@@ -56,17 +56,64 @@ class PublicExportBuilderTests(unittest.TestCase):
         self.assertEqual((self.base / "tools/public_run.sh").read_bytes(), (self.base / "tools/run.sh").read_bytes())
         for relative in (
             "docs/submission/video_script.md",
+            "frontend/src/operatorLabels.js",
             "integrations/paypal_toolkit/check_runtime.py",
             "integrations/paypal_toolkit/pyproject.toml",
             "integrations/paypal_toolkit/requirements.lock",
             "integrations/paypal_toolkit/run.sh",
             "integrations/paypal_toolkit/test_runtime.py",
             "THIRD_PARTY_NOTICES.md",
+            "tests/frontend_operator_labels.mjs",
+            "tests/frontend_recording_contract.mjs",
             "tests/test_public_export_builder.py",
         ):
             self.assertTrue((self.base / relative).is_file(), relative)
         for forbidden in (".venv", "__pycache__", "output", "logs", "archive", "rollback"):
             self.assertFalse(any(forbidden in path.parts for path in self.base.rglob("*")))
+
+    def test_required_release_unit_allowlist_fails_closed(self):
+        self.assertTrue(builder.REQUIRED_RELEASE_UNIT_FILES.issubset(set(builder.source_paths())))
+        cases = (
+            ("frontend/src/operatorLabels.js", "tree"),
+            ("tests/frontend_operator_labels.mjs", "exact"),
+            ("tests/frontend_recording_contract.mjs", "exact"),
+        )
+        for relative, source_group in cases:
+            with self.subTest(relative=relative):
+                if source_group == "tree":
+                    tree_files = dict(builder.TREE_FILES)
+                    tree_files["frontend/src"] = tuple(
+                        name for name in tree_files["frontend/src"]
+                        if f"frontend/src/{name}" != relative
+                    )
+                    patcher = mock.patch.object(builder, "TREE_FILES", tree_files)
+                else:
+                    exact_files = tuple(item for item in builder.EXACT_FILES if item != relative)
+                    patcher = mock.patch.object(builder, "EXACT_FILES", exact_files)
+                with patcher:
+                    with self.assertRaises(RuntimeError) as captured:
+                        builder.source_paths()
+                self.assertEqual(
+                    str(captured.exception),
+                    f"SOURCE_RELEASE_UNIT_MISSING:{relative}",
+                )
+
+    def test_frontend_contract_entrypoints_are_public_and_documented(self):
+        commands = (
+            "node tests/frontend_ai_contract.mjs",
+            "node tests/frontend_operator_labels.mjs",
+            "node tests/frontend_recording_contract.mjs",
+            "node tests/frontend_zip_contract.mjs",
+            "node tests/frontend_zip_api_parity.mjs",
+        )
+        source_paths = set(builder.source_paths())
+        for command in commands:
+            self.assertIn(command.removeprefix("node "), source_paths)
+        for relative in ("README.md", "docs/submission/quickstart.md"):
+            with self.subTest(relative=relative):
+                text = (self.published / relative).read_text(encoding="utf-8")
+                for command in commands:
+                    self.assertIn(command, text)
 
     def test_published_source_mode_has_exact_release_state_and_docs(self):
         result = validator.validate_candidate(self.published)
@@ -104,8 +151,15 @@ class PublicExportBuilderTests(unittest.TestCase):
         security = (self.published / "SECURITY.md").read_text(encoding="utf-8").casefold()
         self.assertIn("trust_env=false", security)
         video = (self.published / "docs/submission/video_script.md").read_text(encoding="utf-8").casefold()
-        self.assertIn("when shown live", video)
-        self.assertIn("operator-attested", video)
+        self.assertIn(
+            "requires the separately authorized paypal sandbox and bounded ai paths "
+            "to be available during recording",
+            video,
+        )
+        self.assertIn(
+            "do not replace live execution with a prior result or operator-attested text",
+            video,
+        )
         self.assertNotIn("sandbox path proves", video)
 
     def test_release_state_mismatches_fail_closed(self):

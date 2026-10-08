@@ -126,10 +126,22 @@ h3 { font-size: 13px; font-weight: 550; margin: 5px 0 0; }
 .grid-caption { display: flex; align-items: center; justify-content: space-between; padding: 17px 23px 13px; gap: 12px; color: #7089a9; font-size: 8px; letter-spacing: 1px; }
 .grid-caption > span { display: flex; align-items: center; gap: 9px; }
 .grid-caption .tiny-dot { color: #54b49e; }
+.velocity-grid-tools { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin: 0 23px 12px; }
+.velocity-grid-tools label { color: #d4e2f2; font-size: 12px; font-weight: 650; }
+.velocity-grid-tools input { width: min(420px, 100%); }
 .transaction-grid { height: 263px; margin: 0 23px; }
 .grid-order { display: inline-flex; gap: 9px; align-items: center; color: #b3c9e6; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 10px; }
 .grid-order .tiny-dot { background: #4b9c89; }
 .grid-amount { color: #d3dfef; font-weight: 500; font-variant-numeric: tabular-nums; }
+.ag-row-selected-transaction { box-shadow: inset 3px 0 0 #0d9488; }
+.velocity-selected-detail { margin: 14px 23px 0; padding: 16px; border: 1px solid #2c465d; border-radius: 10px; background: #0b1726; }
+.velocity-selected-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.velocity-selected-heading h3 { margin-top: 4px; color: #e8f0fa; font-size: 15px; font-family: ui-monospace, SFMono-Regular, monospace; overflow-wrap: anywhere; }
+.velocity-selected-detail dl { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 14px 0 0; }
+.velocity-selected-detail dl > div { min-width: 0; }
+.velocity-selected-detail dt { color: #8fa5c0; font-size: 11px; font-weight: 650; }
+.velocity-selected-detail dd { margin: 5px 0 0; color: #d4e2f2; font-size: 13px; font-weight: 650; overflow-wrap: anywhere; }
+.velocity-selected-detail p { margin: 13px 0 0; color: #8fa5c0; font-size: 12px; line-height: 1.55; }
 .panel-foot { display: flex; justify-content: space-between; gap: 15px; padding: 15px 23px; color: #8fa5c0; font-size: 8px; }
 .panel-foot > span:first-child { display: flex; gap: 6px; align-items: center; }
 .dispute-layout { display: grid; grid-template-columns: 300px 1fr; }
@@ -729,10 +741,14 @@ textarea:focus, input[type="text"]:focus, input[type="number"]:focus, select:foc
 
 .velocity-summary { color: #334155; background: #f0fdfa; border-color: #99f6e4; }
 .velocity-alert { color: #92400e; background: #fffbeb; }
+.velocity-grid-tools label { color: #334155; }
 .transaction-grid { border: 1px solid #dbe3ec; border-radius: 10px; background: #ffffff; }
 .grid-order { color: #334155; }
 .grid-amount { color: #0f172a; }
 .grid-caption .tiny-dot, .grid-order .tiny-dot { color: #0d9488; background: #0d9488; }
+.velocity-selected-detail { border-color: #cbd5e1; background: #f8fafc; }
+.velocity-selected-heading h3, .velocity-selected-detail dd { color: #0f172a; }
+.velocity-selected-detail dt, .velocity-selected-detail p { color: #475569; }
 
 .case-list { background: #faf5ff; border-color: #ddd6fe; }
 .case-card { color: #1e293b; background: #ffffff; border-color: #ddd6fe; }
@@ -891,6 +907,7 @@ textarea:focus, input[type="text"]:focus, input[type="number"]:focus, select:foc
   .overview-panel .metric:nth-child(n + 3) { border-top: 1px solid var(--pg-border-subtle); }
   .description-toolbar { align-items: flex-start; flex-direction: column; gap: 8px; }
   .description-toolbar .description-presets { justify-content: flex-start; }
+  .velocity-selected-detail dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 480px) {
@@ -926,6 +943,11 @@ textarea:focus, input[type="text"]:focus, input[type="number"]:focus, select:foc
   .description-toolbar .description-presets { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
   .description-toolbar .description-presets > span { grid-column: 1 / -1; }
   .description-toolbar .description-presets button { min-height: 44px; }
+  .velocity-grid-tools { align-items: stretch; flex-direction: column; margin-right: 14px; margin-left: 14px; }
+  .velocity-grid-tools input { width: 100%; min-height: 44px; }
+  .velocity-selected-detail { margin-right: 14px; margin-left: 14px; }
+  .velocity-selected-heading { flex-direction: column; }
+  .velocity-selected-detail dl { grid-template-columns: 1fr; }
   .stage-trigger { align-items: flex-start; flex-wrap: wrap; }
   .stage-trigger-label { flex: 1 0 100%; min-width: 0; }
   .stage-title > svg { display: none; }
