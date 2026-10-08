@@ -86,6 +86,12 @@ class PublicExportBuilderTests(unittest.TestCase):
             self.assertNotIn("publication is not authorized", text)
             self.assertNotIn("publication remains closed", text)
             self.assertNotIn("public release remains closed", text)
+        for relative, contradictions in validator.PUBLISHED_RELEASE_ASSETS.items():
+            text = (self.published / relative).read_text(encoding="utf-8").casefold()
+            for statement in validator.PUBLISHED_CURRENT_STATE:
+                self.assertIn(statement, text)
+            for contradiction in contradictions:
+                self.assertNotIn(contradiction, text)
 
     def test_release_state_mismatches_fail_closed(self):
         cases = (
@@ -156,6 +162,26 @@ class PublicExportBuilderTests(unittest.TestCase):
         self.resign_manifest(candidate, manifest, rebuild_package=True)
         with self.assertRaisesRegex(validator.CandidateRejected, "PUBLISHED_RELEASE_DOC_INVALID"):
             validator.validate_candidate(candidate)
+
+    def test_published_source_assets_reject_stale_current_state_claims(self):
+        self.assertEqual(sum(len(items) for items in validator.PUBLISHED_RELEASE_ASSETS.values()), 11)
+        for relative, contradictions in validator.PUBLISHED_RELEASE_ASSETS.items():
+            for index, contradiction in enumerate(contradictions):
+                with self.subTest(relative=relative, contradiction=contradiction):
+                    candidate = self.copy_candidate(
+                        f"published-stale-{Path(relative).stem}-{index}", self.published
+                    )
+                    path = candidate / relative
+                    path.write_text(path.read_text(encoding="utf-8") + "\n" + contradiction + "\n", encoding="utf-8")
+                    manifest = json.loads((candidate / validator.MANIFEST_NAME).read_text(encoding="utf-8"))
+                    row = next(item for item in manifest["files"] if item["path"] == relative)
+                    payload = path.read_bytes()
+                    row["bytes"] = len(payload)
+                    row["sha256"] = validator.sha256_bytes(payload)
+                    row["source_sha256"] = row["sha256"]
+                    self.resign_manifest(candidate, manifest, rebuild_package=True)
+                    with self.assertRaisesRegex(validator.CandidateRejected, "PUBLISHED_RELEASE_ASSET_INVALID"):
+                        validator.validate_candidate(candidate)
 
     def test_manifest_and_unlisted_tamper_fail_closed(self):
         tampered = self.copy_candidate("tampered")
