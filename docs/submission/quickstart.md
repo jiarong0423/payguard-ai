@@ -10,15 +10,22 @@ Status: the complete repository run instructions in this document are the select
 
 From the repository root:
 
+Windows users must run these POSIX `sh` commands in WSL 2; native Command Prompt and PowerShell runners are not supported.
+
 ```sh
 python3.13 -m venv .venv
 uv pip install --python .venv/bin/python3 -r requirements.lock
+./tools/run.sh test
+./tools/run.sh api
+```
+
+The Gemini profile is optional and is not required to start or judge the deterministic console. To validate it separately:
+
+```sh
 uv venv --python python3.12 integrations/gemini/.venv
 uv pip sync integrations/gemini/requirements.lock --python integrations/gemini/.venv/bin/python3 --require-hashes
-./tools/run.sh test
 ./tools/run.sh gemini-check
 ./tools/run.sh gemini-test
-./tools/run.sh api
 ```
 
 In a second terminal:
@@ -95,7 +102,7 @@ After deterministic preflight, each stage may expose **Generate AI evidence brie
 - `semantic_entailment=NOT_EVALUATED` until human review;
 - `external_action_authorized=false`.
 
-The UI validates closed model and evidence identity pairs. The default Gemini line uses `gemini-3.8-flash` with `SYNTHETIC_TEST_RESPONSE` or the separately evidenced `OPERATOR_LIVE_RESPONSE` class. The explicit local line uses `nvidia-nemotron-3-nano-4b` with `LOCAL_RUNTIME_RESPONSE`. Enum support in source does not prove an external execution. The backend launcher selects one line for the process; the browser cannot select a provider and no automatic fallback calls the other line. Neither identity authorizes a provider or workflow action.
+The UI validates closed model and evidence identity pairs. The default Gemini line uses `gemini-3.8-flash` with `SYNTHETIC_TEST_RESPONSE` or the separately evidenced `OPERATOR_LIVE_RESPONSE` class. Any prior external result is operator-attested; a judge-facing execution claim requires showing the bounded path live. The explicit local line uses `nvidia-nemotron-3-nano-4b` with `LOCAL_RUNTIME_RESPONSE`. Enum support in source does not establish an external execution. The backend launcher selects one line for the process; the browser cannot select a provider and no automatic fallback calls the other line. Neither identity authorizes a provider or workflow action.
 
 ## Public references and case caveat
 
@@ -103,9 +110,9 @@ The active source profile contains official PayPal US policy pages, jurisdiction
 
 No reviewed official case proves that rapid sales growth alone caused an account limitation. The narrower supported statement is that the public US User Agreement lists rapidly increasing typical sales volume among multiple risk examples and says some criteria are confidential.
 
-## Optional bounded Sandbox proof
+## Optional bounded Sandbox evidence
 
-Any `BLK-01B` proof remains external to this source package and must be operator-authorized, sanitized and independently reviewed. Its maximum scope is one Sandbox OAuth result plus one unsent USD `10.00` invoice `DRAFT` creation result.
+Any `BLK-01B` result remains operator-attested and external to this source package unless the bounded path is shown live. It must be operator-authorized, sanitized and independently reviewed. Its maximum scope is one Sandbox OAuth result plus one unsent USD `10.00` invoice `DRAFT` creation result.
 
 - Use a fictitious Business sandbox seller for the merchant role.
 - Confirm its country as US before calling it a US seller.
@@ -122,28 +129,33 @@ Mock transport, screenshots and local UI state do not count as authentic provide
 ./tools/run.sh test
 ./tools/run.sh demo
 ./tools/run.sh evaluate
-./tools/run.sh gemini-check
-./tools/run.sh gemini-test
 cd frontend
 npm run build
 ```
 
+Optional Gemini-profile validation remains separate:
+
+```sh
+./tools/run.sh gemini-check
+./tools/run.sh gemini-test
+```
+
 These commands validate the local runtime and source contract. The export manifest records the exact source-release state. No verification command authorizes a provider action.
 
-## What the demo proves
+## What the deterministic console demonstrates
 
 - A deterministic warning funnel can surface public US AUP categories before an invoice draft.
 - A backend calculation can show a local velocity anomaly against a declared synthetic baseline and preceding comparison window.
 - A deterministic intake can organize a synthetic dispute and produce an integrity-checked internal review ZIP while preserving the correct adjudicator boundary.
 - A bounded AI adapter can be placed after deterministic validation without receiving decision authority.
 
-## What the demo does not prove
+## What the demo does not establish
 
 - The operator owns or qualifies for a US live account.
 - A selected sandbox seller is US or Invoicing-enabled without readback.
 - PayPal will approve a product, prevent a limitation, release funds or decide a dispute in a particular way.
 - Evidence is authentic, sufficient or eligible merely because all local fields are complete.
-- Authentic Sandbox execution, model repeatability, real-record model behavior, production readiness or public-submission readiness.
+- Authentic Sandbox or model execution unless shown live, model repeatability, real-record model behavior, production readiness or public-submission readiness.
 - Public or production hosting, restart-safe multi-user AI operation or a hosted-demo URL.
 
 See the [current architecture](../decisions/2026Q4/architecture.md), [official source register](../decisions/2026Q4/us_official_source_register.md) and [US mainline contract](../decisions/2026Q4/us_mainline_contract.md).

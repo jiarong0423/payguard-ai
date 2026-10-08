@@ -606,13 +606,8 @@ class EvidenceBriefAdapter:
             "OPERATOR_LIVE_RESPONSE" if native else "SYNTHETIC_TEST_RESPONSE",
         )
 
-    async def generate(self, request):
-        try:
-            validated = AiBriefRequest.model_validate(request)
-        except ValidationError:
-            fail("ai_request_invalid", 422)
-        provenance = self._capture_request_provenance()
-        context, context_digest, corpus_digest = build_fixed_context(validated.stage)
+    @staticmethod
+    def _validated_config(provenance: _RequestProvenance) -> AiConfig:
         config = provenance.config_loader()
         if type(config) is not AiConfig or type(config.enabled) is not bool:
             fail("ai_configuration_invalid", 503)
@@ -620,6 +615,20 @@ class EvidenceBriefAdapter:
             fail("ai_disabled", 503)
         if config.python_bin is None or config.worker_path is None:
             fail("ai_not_configured", 503)
+        return config
+
+    def validate_attempt_configuration(self) -> None:
+        """Fail before a process-wide attempt is reserved when AI is unavailable."""
+        self._validated_config(self._capture_request_provenance())
+
+    async def generate(self, request):
+        try:
+            validated = AiBriefRequest.model_validate(request)
+        except ValidationError:
+            fail("ai_request_invalid", 422)
+        provenance = self._capture_request_provenance()
+        context, context_digest, corpus_digest = build_fixed_context(validated.stage)
+        config = self._validated_config(provenance)
         command = (
             str(config.python_bin),
             "-I",

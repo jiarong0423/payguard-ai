@@ -21,25 +21,32 @@ The demo target is the United States and the provider environment is PayPal Sand
 - A fictitious Personal sandbox account represents the buyer when needed.
 - The operator's live-account type is not changed or inferred.
 - A US merchant claim requires an operator-confirmed US Business sandbox seller.
-- Any Invoicing proof is limited to its separately reviewed bounded Sandbox path; this source package does not establish live-account or production eligibility.
+- Any Invoicing evidence is limited to its separately reviewed bounded Sandbox path; this source package does not establish live-account or production eligibility.
 
 Sandbox is a virtual test environment. It does not establish production eligibility, a US legal entity, current policy applicability or live-account behavior.
 
 ## Run locally
 
-Prerequisites: Python 3.13 for the provider-neutral API, Python 3.12 for the isolated Gemini worker, Node.js 20.19 or newer or Node.js 22.12 or newer, npm and uv. The optional local-model line also requires a separately installed LM Studio server with the exact `nvidia-nemotron-3-nano-4b` model reachable only at `127.0.0.1:1234`. Run from the repository root. The project does not load `.env` files.
+Required console prerequisites: Python 3.13, Node.js 20.19 or newer or Node.js 22.12 or newer, npm and uv. The Gemini profile is optional and separately requires Python 3.12. The optional local-model line requires a separately installed LM Studio server with the exact `nvidia-nemotron-3-nano-4b` model reachable only at `127.0.0.1:1234`. Run from the repository root. The project does not load `.env` files.
+
+Windows users must run the POSIX `sh` commands in WSL 2; native Command Prompt and PowerShell runners are not supported.
 
 The optional PayPal Agent Toolkit profile is isolated under `integrations/paypal_toolkit/` and requires Python 3.12 with its exact lockfile. Use its `run.sh check` and `run.sh test` commands only for profile validation. It does not own an API launcher. Start the provider-neutral local API with the root Python 3.13 command `./tools/run.sh api`.
 
 ```sh
 python3.13 -m venv .venv
 uv pip install --python .venv/bin/python3 -r requirements.lock
+./tools/run.sh test
+./tools/run.sh api
+```
+
+The Gemini profile is optional and is not required to start or judge the deterministic console. To validate it separately:
+
+```sh
 uv venv --python python3.12 integrations/gemini/.venv
 uv pip sync integrations/gemini/requirements.lock --python integrations/gemini/.venv/bin/python3 --require-hashes
-./tools/run.sh test
 ./tools/run.sh gemini-check
 ./tools/run.sh gemini-test
-./tools/run.sh api
 ```
 
 In a second terminal:
@@ -86,15 +93,15 @@ It includes official PayPal US policy pages, jurisdiction-neutral PayPal Develop
 
 See the [official source register](docs/decisions/2026Q4/us_official_source_register.md) and [US mainline contract](docs/decisions/2026Q4/us_mainline_contract.md).
 
-## Optional provider and model proof
+## Optional provider and model evidence
 
 Outbound Sandbox access is disabled by default and requires the operator's explicit local opt-in. Credentials remain in the backend process environment and must never enter the repository, frontend, screenshots, prompts or reports.
 
-The reviewed local evidence is limited to one bounded Sandbox OAuth result and one unsent USD `10.00` invoice `DRAFT`. Invoice creation and invoice sending remain separate operations. A create response is not a separate GET readback. Production, invoice send, payment, capture, refund and dispute mutation remain frozen.
+The reviewed local records are operator-attested evidence limited to one bounded Sandbox OAuth result and one unsent USD `10.00` invoice `DRAFT`. They are not publicly reproducible from this source; a judge-facing execution claim requires showing that bounded path live with credentials kept off-screen. Invoice creation and invoice sending remain separate operations. A create response is not a separate GET readback. Production, invoice send, payment, capture, refund and dispute mutation remain frozen.
 
-The optional Gemini path is bounded to fixed synthetic facts, pinned citation identities and no automatic retry. The model cannot select jurisdiction, change deterministic results, establish policy applicability or authorize a provider action. No repeatability, other-stage quality, real-record behavior or production claim is made.
+The optional Gemini path is bounded to fixed synthetic facts, pinned citation identities and no automatic retry. Its prior reviewed result is operator-attested and should be presented to a judge as an execution only when shown live; public source establishes the adapter contract, not an external run. The model cannot select jurisdiction, change deterministic results, establish policy applicability or authorize a provider action. No repeatability, other-stage quality, real-record behavior or production claim is made.
 
-The current runtime adds a process-local denial-of-wallet guard around this optional path: three permanent attempt reservations total, one for each fixed stage. Reservation occurs atomically before the provider call; failures, timeouts, cancellation and invalid responses still consume the stage slot. Session reset, expiry and new sessions do not restore it. This is a local prototype control, not a production distributed quota. A public multi-worker or multi-instance deployment must use a durable shared atomic reservation store plus API-gateway rate and budget circuit breakers so restart, another worker or another instance cannot restore capacity.
+The current runtime adds a process-local denial-of-wallet guard around this optional path: three permanent attempt reservations total, one for each fixed stage. Disabled or invalidly configured AI requests do not consume a reservation. After enablement and deterministic context validation, reservation occurs atomically before the provider call; failures, timeouts, cancellation and invalid responses still consume the stage slot. Session reset, expiry and new sessions do not restore it. This is a local prototype control, not a production distributed quota. A public multi-worker or multi-instance deployment must use a durable shared atomic reservation store plus API-gateway rate and budget circuit breakers so restart, another worker or another instance cannot restore capacity.
 
 The server-owned `payguard-bounded-advisory-v2` prompt contract accepts no caller prompt. It treats every value as data, uses only fixed synthetic facts and opaque pinned citation IDs, disables tools, function calling, streaming, external retrieval and automatic retry, and permits generated text only from stage-specific response-schema enums. Backend validation rechecks the exact prompt-contract digest, citation order, text inventory and authority fields after generation.
 
@@ -110,10 +117,15 @@ Use the project-local runner and frontend build:
 ./tools/run.sh test
 ./tools/run.sh demo
 ./tools/run.sh evaluate
-./tools/run.sh gemini-check
-./tools/run.sh gemini-test
 cd frontend
 npm run build
+```
+
+Optional Gemini-profile validation remains separate:
+
+```sh
+./tools/run.sh gemini-check
+./tools/run.sh gemini-test
 ```
 
 Local tests, screenshots and mock transports validate only their recorded runtime and source contracts. The export manifest carries the exact source-release state. These checks do not close video or submission gates, and they do not prove public or production hosting or multi-user AI operation.

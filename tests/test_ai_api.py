@@ -61,6 +61,9 @@ class FakeBriefAdapter:
         self.error = error
         self.calls = []
 
+    def validate_attempt_configuration(self):
+        return None
+
     async def generate(self, request):
         self.calls.append(deepcopy(request))
         if self.error is not None:
@@ -298,8 +301,9 @@ class AiApiTests(unittest.TestCase):
         self.assertEqual(response.status_code, 500, response.text)
         self.assertEqual(response.json()["error"]["code"], "response_contract_failure")
 
-    def test_default_adapter_is_disabled_without_outbound_opt_in(self):
-        app = create_app(store=SessionStore(clock=FixedClock()), paypal=self.provider)
+    def test_default_adapter_is_disabled_without_outbound_opt_in_and_does_not_reserve_attempt(self):
+        store = SessionStore(clock=FixedClock())
+        app = create_app(store=store, paypal=self.provider)
         with TestClient(app, base_url="http://127.0.0.1:8000", client=("127.0.0.1", 55102), raise_server_exceptions=False) as client:
             session = client.post(ROOT + "/demo/sessions", json={}, headers={"Origin": ORIGIN}).json()
             headers = {"Origin": ORIGIN, "X-Demo-Session": session["session_id"], "X-CSRF-Token": session["csrf_token"]}
@@ -307,9 +311,14 @@ class AiApiTests(unittest.TestCase):
             self.assertEqual(prepared.status_code, 200, prepared.text)
             with patch.dict("os.environ", {}, clear=True):
                 response = client.post(ROOT + "/ai/evidence-brief", json={"stage": "source_compliance"}, headers=headers)
+            self.assertEqual(store.ai_attempt_budget.used, 0)
+            app.state.ai_brief = FakeBriefAdapter()
+            retry = client.post(ROOT + "/ai/evidence-brief", json={"stage": "source_compliance"}, headers=headers)
         self.assertEqual(response.status_code, 503, response.text)
         self.assertEqual(response.json()["error"]["code"], "ai_disabled")
         self.assertEqual(response.json()["error"]["message"], "The AI evidence brief is unavailable or could not be verified.")
+        self.assertEqual(retry.status_code, 200, retry.text)
+        self.assertEqual(store.ai_attempt_budget.used, 1)
 
 
 if __name__ == "__main__":

@@ -44,13 +44,13 @@ Spoken script:
 
 > AI runs only after deterministic validation. It receives fixed synthetic facts and pinned citation identities, then summarizes one evidence point and one missing item. It has no tools, payment authority, submission authority or decision authority.
 
-## 2:20 to 2:42 — PayPal and AG Grid proof
+## 2:20 to 2:42 — PayPal and AG Grid boundary
 
-Visual: Show the sanitized Sandbox status and unsent draft boundary, then return to the AG Grid analytics workspace.
+Visual: If this take uses the separately authorized live Sandbox path, show its sanitized status and unsent draft boundary with credentials off-screen. Otherwise, show the disabled-by-default boundary and label any prior result operator-attested. Then return to the AG Grid analytics workspace.
 
 Spoken script:
 
-> The PayPal Sandbox path proves a bounded OAuth connection and an unsent invoice draft. AG Grid provides the operational review surface. The backend owns every workflow signal, and the interface keeps final authority visible at every stage.
+> When shown live in this recording, the PayPal Sandbox path demonstrates a bounded OAuth connection and an unsent invoice draft. Otherwise, the prior result is operator-attested and is not publicly reproducible from this source. AG Grid provides the operational review surface. The backend owns every workflow signal, and the interface keeps final authority visible at every stage.
 
 ## 2:42 to 2:55 — Close
 

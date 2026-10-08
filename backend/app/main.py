@@ -193,6 +193,10 @@ def create_app(*, store=None, paypal=None, reference_loader=None, ai_brief=None)
 
     @application.post("/api/v1/ai/evidence-brief", response_model=AiBriefResponse)
     async def evidence_brief(body: AiBriefRequest, session=Depends(write_session)):
+        try:
+            application.state.ai_brief.validate_attempt_configuration()
+        except AiBriefError as exc:
+            return error_response(exc.status, exc.code)
         application.state.store.reserve_ai_brief_attempt(session, body.stage)
         try:
             result = await application.state.ai_brief.generate(body.model_dump())

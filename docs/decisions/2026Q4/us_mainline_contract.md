@@ -1,8 +1,8 @@
 # PayGuard US-Only Mainline Contract
 
-Status: current accepted canonical local and public-source design. The English US-only conversion, one independently accepted Sandbox OAuth plus unsent invoice `DRAFT` pair, and one independently accepted fixed-synthetic `gemini-3.8-flash` execution are recorded. This contract supersedes prior product narratives for the active runtime; historical evidence retains its original claims and bytes. Competition submission remains a separate open gate.
+Status: current accepted canonical local and public-source design. The English US-only conversion, one operator-attested and independently reviewed Sandbox OAuth plus unsent invoice `DRAFT` pair, and one operator-attested and independently reviewed fixed-synthetic `gemini-3.8-flash` result are recorded. These records are not publicly reproducible from source alone; a judge-facing execution claim requires showing the bounded path live. This contract supersedes prior product narratives for the active runtime; historical evidence retains its original claims and bytes. Competition submission remains a separate open gate.
 
-Current objective state: local baseline `O (Done)`, the exact bounded `BLK-01B` and `BLK-02B` evidence, security review, rights/notices, public export and anonymous repository readback are accepted. Public source publication is complete. Only video publication and Devpost submission remain in the competition submission path. A hosted demo is optional and is not a mandatory gate.
+Current objective state: local baseline `O (Done)`, the operator-attested and independently reviewed `BLK-01B` and `BLK-02B` records, security review, rights/notices, public export and anonymous repository readback are accepted within local governance. Public source publication is complete. Only video publication and Devpost submission remain in the competition submission path. A hosted demo is optional and is not a mandatory gate.
 
 ## Locked product statement
 
@@ -16,7 +16,7 @@ The product is an interception and evidence-preparation funnel. It does not repl
 
 ## Functional demonstration contract
 
-The functional-demo requirement can be satisfied by complete repository run instructions or by a hosted demo URL. This candidate selects the repository-instructions path in `README.md` and `docs/submission/quickstart.md`. The optional hosted-demo path remains `FROZEN` and unperformed. This selection proves no public or production hosting and does not expand the local process-bound AI control into a multi-user or multi-instance deployment.
+The functional-demo requirement can be satisfied by complete repository run instructions or by a hosted demo URL. This candidate selects the repository-instructions path in `README.md` and `docs/submission/quickstart.md`. The optional hosted-demo path remains `FROZEN` and unperformed. This selection establishes neither public nor production hosting and does not expand the local process-bound AI control into a multi-user or multi-instance deployment.
 
 ## Provider identity
 
@@ -57,11 +57,11 @@ No stage produces approval, prohibition, hidden provider risk, evidence authenti
 
 AI receives only accepted structured synthetic facts and pinned citations after deterministic preflight. It may summarize facts, chronology, missing evidence and limitations. It cannot select jurisdiction, add facts, resolve conflicts, authenticate evidence, change a rule result, acknowledge a warning or choose a provider action.
 
-`BLK-02B` is limited to one independently human-accepted `gemini-3.8-flash` response over fixed synthetic facts. The receipt records one invocation, no automatic retry and no workflow or external-action authority. It proves no repeatability, other-stage quality, real-record behavior, provider retention behavior, policy correctness or production readiness.
+`BLK-02B` is limited to one operator-attested, independently human-reviewed `gemini-3.8-flash` response over fixed synthetic facts. The non-public receipt records one invocation, no automatic retry and no workflow or external-action authority. It establishes no repeatability, other-stage quality, real-record behavior, provider retention behavior, policy correctness or production readiness.
 
 ## Sandbox contract
 
-Outbound access is disabled by default. `BLK-01B` is closed only for the separately authorized and independently reviewed authentic OAuth result and one unsent USD `10.00` invoice `DRAFT` creation result using the operator-confirmed US Business sandbox seller path with Invoicing available.
+Outbound access is disabled by default. `BLK-01B` is closed in local governance only for the separately authorized, operator-attested and independently reviewed OAuth result and one unsent USD `10.00` invoice `DRAFT` creation result using the operator-confirmed US Business sandbox seller path with Invoicing available. Public source alone does not authenticate this result.
 
 Invoice send, payment, capture, refund, dispute mutation, production and automatic retry after uncertain creation remain frozen. A create response is not described as a separate GET readback.
 
