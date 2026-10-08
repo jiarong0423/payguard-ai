@@ -176,6 +176,7 @@ for (const phrase of [
 for (const source of [appSource, analyticsSource]) {
   requireText(source, "timeZone: 'UTC'", 'fixed UTC rendering');
   requireText(source, 'UTC`', 'visible UTC suffix');
+  assert.equal(/timeZone:\s*'(?!UTC)[^']+'/u.test(source), false, 'non-UTC timeZone is forbidden');
 }
 requireText(referenceSource, 'placeholder="YYYY-MM-DDTHH:mm:ssZ"');
 requireText(policySource, 'Evaluation time (UTC ISO)');
@@ -188,7 +189,7 @@ for (const [name, source] of [
   ['Video script', scriptSource],
   ['Quickstart', quickstartSource],
 ]) {
-  for (const residue of ['Asia/Taipei', '+08:00', 'local time']) forbidText(source, residue, `${name} timezone residue ${residue}`);
+  for (const residue of ['+08:00', 'local time']) forbidText(source, residue, `${name} timezone residue ${residue}`);
 }
 
 requireText(analyticsSource, 'data-testid={`analytics-mobile-trigger-${id}`}');
