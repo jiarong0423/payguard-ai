@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "sources": [
+    {
+      "source_id": "PP-US-AUP-2022-10-29-OBSERVED-2026-10-06",
+      "authority": "PayPal",
+      "jurisdiction": "US",
+      "locale": "en_US",
+      "title": "PayPal Acceptable Use Policy",
+      "url": "https://www.paypal.com/us/legalhub/paypal/acceptableuse-full?country.x=US&locale.x=en_US",
+      "observed_at": "2026-10-06T12:00:00+08:00",
+      "visible_updated_date": "2022-10-29",
+      "visible_updated_date_status": "DOCUMENT_STATED",
+      "effective_from": null,
+      "effective_to": null,
+      "effective_status": "NOT_VERIFIED",
+      "current_policy_applicability": "NOT_ESTABLISHED",
+      "representation": "STRUCTURED_PARAPHRASE_AND_CONTROLLED_LABELS_NOT_FULL_SOURCE",
+      "origin_bytes_archived": false,
+      "origin_bytes_sha256": null,
+      "rights": "Source rights retained by PayPal; no redistribution license inferred.",
+      "locators": [
+        {
+          "locator_id": "AUP_PROHIBITED_ACTIVITIES",
+          "heading": "Prohibited Activities",
+          "semantic_use": "Reference-only prohibited-category mapping"
+        },
+        {
+          "locator_id": "AUP_PRIOR_APPROVAL_ACTIVITIES",
+          "heading": "Activities Requiring Approval",
+          "semantic_use": "Reference-only prior-approval-category mapping"
+        },
+        {
+          "locator_id": "AUP_CATEGORY_DISTINCTION",
+          "heading": "Prohibited and prior-approval categories",
+          "semantic_use": "A category match does not itself establish a policy violation"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "The visible updated date is not an effective date.",
+    "The observed public page does not establish account-specific eligibility or approval.",
+    "The package contains no complete policy text or origin-byte snapshot.",
+    "Category matching does not establish merchant facts, legality, policy applicability or a violation.",
+    "No match does not establish compliance because the published prior-approval list is non-exhaustive.",
+    "This source authorizes no workflow transition or external action."
+  ]
+}

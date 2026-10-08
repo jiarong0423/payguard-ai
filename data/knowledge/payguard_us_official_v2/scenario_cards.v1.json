@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "catalog_id": "payguard.us_demo_scenarios.v1",
+  "provenance": "AUTHORED_SYNTHETIC_SCENARIOS_NOT_REAL_CASES",
+  "jurisdiction": "US",
+  "scenario_count": 3,
+  "scenarios": [
+    {
+      "scenario_id": "US-DEMO-AUP-WARNING",
+      "theme": "source_compliance",
+      "title": "AUP category warning before invoice draft",
+      "evidence_class": "SYNTHETIC_DEMO_SCENARIO",
+      "citation_chunk_ids": [
+        "PP-US-AUP-POLICY",
+        "PP-US-AUP-NONEXHAUSTIVE"
+      ],
+      "expected_route": "EDIT_CANCEL_OR_ACKNOWLEDGE_AND_CONTINUE",
+      "final_authority": "PAYPAL",
+      "limitations": [
+        "No compliance verdict",
+        "No provider approval inferred"
+      ]
+    },
+    {
+      "scenario_id": "US-DEMO-VELOCITY-READINESS",
+      "theme": "velocity_guard",
+      "title": "Rapid sales growth and fulfillment evidence readiness",
+      "evidence_class": "SYNTHETIC_DEMO_SCENARIO",
+      "citation_chunk_ids": [
+        "PP-US-UA-VELOCITY",
+        "PP-US-UA-HOLDS-RESERVES"
+      ],
+      "expected_route": "REVIEW_LOCAL_BASELINE_AND_MISSING_EVIDENCE",
+      "final_authority": "PAYPAL",
+      "limitations": [
+        "No hidden threshold",
+        "No fraud or money-laundering inference",
+        "No guaranteed release"
+      ]
+    },
+    {
+      "scenario_id": "US-DEMO-DISPUTE-EVIDENCE",
+      "theme": "dispute_mediation",
+      "title": "INR or counterfeit evidence organization",
+      "evidence_class": "SYNTHETIC_DEMO_SCENARIO",
+      "citation_chunk_ids": [
+        "PP-DISPUTES-OVERVIEW-AUTHORITY",
+        "PP-US-PURCHASE-INR-SNAD",
+        "PP-US-PURCHASE-COUNTERFEIT",
+        "PP-US-SELLER-ELIGIBILITY",
+        "PP-US-SELLER-DELIVERY",
+        "PP-REASONS-INR",
+        "PP-REASONS-SNAD",
+        "PP-REASONS-UNAUTH",
+        "PP-REASONS-CREDIT",
+        "PP-REASONS-DUPLICATE",
+        "PP-REASONS-AMOUNT",
+        "PP-REASONS-OTHER-PAYMENT",
+        "PP-REASONS-SUBSCRIPTION",
+        "PP-REASONS-OTHER"
+      ],
+      "expected_route": "PREPARE_REDACTED_DRAFT_FOR_HUMAN_REVIEW",
+      "final_authority": "PAYPAL_OR_EXTERNAL_ISSUER",
+      "limitations": [
+        "No automatic submission",
+        "No outcome prediction",
+        "Photos only when relevant or requested"
+      ]
+    }
+  ],
+  "case_evidence_gap": "No qualifying official US final-merits case was found for all three product stages. These scenarios must never be presented as real cases."
+}

@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "registry_status": "CURRENT_REFERENCE_PROFILE",
+  "packages": [
+    {
+      "package_id": "US_PAYPAL_AUP_REFERENCE_20261006_V1",
+      "relative_path": "US/paypal_aup_reference_v1",
+      "active_tier": "REFERENCE_ONLY",
+      "allowed_next_tier": "SHADOW",
+      "canonical_runtime_active": true,
+      "manifest_sha256": "63177d0ce5de3e4c80101633b82d703219033c09287773fefc954289295b005a",
+      "source_evidence_path": "../../../docs/decisions/2026Q4/us_mainline_contract.md",
+      "source_evidence_sha256": "305f1de611f7713c5c66f6e6ae20107156364414dbc4e7a248d831cbc6f22c18"
+    }
+  ],
+  "promotion_requires": [
+    "independent_verification_pass",
+    "explicit_canonical_apply_scope",
+    "same-version loader and interpreter validation",
+    "negative and conflict vectors",
+    "rollback and no-op evidence"
+  ]
+}

@@ -1,0 +1,27 @@
+[project]
+name = "payguard-gemini-runtime"
+version = "0.1.0"
+description = "Dedicated Python 3.12 Gemini advisory worker for fixed synthetic PayGuard facts"
+requires-python = "==3.12.*"
+dependencies = [
+  "google-auth==2.60.0",
+  "google-genai==2.28.0",
+  "pydantic==2.13.5",
+]
+
+[tool.payguard-gemini]
+entrypoint = "run.sh"
+api-version = "v1"
+location = "global"
+model = "gemini-3.8-flash"
+mode = "fixed_synthetic_advisory_worker"
+sdk-version = "2.28.0"
+lock-sha256 = "36554331392d6102519a4ead5778704c4ff89e79da6bb9d6648b656f130724bb"
+inventory-count = 25
+
+[tool.payguard-gemini.project-markers]
+"backend/app/ai_brief.py" = "d65260d6604a7094358044fd0107230a6706057e2f06f5e2547ff687d322cb10"
+"backend/app/main.py" = "280f89f72c8dccfc253d7ea07f17800d980af4b96ee033c310e6544857277fe0"
+"backend/app/store.py" = "8baaf15899770a33887370046a92a4f8a6f944f47562f5b1d1142da2e4a0a884"
+"integrations/gemini/run.sh" = "6f276cb1cbe6905a5d04e8c107afb83487fd0898c2ab405da28fc8ee18979203"
+"integrations/gemini/worker.py" = "c26a1e3e513530d1af105f87d94ae2fbe5baa3681351c87d36185c389060b2e7"

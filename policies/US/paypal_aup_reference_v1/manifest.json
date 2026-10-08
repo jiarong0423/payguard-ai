@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "package_id": "US_PAYPAL_AUP_REFERENCE_20261006_V1",
+  "jurisdiction": "US",
+  "policy_domain": "AUP",
+  "policy_version": "US_AUP_VISIBLE_UPDATE_2022_10_29_OBSERVED_2026_10_06",
+  "effective_from": null,
+  "effective_to": null,
+  "effective_status": "NOT_VERIFIED",
+  "execution_tier": "REFERENCE_ONLY",
+  "maximum_tier_without_new_source_evidence": "SHADOW",
+  "retroactive": false,
+  "source_ids": [
+    "PP-US-AUP-2022-10-29-OBSERVED-2026-10-06"
+  ],
+  "rules_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "approval_ref": null,
+  "current_policy_applicability": "NOT_ESTABLISHED",
+  "workflow_transition_authorized": false,
+  "external_action_authorized": false,
+  "full_policy_text_included": false,
+  "origin_bytes_archived": false,
+  "status": "CURRENT_REFERENCE_PROFILE"
+}

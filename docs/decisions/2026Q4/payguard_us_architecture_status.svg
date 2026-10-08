@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1060" viewBox="0 0 1600 1060" role="img" aria-labelledby="title desc">
+  <title id="title">PayGuard US-only architecture and delivery status</title>
+  <desc id="desc">Accepted local eight-layer architecture, three-stage merchant journey, response-driven dispute requirements, restricted session metadata, a pseudonymized review copy, authority boundaries, and frozen public release.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07111f"/>
+      <stop offset="1" stop-color="#10233d"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b73e0"/>
+      <stop offset="1" stop-color="#18a8ff"/>
+    </linearGradient>
+    <linearGradient id="green" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#167d64"/>
+      <stop offset="1" stop-color="#25b98a"/>
+    </linearGradient>
+    <linearGradient id="amber" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8b5a12"/>
+      <stop offset="1" stop-color="#e39b27"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.28"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#79bfff"/>
+    </marker>
+    <style>
+      .title { font: 700 38px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #f5f9ff; }
+      .subtitle { font: 500 17px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #a9c2df; }
+      .section { font: 700 20px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #eaf4ff; letter-spacing: .8px; }
+      .stage { font: 700 22px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #fff; }
+      .body { font: 500 15px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #d8e8f9; }
+      .small { font: 500 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #a9c2df; }
+      .layer { font: 700 15px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #eaf4ff; }
+      .status { font: 700 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #fff; letter-spacing: .5px; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1060" fill="url(#background)"/>
+  <circle cx="1450" cy="90" r="230" fill="#0b73e0" opacity="0.08"/>
+  <circle cx="130" cy="940" r="260" fill="#25b98a" opacity="0.06"/>
+
+  <text x="70" y="68" class="title">PayGuard — US-Only Merchant Warning and Evidence Console</text>
+  <text x="70" y="100" class="subtitle">Deterministic first - AI advisory - Human local choices - PayPal or external adjudicator retains final authority</text>
+  <rect x="1290" y="45" width="240" height="42" rx="21" fill="#132b48" stroke="#3d6b99"/>
+  <text x="1410" y="71" class="status" text-anchor="middle">BOUNDED EVIDENCE DONE - PUBLIC NOT READY</text>
+
+  <text x="70" y="152" class="section">THREE-STAGE MERCHANT JOURNEY</text>
+
+  <g filter="url(#shadow)">
+    <rect x="70" y="176" width="430" height="180" rx="18" fill="url(#blue)"/>
+    <text x="100" y="216" class="stage">01 - Before transaction</text>
+    <text x="100" y="250" class="body">US AUP preflight screen</text>
+    <text x="100" y="280" class="small">Required fields → deterministic match → second warning</text>
+    <text x="100" y="306" class="small">Merchant: edit - cancel - acknowledge and continue</text>
+    <text x="100" y="332" class="small">Output: NOT_MADE - NOT_ESTABLISHED</text>
+
+    <rect x="585" y="176" width="430" height="180" rx="18" fill="url(#green)"/>
+    <text x="615" y="216" class="stage">02 - Payment and fulfillment</text>
+    <text x="615" y="250" class="body">Velocity and evidence readiness</text>
+    <text x="615" y="280" class="small">Local baseline → bounded ratio → missing evidence</text>
+    <text x="615" y="306" class="small">No AML, fraud, provider-threshold or release claim</text>
+    <text x="615" y="332" class="small">Tracking is evidence, not an outcome guarantee</text>
+
+    <rect x="1100" y="176" width="430" height="180" rx="18" fill="url(#amber)"/>
+    <text x="1130" y="216" class="stage">03 - After transaction</text>
+    <text x="1130" y="250" class="body">Dispute evidence mediation</text>
+    <text x="1130" y="280" class="small">Current response → seller requests → due state</text>
+    <text x="1130" y="306" class="small">Restricted session layer + pseudonymized review copy</text>
+    <text x="1130" y="332" class="small">No submit, refund, appeal or adjudication</text>
+  </g>
+
+  <path d="M500 266 H575" stroke="#79bfff" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+  <path d="M1015 266 H1090" stroke="#79bfff" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+
+  <text x="70" y="410" class="section">EIGHT-LAYER RESPONSIBILITY MAP</text>
+
+  <g filter="url(#shadow)">
+    <rect x="70" y="436" width="1460" height="62" rx="12" fill="#142c49" stroke="#315579"/>
+    <text x="95" y="474" class="layer">L8 - Presentation</text>
+    <text x="325" y="474" class="body">React - AG Grid Community - custom cells - responsive review - local guide</text>
+    <rect x="1350" y="452" width="145" height="30" rx="15" fill="#167d64"/>
+    <text x="1422" y="472" class="status" text-anchor="middle">O (DONE)</text>
+
+    <rect x="70" y="508" width="1460" height="62" rx="12" fill="#11283f" stroke="#315579"/>
+    <text x="95" y="546" class="layer">L7 - Human Review</text>
+    <text x="325" y="546" class="body">Digest-bound acknowledgement - local draft review - expiry and revocation</text>
+    <rect x="1350" y="524" width="145" height="30" rx="15" fill="#167d64"/>
+    <text x="1422" y="544" class="status" text-anchor="middle">O (DONE)</text>
+
+    <rect x="70" y="580" width="1460" height="62" rx="12" fill="#142c49" stroke="#315579"/>
+    <text x="95" y="618" class="layer">L6 - Governance</text>
+    <text x="325" y="618" class="body">Registries - exact hashes - isolation - focused/full tests - no-op audit</text>
+    <rect x="1350" y="596" width="145" height="30" rx="15" fill="#167d64"/>
+    <text x="1422" y="616" class="status" text-anchor="middle">O (DONE)</text>
+
+    <rect x="70" y="652" width="1460" height="62" rx="12" fill="#11283f" stroke="#315579"/>
+    <text x="95" y="690" class="layer">L5 - API and Report</text>
+    <text x="325" y="690" class="body">Strict loopback HTTP - backend-owned calculations - sanitized typed results</text>
+    <rect x="1350" y="668" width="145" height="30" rx="15" fill="#167d64"/>
+    <text x="1422" y="688" class="status" text-anchor="middle">O (DONE)</text>
+
+    <rect x="70" y="724" width="1460" height="62" rx="12" fill="#142c49" stroke="#315579"/>
+    <text x="95" y="762" class="layer">L4 - Engines</text>
+    <text x="325" y="762" class="body">Deterministic gates - bounded citations - one accepted fixed-synthetic Gemini path</text>
+    <rect x="1350" y="740" width="145" height="30" rx="15" fill="#167d64"/>
+    <text x="1422" y="760" class="status" text-anchor="middle">O (DONE)</text>
+
+    <rect x="70" y="796" width="1460" height="62" rx="12" fill="#11283f" stroke="#315579"/>
+    <text x="95" y="834" class="layer">L3 - Policy</text>
+    <text x="325" y="834" class="body">Pinned US REFERENCE_ONLY profile - unknown effective interval - no fallback</text>
+    <rect x="1350" y="812" width="145" height="30" rx="15" fill="#167d64"/>
+    <text x="1422" y="832" class="status" text-anchor="middle">O (DONE)</text>
+
+    <rect x="70" y="868" width="1460" height="62" rx="12" fill="#142c49" stroke="#315579"/>
+    <text x="95" y="906" class="layer">L2 - Privacy</text>
+    <text x="325" y="906" class="body">Restricted session metadata - pseudonymized review copy - digest binding</text>
+    <rect x="1350" y="884" width="145" height="30" rx="15" fill="#167d64"/>
+    <text x="1422" y="904" class="status" text-anchor="middle">O (DONE)</text>
+
+    <rect x="70" y="940" width="1460" height="62" rx="12" fill="#11283f" stroke="#315579"/>
+    <text x="95" y="978" class="layer">L1 - Ingest</text>
+    <text x="325" y="978" class="body">Closed schema - exact US context - format and consistency checks - deterministic route</text>
+    <rect x="1350" y="956" width="145" height="30" rx="15" fill="#167d64"/>
+    <text x="1422" y="976" class="status" text-anchor="middle">O (DONE)</text>
+  </g>
+
+  <rect x="70" y="1018" width="700" height="28" rx="14" fill="#167d64"/>
+  <text x="420" y="1037" class="status" text-anchor="middle">O (DONE) - one accepted Sandbox OAuth + unsent DRAFT pair</text>
+  <rect x="790" y="1018" width="740" height="28" rx="14" fill="#167d64"/>
+  <text x="1160" y="1037" class="status" text-anchor="middle">O (DONE) - one human-accepted gemini-3.8-flash execution</text>
+</svg>
