@@ -32,6 +32,31 @@ PUBLISHED_REMAINING_GATES = (
     "VIDEO_PUBLICATION",
     "DEVPOST_SUBMISSION",
 )
+PUBLISHED_CURRENT_STATE = (
+    "public source publication is complete",
+    "only video publication and devpost submission remain in the competition submission path",
+)
+PUBLISHED_RELEASE_ASSETS = {
+    "SECURITY.md": (
+        "public export, owner-rights and deploy approval remain open",
+    ),
+    "docs/decisions/2026Q4/architecture.md": (
+        "pending: external receipt binding",
+        "public export, deployment and independent release acceptance remain open",
+        "third-party notices and public artifact proof remain open",
+        "repository publication, video and submission remain frozen",
+        "security, repository-visibility, video and devpost evidence remain required",
+        "production, provider mutations, public release",
+    ),
+    "docs/decisions/2026Q4/us_mainline_contract.md": (
+        "security, rights, export, repository-visibility, video and submission gates",
+        "public repository, video or devpost submission readiness",
+    ),
+    "docs/decisions/2026Q4/payguard_us_architecture_status.svg": (
+        "frozen public release",
+        "public not ready",
+    ),
+}
 FORBIDDEN_PARTS = {
     ".cache", ".codex", ".cursor", ".git", ".github", ".pytest_cache", ".venv",
     ".vscode", "__pycache__", "archive", "build", "dist", "logs", "node_modules",
@@ -351,6 +376,15 @@ def validate_release_docs(root: Path, manifest: dict) -> None:
             reject("PUBLISHED_RELEASE_DOC_INVALID")
         if "hosted demo" not in folded or "optional" not in folded or "unperformed" not in folded:
             reject("PUBLISHED_RELEASE_DOC_INVALID")
+    for relative, contradictions in PUBLISHED_RELEASE_ASSETS.items():
+        try:
+            folded = (root / relative).read_text(encoding="utf-8").casefold()
+        except (OSError, UnicodeError):
+            reject("PUBLISHED_RELEASE_ASSET_INVALID")
+        if any(statement not in folded for statement in PUBLISHED_CURRENT_STATE):
+            reject("PUBLISHED_RELEASE_ASSET_INVALID")
+        if any(contradiction in folded for contradiction in contradictions):
+            reject("PUBLISHED_RELEASE_ASSET_INVALID")
 
 
 def python_lock_tokens(path: Path) -> set[str]:

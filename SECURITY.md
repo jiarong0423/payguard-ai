@@ -1,6 +1,6 @@
 # Security Boundary
 
-Baseline review date: 2026-10-04. Latest contract review: 2026-10-06. Owner: main architect. Scope: local synthetic console plus optional PayPal Sandbox adapter.
+Baseline review date: 2026-10-04. Latest contract review: 2026-10-08. Owner: main architect. Scope: local synthetic console plus optional PayPal Sandbox adapter.
 
 Backend route/auth/data controls are specified in docs/decisions/2026Q4/console_contract.md. Loopback binding, exact Origin/Host allowlists, session-bound CSRF, memory TTL and row/rate/body bounds are required. No public deployment or real merchant authentication is claimed.
 
@@ -14,4 +14,4 @@ The optional LM Studio profile is a separate default-off loopback transport. It 
 
 Repository content, release packages, browser bundles, screenshots, logs and AI prompts must contain no credential value, access token, provider project identity, account identifier or `.env` payload. Configuration names may be documented only as names. Operator credentials remain outside Git in the backend process environment or an approved deployment secret manager. Public packaging must run the exact secret, history and export gates against the candidate bytes; a passing scan does not authorize publication.
 
-Threat model: docs/decisions/2026Q4/threat_model.md. Package review and locked dependency evidence are recorded in the console work-order manifest. The exact current release repository has bounded SAST, dependency, secret and history evidence, but public export, owner-rights and deploy approval remain open in the unique missing registry; this local development stage does not close those gates.
+Threat model: docs/decisions/2026Q4/threat_model.md. Package review and locked dependency evidence are recorded in the console work-order manifest. The exact current release repository has bounded SAST, dependency, secret, history, rights/notices, public-export and anonymous-repository-readback evidence. Public source publication is complete. Only video publication and Devpost submission remain in the competition submission path. Deployment approval remains open; this evidence does not authorize public or production hosting, production PayPal authority, real PII, shared quotas or local-model distribution.

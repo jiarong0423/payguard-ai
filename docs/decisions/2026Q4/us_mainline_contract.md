@@ -1,8 +1,8 @@
 # PayGuard US-Only Mainline Contract
 
-Status: current accepted canonical local design. The English US-only conversion, one independently accepted Sandbox OAuth plus unsent invoice `DRAFT` pair, and one independently accepted fixed-synthetic `gemini-3.8-flash` execution are recorded. This contract supersedes prior product narratives for the active runtime; historical evidence retains its original claims and bytes. Public submission remains a separate open gate.
+Status: current accepted canonical local and public-source design. The English US-only conversion, one independently accepted Sandbox OAuth plus unsent invoice `DRAFT` pair, and one independently accepted fixed-synthetic `gemini-3.8-flash` execution are recorded. This contract supersedes prior product narratives for the active runtime; historical evidence retains its original claims and bytes. Competition submission remains a separate open gate.
 
-Current objective state: local baseline `O (Done)` and the exact bounded `BLK-01B` and `BLK-02B` evidence are accepted. The next P1 boundary is `PG-006` release preparation. Public submission remains frozen behind its separate security, rights, export, repository-visibility, video and submission gates. A hosted demo is optional and is not a mandatory gate.
+Current objective state: local baseline `O (Done)`, the exact bounded `BLK-01B` and `BLK-02B` evidence, security review, rights/notices, public export and anonymous repository readback are accepted. Public source publication is complete. Only video publication and Devpost submission remain in the competition submission path. A hosted demo is optional and is not a mandatory gate.
 
 ## Locked product statement
 
@@ -79,7 +79,7 @@ Local code, tests, source integrity and rendered UI can establish only local con
 - current legal completeness;
 - production readiness;
 - public or production hosting or restart-safe multi-user AI operation;
-- public repository, video or Devpost submission readiness.
+- video or Devpost submission readiness; public repository readiness is established separately by the accepted A8 anonymous readback, not by local code alone.
 
 Canonical state remains governed by `config/module_registry.json` and `config/missing_registry.json`. No document closes a gap.
 

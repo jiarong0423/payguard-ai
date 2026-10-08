@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1060" viewBox="0 0 1600 1060" role="img" aria-labelledby="title desc">
   <title id="title">PayGuard US-only architecture and delivery status</title>
-  <desc id="desc">Accepted local eight-layer architecture, three-stage merchant journey, response-driven dispute requirements, restricted session metadata, a pseudonymized review copy, authority boundaries, and frozen public release.</desc>
+  <desc id="desc">Accepted local eight-layer architecture, three-stage merchant journey, response-driven dispute requirements, restricted session metadata, a pseudonymized review copy, and authority boundaries. Public source publication is complete. Only video publication and Devpost submission remain in the competition submission path. Hosted and production deployment remain unproven.</desc>
   <defs>
     <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#07111f"/>
@@ -43,7 +43,7 @@
   <text x="70" y="68" class="title">PayGuard — US-Only Merchant Warning and Evidence Console</text>
   <text x="70" y="100" class="subtitle">Deterministic first - AI advisory - Human local choices - PayPal or external adjudicator retains final authority</text>
   <rect x="1290" y="45" width="240" height="42" rx="21" fill="#132b48" stroke="#3d6b99"/>
-  <text x="1410" y="71" class="status" text-anchor="middle">BOUNDED EVIDENCE DONE - PUBLIC NOT READY</text>
+  <text x="1410" y="71" class="status" text-anchor="middle">SOURCE PUBLISHED - VIDEO + DEVPOST PENDING</text>
 
   <text x="70" y="152" class="section">THREE-STAGE MERCHANT JOURNEY</text>
 
