@@ -176,15 +176,19 @@ class LmStudioEvidenceBriefAdapter:
         self._config = LmStudioConfig() if config is None else config
         self._transport = call_lmstudio if transport is None else transport
 
+    def validate_attempt_configuration(self) -> None:
+        """Fail before a process-wide attempt is reserved when local AI is unavailable."""
+        if type(self._config) is not LmStudioConfig or type(self._config.enabled) is not bool:
+            fail("ai_configuration_invalid", 503)
+        if not self._config.enabled:
+            fail("ai_disabled", 503)
+
     async def generate(self, request):
         try:
             validated = AiBriefRequest.model_validate(request)
         except ValidationError:
             fail("ai_request_invalid", 422)
-        if type(self._config) is not LmStudioConfig or type(self._config.enabled) is not bool:
-            fail("ai_configuration_invalid", 503)
-        if not self._config.enabled:
-            fail("ai_disabled", 503)
+        self.validate_attempt_configuration()
 
         context, context_digest, corpus_digest = build_fixed_context(validated.stage)
         logical_request = build_lmstudio_request(context)

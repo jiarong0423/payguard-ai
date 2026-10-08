@@ -93,6 +93,21 @@ class PublicExportBuilderTests(unittest.TestCase):
             for contradiction in contradictions:
                 self.assertNotIn(contradiction, text)
 
+    def test_public_run_docs_keep_optional_profiles_and_attested_evidence_explicit(self):
+        for relative in ("README.md", "docs/submission/quickstart.md"):
+            with self.subTest(relative=relative):
+                text = (self.published / relative).read_text(encoding="utf-8").casefold()
+                self.assertIn("gemini profile is optional", text)
+                self.assertIn("wsl 2", text)
+                self.assertIn("operator-attested", text)
+                self.assertNotIn("sandbox path proves", text)
+        security = (self.published / "SECURITY.md").read_text(encoding="utf-8").casefold()
+        self.assertIn("trust_env=false", security)
+        video = (self.published / "docs/submission/video_script.md").read_text(encoding="utf-8").casefold()
+        self.assertIn("when shown live", video)
+        self.assertIn("operator-attested", video)
+        self.assertNotIn("sandbox path proves", video)
+
     def test_release_state_mismatches_fail_closed(self):
         cases = (
             (
