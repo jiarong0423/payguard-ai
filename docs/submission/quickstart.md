@@ -70,7 +70,7 @@ Expected boundary: PayGuard surfaces a public-policy category and a warning. It 
 3. In the core AG Grid, sort the **AMOUNT** column.
 4. Use **Filter transactions** to reduce the visible rows to one known order, then clear the filter and confirm all 50 rows return.
 5. Select one transaction and inspect its order reference, amount, currency and captured-at UTC value.
-6. Confirm the card labels its value as **Stage evidence-readiness status** and says the stage signal does not classify the selected order as fraud or predict PayPal action.
+6. Confirm the card labels its value as **Stage evidence checklist** and says the stage signal does not classify the selected order as fraud or predict PayPal action.
 
 Expected boundary: the signal means the synthetic activity exceeded a local demonstration baseline. It is not a PayPal threshold, risk score, AML finding, fraud finding or prediction of a hold, limitation, reserve or release. Tracking may be relevant evidence but cannot guarantee release or program eligibility.
 

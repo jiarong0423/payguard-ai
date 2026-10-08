@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import {
   buildInternalReviewFiles,
   buildInternalReviewZip,
+  INTERNAL_REVIEW_ZIP_CONTENTS,
   validateInternalReviewZip,
 } from '../frontend/src/reviewZip.js';
 
@@ -16,6 +17,7 @@ const fixedNames = [
   'README.txt', 'manifest.json', 'requirements.json', 'timeline.json',
   'public-sources.json', 'pseudonymized-evidence.json',
 ];
+assert.deepEqual(INTERNAL_REVIEW_ZIP_CONTENTS, fixedNames);
 
 const validDraft = {
   case_ref: 'case-ref-001',
@@ -461,7 +463,10 @@ const downloadBlobOffset = reviewZipSource.indexOf('new Blob([bytes]', downloadF
 assert.ok(downloadFunctionOffset >= 0 && downloadValidatorOffset > downloadFunctionOffset && downloadBlobOffset > downloadValidatorOffset,
   'completed ZIP validation must run after build and before Blob creation');
 for (const required of [
-  "import { downloadInternalReviewZip } from './reviewZip.js';",
+  "import { downloadInternalReviewZip, INTERNAL_REVIEW_ZIP_CONTENTS } from './reviewZip.js';",
+  'data-testid="internal-review-zip-contents"',
+  'Internal Review ZIP contents',
+  'Six fixed files · generated locally · not sent to PayPal',
   'data-testid="download-internal-review-zip"',
   'data-testid="internal-review-zip-boundary"',
   'Download Internal Review ZIP',

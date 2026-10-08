@@ -4,7 +4,7 @@ const encoder = new TextEncoder();
 const decoder = new TextDecoder('utf-8', { fatal: true });
 const MAX_FILE_BYTES = 131072;
 const MAX_ARCHIVE_BYTES = 262144;
-const FIXED_FILES = Object.freeze([
+export const INTERNAL_REVIEW_ZIP_CONTENTS = Object.freeze([
   'README.txt',
   'manifest.json',
   'requirements.json',
@@ -12,6 +12,7 @@ const FIXED_FILES = Object.freeze([
   'public-sources.json',
   'pseudonymized-evidence.json',
 ]);
+const FIXED_FILES = INTERNAL_REVIEW_ZIP_CONTENTS;
 const TOP_LEVEL_KEYS = [
   'status', 'evidence', 'review_reasons', 'recommendation', 'limitations',
   'policy_version', 'advisory_only', 'source', 'routing', 'restricted_original_summary',
