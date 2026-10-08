@@ -586,7 +586,14 @@ class SessionStore:
             session.approved.add(case_id)
             self._activity(session, "review", "Local synthetic draft reviewed; external submission frozen")
             receipt.pop("case_id", None)
-            return dict(receipt, case_ref=case_ref, source="synthetic")
+            return dict(
+                receipt,
+                case_ref=case_ref,
+                reviewer="DEMO_OPERATOR_UNAUTHENTICATED",
+                reviewed_at=now,
+                retention="SESSION_MEMORY_ONLY",
+                source="synthetic",
+            )
 
     def _expire_dispute_layers(self, session: Session, now: datetime):
         expired = [case_id for case_id, expires_at in session.draft_expires.items()

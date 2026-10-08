@@ -2,20 +2,21 @@
 
 Status: `LOCKED`
 
-Version: `VIDEO_SCRIPT_V2_LOCKED`
+Version: `VIDEO_SCRIPT_V3_LOCKED`
 
 Locked on: `2026-10-09 UTC`
 
 Target duration: `2:45 to 2:55`
 
-Timed spoken word count: `341`
+Timed spoken word count: `335`
 
 ## Version history
 
 | Version | Status | Identity | Reason |
 | --- | --- | --- | --- |
 | `VIDEO_SCRIPT_V1_LOCKED` | Superseded | SHA-256 `9cc4c30eaabd49fd032d5f8101a4221bae226fef9e47319aca582ee4ac9f38df` | Replaced after the recording interaction inventory found an ambiguous AUP branch, a missing Stage 2 interaction, and judge-facing engineering terminology. |
-| `VIDEO_SCRIPT_V2_LOCKED` | Current | The SHA-256 is recorded after this file is finalized. | Matches the exact AUP correction path, core transaction filtering, selected transaction card, UTC presentation, human-readable evidence labels, and five live proof points. |
+| `VIDEO_SCRIPT_V2_LOCKED` | Superseded | SHA-256 `00b59c5dcbf0d2364dab3c68c1c1a8c6c4853e41d3cbfcdca59e4d32934abdd8` | Replaced after independent recording review found an opening-frame mismatch and two judge-facing proof gaps. |
+| `VIDEO_SCRIPT_V3_LOCKED` | Current | The SHA-256 is recorded after this file is finalized. | Aligns the opening with the visible lifecycle cards, lists the six ZIP members, records an explicitly unauthenticated demo review with UTC time, and preserves the five live proof points. |
 
 Change control: wording, timing, claim boundaries, visible labels, click order, and the five required live proof points are frozen for the final recording. A later change requires a new version plus repeated timing, privacy, rights, claim-boundary, static-contract, and browser-rehearsal checks.
 
@@ -25,11 +26,11 @@ Keep every visible merchant, transaction, and dispute record synthetic. Never sh
 
 ## 0:00 to 0:15 — Problem, product, and lifecycle
 
-Visual: Start on the compact PayGuard header. Flash three first-party cards: policy warning, fulfillment-record gap, and dispute deadline. Illuminate the three lifecycle stages. Do not show a fabricated PayPal limitation notice or third-party stock footage.
+Visual: Start on the compact PayGuard header. Hold on the three first-party lifecycle cards: policy review, fulfillment evidence readiness, and dispute evidence preparation. Illuminate the three stages. Do not show a fabricated PayPal limitation notice or third-party stock footage.
 
 Spoken script:
 
-> Sales spikes can hide policy warnings, missing fulfillment records, and dispute deadlines. PayGuard AI is the defensive buffer before provider review, surfacing evidence gaps while humans review and PayPal or external issuers retain final authority.
+> Sales spikes can hide policy warnings and missing fulfillment records. When disputes arrive, evidence may still be fragmented. PayGuard AI is the defensive buffer before provider review, while humans and PayPal retain final authority.
 
 ## 0:15 to 0:26 — Live Sandbox connection
 
@@ -57,29 +58,29 @@ Spoken script:
 
 ## 1:10 to 1:35 — Stage 2: velocity and fulfillment readiness
 
-Visual: Open **Fulfillment / Velocity Guard** and select **Inject sales burst**. Show the backend-calculated ratio, synthetic baseline, comparison window, and UTC labels. In the core AG Grid, sort by **AMOUNT**, use **Filter transactions** to reduce the visible rows, clear the filter, and select one row. Hold on the selected transaction card and its **Stage evidence-readiness status** label.
+Visual: Open **Fulfillment / Velocity Guard** and select **Inject sales burst**. Show the backend-calculated ratio, synthetic baseline, comparison window, and UTC labels. In the core AG Grid, sort by **AMOUNT**, use **Filter transactions** to reduce the visible rows, clear the filter, and select one row. Hold on the selected transaction card and its **Stage evidence checklist** label.
 
 Spoken script:
 
-> During fulfillment, PayGuard compares synthetic captures with a declared local baseline. We sort and filter the core transaction grid and open one transaction in the evidence-readiness view. The selected card labels the status as stage-level; it does not classify the order or predict PayPal action.
+> During fulfillment, PayGuard compares synthetic captures with a declared local baseline. We sort and filter the transaction grid and open one evidence checklist. The selected card shows a stage-level status; it does not classify the order or predict PayPal action.
 
-## 1:35 to 2:03 — Stage 3: dispute evidence preparation
+## 1:35 to 2:08 — Stage 3: dispute evidence preparation
 
-Visual: Select **Inject dispute**, open the synthetic case, and select **Generate evidence draft**. Show **Ready for human review**, **Proof of fulfillment**, **Requested from seller**, **Prepare evidence**, and **Required fields present**. Download **Internal Review ZIP**. Check the human-review box, select **Confirm local draft review**, and hold on **Local review recorded** and **Not submitted**.
+Visual: Select **Inject dispute**, open the synthetic case, and select **Generate evidence draft**. Show the UTC response deadline, **Ready for human review**, **Proof of fulfillment**, **Requested from seller**, **Prepare evidence**, and **Required fields present**. Hold on the six-item **Internal Review ZIP contents** list, download the ZIP, check the human-review box, and select **Confirm local draft review**. Hold on the unauthenticated demo operator, UTC review time, session-only retention, and **Not submitted**.
 
 Spoken script:
 
-> After a synthetic dispute opens, PayGuard reads the case status and identifies the seller evidence requested in that record. It checks required fields, hides original identifiers, builds a timeline, and creates the pseudonymized Internal Review ZIP. This is a local preparation package, not a PayPal-supported attachment. We download it and record the human review. Nothing is submitted.
+> After a synthetic dispute opens, PayGuard reads its response deadline and requested seller evidence. It checks required fields, replaces original identifiers, builds a timeline, and creates an Internal Review ZIP with six listed files. This local package is not a PayPal-supported attachment. We download it and record an unauthenticated demo review in UTC. Nothing is submitted.
 
-## 2:03 to 2:25 — Live bounded AI brief
+## 2:08 to 2:30 — Live bounded AI brief
 
 Visual: In the dispute stage, select **Generate AI brief** once. Show the live model identity, mapped execution label, one evidence point, one missing item, fixed source references, and **HUMAN REVIEW REQUIRED**. Keep the prompt, key, raw response, and technical identifiers off-screen.
 
 Spoken script:
 
-> The bounded AI runs only after the rule checks. It receives approved synthetic facts and fixed source references, then summarizes one evidence point and one missing item. It cannot change a rule result, call a payment tool, submit evidence, or decide the dispute.
+> The limited AI brief runs only after the rule checks. It receives approved synthetic facts and fixed source references, then summarizes one evidence point and one missing item. It cannot change a rule result, call a payment tool, submit evidence, or decide the dispute.
 
-## 2:25 to 2:45 — AG Grid analytics and authority
+## 2:30 to 2:45 — AG Grid analytics and authority
 
 Visual: Select **Grid analytics** to open the AG Grid Community workspace. Hold on **Review overview**, the three-stage review path, authority map, evidence counts, and transaction table. Keep expert policy panels and technical details collapsed.
 
@@ -107,8 +108,8 @@ The final take must visibly contain all five items:
 
 ## Operator run sheet
 
-1. Start a fresh backend before the take so every stage has its one available AI attempt.
-2. Confirm the browser, API, and Sandbox status without exposing a terminal, environment variable, account identifier, or credential.
+1. Before recording, complete one current-byte live dress rehearsal; do not describe one or two samples as latency percentiles. Restart the backend before the final take so every stage has its one available AI attempt.
+2. Use a clean browser window with notifications disabled, one neutral tab visible, and download UI hidden. Confirm the API and Sandbox status without exposing a terminal, environment variable, account identifier, credential, or local download path.
 3. Reset synthetic demo data.
 4. Expand the Sandbox section and connect live.
 5. Run the exact high-risk to edit to standard-item AUP path.

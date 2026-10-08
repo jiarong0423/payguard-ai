@@ -21,7 +21,7 @@ EXPECTED_INVENTORY_COUNT = 25
 PROJECT_MARKERS = {
     'backend/app/ai_brief.py': 'a8e0a102e91a3c168799ad91c55129cf09044d5739af2365f78c4e4f4b6242ea',
     'backend/app/main.py': 'dc24c4c91b15700d7f8aaf906438e01cdb0a17a003c9411e42269c8fba9d5f71',
-    'backend/app/store.py': '8baaf15899770a33887370046a92a4f8a6f944f47562f5b1d1142da2e4a0a884',
+    'backend/app/store.py': '1f2d4ba830b41ed443c2d22097825354224a9481a91768e1eb474d1d853fc91e',
     'integrations/gemini/run.sh': '6f276cb1cbe6905a5d04e8c107afb83487fd0898c2ab405da28fc8ee18979203',
     'integrations/gemini/worker.py': 'c26a1e3e513530d1af105f87d94ae2fbe5baa3681351c87d36185c389060b2e7',
 }

@@ -320,10 +320,13 @@ function assertContract(path, payload, session, body) {
       && payload.document_redaction.manual_review_required === true
       && payload.document_redaction.reversibility === false;
   } else if (path.startsWith('/disputes/') && path.endsWith('/approve')) {
-    valid = valid && pk(payload,['case_ref','action','status','external_submission','authenticated_actor','durable_approval','source'])
+    valid = valid && pk(payload,['case_ref','action','status','external_submission','authenticated_actor','durable_approval','reviewer','reviewed_at','retention','source'])
       && text(payload.case_ref) && payload.action === 'review_draft' && payload.status === 'local_draft_reviewed'
       && payload.source === 'synthetic' && payload.external_submission === 'FROZEN'
-      && payload.authenticated_actor === false && payload.durable_approval === false;
+      && payload.authenticated_actor === false && payload.durable_approval === false
+      && payload.reviewer === 'DEMO_OPERATOR_UNAUTHENTICATED'
+      && text(payload.reviewed_at) && Number.isFinite(Date.parse(payload.reviewed_at))
+      && payload.retention === 'SESSION_MEMORY_ONLY';
   } else if (path === '/paypal/invoices/review') {
     valid = valid && payload.source === 'synthetic' && text(payload.review_token) && digest(payload.payload_digest)
       && text(payload.expires_at) && payload.action === 'create_sandbox_invoice_draft';

@@ -43,6 +43,7 @@ const stableAppSelectors = [
   'data-testid="velocity-stage-status"',
   'data-testid="demo-dispute"',
   'data-testid="dispute-draft"',
+  'data-testid="internal-review-zip-contents"',
   'data-testid="download-internal-review-zip"',
   'data-testid="dispute-approve"',
   'data-testid="dispute-result"',
@@ -96,7 +97,7 @@ for (const text of [
   'Filter transactions',
   'quickFilterText={velocityQuickFilter}',
   'onRowClicked={({ data }) => setSelectedVelocityTransaction(data)}',
-  'Stage evidence-readiness status',
+  'Stage evidence checklist',
   'This stage-level signal is not a per-order fraud classification and does not predict any PayPal action.',
 ]) requireText(appSource, text);
 
@@ -119,6 +120,13 @@ for (const directPresentationLeak of [
   '>{row.requirement_state}</Badge>',
 ]) forbidText(appSource, directPresentationLeak);
 requireText(appSource, 'Live Sandbox connection verified · credentials remain off-screen');
+for (const reviewProof of [
+  'Internal Review ZIP contents',
+  'Six fixed files · generated locally · not sent to PayPal',
+  'operatorLabel(receipt.reviewer)',
+  'dateLabel(receipt.reviewed_at)',
+  'operatorLabel(receipt.retention)',
+]) requireText(appSource, reviewProof, `visible review proof ${reviewProof}`);
 
 const analyticsNavigation = appSource.match(/<a href="#analytics"[\s\S]*?>Grid analytics<\/a>/u);
 assert.ok(analyticsNavigation, 'Grid analytics navigation action exists');
@@ -203,22 +211,26 @@ for (const retiredCopy of [
   'Persistence: memory session',
 ]) forbidText(analyticsSource, retiredCopy);
 
-requireText(scriptSource, 'Version: `VIDEO_SCRIPT_V2_LOCKED`');
+requireText(scriptSource, 'Version: `VIDEO_SCRIPT_V3_LOCKED`');
 requireText(scriptSource, 'VIDEO_SCRIPT_V1_LOCKED');
 requireText(scriptSource, '9cc4c30eaabd49fd032d5f8101a4221bae226fef9e47319aca582ee4ac9f38df');
+requireText(scriptSource, 'VIDEO_SCRIPT_V2_LOCKED');
+requireText(scriptSource, '00b59c5dcbf0d2364dab3c68c1c1a8c6c4853e41d3cbfcdca59e4d32934abdd8');
 for (const recordingInstruction of [
   'select **Return to edit**, choose **Standard Item**, and run the policy check again',
   'No match means only that no configured demo keyword matched; it does not mean compliant.',
   'Check **I reviewed the description and amount and confirm that this action creates a Sandbox draft only.**',
   'Select **Confirm Draft Context**, then **Create Sandbox draft**.',
-  'sort and filter the core transaction grid and open one transaction in the evidence-readiness view',
-  'Stage evidence-readiness status',
-  'After a synthetic dispute opens, PayGuard reads the case status and identifies the seller evidence requested in that record.',
-  'The bounded AI runs only after the rule checks.',
+  'sort and filter the transaction grid and open one evidence checklist',
+  'Stage evidence checklist',
+  'After a synthetic dispute opens, PayGuard reads its response deadline and requested seller evidence.',
+  'The limited AI brief runs only after the rule checks.',
   'It receives approved synthetic facts and fixed source references',
   'Every status comes from validated workflow data. AG Grid lets reviewers inspect those signals',
   'address policy blind spots',
-]) requireText(scriptSource, recordingInstruction, `V2 script contract ${recordingInstruction}`);
+  'complete one current-byte live dress rehearsal',
+  'Use a clean browser window with notifications disabled',
+]) requireText(scriptSource, recordingInstruction, `V3 script contract ${recordingInstruction}`);
 
 const firstSection = scriptSource.match(/## 0:00 to 0:15[\s\S]*?^> (.+)$/mu);
 assert.ok(firstSection, 'opening spoken script exists');
@@ -228,7 +240,7 @@ assert.ok(openingWords <= 36, `opening must be at most 36 words; received ${open
 const timedScript = scriptSource.split('## Locked five-point proof', 1)[0];
 const spokenLines = timedScript.split('\n').filter((line) => line.startsWith('> ')).map((line) => line.slice(2));
 const timedWords = spokenLines.reduce((total, line) => total + wordCount(line), 0);
-assert.equal(timedWords, 341, 'timed spoken word count');
+assert.ok(timedWords >= 320 && timedWords <= 350, `timed spoken word count must remain within the rehearsable band; received ${timedWords}`);
 requireText(scriptSource, `Timed spoken word count: \`${timedWords}\``);
 const timedHeadings = [...scriptSource.matchAll(/^## (\d+):(\d+) to (\d+):(\d+) —/gmu)];
 assert.equal(timedHeadings.length, 9, 'nine timed recording segments');
@@ -254,7 +266,7 @@ for (const quickstartLabel of [
   'Confirm Draft Context',
   'Create Sandbox draft',
   'Filter transactions',
-  'Stage evidence-readiness status',
+  'Stage evidence checklist',
   'Ready for human review',
   'Required fields present',
   'Review overview',

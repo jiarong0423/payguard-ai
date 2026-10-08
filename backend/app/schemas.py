@@ -248,6 +248,9 @@ class DisputeApprovalResponse(Contract):
     external_submission: Literal["FROZEN"]
     authenticated_actor: Literal[False]
     durable_approval: Literal[False]
+    reviewer: Literal["DEMO_OPERATOR_UNAUTHENTICATED"]
+    reviewed_at: datetime
+    retention: Literal["SESSION_MEMORY_ONLY"]
     source: Literal["synthetic"]
 
 

@@ -123,6 +123,8 @@ const labels = {
   SEPARATE_READBACK_TRUE: 'Verified by a separate status check',
   SEPARATE_READBACK_FALSE: 'Verified from the creation response only',
   EXTERNAL_ACTION_FALSE: 'No external action authorized',
+  DEMO_OPERATOR_UNAUTHENTICATED: 'Demo operator · identity not authenticated',
+  SESSION_MEMORY_ONLY: 'Stored in this session',
 };
 
 export const OPERATOR_LABELS = Object.freeze(labels);
