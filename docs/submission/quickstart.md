@@ -46,56 +46,63 @@ The target market is the United States. The provider environment is PayPal Sandb
 
 Any separately reviewed Sandbox proof must identify a US Business Sandbox seller and confirm Invoicing only for that bounded path. This source package does not establish the operator's live-account type or production eligibility. No credential should appear in the browser, repository, prompt, screenshot or report.
 
+For a recorded take, start a fresh backend so each stage has its single available AI attempt. Configure Sandbox credentials off-screen, expand **Optional PayPal US Sandbox connection**, and select **Connect US Sandbox**. The recorded primary view must show **Live Sandbox connection verified** and **Live Sandbox response** without an account, token, invoice identifier or technical receipt.
+
 ## Three-stage walkthrough
 
 ### Stage 1 — US AUP preflight screen
 
-1. Open **US AUP Preflight Screen**.
-2. Run the normal-product preset. Confirm the result is `NO_MATCH`, with no compliance clearance.
-3. Run a preset that matches a review category. Confirm the result is `REVIEW_SIGNAL` and the official PayPal US AUP link is visible.
-4. Open the second warning. Verify the three choices: **Return to edit**, **Cancel**, and **Acknowledge and continue**.
-5. Acknowledge the warning and continue to the ordinary invoice-review step. Confirm that the result still says `NOT_MADE` and `NOT_ESTABLISHED`.
-6. Edit the description. Confirm the previous acknowledgement is revoked and a new review is required.
+1. Open **Pre-transaction / AUP Preflight Screen**.
+2. Select **High-risk Claim**, then **Run Policy Check**. Confirm that the result is `REVIEW_SIGNAL` and the official PayPal US AUP link is visible.
+3. In the second warning, verify the three available choices: **Return to edit**, **Cancel flow**, and **Acknowledge and continue**.
+4. For the recording path, select **Return to edit**. Confirm that the prior result, acknowledgement, draft binding and confirmation checkbox are cleared.
+5. Select **Standard Item**, then run the policy check again. Confirm **No demo rule matched**, **No decision made**, and **Not established**.
+6. Treat `NO_MATCH` only as no configured demo keyword match. It is not compliance clearance and does not mean compliant, allowed, approved, legal or safe.
+7. Check the human confirmation, select **Confirm Draft Context**, and then select **Create Sandbox draft**.
+8. Confirm **Sandbox invoice draft created**, **Draft · not sent**, and **Not submitted**. No invoice identifier may appear.
 
 Expected boundary: PayGuard surfaces a public-policy category and a warning. It does not declare the product compliant, prohibited, legal, approved or safe. It does not send an invoice.
 
 ### Stage 2 — Fulfillment and velocity evidence readiness
 
-1. Open **Velocity and Fulfillment Readiness**.
-2. Inspect the AG Grid table. Values come from the backend contract.
-3. Inject the synthetic sales burst.
-4. Confirm that the backend-calculated ratio and local baseline are displayed.
-5. Inspect the declared baseline amount, `SYNTHETIC_BASELINE` provenance, preceding baseline window and the official US User Agreement reference.
+1. Open **Fulfillment / Velocity Guard**.
+2. Select **Inject sales burst** and confirm that the backend-calculated ratio, **Synthetic baseline**, preceding comparison window and UTC labels are displayed.
+3. In the core AG Grid, sort the **AMOUNT** column.
+4. Use **Filter transactions** to reduce the visible rows to one known order, then clear the filter and confirm all 50 rows return.
+5. Select one transaction and inspect its order reference, amount, currency and captured-at UTC value.
+6. Confirm the card labels its value as **Stage evidence-readiness status** and says the stage signal does not classify the selected order as fraud or predict PayPal action.
 
 Expected boundary: the signal means the synthetic activity exceeded a local demonstration baseline. It is not a PayPal threshold, risk score, AML finding, fraud finding or prediction of a hold, limitation, reserve or release. Tracking may be relevant evidence but cannot guarantee release or program eligibility.
 
 ### Stage 3 — Dispute evidence mediation
 
-1. Open **Dispute Evidence Mediation**.
+1. Open **Post-transaction / Dispute Center**.
 2. Inject the synthetic dispute and select the case.
 3. Generate the local evidence draft.
-4. Inspect the provider-response route, lifecycle status, seller-response due state and each current evidence requirement. Confirm that the fulfillment request is `REQUESTED_FROM_SELLER`, `PROVIDE_EVIDENCE` and `STRUCTURALLY_PRESENT`, and that only non-identifying case, order and requirement references are visible.
-5. Inspect the restricted original summary. It must say session-memory only, no persistent vault, no returned content and no provider submission.
-6. Download the standalone pseudonymized internal review copy and inspect its explicit `NOT_PERFORMED` provider-submission boundary.
-7. Download the **Internal Review ZIP**. Confirm that its persistent warning says internal review only, incomplete official evidence, no original PayPal case data or attachment bytes, no provider submission and human review required. The fixed archive contains a README, manifest, response-driven requirements, timeline, public citations and the pseudonymized evidence document; it contains no raw case ID, order ID, request ID, identity token, session ID, draft digest, proof value, attachment name or attachment bytes.
+4. Inspect the case status and evidence request. Confirm the primary view says **Ready for human review**, **Item not received**, **Inquiry**, **Waiting for seller response**, **Proof of fulfillment**, **Requested from seller**, **Prepare evidence**, and **Required fields present**.
+5. Confirm **Original identifiers stay in this demo session** and **No original file content is included, and nothing is submitted externally.**
+6. Download the standalone pseudonymized internal review copy and confirm the provider-submission boundary remains **Not submitted**.
+7. Download the **Internal Review ZIP**. Confirm its short boundary says the synthetic, pseudonymized preparation package is not a PayPal-supported attachment, does not prove authenticity, sufficiency, eligibility, completeness or outcome, and was not submitted. The fixed archive contains a README, manifest, response-driven requirements, timeline, public citations and pseudonymized evidence; it contains no raw case ID, order ID, request ID, identity token, session ID, draft digest, proof value, attachment name or attachment bytes.
 8. Check the human-review box and record the local review.
 
 Expected boundary: the draft remains local and synthetic. PayGuard does not submit evidence, message a buyer, make an offer, accept a claim, refund, appeal or adjudicate. PayPal decides escalated internal claims. A bank or card issuer decides an external dispute, with PayPal acting as intermediary.
 
 ## Sponsor analytics walkthrough
 
-1. Open **Merchant Evidence Analytics** and select **Launch analytics**. The AG Grid Community workspace loads only after this explicit action.
-2. Confirm that **Judge view** shows the three-stage lifecycle widget, the authority map, the session evidence pulse and the AG Grid transaction stream.
-3. Use the quick-filter input, column sorting and column filters to inspect the synthetic rows. Confirm that row data remains synthetic and backend-owned workflow state is not recalculated by the grid.
-4. Select **Inspect data** and verify that the transaction grid moves to the primary review position without changing row identity or backend state.
+1. Select **Grid analytics**. The AG Grid Community workspace opens through the explicit navigation action.
+2. Confirm that **Review overview** shows the three-stage review path, authority map, session evidence counts and transaction table.
+3. Use **Filter visible rows**, column sorting and column filters to inspect the synthetic rows. Confirm that the grid does not recalculate workflow status.
+4. Select **Transaction table** and verify that the grid moves to the primary review position without changing row identity or backend state.
 5. Use **What needs attention?**, **Explain authority** and **Summarize snapshot**. Confirm that the deterministic local guide performs no external request and cannot send an invoice, move money, submit evidence or decide an outcome.
 6. On a mobile viewport, confirm that the single-column review summary replaces the desktop grid. Its single-open accordion starts on the three-stage lifecycle; opening item counts, the compact transaction preview or the authority map closes the prior section.
 
-Expected boundary: the analytics workspace presents backend-owned synthetic state through AG Grid Community and first-party React components. The local guide never changes the AUP, velocity or dispute decisions. The exact source-release state comes from the export manifest; video publication and Devpost submission remain separate gates.
+Expected boundary: the analytics workspace presents validated synthetic workflow status through AG Grid Community and first-party React components. The local guide never changes the AUP, velocity or dispute results. The exact source-release state comes from the export manifest; video publication and Devpost submission remain separate gates.
 
 ## Optional AI evidence brief
 
-After deterministic preflight, each stage may expose **Generate AI evidence brief**. This action uses fixed synthetic facts and pinned citation identities. The expected output summarizes evidence and missing items while retaining:
+After rule checks, each stage may expose **Generate AI brief**. This action uses approved synthetic facts and fixed source references. The primary result shows the model, mapped execution label, one evidence point, one missing item, source references, **HUMAN REVIEW REQUIRED**, and **No external action authorized**.
+
+The strict API contract still retains:
 
 - `compliance_decision=NOT_MADE`;
 - `current_policy_applicability=NOT_ESTABLISHED`;
@@ -129,8 +136,12 @@ Mock transport, screenshots and local UI state do not count as authentic provide
 ./tools/run.sh test
 ./tools/run.sh demo
 ./tools/run.sh evaluate
-cd frontend
-npm run build
+npm --prefix frontend run build
+node tests/frontend_ai_contract.mjs
+node tests/frontend_operator_labels.mjs
+node tests/frontend_recording_contract.mjs
+node tests/frontend_zip_contract.mjs
+node tests/frontend_zip_api_parity.mjs
 ```
 
 Optional Gemini-profile validation remains separate:

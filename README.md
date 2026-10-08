@@ -117,8 +117,12 @@ Use the project-local runner and frontend build:
 ./tools/run.sh test
 ./tools/run.sh demo
 ./tools/run.sh evaluate
-cd frontend
-npm run build
+npm --prefix frontend run build
+node tests/frontend_ai_contract.mjs
+node tests/frontend_operator_labels.mjs
+node tests/frontend_recording_contract.mjs
+node tests/frontend_zip_contract.mjs
+node tests/frontend_zip_api_parity.mjs
 ```
 
 Optional Gemini-profile validation remains separate:

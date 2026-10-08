@@ -82,6 +82,8 @@ EXACT_FILES = (
     "policies/US/paypal_aup_reference_v1/source_index.json",
     "policies/registry.json",
     "tests/frontend_ai_contract.mjs",
+    "tests/frontend_operator_labels.mjs",
+    "tests/frontend_recording_contract.mjs",
     "tests/frontend_zip_api_parity.mjs",
     "tests/frontend_zip_contract.mjs",
     "tools/build_public_candidate.py",
@@ -95,8 +97,8 @@ TREE_FILES = {
     ),
     "frontend/src": (
         "AnalyticsDashboard.css", "AnalyticsDashboard.jsx", "App.jsx", "PolicyPanel.jsx",
-        "ReferencePanel.jsx", "api.js", "index.css", "main.jsx", "pseudonymizedExport.js",
-        "referenceContract.js", "reviewZip.js",
+        "ReferencePanel.jsx", "api.js", "index.css", "main.jsx", "operatorLabels.js",
+        "pseudonymizedExport.js", "referenceContract.js", "reviewZip.js",
     ),
     "src/payguard": (
         "__init__.py", "advisory_eval.py", "applicability.py", "case_cards.py",
@@ -121,6 +123,11 @@ EXECUTABLE_PATHS = {
     "tools/public_run.sh",
     "tools/run.sh",
 }
+REQUIRED_RELEASE_UNIT_FILES = frozenset({
+    "frontend/src/operatorLabels.js",
+    "tests/frontend_operator_labels.mjs",
+    "tests/frontend_recording_contract.mjs",
+})
 
 
 def sha256_bytes(payload: bytes) -> str:
@@ -133,6 +140,9 @@ def source_paths() -> tuple[str, ...]:
         paths.update(f"{directory}/{name}" for name in names)
     if len(paths) != sum(len(group) for group in (ROOT_FILES, EXACT_FILES)) + sum(len(names) for names in TREE_FILES.values()):
         raise RuntimeError("SOURCE_ALLOWLIST_DUPLICATE")
+    missing_release_units = sorted(REQUIRED_RELEASE_UNIT_FILES - paths)
+    if missing_release_units:
+        raise RuntimeError(f"SOURCE_RELEASE_UNIT_MISSING:{','.join(missing_release_units)}")
     return tuple(sorted(paths))
 
 

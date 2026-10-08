@@ -118,6 +118,7 @@ const appSource = readFileSync(resolve(projectRoot, 'frontend/src/App.jsx'), 'ut
 const apiSource = readFileSync(resolve(projectRoot, 'frontend/src/api.js'), 'utf8');
 const referencePanelSource = readFileSync(resolve(projectRoot, 'frontend/src/ReferencePanel.jsx'), 'utf8');
 const policyPanelSource = readFileSync(resolve(projectRoot, 'frontend/src/PolicyPanel.jsx'), 'utf8');
+const operatorLabelsSource = readFileSync(resolve(projectRoot, 'frontend/src/operatorLabels.js'), 'utf8');
 const analyticsSource = readFileSync(resolve(projectRoot, 'frontend/src/AnalyticsDashboard.jsx'), 'utf8');
 const indexSource = readFileSync(resolve(projectRoot, 'frontend/index.html'), 'utf8');
 const readmeSource = readFileSync(resolve(projectRoot, 'README.md'), 'utf8');
@@ -133,8 +134,8 @@ for (const required of [
   "stage=\"source_compliance\"",
   "stage=\"velocity_guard\"",
   "stage=\"dispute_mediation\"",
-  'synthetic MockTransport test response',
-  'no separate GET readback occurred',
+  'sandboxEvidenceLabel',
+  'sandboxReadbackLabel',
   '{brief.model}',
   'data-testid="aup-applicability"',
   'data-testid="velocity-baseline"',
@@ -148,9 +149,9 @@ for (const required of [
   'data-testid="dispute-due-at"',
   'data-testid="dispute-actions"',
   'draft.routing?.seller_response_due_date',
-  "draft.routing?.available_actions?.join(', ')",
+  'operatorLabels(draft.routing?.available_actions)',
   'row.request_id',
-  "row.action || 'NONE'",
+  "operatorLabel(row.action, 'No action requested')",
   'data-testid="dispute-requirements"',
   'data-testid="restricted-original-summary"',
   'data-testid="internal-review-profile"',
@@ -158,9 +159,40 @@ for (const required of [
   'Download pseudonymized file',
   'Pseudonymized evidence file downloaded locally; no file was submitted to PayPal.',
 ]) assert.ok(appSource.includes(required), required);
+for (const required of [
+  'NOT_MADE',
+  'No decision made',
+  'NOT_ESTABLISHED',
+  'Not established',
+  'REQUESTED_FROM_SELLER',
+  'Requested from seller',
+  'PROVIDE_EVIDENCE',
+  'Prepare evidence',
+  'STRUCTURALLY_PRESENT',
+  'Required fields present',
+  'REFERENCE_ONLY_NO_ACTION_AUTHORIZATION',
+  'Reference only · no action authorized',
+  'PAYLOAD_DIGEST_BOUND',
+  'Draft details locked for this review',
+  'SEPARATE_READBACK_FALSE',
+  'Verified from the creation response only',
+  "fallback = 'Needs review'",
+]) assert.ok(operatorLabelsSource.includes(required), required);
 for (const forbidden of ['Sandbox OAuth returned authentic verification', 'Created an authentic Sandbox invoice draft']) {
   assert.equal(appSource.includes(forbidden), false, forbidden);
 }
+for (const forbidden of [
+  '{invoice.invoice_id}',
+  '{invoice.evidence_receipt.proof_kind}',
+  'separate GET readback',
+  'Backend payload digest bound',
+  '{brief.prompt_contract_id}',
+  '{brief.execution_evidence}',
+  '{aup.compliance_decision}',
+  '{aup.current_policy_applicability}',
+  '{draft.routing?.overall_state}',
+  '{row.requirement_state}',
+]) assert.equal(appSource.includes(forbidden), false, forbidden);
 
 const documentRedaction = {
   export_profile: 'INTERNAL_REVIEW_ONLY_V1',
@@ -219,10 +251,13 @@ for (const column of [
 }
 assert.equal(analyticsSource.includes('cellRenderer'), false, 'analytics grid must not claim a custom state cell');
 for (const required of [
-  'AG GRID COMMUNITY · NO COMMERCIAL AG PACKAGES',
-  'Open-source presentation boundary',
-  'first-party React components',
-  'synthetic session data and no provider credentials',
+  'REVIEW ANALYTICS',
+  'Review overview',
+  'Transaction table',
+  'AG Grid Community',
+  'Built with AG Grid Community and first-party React components. Synthetic session data only.',
+  'Session storage: temporary',
+  'Review actions: local only',
   'quickFilterText={quickFilter}',
   'data-testid="analytics-lifecycle-widget"',
   'data-testid="analytics-authority-widget"',
@@ -232,8 +267,17 @@ for (const required of [
 ]) {
   assert.ok(analyticsSource.includes(required), required);
 }
+for (const retired of [
+  'AG GRID COMMUNITY · NO COMMERCIAL AG PACKAGES',
+  'Open-source presentation boundary',
+  'Judge view',
+  'Inspect data',
+  'Persistence: memory session',
+]) {
+  assert.equal(analyticsSource.includes(retired), false, retired);
+}
 assert.ok(apiSource.includes("path === '/ai/evidence-brief' ? 25000 : 15000"));
-for (const required of ['`SYNTHETIC_BASELINE` provenance', '`NOT_MADE` and `NOT_ESTABLISHED`']) {
+for (const required of ['**Synthetic baseline**', '`compliance_decision=NOT_MADE`', '`current_policy_applicability=NOT_ESTABLISHED`']) {
   assert.ok(quickstartSource.includes(required), required);
 }
 for (const forbidden of ['missing fulfillment evidence', 'lifecycle fields, chronology, evidence items, missing fields']) {

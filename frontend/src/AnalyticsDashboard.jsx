@@ -21,6 +21,17 @@ function statusTone(status) {
   return 'muted';
 }
 
+function utcDateTime(value) {
+  if (!value) return '—';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '—';
+  return `${date.toLocaleString('en-US', {
+    month: '2-digit', day: '2-digit', year: 'numeric',
+    hour: '2-digit', minute: '2-digit', second: '2-digit',
+    hour12: false, timeZone: 'UTC',
+  })} UTC`;
+}
+
 function LifecycleWidget({ stages }) {
   return <section className="analytics-card analytics-lifecycle" data-testid="analytics-lifecycle-widget">
     <div className="analytics-card-header">
@@ -122,17 +133,14 @@ function MobileAnalyticsSummary({ boundaries, evidenceCounts, stages, transactio
       </div>
     </MobileAccordionSection>
 
-    <MobileAccordionSection activeSection={activeSection} badge={`${transactions.length} total`} eyebrow="AG GRID PREVIEW" id="stream" onActivate={setActiveSection} title="Recent synthetic rows">
-      {transactions.length ? <div className="analytics-mobile-table-wrap">
-        <table>
-          <thead><tr><th>Order</th><th>Amount</th><th>Captured at</th></tr></thead>
-          <tbody>{transactions.slice(0, 3).map((transaction) => <tr key={transaction.order_id}>
-            <td>{transaction.order_id}</td>
-            <td>{Number(transaction.amount).toFixed(2)} {transaction.currency}</td>
-            <td>{transaction.occurred_at}</td>
-          </tr>)}</tbody>
-        </table>
-      </div> : <p className="analytics-mobile-empty">Inject the synthetic burst scenario to populate the grid preview.</p>}
+    <MobileAccordionSection activeSection={activeSection} badge={`${transactions.length} total`} eyebrow="TRANSACTION TABLE" id="stream" onActivate={setActiveSection} title="Recent synthetic transactions">
+      {transactions.length ? <div className="analytics-mobile-transactions">
+        {transactions.slice(0, 3).map((transaction) => <article key={transaction.order_id}>
+          <div><span>Order</span><strong>{transaction.order_id}</strong></div>
+          <div><span>Amount</span><strong>{Number(transaction.amount).toFixed(2)} {transaction.currency}</strong></div>
+          <div><span>Captured at</span><strong>{utcDateTime(transaction.occurred_at)}</strong></div>
+        </article>)}
+      </div> : <p className="analytics-mobile-empty">Inject the synthetic burst scenario to populate the transaction table.</p>}
     </MobileAccordionSection>
 
     <MobileAccordionSection activeSection={activeSection} badge="Human controlled" eyebrow="AUTHORITY MAP" id="authority" onActivate={setActiveSection} title="Who decides what">
@@ -209,7 +217,7 @@ export default function AnalyticsDashboard({ aup, state }) {
     { field: 'order_id', headerName: 'Order', minWidth: 150, flex: 1.3 },
     { field: 'amount', headerName: 'Amount', minWidth: 110, valueFormatter: ({ value }) => Number(value).toFixed(2) },
     { field: 'currency', headerName: 'Currency', minWidth: 100 },
-    { field: 'occurred_at', headerName: 'Captured at', minWidth: 190, flex: 1.2 },
+    { field: 'occurred_at', headerName: 'Captured at', minWidth: 220, flex: 1.2, valueFormatter: ({ value }) => utcDateTime(value) },
   ], []);
 
   const prompts = [
@@ -221,18 +229,18 @@ export default function AnalyticsDashboard({ aup, state }) {
   return <div className={`analytics-feature analytics-feature-${mode}`} data-testid="community-analytics-dashboard">
     <div className="analytics-toolbar">
       <div>
-        <span>AG GRID COMMUNITY · NO COMMERCIAL AG PACKAGES</span>
+        <span>REVIEW ANALYTICS</span>
         <strong>Merchant Evidence Buffer</strong>
-        <small>One review surface for AUP advisory checks, fulfillment evidence readiness, and dispute evidence preparation.</small>
+        <small>Review AUP signals, fulfillment readiness, and dispute preparation in one workspace.</small>
       </div>
       <div className="analytics-mode-switch" role="group" aria-label="Analytics layout">
-        <button type="button" aria-pressed={mode === 'view'} className={mode === 'view' ? 'active' : ''} onClick={() => setMode('view')}>Judge view</button>
-        <button type="button" aria-pressed={mode === 'inspect'} className={mode === 'inspect' ? 'active' : ''} onClick={() => setMode('inspect')}>Inspect data</button>
+        <button type="button" aria-pressed={mode === 'view'} className={mode === 'view' ? 'active' : ''} onClick={() => setMode('view')}>Review overview</button>
+        <button type="button" aria-pressed={mode === 'inspect'} className={mode === 'inspect' ? 'active' : ''} onClick={() => setMode('inspect')}>Transaction table</button>
       </div>
     </div>
     <div className="analytics-rights-note" role="note">
-      <strong>Open-source presentation boundary</strong>
-      <span>This workspace uses AG Grid Community with first-party React components. It contains synthetic session data and no provider credentials.</span>
+      <strong>AG Grid Community</strong>
+      <span>Built with AG Grid Community and first-party React components. Synthetic session data only.</span>
     </div>
 
     <MobileAnalyticsSummary boundaries={boundaries} evidenceCounts={evidenceCounts} stages={stages} transactions={transactions} />
@@ -244,8 +252,8 @@ export default function AnalyticsDashboard({ aup, state }) {
 
       <section className="analytics-card analytics-grid-widget" data-testid="analytics-grid-widget">
         <div className="analytics-card-header">
-          <div><span>AG GRID COMMUNITY</span><strong>Synthetic transaction stream</strong></div>
-          <em>{transactions.length} rows</em>
+          <div><span>TRANSACTION REVIEW</span><strong>Synthetic transaction table</strong></div>
+          <em>AG Grid Community · {transactions.length} rows</em>
         </div>
         <div className="analytics-grid-tools">
           <label htmlFor="analytics-grid-filter">Filter visible rows</label>
@@ -281,8 +289,8 @@ export default function AnalyticsDashboard({ aup, state }) {
 
     <div className="analytics-footer">
       <span>Grid: AG Grid Community</span>
-      <span>Persistence: memory session</span>
-      <span>Analytics actions: local only</span>
+      <span>Session storage: temporary</span>
+      <span>Review actions: local only</span>
     </div>
   </div>;
 }
