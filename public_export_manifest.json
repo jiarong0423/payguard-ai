@@ -1,5 +1,5 @@
 {
-  "created_at_utc": "2026-10-09T19:53:39Z",
+  "created_at_utc": "2026-10-09T23:33:56Z",
   "dependency_locks": {
     "frontend_npm": "5db6bb7cf7d4e51ab42c08ffc189eebc8471efb61fbc06960c075f6490ba22aa",
     "gemini_python": "36554331392d6102519a4ead5778704c4ff89e79da6bb9d6648b656f130724bb",
@@ -722,19 +722,16 @@
   "package_digest_algorithm": "sha256(sorted utf-8 '<file_sha256>  <relative_path>\\n' records; manifest and detached hash excluded)",
   "package_digest_sha256": "2b416cb6c2cfade335f0c844c20f64e39ba7ecd589c380864a0b015a49e1d51f",
   "public_artifact_id": "payguard-public-source-2b416cb6c2cfade3",
-  "publication_authorized": false,
+  "publication_authorized": true,
   "raw_bounded_prompt_disclosure": {
     "intent": "INTENTIONAL_PUBLIC_EXECUTABLE_PRODUCT_SOURCE",
     "path": "backend/app/ai_brief.py",
     "sha256": "1e92524a14c2a722b603cca06bec0bacd0a1b80cc1cda5f85146cda97762dc92"
   },
   "remaining_gates": [
-    "EXACT_FINAL_BYTES_SECURITY_REVIEW",
-    "INDEPENDENT_RED_TEAM_ACCEPTANCE",
-    "REPOSITORY_VISIBILITY",
     "VIDEO_PUBLICATION",
     "DEVPOST_SUBMISSION"
   ],
   "schema_version": "payguard.public_export.v2",
-  "status": "LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED"
+  "status": "PUBLIC_SOURCE_PUBLISHED"
 }
