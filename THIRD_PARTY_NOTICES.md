@@ -6,21 +6,25 @@ This inventory covers the exact dependency identities locked for the PayGuard pu
 
 | Ecosystem | Lock SHA-256 | Entries | Review basis |
 | --- | --- | ---: | --- |
-| Root Python | `1327fc9d77f256fe1f439ab80876a730f38b9616cf0c0352ddb3913fbd7d4f62` | 17 | Exact local lock; installed-license metadata review remains part of the external final-byte dependency receipt |
-| Gemini Python | `36554331392d6102519a4ead5778704c4ff89e79da6bb9d6648b656f130724bb` | 25 | Exact hash-locked profile; installed-license metadata review remains part of the external final-byte dependency receipt |
+| Root Python | `1327fc9d77f256fe1f439ab80876a730f38b9616cf0c0352ddb3913fbd7d4f62` | 17 | Exact local lock; installed-wheel license metadata and declared license-file hashes reviewed; final candidate digest binding remains required |
+| Gemini Python | `36554331392d6102519a4ead5778704c4ff89e79da6bb9d6648b656f130724bb` | 25 | Exact hash-locked profile; installed-wheel license metadata and declared license-file hashes reviewed; final candidate digest binding remains required |
 | Frontend npm | `5db6bb7cf7d4e51ab42c08ffc189eebc8471efb61fbc06960c075f6490ba22aa` | 91 | License expressions copied from the exact npm lock metadata |
 
 ## Root Python inventory
 
-Review status for every identity in this section: `LOCKED_IDENTITY_RECORDED_LICENSE_METADATA_REVIEW_PENDING`.
+Review status for every identity in this section: `LOCKED_IDENTITY_RECORDED_INSTALLED_LICENSE_METADATA_REVIEWED`.
 
 `annotated-doc==0.0.5`, `annotated-types==0.8.0`, `anyio==4.15.1`, `certifi==2026.7.22`, `click==8.5.0`, `fastapi==0.142.2`, `h11==0.16.0`, `httpcore==1.0.9`, `httpx==0.28.1`, `idna==3.20`, `opentelemetry-api==1.45.0`, `pydantic==2.13.5`, `pydantic-core==2.46.5`, `starlette==1.7.0`, `typing-extensions==4.16.0`, `typing-inspection==0.4.4`, `uvicorn==0.54.0`.
 
 ## Gemini Python inventory
 
-Review status for every identity in this section: `HASH_LOCKED_IDENTITY_RECORDED_LICENSE_METADATA_REVIEW_PENDING`.
+Review status for every identity in this section: `HASH_LOCKED_IDENTITY_RECORDED_INSTALLED_LICENSE_METADATA_REVIEWED`.
 
 `annotated-types==0.8.0`, `anyio==4.15.1`, `certifi==2026.7.22`, `cffi==2.1.1`, `charset-normalizer==3.5.2`, `cryptography==50.0.2`, `distro==1.9.0`, `google-auth==2.60.0`, `google-genai==2.28.0`, `h11==0.16.0`, `httpcore==1.0.9`, `httpx==0.28.1`, `idna==3.20`, `pyasn1==0.6.4`, `pyasn1-modules==0.4.2`, `pycparser==3.0`, `pydantic==2.13.5`, `pydantic-core==2.46.5`, `requests==2.34.2`, `sniffio==1.3.1`, `tenacity==9.1.4`, `typing-extensions==4.16.0`, `typing-inspection==0.4.4`, `urllib3==2.8.0`, `websockets==16.1.1`.
+
+## Metadata review boundary
+
+The Python review matches locally installed distribution versions to the exact locks above and records their declared license metadata and hashes of declared local license files. It does not establish legal redistribution clearance or replace upstream license texts. The installed `httpx` wheels declare `BSD-3-Clause` in the License field but no License-File entry; no license-file presence is inferred for that package.
 
 ## Excluded optional profile
 
