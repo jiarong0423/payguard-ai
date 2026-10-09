@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import {
   buildInternalReviewFiles,
   buildInternalReviewZip,
+  downloadInternalReviewZip,
   INTERNAL_REVIEW_ZIP_CONTENTS,
   validateInternalReviewZip,
 } from '../frontend/src/reviewZip.js';
@@ -455,6 +456,40 @@ for (const mutate of semanticManifestMutations) {
     'canonical manifest semantic mutation with recomputed ZIP CRC must fail before download');
 }
 
+const priorDocument = globalThis.document;
+const priorCreateObjectURL = URL.createObjectURL;
+const priorRevokeObjectURL = URL.revokeObjectURL;
+try {
+  for (const fault of ['none', 'createElement', 'appendChild', 'click', 'remove']) {
+    let allocated = 0;
+    let revoked = 0;
+    const fail = (point) => {
+      if (fault === point) throw new Error('synthetic_dom_failure');
+    };
+    URL.createObjectURL = () => {
+      allocated += 1;
+      return 'blob:synthetic-internal-review';
+    };
+    URL.revokeObjectURL = () => { revoked += 1; };
+    globalThis.document = {
+      createElement: () => {
+        fail('createElement');
+        return { click: () => fail('click'), remove: () => fail('remove') };
+      },
+      body: { appendChild: () => fail('appendChild') },
+    };
+    if (fault === 'none') downloadInternalReviewZip(clone(validDraft));
+    else assert.throws(() => downloadInternalReviewZip(clone(validDraft)), /synthetic_dom_failure/u);
+    assert.equal(allocated, 1, `${fault}: exactly one object URL allocated`);
+    assert.equal(revoked, 1, `${fault}: every allocated object URL revoked`);
+  }
+} finally {
+  URL.createObjectURL = priorCreateObjectURL;
+  URL.revokeObjectURL = priorRevokeObjectURL;
+  if (priorDocument === undefined) delete globalThis.document;
+  else globalThis.document = priorDocument;
+}
+
 const appSource = readFileSync(resolve(projectRoot, 'frontend/src/App.jsx'), 'utf8');
 const reviewZipSource = readFileSync(resolve(projectRoot, 'frontend/src/reviewZip.js'), 'utf8');
 const downloadFunctionOffset = reviewZipSource.indexOf('export function downloadInternalReviewZip');
@@ -485,3 +520,4 @@ console.log(`frontend ZIP privacy: ${invalidMutations.length} fail-closed mutati
 console.log(`frontend ZIP completed-archive gate: ${corruptions.length} binary mutations rejected before download PASS`);
 console.log(`frontend ZIP manifest semantics: ${semanticManifestMutations.length} canonical CRC-recomputed mutations rejected PASS`);
 console.log('frontend ZIP UI contract PASS');
+console.log('frontend ZIP object-URL cleanup under normal and four DOM-fault paths PASS');

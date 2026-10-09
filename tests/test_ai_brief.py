@@ -233,7 +233,7 @@ class GatewayTests(unittest.IsolatedAsyncioTestCase):
                 ai.operator_ai_config()
             self.assertEqual(caught.exception.code, "ai_configuration_ambiguous")
 
-    def test_operator_configuration_accepts_resolved_venv_interpreter_symlink(self):
+    def test_operator_configuration_preserves_validated_venv_interpreter_symlink(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             interpreter = root / "python3.12"
@@ -257,7 +257,8 @@ class GatewayTests(unittest.IsolatedAsyncioTestCase):
             ):
                 config = ai.operator_ai_config()
             self.assertTrue(config.enabled)
-            self.assertEqual(config.python_bin, interpreter.resolve())
+            self.assertEqual(config.python_bin, python_link)
+            self.assertNotEqual(config.python_bin, interpreter.resolve())
             self.assertEqual(config.worker_path, worker.resolve())
             self.assertEqual(config.vertex_project, "synthetic-project")
             self.assertNotIn("synthetic-project", repr(config))
