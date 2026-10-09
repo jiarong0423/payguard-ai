@@ -66,11 +66,18 @@ export function downloadPseudonymizedEvidence(documentRedaction) {
   const payload = buildPseudonymizedEvidenceExport(documentRedaction);
   const blob = new Blob([`${JSON.stringify(payload, null, 2)}\n`], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
-  const anchor = document.createElement('a');
-  anchor.href = url;
-  anchor.download = 'payguard-pseudonymized-evidence.json';
-  document.body.appendChild(anchor);
-  anchor.click();
-  anchor.remove();
-  URL.revokeObjectURL(url);
+  let anchor;
+  try {
+    anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = 'payguard-pseudonymized-evidence.json';
+    document.body.appendChild(anchor);
+    anchor.click();
+  } finally {
+    try {
+      anchor?.remove();
+    } finally {
+      URL.revokeObjectURL(url);
+    }
+  }
 }

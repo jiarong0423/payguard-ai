@@ -73,11 +73,6 @@ EXACT_FILES = (
     "integrations/gemini/run.sh",
     "integrations/gemini/test_worker.py",
     "integrations/gemini/worker.py",
-    "integrations/paypal_toolkit/check_runtime.py",
-    "integrations/paypal_toolkit/pyproject.toml",
-    "integrations/paypal_toolkit/requirements.lock",
-    "integrations/paypal_toolkit/run.sh",
-    "integrations/paypal_toolkit/test_runtime.py",
     "policies/US/paypal_aup_reference_v1/manifest.json",
     "policies/US/paypal_aup_reference_v1/source_index.json",
     "policies/registry.json",
@@ -119,7 +114,6 @@ TREE_FILES = {
 MAPPED_FILES = {"tools/run.sh": "tools/public_run.sh"}
 EXECUTABLE_PATHS = {
     "integrations/gemini/run.sh",
-    "integrations/paypal_toolkit/run.sh",
     "tools/public_run.sh",
     "tools/run.sh",
 }
@@ -138,6 +132,8 @@ def source_paths() -> tuple[str, ...]:
     paths = set(ROOT_FILES) | set(EXACT_FILES)
     for directory, names in TREE_FILES.items():
         paths.update(f"{directory}/{name}" for name in names)
+    if any(path.startswith("integrations/paypal_toolkit/") for path in paths):
+        raise RuntimeError("SOURCE_TOOLKIT_PROFILE_EXCLUDED")
     if len(paths) != sum(len(group) for group in (ROOT_FILES, EXACT_FILES)) + sum(len(names) for names in TREE_FILES.values()):
         raise RuntimeError("SOURCE_ALLOWLIST_DUPLICATE")
     missing_release_units = sorted(REQUIRED_RELEASE_UNIT_FILES - paths)
@@ -266,7 +262,6 @@ def build_candidate(destination: Path, *, published_source: bool = False) -> dic
         dependency_locks = {
             "root_python": row_map["requirements.lock"]["sha256"],
             "gemini_python": row_map["integrations/gemini/requirements.lock"]["sha256"],
-            "paypal_toolkit_python": row_map["integrations/paypal_toolkit/requirements.lock"]["sha256"],
             "frontend_npm": row_map["frontend/package-lock.json"]["sha256"],
         }
         release_status = PUBLISHED_SOURCE_STATUS if published_source else LOCAL_EXPORT_STATUS

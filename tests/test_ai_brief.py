@@ -101,7 +101,12 @@ class GatewayTests(unittest.IsolatedAsyncioTestCase):
 
     def adapter(self, runner=None, config=None):
         process_runner = runner or CapturingRunner()
-        fixed = config or ai.AiConfig(True, Path("/synthetic/python"), Path("/synthetic/worker"))
+        fixed = config or ai.AiConfig(
+            True,
+            Path("/synthetic/python"),
+            Path("/synthetic/worker"),
+            "synthetic-project",
+        )
         return ai.EvidenceBriefAdapter(config_loader=lambda: fixed, process_runner=process_runner), process_runner
 
     async def failure(self, raw, *, code="ai_response_invalid", status=502):
@@ -196,6 +201,7 @@ class GatewayTests(unittest.IsolatedAsyncioTestCase):
                     "stage": stage,
                 })
                 self.assertEqual(environment["PAYGUARD_GEMINI_OUTBOUND"], "enabled")
+                self.assertEqual(environment["PAYGUARD_VERTEX_PROJECT"], "synthetic-project")
                 self.assertEqual(environment["PYTHONNOUSERSITE"], "1")
                 self.assertFalse(set(environment) & ai._AMBIGUOUS_PARENT_ENVIRONMENT)
 
@@ -227,24 +233,80 @@ class GatewayTests(unittest.IsolatedAsyncioTestCase):
                 ai.operator_ai_config()
             self.assertEqual(caught.exception.code, "ai_configuration_ambiguous")
 
+    def test_operator_configuration_accepts_resolved_venv_interpreter_symlink(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            interpreter = root / "python3.12"
+            interpreter.write_bytes(b"synthetic executable")
+            interpreter.chmod(0o700)
+            python_link = root / "python3"
+            python_link.symlink_to(interpreter)
+            worker = root / "worker.py"
+            worker.write_text("synthetic worker\n", encoding="utf-8")
+            with (
+                patch.dict(
+                    os.environ,
+                    {
+                        "PAYGUARD_GEMINI_OUTBOUND": "enabled",
+                        "PAYGUARD_VERTEX_PROJECT": "synthetic-project",
+                    },
+                    clear=True,
+                ),
+                patch.object(ai, "DEFAULT_GEMINI_PYTHON", python_link),
+                patch.object(ai, "DEFAULT_GEMINI_WORKER", worker),
+            ):
+                config = ai.operator_ai_config()
+            self.assertTrue(config.enabled)
+            self.assertEqual(config.python_bin, interpreter.resolve())
+            self.assertEqual(config.worker_path, worker.resolve())
+            self.assertEqual(config.vertex_project, "synthetic-project")
+            self.assertNotIn("synthetic-project", repr(config))
+
+    def test_operator_configuration_requires_valid_project_before_paths(self):
+        for environment, code in (
+            ({"PAYGUARD_GEMINI_OUTBOUND": "enabled"}, "ai_not_configured"),
+            (
+                {
+                    "PAYGUARD_GEMINI_OUTBOUND": "enabled",
+                    "PAYGUARD_VERTEX_PROJECT": "INVALID_PROJECT",
+                },
+                "ai_configuration_invalid",
+            ),
+        ):
+            with self.subTest(code=code), patch.dict(
+                os.environ, environment, clear=True
+            ), patch.object(
+                ai.Path, "is_file", side_effect=AssertionError("path lookup forbidden")
+            ), self.assertRaises(ai.AiBriefError) as caught:
+                ai.operator_ai_config()
+            self.assertEqual(caught.exception.code, code)
+
     def test_clean_worker_environment_is_an_allowlist(self):
         source = {
             "HOME": "/synthetic/home",
             "LANG": "en_US.UTF-8",
+            "PAYGUARD_VERTEX_PROJECT": "synthetic-project",
             "GOOGLE_CLOUD_PROJECT": "must-not-pass",
             "GOOGLE_APPLICATION_CREDENTIALS": "/must-not-pass",
             "HTTPS_PROXY": "https://must-not-pass.invalid",
             "PYTHONPATH": "/must-not-pass",
         }
         with patch.dict(os.environ, source, clear=True):
-            environment = ai.clean_worker_environment()
+            environment = ai.clean_worker_environment("synthetic-project")
         self.assertEqual(environment, {
             "HOME": "/synthetic/home",
             "LANG": "en_US.UTF-8",
             "PATH": "/usr/bin:/bin",
             "PAYGUARD_GEMINI_OUTBOUND": "enabled",
+            "PAYGUARD_VERTEX_PROJECT": "synthetic-project",
             "PYTHONNOUSERSITE": "1",
         })
+
+    def test_clean_worker_environment_rejects_invalid_project(self):
+        for project in ("", "INVALID_PROJECT", "x\nother"):
+            with self.subTest(project=project), self.assertRaises(ai.AiBriefError) as caught:
+                ai.clean_worker_environment(project)
+            self.assertEqual(caught.exception.code, "ai_configuration_invalid")
 
     async def test_parent_rejects_live_claim_from_injected_runner(self):
         await self.failure(envelope(result(execution="OPERATOR_LIVE_RESPONSE")))

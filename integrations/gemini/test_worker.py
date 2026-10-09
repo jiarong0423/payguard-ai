@@ -169,7 +169,11 @@ class GeminiWorkerTests(unittest.IsolatedAsyncioTestCase):
         for name in worker._FORBIDDEN_ENVIRONMENT:
             with self.subTest(name=name), patch.dict(
                 os.environ,
-                {"PAYGUARD_GEMINI_OUTBOUND": "enabled", name: "present"},
+                {
+                    "PAYGUARD_GEMINI_OUTBOUND": "enabled",
+                    "PAYGUARD_VERTEX_PROJECT": "synthetic-project",
+                    name: "present",
+                },
                 clear=True,
             ), patch.object(
                 worker.google.auth, "default", side_effect=AssertionError("ADC must not run")
@@ -180,9 +184,14 @@ class GeminiWorkerTests(unittest.IsolatedAsyncioTestCase):
     def test_operator_config_uses_adc_without_exposing_values(self):
         credentials = object()
         with patch.dict(
-            os.environ, {"PAYGUARD_GEMINI_OUTBOUND": "enabled"}, clear=True
+            os.environ,
+            {
+                "PAYGUARD_GEMINI_OUTBOUND": "enabled",
+                "PAYGUARD_VERTEX_PROJECT": "synthetic-project",
+            },
+            clear=True,
         ), patch.object(
-            worker.google.auth, "default", return_value=(credentials, "synthetic-project")
+            worker.google.auth, "default", return_value=(credentials, None)
         ) as default:
             config = worker.operator_gemini_config()
         self.assertTrue(config.enabled)
@@ -190,6 +199,39 @@ class GeminiWorkerTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(config.project, "synthetic-project")
         self.assertNotIn("synthetic-project", repr(config))
         default.assert_called_once_with(scopes=["https://www.googleapis.com/auth/cloud-platform"])
+
+    def test_operator_config_requires_valid_project_before_adc(self):
+        for environment, code in (
+            ({"PAYGUARD_GEMINI_OUTBOUND": "enabled"}, "ai_not_configured"),
+            (
+                {
+                    "PAYGUARD_GEMINI_OUTBOUND": "enabled",
+                    "PAYGUARD_VERTEX_PROJECT": "INVALID_PROJECT",
+                },
+                "ai_configuration_invalid",
+            ),
+        ):
+            with self.subTest(code=code), patch.dict(
+                os.environ, environment, clear=True
+            ), patch.object(
+                worker.google.auth, "default", side_effect=AssertionError("ADC must not run")
+            ), self.assertRaises(host.AiBriefError) as caught:
+                worker.operator_gemini_config()
+            self.assertEqual(caught.exception.code, code)
+
+    def test_operator_config_rejects_discovered_project_conflict(self):
+        with patch.dict(
+            os.environ,
+            {
+                "PAYGUARD_GEMINI_OUTBOUND": "enabled",
+                "PAYGUARD_VERTEX_PROJECT": "synthetic-project",
+            },
+            clear=True,
+        ), patch.object(
+            worker.google.auth, "default", return_value=(object(), "different-project")
+        ), self.assertRaises(host.AiBriefError) as caught:
+            worker.operator_gemini_config()
+        self.assertEqual(caught.exception.code, "ai_configuration_ambiguous")
 
     def test_native_client_disables_retry_and_environment_routing(self):
         captured = {}

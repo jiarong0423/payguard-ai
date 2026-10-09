@@ -12,7 +12,7 @@ import {
   REFERENCE_SOURCE_DIGEST,
   REFERENCE_CHUNK_DIGEST,
 } from '../frontend/src/referenceContract.js';
-import { buildPseudonymizedEvidenceExport } from '../frontend/src/pseudonymizedExport.js';
+import { buildPseudonymizedEvidenceExport, downloadPseudonymizedEvidence } from '../frontend/src/pseudonymizedExport.js';
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const rawChunks = readFileSync(resolve(projectRoot, 'data/knowledge/payguard_us_official_v2/chunks.jsonl'));
@@ -226,6 +226,36 @@ for (const mutate of [
   const value = clone(documentRedaction);
   mutate(value);
   assert.throws(() => buildPseudonymizedEvidenceExport(value));
+}
+const originalDocument = globalThis.document;
+const originalUrl = globalThis.URL;
+const originalBlob = globalThis.Blob;
+let downloadAnchorRemoved = false;
+let downloadUrlRevoked = false;
+try {
+  globalThis.document = {
+    createElement: () => ({
+      click: () => { throw new Error('synthetic_download_click_failure'); },
+      remove: () => { downloadAnchorRemoved = true; },
+    }),
+    body: { appendChild: () => {} },
+  };
+  globalThis.URL = {
+    createObjectURL: () => 'blob:synthetic-pseudonymized-export',
+    revokeObjectURL: () => { downloadUrlRevoked = true; },
+  };
+  globalThis.Blob = class SyntheticBlob {};
+  assert.throws(
+    () => downloadPseudonymizedEvidence(documentRedaction),
+    /synthetic_download_click_failure/,
+  );
+  assert.equal(downloadAnchorRemoved, true);
+  assert.equal(downloadUrlRevoked, true);
+} finally {
+  if (originalDocument === undefined) delete globalThis.document;
+  else globalThis.document = originalDocument;
+  globalThis.URL = originalUrl;
+  globalThis.Blob = originalBlob;
 }
 assert.ok(readmeSource.includes('AG Grid transaction stream with order, amount, currency and capture-time columns'));
 assert.equal(readmeSource.includes('custom review-state cells'), false);

@@ -57,11 +57,6 @@ class PublicExportBuilderTests(unittest.TestCase):
         for relative in (
             "docs/submission/video_script.md",
             "frontend/src/operatorLabels.js",
-            "integrations/paypal_toolkit/check_runtime.py",
-            "integrations/paypal_toolkit/pyproject.toml",
-            "integrations/paypal_toolkit/requirements.lock",
-            "integrations/paypal_toolkit/run.sh",
-            "integrations/paypal_toolkit/test_runtime.py",
             "THIRD_PARTY_NOTICES.md",
             "tests/frontend_operator_labels.mjs",
             "tests/frontend_recording_contract.mjs",
@@ -70,6 +65,39 @@ class PublicExportBuilderTests(unittest.TestCase):
             self.assertTrue((self.base / relative).is_file(), relative)
         for forbidden in (".venv", "__pycache__", "output", "logs", "archive", "rollback"):
             self.assertFalse(any(forbidden in path.parts for path in self.base.rglob("*")))
+
+    def test_public_candidate_excludes_optional_sdk_profile_and_lock(self):
+        manifest = json.loads((self.base / validator.MANIFEST_NAME).read_text(encoding="utf-8"))
+        self.assertFalse((self.base / "integrations/paypal_toolkit").exists())
+        self.assertNotIn("paypal_toolkit_python", manifest["dependency_locks"])
+        self.assertEqual(set(manifest["dependency_locks"]), {"root_python", "gemini_python", "frontend_npm"})
+        with mock.patch.object(builder, "EXACT_FILES", builder.EXACT_FILES + ("integrations/paypal_toolkit/requirements.lock",)):
+            with self.assertRaisesRegex(RuntimeError, "SOURCE_TOOLKIT_PROFILE_EXCLUDED"):
+                builder.source_paths()
+
+    def test_resigned_manifest_cannot_reintroduce_optional_sdk_profile(self):
+        root = self.copy_candidate("reintroduced-toolkit")
+        relative = "integrations/paypal_toolkit/requirements.lock"
+        path = root / relative
+        path.parent.mkdir(parents=True)
+        payload = b"excluded-profile-test\n"
+        path.write_bytes(payload)
+        manifest = json.loads((root / validator.MANIFEST_NAME).read_text(encoding="utf-8"))
+        digest = validator.sha256_bytes(payload)
+        manifest["files"].append({"path": relative, "bytes": len(payload), "sha256": digest,
+                                  "source_path": relative, "source_sha256": digest})
+        manifest["file_count"] += 1
+        self.resign_manifest(root, manifest, rebuild_package=True)
+        with self.assertRaisesRegex(validator.CandidateRejected, "PUBLIC_TOOLKIT_PROFILE_EXCLUDED"):
+            validator.validate_candidate(root)
+
+    def test_resigned_manifest_cannot_reintroduce_optional_sdk_lock_claim(self):
+        root = self.copy_candidate("reintroduced-toolkit-lock-claim")
+        manifest = json.loads((root / validator.MANIFEST_NAME).read_text(encoding="utf-8"))
+        manifest["dependency_locks"]["paypal_toolkit_python"] = "0" * 64
+        self.resign_manifest(root, manifest)
+        with self.assertRaisesRegex(validator.CandidateRejected, "DEPENDENCY_LOCK_HASH_MISMATCH"):
+            validator.validate_candidate(root)
 
     def test_required_release_unit_allowlist_fails_closed(self):
         self.assertTrue(builder.REQUIRED_RELEASE_UNIT_FILES.issubset(set(builder.source_paths())))
