@@ -35,6 +35,7 @@ from app.ai_brief import (
     PROMPT_CONTRACT_ID,
     PROVIDER_BACKEND,
     TOTAL_TIMEOUT_SECONDS,
+    VERTEX_PROJECT_ENV,
     AiBriefError,
     AiBriefRequest,
     AiBriefResponse,
@@ -42,6 +43,7 @@ from app.ai_brief import (
     build_fixed_context,
     build_logical_request,
     canonical_json,
+    configured_vertex_project,
     fail,
     generated_text_matches_inventory,
     strict_json,
@@ -184,15 +186,20 @@ def operator_gemini_config() -> GeminiConfig:
         return GeminiConfig()
     if any(name in os.environ for name in _FORBIDDEN_ENVIRONMENT):
         fail("ai_configuration_ambiguous", 503)
+    configured_project = configured_vertex_project()
+    if configured_project is None:
+        fail("ai_not_configured", 503)
     try:
-        credentials, project = google.auth.default(
+        credentials, discovered_project = google.auth.default(
             scopes=["https://www.googleapis.com/auth/cloud-platform"]
         )
     except Exception:
         fail("ai_not_configured", 503)
-    if credentials is None or type(project) is not str or not project:
+    if discovered_project not in (None, configured_project):
+        fail("ai_configuration_ambiguous", 503)
+    if credentials is None:
         fail("ai_not_configured", 503)
-    return GeminiConfig(True, credentials, project)
+    return GeminiConfig(True, credentials, configured_project)
 
 
 def assert_sdk_part_schema() -> None:

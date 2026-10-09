@@ -31,7 +31,7 @@ Required console prerequisites: Python 3.13, Node.js 20.19 or newer or Node.js 2
 
 Windows users must run the POSIX `sh` commands in WSL 2; native Command Prompt and PowerShell runners are not supported.
 
-The optional PayPal Agent Toolkit profile is isolated under `integrations/paypal_toolkit/` and requires Python 3.12 with its exact lockfile. Use its `run.sh check` and `run.sh test` commands only for profile validation. It does not own an API launcher. Start the provider-neutral local API with the root Python 3.13 command `./tools/run.sh api`.
+The public console uses the official PayPal Sandbox REST APIs through its reviewed gateway. The optional Agent Toolkit dependency profile is excluded from this public package; no SDK installation is needed for the demonstrated flow. Start the local API with Python 3.13 using `./tools/run.sh api`.
 
 ```sh
 python3.13 -m venv .venv

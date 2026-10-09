@@ -1,6 +1,6 @@
 # PayGuard US-Only Eight-Layer Architecture
 
-Status: accepted local and public-source baseline. The bounded Sandbox and Gemini receipts, security review, rights/notices, export and anonymous repository readback are accepted for the exact release bytes. Public source publication is complete. Only video publication and Devpost submission remain in the competition submission path.
+Status: accepted US-only local design. Prior operator-attested bounded Sandbox and Gemini receipts remain historical evidence for their own captured executions; they do not prove current-byte live behavior or bind a later source candidate. Release state is determined by the package manifest and exact anonymous public readback. When the manifest is `PUBLIC_SOURCE_PUBLISHED` with `publication_authorized=true` and the same bytes pass exact anonymous readback, public source publication is complete. In that published-source state, only video publication and Devpost submission remain in the competition submission path. A package marked `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` has not crossed the public-source gate.
 
 ## Product boundary
 
@@ -23,22 +23,22 @@ PayGuard does not freeze funds, approve compliance, predict hidden provider thre
 
 ```mermaid
 flowchart LR
-  A["US public-source contract<br/>O (Done)"] --> B["US v2 corpus and policy package<br/>O (Done)"]
+  A["US-only product contract<br/>O (Done)"] --> B["US v2 corpus and policy package<br/>O (Done)"]
   B --> C["Backend, API and schema consumers<br/>O (Done)"]
   C --> D["English console and current documents<br/>O (Done)"]
   D --> E["Focused and full local validation<br/>O (Done)"]
   E --> F["Canonical readback and no-op audit<br/>O (Done)"]
-  F --> G["BLK-01B bounded Sandbox evidence<br/>O (Done): operator-attested reviewed record"]
-  F --> H["BLK-02B fixed-synthetic Gemini evidence<br/>O (Done): operator-attested reviewed record"]
+  F -. historical receipt .-> G["BLK-01B bounded Sandbox evidence<br/>HISTORICAL: operator-attested reviewed record"]
+  F -. historical receipt .-> H["BLK-02B fixed-synthetic Gemini evidence<br/>HISTORICAL: operator-attested reviewed record"]
   F --> K["Local 4B loopback adapter and bounded stress<br/>O (Done): candidate runtime"]
   K --> L["PG-014 local-model distribution<br/>FROZEN: identity, license and release acceptance open"]
-  G --> I["PG-006 security, rights, export and repository readback<br/>O (Done)"]
-  H --> I
+  F --> N["Current-byte live provider proof<br/>PENDING: separately authorized rehearsal"]
+  N --> I["PG-006 manifest, release evidence and exact public readback<br/>PENDING"]
   I --> M["Video publication and Devpost submission<br/>PENDING"]
   J["Production hosting and provider mutations<br/>FROZEN"]
 ```
 
-This graph describes the accepted local and public-source baseline. The separately accepted receipts establish only the exact bounded `BLK-01B` and `BLK-02B` executions. The public source uses the complete repository run instructions as its functional-demo path. Source publication, final-byte security, rights/notices, export and anonymous repository readback are complete; video publication and Devpost submission remain pending. The optional hosted demo remains `FROZEN` and unperformed.
+This graph describes the accepted local design and separates historical receipts from current-byte proof. The prior receipts establish only their bounded `BLK-01B` and `BLK-02B` executions. They do not establish a later candidate's live provider behavior, release evidence or public parity. The source uses the complete repository run instructions as its functional-demo path. Current release status must come from the package manifest plus same-byte anonymous readback. The optional hosted demo remains `FROZEN` and unperformed.
 
 ## Eight layers
 
@@ -47,11 +47,11 @@ This graph describes the accepted local and public-source baseline. The separate
 | L1 — Ingest | `M-INGEST` | Validate event source, request kind, identifiers, timestamps, required fields and deterministic route | Accept bounded synthetic input and an explicit US context; reject unsupported or ambiguous routes | Authentic provider event ingestion and durable replay inbox remain open |
 | L2 — Privacy | `M-PRIVACY` | Minimize, pseudonymize and classify sensitive fields | Process fixed synthetic evidence in memory; return redacted text and limited metadata | Real PII, vault, retention enforcement and complete recall remain open |
 | L3 — Policy | `M-POLICY` | Load a versioned policy profile, bind source identity and preserve time semantics | Load one pinned US `REFERENCE_ONLY` package; effective interval and account applicability stay unestablished | Full rule lifecycle, promotion, legal review and account-specific applicability remain open |
-| L4 — Engines | `M-ENGINES` | Run deterministic AUP, velocity, completeness, retrieval and advisory gates | Emit warnings, local anomaly signals, missing evidence, bounded citations and one accepted fixed-synthetic Gemini execution | Full declarative interpreter, repeatability, other-stage semantic quality and real-record behavior remain open |
+| L4 — Engines | `M-ENGINES` | Run deterministic AUP, velocity, completeness, retrieval and advisory gates | Emit warnings, local anomaly signals, missing evidence and bounded citations; retain one historical operator-attested fixed-synthetic Gemini receipt for its captured execution only | Current-byte live proof, full declarative interpretation, repeatability, other-stage semantic quality and real-record behavior remain open |
 | L5 — API and Report | `M-API`, `M-REPORT` | Enforce strict HTTP/I/O contracts and present backend-owned calculations | Loopback session/CSRF/quota controls; no frontend risk recomputation; fixed sanitized errors | Provider telemetry, separate readback and durable external action records remain open |
-| L6 — Governance | `M-GOVERNANCE` | Bind files, hashes, tests, source provenance, evidence and release state | One registry, one gap queue, isolation-first change, strict audit, no-op verification and accepted public-source readback | Production deployment and any future changed release bytes require separate acceptance |
+| L6 — Governance | `M-GOVERNANCE` | Bind files, hashes, tests, source provenance, evidence and release state | One registry, one gap queue, isolation-first change, strict audit, no-op verification and historical readback preserved for its own bytes | Every changed release requires a matching manifest, release evidence and exact anonymous public readback; production deployment requires separate acceptance |
 | L7 — Human Review | `M-REVIEW` | Bind actor choice to case/action/payload digest, nonce and expiry | Short-lived local acknowledgement and draft review; edit/reset/expiry revoke prior approval | Durable authenticated actor, tenant and restart/concurrency semantics remain open |
-| L8 — Presentation | `M-PRESENT`, `M-UI` | Render backend state, references, limitations and operator controls | English US-only console, AG Grid Community, a lazy-loaded first-party analytics workspace, a four-column backend-supplied transaction stream, single-open mobile evidence accordion and a deterministic local dashboard guide | Repository instructions are the selected demo path; rights/notices and public artifact proof are complete; optional hosted judge access remains frozen and unperformed |
+| L8 — Presentation | `M-PRESENT`, `M-UI` | Render backend state, references, limitations and operator controls | English US-only console, AG Grid Community, a lazy-loaded first-party analytics workspace, a four-column backend-supplied transaction stream, single-open mobile evidence accordion and a deterministic local dashboard guide | Repository instructions are the selected demo path; same-version public artifact proof requires manifest binding and exact anonymous readback; optional hosted judge access remains frozen and unperformed |
 
 ## Three-stage lifecycle
 
@@ -178,7 +178,7 @@ The maximum separately reviewed evidence scope is:
 - structural validation and human semantic review;
 - preserved `NOT_MADE`, `NOT_ESTABLISHED` and no-action authority.
 
-The source contract permits one Vertex `v1` invocation of `gemini-3.8-flash` in `global`, no automatic retry and no persisted raw response, credential, project identity or environment. The source package alone does not prove that invocation occurred; the separately accepted `BLK-02B` receipt establishes one bounded fixed-synthetic execution only. The runtime adds a process-local three-attempt budget with one permanent reservation per fixed stage. Deterministic readiness and reservation occur atomically before a provider call; every attempted downstream outcome consumes the reservation. The prompt and its SHA-256 identity are server-owned, caller requests contain only the stage enum, and model output is limited to closed stage-specific sentence enums and fixed citation identities. Tools, function calling, retrieval, streaming and caller overrides are unavailable. This protection does not survive process restart or span multiple workers, so any public distributed deployment remains blocked until a durable shared atomic quota and gateway cost circuit breaker are independently verified.
+The source contract permits one Vertex `v1` invocation of `gemini-3.8-flash` in `global`, no automatic retry and no persisted raw response, credential, project identity or environment. The source package alone does not prove that invocation occurred; the historical `BLK-02B` receipt establishes one bounded fixed-synthetic execution only for its captured provider run and does not establish current-byte live behavior. The runtime adds a process-local three-attempt budget with one permanent reservation per fixed stage. Deterministic readiness and reservation occur atomically before a provider call; every attempted downstream outcome consumes the reservation. The prompt and its SHA-256 identity are server-owned, caller requests contain only the stage enum, and model output is limited to closed stage-specific sentence enums and fixed citation identities. Tools, function calling, retrieval, streaming and caller overrides are unavailable. This protection does not survive process restart or span multiple workers, so any public distributed deployment remains blocked until a durable shared atomic quota and gateway cost circuit breaker are independently verified.
 
 ### Local 4B candidate runtime
 
@@ -190,11 +190,11 @@ The public source includes bounded synthetic contract tests for all three stages
 
 | Gap | Boundary | Current consequence |
 | --- | --- | --- |
-| `PG-001` / `BLK-01B` | One bounded Sandbox OAuth plus unsent invoice `DRAFT` pair | Exact receipt binding is accepted; provider telemetry, separate GET, send, payment, production and broader account behavior remain unavailable |
-| `PG-002` / `BLK-02B` | One bounded `gemini-3.8-flash` execution and human semantic review | Exact receipt binding is accepted; repeatability, other stages, real-record behavior and the optional full policy interpreter remain outside the claim |
+| `PG-001` / `BLK-01B` | One bounded Sandbox OAuth plus unsent invoice `DRAFT` pair | The historical receipt remains accepted for its captured execution only; current-byte live behavior, provider telemetry, separate GET, send, payment, production and broader account behavior remain unavailable |
+| `PG-002` / `BLK-02B` | One bounded `gemini-3.8-flash` execution and human semantic review | The historical receipt remains accepted for its captured execution only; current-byte live behavior, repeatability, other stages, real-record behavior and the optional full policy interpreter remain outside the claim |
 | `PG-003` | Durable external submission authority | Review remains local and short-lived |
 | `PG-004` | Real PII ingestion and retention | Only synthetic bounded privacy demonstrations are allowed |
-| `PG-006` | Public export and deployment | Public source publication is complete; video publication and Devpost submission remain pending; optional hosting remains unperformed and is not a mandatory release gate |
+| `PG-006` | Public export and deployment | Release status is manifest- and exact-readback-bound; current-byte live proof, same-version release evidence, exact anonymous public readback, video publication and Devpost submission remain separate gates; optional hosting remains unperformed and is not mandatory |
 
 Internal machine-readable registries remain local release-owner controls and are not linked from the public package. Public documents cannot close a release gate.
 
@@ -211,7 +211,7 @@ The accepted US-only local baseline has direct evidence that:
 7. historical logs, receipts and superseded bytes remain unchanged;
 8. readiness gaps remain evidence-driven and open.
 
-The exact bounded Sandbox and Gemini evidence, final-byte security review, rights/notices, public export and anonymous repository readback are complete. Only video publication and Devpost submission remain in the competition submission path. Complete repository run instructions are the selected functional-demo path. Optional hosting remains frozen and unperformed, and public or production hosting plus multi-user AI operation remain unproven and outside the accepted runtime.
+The historical bounded Sandbox and Gemini receipts remain evidence only for their captured executions and do not prove current-byte live behavior. Complete repository run instructions are the selected functional-demo path. Each candidate still requires matching release evidence and exact anonymous public readback before it can carry `PUBLIC_SOURCE_PUBLISHED`. When that manifest state and same-byte readback are both present, public source publication is complete. In that published-source state, only video publication and Devpost submission remain in the competition submission path. Optional hosting remains frozen and unperformed, and public or production hosting plus multi-user AI operation remain unproven and outside the accepted runtime.
 
 Stop if a source digest drifts, a foreign source becomes reachable, an effective date is inferred, a procedural court record is presented as a merits decision, a synthetic receipt is called authentic, or any path enables production or financial mutation.
 

@@ -33,6 +33,8 @@ MAX_PROTOCOL_BYTES = 65536
 MAX_REQUEST_BYTES = 16384
 MAX_OUTPUT_TOKENS = 900
 TOTAL_TIMEOUT_SECONDS = 20
+VERTEX_PROJECT_ENV = "PAYGUARD_VERTEX_PROJECT"
+VERTEX_PROJECT_PATTERN = re.compile(r"^[a-z][a-z0-9-]{4,28}[a-z0-9]$")
 Stage = Literal["source_compliance", "velocity_guard", "dispute_mediation"]
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_GEMINI_PYTHON = PROJECT_ROOT / "integrations/gemini/.venv/bin/python3"
@@ -179,6 +181,15 @@ def fail(code: str = "ai_response_invalid", status: int = 502) -> None:
     raise AiBriefError(status, code) from None
 
 
+def configured_vertex_project() -> str | None:
+    project = os.environ.get(VERTEX_PROJECT_ENV)
+    if project is None:
+        return None
+    if VERTEX_PROJECT_PATTERN.fullmatch(project) is None:
+        fail("ai_configuration_invalid", 503)
+    return project
+
+
 class StrictContract(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True)
 
@@ -304,6 +315,7 @@ class AiConfig:
     enabled: bool = False
     python_bin: Path | None = field(default=None, repr=False)
     worker_path: Path | None = field(default=None, repr=False)
+    vertex_project: str = field(default="", repr=False)
 
 
 @dataclass(frozen=True, slots=True)
@@ -487,19 +499,32 @@ def operator_ai_config() -> AiConfig:
         return AiConfig()
     if any(name in os.environ for name in _AMBIGUOUS_PARENT_ENVIRONMENT):
         fail("ai_configuration_ambiguous", 503)
+    vertex_project = configured_vertex_project()
+    if vertex_project is None:
+        fail("ai_not_configured", 503)
     python_bin = DEFAULT_GEMINI_PYTHON
     worker_path = DEFAULT_GEMINI_WORKER
-    if python_bin.is_symlink() or not python_bin.is_file() or not os.access(python_bin, os.X_OK):
+    if not python_bin.is_file() or not os.access(python_bin, os.X_OK):
         fail("ai_not_configured", 503)
     if worker_path.is_symlink() or not worker_path.is_file():
         fail("ai_not_configured", 503)
-    return AiConfig(True, python_bin.resolve(strict=True), worker_path.resolve(strict=True))
+    try:
+        resolved_python = python_bin.resolve(strict=True)
+        resolved_worker = worker_path.resolve(strict=True)
+    except OSError:
+        fail("ai_not_configured", 503)
+    if not resolved_python.is_file() or not os.access(resolved_python, os.X_OK):
+        fail("ai_not_configured", 503)
+    return AiConfig(True, resolved_python, resolved_worker, vertex_project)
 
 
-def clean_worker_environment() -> dict[str, str]:
+def clean_worker_environment(vertex_project: str) -> dict[str, str]:
+    if type(vertex_project) is not str or VERTEX_PROJECT_PATTERN.fullmatch(vertex_project) is None:
+        fail("ai_configuration_invalid", 503)
     environment: dict[str, str] = {
         "PATH": "/usr/bin:/bin",
         "PAYGUARD_GEMINI_OUTBOUND": "enabled",
+        VERTEX_PROJECT_ENV: vertex_project,
         "PYTHONNOUSERSITE": "1",
     }
     for name in _WORKER_ENV_PASSTHROUGH:
@@ -609,12 +634,18 @@ class EvidenceBriefAdapter:
     @staticmethod
     def _validated_config(provenance: _RequestProvenance) -> AiConfig:
         config = provenance.config_loader()
-        if type(config) is not AiConfig or type(config.enabled) is not bool:
+        if (
+            type(config) is not AiConfig
+            or type(config.enabled) is not bool
+            or type(config.vertex_project) is not str
+        ):
             fail("ai_configuration_invalid", 503)
         if not config.enabled:
             fail("ai_disabled", 503)
         if config.python_bin is None or config.worker_path is None:
             fail("ai_not_configured", 503)
+        if VERTEX_PROJECT_PATTERN.fullmatch(config.vertex_project) is None:
+            fail("ai_configuration_invalid", 503)
         return config
 
     def validate_attempt_configuration(self) -> None:
@@ -638,7 +669,11 @@ class EvidenceBriefAdapter:
         )
         runner = provenance.process_runner or run_worker_subprocess
         try:
-            raw = await runner(command, worker_request(validated.stage), clean_worker_environment())
+            raw = await runner(
+                command,
+                worker_request(validated.stage),
+                clean_worker_environment(config.vertex_project),
+            )
             envelope = strict_json(raw)
             if type(envelope) is not dict or set(envelope) != {"schema_version", "status", "result"}:
                 fail()

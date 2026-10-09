@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1060" viewBox="0 0 1600 1060" role="img" aria-labelledby="title desc">
   <title id="title">PayGuard US-only architecture and delivery status</title>
-  <desc id="desc">Accepted local eight-layer architecture, three-stage merchant journey, response-driven dispute requirements, restricted session metadata, a pseudonymized review copy, and authority boundaries. Public source publication is complete. Only video publication and Devpost submission remain in the competition submission path. Hosted and production deployment remain unproven.</desc>
+  <desc id="desc">Accepted local eight-layer architecture, three-stage merchant journey, response-driven dispute requirements, restricted session metadata, a pseudonymized review copy, and authority boundaries. Release state is determined by the package manifest and exact anonymous public readback. When the manifest is PUBLIC_SOURCE_PUBLISHED with publication_authorized=true and the same bytes pass exact anonymous readback, public source publication is complete. In that published-source state, only video publication and Devpost submission remain in the competition submission path. Historical Sandbox and Gemini receipts do not prove current-byte live behavior. Hosted and production deployment remain unproven.</desc>
   <defs>
     <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#07111f"/>
@@ -43,7 +43,7 @@
   <text x="70" y="68" class="title">PayGuard — US-Only Merchant Warning and Evidence Console</text>
   <text x="70" y="100" class="subtitle">Deterministic first - AI advisory - Human local choices - PayPal or external adjudicator retains final authority</text>
   <rect x="1290" y="45" width="240" height="42" rx="21" fill="#132b48" stroke="#3d6b99"/>
-  <text x="1410" y="71" class="status" text-anchor="middle">SOURCE PUBLISHED - VIDEO + DEVPOST PENDING</text>
+  <text x="1410" y="71" class="status" text-anchor="middle">RELEASE STATE: SEE MANIFEST</text>
 
   <text x="70" y="152" class="section">THREE-STAGE MERCHANT JOURNEY</text>
 
@@ -102,7 +102,7 @@
 
     <rect x="70" y="724" width="1460" height="62" rx="12" fill="#142c49" stroke="#315579"/>
     <text x="95" y="762" class="layer">L4 - Engines</text>
-    <text x="325" y="762" class="body">Deterministic gates - bounded citations - one accepted fixed-synthetic Gemini path</text>
+    <text x="325" y="762" class="body">Deterministic gates - bounded citations - historical receipt is not current live proof</text>
     <rect x="1350" y="740" width="145" height="30" rx="15" fill="#167d64"/>
     <text x="1422" y="760" class="status" text-anchor="middle">O (DONE)</text>
 
@@ -125,8 +125,8 @@
     <text x="1422" y="976" class="status" text-anchor="middle">O (DONE)</text>
   </g>
 
-  <rect x="70" y="1018" width="700" height="28" rx="14" fill="#167d64"/>
-  <text x="420" y="1037" class="status" text-anchor="middle">O (DONE) - one accepted Sandbox OAuth + unsent DRAFT pair</text>
-  <rect x="790" y="1018" width="740" height="28" rx="14" fill="#167d64"/>
-  <text x="1160" y="1037" class="status" text-anchor="middle">O (DONE) - one human-accepted gemini-3.8-flash execution</text>
+  <rect x="70" y="1018" width="700" height="28" rx="14" fill="#8b5a12"/>
+  <text x="420" y="1037" class="status" text-anchor="middle">HISTORICAL RECEIPT - bounded Sandbox OAuth + unsent DRAFT pair</text>
+  <rect x="790" y="1018" width="740" height="28" rx="14" fill="#8b5a12"/>
+  <text x="1160" y="1037" class="status" text-anchor="middle">HISTORICAL RECEIPT - one human-reviewed Gemini execution</text>
 </svg>

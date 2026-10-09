@@ -1,8 +1,8 @@
 # PayGuard US-Only Mainline Contract
 
-Status: current accepted canonical local and public-source design. The English US-only conversion, one operator-attested and independently reviewed Sandbox OAuth plus unsent invoice `DRAFT` pair, and one operator-attested and independently reviewed fixed-synthetic `gemini-3.8-flash` result are recorded. These records are not publicly reproducible from source alone; a judge-facing execution claim requires showing the bounded path live. This contract supersedes prior product narratives for the active runtime; historical evidence retains its original claims and bytes. Competition submission remains a separate open gate.
+Status: current accepted canonical US-only local design. The English conversion and three-stage contract are current. One operator-attested and independently reviewed Sandbox OAuth plus unsent invoice `DRAFT` pair and one operator-attested and independently reviewed fixed-synthetic `gemini-3.8-flash` result are historical records for their own captured executions. They do not prove current-byte live behavior or bind a later source candidate. A judge-facing execution claim requires showing the bounded path live. This contract supersedes prior product narratives for the active runtime; historical evidence retains its original claims and bytes. Competition submission remains a separate open gate.
 
-Current objective state: local baseline `O (Done)`, the operator-attested and independently reviewed `BLK-01B` and `BLK-02B` records, security review, rights/notices, public export and anonymous repository readback are accepted within local governance. Public source publication is complete. Only video publication and Devpost submission remain in the competition submission path. A hosted demo is optional and is not a mandatory gate.
+Current objective state: the local product baseline is `O (Done)`. Release state is determined by the package manifest and exact anonymous public readback, not by this contract or a historical receipt. When the manifest is `PUBLIC_SOURCE_PUBLISHED` with `publication_authorized=true` and the same bytes pass exact anonymous readback, public source publication is complete. In that published-source state, only video publication and Devpost submission remain in the competition submission path. A package marked `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` has not crossed the public-source gate. A hosted demo is optional and is not mandatory.
 
 ## Locked product statement
 
@@ -29,7 +29,7 @@ The functional-demo requirement can be satisfied by complete repository run inst
 - `merchant_legal_region=UNKNOWN` for a fictitious sandbox merchant
 - `external_action_authorized=false` by default
 
-The existing login is not converted or described as a live Business account. A Business sandbox seller is a virtual merchant persona. Operator-visible country and Invoicing confirmation exists only for the exact accepted BLK-01B path and does not establish live-account or production eligibility.
+The existing login is not converted or described as a live Business account. A Business sandbox seller is a virtual merchant persona. Operator-visible country and Invoicing confirmation exists only in the historical bounded `BLK-01B` record for its captured execution and does not establish current-byte behavior, live-account status or production eligibility.
 
 ## Policy and source state
 
@@ -57,11 +57,11 @@ No stage produces approval, prohibition, hidden provider risk, evidence authenti
 
 AI receives only accepted structured synthetic facts and pinned citations after deterministic preflight. It may summarize facts, chronology, missing evidence and limitations. It cannot select jurisdiction, add facts, resolve conflicts, authenticate evidence, change a rule result, acknowledge a warning or choose a provider action.
 
-`BLK-02B` is limited to one operator-attested, independently human-reviewed `gemini-3.8-flash` response over fixed synthetic facts. The non-public receipt records one invocation, no automatic retry and no workflow or external-action authority. It establishes no repeatability, other-stage quality, real-record behavior, provider retention behavior, policy correctness or production readiness.
+The historical `BLK-02B` record is limited to one operator-attested, independently human-reviewed `gemini-3.8-flash` response over fixed synthetic facts. The non-public receipt records one captured invocation, no automatic retry and no workflow or external-action authority. It does not establish current-byte live behavior, repeatability, other-stage quality, real-record behavior, provider retention behavior, policy correctness or production readiness.
 
 ## Sandbox contract
 
-Outbound access is disabled by default. `BLK-01B` is closed in local governance only for the separately authorized, operator-attested and independently reviewed OAuth result and one unsent USD `10.00` invoice `DRAFT` creation result using the operator-confirmed US Business sandbox seller path with Invoicing available. Public source alone does not authenticate this result.
+Outbound access is disabled by default. The historical `BLK-01B` record is limited to the separately authorized, operator-attested and independently reviewed OAuth result and one unsent USD `10.00` invoice `DRAFT` creation result using the operator-confirmed US Business sandbox seller path with Invoicing available. It proves only that captured execution, not current-byte live behavior. Public source alone does not authenticate the result.
 
 Invoice send, payment, capture, refund, dispute mutation, production and automatic retry after uncertain creation remain frozen. A create response is not described as a separate GET readback.
 
@@ -74,12 +74,12 @@ The active official U.S. court records establish settlement approval or arbitrat
 Local code, tests, source integrity and rendered UI can establish only local contract behavior. They cannot establish:
 
 - the operator's Dashboard access;
-- sandbox seller country or Invoicing entitlement beyond the exact accepted BLK-01B P1 attestation;
-- Sandbox or model behavior beyond the exact accepted BLK-01B and BLK-02B executions;
+- sandbox seller country or Invoicing entitlement beyond the historical bounded `BLK-01B` record;
+- Sandbox or model behavior beyond the historical bounded `BLK-01B` and `BLK-02B` executions;
 - current legal completeness;
 - production readiness;
 - public or production hosting or restart-safe multi-user AI operation;
-- video or Devpost submission readiness; public repository readiness is established separately by the accepted A8 anonymous readback, not by local code alone.
+- video or Devpost submission readiness; every candidate's public repository readiness requires its own matching manifest and exact anonymous readback. A historical anonymous readback applies only to its captured bytes.
 
 Canonical state remains governed by `config/module_registry.json` and `config/missing_registry.json`. No document closes a gap.
 

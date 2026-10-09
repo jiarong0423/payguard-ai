@@ -10,7 +10,6 @@ from pathlib import Path
 import re
 import stat
 import sys
-import tomllib
 from urllib.parse import unquote, urlsplit
 
 
@@ -269,26 +268,9 @@ def validate_runner(root: Path, rows: dict[str, dict]) -> None:
 
 
 def validate_toolkit(root: Path, rows: dict[str, dict]) -> None:
-    required = {
-        "integrations/paypal_toolkit/check_runtime.py",
-        "integrations/paypal_toolkit/pyproject.toml",
-        "integrations/paypal_toolkit/requirements.lock",
-        "integrations/paypal_toolkit/run.sh",
-        "integrations/paypal_toolkit/test_runtime.py",
-    }
-    if not required <= set(rows):
-        reject("PAYPAL_TOOLKIT_PROFILE_INCOMPLETE")
-    try:
-        document = tomllib.loads((root / "integrations/paypal_toolkit/pyproject.toml").read_text(encoding="utf-8"))
-        markers = document["tool"]["payguard-paypal-toolkit"]["project-markers"]
-    except (OSError, UnicodeError, ValueError, KeyError, TypeError):
-        reject("PAYPAL_TOOLKIT_MARKER_INVALID")
-    expected = rows["tools/public_run.sh"]["sha256"]
-    if markers.get("tools/public_run.sh") != expected or "tools/run.sh" in markers:
-        reject("PAYPAL_TOOLKIT_MARKER_INVALID")
-    guard_text = (root / "integrations/paypal_toolkit/check_runtime.py").read_text(encoding="utf-8")
-    if repr("tools/public_run.sh") not in guard_text or expected not in guard_text:
-        reject("PAYPAL_TOOLKIT_GUARD_MARKER_MISMATCH")
+    """The optional private SDK profile is excluded from the public package."""
+    if any(path.startswith("integrations/paypal_toolkit/") for path in rows):
+        reject("PUBLIC_TOOLKIT_PROFILE_EXCLUDED")
 
 
 def markdown_targets(path: Path) -> list[str]:
@@ -422,7 +404,6 @@ def validate_notices(root: Path, manifest: dict, rows: dict[str, dict]) -> None:
     locks = {
         "root_python": "requirements.lock",
         "gemini_python": "integrations/gemini/requirements.lock",
-        "paypal_toolkit_python": "integrations/paypal_toolkit/requirements.lock",
         "frontend_npm": "frontend/package-lock.json",
     }
     expected_hashes = {name: rows[path]["sha256"] for name, path in locks.items()}
@@ -432,7 +413,7 @@ def validate_notices(root: Path, manifest: dict, rows: dict[str, dict]) -> None:
         if digest not in notice:
             reject("THIRD_PARTY_LOCK_IDENTITY_MISSING")
     tokens = set()
-    for path in (locks["root_python"], locks["gemini_python"], locks["paypal_toolkit_python"]):
+    for path in (locks["root_python"], locks["gemini_python"]):
         tokens.update(python_lock_tokens(root / path))
     tokens.update(frontend_lock_tokens(root / locks["frontend_npm"]))
     if any(f"`{token}`" not in notice for token in tokens):
