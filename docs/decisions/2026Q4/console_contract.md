@@ -14,7 +14,7 @@ The three stages remain separate. Stage 1 does not collect arrival photos. Stage
 
 ## Provider-context banner
 
-The console must display these boundaries before any provider action:
+The optional Sandbox disclosure displays these boundaries before its connect and draft actions become visible:
 
 - `Demo market: United States`
 - `Provider environment: PayPal Sandbox`
@@ -75,9 +75,8 @@ AG Grid displays backend-supplied synthetic transactions and exact backend calcu
 - transaction count and amount;
 - local baseline and provenance;
 - ratio and local signal;
-- fulfillment capacity statement;
-- tracking/delivery evidence state;
-- missing evidence and limitations;
+- a general fulfillment-capacity and tracking/delivery preparation reminder, explicitly marked as not supplied by the synthetic capture stream;
+- limitations stating that Stage 2 has not verified per-order proof or classified missing merchant evidence; detailed requested-proof state belongs to Stage 3;
 - public US User Agreement reference.
 
 The UI must say that the result does not predict a hold, limitation, reserve or release. It must never display AML, money laundering, fraud or PayPal risk-score conclusions derived from the local signal.

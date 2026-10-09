@@ -867,14 +867,18 @@ export function downloadInternalReviewZip(draft) {
   validateInternalReviewZip(bytes);
   const blob = new Blob([bytes], { type: 'application/zip' });
   const url = URL.createObjectURL(blob);
-  const anchor = document.createElement('a');
+  let anchor;
   try {
+    anchor = document.createElement('a');
     anchor.href = url;
     anchor.download = 'payguard-internal-review.zip';
     document.body.appendChild(anchor);
     anchor.click();
   } finally {
-    anchor.remove();
-    URL.revokeObjectURL(url);
+    try {
+      anchor?.remove();
+    } finally {
+      URL.revokeObjectURL(url);
+    }
   }
 }

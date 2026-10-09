@@ -98,7 +98,6 @@ for (const text of [
   'quickFilterText={velocityQuickFilter}',
   'onRowClicked={({ data }) => setSelectedVelocityTransaction(data)}',
   'Stage evidence checklist',
-  'This stage-level signal is not a per-order fraud classification and does not predict any PayPal action.',
 ]) requireText(appSource, text);
 
 const coreVelocityGrid = appSource.match(/<div className="transaction-grid" data-testid="velocity-grid"[\s\S]*?<\/div>/u);
@@ -127,6 +126,21 @@ for (const reviewProof of [
   'dateLabel(receipt.reviewed_at)',
   'operatorLabel(receipt.retention)',
 ]) requireText(appSource, reviewProof, `visible review proof ${reviewProof}`);
+for (const providerContext of [
+  'data-testid="provider-context"',
+  "invoice?.evidence_receipt?.evidence_class === 'AUTHENTIC_SANDBOX_RESPONSE'",
+  "['Sandbox seller country', 'Unconfirmed until Dashboard readback']",
+  "['External action', 'Disabled by default; explicit Sandbox OAuth and unsent draft only']",
+]) requireText(appSource, providerContext, `provider-context boundary ${providerContext}`);
+requireText(appSource, 'Check capacity and tracking or delivery records; they are not supplied in this synthetic capture stream.',
+  'Stage 2 reminder must not claim verified order proof');
+requireText(appSource, 'This stage-level signal does not verify fulfillment evidence, classify this order as fraud, or predict any PayPal action.',
+  'Stage 2 limits stay visible');
+requireText(
+  appSource,
+  'onClick={() => { if (caseItem?.case_ref === item.case_ref) return; invalidateAi(); setSelectedCase(item.case_ref); setDraft(null); setReceipt(null); setReviewChecked(false); }}',
+  'reselecting the reviewed case preserves its draft and receipt while a case change clears prior context',
+);
 
 const analyticsNavigation = appSource.match(/<a href="#analytics"[\s\S]*?>Grid analytics<\/a>/u);
 assert.ok(analyticsNavigation, 'Grid analytics navigation action exists');

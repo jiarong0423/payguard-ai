@@ -1,5 +1,5 @@
 {
-  "created_at_utc": "2026-10-09T16:54:42Z",
+  "created_at_utc": "2026-10-09T19:53:39Z",
   "dependency_locks": {
     "frontend_npm": "5db6bb7cf7d4e51ab42c08ffc189eebc8471efb61fbc06960c075f6490ba22aa",
     "gemini_python": "36554331392d6102519a4ead5778704c4ff89e79da6bb9d6648b656f130724bb",
@@ -57,11 +57,11 @@
       "source_sha256": "9539954f6193f881735f7581249cbe4d429b48c529afe02f072a3281340e958f"
     },
     {
-      "bytes": 28525,
+      "bytes": 28672,
       "path": "backend/app/ai_brief.py",
-      "sha256": "97cbfedf4a1be9f473325cedab225ff2acbcd682a1ebfe075da4eed3c8d65808",
+      "sha256": "1e92524a14c2a722b603cca06bec0bacd0a1b80cc1cda5f85146cda97762dc92",
       "source_path": "backend/app/ai_brief.py",
-      "source_sha256": "97cbfedf4a1be9f473325cedab225ff2acbcd682a1ebfe075da4eed3c8d65808"
+      "source_sha256": "1e92524a14c2a722b603cca06bec0bacd0a1b80cc1cda5f85146cda97762dc92"
     },
     {
       "bytes": 8639,
@@ -141,11 +141,11 @@
       "source_sha256": "54fbb23de535c9e37f5d25271dcfb5245844c800813849952258a0714347b567"
     },
     {
-      "bytes": 12388,
+      "bytes": 12627,
       "path": "docs/decisions/2026Q4/console_contract.md",
-      "sha256": "e93cb2fdf62a4d2a9b08bb7a24dfa93e6af21ac14d76580acc8bbbaab8d87166",
+      "sha256": "b287d06f565e5e1e08aa5329e9de7b7dd8276ca0bf163b724c1bd80fe323430b",
       "source_path": "docs/decisions/2026Q4/console_contract.md",
-      "source_sha256": "e93cb2fdf62a4d2a9b08bb7a24dfa93e6af21ac14d76580acc8bbbaab8d87166"
+      "source_sha256": "b287d06f565e5e1e08aa5329e9de7b7dd8276ca0bf163b724c1bd80fe323430b"
     },
     {
       "bytes": 9402,
@@ -232,11 +232,11 @@
       "source_sha256": "187cbe3b1a5a30ef56f57976e17a868b543b9c66d224790a7f9bd67e7b29082e"
     },
     {
-      "bytes": 58432,
+      "bytes": 59492,
       "path": "frontend/src/App.jsx",
-      "sha256": "781ac1b23c40d57d18cf4834d60fbd01a487d63602f63598595aa2b7f38c06a1",
+      "sha256": "8c0250eee2d7e3763e37dc25f9409d5101695c510522b351774a91ddc104d97b",
       "source_path": "frontend/src/App.jsx",
-      "source_sha256": "781ac1b23c40d57d18cf4834d60fbd01a487d63602f63598595aa2b7f38c06a1"
+      "source_sha256": "8c0250eee2d7e3763e37dc25f9409d5101695c510522b351774a91ddc104d97b"
     },
     {
       "bytes": 13706,
@@ -260,11 +260,11 @@
       "source_sha256": "619e4c4f4c2d2af5c6961bab97a3b48fa1667a713041b420b3f610b1eb565667"
     },
     {
-      "bytes": 79958,
+      "bytes": 80534,
       "path": "frontend/src/index.css",
-      "sha256": "f1800d4a518321be823f7eeb51920c5b6bc353c4a1c8d7e3fe8e0b9bc3d3eb11",
+      "sha256": "ae119d658efbbe63ab8aa2252617137e1efbf4550283c096a523e188de9afea8",
       "source_path": "frontend/src/index.css",
-      "source_sha256": "f1800d4a518321be823f7eeb51920c5b6bc353c4a1c8d7e3fe8e0b9bc3d3eb11"
+      "source_sha256": "ae119d658efbbe63ab8aa2252617137e1efbf4550283c096a523e188de9afea8"
     },
     {
       "bytes": 187,
@@ -295,11 +295,11 @@
       "source_sha256": "a940e67aea3d246fcb6425731b39e1c88f6b203c7acaedce494d29309a59c234"
     },
     {
-      "bytes": 38189,
+      "bytes": 38236,
       "path": "frontend/src/reviewZip.js",
-      "sha256": "810b7482220c60802ca42b2becf483e301c1c809caa8516846833905ddcfa348",
+      "sha256": "586b3095cf66091beeb0bd94d90f0d96311ecbbd78851c93b911c3df5749bbce",
       "source_path": "frontend/src/reviewZip.js",
-      "source_sha256": "810b7482220c60802ca42b2becf483e301c1c809caa8516846833905ddcfa348"
+      "source_sha256": "586b3095cf66091beeb0bd94d90f0d96311ecbbd78851c93b911c3df5749bbce"
     },
     {
       "bytes": 418,
@@ -311,16 +311,16 @@
     {
       "bytes": 7894,
       "path": "integrations/gemini/check_runtime.py",
-      "sha256": "1e9a5c761e193f96361aaaf800ff7294460636ba583675162507ec40ee6063b4",
+      "sha256": "3fc42a9acd66e992b425009222a95d0ea70373bab88ec97ff0d08f457e9c57f7",
       "source_path": "integrations/gemini/check_runtime.py",
-      "source_sha256": "1e9a5c761e193f96361aaaf800ff7294460636ba583675162507ec40ee6063b4"
+      "source_sha256": "3fc42a9acd66e992b425009222a95d0ea70373bab88ec97ff0d08f457e9c57f7"
     },
     {
       "bytes": 1073,
       "path": "integrations/gemini/pyproject.toml",
-      "sha256": "41eb0e37010e49ba02a0851f048e09bf725f0548f857bb04caece09c4ebae972",
+      "sha256": "67dee0a6fd57e62effc80bb9cea09585a1c368b6bd1af01ee5d22ea77befca25",
       "source_path": "integrations/gemini/pyproject.toml",
-      "source_sha256": "41eb0e37010e49ba02a0851f048e09bf725f0548f857bb04caece09c4ebae972"
+      "source_sha256": "67dee0a6fd57e62effc80bb9cea09585a1c368b6bd1af01ee5d22ea77befca25"
     },
     {
       "bytes": 51446,
@@ -519,11 +519,11 @@
       "source_sha256": "d3153ea9e507a2e4c61e3a2870556b50fd2074037e6afbaa6f809adde63c16de"
     },
     {
-      "bytes": 15343,
+      "bytes": 16331,
       "path": "tests/frontend_recording_contract.mjs",
-      "sha256": "c507dad7f93a3187f1f1c127553375facd29b533e0bdd90695333de3543ddd78",
+      "sha256": "1e0ac7e19d2bae6d0bd4826825f360df6eac837092928010b818f613377e4398",
       "source_path": "tests/frontend_recording_contract.mjs",
-      "source_sha256": "c507dad7f93a3187f1f1c127553375facd29b533e0bdd90695333de3543ddd78"
+      "source_sha256": "1e0ac7e19d2bae6d0bd4826825f360df6eac837092928010b818f613377e4398"
     },
     {
       "bytes": 3823,
@@ -533,11 +533,11 @@
       "source_sha256": "917e9f7f7eed94f176ae87840b4faeb29d95f46db51904483fa437c7a5de7bec"
     },
     {
-      "bytes": 25758,
+      "bytes": 27208,
       "path": "tests/frontend_zip_contract.mjs",
-      "sha256": "1156cc8331a8b9e2a18f9e0c702049d4709a71c3edf9cd9c6c9ffd4c3a81603b",
+      "sha256": "b30d6d09e3ca3c63abdbdde1ba0bf6c8c09bc714c8c084aaba4f70ba8b0e77b5",
       "source_path": "tests/frontend_zip_contract.mjs",
-      "source_sha256": "1156cc8331a8b9e2a18f9e0c702049d4709a71c3edf9cd9c6c9ffd4c3a81603b"
+      "source_sha256": "b30d6d09e3ca3c63abdbdde1ba0bf6c8c09bc714c8c084aaba4f70ba8b0e77b5"
     },
     {
       "bytes": 14401,
@@ -554,11 +554,11 @@
       "source_sha256": "10909d17c1f9514bb7761aef1f15b9b67aebd85b9feacb31fe93e0f927170138"
     },
     {
-      "bytes": 22250,
+      "bytes": 22317,
       "path": "tests/test_ai_brief.py",
-      "sha256": "04b31e27c76b3e26e602cb1f195640c224b698ad530b77770a42e25b4d5b62a5",
+      "sha256": "dbedd0640f8b827e408508c8cc308aabb0532048b69d7f65e8d773e55ea1ccc2",
       "source_path": "tests/test_ai_brief.py",
-      "source_sha256": "04b31e27c76b3e26e602cb1f195640c224b698ad530b77770a42e25b4d5b62a5"
+      "source_sha256": "dbedd0640f8b827e408508c8cc308aabb0532048b69d7f65e8d773e55ea1ccc2"
     },
     {
       "bytes": 59160,
@@ -720,13 +720,13 @@
     "scope": "RECORDED_OWNER_RIGHTS_AND_ENTRANT_ELIGIBILITY"
   },
   "package_digest_algorithm": "sha256(sorted utf-8 '<file_sha256>  <relative_path>\\n' records; manifest and detached hash excluded)",
-  "package_digest_sha256": "04ed81911dba45c20deb1bd058ad6f2289c12596bf38e19cf97f2cd8c540d501",
-  "public_artifact_id": "payguard-public-source-04ed81911dba45c2",
+  "package_digest_sha256": "2b416cb6c2cfade335f0c844c20f64e39ba7ecd589c380864a0b015a49e1d51f",
+  "public_artifact_id": "payguard-public-source-2b416cb6c2cfade3",
   "publication_authorized": false,
   "raw_bounded_prompt_disclosure": {
     "intent": "INTENTIONAL_PUBLIC_EXECUTABLE_PRODUCT_SOURCE",
     "path": "backend/app/ai_brief.py",
-    "sha256": "97cbfedf4a1be9f473325cedab225ff2acbcd682a1ebfe075da4eed3c8d65808"
+    "sha256": "1e92524a14c2a722b603cca06bec0bacd0a1b80cc1cda5f85146cda97762dc92"
   },
   "remaining_gates": [
     "EXACT_FINAL_BYTES_SECURITY_REVIEW",

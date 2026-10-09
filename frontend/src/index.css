@@ -1095,3 +1095,36 @@ textarea:focus, input[type="text"]:focus, input[type="number"]:focus, select:foc
 .requirement-list small {
   grid-column: 1 / -1;
 }
+
+.provider-context {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0 0 14px;
+}
+
+.provider-context > div {
+  min-width: 0;
+  padding: 9px 11px;
+  border: 1px solid var(--pg-border-subtle);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.provider-context dt {
+  color: #475569;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.provider-context dd {
+  margin: 3px 0 0;
+  color: #0f172a;
+  font-size: 12px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+  .provider-context { grid-template-columns: 1fr; }
+}

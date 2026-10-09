@@ -515,7 +515,9 @@ def operator_ai_config() -> AiConfig:
         fail("ai_not_configured", 503)
     if not resolved_python.is_file() or not os.access(resolved_python, os.X_OK):
         fail("ai_not_configured", 503)
-    return AiConfig(True, resolved_python, resolved_worker, vertex_project)
+    # Validate the target, but execute through the venv entry so Python loads
+    # that environment's installed SDK instead of the base interpreter's.
+    return AiConfig(True, python_bin, resolved_worker, vertex_project)
 
 
 def clean_worker_environment(vertex_project: str) -> dict[str, str]:
