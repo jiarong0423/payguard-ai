@@ -2,9 +2,13 @@
 
 PayGuard is a US-only defensive buffer layer between merchant operations and provider review workflows for a PayPal Sandbox demonstration. It helps merchants review earlier, complete missing records, and prepare for provider review without making provider decisions. It presents one end-to-end story:
 
-1. **Before a transaction:** surface a US Acceptable Use Policy warning before an invoice draft.
-2. **During payment and fulfillment:** detect a local sales-velocity anomaly and prepare fulfillment evidence.
-3. **After a transaction:** organize a dispute timeline and requested evidence for human review.
+![PayGuard AI cover: three merchant scenarios and the tools used at each stage](docs/submission/payguard_cover.svg)
+
+The [judge quickstart](docs/submission/quickstart.md) walks through the working console; the [three-stage workflow map](docs/submission/payguard_judge_overview.svg) and [detailed architecture diagram](docs/decisions/2026Q4/payguard_us_architecture_status.svg) show the review and implementation boundaries.
+
+1. **Before a draft — AUP preflight:** use pinned PayPal US AUP references and deterministic rule checks to surface a warning; after merchant review, PayPal Sandbox OAuth supports one unsent invoice draft.
+2. **During fulfillment — velocity readiness:** use a backend comparison against a declared local baseline to flag synthetic sales spikes; AG Grid Community lets reviewers sort, filter and select the transaction evidence.
+3. **After a dispute — evidence preparation:** match the current synthetic case's requested seller items, produce a pseudonymized Internal Review ZIP and, on request, a bounded Gemini evidence brief for human review.
 
 The console uses FastAPI, React, Tailwind and AG Grid Community. Its lazy-loaded analytics workspace combines a sortable and filterable AG Grid transaction stream with order, amount, currency and capture-time columns, three first-party evidence widgets, a single-open mobile evidence accordion and a deterministic local dashboard guide. Deterministic validation runs first. Optional AI creates bounded advisory summaries afterward. Humans control local workflow choices. PayPal retains final authority for PayPal policy, account and internal-dispute decisions; a bank or card issuer retains authority for an external dispute.
 

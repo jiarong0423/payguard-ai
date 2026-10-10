@@ -64,6 +64,33 @@ const aupSequence = [
   '>Create Sandbox draft<',
 ];
 for (const marker of aupSequence) requireText(appSource, marker, `AUP recording control ${marker}`);
+requireText(appSource, "if (aup.match_status === 'REVIEW_SIGNAL') { setWarningOpen(true); return; }", 'draft-context action opens the AUP warning');
+requireText(appSource, 'onClick={reviewInvoice}>Confirm Draft Context</Button>', 'warning route is bound to the visible draft-context button');
+
+const warningClickOrder = [
+  '**Run Policy Check**',
+  '**Optional PayPal US Sandbox connection**',
+  'check **I reviewed the description and amount and confirm that this action creates a Sandbox draft only.**',
+  'select **Confirm Draft Context**',
+  'The warning dialog now opens',
+  'select **Return to edit**',
+];
+const stageOneScript = scriptSource.split('## 0:26 to 0:55 — Stage 1: AUP correction path')[1]?.split('## 0:55 to 1:10')[0];
+assert.ok(stageOneScript, 'timed AUP recording segment exists');
+let priorWarningMarker = -1;
+for (const marker of warningClickOrder) {
+  const position = stageOneScript.indexOf(marker);
+  assert.ok(position > priorWarningMarker, `AUP recording click order must include ${marker} after its prerequisite`);
+  priorWarningMarker = position;
+}
+const quickstartStageOne = quickstartSource.split('### Stage 1 — US AUP preflight screen')[1]?.split('### Stage 2')[0];
+assert.ok(quickstartStageOne, 'AUP quickstart segment exists');
+let priorQuickstartMarker = -1;
+for (const marker of warningClickOrder.slice(0, -1)) {
+  const position = quickstartStageOne.indexOf(marker);
+  assert.ok(position > priorQuickstartMarker, `AUP quickstart click order must include ${marker} after its prerequisite`);
+  priorQuickstartMarker = position;
+}
 
 const aupInvalidator = appSource.match(/const invalidateAup = useCallback\(\(\) => \{([\s\S]*?)\n  \}, \[invalidateAi\]\);/u);
 assert.ok(aupInvalidator, 'AUP invalidator exists');
@@ -194,7 +221,7 @@ for (const source of [appSource, analyticsSource]) {
 }
 requireText(referenceSource, 'placeholder="YYYY-MM-DDTHH:mm:ssZ"');
 requireText(policySource, 'Evaluation time (UTC ISO)');
-requireText(scriptSource, 'Locked on: `2026-10-09 UTC`');
+requireText(scriptSource, 'Locked on: `2026-10-10 UTC`');
 for (const [name, source] of [
   ['App', appSource],
   ['Analytics', analyticsSource],
@@ -226,11 +253,18 @@ for (const retiredCopy of [
   'Persistence: memory session',
 ]) forbidText(analyticsSource, retiredCopy);
 
-requireText(scriptSource, 'Version: `VIDEO_SCRIPT_V3_LOCKED`');
+requireText(scriptSource, 'Version: `VIDEO_SCRIPT_V5_LOCKED`');
 requireText(scriptSource, 'VIDEO_SCRIPT_V1_LOCKED');
 requireText(scriptSource, '9cc4c30eaabd49fd032d5f8101a4221bae226fef9e47319aca582ee4ac9f38df');
 requireText(scriptSource, 'VIDEO_SCRIPT_V2_LOCKED');
 requireText(scriptSource, '00b59c5dcbf0d2364dab3c68c1c1a8c6c4853e41d3cbfcdca59e4d32934abdd8');
+requireText(scriptSource, 'VIDEO_SCRIPT_V3_LOCKED');
+requireText(scriptSource, 'a9237f3256e6c3565a116dfe48fbf05e34b69dad608966a678dce48cad738a15');
+requireText(scriptSource, 'VIDEO_SCRIPT_V4_LOCKED');
+requireText(scriptSource, '07d2421431b6af7b79bfcdc4c8cece744a7a97bd5d1ca5fa51ad2b4a61c7fa4d');
+requireText(scriptSource, '[cover](payguard_cover.svg)', 'opening visual uses the public cover');
+requireText(scriptSource, '[three-stage workflow map](payguard_judge_overview.svg)', 'detailed workflow map remains linked');
+requireText(scriptSource, 'PayPal Sandbox draft, AG Grid sales signals, and a bounded AI evidence brief', 'opening names all three judge proof pillars');
 for (const recordingInstruction of [
   'select **Return to edit**, choose **Standard Item**, and run the policy check again',
   'No match means only that no configured demo keyword matched; it does not mean compliant.',

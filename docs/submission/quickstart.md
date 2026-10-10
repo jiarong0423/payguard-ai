@@ -2,6 +2,8 @@
 
 This walkthrough uses synthetic data and a US-only official-reference profile. It does not require a new outbound provider call. Any recorded provider or model evidence supports only its exact sanitized request and response.
 
+![The three-stage PayGuard defense buffer](payguard_judge_overview.svg)
+
 For the competition recording sequence and exact opening narration, see [PayGuard AI Demonstration Script](video_script.md).
 
 Status: the complete repository run instructions in this document are the selected functional-demo path. A hosted demo URL is optional and unperformed. The default export records `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` with final-byte security review, independent red-team acceptance, repository visibility, video publication and Devpost submission still gated. After repository source publication, `--published-source` records `PUBLIC_SOURCE_PUBLISHED` with exactly video publication and Devpost submission remaining. Neither state establishes a public or production-hosted service.
@@ -54,12 +56,13 @@ For a recorded take, start a fresh backend so each stage has its single availabl
 
 1. Open **Pre-transaction / AUP Preflight Screen**.
 2. Select **High-risk Claim**, then **Run Policy Check**. Confirm that the result is `REVIEW_SIGNAL` and the official PayPal US AUP link is visible.
-3. In the second warning, verify the three available choices: **Return to edit**, **Cancel flow**, and **Acknowledge and continue**.
-4. For the recording path, select **Return to edit**. Confirm that the prior result, acknowledgement, draft binding and confirmation checkbox are cleared.
-5. Select **Standard Item**, then run the policy check again. Confirm **No demo rule matched**, **No decision made**, and **Not established**.
-6. Treat `NO_MATCH` only as no configured demo keyword match. It is not compliance clearance and does not mean compliant, allowed, approved, legal or safe.
-7. Check the human confirmation, select **Confirm Draft Context**, and then select **Create Sandbox draft**.
-8. Confirm **Sandbox invoice draft created**, **Draft · not sent**, and **Not submitted**. No invoice identifier may appear.
+3. In the already-open **Optional PayPal US Sandbox connection** section, check **I reviewed the description and amount and confirm that this action creates a Sandbox draft only.**, then select **Confirm Draft Context**. The warning dialog now opens.
+4. In the warning dialog, verify the three available choices: **Return to edit**, **Cancel flow**, and **Acknowledge and continue**.
+5. For the recording path, select **Return to edit**. Confirm that the prior result, acknowledgement, draft binding and confirmation checkbox are cleared.
+6. Select **Standard Item**, then run the policy check again. Confirm **No demo rule matched**, **No decision made**, and **Not established**.
+7. Treat `NO_MATCH` only as no configured demo keyword match. It is not compliance clearance and does not mean compliant, allowed, approved, legal or safe.
+8. Check the human confirmation again, select **Confirm Draft Context**, and then select **Create Sandbox draft**.
+9. Confirm **Sandbox invoice draft created**, **Draft · not sent**, and **Not submitted**. No invoice identifier may appear.
 
 Expected boundary: PayGuard surfaces a public-policy category and a warning. It does not declare the product compliant, prohibited, legal, approved or safe. It does not send an invoice.
 
