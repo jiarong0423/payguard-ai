@@ -1,5 +1,5 @@
 {
-  "created_at_utc": "2026-10-10T11:28:38Z",
+  "created_at_utc": "2026-10-10T15:27:01Z",
   "dependency_locks": {
     "frontend_npm": "5db6bb7cf7d4e51ab42c08ffc189eebc8471efb61fbc06960c075f6490ba22aa",
     "gemini_python": "36554331392d6102519a4ead5778704c4ff89e79da6bb9d6648b656f130724bb",
@@ -22,11 +22,11 @@
       "source_sha256": "bb3e4ececbe261e1f0851c331a8377cf24f1209cbe0bb8df6ce76f4b5a3d0447"
     },
     {
-      "bytes": 15578,
+      "bytes": 17995,
       "path": "README.md",
-      "sha256": "ae025713a44a7ac88d83dd725b7fc9d823762a6329f7cae5a2fb9565d220c5d3",
+      "sha256": "286321b6403ef65de005f40bf61a65eafe7ca1579b6e6119f8d9eeb5541a9c0e",
       "source_path": "README.md",
-      "source_sha256": "ae025713a44a7ac88d83dd725b7fc9d823762a6329f7cae5a2fb9565d220c5d3"
+      "source_sha256": "286321b6403ef65de005f40bf61a65eafe7ca1579b6e6119f8d9eeb5541a9c0e"
     },
     {
       "bytes": 4831,
@@ -755,8 +755,8 @@
     "scope": "RECORDED_OWNER_RIGHTS_AND_ENTRANT_ELIGIBILITY"
   },
   "package_digest_algorithm": "sha256(sorted utf-8 '<file_sha256>  <relative_path>\\n' records; manifest and detached hash excluded)",
-  "package_digest_sha256": "ccf57a5a40c855b0b73945d11414ec1bb8c71519d8ecd8841c89a0f97b59217d",
-  "public_artifact_id": "payguard-public-source-ccf57a5a40c855b0",
+  "package_digest_sha256": "de036aeafc4ddef39c8b45af2e689f65d4e875d35d50821b0c3e0a544c1150b6",
+  "public_artifact_id": "payguard-public-source-de036aeafc4ddef3",
   "publication_authorized": true,
   "raw_bounded_prompt_disclosure": {
     "intent": "INTENTIONAL_PUBLIC_EXECUTABLE_PRODUCT_SOURCE",
