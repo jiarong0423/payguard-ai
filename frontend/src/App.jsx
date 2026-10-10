@@ -559,7 +559,7 @@ export default function App() {
       <footer><span><Icon name="shield" size={15} /> PayGuard AI <span className="footer-divider">/</span> Local prototype</span><span>Synthetic data · deterministic advisory · human review · external actions restricted</span></footer>
     </main>
     {warningOpen && <div className="aup-warning-backdrop"><div ref={warningRef} className="aup-warning-dialog" role="dialog" aria-modal="true" aria-labelledby="aup-warning-title" aria-describedby="aup-warning-copy" data-testid="aup-warning-dialog" onKeyDown={warningKeys} tabIndex={-1}>
-      <Badge tone="amber">Second reminder · REVIEW_SIGNAL</Badge>
+      <Badge tone="amber">Second reminder · Needs review</Badge>
       <h2 id="aup-warning-title">Review the actual goods or activity before continuing</h2>
       <p id="aup-warning-copy">The description matched a demo rule. This is a reminder only. Review the official policy; after acknowledging the reminder, you may continue the ordinary Sandbox draft-review flow.</p>
       <p>Acknowledgement is not compliance certification, PayPal policy review, or invoice send. Description changes require a new check.</p>

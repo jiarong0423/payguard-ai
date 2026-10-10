@@ -24,14 +24,11 @@ LOCAL_REMAINING_GATES = (
     "EXACT_FINAL_BYTES_SECURITY_REVIEW",
     "INDEPENDENT_RED_TEAM_ACCEPTANCE",
     "REPOSITORY_VISIBILITY",
-    "DEVPOST_SUBMISSION",
 )
-PUBLISHED_REMAINING_GATES = (
-    "DEVPOST_SUBMISSION",
-)
+PUBLISHED_REMAINING_GATES = ()
 PUBLISHED_CURRENT_STATE = (
     "public source publication is complete",
-    "only devpost submission remains in the competition submission path",
+    "the devpost project is submitted",
 )
 PUBLISHED_RELEASE_ASSETS = {
     "SECURITY.md": (
@@ -355,6 +352,10 @@ def validate_release_docs(root: Path, manifest: dict) -> None:
         if "complete repository run instructions" not in folded:
             reject("PUBLISHED_RELEASE_DOC_INVALID")
         if "hosted demo" not in folded or "optional" not in folded or "unperformed" not in folded:
+            reject("PUBLISHED_RELEASE_DOC_INVALID")
+        if "the devpost project is submitted" not in folded:
+            reject("PUBLISHED_RELEASE_DOC_INVALID")
+        if "devpost submission remains" in folded or "devpost remains pending" in folded:
             reject("PUBLISHED_RELEASE_DOC_INVALID")
     for relative, contradictions in PUBLISHED_RELEASE_ASSETS.items():
         try:

@@ -8,7 +8,7 @@ For the competition recording sequence and exact opening narration, see [PayGuar
 
 The [published 2:02 demonstration](https://youtu.be/K28N9QhRp1E) is the final edited video. The script preserves the longer pre-edit recording plan; its timestamps are not final-cut seek positions.
 
-Status: the complete repository run instructions in this document are the selected functional-demo path. A hosted demo URL is optional and unperformed. The 2:02 video is public. The default export records `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` with final-byte security review, independent red-team acceptance, repository visibility and Devpost submission still gated. After this source candidate is published and its exact bytes pass anonymous readback, `--published-source` records `PUBLIC_SOURCE_PUBLISHED` with only Devpost submission remaining. Neither state establishes a public or production-hosted service.
+Status: the Devpost project is submitted and the 2:02 video is public. The complete repository run instructions here are the selected functional-demo path. A hosted demo URL is optional and unperformed. A new local export stays `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` until its exact bytes pass security review, independent acceptance and repository readback; only an accepted same-byte public source release records `PUBLIC_SOURCE_PUBLISHED`. Neither state establishes a public or production-hosted service.
 
 ## Start the console
 
@@ -107,7 +107,7 @@ On a viewport 720px wide or narrower:
 1. Expand **Merchant Evidence Buffer** and select **Launch analytics**. The responsive evidence summary opens; the desktop AG Grid table, mode switch and guide controls are not shown at this width. At 641–720px, the **Grid analytics** navigation link also opens this summary; at 640px or narrower, the top navigation is hidden.
 2. Confirm that the single-column review summary starts on the three-stage lifecycle. Opening item counts, the compact transaction preview or the authority map closes the prior accordion section. To demonstrate AG Grid sorting and filtering, use a viewport wider than 720px.
 
-Expected boundary: the analytics workspace presents validated synthetic workflow status through AG Grid Community and first-party React components. The local guide never changes the AUP, velocity or dispute results. The exact source-release state comes from the export manifest; the video is public and Devpost submission remains open.
+Expected boundary: the analytics workspace presents validated synthetic workflow status through AG Grid Community and first-party React components. The local guide never changes the AUP, velocity or dispute results. The exact source-release state comes from the export manifest; the video is public and the Devpost project is submitted.
 
 ## Optional AI evidence brief
 

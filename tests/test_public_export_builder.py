@@ -165,6 +165,7 @@ class PublicExportBuilderTests(unittest.TestCase):
         self.assertEqual(manifest["status"], validator.PUBLISHED_SOURCE_STATUS)
         self.assertTrue(manifest["publication_authorized"])
         self.assertEqual(manifest["remaining_gates"], list(validator.PUBLISHED_REMAINING_GATES))
+        self.assertEqual(manifest["remaining_gates"], [])
         for relative in ("README.md", "docs/submission/quickstart.md"):
             text = (self.published / relative).read_text(encoding="utf-8").casefold()
             self.assertIn("complete repository run instructions", text)
@@ -180,6 +181,18 @@ class PublicExportBuilderTests(unittest.TestCase):
                 self.assertIn(statement, text)
             for contradiction in contradictions:
                 self.assertNotIn(contradiction, text)
+        for relative in (
+            "README.md",
+            "SECURITY.md",
+            "docs/submission/quickstart.md",
+            "docs/decisions/2026Q4/architecture.md",
+            "docs/decisions/2026Q4/us_mainline_contract.md",
+            "docs/decisions/2026Q4/payguard_us_architecture_status.svg",
+        ):
+            text = (self.published / relative).read_text(encoding="utf-8").casefold()
+            self.assertIn("the devpost project is submitted", text)
+            self.assertNotIn("devpost remains pending", text)
+            self.assertNotIn("devpost submission remains", text)
 
     def test_public_run_docs_keep_optional_profiles_and_attested_evidence_explicit(self):
         for relative in ("README.md", "docs/submission/quickstart.md"):

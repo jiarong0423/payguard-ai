@@ -42,7 +42,7 @@ flowchart TB
 
 The [judge quickstart](docs/submission/quickstart.md) walks through the working console; the [editable workflow diagram](docs/submission/payguard_judge_overview.svg) and [detailed architecture diagram](docs/decisions/2026Q4/payguard_us_architecture_status.svg) show the review and implementation boundaries.
 
-Watch the [2:02 public demonstration](https://youtu.be/K28N9QhRp1E). It shows the synthetic merchant workflow; the [recording script](docs/submission/video_script.md) preserves the longer pre-edit timing plan.
+Watch the [2:02 public demonstration](https://youtu.be/K28N9QhRp1E) and the [submitted Devpost project](https://devpost.com/software/payguard-ai-zbsp9l). It shows the synthetic merchant workflow; the [recording script](docs/submission/video_script.md) preserves the longer pre-edit timing plan.
 
 1. **Before a draft — AUP preflight:** use pinned PayPal US AUP references and deterministic rule checks to surface a warning; after merchant review, PayPal Sandbox OAuth supports one unsent invoice draft.
 2. **During fulfillment — velocity readiness:** use a backend comparison against a declared local baseline to flag synthetic sales spikes; AG Grid Community lets reviewers sort, filter and select the transaction evidence.
@@ -52,7 +52,7 @@ The console uses FastAPI, React, Tailwind and AG Grid Community. Its lazy-loaded
 
 The active analytics dependency boundary is AG Grid Community under the MIT licence. No Commercial AG packages are part of the current frontend dependency or lock contract. The MIT license, contributor-rights attestation, third-party notices and exact export manifest travel with the public source package.
 
-**Source release contract:** The complete repository run instructions below are the selected functional-demo path. A hosted demo URL is optional and unperformed. The default export mode creates `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` with final-byte security review, independent red-team acceptance, repository visibility and Devpost submission still gated. The 2:02 demonstration is publicly visible. After a specific repository source candidate is published and its exact bytes pass anonymous readback, the explicit `--published-source` mode records `PUBLIC_SOURCE_PUBLISHED` with only Devpost submission remaining. The published-source state covers source availability only; a prior public commit does not publish changed local files. The English US-only synthetic implementation and its bounded Sandbox and optional AI paths do not prove provider telemetry, a separate GET, invoice sending, payment, repeatability, real-record behavior, policy correctness, provider retention behavior, public or production hosting, multi-user AI operation or production readiness.
+**Source release contract:** The Devpost project is submitted and the 2:02 demonstration is public. The complete repository run instructions below are the selected functional-demo path; a hosted demo URL is optional and unperformed. A new local export starts as `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` until its exact bytes pass security review, independent acceptance and repository readback. Only an accepted public source candidate records `PUBLIC_SOURCE_PUBLISHED` through `--published-source`. This status covers source availability, not public hosting or production readiness. A prior public commit does not publish changed local files. The US-only synthetic implementation and its bounded Sandbox and optional AI paths do not prove provider telemetry, a separate GET, invoice sending, payment, repeatability, real-record behavior, policy correctness, provider retention behavior or multi-user AI operation.
 
 ## US Sandbox identity boundary
 
@@ -174,7 +174,7 @@ Optional Gemini-profile validation remains separate:
 ./tools/run.sh gemini-test
 ```
 
-Local tests, screenshots and mock transports validate only their recorded runtime and source contracts. The export manifest carries the exact source-release state. The public video closes the video-publication step but does not close the current-source or Devpost gates, and these checks do not prove public or production hosting or multi-user AI operation.
+Local tests, screenshots and mock transports validate only their recorded runtime and source contracts. The export manifest carries the exact source-release state. The public video closes the video-publication step but does not close current-source gates; the Devpost project is submitted, and these checks do not prove public or production hosting or multi-user AI operation.
 
 ## Architecture, privacy and release boundary
 
@@ -188,4 +188,4 @@ Local tests, screenshots and mock transports validate only their recorded runtim
 
 The default dataset is synthetic and session-bound. Pseudonymization is not complete anonymization. Source publication does not establish a production tenant system, durable merchant authorization, real logistics integration, real dispute ingestion or cloud deployment.
 
-The MIT license, contributor-rights attestation and third-party notices are present in the source package. The manifest distinguishes the default local-review state from the explicit published-source state. The demonstration video is public; Devpost submission remains a separate owner action.
+The MIT license, contributor-rights attestation and third-party notices are present in the source package. The manifest distinguishes the default local-review state from the explicit published-source state. The demonstration video is public; the Devpost project is submitted. Later source revisions require fresh release review.
