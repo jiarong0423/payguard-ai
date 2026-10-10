@@ -19,7 +19,7 @@ PayGuard is a US-only defensive buffer layer between merchant operations and pro
 **What PayGuard does well:** one merchant-side path covers policy warning, sales-velocity review and dispute preparation. Deterministic checks make each signal inspectable; AG Grid makes transaction evidence usable; the ZIP and optional Gemini brief help a person review without claiming an outcome.
 
 ```mermaid
-flowchart LR
+flowchart TB
     A["01 AUP preflight<br/>FastAPI deterministic warning"] --> H1["Merchant edits, cancels or acknowledges"]
     H1 -->|Only after acknowledgment| S["PayPal Sandbox OAuth<br/>unsent invoice draft"]
     S --> B["02 Velocity readiness<br/>Backend signal + AG Grid review"]
