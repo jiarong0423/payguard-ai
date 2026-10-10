@@ -2,13 +2,13 @@
 
 Status: `LOCKED`
 
-Version: `VIDEO_SCRIPT_V3_LOCKED`
+Version: `VIDEO_SCRIPT_V5_LOCKED`
 
-Locked on: `2026-10-09 UTC`
+Locked on: `2026-10-10 UTC`
 
 Target duration: `2:45 to 2:55`
 
-Timed spoken word count: `335`
+Timed spoken word count: `333`
 
 ## Version history
 
@@ -16,7 +16,9 @@ Timed spoken word count: `335`
 | --- | --- | --- | --- |
 | `VIDEO_SCRIPT_V1_LOCKED` | Superseded | SHA-256 `9cc4c30eaabd49fd032d5f8101a4221bae226fef9e47319aca582ee4ac9f38df` | Replaced after the recording interaction inventory found an ambiguous AUP branch, a missing Stage 2 interaction, and judge-facing engineering terminology. |
 | `VIDEO_SCRIPT_V2_LOCKED` | Superseded | SHA-256 `00b59c5dcbf0d2364dab3c68c1c1a8c6c4853e41d3cbfcdca59e4d32934abdd8` | Replaced after independent recording review found an opening-frame mismatch and two judge-facing proof gaps. |
-| `VIDEO_SCRIPT_V3_LOCKED` | Current | The SHA-256 is recorded after this file is finalized. | Aligns the opening with the visible lifecycle cards, lists the six ZIP members, records an explicitly unauthenticated demo review with UTC time, and preserves the five live proof points. |
+| `VIDEO_SCRIPT_V3_LOCKED` | Superseded | SHA-256 `a9237f3256e6c3565a116dfe48fbf05e34b69dad608966a678dce48cad738a15` | Aligned the opening with the visible lifecycle cards, listed the six ZIP members, recorded an explicitly unauthenticated demo review with UTC time, and preserved the five live proof points. |
+| `VIDEO_SCRIPT_V4_LOCKED` | Superseded | SHA-256 `07d2421431b6af7b79bfcdc4c8cece744a7a97bd5d1ca5fa51ad2b4a61c7fa4d` | Named the PayPal Sandbox, AG Grid and bounded AI proof in the first 15 seconds, but omitted the confirmation action that opens the AUP warning dialog. |
+| `VIDEO_SCRIPT_V5_LOCKED` | Current | Bound by the exact public export manifest. | Keeps the judge-first cover and five live demonstrations while correcting the AUP warning-dialog click order. |
 
 Change control: wording, timing, claim boundaries, visible labels, click order, and the five required live proof points are frozen for the final recording. A later change requires a new version plus repeated timing, privacy, rights, claim-boundary, static-contract, and browser-rehearsal checks.
 
@@ -26,11 +28,11 @@ Keep every visible merchant, transaction, and dispute record synthetic. Never sh
 
 ## 0:00 to 0:15 — Problem, product, and lifecycle
 
-Visual: Start on the compact PayGuard header. Hold on the three first-party lifecycle cards: policy review, fulfillment evidence readiness, and dispute evidence preparation. Illuminate the three stages. Do not show a fabricated PayPal limitation notice or third-party stock footage.
+Visual: Start on the working PayGuard console for three seconds. Show the [cover](payguard_cover.svg) for five seconds so the three scenarios and their tools are legible, then return to the working console. The [three-stage workflow map](payguard_judge_overview.svg) is available for the detailed explanation. The cover is a visual map; show the Sandbox, AG Grid and AI executions live in their timed segments. Do not show a fabricated PayPal limitation notice or third-party stock footage.
 
 Spoken script:
 
-> Sales spikes can hide policy warnings and missing fulfillment records. When disputes arrive, evidence may still be fragmented. PayGuard AI is the defensive buffer before provider review, while humans and PayPal retain final authority.
+> Policy warnings. Sudden sales. Dispute deadlines. PayGuard AI gives merchants one defense buffer: a live PayPal Sandbox draft, AG Grid sales signals, and a bounded AI evidence brief. Humans review; providers decide.
 
 ## 0:15 to 0:26 — Live Sandbox connection
 
@@ -42,7 +44,7 @@ Spoken script:
 
 ## 0:26 to 0:55 — Stage 1: AUP correction path
 
-Visual: Open **Pre-transaction / AUP Preflight Screen**. Select **High-risk Claim** and **Run Policy Check**. Show the `REVIEW_SIGNAL` warning and all three available choices: **Return to edit**, **Cancel flow**, and **Acknowledge and continue**. For the filmed branch, select **Return to edit**, choose **Standard Item**, and run the policy check again. Hold on **No demo rule matched**, **No decision made**, and **Not established**.
+Visual: Open **Pre-transaction / AUP Preflight Screen**. Select **High-risk Claim** and **Run Policy Check**. Show the `REVIEW_SIGNAL` result. In the already-open **Optional PayPal US Sandbox connection** section, check **I reviewed the description and amount and confirm that this action creates a Sandbox draft only.**, then select **Confirm Draft Context**. The warning dialog now opens; show **Return to edit**, **Cancel flow**, and **Acknowledge and continue**. For the filmed branch, select **Return to edit**, choose **Standard Item**, and run the policy check again. Hold on **No demo rule matched**, **No decision made**, and **Not established**.
 
 Spoken script:
 
@@ -50,7 +52,7 @@ Spoken script:
 
 ## 0:55 to 1:10 — Human confirmation and unsent draft
 
-Visual: Check **I reviewed the description and amount and confirm that this action creates a Sandbox draft only.** Select **Confirm Draft Context**, then **Create Sandbox draft**. Hold on **Sandbox invoice draft created**, **Draft · not sent**, and **Not submitted**. Confirm that no invoice identifier is visible.
+Visual: **Return to edit** cleared the earlier confirmation. Check **I reviewed the description and amount and confirm that this action creates a Sandbox draft only.** again. Select **Confirm Draft Context**, then **Create Sandbox draft**. Hold on **Sandbox invoice draft created**, **Draft · not sent**, and **Not submitted**. Confirm that no invoice identifier is visible.
 
 Spoken script:
 
@@ -90,7 +92,7 @@ Spoken script:
 
 ## 2:45 to 2:55 — Close
 
-Visual: Return to the three-stage Defense Buffer and finish on the PayGuard wordmark with all three stages visible.
+Visual: Return to the working three-stage Defense Buffer and finish on the PayGuard wordmark with all three stages visible.
 
 Spoken script:
 

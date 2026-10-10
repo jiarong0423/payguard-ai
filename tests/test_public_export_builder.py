@@ -55,6 +55,8 @@ class PublicExportBuilderTests(unittest.TestCase):
         self.assertEqual(manifest["remaining_gates"], list(validator.LOCAL_REMAINING_GATES))
         self.assertEqual((self.base / "tools/public_run.sh").read_bytes(), (self.base / "tools/run.sh").read_bytes())
         for relative in (
+            "docs/submission/payguard_cover.svg",
+            "docs/submission/payguard_judge_overview.svg",
             "docs/submission/video_script.md",
             "frontend/src/operatorLabels.js",
             "THIRD_PARTY_NOTICES.md",
@@ -63,6 +65,11 @@ class PublicExportBuilderTests(unittest.TestCase):
             "tests/test_public_export_builder.py",
         ):
             self.assertTrue((self.base / relative).is_file(), relative)
+        readme = (self.base / "README.md").read_text(encoding="utf-8")
+        self.assertLess(
+            readme.index("docs/submission/payguard_cover.svg"),
+            readme.index("1. **Before a draft — AUP preflight:**"),
+        )
         for forbidden in (".venv", "__pycache__", "output", "logs", "archive", "rollback"):
             self.assertFalse(any(forbidden in path.parts for path in self.base.rglob("*")))
 
