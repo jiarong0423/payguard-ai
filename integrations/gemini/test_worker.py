@@ -246,6 +246,7 @@ class GeminiWorkerTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(captured["location"], "global")
         options = captured["http_options"]
         self.assertEqual(options.api_version, "v1")
+        self.assertEqual(options.timeout, 45_000)
         self.assertEqual(options.retry_options.attempts, 1)
         self.assertFalse(options.client_args["trust_env"])
         self.assertFalse(options.client_args["follow_redirects"])

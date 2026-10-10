@@ -13,6 +13,8 @@ const analyticsGridTheme = themeQuartz.withParams({
   headerTextColor: '#334155',
   oddRowBackgroundColor: '#f8fafc',
   rowHoverColor: '#eff6ff',
+  fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+  fontSize: 15,
 });
 
 function statusTone(status) {
@@ -140,7 +142,7 @@ function MobileAnalyticsSummary({ boundaries, evidenceCounts, stages, transactio
           <div><span>Amount</span><strong>{Number(transaction.amount).toFixed(2)} {transaction.currency}</strong></div>
           <div><span>Captured at</span><strong>{utcDateTime(transaction.occurred_at)}</strong></div>
         </article>)}
-      </div> : <p className="analytics-mobile-empty">Inject the synthetic burst scenario to populate the transaction table.</p>}
+      </div> : <p className="analytics-mobile-empty">Select Load sales burst to view the transaction table.</p>}
     </MobileAccordionSection>
 
     <MobileAccordionSection activeSection={activeSection} badge="Human controlled" eyebrow="AUTHORITY MAP" id="authority" onActivate={setActiveSection} title="Who decides what">
@@ -195,7 +197,7 @@ export default function AnalyticsDashboard({ aup, state }) {
     {
       id: 'dispute', phase: 'POST-TRANSACTION', label: 'Dispute evidence mediation',
       status: disputeStatus,
-      detail: disputeCount ? `${disputeCount} synthetic case${disputeCount === 1 ? '' : 's'}; status comes from the backend case workflow.` : 'Inject a dispute to open the evidence workspace.',
+      detail: disputeCount ? `${disputeCount} synthetic case${disputeCount === 1 ? '' : 's'}; status comes from the case workflow.` : 'Load dispute case to open the evidence workspace.',
     },
   ], [aup, aupFindingCount, disputeCount, disputeStatus, velocity]);
 
@@ -269,7 +271,7 @@ export default function AnalyticsDashboard({ aup, state }) {
             headerHeight={42}
             rowHeight={42}
             quickFilterText={quickFilter}
-            overlayNoRowsTemplate="Inject the synthetic sales-burst scenario to populate this grid"
+            overlayNoRowsTemplate="Select Load sales burst to view transactions"
           />
         </div>
       </section>

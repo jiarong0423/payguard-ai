@@ -2,7 +2,7 @@
 
 Status: current accepted canonical US-only local design. The English conversion and three-stage contract are current. One operator-attested and independently reviewed Sandbox OAuth plus unsent invoice `DRAFT` pair and one operator-attested and independently reviewed fixed-synthetic `gemini-3.8-flash` result are historical records for their own captured executions. They do not prove current-byte live behavior or bind a later source candidate. A judge-facing execution claim requires showing the bounded path live. This contract supersedes prior product narratives for the active runtime; historical evidence retains its original claims and bytes. Competition submission remains a separate open gate.
 
-Current objective state: the local product baseline is `O (Done)`. Release state is determined by the package manifest and exact anonymous public readback, not by this contract or a historical receipt. When the manifest is `PUBLIC_SOURCE_PUBLISHED` with `publication_authorized=true` and the same bytes pass exact anonymous readback, public source publication is complete. In that published-source state, only video publication and Devpost submission remain in the competition submission path. A package marked `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` has not crossed the public-source gate. A hosted demo is optional and is not mandatory.
+Current objective state: the local product baseline is `O (Done)`. Release state is determined by the package manifest and exact anonymous public readback, not by this contract or a historical receipt. When the manifest is `PUBLIC_SOURCE_PUBLISHED` with `publication_authorized=true` and the same bytes pass exact anonymous readback, public source publication is complete. In that published-source state, only Devpost submission remains in the competition submission path; the 2:02 demonstration is already public. A package marked `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` has not crossed the public-source gate. A hosted demo is optional and is not mandatory.
 
 ## Locked product statement
 
@@ -79,7 +79,7 @@ Local code, tests, source integrity and rendered UI can establish only local con
 - current legal completeness;
 - production readiness;
 - public or production hosting or restart-safe multi-user AI operation;
-- video or Devpost submission readiness; every candidate's public repository readiness requires its own matching manifest and exact anonymous readback. A historical anonymous readback applies only to its captured bytes.
+- Devpost submission readiness; the 2:02 video is public, while every candidate's public repository readiness requires its own matching manifest and exact anonymous readback. A historical anonymous readback applies only to its captured bytes.
 
 Canonical state remains governed by `config/module_registry.json` and `config/missing_registry.json`. No document closes a gap.
 

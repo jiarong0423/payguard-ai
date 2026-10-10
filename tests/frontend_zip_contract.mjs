@@ -504,7 +504,7 @@ for (const required of [
   'Six fixed files · generated locally · not sent to PayPal',
   'data-testid="download-internal-review-zip"',
   'data-testid="internal-review-zip-boundary"',
-  'Download Internal Review ZIP',
+  'Download review ZIP',
   '<strong>INTERNAL REVIEW ONLY</strong>',
   'This synthetic, pseudonymized preparation package is not a PayPal-supported attachment.',
   'Required fields present does not prove authenticity, sufficiency, eligibility, completeness, or outcome.',

@@ -20,8 +20,8 @@ lock-sha256 = "36554331392d6102519a4ead5778704c4ff89e79da6bb9d6648b656f130724bb"
 inventory-count = 25
 
 [tool.payguard-gemini.project-markers]
-"backend/app/ai_brief.py" = "1e92524a14c2a722b603cca06bec0bacd0a1b80cc1cda5f85146cda97762dc92"
+"backend/app/ai_brief.py" = "e16d8c9e04e639160de11e46aaecc6e808a255de38d1b68c93aacef1a5bb0470"
 "backend/app/main.py" = "dc24c4c91b15700d7f8aaf906438e01cdb0a17a003c9411e42269c8fba9d5f71"
 "backend/app/store.py" = "1f2d4ba830b41ed443c2d22097825354224a9481a91768e1eb474d1d853fc91e"
 "integrations/gemini/run.sh" = "6f276cb1cbe6905a5d04e8c107afb83487fd0898c2ab405da28fc8ee18979203"
-"integrations/gemini/worker.py" = "dcd627e0260bd61fc929cc930ede3ca32752e08148241d78ab4963773128f51e"
+"integrations/gemini/worker.py" = "cb9b4d255db828208e666eab4f14302e50b980c4559fb92542f81477c469ed1d"

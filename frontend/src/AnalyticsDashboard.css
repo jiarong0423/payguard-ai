@@ -32,20 +32,20 @@
 .analytics-mobile-copy > span,
 .analytics-mobile-notice > span {
   color: #1d4ed8;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.09em;
 }
 
 .analytics-toolbar strong {
   color: #0f172a;
-  font-size: 20px;
+  font-size: 22px;
   line-height: 1.2;
 }
 
 .analytics-toolbar small {
   color: #475569;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.5;
 }
 
@@ -154,7 +154,7 @@
 
 .analytics-card-header strong {
   color: #0f172a;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.3;
 }
 
@@ -166,7 +166,7 @@
   border-radius: 999px;
   color: #1d4ed8;
   background: #eff6ff;
-  font-size: 10px;
+  font-size: 12px;
   font-style: normal;
   font-weight: 800;
   line-height: 1.2;
@@ -232,13 +232,13 @@
 .analytics-stage-copy span,
 .analytics-stage-copy small {
   color: var(--analytics-muted);
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1.4;
 }
 
 .analytics-stage-copy strong {
   color: var(--analytics-text);
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.35;
 }
 
@@ -247,7 +247,7 @@
   justify-self: start;
   padding: 4px 8px;
   border-radius: 999px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
   line-height: 1.2;
 }
@@ -303,14 +303,14 @@
 .analytics-mobile-authority span,
 .analytics-pulse-row span {
   color: #64748b;
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .analytics-authority li strong,
 .analytics-mobile-authority strong,
 .analytics-pulse-row strong {
   color: #1e293b;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.35;
 }
 
@@ -319,7 +319,7 @@
 .analytics-guide > small {
   margin: 12px 0 0;
   color: #64748b;
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1.5;
 }
 
@@ -364,7 +364,7 @@
 
 .analytics-grid-tools label {
   color: #475569;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
 }
 
@@ -377,7 +377,7 @@
   color: #0f172a;
   background: #ffffff;
   font: inherit;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .analytics-grid-frame {
@@ -393,7 +393,7 @@
   margin-top: 7px;
   padding: 3px 7px;
   border-radius: 999px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
   line-height: 1.2;
   text-transform: capitalize;
@@ -413,7 +413,7 @@
   color: #1d4ed8;
   background: #eff6ff;
   font: inherit;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 750;
   cursor: pointer;
 }
@@ -426,7 +426,7 @@
   border-radius: 8px;
   color: #334155;
   background: #f8fafc;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.55;
 }
 
@@ -438,7 +438,7 @@
   border-top: 1px solid var(--analytics-border);
   color: #64748b;
   background: #ffffff;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
 }
 

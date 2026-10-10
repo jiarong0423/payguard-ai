@@ -33,8 +33,9 @@ from app.ai_brief import (
     MODEL,
     PROMPT_CONTRACT_DIGEST,
     PROMPT_CONTRACT_ID,
+    PROVIDER_TIMEOUT_SECONDS,
     PROVIDER_BACKEND,
-    TOTAL_TIMEOUT_SECONDS,
+    WORKER_TIMEOUT_SECONDS,
     VERTEX_PROJECT_ENV,
     AiBriefError,
     AiBriefRequest,
@@ -315,7 +316,7 @@ def _native_client(config: GeminiConfig):
         location=LOCATION,
         http_options=types.HttpOptions(
             api_version=API_VERSION,
-            timeout=TOTAL_TIMEOUT_SECONDS * 1000,
+            timeout=PROVIDER_TIMEOUT_SECONDS * 1000,
             retry_options=types.HttpRetryOptions(attempts=1),
             client_args={"trust_env": False, "follow_redirects": False},
             async_client_args={"trust_env": False, "follow_redirects": False},
@@ -394,7 +395,7 @@ class GeminiWorkerAdapter:
                     parts=[types.Part(text=logical["contents"][0]["parts"][0]["text"])],
                 )
             ]
-            async with asyncio.timeout(TOTAL_TIMEOUT_SECONDS):
+            async with asyncio.timeout(WORKER_TIMEOUT_SECONDS):
                 async with parent_client.aio as async_client:
                     response = await async_client.models.generate_content(
                         model=MODEL,

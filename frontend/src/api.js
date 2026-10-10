@@ -342,7 +342,7 @@ function assertContract(path, payload, session, body) {
 
 export async function apiRequest(path, { method = 'GET', body, session, signal } = {}) {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), path === '/ai/evidence-brief' ? 25000 : 15000);
+  const timeout = setTimeout(() => controller.abort(), path === '/ai/evidence-brief' ? 65000 : 15000);
   const abort = () => controller.abort();
   signal?.addEventListener('abort', abort, { once: true });
   const headers = { Accept: 'application/json' };
