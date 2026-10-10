@@ -32,13 +32,13 @@ flowchart LR
   F -. historical receipt .-> H["BLK-02B fixed-synthetic Gemini evidence<br/>HISTORICAL: operator-attested reviewed record"]
   F --> K["Local 4B loopback adapter and bounded stress<br/>O (Done): candidate runtime"]
   K --> L["PG-014 local-model distribution<br/>FROZEN: identity, license and release acceptance open"]
-  F --> N["Current-byte live provider proof<br/>PENDING: separately authorized rehearsal"]
-  N --> I["PG-006 manifest, release evidence and exact public readback<br/>PENDING"]
+  F --> N["Current-byte bounded live rehearsal<br/>O (Done): three AI stages + Sandbox DRAFT"]
+  N --> I["PG-006 public source and anonymous byte readback<br/>O (Done): pre-video release"]
   I --> M["Video publication and Devpost submission<br/>PENDING"]
   J["Production hosting and provider mutations<br/>FROZEN"]
 ```
 
-This graph describes the accepted local design and separates historical receipts from current-byte proof. The prior receipts establish only their bounded `BLK-01B` and `BLK-02B` executions. They do not establish a later candidate's live provider behavior, release evidence or public parity. The source uses the complete repository run instructions as its functional-demo path. Current release status must come from the package manifest plus same-byte anonymous readback. The optional hosted demo remains `FROZEN` and unperformed.
+This graph describes the accepted local design and separates historical receipts from the separately reviewed current-byte rehearsal. The prior `BLK-01B` and `BLK-02B` receipts retain only their original bounded claims; a later sanitized receipt records three validated AI stages, one Sandbox OAuth and one unsent invoice DRAFT in a single session. Source publication is established only when the published manifest and exact anonymous readback agree. The complete repository run instructions are the selected functional-demo path. Video and Devpost remain pending; the optional hosted demo remains `FROZEN` and unperformed.
 
 ## Eight layers
 
@@ -47,7 +47,7 @@ This graph describes the accepted local design and separates historical receipts
 | L1 — Ingest | `M-INGEST` | Validate event source, request kind, identifiers, timestamps, required fields and deterministic route | Accept bounded synthetic input and an explicit US context; reject unsupported or ambiguous routes | Authentic provider event ingestion and durable replay inbox remain open |
 | L2 — Privacy | `M-PRIVACY` | Minimize, pseudonymize and classify sensitive fields | Process fixed synthetic evidence in memory; return redacted text and limited metadata | Real PII, vault, retention enforcement and complete recall remain open |
 | L3 — Policy | `M-POLICY` | Load a versioned policy profile, bind source identity and preserve time semantics | Load one pinned US `REFERENCE_ONLY` package; effective interval and account applicability stay unestablished | Full rule lifecycle, promotion, legal review and account-specific applicability remain open |
-| L4 — Engines | `M-ENGINES` | Run deterministic AUP, velocity, completeness, retrieval and advisory gates | Emit warnings, local anomaly signals, missing evidence and bounded citations; retain one historical operator-attested fixed-synthetic Gemini receipt for its captured execution only | Current-byte live proof, full declarative interpretation, repeatability, other-stage semantic quality and real-record behavior remain open |
+| L4 — Engines | `M-ENGINES` | Run deterministic AUP, velocity, completeness, retrieval and advisory gates | Emit warnings, local anomaly signals, missing evidence and bounded citations; the current-byte rehearsal validated one bounded AI response per fixed stage | Full declarative interpretation, repeatability, semantic quality beyond the fixed samples and real-record behavior remain open |
 | L5 — API and Report | `M-API`, `M-REPORT` | Enforce strict HTTP/I/O contracts and present backend-owned calculations | Loopback session/CSRF/quota controls; no frontend risk recomputation; fixed sanitized errors | Provider telemetry, separate readback and durable external action records remain open |
 | L6 — Governance | `M-GOVERNANCE` | Bind files, hashes, tests, source provenance, evidence and release state | One registry, one gap queue, isolation-first change, strict audit, no-op verification and historical readback preserved for its own bytes | Every changed release requires a matching manifest, release evidence and exact anonymous public readback; production deployment requires separate acceptance |
 | L7 — Human Review | `M-REVIEW` | Bind actor choice to case/action/payload digest, nonce and expiry | Short-lived local acknowledgement and draft review; edit/reset/expiry revoke prior approval | Durable authenticated actor, tenant and restart/concurrency semantics remain open |
@@ -190,11 +190,11 @@ The public source includes bounded synthetic contract tests for all three stages
 
 | Gap | Boundary | Current consequence |
 | --- | --- | --- |
-| `PG-001` / `BLK-01B` | One bounded Sandbox OAuth plus unsent invoice `DRAFT` pair | The historical receipt remains accepted for its captured execution only; current-byte live behavior, provider telemetry, separate GET, send, payment, production and broader account behavior remain unavailable |
-| `PG-002` / `BLK-02B` | One bounded `gemini-3.8-flash` execution and human semantic review | The historical receipt remains accepted for its captured execution only; current-byte live behavior, repeatability, other stages, real-record behavior and the optional full policy interpreter remain outside the claim |
+| `PG-001` / `BLK-01B` | One bounded Sandbox OAuth plus unsent invoice `DRAFT` pair | The historical receipt retains its original scope; a separate current-byte rehearsal confirmed one OAuth and one unsent DRAFT through source-bound sanitized receipts. Independent provider telemetry, separate GET, send, payment, production and broader account behavior remain unavailable |
+| `PG-002` / `BLK-02B` | One bounded `gemini-3.8-flash` execution and human semantic review | The historical receipt retains its original scope; a separate current-byte rehearsal validated one bounded response for each fixed stage. Repeatability, semantic quality beyond those samples, real-record behavior and the optional full policy interpreter remain outside the claim |
 | `PG-003` | Durable external submission authority | Review remains local and short-lived |
 | `PG-004` | Real PII ingestion and retention | Only synthetic bounded privacy demonstrations are allowed |
-| `PG-006` | Public export and deployment | Release status is manifest- and exact-readback-bound; current-byte live proof, same-version release evidence, exact anonymous public readback, video publication and Devpost submission remain separate gates; optional hosting remains unperformed and is not mandatory |
+| `PG-006` | Pre-video public source release | Current-byte live proof, same-version release evidence and exact anonymous public readback are accepted for this bounded source release. Video publication and Devpost submission remain separate pending actions; optional hosting remains unperformed and is not mandatory |
 
 Internal machine-readable registries remain local release-owner controls and are not linked from the public package. Public documents cannot close a release gate.
 
@@ -209,9 +209,9 @@ The accepted US-only local baseline has direct evidence that:
 5. AI remains post-validation and advisory;
 6. focused and full tests, frontend build, rendered desktop/mobile/keyboard review, audit publication, second no-op audit and canonical readback pass;
 7. historical logs, receipts and superseded bytes remain unchanged;
-8. readiness gaps remain evidence-driven and open.
+8. video publication and Devpost submission remain separate evidence-driven pending actions.
 
-The historical bounded Sandbox and Gemini receipts remain evidence only for their captured executions and do not prove current-byte live behavior. Complete repository run instructions are the selected functional-demo path. Each candidate still requires matching release evidence and exact anonymous public readback before it can carry `PUBLIC_SOURCE_PUBLISHED`. When that manifest state and same-byte readback are both present, public source publication is complete. In that published-source state, only video publication and Devpost submission remain in the competition submission path. Optional hosting remains frozen and unperformed, and public or production hosting plus multi-user AI operation remain unproven and outside the accepted runtime.
+The historical bounded Sandbox and Gemini receipts remain evidence only for their captured executions; the separately reviewed current-byte rehearsal supports exactly its three fixed AI stages, one Sandbox OAuth and one unsent invoice DRAFT. Complete repository run instructions are the selected functional-demo path. Each published candidate still requires matching release evidence and exact anonymous public readback before it can carry `PUBLIC_SOURCE_PUBLISHED`. After that same-byte readback, only video publication and Devpost submission remain in the competition submission path. Optional hosting remains frozen and unperformed, and public or production hosting plus multi-user AI operation remain unproven and outside the accepted runtime.
 
 Stop if a source digest drifts, a foreign source becomes reachable, an effective date is inferred, a procedural court record is presented as a merits decision, a synthetic receipt is called authentic, or any path enables production or financial mutation.
 
