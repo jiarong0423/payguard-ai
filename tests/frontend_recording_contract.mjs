@@ -75,7 +75,7 @@ const warningClickOrder = [
   'The warning dialog now opens',
   'select **Return to edit**',
 ];
-const stageOneScript = scriptSource.split('## 0:26 to 0:55 — Stage 1: AUP correction path')[1]?.split('## 0:55 to 1:10')[0];
+const stageOneScript = scriptSource.match(/## \d+:\d+ to \d+:\d+ — Stage 1: AUP correction path\n([\s\S]*?)(?=\n## \d+:\d+ to \d+:\d+ — Human confirmation and unsent draft)/u)?.[1];
 assert.ok(stageOneScript, 'timed AUP recording segment exists');
 let priorWarningMarker = -1;
 for (const marker of warningClickOrder) {
@@ -253,7 +253,7 @@ for (const retiredCopy of [
   'Persistence: memory session',
 ]) forbidText(analyticsSource, retiredCopy);
 
-requireText(scriptSource, 'Version: `VIDEO_SCRIPT_V5_LOCKED`');
+requireText(scriptSource, 'Version: `VIDEO_SCRIPT_V9_LOCKED`');
 requireText(scriptSource, 'VIDEO_SCRIPT_V1_LOCKED');
 requireText(scriptSource, '9cc4c30eaabd49fd032d5f8101a4221bae226fef9e47319aca582ee4ac9f38df');
 requireText(scriptSource, 'VIDEO_SCRIPT_V2_LOCKED');
@@ -262,24 +262,40 @@ requireText(scriptSource, 'VIDEO_SCRIPT_V3_LOCKED');
 requireText(scriptSource, 'a9237f3256e6c3565a116dfe48fbf05e34b69dad608966a678dce48cad738a15');
 requireText(scriptSource, 'VIDEO_SCRIPT_V4_LOCKED');
 requireText(scriptSource, '07d2421431b6af7b79bfcdc4c8cece744a7a97bd5d1ca5fa51ad2b4a61c7fa4d');
-requireText(scriptSource, '[cover](payguard_cover.svg)', 'opening visual uses the public cover');
-requireText(scriptSource, '[three-stage workflow map](payguard_judge_overview.svg)', 'detailed workflow map remains linked');
-requireText(scriptSource, 'PayPal Sandbox draft, AG Grid sales signals, and a bounded AI evidence brief', 'opening names all three judge proof pillars');
+requireText(scriptSource, 'VIDEO_SCRIPT_V5_LOCKED');
+requireText(scriptSource, '0ce4a87ceb13b2e8e98c8cde03ec32051e25727cd1767b78dfdc70cd17b08aae');
+requireText(scriptSource, 'VIDEO_SCRIPT_V6_LOCKED');
+requireText(scriptSource, '1b7d2afbacaf8f9f5ded39e4f7a8c7f68858d3382184ce1f1948cbba4022c688');
+requireText(scriptSource, 'VIDEO_SCRIPT_V7_LOCKED');
+requireText(scriptSource, '40b693425f88d82b5ff81da98ff3019431622aecbbacb5a1c11023434cd06cc5');
+requireText(scriptSource, 'VIDEO_SCRIPT_V8_LOCKED');
+requireText(scriptSource, 'e317b741006c5ab9f7a236baf60a5199b52b7ae8a97ad6a4279acece998cd796');
+requireText(scriptSource, '[cover](payguard_cover.png)', 'opening visual uses the public cover');
+requireText(scriptSource, '[second image: three-stage workflow map](payguard_judge_overview.png)', 'second PNG follows live product proof');
+requireText(scriptSource, '2:42–2:44 | `payguard_judge_overview.png`', 'second PNG is in the late recap slot');
+requireText(scriptSource, 'PayPal Sandbox draft, AG Grid evidence review, and one bounded Gemini API brief', 'opening names all three judge proof pillars');
+requireText(scriptSource, 'This V9 final take remains on Gemini API.', 'one recording adapter');
+requireText(scriptSource, 'It is not Gemini, an automatic fallback', 'local model cannot be relabeled or used as automatic fallback');
+requireText(scriptSource, 'This is a dispute-stage brief, not a merged conclusion about all three scenarios.', 'no invented cross-stage AI summary');
 for (const recordingInstruction of [
   'select **Return to edit**, choose **Standard Item**, and run the policy check again',
   'No match means only that no configured demo keyword matched; it does not mean compliant.',
   'Check **I reviewed the description and amount and confirm that this action creates a Sandbox draft only.**',
   'Select **Confirm Draft Context**, then **Create Sandbox draft**.',
-  'sort and filter the transaction grid and open one evidence checklist',
+  'sort by **AMOUNT**',
+  '**Filter transactions**',
   'Stage evidence checklist',
-  'After a synthetic dispute opens, PayGuard reads its response deadline and requested seller evidence.',
-  'The limited AI brief runs only after the rule checks.',
-  'It receives approved synthetic facts and fixed source references',
-  'Every status comes from validated workflow data. AG Grid lets reviewers inspect those signals',
-  'address policy blind spots',
+  'For the third input, we inject a synthetic dispute.',
+  'After rule checks, one bounded Gemini call.',
+  'fixed synthetic facts and pinned sources',
+  'It cannot change rules, submit evidence, or decide disputes; a person reviews.',
+  'begin narration with that click',
+  'only idle waiting frames may be trimmed',
+  'The analytics view links all three stages',
+  'prepare evidence before provider review',
   'complete one current-byte live dress rehearsal',
   'Use a clean browser window with notifications disabled',
-]) requireText(scriptSource, recordingInstruction, `V3 script contract ${recordingInstruction}`);
+]) requireText(scriptSource, recordingInstruction, `V9 script contract ${recordingInstruction}`);
 
 const firstSection = scriptSource.match(/## 0:00 to 0:15[\s\S]*?^> (.+)$/mu);
 assert.ok(firstSection, 'opening spoken script exists');
@@ -289,18 +305,26 @@ assert.ok(openingWords <= 36, `opening must be at most 36 words; received ${open
 const timedScript = scriptSource.split('## Locked five-point proof', 1)[0];
 const spokenLines = timedScript.split('\n').filter((line) => line.startsWith('> ')).map((line) => line.slice(2));
 const timedWords = spokenLines.reduce((total, line) => total + wordCount(line), 0);
-assert.ok(timedWords >= 320 && timedWords <= 350, `timed spoken word count must remain within the rehearsable band; received ${timedWords}`);
+assert.ok(timedWords >= 285 && timedWords <= 315, `timed spoken word count must remain within the rehearsable band; received ${timedWords}`);
 requireText(scriptSource, `Timed spoken word count: \`${timedWords}\``);
 const timedHeadings = [...scriptSource.matchAll(/^## (\d+):(\d+) to (\d+):(\d+) —/gmu)];
 assert.equal(timedHeadings.length, 9, 'nine timed recording segments');
+let priorEnd = 0;
+for (const heading of timedHeadings) {
+  const start = Number(heading[1]) * 60 + Number(heading[2]);
+  const end = Number(heading[3]) * 60 + Number(heading[4]);
+  assert.equal(start, priorEnd, `timed segment at ${heading[0]} must start when the prior segment ends`);
+  assert.ok(end > start, `timed segment at ${heading[0]} must have positive duration`);
+  priorEnd = end;
+}
 const lastHeading = timedHeadings.at(-1);
 const finalSeconds = Number(lastHeading[3]) * 60 + Number(lastHeading[4]);
-assert.ok(finalSeconds >= 1 && finalSeconds <= 179, `recording target must end within 1 to 179 seconds; received ${finalSeconds}`);
+assert.ok(finalSeconds >= 160 && finalSeconds <= 170, `recording target must retain at least ten seconds below the 180-second limit; received ${finalSeconds}`);
 
 for (const proofPoint of [
   'One sanitized live PayPal Sandbox OAuth connection.',
   'One unsent Sandbox invoice draft, with no invoice identifier visible.',
-  'One live bounded AI evidence brief.',
+  'One live bounded Gemini API dispute evidence brief, showing `gemini-3.8-flash` and **Live model response**.',
   'AG Grid transaction sorting, filtering, and one selected transaction card labelled as stage-level.',
   'Internal Review ZIP download followed by a recorded human review.',
 ]) requireText(scriptSource, proofPoint, `locked proof point ${proofPoint}`);
