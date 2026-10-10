@@ -2,6 +2,10 @@
 
 PayGuard is a US-only defensive buffer layer between merchant operations and provider review workflows for a PayPal Sandbox demonstration. It helps merchants review earlier, complete missing records, and prepare for provider review without making provider decisions. It presents one end-to-end story:
 
+**At a glance:** AUP warning before a draft → sales-velocity evidence review → dispute evidence ZIP and optional AI brief. The merchant checks each step; PayPal or the applicable issuer keeps the final decision.
+
+**Working stack:** PayPal Sandbox OAuth and an unsent invoice draft · FastAPI and deterministic rules · React, Tailwind and AG Grid Community · optional bounded Gemini on Vertex AI.
+
 ![Concept illustration of a merchant reviewing AUP warnings, sales velocity and dispute evidence with PayGuard AI](docs/submission/payguard_cover.png)
 
 *Synthetic merchant-side cover illustration. The working console is designed to demonstrate the Sandbox, AG Grid, and bounded Gemini actions live; the cover is not a product screenshot.*
@@ -9,6 +13,32 @@ PayGuard is a US-only defensive buffer layer between merchant operations and pro
 ![PayGuard AI workflow map: policy warning, sales-velocity review, and dispute evidence preparation](docs/submission/payguard_judge_overview.png)
 
 *Three-stage workflow map for the US-only synthetic demo; rules and merchants guide local actions, while PayPal and issuers retain final authority.*
+
+## Architecture and tools at a glance
+
+**What PayGuard does well:** one merchant-side path covers policy warning, sales-velocity review and dispute preparation. Deterministic checks make each signal inspectable; AG Grid makes transaction evidence usable; the ZIP and optional Gemini brief help a person review without claiming an outcome.
+
+```mermaid
+flowchart LR
+    A["01 AUP preflight<br/>FastAPI deterministic warning"] --> H1["Merchant edits, cancels or acknowledges"]
+    H1 -->|Only after acknowledgment| S["PayPal Sandbox OAuth<br/>unsent invoice draft"]
+    S --> B["02 Velocity readiness<br/>Backend signal + AG Grid review"]
+    B --> C["03 Dispute evidence<br/>Internal Review ZIP + optional Gemini"]
+    C --> H2["Merchant reviews the evidence"]
+    H2 -.->|Final decision stays outside PayGuard| P["PayPal or bank / card issuer"]
+```
+
+| Part | What the judge can see | Responsibility and limit |
+| --- | --- | --- |
+| PayPal Sandbox | OAuth connection and one unsent invoice draft | Provider test environment; no payment or invoice send |
+| FastAPI + deterministic rules | AUP warning, local sales-baseline comparison, current-case evidence requests | Produce review signals before any optional AI brief |
+| React + Tailwind + AG Grid Community | Merchant console and sortable, filterable transaction evidence | Show the three stages and let a human inspect the records |
+| Optional Gemini on Vertex AI | Bounded evidence brief from fixed synthetic facts and pinned citations | Suggest what to review; no submission or decision authority |
+| Internal Review ZIP | Pseudonymized evidence copy | Download for human review; not a PayPal submission package |
+
+![PayGuard AI eight-layer system architecture showing the three merchant stages, deterministic checks, UI, optional AI and provider authority boundaries](docs/decisions/2026Q4/payguard_us_architecture_status.svg)
+
+*System architecture. The diagram separates merchant actions, deterministic checks, optional AI and PayPal or issuer authority.*
 
 The [judge quickstart](docs/submission/quickstart.md) walks through the working console; the [editable workflow diagram](docs/submission/payguard_judge_overview.svg) and [detailed architecture diagram](docs/decisions/2026Q4/payguard_us_architecture_status.svg) show the review and implementation boundaries.
 
