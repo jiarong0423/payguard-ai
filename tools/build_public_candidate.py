@@ -62,6 +62,7 @@ EXACT_FILES = (
     "docs/decisions/2026Q4/us_mainline_contract.md",
     "docs/decisions/2026Q4/us_official_source_register.md",
     "docs/submission/quickstart.md",
+    "docs/submission/devpost_story.md",
     "docs/submission/payguard_cover.png",
     "docs/submission/payguard_cover.svg",
     "docs/submission/payguard_judge_overview.png",
