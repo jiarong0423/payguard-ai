@@ -2,9 +2,15 @@
 
 PayGuard is a US-only defensive buffer layer between merchant operations and provider review workflows for a PayPal Sandbox demonstration. It helps merchants review earlier, complete missing records, and prepare for provider review without making provider decisions. It presents one end-to-end story:
 
-![PayGuard AI cover: three merchant scenarios and the tools used at each stage](docs/submission/payguard_cover.svg)
+![Concept illustration of a merchant reviewing AUP warnings, sales velocity and dispute evidence with PayGuard AI](docs/submission/payguard_cover.png)
 
-The [judge quickstart](docs/submission/quickstart.md) walks through the working console; the [three-stage workflow map](docs/submission/payguard_judge_overview.svg) and [detailed architecture diagram](docs/decisions/2026Q4/payguard_us_architecture_status.svg) show the review and implementation boundaries.
+*Synthetic merchant-side cover illustration; the working console and its Sandbox, AG Grid and Gemini actions are shown in the demo.*
+
+![PayGuard AI workflow map: policy warning, sales-velocity review, and dispute evidence preparation](docs/submission/payguard_judge_overview.png)
+
+*Three-stage workflow map for the US-only synthetic demo; rules and merchants guide local actions, while PayPal and issuers retain final authority.*
+
+The [judge quickstart](docs/submission/quickstart.md) walks through the working console; the [editable workflow diagram](docs/submission/payguard_judge_overview.svg) and [detailed architecture diagram](docs/decisions/2026Q4/payguard_us_architecture_status.svg) show the review and implementation boundaries.
 
 1. **Before a draft — AUP preflight:** use pinned PayPal US AUP references and deterministic rule checks to surface a warning; after merchant review, PayPal Sandbox OAuth supports one unsent invoice draft.
 2. **During fulfillment — velocity readiness:** use a backend comparison against a declared local baseline to flag synthetic sales spikes; AG Grid Community lets reviewers sort, filter and select the transaction evidence.
