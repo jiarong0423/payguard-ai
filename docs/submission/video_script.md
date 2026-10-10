@@ -1,14 +1,14 @@
 # PayGuard AI Demonstration Script
 
-Status: `LOCKED`
+Status: `LOCKED` pre-edit recording plan; the final public video is [2:02](https://youtu.be/K28N9QhRp1E).
 
-Version: `VIDEO_SCRIPT_V9_LOCKED`
+Version: `VIDEO_SCRIPT_V10_LOCKED`
 
 Locked on: `2026-10-10 UTC`
 
-Target duration: `2:40 to 2:50`
+Original target duration: `2:40 to 2:50`. These scene timestamps belong to the recording plan, not the edited video's seek positions.
 
-Timed spoken word count: `296`
+Timed spoken word count: `294`
 
 ## Version history
 
@@ -22,13 +22,14 @@ Timed spoken word count: `296`
 | `VIDEO_SCRIPT_V6_LOCKED` | Superseded | SHA-256 `1b7d2afbacaf8f9f5ded39e4f7a8c7f68858d3382184ce1f1948cbba4022c688` | Names Gemini API as the single live recording adapter, keeps Nemotron 4B as a separate alternative, and gives the AG Grid interaction more continuous screen time. |
 | `VIDEO_SCRIPT_V7_LOCKED` | Superseded | SHA-256 `40b693425f88d82b5ff81da98ff3019431622aecbbacb5a1c11023434cd06cc5` | Uses the approved merchant-view synthetic hero cover; timing, narration and live proof remain unchanged from V6. |
 | `VIDEO_SCRIPT_V8_LOCKED` | Superseded | SHA-256 `e317b741006c5ab9f7a236baf60a5199b52b7ae8a97ad6a4279acece998cd796` | Adds the requested second PNG workflow image after the live analytics proof; timing, narration and all five live proof points remain unchanged. |
-| `VIDEO_SCRIPT_V9_LOCKED` | Current | Bound by the exact public export manifest after release validation. | Starts the Gemini narration at the live click and shortens it while preserving rule, submission, decision and human-review boundaries; the two images and all five live proof points remain unchanged. |
+| `VIDEO_SCRIPT_V9_LOCKED` | Superseded | SHA-256 `536a3a8bfa68d12eb5fb8ca03c8121ea009a86f1dad52cf66c5fbfb3a08f855b` | Superseded after the UI changed to a focused one-stage view with new control labels and on-demand evidence details. |
+| `VIDEO_SCRIPT_V10_LOCKED` | Final recording plan; public cut is 2:02 | Bind this document to the next validated public export manifest. | Aligns clicks with the focused UI. The edited video is shorter than this plan; verify claims against the video itself. |
 
 Change control: wording, timing, claim boundaries, visible labels, click order, and the five required live proof points are frozen for the final recording. A later change requires a new version plus repeated timing, privacy, rights, claim-boundary, static-contract, and browser-rehearsal checks.
 
 This final-take script selects the default Gemini API backend (`./tools/run.sh api`) and requires the separately authorized PayPal Sandbox and bounded AI paths to be available during recording. It shows one live `gemini-3.8-flash` dispute-stage brief after all three synthetic scenarios. It does not claim a combined three-stage AI result. If either live path is unavailable, stop the final take and repair the demonstration environment. Do not replace live execution with a prior result or operator-attested text.
 
-The default-off `nvidia-nemotron-3-nano-4b` LM Studio route (`./tools/run.sh local-ai-api`) is documented on a separate local-model option slide, outside the timed video. The slide shows only one manually observed synthetic AUP response; it does not prove a three-stage adapter run. Other local models require the same adapter, schema, and closed-output validation before use. It is not Gemini, an automatic fallback, a second call in this take, or a distributed production deployment. The operator selects exactly one backend at process start; the browser cannot change it. This V9 final take remains on Gemini API.
+The default-off `nvidia-nemotron-3-nano-4b` LM Studio route (`./tools/run.sh local-ai-api`) is documented on a separate local-model option slide, outside the timed video. The slide shows only one manually observed synthetic AUP response; it does not prove a three-stage adapter run. Other local models require the same adapter, schema, and closed-output validation before use. It is not Gemini, an automatic fallback, a second call in this take, or a distributed production deployment. The operator selects exactly one backend at process start; the browser cannot change it. This V10 final take remains on Gemini API.
 
 Keep every visible merchant, transaction, and dispute record synthetic. Never show credentials, account identifiers, invoice identifiers, local paths, internal evidence folders, environment variables, or model prompts. Use only the PayGuard interface and the minimum sanitized Sandbox status needed to prove the integration.
 
@@ -50,7 +51,7 @@ Spoken script:
 
 ## 0:25 to 0:55 — Stage 1: AUP correction path
 
-Visual: Open **Pre-transaction / AUP Preflight Screen**. Select **High-risk Claim** and **Run Policy Check**. Show the `REVIEW_SIGNAL` result. In the already-open **Optional PayPal US Sandbox connection** section, check **I reviewed the description and amount and confirm that this action creates a Sandbox draft only.**, then select **Confirm Draft Context**. The warning dialog now opens; show **Return to edit**, **Cancel flow**, and **Acknowledge and continue**. For the filmed branch, select **Return to edit**, choose **Standard Item**, and run the policy check again. Hold on **No demo rule matched**, **No decision made**, and **Not established**.
+Visual: Stay in **STEP 01 AUP preflight**. Select **High-risk Claim** and **Run Policy Check**. Show the review signal. In **Optional PayPal US Sandbox connection**, check **I reviewed the description and amount and confirm that this action creates a Sandbox draft only.**, then select **Confirm Draft Context**. The warning dialog now opens; show **Return to edit**, **Cancel flow**, and **Acknowledge and continue**. For the filmed branch, select **Return to edit**, choose **Standard Item**, and run the policy check again. Hold on **No demo rule matched**; expand **How this result was checked** only if time permits to show **No decision made** and **Not established**.
 
 Spoken script:
 
@@ -66,19 +67,19 @@ Spoken script:
 
 ## 1:08 to 1:43 — Stage 2: velocity and fulfillment readiness
 
-Visual: Open **Fulfillment / Velocity Guard** and select **Inject sales burst**. Show the backend-calculated ratio, synthetic baseline, comparison window, and UTC labels. In the core AG Grid, sort by **AMOUNT**, use **Filter transactions** to reduce the visible rows, clear the filter, and select one row. Hold on the selected transaction card and its **Stage evidence checklist** label.
+Visual: Select **Next: sales burst**; the prior stage closes and STEP 02 scrolls into view. Select **Load sales burst**. Show the ratio, capture count and alert. Briefly expand **How this signal was calculated** for the synthetic baseline, comparison window and UTC labels, then close it. In the core AG Grid, sort by **AMOUNT**, use **Filter transactions** to reduce the visible rows, clear the filter, and select one row. Hold on the selected transaction card and its **Stage evidence checklist** label.
 
 Spoken script:
 
-> For the second input, we inject a synthetic sales burst. The Python backend compares the capture window with a declared baseline. We sort and filter the transaction grid in AG Grid and open one selected order's evidence checklist. This stage-level signal asks for fulfillment review; it cannot predict a PayPal hold or classify that order as fraud.
+> For the second input, we load a synthetic sales burst. PayGuard compares the capture window with a declared baseline. We sort and filter the transaction grid in AG Grid and open one selected order's evidence checklist. This stage-level signal asks for fulfillment review; it cannot predict a PayPal hold or classify that order as fraud.
 
 ## 1:43 to 2:15 — Stage 3: dispute evidence preparation
 
-Visual: Select **Inject dispute**, open the synthetic case, and select **Generate evidence draft**. Show the UTC response deadline, **Ready for human review**, **Proof of fulfillment**, **Requested from seller**, **Prepare evidence**, and **Required fields present**. Hold on the six-item **Internal Review ZIP contents** list, download the ZIP, check the human-review box, and select **Confirm local draft review**. Hold on the unauthenticated demo operator, UTC review time, session-only retention, and **Not submitted**.
+Visual: Select **Next: dispute evidence**; STEP 02 closes and STEP 03 scrolls into view. Select **Load dispute case**, open the synthetic case, and select **Prepare evidence draft**. Show the UTC response deadline and response readiness. Briefly expand **Evidence fields, requested items, and ZIP contents** to show the requested seller proof and six ZIP members, then close it. Select **Download review ZIP**. Insert [the verified local ZIP slide](payguard_zip_review_slide.png) for four seconds; it shows the six archive members and the internal-review boundary. Then check the human-review box and select **Confirm local draft review**. Hold on the local review receipt, UTC review time, session-only retention, and **Not submitted**.
 
 Spoken script:
 
-> For the third input, we inject a synthetic dispute. PayGuard shows the response deadline and requested seller proof. It checks required fields, builds a timeline, and replaces original identifiers in an Internal Review ZIP. We download this six-file local package and record a human review. It is not a PayPal-supported attachment; nothing is submitted.
+> For the third input, we load a synthetic dispute. PayGuard shows the response deadline and requested seller proof. It checks required fields, builds a timeline, and replaces original identifiers in an Internal Review ZIP. We download this six-file local package and record a human review. It is not a PayPal-supported attachment; nothing is submitted.
 
 ## 2:15 to 2:35 — Live bounded Gemini API brief
 
@@ -98,7 +99,7 @@ Spoken script:
 
 ## 2:44 to 2:50 — Close
 
-Visual: Return to the working three-stage Defense Buffer and finish on the PayGuard wordmark with all three stages visible.
+Visual: Return to the working Defense Buffer and finish on the PayGuard wordmark with the three stage tabs visible.
 
 Spoken script:
 
@@ -118,12 +119,13 @@ These are target cut points, not measured provider latency. Keep action initiati
 | 0:36–0:45 | Check draft-only confirmation → **Confirm Draft Context** | Three warning-dialog choices visible |
 | 0:45–0:55 | **Return to edit** → **Standard Item** → **Run Policy Check** | No demo rule matched, no decision made |
 | 0:55–1:08 | Recheck confirmation → **Confirm Draft Context** → **Create Sandbox draft** | Draft created, unsent and not submitted |
-| 1:08–1:18 | **Inject sales burst** | Declared synthetic window, baseline and UTC labels |
+| 1:08–1:18 | **Next: sales burst** → **Load sales burst** | Prior stage closes; synthetic ratio and captures appear |
 | 1:18–1:35 | AG Grid sort → filter → clear filter | Live grid interaction remains on screen |
 | 1:35–1:43 | Select one transaction row | Stage evidence checklist, not an order verdict |
-| 1:43–1:55 | **Inject dispute** → open case → **Generate evidence draft** | Deadline, required fields and proof status |
-| 1:55–2:05 | Show six ZIP members → download Internal Review ZIP | Local package boundary |
-| 2:05–2:15 | Check review box → **Confirm local draft review** | Human review, UTC time and not submitted |
+| 1:43–1:55 | **Next: dispute evidence** → **Load dispute case** → open case → **Prepare evidence draft** | Prior stage closes; deadline and review status appear |
+| 1:55–2:05 | Open evidence details briefly → **Download review ZIP** | Six members and local package boundary |
+| 2:05–2:09 | `payguard_zip_review_slide.png` | Verified six-file local archive; internal review only |
+| 2:09–2:15 | Check review box → **Confirm local draft review** | Human review, UTC time and not submitted |
 | 2:15–2:35 | Select **Generate AI brief** once | Live `gemini-3.8-flash` result and human-review status |
 | 2:35–2:42 | Open **Grid analytics** | Live three-stage path and authority map |
 | 2:42–2:44 | `payguard_judge_overview.png` | Second static image recaps the three stages and human/provider boundary |
@@ -149,8 +151,8 @@ The final take must visibly contain all five items:
 4. Expand the Sandbox section and connect live.
 5. Run the exact high-risk to edit to standard-item AUP path.
 6. Check the human confirmation, confirm the draft context, and create exactly one unsent draft.
-7. Inject the sales burst, sort, filter, clear the filter, and select one core-grid row.
-8. Inject the dispute, generate the draft, download the Internal Review ZIP, and record the local human review.
+7. Select **Next: sales burst**, load the sales burst, sort, filter, clear the filter, and select one core-grid row.
+8. Select **Next: dispute evidence**, load the dispute case, prepare the draft, download the review ZIP, and record the local human review.
 9. Generate exactly one live dispute-stage Gemini API brief and verify the visible Gemini model and live-response labels.
 10. Open Grid analytics for the final architecture and authority frame; show the second PNG only after this live view.
 11. Cut only idle loading time while retaining the initiation and resulting state from the same take. Stop the take if a credential, identifier, raw prompt, local path, unexpected error, or provider failure appears. Do not switch to Nemotron 4B or automatically retry Gemini during the take.

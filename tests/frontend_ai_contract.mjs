@@ -156,7 +156,7 @@ for (const required of [
   'data-testid="restricted-original-summary"',
   'data-testid="internal-review-profile"',
   'data-testid="download-pseudonymized-evidence"',
-  'Download pseudonymized file',
+  'Download review file',
   'Pseudonymized evidence file downloaded locally; no file was submitted to PayPal.',
 ]) assert.ok(appSource.includes(required), required);
 for (const required of [
@@ -265,9 +265,10 @@ assert.ok(consoleContractSource.includes('order, amount, currency and capture-ti
 assert.equal(consoleContractSource.includes('custom backend-state cell'), false);
 assert.ok(indexSource.includes('<title>PayGuard AI · Merchant Evidence Buffer</title>'));
 assert.equal(indexSource.includes('Merchant Command Center'), false);
-for (const required of ['MERCHANT EVIDENCE BUFFER', 'Three-stage evidence buffer', 'Backend-owned data']) {
+for (const required of ['MERCHANT EVIDENCE BUFFER', 'Three-stage evidence buffer', 'SYNTHETIC CAPTURES', 'AG Grid Community']) {
   assert.ok(appSource.includes(required), required);
 }
+assert.equal(appSource.includes('Backend-owned data'), false, 'operator view should not show the removed engineering badge');
 for (const forbidden of ['MERCHANT COMMAND CENTER', 'Eight-layer architecture', 'Layer 8: Presentation']) {
   assert.equal(appSource.includes(forbidden), false, forbidden);
 }
@@ -306,7 +307,7 @@ for (const retired of [
 ]) {
   assert.equal(analyticsSource.includes(retired), false, retired);
 }
-assert.ok(apiSource.includes("path === '/ai/evidence-brief' ? 25000 : 15000"));
+assert.ok(apiSource.includes("path === '/ai/evidence-brief' ? 65000 : 15000"));
 for (const required of ['**Synthetic baseline**', '`compliance_decision=NOT_MADE`', '`current_policy_applicability=NOT_ESTABLISHED`']) {
   assert.ok(quickstartSource.includes(required), required);
 }

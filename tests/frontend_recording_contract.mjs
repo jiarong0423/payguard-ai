@@ -130,8 +130,8 @@ for (const text of [
 const coreVelocityGrid = appSource.match(/<div className="transaction-grid" data-testid="velocity-grid"[\s\S]*?<\/div>/u);
 assert.ok(coreVelocityGrid, 'core velocity grid exists');
 requireText(coreVelocityGrid[0], 'loading={loading || !state}', 'AG Grid loading state prop');
-requireText(coreVelocityGrid[0], 'overlayLoadingTemplate="Loading backend data"', 'AG Grid loading overlay');
-requireText(coreVelocityGrid[0], 'overlayNoRowsTemplate="No transactions; inject a sales-burst scenario"', 'AG Grid no-row overlay');
+requireText(coreVelocityGrid[0], 'overlayLoadingTemplate="Loading transactions"', 'AG Grid loading overlay');
+requireText(coreVelocityGrid[0], 'overlayNoRowsTemplate="Select Load sales burst above to see transactions"', 'AG Grid no-row overlay');
 forbidText(coreVelocityGrid[0], "overlayNoRowsTemplate={loading ?", 'no-row template must not encode loading state');
 forbidText(coreVelocityGrid[0], 'Backend not connected; no transaction data', 'no-row template must remain deterministic');
 
@@ -253,7 +253,7 @@ for (const retiredCopy of [
   'Persistence: memory session',
 ]) forbidText(analyticsSource, retiredCopy);
 
-requireText(scriptSource, 'Version: `VIDEO_SCRIPT_V9_LOCKED`');
+requireText(scriptSource, 'Version: `VIDEO_SCRIPT_V10_LOCKED`');
 requireText(scriptSource, 'VIDEO_SCRIPT_V1_LOCKED');
 requireText(scriptSource, '9cc4c30eaabd49fd032d5f8101a4221bae226fef9e47319aca582ee4ac9f38df');
 requireText(scriptSource, 'VIDEO_SCRIPT_V2_LOCKED');
@@ -274,7 +274,7 @@ requireText(scriptSource, '[cover](payguard_cover.png)', 'opening visual uses th
 requireText(scriptSource, '[second image: three-stage workflow map](payguard_judge_overview.png)', 'second PNG follows live product proof');
 requireText(scriptSource, '2:42–2:44 | `payguard_judge_overview.png`', 'second PNG is in the late recap slot');
 requireText(scriptSource, 'PayPal Sandbox draft, AG Grid evidence review, and one bounded Gemini API brief', 'opening names all three judge proof pillars');
-requireText(scriptSource, 'This V9 final take remains on Gemini API.', 'one recording adapter');
+requireText(scriptSource, 'This V10 final take remains on Gemini API.', 'one recording adapter');
 requireText(scriptSource, 'It is not Gemini, an automatic fallback', 'local model cannot be relabeled or used as automatic fallback');
 requireText(scriptSource, 'This is a dispute-stage brief, not a merged conclusion about all three scenarios.', 'no invented cross-stage AI summary');
 for (const recordingInstruction of [
@@ -285,7 +285,7 @@ for (const recordingInstruction of [
   'sort by **AMOUNT**',
   '**Filter transactions**',
   'Stage evidence checklist',
-  'For the third input, we inject a synthetic dispute.',
+  'For the third input, we load a synthetic dispute.',
   'After rule checks, one bounded Gemini call.',
   'fixed synthetic facts and pinned sources',
   'It cannot change rules, submit evidence, or decide disputes; a person reviews.',
@@ -295,7 +295,7 @@ for (const recordingInstruction of [
   'prepare evidence before provider review',
   'complete one current-byte live dress rehearsal',
   'Use a clean browser window with notifications disabled',
-]) requireText(scriptSource, recordingInstruction, `V9 script contract ${recordingInstruction}`);
+]) requireText(scriptSource, recordingInstruction, `V10 script contract ${recordingInstruction}`);
 
 const firstSection = scriptSource.match(/## 0:00 to 0:15[\s\S]*?^> (.+)$/mu);
 assert.ok(firstSection, 'opening spoken script exists');
@@ -340,8 +340,8 @@ for (const quickstartLabel of [
   'Create Sandbox draft',
   'Filter transactions',
   'Stage evidence checklist',
-  'Ready for human review',
-  'Required fields present',
+  'Evidence fields, requested items, and ZIP contents',
+  'Download review ZIP',
   'Review overview',
   'Transaction table',
   'Generate AI brief',

@@ -1,6 +1,6 @@
 # PayGuard US-Only Eight-Layer Architecture
 
-Status: accepted US-only local design. Prior operator-attested bounded Sandbox and Gemini receipts remain historical evidence for their own captured executions; they do not prove current-byte live behavior or bind a later source candidate. Release state is determined by the package manifest and exact anonymous public readback. When the manifest is `PUBLIC_SOURCE_PUBLISHED` with `publication_authorized=true` and the same bytes pass exact anonymous readback, public source publication is complete. In that published-source state, only video publication and Devpost submission remain in the competition submission path. A package marked `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` has not crossed the public-source gate.
+Status: accepted US-only local design. Prior operator-attested bounded Sandbox and Gemini receipts remain historical evidence for their own captured executions; they do not prove current-byte live behavior or bind a later source candidate. Release state is determined by the package manifest and exact anonymous public readback. When the manifest is `PUBLIC_SOURCE_PUBLISHED` with `publication_authorized=true` and the same bytes pass exact anonymous readback, public source publication is complete. In that published-source state, only Devpost submission remains in the competition submission path; the 2:02 video is already public. A package marked `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` has not crossed the public-source gate.
 
 ## Product boundary
 
@@ -34,11 +34,12 @@ flowchart LR
   K --> L["PG-014 local-model distribution<br/>FROZEN: identity, license and release acceptance open"]
   F --> N["Current-byte bounded live rehearsal<br/>O (Done): three AI stages + Sandbox DRAFT"]
   N --> I["PG-006 public source and anonymous byte readback<br/>O (Done): pre-video release"]
-  I --> M["Video publication and Devpost submission<br/>PENDING"]
+  I --> M["Video publication<br/>O (Done): 2:02 public video"]
+  M --> P["Devpost submission<br/>PENDING"]
   J["Production hosting and provider mutations<br/>FROZEN"]
 ```
 
-This graph describes the accepted local design and separates historical receipts from the separately reviewed current-byte rehearsal. The prior `BLK-01B` and `BLK-02B` receipts retain only their original bounded claims; a later sanitized receipt records three validated AI stages, one Sandbox OAuth and one unsent invoice DRAFT in a single session. Source publication is established only when the published manifest and exact anonymous readback agree. The complete repository run instructions are the selected functional-demo path. Video and Devpost remain pending; the optional hosted demo remains `FROZEN` and unperformed.
+This graph describes the accepted local design and separates historical receipts from the separately reviewed current-byte rehearsal. The prior `BLK-01B` and `BLK-02B` receipts retain only their original bounded claims; a later sanitized receipt records three validated AI stages, one Sandbox OAuth and one unsent invoice DRAFT in a single session. Source publication is established only when the published manifest and exact anonymous readback agree for that candidate. The complete repository run instructions are the selected functional-demo path. The [2:02 video](https://youtu.be/K28N9QhRp1E) is public; Devpost remains pending. The optional hosted demo remains `FROZEN` and unperformed.
 
 ## Eight layers
 
@@ -194,7 +195,7 @@ The public source includes bounded synthetic contract tests for all three stages
 | `PG-002` / `BLK-02B` | One bounded `gemini-3.8-flash` execution and human semantic review | The historical receipt retains its original scope; a separate current-byte rehearsal validated one bounded response for each fixed stage. Repeatability, semantic quality beyond those samples, real-record behavior and the optional full policy interpreter remain outside the claim |
 | `PG-003` | Durable external submission authority | Review remains local and short-lived |
 | `PG-004` | Real PII ingestion and retention | Only synthetic bounded privacy demonstrations are allowed |
-| `PG-006` | Pre-video public source release | Current-byte live proof, same-version release evidence and exact anonymous public readback are accepted for this bounded source release. Video publication and Devpost submission remain separate pending actions; optional hosting remains unperformed and is not mandatory |
+| `PG-006` | Pre-video public source release | Current-byte live proof, same-version release evidence and exact anonymous public readback were accepted for the bounded historical source release. The 2:02 video is public. A changed source candidate needs fresh exact-byte release acceptance; Devpost remains pending. Optional hosting is unperformed and not mandatory |
 
 Internal machine-readable registries remain local release-owner controls and are not linked from the public package. Public documents cannot close a release gate.
 
@@ -209,9 +210,9 @@ The accepted US-only local baseline has direct evidence that:
 5. AI remains post-validation and advisory;
 6. focused and full tests, frontend build, rendered desktop/mobile/keyboard review, audit publication, second no-op audit and canonical readback pass;
 7. historical logs, receipts and superseded bytes remain unchanged;
-8. video publication and Devpost submission remain separate evidence-driven pending actions.
+8. the 2:02 video is public; Devpost submission remains a separate evidence-driven pending action.
 
-The historical bounded Sandbox and Gemini receipts remain evidence only for their captured executions; the separately reviewed current-byte rehearsal supports exactly its three fixed AI stages, one Sandbox OAuth and one unsent invoice DRAFT. Complete repository run instructions are the selected functional-demo path. Each published candidate still requires matching release evidence and exact anonymous public readback before it can carry `PUBLIC_SOURCE_PUBLISHED`. After that same-byte readback, only video publication and Devpost submission remain in the competition submission path. Optional hosting remains frozen and unperformed, and public or production hosting plus multi-user AI operation remain unproven and outside the accepted runtime.
+The historical bounded Sandbox and Gemini receipts remain evidence only for their captured executions; the separately reviewed current-byte rehearsal supports exactly its three fixed AI stages, one Sandbox OAuth and one unsent invoice DRAFT. Complete repository run instructions are the selected functional-demo path. Each published candidate still requires matching release evidence and exact anonymous public readback before it can carry `PUBLIC_SOURCE_PUBLISHED`. After that same-byte readback, only Devpost submission remains in the competition submission path. Optional hosting remains frozen and unperformed, and public or production hosting plus multi-user AI operation remain unproven and outside the accepted runtime.
 
 Stop if a source digest drifts, a foreign source becomes reachable, an effective date is inferred, a procedural court record is presented as a merits decision, a synthetic receipt is called authentic, or any path enables production or financial mutation.
 

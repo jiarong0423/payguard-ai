@@ -24,16 +24,14 @@ LOCAL_REMAINING_GATES = (
     "EXACT_FINAL_BYTES_SECURITY_REVIEW",
     "INDEPENDENT_RED_TEAM_ACCEPTANCE",
     "REPOSITORY_VISIBILITY",
-    "VIDEO_PUBLICATION",
     "DEVPOST_SUBMISSION",
 )
 PUBLISHED_REMAINING_GATES = (
-    "VIDEO_PUBLICATION",
     "DEVPOST_SUBMISSION",
 )
 PUBLISHED_CURRENT_STATE = (
     "public source publication is complete",
-    "only video publication and devpost submission remain in the competition submission path",
+    "only devpost submission remains in the competition submission path",
 )
 PUBLISHED_RELEASE_ASSETS = {
     "SECURITY.md": (

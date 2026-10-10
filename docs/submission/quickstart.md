@@ -6,7 +6,9 @@ This walkthrough uses synthetic data and a US-only official-reference profile. I
 
 For the competition recording sequence and exact opening narration, see [PayGuard AI Demonstration Script](video_script.md).
 
-Status: the complete repository run instructions in this document are the selected functional-demo path. A hosted demo URL is optional and unperformed. The default export records `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` with final-byte security review, independent red-team acceptance, repository visibility, video publication and Devpost submission still gated. After repository source publication, `--published-source` records `PUBLIC_SOURCE_PUBLISHED` with exactly video publication and Devpost submission remaining. Neither state establishes a public or production-hosted service.
+The [published 2:02 demonstration](https://youtu.be/K28N9QhRp1E) is the final edited video. The script preserves the longer pre-edit recording plan; its timestamps are not final-cut seek positions.
+
+Status: the complete repository run instructions in this document are the selected functional-demo path. A hosted demo URL is optional and unperformed. The 2:02 video is public. The default export records `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` with final-byte security review, independent red-team acceptance, repository visibility and Devpost submission still gated. After this source candidate is published and its exact bytes pass anonymous readback, `--published-source` records `PUBLIC_SOURCE_PUBLISHED` with only Devpost submission remaining. Neither state establishes a public or production-hosted service.
 
 ## Start the console
 
@@ -54,12 +56,12 @@ For a recorded take, start a fresh backend so each stage has its single availabl
 
 ### Stage 1 — US AUP preflight screen
 
-1. Open **Pre-transaction / AUP Preflight Screen**.
+1. Open **STEP 01 AUP preflight**.
 2. Select **High-risk Claim**, then **Run Policy Check**. Confirm that the result is `REVIEW_SIGNAL` and the official PayPal US AUP link is visible.
 3. In the already-open **Optional PayPal US Sandbox connection** section, check **I reviewed the description and amount and confirm that this action creates a Sandbox draft only.**, then select **Confirm Draft Context**. The warning dialog now opens.
 4. In the warning dialog, verify the three available choices: **Return to edit**, **Cancel flow**, and **Acknowledge and continue**.
 5. For the recording path, select **Return to edit**. Confirm that the prior result, acknowledgement, draft binding and confirmation checkbox are cleared.
-6. Select **Standard Item**, then run the policy check again. Confirm **No demo rule matched**, **No decision made**, and **Not established**.
+6. Select **Standard Item**, then run the policy check again. Confirm **No demo rule matched**. Expand **How this result was checked** to inspect **No decision made** and **Not established**.
 7. Treat `NO_MATCH` only as no configured demo keyword match. It is not compliance clearance and does not mean compliant, allowed, approved, legal or safe.
 8. Check the human confirmation again, select **Confirm Draft Context**, and then select **Create Sandbox draft**.
 9. Confirm **Sandbox invoice draft created**, **Draft · not sent**, and **Not submitted**. No invoice identifier may appear.
@@ -68,8 +70,8 @@ Expected boundary: PayGuard surfaces a public-policy category and a warning. It 
 
 ### Stage 2 — Fulfillment and velocity evidence readiness
 
-1. Open **Fulfillment / Velocity Guard**.
-2. Select **Inject sales burst** and confirm that the backend-calculated ratio, **Synthetic baseline**, preceding comparison window and UTC labels are displayed.
+1. Select **Next: sales burst**. Confirm STEP 01 closes, STEP 02 opens, and the page scrolls naturally to it.
+2. Select **Load sales burst** and confirm the backend-calculated ratio and capture count. Expand **How this signal was calculated** to inspect the **Synthetic baseline**, preceding comparison window and UTC labels.
 3. In the core AG Grid, sort the **AMOUNT** column.
 4. Use **Filter transactions** to reduce the visible rows to one known order, then clear the filter and confirm all 50 rows return.
 5. Select one transaction and inspect its order reference, amount, currency and captured-at UTC value.
@@ -79,27 +81,33 @@ Expected boundary: the signal means the synthetic activity exceeded a local demo
 
 ### Stage 3 — Dispute evidence mediation
 
-1. Open **Post-transaction / Dispute Center**.
-2. Inject the synthetic dispute and select the case.
-3. Generate the local evidence draft.
-4. Inspect the case status and evidence request. Confirm the primary view says **Ready for human review**, **Item not received**, **Inquiry**, **Waiting for seller response**, **Proof of fulfillment**, **Requested from seller**, **Prepare evidence**, and **Required fields present**.
-5. Confirm **Original identifiers stay in this demo session** and **No original file content is included, and nothing is submitted externally.**
-6. Download the standalone pseudonymized internal review copy and confirm the provider-submission boundary remains **Not submitted**.
-7. Download the **Internal Review ZIP**. Confirm its short boundary says the synthetic, pseudonymized preparation package is not a PayPal-supported attachment, does not prove authenticity, sufficiency, eligibility, completeness or outcome, and was not submitted. The fixed archive contains a README, manifest, response-driven requirements, timeline, public citations and pseudonymized evidence; it contains no raw case ID, order ID, request ID, identity token, session ID, draft digest, proof value, attachment name or attachment bytes.
+1. Select **Next: dispute evidence**. Confirm STEP 02 closes, STEP 03 opens, and the page scrolls naturally to it.
+2. Select **Load dispute case** and select the case.
+3. Select **Prepare evidence draft**.
+4. Inspect the response deadline and readiness in the primary view. Expand **Evidence fields, requested items, and ZIP contents** to inspect **Proof of fulfillment**, **Requested from seller**, requirements, original-identifier summary, and six ZIP members.
+5. Confirm the details say **Original identifiers stay in this demo session** and **No original file content is included, and nothing is submitted externally.**
+6. Select **Download review file** and confirm the provider-submission boundary remains **Not submitted**.
+7. Select **Download review ZIP**. Confirm its visible short warning says the review copy is not a PayPal attachment and was not submitted; expand **What this review copy does not prove** for the full boundary. The fixed archive contains a README, manifest, response-driven requirements, timeline, public citations and pseudonymized evidence; it contains no raw case ID, order ID, request ID, identity token, session ID, draft digest, proof value, attachment name or attachment bytes.
 8. Check the human-review box and record the local review.
 
 Expected boundary: the draft remains local and synthetic. PayGuard does not submit evidence, message a buyer, make an offer, accept a claim, refund, appeal or adjudicate. PayPal decides escalated internal claims. A bank or card issuer decides an external dispute, with PayPal acting as intermediary.
 
 ## Sponsor analytics walkthrough
 
+On a desktop viewport wider than 720px:
+
 1. Select **Grid analytics**. The AG Grid Community workspace opens through the explicit navigation action.
 2. Confirm that **Review overview** shows the three-stage review path, authority map, session evidence counts and transaction table.
 3. Use **Filter visible rows**, column sorting and column filters to inspect the synthetic rows. Confirm that the grid does not recalculate workflow status.
 4. Select **Transaction table** and verify that the grid moves to the primary review position without changing row identity or backend state.
 5. Use **What needs attention?**, **Explain authority** and **Summarize snapshot**. Confirm that the deterministic local guide performs no external request and cannot send an invoice, move money, submit evidence or decide an outcome.
-6. On a mobile viewport, confirm that the single-column review summary replaces the desktop grid. Its single-open accordion starts on the three-stage lifecycle; opening item counts, the compact transaction preview or the authority map closes the prior section.
 
-Expected boundary: the analytics workspace presents validated synthetic workflow status through AG Grid Community and first-party React components. The local guide never changes the AUP, velocity or dispute results. The exact source-release state comes from the export manifest; video publication and Devpost submission remain separate gates.
+On a viewport 720px wide or narrower:
+
+1. Expand **Merchant Evidence Buffer** and select **Launch analytics**. The responsive evidence summary opens; the desktop AG Grid table, mode switch and guide controls are not shown at this width. At 641–720px, the **Grid analytics** navigation link also opens this summary; at 640px or narrower, the top navigation is hidden.
+2. Confirm that the single-column review summary starts on the three-stage lifecycle. Opening item counts, the compact transaction preview or the authority map closes the prior accordion section. To demonstrate AG Grid sorting and filtering, use a viewport wider than 720px.
+
+Expected boundary: the analytics workspace presents validated synthetic workflow status through AG Grid Community and first-party React components. The local guide never changes the AUP, velocity or dispute results. The exact source-release state comes from the export manifest; the video is public and Devpost submission remains open.
 
 ## Optional AI evidence brief
 

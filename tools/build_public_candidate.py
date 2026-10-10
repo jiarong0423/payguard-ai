@@ -66,6 +66,7 @@ EXACT_FILES = (
     "docs/submission/payguard_cover.svg",
     "docs/submission/payguard_judge_overview.png",
     "docs/submission/payguard_judge_overview.svg",
+    "docs/submission/payguard_zip_review_slide.png",
     "docs/submission/video_script.md",
     "frontend/index.html",
     "frontend/package-lock.json",
