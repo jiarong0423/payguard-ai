@@ -43,7 +43,7 @@ Spoken script:
 
 ## 0:15 to 0:25 — Live Sandbox connection
 
-Visual: With credentials already configured off-screen, expand **Optional PayPal US Sandbox connection**, select **Connect US Sandbox**, and show only **Live Sandbox connection verified** and **Live Sandbox response**. Keep the account, token, and technical receipt off-screen.
+Visual: With credentials already configured off-screen, expand **PayPal US Sandbox connection**, select **Connect US Sandbox**, and show only **Live Sandbox connection verified** and **Live Sandbox response**. Keep the account, token, and technical receipt off-screen.
 
 Spoken script:
 
@@ -51,7 +51,7 @@ Spoken script:
 
 ## 0:25 to 0:55 — Stage 1: AUP correction path
 
-Visual: Stay in **STEP 01 AUP preflight**. Select **High-risk Claim** and **Run Policy Check**. Show the review signal. In **Optional PayPal US Sandbox connection**, check **I reviewed the description and amount and confirm that this action creates a Sandbox draft only.**, then select **Confirm Draft Context**. The warning dialog now opens; show **Return to edit**, **Cancel flow**, and **Acknowledge and continue**. For the filmed branch, select **Return to edit**, choose **Standard Item**, and run the policy check again. Hold on **No demo rule matched**; expand **How this result was checked** only if time permits to show **No decision made** and **Not established**.
+Visual: Stay in **STEP 01 AUP preflight**. Select **High-risk Claim** and **Run Policy Check**. Show the review signal. In **PayPal US Sandbox connection**, check **I reviewed the description and amount and confirm that this action creates a Sandbox draft only.**, then select **Confirm Draft Context**. The warning dialog now opens; show **Return to edit**, **Cancel flow**, and **Acknowledge and continue**. For the filmed branch, select **Return to edit**, choose **Standard Item**, and run the policy check again. Hold on **No demo rule matched**; expand **How this result was checked** only if time permits to show **No decision made** and **Not established**.
 
 Spoken script:
 

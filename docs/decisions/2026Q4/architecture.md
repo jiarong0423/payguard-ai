@@ -1,6 +1,6 @@
 # PayGuard US-Only Eight-Layer Architecture
 
-Status: accepted US-only local design. Prior operator-attested bounded Sandbox and Gemini receipts remain historical evidence for their own captured executions; they do not prove current-byte live behavior or bind a later source candidate. Release state is determined by the package manifest and exact anonymous public readback. When the manifest is `PUBLIC_SOURCE_PUBLISHED` with `publication_authorized=true` and the same bytes pass exact anonymous readback, public source publication is complete. In that published-source state, the Devpost project is submitted; the 2:02 video is already public. A package marked `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` has not crossed the public-source gate.
+Status: accepted US-only local design. The recorded Sandbox and Gemini runs of 2026-10-06 are evidence for their own captured executions; they do not prove current-byte live behavior or bind a later source candidate. Release state is determined by the package manifest and exact anonymous public readback. When the manifest is `PUBLIC_SOURCE_PUBLISHED` with `publication_authorized=true` and the same bytes pass exact anonymous readback, public source publication is complete. In that published-source state, the Devpost project is submitted; the 2:02 video is already public. A package marked `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` has not crossed the public-source gate.
 
 ## Product boundary
 
@@ -17,7 +17,7 @@ The architecture follows four authority rules:
 - humans control local edit, cancel, acknowledge and review choices;
 - PayPal retains final authority for PayPal policy, account and internal-dispute decisions, while a bank or card issuer retains authority for an external dispute.
 
-PayGuard does not freeze funds, approve compliance, predict hidden provider thresholds, submit evidence, send invoices, pay, capture, refund, appeal or adjudicate.
+PayGuard does not freeze funds, approve compliance, predict hidden provider thresholds, send invoices, pay, capture, refund, appeal or adjudicate. It submits dispute evidence only through the gated `provide-evidence` request (local reviewer approval, `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`, a connected Sandbox and an explicit `submit: true`).
 
 ## Current status map
 
@@ -28,18 +28,18 @@ flowchart LR
   C --> D["English console and current documents<br/>O (Done)"]
   D --> E["Focused and full local validation<br/>O (Done)"]
   E --> F["Canonical readback and no-op audit<br/>O (Done)"]
-  F -. historical receipt .-> G["BLK-01B bounded Sandbox evidence<br/>HISTORICAL: operator-attested reviewed record"]
-  F -. historical receipt .-> H["BLK-02B fixed-synthetic Gemini evidence<br/>HISTORICAL: operator-attested reviewed record"]
+  F -. historical receipt .-> G["Recorded Sandbox run (2026-10-06)<br/>OAuth + one unsent DRAFT"]
+  F -. historical receipt .-> H["Recorded Gemini run (2026-10-06)<br/>fixed synthetic input, one response"]
   F --> K["Local 4B loopback adapter and bounded stress<br/>O (Done): candidate runtime"]
-  K --> L["PG-014 local-model distribution<br/>FROZEN: identity, license and release acceptance open"]
+  K --> L["Local-model distribution<br/>not part of this package"]
   F --> N["Current-byte bounded live rehearsal<br/>O (Done): three AI stages + Sandbox DRAFT"]
-  N --> I["PG-006 public source and anonymous byte readback<br/>O (Done): pre-video release"]
+  N --> I["Public source and anonymous byte readback<br/>O (Done): pre-video release"]
   I --> M["Video publication<br/>O (Done): 2:02 public video"]
   M --> P["Devpost submission<br/>O (Done)"]
-  J["Production hosting and provider mutations<br/>FROZEN"]
+  J["Production hosting and provider mutations<br/>not performed"]
 ```
 
-This graph describes the accepted local design and separates historical receipts from the separately reviewed current-byte rehearsal. The prior `BLK-01B` and `BLK-02B` receipts retain only their original bounded claims; a later sanitized receipt records three validated AI stages, one Sandbox OAuth and one unsent invoice DRAFT in a single session. Source publication is established only when the published manifest and exact anonymous readback agree for that candidate. The complete repository run instructions are the selected functional-demo path. The [2:02 video](https://youtu.be/K28N9QhRp1E) is public; the Devpost project is submitted. The optional hosted demo remains `FROZEN` and unperformed.
+This graph describes the accepted local design and separates historical receipts from the separately reviewed current-byte rehearsal. The recorded runs of 2026-10-06 retain only their original bounded claims; a later sanitized receipt records three validated AI stages, one Sandbox OAuth and one unsent invoice DRAFT in a single session. Source publication is established only when the published manifest and exact anonymous readback agree for that candidate. The complete repository run instructions are the selected functional-demo path. The [2:02 video](https://youtu.be/K28N9QhRp1E) is public; the Devpost project is submitted. The optional hosted demo is unperformed.
 
 ## Eight layers
 
@@ -79,7 +79,7 @@ Processing order:
 3. produce `NO_MATCH` or `REVIEW_SIGNAL` with `compliance_decision=NOT_MADE`;
 4. show source identity, visible source date, limitations and the official link;
 5. let the merchant edit, cancel, or acknowledge and continue to ordinary provider-gated review;
-6. optionally request a bounded AI summary after deterministic validation;
+6. request a bounded Gemini summary after deterministic validation;
 7. leave every external policy and provider decision to PayPal.
 
 Required-field validation may stop an incomplete local draft. The AUP warning does not create a local compliance hard block. A no-match does not grant clearance.
@@ -157,7 +157,7 @@ Every policy output retains `current_policy_applicability=NOT_ESTABLISHED`, `com
 
 ## Sandbox and model boundaries
 
-### `BLK-01B` — bounded external Sandbox evidence
+### Recorded Sandbox run
 
 The maximum separately reviewed evidence scope is:
 
@@ -169,7 +169,7 @@ The maximum separately reviewed evidence scope is:
 
 The existing login is only the Developer-login identity. A virtual Business sandbox seller is not the operator's live account. A create response is not a separate GET readback. Invoice send, payment, capture, refund and production are frozen.
 
-### `BLK-02B` — bounded external model evidence
+### Recorded Gemini run
 
 The maximum separately reviewed evidence scope is:
 
@@ -179,23 +179,23 @@ The maximum separately reviewed evidence scope is:
 - structural validation and human semantic review;
 - preserved `NOT_MADE`, `NOT_ESTABLISHED` and no-action authority.
 
-The source contract permits one Vertex `v1` invocation of `gemini-3.8-flash` in `global`, no automatic retry and no persisted raw response, credential, project identity or environment. The source package alone does not prove that invocation occurred; the historical `BLK-02B` receipt establishes one bounded fixed-synthetic execution only for its captured provider run and does not establish current-byte live behavior. The runtime adds a process-local three-attempt budget with one permanent reservation per fixed stage. Deterministic readiness and reservation occur atomically before a provider call; every attempted downstream outcome consumes the reservation. The prompt and its SHA-256 identity are server-owned, caller requests contain only the stage enum, and model output is limited to closed stage-specific sentence enums and fixed citation identities. Tools, function calling, retrieval, streaming and caller overrides are unavailable. This protection does not survive process restart or span multiple workers, so any public distributed deployment remains blocked until a durable shared atomic quota and gateway cost circuit breaker are independently verified.
+The source contract permits one Vertex `v1` invocation of `gemini-3.8-flash` in `global`, no automatic retry and no persisted raw response, credential, project identity or environment. The source package alone does not prove that invocation occurred; the recorded Gemini run establishes one bounded fixed-synthetic execution only for its captured provider run and does not establish current-byte live behavior. The runtime adds a process-local three-attempt budget with one permanent reservation per fixed stage. Deterministic readiness and reservation occur atomically before a provider call; every attempted downstream outcome consumes the reservation. The prompt and its SHA-256 identity are server-owned, caller requests contain only the stage enum, and model output is limited to closed stage-specific sentence enums and fixed citation identities. Tools, function calling, retrieval, streaming and caller overrides are unavailable. This protection does not survive process restart or span multiple workers, so any public distributed deployment remains blocked until a durable shared atomic quota and gateway cost circuit breaker are independently verified.
 
 ### Local 4B candidate runtime
 
 The default-off LM Studio adapter is fixed to the locally installed `nvidia-nemotron-3-nano-4b` model at `127.0.0.1:1234`. It uses the same fixed synthetic context, prompt digest, sentence enums and citation identities as the Gemini line. The transport disables environment proxies and redirects, requests structured JSON with `reasoning_effort=none`, exposes no tools, serializes inference and performs no retry or provider fallback.
 
-The public source includes bounded synthetic contract tests for all three stages and repeat-request rejection. These tests do not establish a live local-model execution, replace Gemini, expand `BLK-02B` or authorize public deployment. Exact model-weight digest, license review, restart and hardware repeatability, public-host quota and independent release acceptance remain open boundaries.
+The public source includes bounded synthetic contract tests for all three stages and repeat-request rejection. These tests do not establish a live local-model execution, replace Gemini, expand the recorded Gemini run or authorize public deployment. Exact model-weight digest, license review, restart and hardware repeatability, public-host quota and independent release acceptance remain open boundaries.
 
 ## Gap ownership
 
 | Gap | Boundary | Current consequence |
 | --- | --- | --- |
-| `PG-001` / `BLK-01B` | One bounded Sandbox OAuth plus unsent invoice `DRAFT` pair | The historical receipt retains its original scope; a separate current-byte rehearsal confirmed one OAuth and one unsent DRAFT through source-bound sanitized receipts. Independent provider telemetry, separate GET, send, payment, production and broader account behavior remain unavailable |
-| `PG-002` / `BLK-02B` | One bounded `gemini-3.8-flash` execution and human semantic review | The historical receipt retains its original scope; a separate current-byte rehearsal validated one bounded response for each fixed stage. Repeatability, semantic quality beyond those samples, real-record behavior and the optional full policy interpreter remain outside the claim |
-| `PG-003` | Durable external submission authority | Review remains local and short-lived |
-| `PG-004` | Real PII ingestion and retention | Only synthetic bounded privacy demonstrations are allowed |
-| `PG-006` | Pre-video public source release | Current-byte live proof, same-version release evidence and exact anonymous public readback were accepted for the bounded historical source release. The 2:02 video is public. A changed source candidate needs fresh exact-byte release acceptance; the Devpost project is submitted. Optional hosting is unperformed and not mandatory |
+| Sandbox run | One bounded Sandbox OAuth plus unsent invoice `DRAFT` pair | The recorded run retains its original scope; a separate current-byte rehearsal confirmed one OAuth and one unsent DRAFT through source-bound sanitized receipts. Independent provider telemetry, separate GET, send, payment, production and broader account behavior remain unavailable |
+| Gemini run | One bounded `gemini-3.8-flash` execution and human semantic review | The recorded run retains its original scope; a separate current-byte rehearsal validated one bounded response for each fixed stage. Repeatability, semantic quality beyond those samples, real-record behavior and the optional full policy interpreter remain outside the claim |
+| Review authority | Durable external submission authority | Review remains local and short-lived |
+| Real data | Real PII ingestion and retention | Only synthetic bounded privacy demonstrations are allowed |
+| Source release | Pre-video public source release | Current-byte live proof, same-version release evidence and exact anonymous public readback were accepted for the bounded historical source release. The 2:02 video is public. A changed source candidate needs fresh exact-byte release acceptance; the Devpost project is submitted. Optional hosting is unperformed and not mandatory |
 
 Internal machine-readable registries remain local release-owner controls and are not linked from the public package. Public documents cannot close a release gate.
 
@@ -212,7 +212,7 @@ The accepted US-only local baseline has direct evidence that:
 7. historical logs, receipts and superseded bytes remain unchanged;
 8. the 2:02 video is public; the Devpost project is submitted; later source revisions need separate evidence-driven release acceptance.
 
-The historical bounded Sandbox and Gemini receipts remain evidence only for their captured executions; the separately reviewed current-byte rehearsal supports exactly its three fixed AI stages, one Sandbox OAuth and one unsent invoice DRAFT. Complete repository run instructions are the selected functional-demo path. Each published candidate still requires matching release evidence and exact anonymous public readback before it can carry `PUBLIC_SOURCE_PUBLISHED`. After that same-byte readback, the Devpost project is submitted and the repository copy matches the accepted public source bytes. Optional hosting remains frozen and unperformed, and public or production hosting plus multi-user AI operation remain unproven and outside the accepted runtime.
+The recorded Sandbox and Gemini runs remain evidence only for their captured executions; the separately reviewed current-byte rehearsal supports exactly its three fixed AI stages, one Sandbox OAuth and one unsent invoice DRAFT. Complete repository run instructions are the selected functional-demo path. Each published candidate still requires matching release evidence and exact anonymous public readback before it can carry `PUBLIC_SOURCE_PUBLISHED`. After that same-byte readback, the Devpost project is submitted and the repository copy matches the accepted public source bytes. Optional hosting is unperformed, and public or production hosting plus multi-user AI operation remain unproven and outside the accepted runtime.
 
 Stop if a source digest drifts, a foreign source becomes reachable, an effective date is inferred, a procedural court record is presented as a merits decision, a synthetic receipt is called authentic, or any path enables production or financial mutation.
 

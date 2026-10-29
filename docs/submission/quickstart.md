@@ -50,7 +50,7 @@ The target market is the United States. The provider environment is PayPal Sandb
 
 Any separately reviewed Sandbox proof must identify a US Business Sandbox seller and confirm Invoicing only for that bounded path. Scope: a fictitious US Business Sandbox seller; production eligibility and live-account behaviour were not tested. No credential should appear in the browser, repository, prompt, screenshot or report.
 
-For a recorded take, start a fresh backend so each stage has its single available AI attempt. Configure Sandbox credentials off-screen, expand **Optional PayPal US Sandbox connection**, and select **Connect US Sandbox**. The recorded primary view must show **Live Sandbox connection verified** and **Live Sandbox response** without an account, token, invoice identifier or technical receipt.
+For a recorded take, start a fresh backend so each stage has its single available AI attempt. Configure Sandbox credentials off-screen, expand **PayPal US Sandbox connection**, and select **Connect US Sandbox**. The recorded primary view must show **Live Sandbox connection verified** and **Live Sandbox response** without an account, token, invoice identifier or technical receipt.
 
 ## Three-stage walkthrough
 
@@ -58,7 +58,7 @@ For a recorded take, start a fresh backend so each stage has its single availabl
 
 1. Open **STEP 01 AUP preflight**.
 2. Select **High-risk Claim**, then **Run Policy Check**. Confirm that the result is `REVIEW_SIGNAL` and the official PayPal US AUP link is visible.
-3. In the already-open **Optional PayPal US Sandbox connection** section, check **I reviewed the description and amount and confirm that this action creates a Sandbox draft only.**, then select **Confirm Draft Context**. The warning dialog now opens.
+3. In the already-open **PayPal US Sandbox connection** section, check **I reviewed the description and amount and confirm that this action creates a Sandbox draft only.**, then select **Confirm Draft Context**. The warning dialog now opens.
 4. In the warning dialog, verify the three available choices: **Return to edit**, **Cancel flow**, and **Acknowledge and continue**.
 5. For the recording path, select **Return to edit**. Confirm that the prior result, acknowledgement, draft binding and confirmation checkbox are cleared.
 6. Select **Standard Item**, then run the policy check again. Confirm **No demo rule matched**. Expand **How this result was checked** to inspect **No decision made** and **Not established**.
@@ -110,7 +110,7 @@ On a viewport 720px wide or narrower:
 
 Expected boundary: the analytics workspace presents validated synthetic workflow status through AG Grid Community and first-party React components. The local guide never changes the AUP, velocity or dispute results. The exact source-release state comes from the export manifest; the video is public and the Devpost project is submitted.
 
-## Optional AI evidence brief
+## AI evidence brief
 
 After rule checks, each stage may expose **Generate AI brief**. Without the Gemini profile the panel shows "Gemini profile not configured" and the console continues without it. This action uses approved synthetic facts and fixed source references. The primary result shows the model, mapped execution label, one evidence point, one missing item, source references, **HUMAN REVIEW REQUIRED**, and **No external action authorized**.
 
@@ -121,7 +121,7 @@ The strict API contract still retains:
 - `semantic_entailment=NOT_EVALUATED` until human review;
 - `external_action_authorized=false`.
 
-The UI validates closed model and evidence identity pairs. The default Gemini line uses `gemini-3.8-flash` with `SYNTHETIC_TEST_RESPONSE` or the separately evidenced `OPERATOR_LIVE_RESPONSE` class. The Gemini brief was run once by the operator against Vertex AI; reproducing it needs your own Vertex project. The explicit local line uses `nvidia-nemotron-3-nano-4b` with `LOCAL_RUNTIME_RESPONSE`. The backend launcher selects one line for the process; the browser cannot select a provider and no automatic fallback calls the other line. Neither identity authorizes a provider or workflow action.
+The UI validates closed model and evidence identity pairs. The default Gemini line uses `gemini-3.8-flash` with `SYNTHETIC_TEST_RESPONSE` or the separately evidenced `OPERATOR_LIVE_RESPONSE` class. Gemini selects each sentence from the stage's closed inventory and fixed code validates the choice. The Gemini brief was run once by the operator against Vertex AI; reproducing it needs your own Vertex project. The explicit local line uses `nvidia-nemotron-3-nano-4b` with `LOCAL_RUNTIME_RESPONSE`. The backend launcher selects one line for the process; the browser cannot select a provider and no automatic fallback calls the other line. Neither identity authorizes a provider or workflow action.
 
 ## Public references and case caveat
 
@@ -129,9 +129,9 @@ The active source profile contains official PayPal US policy pages, jurisdiction
 
 No reviewed official case proves that rapid sales growth alone caused an account limitation. The narrower supported statement is that the public US User Agreement lists rapidly increasing typical sales volume among multiple risk examples and says some criteria are confidential.
 
-## Optional bounded Sandbox evidence
+## Bounded Sandbox evidence
 
-The recorded Sandbox run (2026-10-06 17:44 UTC, 2026-10-07 in UTC+8; an operator-attested receipt) is one OAuth connection plus one unsent USD `10.00` invoice `DRAFT`, id `INV2-2MTA-PRPQ-4CAJ-W5UW`. It used the operator's own Sandbox app; to replay it, set `PAYGUARD_PAYPAL_OUTBOUND=enabled` with yours (README, "Turning on PayPal").
+The recorded Sandbox run (2026-10-06 17:44 UTC, 2026-10-07 in UTC+8; recorded by the operator) is one OAuth connection plus one unsent USD `10.00` invoice `DRAFT`, id `INV2-2MTA-PRPQ-4CAJ-W5UW`. It used the operator's own Sandbox app; to replay it, set `PAYGUARD_PAYPAL_OUTBOUND=enabled` with yours (README, "Turning on PayPal").
 
 - Use a fictitious Business sandbox seller for the merchant role.
 - Confirm its country as US before calling it a US seller.
@@ -172,7 +172,7 @@ These commands validate the local runtime and source contract. The export manife
 - A deterministic intake can organize a synthetic dispute and produce an integrity-checked internal review ZIP while preserving the correct adjudicator boundary.
 - A bounded AI adapter can be placed after deterministic validation without receiving decision authority.
 
-## What I did not test
+## Scope of testing
 
 - A production or live account: only a fictitious US Business Sandbox seller was used.
 - A Sandbox dispute through the Disputes calls: list, detail and provide-evidence run against mocked transport and the fixture; connect your own Sandbox app to run them live.

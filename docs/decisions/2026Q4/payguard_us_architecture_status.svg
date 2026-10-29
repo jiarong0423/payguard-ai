@@ -67,7 +67,7 @@
     <text x="1130" y="250" class="body">Dispute evidence mediation</text>
     <text x="1130" y="280" class="small">Current response → seller requests → due state</text>
     <text x="1130" y="306" class="small">Restricted session layer + pseudonymized review copy</text>
-    <text x="1130" y="332" class="small">No submit, refund, appeal or adjudication</text>
+    <text x="1130" y="332" class="small">Gated submit only; no refund, appeal, adjudication</text>
   </g>
 
   <path d="M500 266 H575" stroke="#79bfff" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
@@ -126,7 +126,7 @@
   </g>
 
   <rect x="70" y="1018" width="700" height="28" rx="14" fill="#8b5a12"/>
-  <text x="420" y="1037" class="status" text-anchor="middle">HISTORICAL RECEIPT - bounded Sandbox OAuth + unsent DRAFT pair</text>
+  <text x="420" y="1037" class="status" text-anchor="middle">RECORDED RUN - Sandbox OAuth + unsent DRAFT pair</text>
   <rect x="790" y="1018" width="740" height="28" rx="14" fill="#8b5a12"/>
-  <text x="1160" y="1037" class="status" text-anchor="middle">HISTORICAL RECEIPT - one human-reviewed Gemini execution</text>
+  <text x="1160" y="1037" class="status" text-anchor="middle">RECORDED RUN - one human-reviewed Gemini execution</text>
 </svg>

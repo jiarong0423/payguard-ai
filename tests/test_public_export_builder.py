@@ -1,5 +1,6 @@
 """Focused tests for the fail-closed and published-source export contracts."""
 
+import ast
 import json
 from pathlib import Path
 import shutil
@@ -78,6 +79,20 @@ class PublicExportBuilderTests(unittest.TestCase):
         )
         for forbidden in (".venv", "__pycache__", "output", "logs", "archive", "rollback"):
             self.assertFalse(any(forbidden in path.parts for path in self.base.rglob("*")))
+        # an allowlist omission must not ship a package that cannot import itself: every local import in the candidate resolves to a shipped file
+        for tree, package in (("backend/app", "backend.app"), ("src/payguard", "payguard")):
+            for module in sorted((self.base / tree).glob("*.py")):
+                for node in ast.walk(ast.parse(module.read_text(encoding="utf-8"))):
+                    targets = []
+                    if isinstance(node, ast.ImportFrom) and node.level == 1 and node.module:
+                        targets.append(node.module.split(".")[0])
+                    elif isinstance(node, ast.ImportFrom) and node.level == 0 and node.module and node.module.startswith(package + "."):
+                        targets.append(node.module[len(package) + 1:].split(".")[0])
+                    elif isinstance(node, ast.ImportFrom) and node.level == 0 and node.module == package:
+                        targets.extend(alias.name for alias in node.names)
+                    for target in targets:
+                        self.assertTrue((self.base / tree / f"{target}.py").is_file() or (self.base / tree / target).is_dir(),
+                                        f"{module.name} imports {target}, which is not in the public package")
 
     def test_public_candidate_excludes_optional_sdk_profile_and_lock(self):
         manifest = json.loads((self.base / validator.MANIFEST_NAME).read_text(encoding="utf-8"))
@@ -200,7 +215,8 @@ class PublicExportBuilderTests(unittest.TestCase):
                 text = (self.published / relative).read_text(encoding="utf-8").casefold()
                 self.assertIn("the console starts without the gemini profile", text)
                 self.assertIn("wsl 2", text)
-                self.assertIn("operator-attested", text)
+                self.assertIn("2026-10-06", text)
+                self.assertIn("inv2-2mta-prpq-4caj-w5uw", text)
                 self.assertNotIn("sandbox path proves", text)
         security = (self.published / "SECURITY.md").read_text(encoding="utf-8").casefold()
         self.assertIn("trust_env=false", security)

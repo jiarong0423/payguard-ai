@@ -1,6 +1,6 @@
 # Security Boundary
 
-Baseline review date: 2026-10-04. Latest contract review: 2026-10-08. Owner: main architect. Scope: local synthetic console plus optional PayPal Sandbox adapter.
+Baseline review date: 2026-10-04. Latest contract review: 2026-10-08. Scope: local synthetic console plus the PayPal Sandbox adapter.
 
 Backend route/auth/data controls are specified in docs/decisions/2026Q4/console_contract.md. Loopback binding, exact Origin/Host allowlists, session-bound CSRF, memory TTL and row/rate/body bounds are required. No public deployment or real merchant authentication is claimed.
 

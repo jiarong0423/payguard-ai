@@ -192,7 +192,7 @@ AI may summarize fixed accepted synthetic facts and pinned citations after prefl
 - acknowledge a warning;
 - create provider authority.
 
-`BLK-02B` has one independently accepted fixed-synthetic `gemini-3.8-flash` response and human semantic review. A local mock or schema-valid fixture proves only the consumer contract, and the accepted invocation proves no repeatability, other-stage quality, policy correctness or real-record behavior.
+The recorded Gemini run (2026-10-06) is one fixed-synthetic `gemini-3.8-flash` response with human semantic review. A local mock or schema-valid fixture proves only the consumer contract, and the accepted invocation proves no repeatability, other-stage quality, policy correctness or real-record behavior.
 
 ## Promotion gate
 
@@ -216,8 +216,8 @@ The US narrative conversion is not a promotion event.
 - policy-effective interval governance;
 - atomic reload and last-known-good lifecycle;
 - durable audit and override authority;
-- any model claim beyond the accepted one-execution `BLK-02B` boundary;
-- provider behavior beyond the exact accepted `BLK-01B` evidence pair;
+- any model claim beyond the one recorded Gemini execution;
+- provider behavior beyond the recorded OAuth plus unsent-draft pair;
 - legal review and public-release acceptance.
 
 Until those gates pass, the engine remains an advisory warning and reference system.

@@ -21,7 +21,7 @@ Status: current US-only local prototype threat model.
 4. synthetic evidence to deterministic engines;
 5. deterministic output to human review;
 6. backend process to fixed PayPal Sandbox endpoints;
-7. accepted structured synthetic facts to the optional model adapter;
+7. accepted structured synthetic facts to the model adapter;
 8. repository source to governance and release artifacts.
 
 Local synthetic sessions are not merchant authentication or durable authorization. Public sources are data, never instructions. A valid schema does not establish legal applicability, evidence authenticity or provider eligibility.
@@ -41,7 +41,7 @@ Local synthetic sessions are not merchant authentication or durable authorizatio
 | False Sandbox connection | Connected state only after a validated authentic receipt; mock and authentic evidence classes remain distinct | Dashboard identity, country and feature availability remain unknown until operator readback |
 | Credential or token disclosure | Backend process environment only, fixed Sandbox host, no redirect, no frontend/token return, sanitized errors and no payload logging | Operator endpoint security remains outside the local prototype |
 | Duplicate or uncertain invoice creation | One-shot review binding, idempotency where supported, no automatic retry after uncertain success, DRAFT-only scope | No separate GET readback is claimed |
-| Provider-action expansion | Default-off outbound, exact endpoint/action allowlist and frozen send/payment/capture/refund/dispute mutation | Production and external submission remain unavailable |
+| Provider-action expansion | Default-off outbound, exact endpoint/action allowlist and frozen send/payment/capture/refund/dispute mutation | Production is unavailable; Sandbox evidence submission needs the submit flag, a connected Sandbox and local approval |
 | PII leakage | Synthetic default data, bounded allowlists, in-memory pseudonymization, no reverse map/raw log and manual review | Pattern detection is incomplete and is not legal anonymization |
 | Evidence overclaim | Separate presence, authenticity, verification, sufficiency, eligibility and outcome states | A human can still misinterpret a draft; UI limitations remain mandatory |
 | Dispute-authority confusion | Documented authority distinction and explicit statement that the current demo performs no provider-case routing | A real case requires current provider fields and an independently validated adapter |
@@ -56,7 +56,7 @@ The existing PayPal login is a Developer-login identity. The merchant role is a 
 
 The UI may say `PayPal Sandbox` before seller-country confirmation. It may say `US Business sandbox seller` only after trusted Dashboard confirmation. Invoicing availability also requires confirmation. The Sandbox host and browser locale are not country evidence.
 
-`BLK-01B` is closed only for the independently reviewed sanitized authentic OAuth result and one unsent invoice `DRAFT` result. MockTransport results, screenshots and local UI state did not and cannot expand that accepted provider-evidence boundary.
+The recorded Sandbox run covers only the sanitized authentic OAuth result and one unsent invoice `DRAFT` result. MockTransport results, screenshots and local UI state did not and cannot expand that accepted provider-evidence boundary.
 
 ## AUP boundary
 
@@ -74,7 +74,7 @@ The local signal cannot be labelled AML, fraud, money laundering or a predicted 
 
 The current synthetic resolver reads a closed fixture containing reason, status, lifecycle stage, seller-response due date, normalized available actions and evidence requests with source and action. Only exact `REQUESTED_FROM_SELLER` plus `PROVIDE_EVIDENCE` rows can create preparation tasks. It accepts only separately bound synthetic proof records and attachment bytes, then discards the bytes after signature/type/size validation. Raw provider case, order and request identifiers remain restricted server-side; the browser receives non-identifying references. The restricted digest is recomputed before reuse, AI eligibility and local approval so nested tampering fails closed. A real adapter must additionally retain current PayPal response options and HATEOAS links without treating them as action authority. Every fixture field remains explicitly synthetic.
 
-PayGuard may prepare and pseudonymize a local draft. It cannot provide evidence, send a message, make an offer, accept a claim, acknowledge a return, appeal, refund or adjudicate. Internal claims remain under PayPal authority; external disputes remain under the bank/card issuer's authority.
+PayGuard may prepare and pseudonymize a local draft. It provides evidence to PayPal only through the gated `provide-evidence` request (local reviewer approval, `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`, a connected Sandbox and an explicit `submit: true`); it cannot send a message, make an offer, accept a claim, acknowledge a return, appeal, refund or adjudicate. Internal claims remain under PayPal authority; external disputes remain under the bank/card issuer's authority.
 
 Counterfeit goods may be a Purchase Protection SNAD condition. SNAD is outside US Seller Protection. Photos are possible evidence, not a universal requirement.
 
@@ -92,9 +92,9 @@ Counterfeit goods may be a Purchase Protection SNAD condition. SNAD is outside U
 
 ## Release blockers
 
-- `BLK-02B`: one accepted fixed-synthetic Gemini response and human semantic review, with every broader model claim still out of scope;
-- `PG-003`: durable authenticated review/submission authority;
-- `PG-004`: real PII lifecycle and retention;
-- `PG-006`: security, rights, public export and deployment acceptance.
+- the recorded Gemini run: one fixed-synthetic response with human semantic review, with every broader model claim out of scope;
+- durable authenticated review/submission authority;
+- real PII lifecycle and retention;
+- security, rights, public export and deployment acceptance.
 
 The implementation must fail closed at the first schema, source, identity, privacy, evidence, authority or provider mismatch. Local validation cannot promote an external or release state.
