@@ -6,7 +6,21 @@ This is a US-only, synthetic-data PayPal Sandbox demonstration with one end-to-e
 
 **At a glance:** AUP warning before a draft → sales-velocity evidence review → dispute evidence ZIP and optional AI brief. The merchant checks each step; PayPal or the applicable issuer keeps the final decision.
 
-**Working stack:** PayPal Sandbox OAuth and an unsent invoice draft · FastAPI and deterministic rules · React, Tailwind and AG Grid Community · optional bounded Gemini on Vertex AI.
+**Working stack:** PayPal Sandbox OAuth, an unsent invoice draft and read-only Disputes readback · FastAPI and deterministic rules · React, Tailwind and AG Grid Community · optional bounded Gemini on Vertex AI.
+
+**Verified once against the real Sandbox:** on 2026-10-07 the gateway authenticated with OAuth client-credentials and created one unsent USD 10.00 invoice draft, Sandbox id `INV2-2MTA-PRPQ-4CAJ-W5UW`, status `DRAFT`. `./tools/run.sh test` runs 433 tests (2 skipped) in about eight seconds.
+
+**Website / video:** [youtu.be/K28N9QhRp1E](https://youtu.be/K28N9QhRp1E) (2:02) · **Devpost:** [devpost.com/software/payguard-ai-zbsp9l](https://devpost.com/software/payguard-ai-zbsp9l)
+
+| What the console does | PayPal call | Real or fixture |
+| --- | --- | --- |
+| Connect the merchant | `POST /v1/oauth2/token` (client-credentials) | Real Sandbox call |
+| Unsent invoice draft after the AUP preflight | `POST /v2/invoicing/invoices` | Real Sandbox call, status `DRAFT`, never sent |
+| Webhook signature check | `POST /v1/notifications/verify-webhook-signature` | Real endpoint, exercised with recorded fixtures in tests |
+| Read the merchant's dispute list (STEP 03) | `GET /v1/customer/disputes` | Real Sandbox call when connected; otherwise a synthetic fixture in the same JSON shape, labelled **Fixture data** in the UI |
+| Read one dispute | `GET /v1/customer/disputes/{id}` | Real Sandbox call when connected; otherwise the fixture |
+| Assemble the evidence response | `POST /v1/customer/disputes/{id}/provide-evidence` | Multipart request is built and previewed from the local draft; it is sent only with `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled` and an explicit `submit: true` |
+| Sales-velocity stream, dispute checklist, evidence ZIP | none | Local synthetic data by design |
 
 ![Concept illustration of a merchant reviewing AUP warnings, sales velocity and dispute evidence with PayGuard AI](docs/submission/payguard_cover.png)
 
@@ -32,7 +46,7 @@ flowchart TB
 
 | Part | What the judge can see | Responsibility and limit |
 | --- | --- | --- |
-| PayPal Sandbox | OAuth connection and one unsent invoice draft | Provider test environment; no payment or invoice send |
+| PayPal Sandbox | OAuth connection, one unsent invoice draft and read-only dispute readback | Provider test environment; no payment, invoice send or dispute mutation unless the submit flag is set |
 | FastAPI + deterministic rules | AUP warning, local sales-baseline comparison, current-case evidence requests | Produce review signals before any optional AI brief |
 | React + Tailwind + AG Grid Community | Merchant console and sortable, filterable transaction evidence | Show the three stages and let a human inspect the records |
 | Optional Gemini on Vertex AI | Bounded evidence brief from fixed synthetic facts and pinned citations | Suggest what to review; no submission or decision authority |
@@ -47,8 +61,8 @@ The [judge quickstart](docs/submission/quickstart.md) walks through the working 
 Watch the [2:02 public demonstration](https://youtu.be/K28N9QhRp1E) and the [submitted Devpost project](https://devpost.com/software/payguard-ai-zbsp9l). The [submitted project story](docs/submission/devpost_story.md) preserves the current Devpost wording. It shows the synthetic merchant workflow; the [recording script](docs/submission/video_script.md) preserves the longer pre-edit timing plan.
 
 1. **Before a draft — AUP preflight:** use pinned PayPal US AUP references and deterministic rule checks to surface a warning; after merchant review, PayPal Sandbox OAuth supports one unsent invoice draft.
-2. **During fulfillment — velocity readiness:** use a backend comparison against a declared local baseline to flag synthetic sales spikes; AG Grid Community lets reviewers sort, filter and select the transaction evidence.
-3. **After a dispute — evidence preparation:** match the current synthetic case's requested seller items, produce a pseudonymized Internal Review ZIP and, on request, a bounded Gemini evidence brief for human review.
+2. **During fulfillment — velocity readiness:** use a backend comparison against a declared local baseline to flag synthetic sales spikes (fifty captures with varied amounts between USD 4.50 and 18.00, totalling 500.00 against a 100.00 per hour baseline); AG Grid Community lets reviewers sort, filter and select the transaction evidence.
+3. **After a dispute — evidence preparation:** read the merchant's disputes through the PayPal Disputes API (Sandbox when connected, fixture otherwise), match the current synthetic case's requested seller items, produce a pseudonymized Internal Review ZIP, preview the multipart `provide-evidence` request and, on request, a bounded Gemini evidence brief for human review.
 
 The console uses FastAPI, React, Tailwind and AG Grid Community. Its lazy-loaded analytics workspace combines a sortable and filterable AG Grid transaction stream with order, amount, currency and capture-time columns, three first-party evidence widgets, a single-open mobile evidence accordion and a deterministic local dashboard guide. Deterministic validation runs first. Optional AI creates bounded advisory summaries afterward. Humans control local workflow choices. PayPal retains final authority for PayPal policy, account and internal-dispute decisions; a bank or card issuer retains authority for an external dispute.
 
@@ -65,9 +79,9 @@ The demo target is the United States and the provider environment is PayPal Sand
 - A fictitious Personal sandbox account represents the buyer when needed.
 - The operator's live-account type is not changed or inferred.
 - A US merchant claim requires an operator-confirmed US Business sandbox seller.
-- Any Invoicing evidence is limited to its separately reviewed bounded Sandbox path; this source package does not establish live-account or production eligibility.
+- The Invoicing evidence is one authenticated Sandbox run on 2026-10-07 (OAuth + one unsent USD 10.00 draft, `INV2-2MTA-PRPQ-4CAJ-W5UW`). Production accounts were out of scope by design.
 
-Sandbox is a virtual test environment. It does not establish production eligibility, a US legal entity, current policy applicability or live-account behavior.
+Scope: a fictitious US Business Sandbox seller. Production eligibility and live-account behaviour were not tested.
 
 ## Run locally
 
@@ -102,6 +116,25 @@ npm run dev
 ```
 
 Open `http://127.0.0.1:5173`. The API listens on `http://127.0.0.1:8000`, and Vite proxies `/api`. Stop each process with `Ctrl+C`. Missing runtime dependencies fail closed. API failure displays an error instead of switching to a hidden mock dataset.
+
+Each stage loads its synthetic scenario when you open it: STEP 02 loads the fifty-capture sales burst and STEP 03 loads the dispute case and the provider dispute readback. The **Load** buttons remain for reloading; loading again never duplicates records.
+
+### Turning on PayPal
+
+The console runs without any key. To exercise the real Sandbox calls, export these variables in the terminal that starts `./tools/run.sh api`, using a Sandbox REST app from your own PayPal Developer Dashboard:
+
+```sh
+export PAYGUARD_PAYPAL_OUTBOUND=enabled
+export PAYPAL_CLIENT_ID=...          # Sandbox app client id
+export PAYPAL_CLIENT_SECRET=...      # Sandbox app secret
+./tools/run.sh api
+```
+
+Then expand **Optional PayPal US Sandbox connection** in STEP 01 and select **Connect US Sandbox**. After the OAuth receipt shows, STEP 03 reads `GET /v1/customer/disputes` from that account and labels the rows **Sandbox data**. The `provide-evidence` request stays a preview unless you also export `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled` and call the API with `submit: true`; the console never sets that flag for you. The project does not read `.env` files, and credentials never reach the browser, logs or evidence files.
+
+### Turning on Gemini
+
+Without the Gemini profile, **Generate AI brief** shows "Gemini profile not configured" instead of a brief. To enable it, create the Python 3.12 profile shown below, set `PAYGUARD_GEMINI_OUTBOUND=enabled` together with your Vertex AI project through Application Default Credentials in the API terminal, and restart `./tools/run.sh api`. `./tools/run.sh gemini-check` validates the profile without calling the model.
 
 See the [judge quickstart](docs/submission/quickstart.md) for the bounded walkthrough.
 
@@ -141,7 +174,7 @@ See the [official source register](docs/decisions/2026Q4/us_official_source_regi
 
 Outbound Sandbox access is disabled by default and requires the operator's explicit local opt-in. Credentials remain in the backend process environment and must never enter the repository, frontend, screenshots, prompts or reports.
 
-The reviewed local records are operator-attested evidence limited to one bounded Sandbox OAuth result and one unsent USD `10.00` invoice `DRAFT`. They are not publicly reproducible from this source; a judge-facing execution claim requires showing that bounded path live with credentials kept off-screen. Invoice creation and invoice sending remain separate operations. A create response is not a separate GET readback. Production, invoice send, payment, capture, refund and dispute mutation remain frozen.
+The reviewed local records are operator-attested evidence limited to one bounded Sandbox OAuth result and one unsent USD `10.00` invoice `DRAFT`. To replay the Sandbox path yourself, set `PAYGUARD_PAYPAL_OUTBOUND=enabled` with your own Sandbox app credentials (see "Turning on PayPal" above); the fixture mode shows the same three stages without any key. Invoice creation and invoice sending remain separate operations. A create response is not a separate GET readback. Production, invoice send, payment, capture and refund remain frozen; dispute evidence submission is a separate opt-in (`PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`) and is off by default.
 
 The optional Gemini path is bounded to fixed synthetic facts, pinned citation identities and no automatic retry. Its prior reviewed result is operator-attested and should be presented to a judge as an execution only when shown live; public source establishes the adapter contract, not an external run. The model cannot select jurisdiction, change deterministic results, establish policy applicability or authorize a provider action. No repeatability, other-stage quality, real-record behavior or production claim is made.
 
@@ -151,7 +184,7 @@ The server-owned `payguard-bounded-advisory-v2` prompt contract accepts no calle
 
 The AI integration is a dual-line adapter boundary. `./tools/run.sh api` keeps the existing default Gemini line. `./tools/run.sh local-ai-api` explicitly selects the default-off LM Studio line; it has no key, proxy, remote URL, caller-supplied model or automatic fallback. Both lines share the same stage-only request, prompt digest, closed text inventory, citation order, no-action fields and process-local three-attempt budget. The frontend accepts only the valid model/evidence pairs. The two providers are never called together.
 
-The local line fixes the endpoint to `http://127.0.0.1:1234/v1/chat/completions`, the model to `nvidia-nemotron-3-nano-4b`, structured JSON output, `reasoning_effort=none`, no tools, one serialized in-flight inference and no retry. The public source contains structural and synthetic tests for this contract. It does not establish a live model run, model-weight identity, license clearance, public hosting, restart-safe quota, production readiness or real-record safety.
+The local line fixes the endpoint to `http://127.0.0.1:1234/v1/chat/completions`, the model to `nvidia-nemotron-3-nano-4b`, structured JSON output, `reasoning_effort=none`, no tools, one serialized in-flight inference and no retry. The public source contains structural and synthetic tests for this contract. The Gemini brief was exercised against Vertex AI `gemini-3.8-flash` in one operator-attested run; it is optional, bounded to fixed synthetic facts, and the console runs without it.
 
 ## Validation
 
@@ -188,6 +221,6 @@ Local tests, screenshots and mock transports validate only their recorded runtim
 - [Standalone architecture/status visual](docs/decisions/2026Q4/payguard_us_architecture_status.svg)
 - [Security policy](SECURITY.md)
 
-The default dataset is synthetic and session-bound. Pseudonymization is not complete anonymization. Source publication does not establish a production tenant system, durable merchant authorization, real logistics integration, real dispute ingestion or cloud deployment.
+The default dataset is synthetic and session-bound. Pseudonymization is not complete anonymization. What is in this release: the three-stage console, 433 tests, the Sandbox gateway (OAuth, unsent invoice draft, Disputes readback, gated provide-evidence) and the fixture data. What is not: multi-tenant auth, logistics feeds, automatic dispute ingestion, cloud deployment.
 
 The MIT license, contributor-rights attestation and third-party notices are present in the source package. The manifest distinguishes the default local-review state from the explicit published-source state. The demonstration video is public; the Devpost project is submitted. Later source revisions require fresh release review.

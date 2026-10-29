@@ -70,9 +70,9 @@ Expected boundary: PayGuard surfaces a public-policy category and a warning. It 
 
 ### Stage 2 — Fulfillment and velocity evidence readiness
 
-1. Select **Next: sales burst**. Confirm STEP 01 closes, STEP 02 opens, and the page scrolls naturally to it.
-2. Select **Load sales burst** and confirm the backend-calculated ratio and capture count. Expand **How this signal was calculated** to inspect the **Synthetic baseline**, preceding comparison window and UTC labels.
-3. In the core AG Grid, sort the **AMOUNT** column.
+1. Select **Next: sales burst**. Confirm STEP 01 closes, STEP 02 opens, and the page scrolls naturally to it. The synthetic sales burst loads automatically on entry; **Load sales burst** remains available to reload it and never duplicates records.
+2. Confirm the backend-calculated ratio (5 times baseline), window sales of 500.00 USD and 50 captures. Expand **How this signal was calculated** to inspect the **Synthetic baseline**, preceding comparison window and UTC labels.
+3. In the core AG Grid, sort the **AMOUNT** column. The fifty captures carry ten different synthetic amounts between 4.50 and 18.00 USD, so the sort order changes visibly.
 4. Use **Filter transactions** to reduce the visible rows to one known order, then clear the filter and confirm all 50 rows return.
 5. Select one transaction and inspect its order reference, amount, currency and captured-at UTC value.
 6. Confirm the card labels its value as **Stage evidence checklist** and says the stage signal does not classify the selected order as fraud or predict PayPal action.
@@ -81,14 +81,15 @@ Expected boundary: the signal means the synthetic activity exceeded a local demo
 
 ### Stage 3 — Dispute evidence mediation
 
-1. Select **Next: dispute evidence**. Confirm STEP 02 closes, STEP 03 opens, and the page scrolls naturally to it.
-2. Select **Load dispute case** and select the case.
+1. Select **Next: dispute evidence**. Confirm STEP 02 closes, STEP 03 opens, and the page scrolls naturally to it. The synthetic dispute case loads automatically; **Load dispute case** remains available to reload it.
+2. Select the case in the case queue.
 3. Select **Prepare evidence draft**.
 4. Inspect the response deadline and readiness in the primary view. Expand **Evidence fields, requested items, and ZIP contents** to inspect **Proof of fulfillment**, **Requested from seller**, requirements, original-identifier summary, and six ZIP members.
 5. Confirm the details say **Original identifiers stay in this demo session** and **No original file content is included, and nothing is submitted externally.**
 6. Select **Download review file** and confirm the provider-submission boundary remains **Not submitted**.
 7. Select **Download review ZIP**. Confirm its visible short warning says the review copy is not a PayPal attachment and was not submitted; expand **What this review copy does not prove** for the full boundary. The fixed archive contains a README, manifest, response-driven requirements, timeline, public citations and pseudonymized evidence; it contains no raw case ID, order ID, request ID, identity token, session ID, draft digest, proof value, attachment name or attachment bytes.
 8. Check the human-review box and record the local review.
+9. In **PayPal Disputes API readback**, confirm the data-source badge. Without a Sandbox connection it reads **Fixture data** and lists two synthetic disputes in the PayPal Disputes API JSON shape; with a connection made in STEP 01 it reads **Sandbox data** from `GET /v1/customer/disputes`. Select a dispute to read its detail (`GET /v1/customer/disputes/{id}`), then select **Preview provide-evidence request** to see the multipart `POST /v1/customer/disputes/{id}/provide-evidence` built from the local draft: the JSON `input` part with masked tracking numbers, the file part metadata and the **Not submitted** boundary. The request is sent only when the operator sets `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled` and calls the API with `submit: true`.
 
 Expected boundary: the draft remains local and synthetic. PayGuard does not submit evidence, message a buyer, make an offer, accept a claim, refund, appeal or adjudicate. PayPal decides escalated internal claims. A bank or card issuer decides an external dispute, with PayPal acting as intermediary.
 
@@ -111,7 +112,7 @@ Expected boundary: the analytics workspace presents validated synthetic workflow
 
 ## Optional AI evidence brief
 
-After rule checks, each stage may expose **Generate AI brief**. This action uses approved synthetic facts and fixed source references. The primary result shows the model, mapped execution label, one evidence point, one missing item, source references, **HUMAN REVIEW REQUIRED**, and **No external action authorized**.
+After rule checks, each stage may expose **Generate AI brief**. Without the Gemini profile the panel shows "Gemini profile not configured" and the console continues without it. This action uses approved synthetic facts and fixed source references. The primary result shows the model, mapped execution label, one evidence point, one missing item, source references, **HUMAN REVIEW REQUIRED**, and **No external action authorized**.
 
 The strict API contract still retains:
 

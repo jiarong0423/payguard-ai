@@ -281,6 +281,45 @@ function assertContract(path, payload, session, body) {
       assertSandboxReceipt(payload.evidence_receipt,'OAUTH_CONNECT');
       valid = payload.configured && payload.last_verified_at === payload.evidence_receipt.observed_at;
     } else if (valid) valid = payload.evidence_receipt === null;
+  } else if (path === '/paypal/disputes' || /^\/paypal\/disputes\/PP-[A-Z0-9][A-Z0-9-]{2,62}$/.test(path) || path === '/paypal/disputes/provide-evidence') {
+    const disputeId = (value) => typeof value === 'string' && /^PP-[A-Z0-9][A-Z0-9-]{2,62}$/.test(value);
+    const money = (value) => object(value) && pk(value, ['currency_code', 'value']) && /^[A-Z]{3}$/.test(value.currency_code) && /^[0-9]{1,10}(\.[0-9]{1,2})?$/.test(value.value);
+    const envelopeKeys = ['source', 'data_source_label', 'environment', 'evidence_class', 'observed_at', 'provider_submission'];
+    const recordKeys = ['dispute_id', 'reason', 'status', 'dispute_life_cycle_stage', 'dispute_state', 'dispute_amount', 'create_time', 'update_time', 'seller_response_due_date'];
+    const record = (row) => object(row) && disputeId(row.dispute_id) && text(row.reason) && text(row.status) && text(row.dispute_life_cycle_stage)
+      && (row.dispute_state === null || text(row.dispute_state)) && money(row.dispute_amount) && text(row.create_time)
+      && (row.update_time === null || text(row.update_time)) && (row.seller_response_due_date === null || text(row.seller_response_due_date));
+    const fixture = payload.source === 'synthetic_fixture';
+    valid = valid && ['paypal_sandbox', 'synthetic_fixture'].includes(payload.source) && payload.environment === 'sandbox'
+      && payload.data_source_label === (fixture ? 'Fixture' : 'Sandbox')
+      && (fixture ? payload.evidence_class === 'SYNTHETIC_FIXTURE' : ['AUTHENTIC_SANDBOX_RESPONSE', 'SYNTHETIC_TEST_RESPONSE'].includes(payload.evidence_class))
+      && text(payload.observed_at) && ['NOT_PERFORMED', 'PERFORMED'].includes(payload.provider_submission);
+    if (valid && path === '/paypal/disputes') {
+      valid = pk(payload, [...envelopeKeys, 'readback', 'items']) && payload.readback === 'GET_LIST' && payload.provider_submission === 'NOT_PERFORMED'
+        && Array.isArray(payload.items) && payload.items.length <= 20 && payload.items.every((row) => pk(row, recordKeys) && record(row))
+        && new Set(payload.items.map((row) => row.dispute_id)).size === payload.items.length;
+    } else if (valid && path === '/paypal/disputes/provide-evidence') {
+      const submitted = payload.external_send === 'SUBMITTED';
+      valid = pk(payload, [...envelopeKeys, 'readback', 'dispute_id', 'case_ref', 'method', 'path', 'content_type', 'input', 'files', 'external_send', 'submit_flag_enabled', 'human_review_required'])
+        && ['PROVIDE_EVIDENCE_PREVIEW', 'PROVIDE_EVIDENCE_SUBMITTED'].includes(payload.readback) && disputeId(payload.dispute_id)
+        && payload.dispute_id === body?.dispute_id && payload.case_ref === body?.case_ref && payload.method === 'POST'
+        && payload.path === `/v1/customer/disputes/${payload.dispute_id}/provide-evidence` && payload.content_type === 'multipart/form-data'
+        && object(payload.input) && pk(payload.input, ['evidences']) && Array.isArray(payload.input.evidences) && payload.input.evidences.length >= 1 && payload.input.evidences.length <= 20
+        && payload.input.evidences.every((row) => pk(row, ['evidence_type', 'evidence_info', 'notes']) && text(row.evidence_type) && text(row.notes) && object(row.evidence_info) && Array.isArray(row.evidence_info.tracking_info))
+        && Array.isArray(payload.files) && payload.files.length <= 20
+        && payload.files.every((row) => pk(row, ['name', 'filename', 'content_type', 'byte_length']) && text(row.name) && Number.isInteger(row.byte_length) && row.byte_length >= 0)
+        && ['FROZEN', 'SUBMITTED'].includes(payload.external_send) && typeof payload.submit_flag_enabled === 'boolean' && payload.human_review_required === true
+        && submitted === (payload.provider_submission === 'PERFORMED') && submitted === (payload.readback === 'PROVIDE_EVIDENCE_SUBMITTED')
+        && (!submitted || (!fixture && payload.submit_flag_enabled));
+    } else if (valid) {
+      valid = pk(payload, [...envelopeKeys, 'readback', ...recordKeys, 'dispute_channel', 'disputed_transactions', 'evidences']) && payload.readback === 'GET_DETAIL'
+        && payload.provider_submission === 'NOT_PERFORMED' && record(payload) && payload.dispute_id === path.slice('/paypal/disputes/'.length)
+        && (payload.dispute_channel === null || text(payload.dispute_channel))
+        && Array.isArray(payload.disputed_transactions) && payload.disputed_transactions.length <= 10
+        && payload.disputed_transactions.every((row) => pk(row, ['seller_transaction_id', 'transaction_status', 'gross_amount', 'seller_protection_eligible']) && text(row.seller_transaction_id) && (row.gross_amount === null || money(row.gross_amount)))
+        && Array.isArray(payload.evidences) && payload.evidences.length <= 20
+        && payload.evidences.every((row) => pk(row, ['evidence_type', 'source', 'action', 'date']) && text(row.evidence_type) && text(row.source));
+    }
   } else if (path.startsWith('/disputes/') && path.endsWith('/draft')) {
     const routing = payload.routing;
     const summary = payload.restricted_original_summary;

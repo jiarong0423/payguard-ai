@@ -17,12 +17,14 @@ from payguard.advisory_eval import AdvisoryError, evaluate_advisory
 
 from .paypal import PaypalAdapter
 from .paypal_tools import SafePaypalToolGateway
+from .paypal_disputes import DisputeReadbackService
 from .ai_brief import AiBriefError, AiBriefRequest, AiBriefResponse, EvidenceBriefAdapter
 from .lmstudio_brief import LmStudioConfig, LmStudioEvidenceBriefAdapter
 from .schemas import (ApproveRequest, AupRequest, AupResponse, AupAcknowledgeRequest, AupAcknowledgeResponse, DisputeApprovalResponse,
                       DisputeDraftResponse, EmptyRequest, HealthResponse, InjectRequest,
                       InvoiceDraftRequest, InvoiceDraftResponse, InvoiceReviewRequest,
                       InvoiceReviewResponse, PaypalStatusResponse, SessionResponse,
+                      DisputeDetailResponse, DisputeListResponse, ProvideEvidenceRequest, ProvideEvidenceResponse,
                       StateResponse, WebhookVerifyRequest, WebhookVerifyResponse,
                       ReferenceRequest, ReferenceResponse, PolicyRequest,
                       AdvisoryRequest, PolicyAssessmentResponse, AdvisoryEvaluationResponse)
@@ -157,6 +159,7 @@ def create_app(*, store=None, paypal=None, reference_loader=None, ai_brief=None)
     application.state.store = store or SessionStore(ai_attempt_budget=PROCESS_AI_ATTEMPT_BUDGET)
     application.state.paypal = paypal or PaypalAdapter()
     application.state.paypal_tools = SafePaypalToolGateway(application.state.store, application.state.paypal)
+    application.state.paypal_disputes = DisputeReadbackService(application.state.store, application.state.paypal)
     application.state.reference_loader = load_corpus if reference_loader is None else reference_loader
     application.state.ai_brief = ai_brief if ai_brief is not None else EvidenceBriefAdapter()
     application.add_middleware(LocalBoundaryMiddleware)
@@ -310,6 +313,18 @@ def create_app(*, store=None, paypal=None, reference_loader=None, ai_brief=None)
     @application.post("/api/v1/paypal/invoices/draft", response_model=InvoiceDraftResponse)
     async def invoice_draft(body: InvoiceDraftRequest, session=Depends(write_session)):
         return await application.state.paypal_tools.invoke("create_invoice", body.model_dump(), session=session)
+
+    @application.get("/api/v1/paypal/disputes", response_model=DisputeListResponse)
+    async def list_disputes(session=Depends(read_session)):
+        return await application.state.paypal_disputes.list_disputes(session)
+
+    @application.get("/api/v1/paypal/disputes/{dispute_id}", response_model=DisputeDetailResponse)
+    async def get_dispute(dispute_id: str, session=Depends(read_session)):
+        return await application.state.paypal_disputes.get_dispute(session, dispute_id)
+
+    @application.post("/api/v1/paypal/disputes/provide-evidence", response_model=ProvideEvidenceResponse)
+    async def provide_evidence(body: ProvideEvidenceRequest, session=Depends(write_session)):
+        return await application.state.paypal_disputes.provide_evidence(session, body.model_dump())
 
     @application.post("/api/v1/paypal/webhooks/verify", response_model=WebhookVerifyResponse)
     async def verify_webhook(body: WebhookVerifyRequest, _session=Depends(write_session)):
