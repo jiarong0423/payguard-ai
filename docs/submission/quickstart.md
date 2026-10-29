@@ -131,7 +131,7 @@ No reviewed official case proves that rapid sales growth alone caused an account
 
 ## Optional bounded Sandbox evidence
 
-The recorded Sandbox run (2026-10-07; an operator-attested receipt) is one OAuth connection plus one unsent USD `10.00` invoice `DRAFT`, id `INV2-2MTA-PRPQ-4CAJ-W5UW`. It used the operator's own Sandbox app; to replay it, set `PAYGUARD_PAYPAL_OUTBOUND=enabled` with yours (README, "Turning on PayPal").
+The recorded Sandbox run (2026-10-06 17:44 UTC, 2026-10-07 in UTC+8; an operator-attested receipt) is one OAuth connection plus one unsent USD `10.00` invoice `DRAFT`, id `INV2-2MTA-PRPQ-4CAJ-W5UW`. It used the operator's own Sandbox app; to replay it, set `PAYGUARD_PAYPAL_OUTBOUND=enabled` with yours (README, "Turning on PayPal").
 
 - Use a fictitious Business sandbox seller for the merchant role.
 - Confirm its country as US before calling it a US seller.
