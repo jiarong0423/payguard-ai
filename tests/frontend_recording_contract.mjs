@@ -69,7 +69,7 @@ requireText(appSource, 'onClick={reviewInvoice}>Confirm Draft Context</Button>',
 
 const warningClickOrder = [
   '**Run Policy Check**',
-  '**Optional PayPal US Sandbox connection**',
+  '**PayPal US Sandbox connection**',
   'check **I reviewed the description and amount and confirm that this action creates a Sandbox draft only.**',
   'select **Confirm Draft Context**',
   'The warning dialog now opens',

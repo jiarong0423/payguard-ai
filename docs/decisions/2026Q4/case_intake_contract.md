@@ -13,7 +13,7 @@ Every request follows the same deterministic sequence:
 5. check chronology, currency, amount and identifier consistency;
 6. apply deterministic routing and fixed reference matching;
 7. prepare an advisory record for human review;
-8. optionally create an AI summary from accepted structured facts;
+8. create a bounded Gemini summary from accepted structured facts, on request;
 9. leave every provider or adjudicator action outside the local contract.
 
 AI never fills a required field, guesses a jurisdiction, resolves a contradiction, authenticates evidence or selects an external action.
@@ -218,7 +218,7 @@ AI may receive only accepted structured synthetic facts and pinned citation iden
 - source limitations;
 - questions for human review.
 
-It may not add facts, authenticate documents, choose jurisdiction, resolve conflicts, select a provider action, predict a result or change any deterministic status. `BLK-02B` has one independently accepted fixed-synthetic `gemini-3.8-flash` execution; that evidence does not establish repeatability, other-stage quality or real-record behavior.
+It may not add facts, authenticate documents, choose jurisdiction, resolve conflicts, select a provider action, predict a result or change any deterministic status. The recorded Gemini run (2026-10-06) is one fixed-synthetic `gemini-3.8-flash` execution; that evidence does not establish repeatability, other-stage quality or real-record behavior.
 
 ## Acceptance tests
 

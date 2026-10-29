@@ -14,7 +14,7 @@ The three stages remain separate. Stage 1 does not collect arrival photos. Stage
 
 ## Provider-context banner
 
-The optional Sandbox disclosure displays these boundaries before its connect and draft actions become visible:
+The Sandbox disclosure displays these boundaries before its connect and draft actions become visible:
 
 - `Demo market: United States`
 - `Provider environment: PayPal Sandbox`
@@ -123,7 +123,7 @@ Developer documentation cannot satisfy policy coverage. Court records cannot bec
 
 Source links are restricted to the exact allowlisted official hosts and paths. All source text renders as plain React text; source data is never executed as HTML or instructions.
 
-## Optional AI panel
+## AI evidence panel
 
 The AI button remains disabled until the stage's deterministic preflight has produced accepted structured synthetic facts. The request cannot include arbitrary user documents, private business data, credentials, loader paths, model configuration or action authority.
 
@@ -145,13 +145,13 @@ Two startup-selected adapters implement this single contract. The default `api` 
 
 The backend owns a single process-local attempt budget with exactly three permanent reservations, one per fixed stage. It validates deterministic readiness and atomically reserves the stage before invoking the adapter. A provider failure, timeout, cancellation, worker crash or invalid response consumes the reservation. Session reset, expiry, purge and replacement do not return it. SDK retry count remains one total invocation. A fourth attempt receives `429 ai_attempt_limit`; an earlier repeat of an already reserved stage receives `409 ai_stage_attempt_exhausted`.
 
-This budget does not survive process restart and is not shared between workers, pods or regions. Before public multi-instance deployment, the same reserve-first contract must move to a strongly consistent shared store or one authoritative Redis cluster with an atomic script, durable persistence and fail-closed behavior. The quota identity must be authenticated or server-signed, and an API gateway must enforce request-rate and daily-cost circuit breakers. No model output can mutate the merchant session, acknowledge a warning, approve a draft or call a provider. `BLK-02B` has one independently accepted fixed-synthetic Gemini execution and human review; no broader model behavior is established.
+This budget does not survive process restart and is not shared between workers, pods or regions. Before public multi-instance deployment, the same reserve-first contract must move to a strongly consistent shared store or one authoritative Redis cluster with an atomic script, durable persistence and fail-closed behavior. The quota identity must be authenticated or server-signed, and an API gateway must enforce request-rate and daily-cost circuit breakers. No model output can mutate the merchant session, acknowledge a warning, approve a draft or call a provider. The recorded Gemini run (2026-10-06) is one fixed-synthetic execution with human review; no broader model behavior is claimed.
 
-## Optional Sandbox panel
+## Sandbox panel
 
 Outbound access is disabled by default. Credentials come only from the operator-owned backend process environment and never enter frontend state or activity logs.
 
-The only accepted `BLK-01B` sequence is:
+The recorded Sandbox sequence (2026-10-06) is:
 
 1. operator confirms an eligible US Business sandbox seller and Invoicing availability;
 2. operator explicitly enables the bounded Sandbox path;
@@ -159,7 +159,7 @@ The only accepted `BLK-01B` sequence is:
 4. UI displays connected only after a validated authentic response;
 5. human reviews the exact synthetic invoice payload and action;
 6. backend may create one unsent invoice `DRAFT`;
-7. the sanitized response receipt is independently reviewed;
+7. the sanitized response receipt is reviewed by a person;
 8. no automatic retry occurs after an uncertain create result.
 
 Invoice send, reminders, QR distribution, payment, capture, refund, dispute mutation and production remain frozen. A POST create response is the accepted creation receipt, not a separate GET readback.
@@ -191,4 +191,4 @@ The UI may not relabel one class as another.
 
 Acceptance requires source scans, component tests, API tests, session/CSRF negatives, foreign-before-load tests, focused warning/acknowledgement tests, full project tests, frontend build, desktop/mobile/keyboard browser review, module audit publication, no-op audit and canonical readback.
 
-Documentation or rendered appearance alone cannot close `BLK-01B`, expand the one-execution `BLK-02B` evidence or close any release gap.
+Documentation or rendered appearance alone cannot extend the recorded Sandbox run, expand the one-execution Gemini evidence or close any release gap.
