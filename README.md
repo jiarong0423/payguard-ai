@@ -8,7 +8,7 @@ This is a US-only, synthetic-data PayPal Sandbox demonstration with one end-to-e
 
 **Working stack:** PayPal Sandbox OAuth, an unsent invoice draft and read-only Disputes readback · FastAPI and deterministic rules · React, Tailwind and AG Grid Community · Gemini on Vertex AI for the evidence brief.
 
-**Verified once against the real Sandbox:** on 2026-10-06 17:44 UTC (2026-10-07 in UTC+8) the gateway authenticated with OAuth client-credentials and created one unsent USD 10.00 invoice draft, Sandbox id `INV2-2MTA-PRPQ-4CAJ-W5UW`, status `DRAFT`. `./tools/run.sh test` runs 436 tests (2 skipped) in about eight seconds.
+**Verified against the real Sandbox:** on 2026-10-06 17:44 UTC (2026-10-07 in UTC+8) the gateway authenticated with OAuth client-credentials and created one unsent USD 10.00 invoice draft, Sandbox id `INV2-2MTA-PRPQ-4CAJ-W5UW`, status `DRAFT`. A later current-byte rehearsal confirmed one OAuth and one unsent draft again and ran the three Gemini stages (see `docs/decisions/2026Q4/architecture.md`). `./tools/run.sh test` runs 436 tests (2 skipped) in about eight seconds.
 
 **Website / video:** [youtu.be/K28N9QhRp1E](https://youtu.be/K28N9QhRp1E) (2:02) · **Devpost:** [devpost.com/software/payguard-ai-zbsp9l](https://devpost.com/software/payguard-ai-zbsp9l)
 
@@ -16,9 +16,9 @@ This is a US-only, synthetic-data PayPal Sandbox demonstration with one end-to-e
 | --- | --- | --- |
 | Connect the merchant | `POST /v1/oauth2/token` (client-credentials) | Real Sandbox call |
 | Unsent invoice draft after the AUP preflight | `POST /v2/invoicing/invoices` | Real Sandbox call, status `DRAFT`, never sent |
-| Webhook signature check | `POST /v1/notifications/verify-webhook-signature` | Real endpoint, exercised with recorded fixtures in tests |
-| Read the merchant's dispute list (STEP 03) | `GET /v1/customer/disputes` | Real Sandbox call when connected; otherwise a synthetic fixture in the same JSON shape, labelled **Fixture data** in the UI |
-| Read one dispute | `GET /v1/customer/disputes/{id}` | Real Sandbox call when connected; otherwise the fixture |
+| Webhook signature check | `POST /v1/notifications/verify-webhook-signature` | Allow-listed Sandbox endpoint; exercised in tests with hand-written mock responses; needs `PAYPAL_WEBHOOK_ID`; no UI path |
+| Read the merchant's dispute list (STEP 03) | `GET /v1/customer/disputes` | Implemented for the Sandbox and tested with a mocked transport; not yet run against a live Sandbox dispute. Without a connection a synthetic fixture in the same JSON shape is used, labelled **Fixture data** in the UI |
+| Read one dispute | `GET /v1/customer/disputes/{id}` | Implemented for the Sandbox and tested with a mocked transport; not yet run against a live Sandbox dispute; otherwise the fixture |
 | Assemble the evidence response | `POST /v1/customer/disputes/{id}/provide-evidence` | Multipart request is built and previewed from the local draft for a dispute id the console itself returned; it is sent only after the local review approval, with `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`, a Sandbox connection and an explicit `submit: true` |
 | Sales-velocity stream, dispute checklist, evidence ZIP | none | Local synthetic data by design |
 
@@ -184,7 +184,7 @@ The server-owned `payguard-bounded-advisory-v2` prompt contract accepts no calle
 
 The AI integration is a dual-line adapter boundary. `./tools/run.sh api` keeps the existing default Gemini line. `./tools/run.sh local-ai-api` explicitly selects the default-off LM Studio line; it has no key, proxy, remote URL, caller-supplied model or automatic fallback. Both lines share the same stage-only request, prompt digest, closed text inventory, citation order, no-action fields and process-local three-attempt budget. The frontend accepts only the valid model/evidence pairs. The two providers are never called together.
 
-The local line fixes the endpoint to `http://127.0.0.1:1234/v1/chat/completions`, the model to `nvidia-nemotron-3-nano-4b`, structured JSON output, `reasoning_effort=none`, no tools, one serialized in-flight inference and no retry. The public source contains structural and synthetic tests for this contract. The Gemini brief was exercised against Vertex AI `gemini-3.8-flash` in a single operator-run call (no retry); Gemini writes the brief from fixed synthetic facts and fixed code validates it; the console also starts without a Gemini profile.
+The local line fixes the endpoint to `http://127.0.0.1:1234/v1/chat/completions`, the model to `nvidia-nemotron-3-nano-4b`, structured JSON output, `reasoning_effort=none`, no tools, one serialized in-flight inference and no retry. The public source contains structural and synthetic tests for this contract. The Gemini brief was exercised against Vertex AI `gemini-3.8-flash` in a validated operator-run call on 2026-10-06 (10:48 UTC, 3.5 s, no automatic retry) and again in the current-byte rehearsal; Gemini writes the brief from fixed synthetic facts and fixed code validates it; the console also starts without a Gemini profile.
 
 ## Validation
 
@@ -211,7 +211,7 @@ Gemini-profile validation remains separate:
 ./tools/run.sh gemini-test
 ```
 
-Measured scope: `./tools/run.sh test` runs 436 tests (2 skipped) against synthetic data, mocked transports and the built-in fixture; the Sandbox calls are covered by one operator-run receipt (2026-10-07) and by MockTransport tests. Not covered: multi-instance or hosted operation and real-record behaviour.
+Measured scope: `./tools/run.sh test` runs 436 tests (2 skipped) against synthetic data, mocked transports and the built-in fixture; the Sandbox OAuth and invoice-draft calls are covered by an operator-run receipt (2026-10-06 UTC) and a later rehearsal, and the Disputes and webhook calls by MockTransport tests. Not covered: multi-instance or hosted operation and real-record behaviour.
 
 ## Architecture, privacy and release boundary
 
