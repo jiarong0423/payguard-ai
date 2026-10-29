@@ -464,9 +464,12 @@ class ApiTests(unittest.TestCase):
         # submit request stays frozen while the provider is disabled.
         self.assertEqual(self.post("/paypal/disputes/provide-evidence").status_code, 422)
         self.post("/demo/inject", {"scenario": "dispute"})
-        self.assertEqual(self.post("/disputes/case-ref-001/draft").status_code, 200)
-        frozen = self.post("/paypal/disputes/provide-evidence",
-                           {"dispute_id": "PP-D-00000001", "case_ref": "case-ref-001", "submit": True})
+        draft = self.post("/disputes/case-ref-001/draft")
+        self.assertEqual(draft.status_code, 200)
+        request = {"dispute_id": "PP-D-00000001", "case_ref": "case-ref-001", "submit": True}
+        self.assertEqual(self.post("/paypal/disputes/provide-evidence", request).json()["error"]["code"], "approval_required")
+        self.assertEqual(self.post("/disputes/case-ref-001/approve", {"draft_digest": draft.json()["draft_digest"]}).status_code, 200)
+        frozen = self.post("/paypal/disputes/provide-evidence", request)
         self.assertEqual((frozen.status_code, frozen.json()["error"]["code"]), (503, "provider_action_frozen"))
         self.assertEqual(self.calls, [])
 

@@ -12,6 +12,7 @@ request preview. It is sent only when the operator sets
 """
 
 from copy import deepcopy
+from datetime import datetime, timedelta, timezone
 import hashlib
 import json
 import re
@@ -50,77 +51,89 @@ _TRANSACTION_ID = re.compile(r"[A-Za-z0-9._-]{1,64}")
 _TRACKING = re.compile(r"[A-Za-z0-9._-]{1,64}")
 
 
-# Synthetic fixture in the public PayPal Disputes API JSON shape. Identifiers,
-# amounts and dates are invented; they correspond to no PayPal account.
-FIXTURE_DISPUTES = (
-    {
-        "dispute_id": "PP-D-00000001",
-        "create_time": "2026-10-20T14:02:11.000Z",
-        "update_time": "2026-10-21T09:15:40.000Z",
-        "disputed_transactions": [{
-            "seller_transaction_id": "SYNTHETIC-TXN-0001",
-            "create_time": "2026-10-17T18:40:03.000Z",
-            "transaction_status": "COMPLETED",
-            "gross_amount": {"currency_code": "USD", "value": "48.00"},
-            "seller": {"merchant_id": "SYNTHETICMERCHANT", "name": "Synthetic Demo Seller"},
-            "buyer": {"name": "Synthetic Demo Person"},
-            "items": [{"item_id": "SYN-CUP-001", "item_description": "Handcrafted ceramic coffee cup, set of two",
-                       "item_quantity": "1", "partner_transaction_id": "SYNTHETIC-TXN-0001"}],
-            "seller_protection_eligible": True,
-        }],
-        "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
-        "status": "WAITING_FOR_SELLER_RESPONSE",
-        "dispute_state": "REQUIRED_ACTION",
-        "dispute_amount": {"currency_code": "USD", "value": "48.00"},
-        "dispute_life_cycle_stage": "INQUIRY",
-        "dispute_channel": "INTERNAL",
-        "messages": [{"posted_by": "BUYER", "time_posted": "2026-10-20T14:02:11.000Z",
-                      "content": "Synthetic buyer message: the package has not arrived."}],
-        "evidences": [{
-            "evidence_type": "PROOF_OF_FULFILLMENT",
-            "source": "REQUESTED_FROM_SELLER",
-            "action": "PROVIDE_EVIDENCE",
-            "date": "2026-10-20T14:02:11.000Z",
-            "notes": "Synthetic request: provide tracking information.",
-        }],
-        "seller_response_due_date": "2026-11-09T14:02:11.000Z",
-        "links": [{"href": "https://api-m.sandbox.paypal.com/v1/customer/disputes/PP-D-00000001",
-                   "rel": "self", "method": "GET"}],
-    },
-    {
-        "dispute_id": "PP-D-00000002",
-        "create_time": "2026-10-12T08:30:00.000Z",
-        "update_time": "2026-10-19T16:45:12.000Z",
-        "disputed_transactions": [{
-            "seller_transaction_id": "SYNTHETIC-TXN-0002",
-            "create_time": "2026-10-05T11:12:45.000Z",
-            "transaction_status": "COMPLETED",
-            "gross_amount": {"currency_code": "USD", "value": "125.50"},
-            "seller": {"merchant_id": "SYNTHETICMERCHANT", "name": "Synthetic Demo Seller"},
-            "buyer": {"name": "Synthetic Demo Person"},
-            "items": [{"item_id": "SYN-LAMP-002", "item_description": "Hand-blown glass table lamp",
-                       "item_quantity": "1", "partner_transaction_id": "SYNTHETIC-TXN-0002"}],
-            "seller_protection_eligible": False,
-        }],
-        "reason": "MERCHANDISE_OR_SERVICE_NOT_AS_DESCRIBED",
-        "status": "UNDER_REVIEW",
-        "dispute_state": "UNDER_PAYPAL_REVIEW",
-        "dispute_amount": {"currency_code": "USD", "value": "125.50"},
-        "dispute_life_cycle_stage": "CHARGEBACK",
-        "dispute_channel": "EXTERNAL",
-        "messages": [],
-        "evidences": [{
-            "evidence_type": "PROOF_OF_FULFILLMENT",
-            "source": "SUBMITTED_BY_SELLER",
-            "action": None,
-            "date": "2026-10-14T10:00:00.000Z",
-            "documents": [{"name": "synthetic-receipt.pdf", "url": "https://example.invalid/synthetic"}],
-        }],
-        "seller_response_due_date": "2026-10-22T08:30:00.000Z",
-        "links": [{"href": "https://api-m.sandbox.paypal.com/v1/customer/disputes/PP-D-00000002",
-                   "rel": "self", "method": "GET"}],
-    },
-)
+FIXTURE_DISPUTE_IDS = frozenset({"PP-D-00000001", "PP-D-00000002"})
+
+
+def _stamp(moment: datetime) -> str:
+    return moment.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.000Z")
+
+
+def fixture_disputes(now: datetime) -> tuple[dict, ...]:
+    """Synthetic disputes in the public PayPal Disputes API JSON shape.
+
+    Dates are offsets from ``now`` (the request time), so the response windows
+    never expire as the calendar moves. Identifiers, amounts and names are
+    invented; they correspond to no PayPal account.
+    """
+    return (
+        {
+            "dispute_id": "PP-D-00000001",
+            "create_time": _stamp(now - timedelta(days=2)),
+            "update_time": _stamp(now - timedelta(hours=6)),
+            "disputed_transactions": [{
+                "seller_transaction_id": "SYNTHETIC-TXN-0001",
+                "create_time": _stamp(now - timedelta(days=6)),
+                "transaction_status": "COMPLETED",
+                "gross_amount": {"currency_code": "USD", "value": "48.00"},
+                "seller": {"merchant_id": "SYNTHETICMERCHANT", "name": "Synthetic Demo Seller"},
+                "buyer": {"name": "Synthetic Demo Person"},
+                "items": [{"item_id": "SYN-CUP-001", "item_description": "Handcrafted ceramic coffee cup, set of two",
+                           "item_quantity": "1", "partner_transaction_id": "SYNTHETIC-TXN-0001"}],
+                "seller_protection_eligible": True,
+            }],
+            "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+            "status": "WAITING_FOR_SELLER_RESPONSE",
+            "dispute_state": "REQUIRED_ACTION",
+            "dispute_amount": {"currency_code": "USD", "value": "48.00"},
+            "dispute_life_cycle_stage": "INQUIRY",
+            "dispute_channel": "INTERNAL",
+            "messages": [{"posted_by": "BUYER", "time_posted": _stamp(now - timedelta(days=2)),
+                          "content": "Synthetic buyer message: the package has not arrived."}],
+            "evidences": [{
+                "evidence_type": "PROOF_OF_FULFILLMENT",
+                "source": "REQUESTED_FROM_SELLER",
+                "action": "PROVIDE_EVIDENCE",
+                "date": _stamp(now - timedelta(days=2)),
+                "notes": "Synthetic request: provide tracking information.",
+            }],
+            "seller_response_due_date": _stamp(now + timedelta(days=7)),
+            "links": [{"href": "https://api-m.sandbox.paypal.com/v1/customer/disputes/PP-D-00000001",
+                       "rel": "self", "method": "GET"}],
+        },
+        {
+            "dispute_id": "PP-D-00000002",
+            "create_time": _stamp(now - timedelta(days=9)),
+            "update_time": _stamp(now - timedelta(days=1)),
+            "disputed_transactions": [{
+                "seller_transaction_id": "SYNTHETIC-TXN-0002",
+                "create_time": _stamp(now - timedelta(days=16)),
+                "transaction_status": "COMPLETED",
+                "gross_amount": {"currency_code": "USD", "value": "125.50"},
+                "seller": {"merchant_id": "SYNTHETICMERCHANT", "name": "Synthetic Demo Seller"},
+                "buyer": {"name": "Synthetic Demo Person"},
+                "items": [{"item_id": "SYN-LAMP-002", "item_description": "Hand-blown glass table lamp",
+                           "item_quantity": "1", "partner_transaction_id": "SYNTHETIC-TXN-0002"}],
+                "seller_protection_eligible": False,
+            }],
+            "reason": "MERCHANDISE_OR_SERVICE_NOT_AS_DESCRIBED",
+            "status": "UNDER_REVIEW",
+            "dispute_state": "UNDER_PAYPAL_REVIEW",
+            "dispute_amount": {"currency_code": "USD", "value": "125.50"},
+            "dispute_life_cycle_stage": "CHARGEBACK",
+            "dispute_channel": "EXTERNAL",
+            "messages": [],
+            "evidences": [{
+                "evidence_type": "PROOF_OF_FULFILLMENT",
+                "source": "SUBMITTED_BY_SELLER",
+                "action": None,
+                "date": _stamp(now - timedelta(days=7)),
+                "documents": [{"name": "synthetic-receipt.pdf", "url": "https://example.invalid/synthetic"}],
+            }],
+            "seller_response_due_date": _stamp(now + timedelta(days=5)),
+            "links": [{"href": "https://api-m.sandbox.paypal.com/v1/customer/disputes/PP-D-00000002",
+                       "rel": "self", "method": "GET"}],
+        },
+    )
 
 
 def _invalid():
@@ -311,6 +324,19 @@ class DisputeReadbackService:
     def __init__(self, store: SessionStore, adapter):
         self._store = store
         self._adapter = adapter
+        # Dispute ids this session has read, per data source. A preview or submit
+        # may only name an id the console itself returned for the current source.
+        self._seen: dict[str, dict[str, set]] = {}
+
+    def _remember(self, session: Session, source: str, ids) -> None:
+        for stale in [key for key in self._seen if key not in self._store.sessions]:
+            del self._seen[stale]
+        self._seen.setdefault(session.session_id, {}).setdefault(source, set()).update(ids)
+
+    def _known(self, session: Session, live: bool, dispute_id: str) -> bool:
+        if not live:
+            return dispute_id in FIXTURE_DISPUTE_IDS
+        return dispute_id in self._seen.get(session.session_id, {}).get("paypal_sandbox", set())
 
     def _connected(self) -> bool:
         try:
@@ -343,7 +369,9 @@ class DisputeReadbackService:
         if live:
             items = await self._adapter.list_disputes()
         else:
-            items = [sanitize_dispute_summary(row) for row in FIXTURE_DISPUTES]
+            items = [sanitize_dispute_summary(row) for row in fixture_disputes(self._store._now())]
+        if live:
+            self._remember(session, "paypal_sandbox", [row["dispute_id"] for row in items])
         try:
             return DisputeListResponse.model_validate(dict(self._envelope(live, "GET_LIST"), items=items)).model_dump()
         except ValidationError:
@@ -358,10 +386,12 @@ class DisputeReadbackService:
         if live:
             detail = await self._adapter.get_dispute(dispute_id)
         else:
-            match = [row for row in FIXTURE_DISPUTES if row["dispute_id"] == dispute_id]
+            match = [row for row in fixture_disputes(self._store._now()) if row["dispute_id"] == dispute_id]
             if not match:
                 raise BoundaryError(404, "dispute_not_found")
             detail = sanitize_dispute_detail(deepcopy(match[0]))
+        if live:
+            self._remember(session, "paypal_sandbox", [dispute_id])
         try:
             return DisputeDetailResponse.model_validate(dict(self._envelope(live, "GET_DETAIL"), **detail)).model_dump()
         except ValidationError:
@@ -371,6 +401,9 @@ class DisputeReadbackService:
         dispute_id = body["dispute_id"]
         case_ref = body["case_ref"]
         submit = body["submit"] is True
+        live = self._connected()
+        if not self._known(session, live, dispute_id):
+            raise BoundaryError(404, "dispute_not_found")
         with self._store.lock:
             now = self._store._now()
             self._store._require_live_session(session, now)
@@ -379,17 +412,19 @@ class DisputeReadbackService:
             if case_id not in session.drafts or case_id not in session.restricted_evidence:
                 raise BoundaryError(422, "draft_required")
             self._store._verified_restricted_digest(session, case_id)
+            approved = case_id in session.approved
             restricted = deepcopy(session.restricted_evidence[case_id])
             attachment_bytes = {row["attachment_id"]: row["content"]
                                 for row in session.disputes[case_id].get("attachment_candidates", [])
                                 if type(row.get("attachment_id")) is str and type(row.get("content")) is bytes}
         preview = build_provide_evidence_request(dispute_id, case_ref, restricted, masked=True)
-        live = self._connected()
         submit_enabled = bool(self._adapter.dispute_submit_enabled())
         envelope = self._envelope(live, "PROVIDE_EVIDENCE_PREVIEW")
         result = dict(envelope, dispute_id=dispute_id, case_ref=case_ref, external_send="FROZEN",
                       submit_flag_enabled=submit_enabled, human_review_required=True, **preview)
         if submit:
+            if not approved:
+                raise BoundaryError(422, "approval_required")
             if not live or not submit_enabled:
                 raise BoundaryError(503, "provider_action_frozen")
             unmasked = build_provide_evidence_request(dispute_id, case_ref, restricted, masked=False,

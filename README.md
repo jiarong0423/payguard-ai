@@ -8,7 +8,7 @@ This is a US-only, synthetic-data PayPal Sandbox demonstration with one end-to-e
 
 **Working stack:** PayPal Sandbox OAuth, an unsent invoice draft and read-only Disputes readback · FastAPI and deterministic rules · React, Tailwind and AG Grid Community · optional bounded Gemini on Vertex AI.
 
-**Verified once against the real Sandbox:** on 2026-10-07 the gateway authenticated with OAuth client-credentials and created one unsent USD 10.00 invoice draft, Sandbox id `INV2-2MTA-PRPQ-4CAJ-W5UW`, status `DRAFT`. `./tools/run.sh test` runs 433 tests (2 skipped) in about eight seconds.
+**Verified once against the real Sandbox:** on 2026-10-07 the gateway authenticated with OAuth client-credentials and created one unsent USD 10.00 invoice draft, Sandbox id `INV2-2MTA-PRPQ-4CAJ-W5UW`, status `DRAFT`. `./tools/run.sh test` runs 436 tests (2 skipped) in about eight seconds.
 
 **Website / video:** [youtu.be/K28N9QhRp1E](https://youtu.be/K28N9QhRp1E) (2:02) · **Devpost:** [devpost.com/software/payguard-ai-zbsp9l](https://devpost.com/software/payguard-ai-zbsp9l)
 
@@ -19,7 +19,7 @@ This is a US-only, synthetic-data PayPal Sandbox demonstration with one end-to-e
 | Webhook signature check | `POST /v1/notifications/verify-webhook-signature` | Real endpoint, exercised with recorded fixtures in tests |
 | Read the merchant's dispute list (STEP 03) | `GET /v1/customer/disputes` | Real Sandbox call when connected; otherwise a synthetic fixture in the same JSON shape, labelled **Fixture data** in the UI |
 | Read one dispute | `GET /v1/customer/disputes/{id}` | Real Sandbox call when connected; otherwise the fixture |
-| Assemble the evidence response | `POST /v1/customer/disputes/{id}/provide-evidence` | Multipart request is built and previewed from the local draft; it is sent only with `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled` and an explicit `submit: true` |
+| Assemble the evidence response | `POST /v1/customer/disputes/{id}/provide-evidence` | Multipart request is built and previewed from the local draft for a dispute id the console itself returned; it is sent only after the local review approval, with `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`, a Sandbox connection and an explicit `submit: true` |
 | Sales-velocity stream, dispute checklist, evidence ZIP | none | Local synthetic data by design |
 
 ![Concept illustration of a merchant reviewing AUP warnings, sales velocity and dispute evidence with PayGuard AI](docs/submission/payguard_cover.png)
@@ -68,7 +68,7 @@ The console uses FastAPI, React, Tailwind and AG Grid Community. Its lazy-loaded
 
 The active analytics dependency boundary is AG Grid Community under the MIT licence. No Commercial AG packages are part of the current frontend dependency or lock contract. The MIT license, contributor-rights attestation, third-party notices and exact export manifest travel with the public source package.
 
-**Source release contract:** The Devpost project is submitted and the 2:02 demonstration is public. The complete repository run instructions below are the selected functional-demo path; a hosted demo URL is optional and unperformed. A new local export starts as `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` until its exact bytes pass security review, independent acceptance and repository readback. Only an accepted public source candidate records `PUBLIC_SOURCE_PUBLISHED` through `--published-source`. This status covers source availability, not public hosting or production readiness. A prior public commit does not publish changed local files. The US-only synthetic implementation and its bounded Sandbox and optional AI paths do not prove provider telemetry, a separate GET, invoice sending, payment, repeatability, real-record behavior, policy correctness, provider retention behavior or multi-user AI operation.
+**Release status:** the Devpost project is submitted and the 2:02 demonstration is public. The complete repository run instructions below are the functional-demo path; a hosted demo URL is optional and unperformed (hosting was not part of this entry). The default run uses synthetic data and needs no credentials.
 
 ## US Sandbox identity boundary
 
@@ -117,7 +117,7 @@ npm run dev
 
 Open `http://127.0.0.1:5173`. The API listens on `http://127.0.0.1:8000`, and Vite proxies `/api`. Stop each process with `Ctrl+C`. Missing runtime dependencies fail closed. API failure displays an error instead of switching to a hidden mock dataset.
 
-Each stage loads its synthetic scenario when you open it: STEP 02 loads the fifty-capture sales burst and STEP 03 loads the dispute case and the provider dispute readback. The **Load** buttons remain for reloading; loading again never duplicates records.
+Each stage loads its synthetic scenario when you open it: STEP 02 loads the fifty-capture sales burst and STEP 03 loads the dispute case and the provider dispute readback. The **Load** buttons remain for reloading; loading again never duplicates records. The fixture disputes use dates relative to the request time (response due in 7 and 5 days), so they never show as expired.
 
 ### Turning on PayPal
 
@@ -130,7 +130,7 @@ export PAYPAL_CLIENT_SECRET=...      # Sandbox app secret
 ./tools/run.sh api
 ```
 
-Then expand **Optional PayPal US Sandbox connection** in STEP 01 and select **Connect US Sandbox**. After the OAuth receipt shows, STEP 03 reads `GET /v1/customer/disputes` from that account and labels the rows **Sandbox data**. The `provide-evidence` request stays a preview unless you also export `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled` and call the API with `submit: true`; the console never sets that flag for you. The project does not read `.env` files, and credentials never reach the browser, logs or evidence files.
+Then expand **Optional PayPal US Sandbox connection** in STEP 01 and select **Connect US Sandbox**. After the OAuth receipt shows, STEP 03 reads `GET /v1/customer/disputes` from that account and labels the rows **Sandbox data**. The `provide-evidence` request stays a preview unless you also export `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`, record the local review approval for the case and submit with the console's gated button (or `submit: true` on the API). An id the console did not return, or a case without approval, is refused (404 or 422). The console never sets that flag for you. The project does not read `.env` files, and credentials never reach the browser, logs or evidence files.
 
 ### Turning on Gemini
 
@@ -174,9 +174,9 @@ See the [official source register](docs/decisions/2026Q4/us_official_source_regi
 
 Outbound Sandbox access is disabled by default and requires the operator's explicit local opt-in. Credentials remain in the backend process environment and must never enter the repository, frontend, screenshots, prompts or reports.
 
-The reviewed local records are operator-attested evidence limited to one bounded Sandbox OAuth result and one unsent USD `10.00` invoice `DRAFT`. To replay the Sandbox path yourself, set `PAYGUARD_PAYPAL_OUTBOUND=enabled` with your own Sandbox app credentials (see "Turning on PayPal" above); the fixture mode shows the same three stages without any key. Invoice creation and invoice sending remain separate operations. A create response is not a separate GET readback. Production, invoice send, payment, capture and refund remain frozen; dispute evidence submission is a separate opt-in (`PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`) and is off by default.
+The reviewed local records are operator-attested evidence limited to one bounded Sandbox OAuth result and one unsent USD `10.00` invoice `DRAFT`. To replay the Sandbox path yourself, set `PAYGUARD_PAYPAL_OUTBOUND=enabled` with your own Sandbox app credentials (see "Turning on PayPal" above); the fixture mode shows the same three stages without any key. Invoice creation and invoice sending remain separate operations. I did not issue a GET for the invoice after creating it. Production, invoice send, payment, capture and refund remain frozen; dispute evidence submission is a separate opt-in (`PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`) and is off by default.
 
-The optional Gemini path is bounded to fixed synthetic facts, pinned citation identities and no automatic retry. Its prior reviewed result is operator-attested and should be presented to a judge as an execution only when shown live; public source establishes the adapter contract, not an external run. The model cannot select jurisdiction, change deterministic results, establish policy applicability or authorize a provider action. No repeatability, other-stage quality, real-record behavior or production claim is made.
+The optional Gemini path is bounded to fixed synthetic facts, pinned citation identities and no automatic retry. The Gemini brief was run once against Vertex AI `gemini-3.8-flash` by the operator; to reproduce it you need your own Vertex AI project (see "Turning on Gemini"). The model cannot select jurisdiction, change deterministic results or authorize a provider action, and the console runs without it.
 
 The current runtime adds a process-local denial-of-wallet guard around this optional path: three permanent attempt reservations total, one for each fixed stage. Disabled or invalidly configured AI requests do not consume a reservation. After enablement and deterministic context validation, reservation occurs atomically before the provider call; failures, timeouts, cancellation and invalid responses still consume the stage slot. Session reset, expiry and new sessions do not restore it. This is a local prototype control, not a production distributed quota. A public multi-worker or multi-instance deployment must use a durable shared atomic reservation store plus API-gateway rate and budget circuit breakers so restart, another worker or another instance cannot restore capacity.
 
@@ -187,6 +187,8 @@ The AI integration is a dual-line adapter boundary. `./tools/run.sh api` keeps t
 The local line fixes the endpoint to `http://127.0.0.1:1234/v1/chat/completions`, the model to `nvidia-nemotron-3-nano-4b`, structured JSON output, `reasoning_effort=none`, no tools, one serialized in-flight inference and no retry. The public source contains structural and synthetic tests for this contract. The Gemini brief was exercised against Vertex AI `gemini-3.8-flash` in one operator-attested run; it is optional, bounded to fixed synthetic facts, and the console runs without it.
 
 ## Validation
+
+**Public package versus the private export.** The project's private working export also ran two local-only test files, `tests/test_governance.py` and `tests/test_submission_readiness.py`, which check export tooling, module registries and release receipts that are not part of this repository. They account for the 471 count quoted in earlier notes; the public package does not contain them. The number you can reproduce from this repository is the one `./tools/run.sh test` prints (436 tests, 2 skipped).
 
 Use the project-local runner and frontend build:
 
@@ -209,7 +211,7 @@ Optional Gemini-profile validation remains separate:
 ./tools/run.sh gemini-test
 ```
 
-Local tests, screenshots and mock transports validate only their recorded runtime and source contracts. The export manifest carries the exact source-release state. The public video closes the video-publication step but does not close current-source gates; the Devpost project is submitted, and these checks do not prove public or production hosting or multi-user AI operation.
+Measured scope: `./tools/run.sh test` runs 436 tests (2 skipped) against synthetic data, mocked transports and the built-in fixture; the Sandbox calls are covered by one operator-run receipt (2026-10-07) and by MockTransport tests. Not covered: multi-instance or hosted operation and real-record behaviour.
 
 ## Architecture, privacy and release boundary
 
@@ -221,6 +223,6 @@ Local tests, screenshots and mock transports validate only their recorded runtim
 - [Standalone architecture/status visual](docs/decisions/2026Q4/payguard_us_architecture_status.svg)
 - [Security policy](SECURITY.md)
 
-The default dataset is synthetic and session-bound. Pseudonymization is not complete anonymization. What is in this release: the three-stage console, 433 tests, the Sandbox gateway (OAuth, unsent invoice draft, Disputes readback, gated provide-evidence) and the fixture data. What is not: multi-tenant auth, logistics feeds, automatic dispute ingestion, cloud deployment.
+The default dataset is synthetic and session-bound. Pseudonymization is not complete anonymization. What is in this release: the three-stage console, 436 tests, the Sandbox gateway (OAuth, unsent invoice draft, Disputes readback, gated provide-evidence) and the fixture data. What is not: multi-tenant auth, logistics feeds, automatic dispute ingestion, cloud deployment.
 
 The MIT license, contributor-rights attestation and third-party notices are present in the source package. The manifest distinguishes the default local-review state from the explicit published-source state. The demonstration video is public; the Devpost project is submitted. Later source revisions require fresh release review.

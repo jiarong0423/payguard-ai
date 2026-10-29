@@ -17,7 +17,7 @@ from pydantic import ValidationError
 
 from app.main import create_app
 from app.paypal import PaypalAdapter, PaypalConfig, SANDBOX_BASE, allowed_request
-from app.paypal_disputes import (FIXTURE_DISPUTES, build_provide_evidence_request, multipart_parts,
+from app.paypal_disputes import (fixture_disputes, build_provide_evidence_request, multipart_parts,
                                  sanitize_dispute_detail, sanitize_dispute_list, sanitize_dispute_summary)
 from app.schemas import DisputeDetailResponse, DisputeListResponse, ProvideEvidenceResponse
 from app.store import BoundaryError, DEMO_BURST_AMOUNTS, SessionStore
@@ -30,22 +30,26 @@ PRIVATE_MARKERS = ("Synthetic Demo Person", "Synthetic Demo Seller", "SYNTHETICM
 
 
 class Clock:
-    def __init__(self):
-        self.now = datetime(2026, 10, 29, 8, 0, tzinfo=timezone.utc)
+    def __init__(self, start=None):
+        self.now = start or datetime(2026, 10, 29, 8, 0, tzinfo=timezone.utc)
 
     def __call__(self):
         return self.now
 
 
+FIXTURE_NOW = Clock()()
+FIX = fixture_disputes(FIXTURE_NOW)
+
+
 def sandbox_list_reply():
-    return {"items": [dict(FIXTURE_DISPUTES[0], dispute_id="PP-D-SANDBOX01",
+    return {"items": [dict(FIX[0], dispute_id="PP-D-SANDBOX01",
                            messages=[{"content": "private-message-marker"}]),
-                      dict(FIXTURE_DISPUTES[1], dispute_id="PP-D-SANDBOX02")],
+                      dict(FIX[1], dispute_id="PP-D-SANDBOX02")],
             "links": [{"href": "https://api-m.sandbox.paypal.com/private-link-marker", "rel": "self"}]}
 
 
 def sandbox_detail_reply(dispute_id="PP-D-SANDBOX01"):
-    return dict(FIXTURE_DISPUTES[0], dispute_id=dispute_id, status="OTHER", dispute_life_cycle_stage="UNEXPECTED",
+    return dict(FIX[0], dispute_id=dispute_id, status="OTHER", dispute_life_cycle_stage="UNEXPECTED",
                 extensions={"merchant_contacted": True}, offer={"buyer_requested_amount": {"value": "1.00"}})
 
 
@@ -72,7 +76,7 @@ class AllowlistTests(unittest.TestCase):
 
 class SanitizerTests(unittest.TestCase):
     def test_summary_and_detail_drop_private_fields(self):
-        summary = sanitize_dispute_summary(FIXTURE_DISPUTES[0])
+        summary = sanitize_dispute_summary(FIX[0])
         self.assertEqual(set(summary), {"dispute_id", "reason", "status", "dispute_life_cycle_stage", "dispute_state",
                                         "dispute_amount", "create_time", "update_time", "seller_response_due_date"})
         detail = sanitize_dispute_detail(sandbox_detail_reply())
@@ -83,7 +87,7 @@ class SanitizerTests(unittest.TestCase):
                                                             "gross_amount": {"currency_code": "USD", "value": "48.00"},
                                                             "seller_protection_eligible": True}])
         self.assertEqual(detail["evidences"], [{"evidence_type": "PROOF_OF_FULFILLMENT", "source": "REQUESTED_FROM_SELLER",
-                                                "action": "PROVIDE_EVIDENCE", "date": "2026-10-20T14:02:11.000Z"}])
+                                                "action": "PROVIDE_EVIDENCE", "date": FIX[0]["evidences"][0]["date"]}])
         encoded = json.dumps(detail)
         for marker in PRIVATE_MARKERS:
             self.assertNotIn(marker, encoded)
@@ -94,18 +98,18 @@ class SanitizerTests(unittest.TestCase):
 
     def test_invalid_provider_shapes_fail_closed(self):
         for broken in ({"items": "rows"}, {"items": [{"dispute_id": "../x"}]},
-                       {"items": [FIXTURE_DISPUTES[0], FIXTURE_DISPUTES[0]]},
-                       {"items": [dict(FIXTURE_DISPUTES[0], dispute_amount={"currency_code": "usd", "value": "1"})]},
-                       {"items": [dict(FIXTURE_DISPUTES[0], create_time="2026-10-20 14:02")]},
-                       {"items": [dict(FIXTURE_DISPUTES[0], reason=["MERCHANDISE_OR_SERVICE_NOT_RECEIVED"])]}):
+                       {"items": [FIX[0], FIX[0]]},
+                       {"items": [dict(FIX[0], dispute_amount={"currency_code": "usd", "value": "1"})]},
+                       {"items": [dict(FIX[0], create_time="2026-10-20 14:02")]},
+                       {"items": [dict(FIX[0], reason=["MERCHANDISE_OR_SERVICE_NOT_RECEIVED"])]}):
             with self.subTest(broken=str(broken)[:60]), self.assertRaises(BoundaryError) as caught:
                 sanitize_dispute_list(broken)
             self.assertEqual(caught.exception.code, "provider_response_invalid")
         self.assertEqual(sanitize_dispute_list({}), [])
         with self.assertRaises(BoundaryError):
-            sanitize_dispute_detail(dict(FIXTURE_DISPUTES[0], disputed_transactions=[{"seller_transaction_id": "a b"}]))
+            sanitize_dispute_detail(dict(FIX[0], disputed_transactions=[{"seller_transaction_id": "a b"}]))
         with self.assertRaises(BoundaryError):
-            sanitize_dispute_detail(dict(FIXTURE_DISPUTES[0], evidences=[{"evidence_type": "proof"}]))
+            sanitize_dispute_detail(dict(FIX[0], evidences=[{"evidence_type": "proof"}]))
 
     def test_schema_bindings_reject_inconsistent_envelopes(self):
         base = dict(source="synthetic_fixture", data_source_label="Fixture", environment="sandbox",
@@ -203,6 +207,35 @@ class FixtureRouteTests(unittest.TestCase):
         self.assertEqual(self.client.get(ROOT + "/paypal/disputes").status_code, 401)
         self.assertEqual(self.calls, [])
 
+    def test_fixture_dates_are_relative_to_request_time_and_never_expired(self):
+        for shifted in (FIXTURE_NOW, FIXTURE_NOW + timedelta(days=400), datetime(2031, 3, 1, tzinfo=timezone.utc)):
+            rows = fixture_disputes(shifted)
+            self.assertEqual([row["seller_response_due_date"] for row in rows],
+                             [(shifted + timedelta(days=7)).strftime("%Y-%m-%dT%H:%M:%S.000Z"),
+                              (shifted + timedelta(days=5)).strftime("%Y-%m-%dT%H:%M:%S.000Z")])
+            self.assertTrue(all(row["create_time"] < row["seller_response_due_date"] for row in rows))
+        self.clock.now += timedelta(minutes=10)
+        due = [row["seller_response_due_date"] for row in self.get("/paypal/disputes").json()["items"]]
+        self.assertEqual(due, [(self.clock.now + timedelta(days=7)).strftime("%Y-%m-%dT%H:%M:%S.000Z"),
+                               (self.clock.now + timedelta(days=5)).strftime("%Y-%m-%dT%H:%M:%S.000Z")])
+
+    def test_unknown_dispute_id_is_rejected_for_preview_and_submit(self):
+        self.post("/demo/inject", {"scenario": "dispute"})
+        self.assertEqual(self.post("/disputes/case-ref-001/draft").status_code, 200)
+        for submit in (False, True):
+            response = self.post("/paypal/disputes/provide-evidence",
+                                 {"dispute_id": "PP-D-99999999", "case_ref": "case-ref-001", "submit": submit})
+            self.assertEqual((response.status_code, response.json()["error"]["code"]), (404, "dispute_not_found"))
+        self.assertEqual(self.calls, [])
+
+    def test_submit_before_approval_is_rejected_even_for_known_id(self):
+        self.post("/demo/inject", {"scenario": "dispute"})
+        self.assertEqual(self.post("/disputes/case-ref-001/draft").status_code, 200)
+        response = self.post("/paypal/disputes/provide-evidence",
+                             {"dispute_id": "PP-D-00000001", "case_ref": "case-ref-001", "submit": True})
+        self.assertEqual((response.status_code, response.json()["error"]["code"]), (422, "approval_required"))
+        self.assertEqual(self.calls, [])
+
     def test_preview_requires_draft_and_masks_restricted_values(self):
         missing = self.post("/paypal/disputes/provide-evidence", {"dispute_id": "PP-D-00000001", "case_ref": "case-ref-001"})
         self.assertEqual(missing.json()["error"]["code"], "case_not_found")
@@ -229,6 +262,8 @@ class FixtureRouteTests(unittest.TestCase):
         for change in ({"submit": "yes"}, {"dispute_id": "PP-D-0000 1"}, {"case_ref": "demo-case-001"}, {"extra": 1}):
             self.assertEqual(self.post("/paypal/disputes/provide-evidence",
                                        dict({"dispute_id": "PP-D-00000001", "case_ref": "case-ref-001"}, **change)).status_code, 422)
+        draft = self.post("/disputes/case-ref-001/draft").json()
+        self.assertEqual(self.post("/disputes/case-ref-001/approve", {"draft_digest": draft["draft_digest"]}).status_code, 200)
         frozen = self.post("/paypal/disputes/provide-evidence",
                            {"dispute_id": "PP-D-00000001", "case_ref": "case-ref-001", "submit": True})
         self.assertEqual((frozen.status_code, frozen.json()["error"]["code"]), (503, "provider_action_frozen"))
@@ -321,20 +356,40 @@ class SandboxRouteTests(unittest.TestCase):
         self.list_reply = {"items": [{"dispute_id": "PP-D-SANDBOX01", "reason": "OTHER"}]}
         self.assertEqual(self.get("/paypal/disputes").json()["error"]["code"], "provider_response_invalid")
 
-    def test_submit_requires_explicit_flag_and_posts_multipart(self):
+    def approve_case(self):
+        draft = self.post("/disputes/case-ref-001/draft").json()
+        approval = self.post("/disputes/case-ref-001/approve", {"draft_digest": draft["draft_digest"]})
+        self.assertEqual(approval.status_code, 200, approval.text)
+
+    def test_submit_requires_known_id_approval_flag_and_posts_multipart(self):
         self.connect()
         self.post("/demo/inject", {"scenario": "dispute"})
         self.assertEqual(self.post("/disputes/case-ref-001/draft").status_code, 200)
         request = {"dispute_id": "PP-D-SANDBOX01", "case_ref": "case-ref-001", "submit": True}
-        frozen = self.post("/paypal/disputes/provide-evidence", request)
-        self.assertEqual((frozen.status_code, frozen.json()["error"]["code"]), (503, "provider_action_frozen"))
-        self.assertFalse(any(row.url.path.endswith("/provide-evidence") for row in self.calls))
-        preview = self.post("/paypal/disputes/provide-evidence", dict(request, submit=False)).json()
+        provide = lambda payload: self.post("/paypal/disputes/provide-evidence", payload)
+        provider_posts = lambda: [row for row in self.calls if row.url.path.endswith("/provide-evidence")]
+        # 1. an id this session never read from the Sandbox is unknown, for preview and submit
+        for submit in (False, True):
+            unread = provide(dict(request, submit=submit))
+            self.assertEqual((unread.status_code, unread.json()["error"]["code"]), (404, "dispute_not_found"))
+        self.assertEqual(self.get("/paypal/disputes/PP-D-SANDBOX01").status_code, 200)
+        fixture_only = provide(dict(request, dispute_id="PP-D-00000001"))
+        self.assertEqual((fixture_only.status_code, fixture_only.json()["error"]["code"]), (404, "dispute_not_found"))
+        # 2. read id, preview allowed, submit needs approval first
+        preview = provide(dict(request, submit=False)).json()
         self.assertEqual((preview["source"], preview["external_send"], preview["submit_flag_enabled"]),
                          ("paypal_sandbox", "FROZEN", False))
+        unapproved = provide(request)
+        self.assertEqual((unapproved.status_code, unapproved.json()["error"]["code"]), (422, "approval_required"))
+        # 3. approved but the operator flag is off
+        self.approve_case()
+        frozen = provide(request)
+        self.assertEqual((frozen.status_code, frozen.json()["error"]["code"]), (503, "provider_action_frozen"))
+        self.assertEqual(provider_posts(), [])
+        # 4. everything on
         self.submit_enabled = True
         self.connect()
-        submitted = self.post("/paypal/disputes/provide-evidence", request)
+        submitted = provide(request)
         self.assertEqual(submitted.status_code, 200, submitted.text)
         body = submitted.json()
         self.assertEqual((body["external_send"], body["provider_submission"], body["readback"], body["submit_flag_enabled"]),
@@ -354,7 +409,7 @@ class SandboxRouteTests(unittest.TestCase):
         activity = self.client.get(ROOT + "/demo/state", headers={"X-Demo-Session": self.session["session_id"]}).json()["activity"]
         self.assertIn("provide_evidence", [row["kind"] for row in activity])
         self.submit_status = 400
-        failed = self.post("/paypal/disputes/provide-evidence", request)
+        failed = provide(request)
         self.assertEqual((failed.status_code, failed.json()["error"]["code"]), (502, "provider_upstream_failure"))
         self.assertNotIn("private", failed.text)
 
