@@ -1,6 +1,6 @@
 # PayGuard AI — Submitted Devpost Story
 
-Status: the Devpost project is submitted. This is the current public story, read back after saving the evidence-gap wording.
+Status: the Devpost project is submitted. Story text updated 2026-10-29 to match the repository (Disputes readback, stage auto-load, varied transaction amounts, 436 tests).
 
 Project: PayGuard AI
 
@@ -22,7 +22,7 @@ A merchant may notice a policy warning, a sudden sales spike, or a dispute only 
 
 1. **Before an invoice draft — AUP preflight.** Deterministic checks compare a synthetic product description with pinned public PayPal US AUP references. The merchant can edit, cancel, or acknowledge the warning. Only after that review does the PayPal Sandbox path create one **unsent** invoice draft.
 2. **During fulfillment — sales-velocity readiness.** A backend comparison flags a synthetic increase against a declared local baseline. **AG Grid Community** makes the transaction stream sortable and filterable, so a reviewer can select an order and inspect missing fulfillment records. This is a local preparation signal, not a PayPal risk score or account-hold prediction.
-3. **After a dispute — evidence preparation.** A case-specific checklist identifies requested seller items. PayGuard builds a pseudonymized, integrity-checked **Internal Review ZIP** and can request an optional bounded Gemini evidence brief. A person reviews the package; it is not a PayPal submission attachment and nothing is sent automatically.
+3. **After a dispute — evidence preparation.** The stage lists disputes through `GET /v1/customer/disputes` and `GET /v1/customer/disputes/{id}` (Sandbox when connected, otherwise a labelled fixture), a case-specific checklist identifies requested seller items, and PayGuard builds a pseudonymized, integrity-checked **Internal Review ZIP**, previews the multipart `provide-evidence` request and can request an optional bounded Gemini evidence brief. A person reviews the package; the request is sent only after the local approval, with `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled` and a Sandbox connection.
 
 ## How I built it
 
@@ -34,4 +34,4 @@ The hardest design choice was joining three moments in a merchant's workflow wit
 
 ## Scope and access
 
-This is a **US-only, synthetic-data Sandbox demo**. PayPal decides applicable internal policy and dispute matters; a bank or card issuer decides an external dispute. PayGuard does not approve compliance, prevent an account restriction, handle real customer records, or claim production readiness. Judges can run the build using the [public repository and quickstart](https://github.com/jiarong0423/payguard-ai); no hosted demo is claimed. The [2:02 demonstration](https://youtu.be/K28N9QhRp1E) shows the merchant workflow.
+This is a **US-only, synthetic-data Sandbox demo**. PayPal decides applicable internal policy and dispute matters; a bank or card issuer decides an external dispute. Scope: a fictitious US Business Sandbox seller with synthetic data; PayPal and card issuers keep the decisions. Judges run it locally in about five minutes (quickstart in the [public repository](https://github.com/jiarong0423/payguard-ai)); hosting was not part of this entry. Measured scope: `./tools/run.sh test` runs 436 tests (2 skipped); the Sandbox path has one operator-run receipt (2026-10-07, unsent USD 10.00 draft `INV2-2MTA-PRPQ-4CAJ-W5UW`) and the Disputes calls are covered by mocked-transport tests, not yet by a live Sandbox dispute. The [2:02 demonstration](https://youtu.be/K28N9QhRp1E) shows the merchant workflow.

@@ -388,6 +388,12 @@ export default function App() {
     const result = await apiRequest('/paypal/disputes/provide-evidence', { method: 'POST', body: { dispute_id: providerDisputeDetail.dispute_id, case_ref: caseItem.case_ref, submit: false }, session });
     setEvidencePreview(result);
   });
+  const submitEvidence = () => action('evidence-submit', async (session) => {
+    const result = await apiRequest('/paypal/disputes/provide-evidence', { method: 'POST', body: { dispute_id: providerDisputeDetail.dispute_id, case_ref: caseItem.case_ref, submit: true }, session });
+    setEvidencePreview(result);
+    setNotice('Evidence request submitted to the PayPal Sandbox after local approval.');
+  });
+  const evidenceSubmitReady = Boolean(receipt) && evidencePreview?.submit_flag_enabled === true && evidencePreview?.source === 'paypal_sandbox' && evidencePreview?.external_send === 'FROZEN';
   const velocity = state?.velocity;
   const caseItem = state?.disputes?.find((item) => item.case_ref === selectedCase) || state?.disputes?.[0];
   useEffect(() => {
@@ -608,7 +614,7 @@ export default function App() {
               ['Evidence requests', providerDisputeDetail.evidences.map((row) => `${operatorLabel(row.evidence_type, row.evidence_type)} · ${operatorLabel(row.source, row.source)}`).join('; ') || 'None returned'],
               ['Provider submission', operatorLabel(providerDisputeDetail.provider_submission)],
             ].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>}
-            <div className="provider-dispute-actions"><Button data-testid="evidence-preview" icon="file" disabled={disabled || !draft || !providerDisputeDetail} loading={busy === 'evidence-preview'} onClick={previewEvidence}>Preview provide-evidence request</Button><span className="text-dim">Builds the multipart POST /v1/customer/disputes/{'{id}'}/provide-evidence from the local draft. Prepare the evidence draft and select a dispute first. Nothing is sent unless the operator sets PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled and a person confirms.</span></div>
+            <div className="provider-dispute-actions"><Button data-testid="evidence-preview" icon="file" disabled={disabled || !draft || !providerDisputeDetail} loading={busy === 'evidence-preview'} onClick={previewEvidence}>Prepare evidence request (preview)</Button><Button data-testid="evidence-submit" icon="lock" tone="ghost" disabled={disabled || !evidenceSubmitReady} loading={busy === 'evidence-submit'} onClick={submitEvidence} title="Requires PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled, a Sandbox connection and a recorded local approval">Submit to Sandbox (requires PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled and approval)</Button><span className="text-dim">Builds the multipart POST /v1/customer/disputes/{'{id}'}/provide-evidence from the local draft. Select a dispute and prepare the evidence draft first. The submit button stays disabled until the operator sets PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled, the Sandbox is connected, a person has recorded the local approval and a preview has been prepared.</span></div>
             {evidencePreview && <div className="evidence-preview" data-testid="evidence-preview-result"><div className="ai-brief-badges"><Badge tone="blue">{evidencePreview.method} {evidencePreview.path}</Badge><Badge tone="muted">{evidencePreview.content_type}</Badge><Badge tone={evidencePreview.external_send === 'SUBMITTED' ? 'green' : 'amber'}>{operatorLabel(evidencePreview.external_send)}</Badge><Badge tone="muted">{evidencePreview.data_source_label} data</Badge></div><pre>{JSON.stringify(evidencePreview.input, null, 2)}</pre><ul>{evidencePreview.files.map((part) => <li key={part.name}>{part.name}: {part.filename} · {part.content_type} · {part.byte_length} bytes (file bytes stay on the server)</li>)}</ul><p className="text-dim">Tracking numbers are masked in this preview. Submit flag: {evidencePreview.submit_flag_enabled ? 'enabled' : 'off'}. A person reviews before any submission.</p></div>}
           </div>
         </details>

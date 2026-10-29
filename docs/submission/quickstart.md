@@ -42,13 +42,13 @@ npm run dev
 
 Open `http://127.0.0.1:5173`. Keep both processes running. If the API is unavailable, the UI fails visibly instead of loading a hidden mock.
 
-This loopback walkthrough is the selected functional-demo path. It does not establish a public or production-hosted service.
+This loopback walkthrough is the selected functional-demo path. Hosting was not part of this entry; the walkthrough runs locally.
 
 ## Understand the banner before the demo
 
 The target market is the United States. The provider environment is PayPal Sandbox. The existing PayPal login is only the Developer-login identity. A fictitious Business sandbox account represents the merchant, and a fictitious Personal sandbox account represents the buyer when needed.
 
-Any separately reviewed Sandbox proof must identify a US Business Sandbox seller and confirm Invoicing only for that bounded path. This source package does not establish the operator's live-account type or production eligibility. No credential should appear in the browser, repository, prompt, screenshot or report.
+Any separately reviewed Sandbox proof must identify a US Business Sandbox seller and confirm Invoicing only for that bounded path. Scope: a fictitious US Business Sandbox seller; production eligibility and live-account behaviour were not tested. No credential should appear in the browser, repository, prompt, screenshot or report.
 
 For a recorded take, start a fresh backend so each stage has its single available AI attempt. Configure Sandbox credentials off-screen, expand **Optional PayPal US Sandbox connection**, and select **Connect US Sandbox**. The recorded primary view must show **Live Sandbox connection verified** and **Live Sandbox response** without an account, token, invoice identifier or technical receipt.
 
@@ -89,7 +89,7 @@ Expected boundary: the signal means the synthetic activity exceeded a local demo
 6. Select **Download review file** and confirm the provider-submission boundary remains **Not submitted**.
 7. Select **Download review ZIP**. Confirm its visible short warning says the review copy is not a PayPal attachment and was not submitted; expand **What this review copy does not prove** for the full boundary. The fixed archive contains a README, manifest, response-driven requirements, timeline, public citations and pseudonymized evidence; it contains no raw case ID, order ID, request ID, identity token, session ID, draft digest, proof value, attachment name or attachment bytes.
 8. Check the human-review box and record the local review.
-9. In **PayPal Disputes API readback**, confirm the data-source badge. Without a Sandbox connection it reads **Fixture data** and lists two synthetic disputes in the PayPal Disputes API JSON shape; with a connection made in STEP 01 it reads **Sandbox data** from `GET /v1/customer/disputes`. Select a dispute to read its detail (`GET /v1/customer/disputes/{id}`), then select **Preview provide-evidence request** to see the multipart `POST /v1/customer/disputes/{id}/provide-evidence` built from the local draft: the JSON `input` part with masked tracking numbers, the file part metadata and the **Not submitted** boundary. The request is sent only when the operator sets `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled` and calls the API with `submit: true`.
+9. In **PayPal Disputes API readback** (the fixture's response dates are relative to now, so they never show as expired), confirm the data-source badge. Without a Sandbox connection it reads **Fixture data** and lists two synthetic disputes in the PayPal Disputes API JSON shape; with a connection made in STEP 01 it reads **Sandbox data** from `GET /v1/customer/disputes`. Select a dispute to read its detail (`GET /v1/customer/disputes/{id}`), then select **Prepare evidence request (preview)** to see the multipart `POST /v1/customer/disputes/{id}/provide-evidence` built from the local draft: the JSON `input` part with masked tracking numbers, the file part metadata and the **Not submitted** boundary. The **Submit to Sandbox** button stays disabled until the operator sets `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`, the Sandbox is connected, the local review approval (step 8) is recorded and a preview exists; an id the console did not return is refused with 404 and a missing approval with 422.
 
 Expected boundary: the draft remains local and synthetic. PayGuard does not submit evidence, message a buyer, make an offer, accept a claim, refund, appeal or adjudicate. PayPal decides escalated internal claims. A bank or card issuer decides an external dispute, with PayPal acting as intermediary.
 
@@ -121,7 +121,7 @@ The strict API contract still retains:
 - `semantic_entailment=NOT_EVALUATED` until human review;
 - `external_action_authorized=false`.
 
-The UI validates closed model and evidence identity pairs. The default Gemini line uses `gemini-3.8-flash` with `SYNTHETIC_TEST_RESPONSE` or the separately evidenced `OPERATOR_LIVE_RESPONSE` class. Any prior external result is operator-attested; a judge-facing execution claim requires showing the bounded path live. The explicit local line uses `nvidia-nemotron-3-nano-4b` with `LOCAL_RUNTIME_RESPONSE`. Enum support in source does not establish an external execution. The backend launcher selects one line for the process; the browser cannot select a provider and no automatic fallback calls the other line. Neither identity authorizes a provider or workflow action.
+The UI validates closed model and evidence identity pairs. The default Gemini line uses `gemini-3.8-flash` with `SYNTHETIC_TEST_RESPONSE` or the separately evidenced `OPERATOR_LIVE_RESPONSE` class. The Gemini brief was run once by the operator against Vertex AI; reproducing it needs your own Vertex project. The explicit local line uses `nvidia-nemotron-3-nano-4b` with `LOCAL_RUNTIME_RESPONSE`. The backend launcher selects one line for the process; the browser cannot select a provider and no automatic fallback calls the other line. Neither identity authorizes a provider or workflow action.
 
 ## Public references and case caveat
 
@@ -131,7 +131,7 @@ No reviewed official case proves that rapid sales growth alone caused an account
 
 ## Optional bounded Sandbox evidence
 
-Any `BLK-01B` result remains operator-attested and external to this source package unless the bounded path is shown live. It must be operator-authorized, sanitized and independently reviewed. Its maximum scope is one Sandbox OAuth result plus one unsent USD `10.00` invoice `DRAFT` creation result.
+The recorded Sandbox run (2026-10-07; an operator-attested receipt) is one OAuth connection plus one unsent USD `10.00` invoice `DRAFT`, id `INV2-2MTA-PRPQ-4CAJ-W5UW`. It used the operator's own Sandbox app; to replay it, set `PAYGUARD_PAYPAL_OUTBOUND=enabled` with yours (README, "Turning on PayPal").
 
 - Use a fictitious Business sandbox seller for the merchant role.
 - Confirm its country as US before calling it a US seller.
@@ -172,13 +172,11 @@ These commands validate the local runtime and source contract. The export manife
 - A deterministic intake can organize a synthetic dispute and produce an integrity-checked internal review ZIP while preserving the correct adjudicator boundary.
 - A bounded AI adapter can be placed after deterministic validation without receiving decision authority.
 
-## What the demo does not establish
+## What I did not test
 
-- The operator owns or qualifies for a US live account.
-- A selected sandbox seller is US or Invoicing-enabled without readback.
-- PayPal will approve a product, prevent a limitation, release funds or decide a dispute in a particular way.
-- Evidence is authentic, sufficient or eligible merely because all local fields are complete.
-- Authentic Sandbox or model execution unless shown live, model repeatability, real-record model behavior, production readiness or public-submission readiness.
-- Public or production hosting, restart-safe multi-user AI operation or a hosted-demo URL.
+- A production or live account: only a fictitious US Business Sandbox seller was used.
+- A Sandbox dispute through the Disputes calls: list, detail and provide-evidence run against mocked transport and the fixture; connect your own Sandbox app to run them live.
+- Authentic Gemini output on your machine: needs your own Vertex AI project.
+- Hosted or multi-user operation: the console is a loopback demo.
 
 See the [current architecture](../decisions/2026Q4/architecture.md), [official source register](../decisions/2026Q4/us_official_source_register.md) and [US mainline contract](../decisions/2026Q4/us_mainline_contract.md).
