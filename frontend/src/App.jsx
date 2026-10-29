@@ -84,16 +84,17 @@ function velocityStageStatusLabel(velocity) {
   return 'Baseline unavailable';
 }
 
-function AiBriefPanel({ stage, available, brief, loading, onGenerate }) {
+function AiBriefPanel({ stage, available, brief, loading, onGenerate, notice }) {
   const [open, setOpen] = useState(false);
   useEffect(() => { if (brief) setOpen(true); }, [brief]);
   return <section className="ai-brief-panel" data-testid={`ai-brief-${stage}`}>
-    <div className="ai-brief-heading"><div><span className="meta-label">OPTIONAL AI EVIDENCE BRIEF</span><h3>{brief ? 'Generated evidence brief' : 'Fixed synthetic evidence brief'}</h3></div><Button data-testid={`ai-generate-${stage}`} icon="layers" tone="secondary" loading={loading} disabled={!available || loading || Boolean(brief)} onClick={() => onGenerate(stage)}>{brief ? 'AI brief generated' : 'Generate AI brief'}</Button></div>
+    <div className="ai-brief-heading"><div><span className="meta-label">OPTIONAL AI EVIDENCE BRIEF</span><h3>{brief ? 'Generated evidence brief' : 'Fixed synthetic evidence brief'}</h3></div><Button data-testid={`ai-generate-${stage}`} icon="layers" tone="secondary" loading={loading} disabled={!available || loading || Boolean(brief)} onClick={() => onGenerate(stage)}>{brief ? 'AI brief generated' : 'Generate AI brief'}</Button></div>{notice && <p className="ai-boundary" data-testid={`ai-notice-${stage}`} role="status">{notice}</p>}
     <details className="ai-brief-details" open={open} onToggle={(event) => setOpen(event.currentTarget.open)}><summary>{brief ? 'View evidence, citations, and limitations' : 'Why this optional AI call is bounded'}</summary><div className="ai-brief-detail-body"><p className="ai-boundary">Uses only backend-fixed synthetic facts and pinned citation IDs. It does not use current merchant, product, transaction, or case data. The backend permits at most three model attempts per process and one attempt per stage; failed attempts count and no automatic retry occurs. AI makes no compliance or dispute decision and authorizes no PayPal action.</p>{!available && <p className="text-dim">Complete deterministic preflight first, then let a human decide whether to call AI.</p>}{brief && <div className="ai-brief-result" aria-live="polite"><div className="ai-brief-badges"><Badge tone="blue">AI GENERATED</Badge><Badge tone="blue">{brief.model}</Badge><Badge tone="muted">{operatorLabel(brief.prompt_contract_id)}</Badge><Badge tone="muted">{operatorLabel(brief.execution_evidence)}</Badge><Badge tone="amber">HUMAN REVIEW REQUIRED</Badge></div><p className="ai-summary">{brief.brief.summary}</p><div className="ai-brief-columns"><div><strong>Evidence points</strong><ul>{brief.brief.evidence_points.map((item) => <li key={item}>{item}</li>)}</ul></div><div><strong>Missing evidence</strong><ul>{brief.brief.missing_evidence.map((item) => <li key={item}>{item}</li>)}</ul></div></div><p className="ai-citations">Source references: {brief.brief.citation_ids.join(' · ')}</p><ul className="ai-limitations">{brief.limitations.map((item) => <li key={item}>{item}</li>)}</ul><p className="ai-authority">{operatorLabel(brief.compliance_decision)} · {operatorLabel(brief.current_policy_applicability)} · {operatorLabel(brief.semantic_entailment)} · {operatorLabel(brief.external_action_authorized === false ? 'EXTERNAL_ACTION_FALSE' : '')}</p></div>}</div></details>
   </section>;
 }
 
 const AUP_POLICY_URL = 'https://www.paypal.com/us/legalhub/paypal/acceptableuse-full';
+const AI_NOT_CONFIGURED_NOTICE = 'Gemini profile not configured; see README "Turning on Gemini". The deterministic console works without it.';
 
 const findingLabels = {
   unsupported_financial_promise: 'Unsupported return claim', weapons: 'Weapons-related goods',
@@ -117,6 +118,12 @@ export default function App() {
   const [analyticsExpanded, setAnalyticsExpanded] = useState(false);
   const [activityExpanded, setActivityExpanded] = useState(false);
   const [openSecondary, setOpenSecondary] = useState({ source_compliance: null, velocity_guard: null, dispute_mediation: null });
+  const [aiNotices, setAiNotices] = useState({});
+  const [providerDisputes, setProviderDisputes] = useState(null);
+  const [providerDisputeDetail, setProviderDisputeDetail] = useState(null);
+  const [evidencePreview, setEvidencePreview] = useState(null);
+  const autoLoadedRef = useRef({ burst: false, dispute: false });
+  const providerDisputesKeyRef = useRef('');
   const toggleSecondary = useCallback((theme, panel, nextOpen) => {
     setOpenSecondary((current) => {
       if (nextOpen) return current[theme] === panel ? current : { ...current, [theme]: panel };
@@ -170,6 +177,7 @@ export default function App() {
     aiControllerRef.current?.abort();
     aiControllerRef.current = null;
     setAiBriefs({});
+    setAiNotices({});
     setAiBusyStage('');
   }, []);
   const [description, setDescription] = useState('Handcrafted ceramic coffee cup — set of two');
@@ -260,6 +268,9 @@ export default function App() {
     setInvoiceChecked(false);
     setVelocityQuickFilter('');
     setSelectedVelocityTransaction(null);
+    autoLoadedRef.current = { burst: false, dispute: false };
+    providerDisputesKeyRef.current = '';
+    setProviderDisputes(null); setProviderDisputeDetail(null); setEvidencePreview(null);
     try {
       const session = await apiRequest('/demo/sessions', { method: 'POST', body: {}, signal });
       if (signal?.aborted || !mounted.current) return;
@@ -321,6 +332,7 @@ export default function App() {
     } catch (failure) {
       if (controller.signal.aborted || revision !== aiRevisionRef.current || sessionRef.current?.session_id !== identity) return;
       setAiBriefs({});
+      if (failure.code === 'ai_disabled' || failure.code === 'ai_not_configured') { setAiNotices({ [stage]: AI_NOT_CONFIGURED_NOTICE }); return; }
       setError(failure);
       if (failure.status === 401) expireSession(failure, identity, referenceRevision);
     } finally {
@@ -329,7 +341,7 @@ export default function App() {
     }
   };
 
-  const inject = (scenario) => action(scenario, async (session) => {
+  const inject = (scenario, { automatic = false } = {}) => action(scenario, async (session) => {
     invalidateAi();
     const nextState = await apiRequest('/demo/inject', { method: 'POST', body: { scenario }, session });
     setState(nextState);
@@ -337,12 +349,45 @@ export default function App() {
       setDraft(null); setReceipt(null); setSelectedCase(''); setReviewChecked(false);
       setAup(null); setInvoiceReview(null); setInvoice(null); setInvoiceChecked(false);
       setVelocityQuickFilter(''); setSelectedVelocityTransaction(null);
+      setEvidencePreview(null); setProviderDisputeDetail(null);
+      autoLoadedRef.current = { burst: false, dispute: false };
     }
-    setNotice(scenario === 'reset' ? 'Demo data reset; the session remains active.' : 'Scenario loaded. Loading it again will not duplicate records.');
+    setNotice(scenario === 'reset' ? 'Demo data reset; the session remains active.' : automatic ? 'Synthetic scenario loaded for this stage; Load again does not duplicate records.' : 'Scenario loaded. Loading it again will not duplicate records.');
   });
 
   const disabled = loading || Boolean(busy) || !state || error?.status === 401;
   const referenceProps = { session: state ? sessionRef.current : null, revision: referenceRevision, unavailable: disabled, onSessionExpired: expireSession };
+  useEffect(() => {
+    // Entering a stage loads its synthetic scenario once, so no stage starts empty.
+    if (!state || disabled) return;
+    const scenario = activeStage === 'velocity' ? 'burst' : activeStage === 'disputes' ? 'dispute' : null;
+    if (!scenario || state.scenario?.[scenario] || autoLoadedRef.current[scenario]) return;
+    autoLoadedRef.current[scenario] = true;
+    inject(scenario, { automatic: true });
+  }, [activeStage, state, disabled]);
+  useEffect(() => {
+    // Stage 03 reads provider dispute records: Sandbox when connected, fixture otherwise.
+    if (activeStage !== 'disputes' || !state || loading || !sessionRef.current) return;
+    const session = sessionRef.current;
+    const key = `${session.session_id}:${sandbox?.status || ''}`;
+    if (providerDisputesKeyRef.current === key) return;
+    providerDisputesKeyRef.current = key;
+    apiRequest('/paypal/disputes', { session }).then((result) => {
+      if (!mounted.current || sessionRef.current?.session_id !== session.session_id) return;
+      setProviderDisputes(result); setProviderDisputeDetail(null); setEvidencePreview(null);
+    }).catch((failure) => {
+      if (!mounted.current || sessionRef.current?.session_id !== session.session_id) return;
+      setProviderDisputes({ error: failure.message });
+    });
+  }, [activeStage, state, loading, sandbox?.status]);
+  const loadProviderDispute = (disputeId) => action('provider-dispute', async (session) => {
+    const result = await apiRequest(`/paypal/disputes/${disputeId}`, { session });
+    setProviderDisputeDetail(result); setEvidencePreview(null);
+  });
+  const previewEvidence = () => action('evidence-preview', async (session) => {
+    const result = await apiRequest('/paypal/disputes/provide-evidence', { method: 'POST', body: { dispute_id: providerDisputeDetail.dispute_id, case_ref: caseItem.case_ref, submit: false }, session });
+    setEvidencePreview(result);
+  });
   const velocity = state?.velocity;
   const caseItem = state?.disputes?.find((item) => item.case_ref === selectedCase) || state?.disputes?.[0];
   useEffect(() => {
@@ -524,7 +569,7 @@ export default function App() {
         ].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl><p>Sandbox OAuth runs only after an explicit connect action. Credentials remain in the backend process environment. The flow creates an unsent draft only, and every receipt is labeled as live Sandbox evidence or synthetic test evidence.</p></details><div className="sandbox-connect"><Button data-testid="sandbox-connect" icon="link" disabled={disabled} loading={busy === 'connect'} onClick={connectSandbox}>Connect US Sandbox</Button>{!sandbox?.configured && <span className="text-dim">Select Connect to check the Sandbox connection.</span>}</div>{sandbox?.evidence_receipt && <p className="sandbox-readback">Connection evidence: {sandboxEvidenceLabel(sandbox.evidence_receipt)} · {sandboxReadbackLabel(sandbox.evidence_receipt.separate_get_readback)}</p>}<p data-testid="aup-invoice-limit" className="text-dim">Invoice drafts allow 200 description characters. {description.length > 200 && 'Shorten the description and run the check again before continuing.'}</p><div className="invoice-draft-form"><label>Draft amount <span className="text-dim">USD</span><input type="text" inputMode="decimal" value={invoiceAmount} maxLength={20} disabled={Boolean(busy)} onChange={(event) => editInvoiceAmount(event.target.value)} /></label><label className="checkbox-label"><input data-testid="invoice-confirm" type="checkbox" checked={invoiceChecked} disabled={Boolean(busy)} onChange={(event) => setInvoiceChecked(event.target.checked)} /><span>I reviewed the description and amount and confirm that this action creates a Sandbox draft only.</span></label><Button data-testid="invoice-review" icon="check" disabled={disabled || !invoiceChecked || !aup || aupConsumed || description.length > 200} loading={busy === 'invoice-review'} onClick={reviewInvoice}>Confirm Draft Context</Button><Button data-testid="invoice-create" icon="file" tone="blue" disabled={disabled || !invoiceReview || !invoiceChecked || sandbox?.status !== 'connected'} loading={busy === 'invoice'} onClick={createInvoice}>Create Sandbox draft</Button></div>{invoiceReview && <p className="sandbox-readback">{operatorLabel('PAYLOAD_DIGEST_BOUND')} · valid until {dateLabel(invoiceReview.expires_at)}</p>}{invoice && <p className="sandbox-readback">Sandbox invoice draft created · {operatorLabel(invoice.status)} · {sandboxEvidenceLabel(invoice.evidence_receipt)} · {sandboxReadbackLabel(invoice.evidence_receipt.separate_get_readback)} · {operatorLabel(invoice.external_send)}</p>}</div></details>
         <ReferencePanel theme="source_compliance" {...referenceProps} open={openSecondary.source_compliance === 'reference'} onToggle={(nextOpen) => toggleSecondary('source_compliance', 'reference', nextOpen)} />
         <PolicyPanel theme="source_compliance" {...referenceProps} open={openSecondary.source_compliance === 'policy'} onToggle={(nextOpen) => toggleSecondary('source_compliance', 'policy', nextOpen)} />
-        <AiBriefPanel stage="source_compliance" available={aup?.match_status === 'REVIEW_SIGNAL' && !aupConsumed && !disabled && !busy && !aiBusyStage} brief={aiBriefs.source_compliance} loading={aiBusyStage === 'source_compliance'} onGenerate={generateAiBrief} />
+        <AiBriefPanel stage="source_compliance" available={aup?.match_status === 'REVIEW_SIGNAL' && !aupConsumed && !disabled && !busy && !aiBusyStage} brief={aiBriefs.source_compliance} notice={aiNotices.source_compliance} loading={aiBusyStage === 'source_compliance'} onGenerate={generateAiBrief} />
         <div className="stage-next"><span>Next, inspect a sales burst and the orders behind it.</span><Button icon="arrow" tone="blue" onClick={() => openStage('velocity', { updateHash: true, scroll: true, focus: true })}>Next: sales burst</Button></div>
       </StageAccordion>
 
@@ -542,15 +587,34 @@ export default function App() {
         <div className="panel-foot"><span><Icon name="lock" size={13} /> This signal does not predict PayPal account limitations and does not initiate payments or provider filings.</span><details className="velocity-details"><summary>How this signal was calculated</summary><span data-testid="velocity-baseline">Baseline {velocity?.baseline_amount_per_hour ?? '—'} USD/hour · {operatorLabel(velocity?.baseline_provenance)} · {dateLabel(velocity?.baseline_window_start)} to {dateLabel(velocity?.baseline_window_end)}</span><span>{state?.policy_version || 'POLICY —'}</span></details></div>
         <ReferencePanel theme="velocity_guard" {...referenceProps} open={openSecondary.velocity_guard === 'reference'} onToggle={(nextOpen) => toggleSecondary('velocity_guard', 'reference', nextOpen)} />
         <PolicyPanel theme="velocity_guard" {...referenceProps} open={openSecondary.velocity_guard === 'policy'} onToggle={(nextOpen) => toggleSecondary('velocity_guard', 'policy', nextOpen)} />
-        <AiBriefPanel stage="velocity_guard" available={velocity?.status === 'review_velocity' && !disabled && !busy && !aiBusyStage} brief={aiBriefs.velocity_guard} loading={aiBusyStage === 'velocity_guard'} onGenerate={generateAiBrief} />
+        <AiBriefPanel stage="velocity_guard" available={velocity?.status === 'review_velocity' && !disabled && !busy && !aiBusyStage} brief={aiBriefs.velocity_guard} notice={aiNotices.velocity_guard} loading={aiBusyStage === 'velocity_guard'} onGenerate={generateAiBrief} />
         <div className="stage-next"><span>Next, prepare a dispute response for a person to review.</span><Button icon="arrow" tone="blue" onClick={() => openStage('disputes', { updateHash: true, scroll: true, focus: true })}>Next: dispute evidence</Button></div>
       </StageAccordion>
 
       <StageAccordion id="disputes" number="03" title="Prepare the dispute response" subtitle="Download a review copy, then confirm it yourself." icon="file" status={<Badge tone="frozen"><Icon name="lock" size={12} /> HUMAN REVIEW</Badge>} open={activeStage === 'disputes'} onOpen={(stage) => openStage(stage, { updateHash: true })}>
         <div className="dispute-layout"><div className="case-list"><div className="mini-heading"><span>Case queue</span><span className="text-dim">Synthetic cases</span></div>{state?.disputes?.length ? state.disputes.map((item) => <button key={item.case_ref} className={`case-card ${caseItem?.case_ref === item.case_ref ? 'case-selected' : ''}`} disabled={Boolean(busy)} onClick={() => { if (caseItem?.case_ref === item.case_ref) return; invalidateAi(); setSelectedCase(item.case_ref); setDraft(null); setReceipt(null); setReviewChecked(false); }}><div><Icon name="file" /><strong>{item.case_ref}</strong><Badge tone="amber">{operatorLabel(item.reason)}</Badge></div><span>{item.order_ref}</span><small>{dateLabel(item.opened_at)} · {operatorLabel(item.status)}</small></button>) : <div className="empty-state"><Icon name="file" size={32} /><strong>No dispute cases</strong><p>Use “Load dispute case” above to start.</p></div>}<div className="case-note"><Icon name="shield" size={15} /><p>Delivery records help review a case; they do not decide it.</p></div></div><div className="evidence-workspace"><div className="evidence-toolbar"><div><span className="meta-label">CASE REVIEW</span><h3>{receipt ? 'Local draft review recorded' : draft ? 'Draft created · awaiting human review' : caseItem ? 'Prepare objective evidence draft' : 'Human in the loop'}</h3></div><Button data-testid="dispute-draft" icon="file" disabled={disabled || !caseItem || caseItem.status === 'local_draft_reviewed'} loading={busy === 'draft'} onClick={getDraft}>Prepare evidence draft</Button></div>{draft ? <><div className="dispute-route" data-testid="dispute-route"><div><span>Response readiness</span><strong>{operatorLabel(draft.routing?.overall_state)}</strong><small>{operatorLabel(draft.routing?.reason)} · {operatorLabel(draft.routing?.dispute_life_cycle_stage)} · {operatorLabel(draft.routing?.status)}</small><small data-testid="dispute-due-at">Due {dateLabel(draft.routing?.seller_response_due_date)}</small><small data-testid="dispute-actions">Next options: {operatorLabels(draft.routing?.available_actions).join(', ') || 'None'}</small></div><Badge tone={draft.routing?.due_state === 'OPEN' ? 'green' : 'danger'}><span data-testid="dispute-due-state">{operatorLabel(draft.routing?.due_state)}</span></Badge></div><div className="privacy-strip" data-testid="internal-review-profile"><Icon name="lock" /><div><strong>Review copy ready for download</strong><span>{draft.document_redaction?.replacement_count ?? 0} identifier replacements · check before sharing</span><small>Limited detection; manual review is required. Pseudonymization is not anonymization.</small></div><Button data-testid="download-pseudonymized-evidence" className="privacy-download" icon="file" onClick={downloadRedactedFile} disabled={disabled || !draft.document_redaction}>Download review file</Button><Button data-testid="download-internal-review-zip" icon="file" onClick={downloadReviewZip} disabled={disabled || !draft}>Download review ZIP</Button></div><p className="review-warning review-warning-short"><strong>Internal review only.</strong> This ZIP is not a PayPal attachment. Nothing was submitted; a person checks it before any external use.</p><details className="review-boundary-details"><summary>What this review copy does not prove</summary><p className="review-warning" data-testid="internal-review-zip-boundary"><strong>INTERNAL REVIEW ONLY</strong> — This synthetic, pseudonymized preparation package is not a PayPal-supported attachment. Required fields present does not prove authenticity, sufficiency, eligibility, completeness, or outcome. PayPal or the external issuer keeps final authority, and nothing was submitted.</p></details><div className="human-review"><label className="checkbox-label"><input type="checkbox" checked={reviewChecked} disabled={Boolean(busy) || Boolean(receipt) || draft.routing?.overall_state !== 'READY_FOR_LOCAL_REVIEW'} onChange={(event) => setReviewChecked(event.target.checked)} /><span>I reviewed the evidence and timeline and confirm this review is recorded only in the local demo.</span></label><Button data-testid="dispute-approve" tone={receipt ? 'secondary' : 'blue'} icon="check" onClick={approve} disabled={disabled || !reviewChecked || !draft.draft_digest || Boolean(receipt) || draft.routing?.overall_state !== 'READY_FOR_LOCAL_REVIEW'} loading={busy === 'approve'}>{receipt ? 'Local review recorded' : 'Confirm local draft review'}</Button></div>{receipt && <div className="receipt" data-testid="dispute-result"><Icon name="check" /><span>Local draft reviewed · {operatorLabel(receipt.reviewer)} · {dateLabel(receipt.reviewed_at)} · {operatorLabel(receipt.retention)} · {operatorLabel(receipt.external_submission || 'FROZEN')}</span></div>}<details className="dispute-details"><summary><Icon name="layers" size={16} /> Evidence fields, requested items, and ZIP contents</summary><div className="dispute-detail-content"><div className="evidence-grid">{[['Case reason', operatorLabel(draft.evidence?.reason)], ['Carrier status', operatorLabel(draft.evidence?.carrier_status)], ['Order created', dateLabel(draft.evidence?.order_created_at)], ['Delivery event', dateLabel(draft.evidence?.delivered_at)], ['Dispute opened', dateLabel(draft.evidence?.opened_at)], ['Evidence source', operatorLabel(draft.evidence?.evidence_source)]].map(([label, value]) => <div key={label}><span>{label}</span><strong>{value || '—'}</strong></div>)}</div><div className="requirement-list" data-testid="dispute-requirements">{draft.routing?.requirements?.map((row) => <div key={row.request_id}><div><strong>{operatorLabel(row.provider_evidence_type)}</strong><span>{operatorLabel(row.source)}</span><small>Next step: {operatorLabel(row.action, 'No action requested')}</small></div><Badge tone={row.requirement_state === 'STRUCTURALLY_PRESENT' ? 'green' : row.requirement_state.includes('MISSING') ? 'amber' : 'muted'}>{operatorLabel(row.requirement_state)}</Badge><small>{row.proof_count} proof record(s) · {row.accepted_attachment_count} accepted attachment(s)</small></div>)}</div><div className="restricted-summary" data-testid="restricted-original-summary"><Icon name="lock" /><div><strong>Original identifiers stay in this demo session</strong><span>{draft.restricted_original_summary?.proof_record_count} proof record(s) · {draft.restricted_original_summary?.attachment_count} attachment metadata record(s)</span><small>No original file content is included, and nothing is submitted externally.</small></div></div><div className="zip-contents" data-testid="internal-review-zip-contents"><strong>Internal Review ZIP contents</strong><ul>{INTERNAL_REVIEW_ZIP_CONTENTS.map((name) => <li key={name}>{name}</li>)}</ul><small>Six fixed files · generated locally · not sent to PayPal</small></div><ScenarioMatchPanel match={draft.scenario_match} />{draft.review_reasons?.length > 0 && <p className="review-warning">Review flags: {operatorLabels(draft.review_reasons).join(', ')}</p>}</div></details></> : <div className="evidence-placeholder"><div className="placeholder-nodes"><span><Icon name="layers" /></span><i /><span><Icon name="lock" /></span><i /><span><Icon name="check" /></span></div><h3>Prepare → Download → Human review</h3><p>Generate a review draft, then confirm the same evidence and timeline before recording the local review.<br />Real carrier, payment, and case verification still require official sources.</p></div>}</div></div>
+        <details className="sandbox-details provider-disputes" data-testid="provider-disputes" open><summary><Icon name="link" size={16} /><span>PayPal Disputes API readback</span><span data-testid="dispute-data-source"><Badge tone={providerDisputes?.source === 'paypal_sandbox' ? 'green' : 'muted'} dot>{providerDisputes?.data_source_label ? `${providerDisputes.data_source_label} data` : providerDisputes?.error ? 'Readback unavailable' : 'Loading'}</Badge></span></summary>
+          <div className="provider-disputes-body">
+            <p>{providerDisputes?.source === 'paypal_sandbox' ? 'Rows come from GET /v1/customer/disputes on the connected Sandbox account. Names, messages, offers and links are dropped before display.' : 'No Sandbox connection: rows come from a synthetic fixture in the PayPal Disputes API JSON shape. Connect the Sandbox in STEP 01 to read Sandbox cases instead.'}</p>
+            {providerDisputes?.error && <p className="text-dim">{providerDisputes.error}</p>}
+            <div className="provider-dispute-list">{(providerDisputes?.items || []).map((row) => <button key={row.dispute_id} type="button" data-testid="provider-dispute-row" className={`case-card ${providerDisputeDetail?.dispute_id === row.dispute_id ? 'case-selected' : ''}`} disabled={disabled} onClick={() => loadProviderDispute(row.dispute_id)}><div><Icon name="file" /><strong>{row.dispute_id}</strong><Badge tone="amber">{operatorLabel(row.reason)}</Badge></div><span>{row.dispute_amount.value} {row.dispute_amount.currency_code} · {operatorLabel(row.status)}</span><small>{operatorLabel(row.dispute_life_cycle_stage)} · due {dateLabel(row.seller_response_due_date)}</small></button>)}</div>
+            {providerDisputeDetail && <dl className="provider-dispute-detail" data-testid="provider-dispute-detail">{[
+              ['Dispute', providerDisputeDetail.dispute_id],
+              ['Source', `${providerDisputeDetail.data_source_label} · GET /v1/customer/disputes/{id}`],
+              ['Reason', operatorLabel(providerDisputeDetail.reason)],
+              ['Status', `${operatorLabel(providerDisputeDetail.status)} · ${operatorLabel(providerDisputeDetail.dispute_life_cycle_stage)}`],
+              ['Amount', `${providerDisputeDetail.dispute_amount.value} ${providerDisputeDetail.dispute_amount.currency_code}`],
+              ['Transactions', providerDisputeDetail.disputed_transactions.map((row) => `${row.seller_transaction_id} (${operatorLabel(row.transaction_status, 'status not stated')})`).join(', ') || 'None returned'],
+              ['Evidence requests', providerDisputeDetail.evidences.map((row) => `${operatorLabel(row.evidence_type, row.evidence_type)} · ${operatorLabel(row.source, row.source)}`).join('; ') || 'None returned'],
+              ['Provider submission', operatorLabel(providerDisputeDetail.provider_submission)],
+            ].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>}
+            <div className="provider-dispute-actions"><Button data-testid="evidence-preview" icon="file" disabled={disabled || !draft || !providerDisputeDetail} loading={busy === 'evidence-preview'} onClick={previewEvidence}>Preview provide-evidence request</Button><span className="text-dim">Builds the multipart POST /v1/customer/disputes/{'{id}'}/provide-evidence from the local draft. Prepare the evidence draft and select a dispute first. Nothing is sent unless the operator sets PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled and a person confirms.</span></div>
+            {evidencePreview && <div className="evidence-preview" data-testid="evidence-preview-result"><div className="ai-brief-badges"><Badge tone="blue">{evidencePreview.method} {evidencePreview.path}</Badge><Badge tone="muted">{evidencePreview.content_type}</Badge><Badge tone={evidencePreview.external_send === 'SUBMITTED' ? 'green' : 'amber'}>{operatorLabel(evidencePreview.external_send)}</Badge><Badge tone="muted">{evidencePreview.data_source_label} data</Badge></div><pre>{JSON.stringify(evidencePreview.input, null, 2)}</pre><ul>{evidencePreview.files.map((part) => <li key={part.name}>{part.name}: {part.filename} · {part.content_type} · {part.byte_length} bytes (file bytes stay on the server)</li>)}</ul><p className="text-dim">Tracking numbers are masked in this preview. Submit flag: {evidencePreview.submit_flag_enabled ? 'enabled' : 'off'}. A person reviews before any submission.</p></div>}
+          </div>
+        </details>
         <ReferencePanel theme="dispute_mediation" {...referenceProps} open={openSecondary.dispute_mediation === 'reference'} onToggle={(nextOpen) => toggleSecondary('dispute_mediation', 'reference', nextOpen)} />
         <PolicyPanel theme="dispute_mediation" {...referenceProps} open={openSecondary.dispute_mediation === 'policy'} onToggle={(nextOpen) => toggleSecondary('dispute_mediation', 'policy', nextOpen)} />
-        <AiBriefPanel stage="dispute_mediation" available={Boolean(draft) && caseItem?.reason === 'INR' && draft?.evidence?.reason === 'INR' && draft?.routing?.overall_state === 'READY_FOR_LOCAL_REVIEW' && !draft?.review_reasons?.includes('unsupported_reason') && !disabled && !busy && !aiBusyStage} brief={aiBriefs.dispute_mediation} loading={aiBusyStage === 'dispute_mediation'} onGenerate={generateAiBrief} />
+        <AiBriefPanel stage="dispute_mediation" available={Boolean(draft) && caseItem?.reason === 'INR' && draft?.evidence?.reason === 'INR' && draft?.routing?.overall_state === 'READY_FOR_LOCAL_REVIEW' && !draft?.review_reasons?.includes('unsupported_reason') && !disabled && !busy && !aiBusyStage} brief={aiBriefs.dispute_mediation} notice={aiNotices.dispute_mediation} loading={aiBusyStage === 'dispute_mediation'} onGenerate={generateAiBrief} />
       </StageAccordion>
 
       <OptionalDisclosure id="analytics" title="Merchant Evidence Buffer" subtitle="Optional AG Grid Community review workspace" icon="layers" badge={<Badge tone="blue">AG GRID COMMUNITY</Badge>} open={analyticsExpanded} onToggle={setAnalyticsExpanded} testId="optional-toggle-analytics">{analyticsOpen ? <Suspense fallback={<div className="analytics-loading" role="status"><span className="spinner" />Loading the isolated analytics workspace.</div>}><AnalyticsDashboard aup={aup} state={state} /></Suspense> : <div className="analytics-launch-card"><div className="analytics-launch-copy"><span className="meta-label">OPTIONAL SPONSOR EXPERIENCE</span><strong>Open the PayGuard evidence buffer</strong><p>Explore an AG Grid Community evidence table, quick filtering, first-party lifecycle widgets, and a bounded local dashboard guide.</p><div className="analytics-launch-tags"><span>AG Grid Community</span><span>Backend-owned workflow state</span><span>Quick filtering</span><span>Human review</span></div></div><Button data-testid="analytics-launch" icon="layers" tone="blue" disabled={!state} onClick={() => setAnalyticsOpen(true)}>Launch analytics</Button></div>}</OptionalDisclosure>

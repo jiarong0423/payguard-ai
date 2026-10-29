@@ -11,7 +11,7 @@ import re
 import httpx
 
 from .store import BoundaryError, iso, utc_now
-from .schemas import SandboxEvidenceReceipt, PaypalStatusResponse
+from .schemas import DISPUTE_ID_PATTERN, SandboxEvidenceReceipt, PaypalStatusResponse
 
 
 SANDBOX_BASE = "https://api-m.sandbox.paypal.com"
@@ -19,6 +19,23 @@ HTTP_TIMEOUT = httpx.Timeout(8.0, connect=5.0)
 PROVIDER_JSON_MAX_DEPTH = 32
 PROVIDER_JSON_MAX_NODES = 4096
 PROVIDER_JSON_MAX_INTEGER_DIGITS = 64
+_DISPUTE_ID = re.compile(DISPUTE_ID_PATTERN)
+_DISPUTE_PATH = re.compile(r"/v1/customer/disputes/(PP-[A-Z0-9][A-Z0-9-]{2,62})(/provide-evidence)?")
+_POST_ALLOWLIST = frozenset({"/v1/oauth2/token", "/v2/invoicing/invoices", "/v1/notifications/verify-webhook-signature"})
+
+
+def allowed_request(method: str, path: str) -> bool:
+    """Closed method/path allowlist; dispute paths carry a validated id only."""
+    if method == "POST" and path in _POST_ALLOWLIST:
+        return True
+    if method == "GET" and path == "/v1/customer/disputes":
+        return True
+    match = _DISPUTE_PATH.fullmatch(path)
+    if match is None:
+        return False
+    if match.group(2):
+        return method == "POST"
+    return method == "GET"
 
 
 def _provider_float(value: str) -> float:
@@ -60,6 +77,7 @@ class PaypalConfig:
     client_id: str = field(default="", repr=False)
     client_secret: str = field(default="", repr=False)
     webhook_id: str = field(default="", repr=False)
+    dispute_submit: bool = False
 
 
 def operator_config() -> PaypalConfig:
@@ -72,7 +90,8 @@ def operator_config() -> PaypalConfig:
         return PaypalConfig()
     return PaypalConfig(True, os.environ.get("PAYPAL_CLIENT_ID", ""),
                         os.environ.get("PAYPAL_CLIENT_SECRET", ""),
-                        os.environ.get("PAYPAL_WEBHOOK_ID", ""))
+                        os.environ.get("PAYPAL_WEBHOOK_ID", ""),
+                        os.environ.get("PAYGUARD_PAYPAL_DISPUTE_SUBMIT") == "enabled")
 
 
 class PaypalAdapter:
@@ -153,14 +172,16 @@ class PaypalAdapter:
         if self.status()["status"] != "connected":
             raise BoundaryError(503, "provider_not_connected")
 
-    async def _request(self, path: str, *, headers=None, data=None, body=None, auth=None) -> tuple[int, dict]:
-        if path not in ("/v1/oauth2/token", "/v2/invoicing/invoices", "/v1/notifications/verify-webhook-signature"):
+    async def _request(self, path: str, *, method="POST", headers=None, data=None, body=None, auth=None,
+                       params=None, files=None) -> tuple[int, dict]:
+        if method not in ("GET", "POST") or not allowed_request(method, path):
             raise BoundaryError(503, "provider_action_frozen")
         self.open_clients += 1
         try:
             async with asyncio.timeout(15), httpx.AsyncClient(base_url=SANDBOX_BASE, transport=self.transport,
                                          timeout=HTTP_TIMEOUT, follow_redirects=False, trust_env=False) as client:
-                async with client.stream("POST", path, headers=headers, data=data, json=body, auth=auth) as response:
+                async with client.stream(method, path, headers=headers, params=params, data=data, json=body,
+                                         files=files, auth=auth) as response:
                     content = bytearray()
                     async for chunk in response.aiter_bytes():
                         content.extend(chunk)
@@ -281,6 +302,52 @@ class PaypalAdapter:
                 if exc.code == "clock_unavailable":
                     self._revoke_connection("not_configured")
                 raise BoundaryError(exc.status, exc.code) from None
+
+    def dispute_submit_enabled(self) -> bool:
+        """True only while connected with the explicit submit flag in the loaded config."""
+        return bool(self._config.enabled and self._config.dispute_submit and self._status == "connected")
+
+    def _bearer_headers(self) -> dict:
+        return {"Authorization": "Bearer " + self._access_token, "Accept": "application/json"}
+
+    async def list_disputes(self, page_size: int = 10) -> list[dict]:
+        """GET /v1/customer/disputes; the provider rows are projected before return."""
+        from .paypal_disputes import sanitize_dispute_list
+        if type(page_size) is not int or not 1 <= page_size <= 20:
+            raise BoundaryError(422, "schema_invalid")
+        async with self._lock:
+            self.require_connected()
+            _, result = await self._request("/v1/customer/disputes", method="GET", headers=self._bearer_headers(),
+                                            params={"page_size": str(page_size)})
+            return sanitize_dispute_list(result)
+
+    async def get_dispute(self, dispute_id: str) -> dict:
+        """GET /v1/customer/disputes/{id}; names, messages and links are never copied."""
+        from .paypal_disputes import sanitize_dispute_detail
+        if type(dispute_id) is not str or _DISPUTE_ID.fullmatch(dispute_id) is None:
+            raise BoundaryError(422, "schema_invalid")
+        async with self._lock:
+            self.require_connected()
+            _, result = await self._request(f"/v1/customer/disputes/{dispute_id}", method="GET",
+                                            headers=self._bearer_headers())
+            detail = sanitize_dispute_detail(result)
+            if detail["dispute_id"] != dispute_id:
+                raise BoundaryError(502, "provider_response_invalid")
+            return detail
+
+    async def provide_evidence(self, dispute_id: str, parts: dict) -> dict:
+        """POST multipart provide-evidence; requires the explicit submit flag."""
+        if type(dispute_id) is not str or _DISPUTE_ID.fullmatch(dispute_id) is None:
+            raise BoundaryError(422, "schema_invalid")
+        async with self._lock:
+            self.require_connected()
+            if not self._config.dispute_submit:
+                raise BoundaryError(503, "provider_action_frozen")
+            if type(parts) is not dict or "input" not in parts:
+                raise BoundaryError(422, "schema_invalid")
+            status, _result = await self._request(f"/v1/customer/disputes/{dispute_id}/provide-evidence",
+                                                  method="POST", headers=self._bearer_headers(), files=parts)
+            return {"status_code": status, "dispute_id": dispute_id}
 
     async def verify_webhook(self, payload: dict) -> dict:
         """Verify only an allowlisted event; never import a real resource into demo."""

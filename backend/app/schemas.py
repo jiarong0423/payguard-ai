@@ -371,6 +371,157 @@ class WebhookVerifyResponse(Contract):
     imported_into_demo: Literal[False]
 
 
+DISPUTE_ID_PATTERN = r"^PP-[A-Z0-9][A-Z0-9-]{2,62}$"
+_UPPER_TOKEN = r"^[A-Z][A-Z0-9_]{0,63}$"
+_PROVIDER_TIME = r"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]{1,6})?Z$"
+DisputeSource = Literal["paypal_sandbox", "synthetic_fixture"]
+DisputeEvidenceClass = Literal["AUTHENTIC_SANDBOX_RESPONSE", "SYNTHETIC_TEST_RESPONSE", "SYNTHETIC_FIXTURE"]
+
+
+class ProviderMoney(Contract):
+    currency_code: StrictStr = Field(pattern=r"^[A-Z]{3}$")
+    value: StrictStr = Field(pattern=r"^[0-9]{1,10}(?:\.[0-9]{1,2})?$")
+
+
+class DisputeRecord(Contract):
+    dispute_id: StrictStr = Field(pattern=DISPUTE_ID_PATTERN)
+    reason: Literal[
+        "MERCHANDISE_OR_SERVICE_NOT_RECEIVED", "MERCHANDISE_OR_SERVICE_NOT_AS_DESCRIBED",
+        "UNAUTHORISED", "CREDIT_NOT_PROCESSED", "DUPLICATE_TRANSACTION",
+        "INCORRECT_AMOUNT", "PAYMENT_BY_OTHER_MEANS", "CANCELED_RECURRING_BILLING", "OTHER",
+    ]
+    status: Literal[
+        "OPEN", "WAITING_FOR_SELLER_RESPONSE", "WAITING_FOR_BUYER_RESPONSE",
+        "UNDER_REVIEW", "RESOLVED", "CLOSED", "UNKNOWN",
+    ]
+    dispute_life_cycle_stage: Literal["INQUIRY", "CHARGEBACK", "PRE_ARBITRATION", "ARBITRATION", "UNKNOWN"]
+    dispute_state: StrictStr | None = Field(default=None, pattern=_UPPER_TOKEN)
+    dispute_amount: ProviderMoney
+    create_time: StrictStr = Field(pattern=_PROVIDER_TIME)
+    update_time: StrictStr | None = Field(default=None, pattern=_PROVIDER_TIME)
+    seller_response_due_date: StrictStr | None = Field(default=None, pattern=_PROVIDER_TIME)
+
+
+class DisputeEnvelope(Contract):
+    source: DisputeSource
+    data_source_label: Literal["Sandbox", "Fixture"]
+    environment: Literal["sandbox"]
+    evidence_class: DisputeEvidenceClass
+    observed_at: StrictStr = Field(min_length=20, max_length=27)
+    provider_submission: Literal["NOT_PERFORMED", "PERFORMED"]
+
+    @model_validator(mode="after")
+    def source_binding(self):
+        if (self.source == "synthetic_fixture") != (self.evidence_class == "SYNTHETIC_FIXTURE"):
+            raise ValueError("dispute_source_invalid")
+        if (self.source == "synthetic_fixture") != (self.data_source_label == "Fixture"):
+            raise ValueError("dispute_source_invalid")
+        return self
+
+
+class DisputeListResponse(DisputeEnvelope):
+    readback: Literal["GET_LIST"]
+    items: list[DisputeRecord] = Field(max_length=20)
+
+    @model_validator(mode="after")
+    def unique_and_frozen(self):
+        if self.provider_submission != "NOT_PERFORMED":
+            raise ValueError("dispute_source_invalid")
+        if len({row.dispute_id for row in self.items}) != len(self.items):
+            raise ValueError("dispute_source_invalid")
+        return self
+
+
+class DisputedTransaction(Contract):
+    seller_transaction_id: StrictStr = Field(pattern=r"^[A-Za-z0-9._-]{1,64}$")
+    transaction_status: StrictStr | None = Field(default=None, pattern=_UPPER_TOKEN)
+    gross_amount: ProviderMoney | None = None
+    seller_protection_eligible: StrictBool | None = None
+
+
+class DisputeEvidenceRow(Contract):
+    evidence_type: StrictStr = Field(pattern=_UPPER_TOKEN)
+    source: Literal[
+        "REQUESTED_FROM_SELLER", "REQUESTED_FROM_BUYER", "SUBMITTED_BY_SELLER",
+        "SUBMITTED_BY_BUYER", "SUBMITTED_BY_PARTNER", "UNKNOWN",
+    ]
+    action: StrictStr | None = Field(default=None, pattern=_UPPER_TOKEN)
+    date: StrictStr | None = Field(default=None, pattern=_PROVIDER_TIME)
+
+
+class DisputeDetailResponse(DisputeEnvelope, DisputeRecord):
+    readback: Literal["GET_DETAIL"]
+    dispute_channel: StrictStr | None = Field(default=None, pattern=_UPPER_TOKEN)
+    disputed_transactions: list[DisputedTransaction] = Field(max_length=10)
+    evidences: list[DisputeEvidenceRow] = Field(max_length=20)
+
+    @model_validator(mode="after")
+    def frozen_readback(self):
+        if self.provider_submission != "NOT_PERFORMED":
+            raise ValueError("dispute_source_invalid")
+        return self
+
+
+class ProvideEvidenceRequest(Contract):
+    dispute_id: StrictStr = Field(pattern=DISPUTE_ID_PATTERN)
+    case_ref: StrictStr = Field(pattern=r"^case-ref-[0-9]{3}$")
+    submit: StrictBool = False
+
+
+class TrackingInfo(Contract):
+    carrier_name: Literal["OTHER"]
+    carrier_name_other: StrictStr = Field(min_length=1, max_length=64)
+    tracking_number: StrictStr = Field(min_length=1, max_length=64)
+
+
+class EvidenceInfo(Contract):
+    tracking_info: list[TrackingInfo] = Field(max_length=20)
+
+
+class EvidenceInputItem(Contract):
+    evidence_type: StrictStr = Field(pattern=_UPPER_TOKEN)
+    evidence_info: EvidenceInfo
+    notes: StrictStr = Field(min_length=1, max_length=2000)
+
+
+class EvidenceInput(Contract):
+    evidences: list[EvidenceInputItem] = Field(min_length=1, max_length=20)
+
+
+class MultipartFilePart(Contract):
+    name: StrictStr = Field(pattern=r"^file[0-9]{1,3}$")
+    filename: StrictStr = Field(max_length=255)
+    content_type: StrictStr = Field(max_length=128)
+    byte_length: StrictInt = Field(ge=0, le=10_000_000)
+
+
+class ProvideEvidenceResponse(DisputeEnvelope):
+    readback: Literal["PROVIDE_EVIDENCE_PREVIEW", "PROVIDE_EVIDENCE_SUBMITTED"]
+    dispute_id: StrictStr = Field(pattern=DISPUTE_ID_PATTERN)
+    case_ref: StrictStr = Field(pattern=r"^case-ref-[0-9]{3}$")
+    method: Literal["POST"]
+    path: StrictStr = Field(pattern=r"^/v1/customer/disputes/PP-[A-Z0-9][A-Z0-9-]{2,62}/provide-evidence$")
+    content_type: Literal["multipart/form-data"]
+    input: EvidenceInput
+    files: list[MultipartFilePart] = Field(max_length=20)
+    external_send: Literal["FROZEN", "SUBMITTED"]
+    submit_flag_enabled: StrictBool
+    human_review_required: Literal[True]
+
+    @model_validator(mode="after")
+    def submit_binding(self):
+        submitted = self.external_send == "SUBMITTED"
+        if submitted != (self.provider_submission == "PERFORMED"):
+            raise ValueError("dispute_submit_invalid")
+        if submitted != (self.readback == "PROVIDE_EVIDENCE_SUBMITTED"):
+            raise ValueError("dispute_submit_invalid")
+        if submitted and (self.source != "paypal_sandbox" or not self.submit_flag_enabled):
+            raise ValueError("dispute_submit_invalid")
+        if self.path != f"/v1/customer/disputes/{self.dispute_id}/provide-evidence":
+            raise ValueError("dispute_submit_invalid")
+        return self
+
+
 ReferenceTheme = Literal["source_compliance", "velocity_guard", "dispute_mediation"]
 ReferenceRegion = Literal["US"]
 ReferenceStage = Literal["any", "procedural_order", "not_applicable"]

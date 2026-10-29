@@ -83,6 +83,8 @@ const labels = {
   CONNECTED: 'Connected',
   DRAFT: 'Draft · not sent',
   FROZEN: 'Not submitted',
+  SUBMITTED: 'Submitted to Sandbox',
+  PERFORMED: 'Submitted',
   connected: 'Connected',
   disconnected: 'Disconnected',
   not_configured: 'Not configured',

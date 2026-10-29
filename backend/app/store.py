@@ -34,6 +34,7 @@ DEMO_VELOCITY_BASELINE = MappingProxyType({
     "comparison_hours": 24,
     "observation_hours": 1,
 })
+DEMO_BURST_AMOUNTS = ("4.50", "12.00", "7.25", "18.00", "9.75", "6.50", "15.00", "11.25", "8.00", "7.75")
 AI_ATTEMPT_LIMIT = 3
 AI_BRIEF_STAGES = frozenset({"source_compliance", "velocity_guard", "dispute_mediation"})
 
@@ -399,7 +400,10 @@ class SessionStore:
             rows = deepcopy(session.transactions)
             cases = deepcopy(session.disputes)
             if scenario == "burst":
-                rows.extend({"order_id": f"demo-burst-{index:03d}", "amount": "10.00", "currency": "USD",
+                # Fifty synthetic captures with varied amounts; every ten rows sum to
+                # 100.00 so the window total stays 500.00 against the 100.00/h baseline.
+                rows.extend({"order_id": f"demo-burst-{index:03d}",
+                             "amount": DEMO_BURST_AMOUNTS[(index - 1) % len(DEMO_BURST_AMOUNTS)], "currency": "USD",
                              "occurred_at": iso(session.anchor - timedelta(minutes=index % 40))}
                             for index in range(1, 51))
             else:

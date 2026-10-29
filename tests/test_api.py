@@ -458,8 +458,16 @@ class ApiTests(unittest.TestCase):
         review = self.post("/paypal/invoices/review", bound_invoice_review(self)).json()
         request = dict(invoice_payload(), review_token=review["review_token"], payload_digest=review["payload_digest"])
         self.assertEqual(self.post("/paypal/invoices/draft", request).status_code, 503)
-        for route in ("/paypal/invoices/send", "/paypal/payments", "/paypal/refunds", "/paypal/disputes/provide-evidence"):
+        for route in ("/paypal/invoices/send", "/paypal/payments", "/paypal/refunds", "/paypal/disputes/PP-D-00000001/accept-claim"):
             self.assertEqual(self.post(route).status_code, 404)
+        # provide-evidence exists as a preview route; an empty body is rejected and a
+        # submit request stays frozen while the provider is disabled.
+        self.assertEqual(self.post("/paypal/disputes/provide-evidence").status_code, 422)
+        self.post("/demo/inject", {"scenario": "dispute"})
+        self.assertEqual(self.post("/disputes/case-ref-001/draft").status_code, 200)
+        frozen = self.post("/paypal/disputes/provide-evidence",
+                           {"dispute_id": "PP-D-00000001", "case_ref": "case-ref-001", "submit": True})
+        self.assertEqual((frozen.status_code, frozen.json()["error"]["code"]), (503, "provider_action_frozen"))
         self.assertEqual(self.calls, [])
 
 

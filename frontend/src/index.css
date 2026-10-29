@@ -1438,3 +1438,17 @@ body { scrollbar-gutter: stable; }
   .overview-panel .button,
   .stage-accordion .button { font-size: 15px; }
 }
+
+/* Stage 03 provider dispute readback (Sandbox or fixture) and provide-evidence preview */
+.provider-disputes-body { padding: 0 23px 18px; display: flex; flex-direction: column; gap: 12px; }
+.provider-disputes-body > p { margin: 0; font-size: 12px; line-height: 1.7; color: var(--pg-text-muted, #8da7c9); }
+.provider-dispute-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
+.provider-dispute-list .case-card { margin-bottom: 0; }
+.provider-dispute-detail { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 16px; margin: 0; }
+.provider-dispute-detail dt { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--pg-text-muted, #8fa5c0); }
+.provider-dispute-detail dd { margin: 2px 0 0; font-size: 12px; color: var(--pg-text-primary, var(--pg-text-bright, #d2e2f5)); overflow-wrap: anywhere; }
+.provider-dispute-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.provider-dispute-actions .text-dim { flex: 1 1 260px; font-size: 12px; line-height: 1.6; }
+.evidence-preview pre { margin: 10px 0; padding: 12px; border-radius: 8px; background: #0a1421; color: #cfe0f5; font-size: 11px; line-height: 1.5; overflow: auto; max-height: 260px; }
+.evidence-preview ul { margin: 0; padding-left: 18px; font-size: 12px; color: var(--pg-text-primary, var(--pg-text-bright, #b8cae1)); }
+@media (max-width: 720px) { .provider-dispute-detail { grid-template-columns: 1fr; } }
