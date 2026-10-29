@@ -6,9 +6,9 @@ This is a US-only, synthetic-data PayPal Sandbox demonstration with one end-to-e
 
 **At a glance:** AUP warning before a draft → sales-velocity evidence review → dispute evidence ZIP and optional AI brief. The merchant checks each step; PayPal or the applicable issuer keeps the final decision.
 
-**Working stack:** PayPal Sandbox OAuth, an unsent invoice draft and read-only Disputes readback · FastAPI and deterministic rules · React, Tailwind and AG Grid Community · optional bounded Gemini on Vertex AI.
+**Working stack:** PayPal Sandbox OAuth, an unsent invoice draft and read-only Disputes readback · FastAPI and deterministic rules · React, Tailwind and AG Grid Community · Gemini on Vertex AI for the evidence brief.
 
-**Verified once against the real Sandbox:** on 2026-10-07 the gateway authenticated with OAuth client-credentials and created one unsent USD 10.00 invoice draft, Sandbox id `INV2-2MTA-PRPQ-4CAJ-W5UW`, status `DRAFT`. `./tools/run.sh test` runs 436 tests (2 skipped) in about eight seconds.
+**Verified once against the real Sandbox:** on 2026-10-06 17:44 UTC (2026-10-07 in UTC+8) the gateway authenticated with OAuth client-credentials and created one unsent USD 10.00 invoice draft, Sandbox id `INV2-2MTA-PRPQ-4CAJ-W5UW`, status `DRAFT`. `./tools/run.sh test` runs 436 tests (2 skipped) in about eight seconds.
 
 **Website / video:** [youtu.be/K28N9QhRp1E](https://youtu.be/K28N9QhRp1E) (2:02) · **Devpost:** [devpost.com/software/payguard-ai-zbsp9l](https://devpost.com/software/payguard-ai-zbsp9l)
 
@@ -79,7 +79,7 @@ The demo target is the United States and the provider environment is PayPal Sand
 - A fictitious Personal sandbox account represents the buyer when needed.
 - The operator's live-account type is not changed or inferred.
 - A US merchant claim requires an operator-confirmed US Business sandbox seller.
-- The Invoicing evidence is one authenticated Sandbox run on 2026-10-07 (OAuth + one unsent USD 10.00 draft, `INV2-2MTA-PRPQ-4CAJ-W5UW`). Production accounts were out of scope by design.
+- The Invoicing evidence is one authenticated Sandbox run on 2026-10-06 17:44 UTC (2026-10-07 in UTC+8): OAuth plus one unsent USD 10.00 draft, `INV2-2MTA-PRPQ-4CAJ-W5UW`. Production accounts were out of scope by design.
 
 Scope: a fictitious US Business Sandbox seller. Production eligibility and live-account behaviour were not tested.
 
@@ -134,7 +134,7 @@ Then expand **Optional PayPal US Sandbox connection** in STEP 01 and select **Co
 
 ### Turning on Gemini
 
-Without the Gemini profile, **Generate AI brief** shows "Gemini profile not configured" instead of a brief. To enable it, create the Python 3.12 profile shown below, set `PAYGUARD_GEMINI_OUTBOUND=enabled` together with your Vertex AI project through Application Default Credentials in the API terminal, and restart `./tools/run.sh api`. `./tools/run.sh gemini-check` validates the profile without calling the model.
+Without the Gemini profile, **Generate AI brief** shows "Gemini profile not configured" instead of a brief. To enable it, create the Python 3.12 profile shown below, set `PAYGUARD_GEMINI_OUTBOUND=enabled` and `PAYGUARD_VERTEX_PROJECT=<your Google Cloud project id>` with Application Default Credentials in the API terminal, and restart `./tools/run.sh api`. `./tools/run.sh gemini-check` validates the profile without calling the model.
 
 See the [judge quickstart](docs/submission/quickstart.md) for the bounded walkthrough.
 
@@ -176,7 +176,7 @@ Outbound Sandbox access is disabled by default and requires the operator's expli
 
 Operator-attested Sandbox evidence: at 2026-10-06 17:44 UTC (2026-10-07 in UTC+8) one run under the operator's own US Business Sandbox app completed an OAuth client-credentials request and created one unsent USD `10.00` invoice (Sandbox id `INV2-2MTA-PRPQ-4CAJ-W5UW`, status `DRAFT`), with no send, payment, capture, refund or retry. The receipt is a local operator record. To replay the Sandbox path yourself, set `PAYGUARD_PAYPAL_OUTBOUND=enabled` with your own Sandbox app credentials (see "Turning on PayPal" above); the fixture mode shows the same three stages without any key. Invoice creation and invoice sending remain separate operations. I did not issue a GET for the invoice after creating it. Production, invoice send, payment, capture and refund remain frozen; dispute evidence submission is a separate opt-in (`PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`) and is off by default.
 
-The optional Gemini path is bounded to fixed synthetic facts, pinned citation identities and no automatic retry. The Gemini brief was run once against Vertex AI `gemini-3.8-flash` by the operator; to reproduce it you need your own Vertex AI project (see "Turning on Gemini"). The model cannot select jurisdiction, change deterministic results or authorize a provider action, and the console runs without it.
+The Gemini path is bounded to fixed synthetic facts, pinned citation identities and no automatic retry. A live `gemini-3.8-flash` call on Vertex AI completed on 2026-10-06 10:48 UTC (dispute stage, 3.5 s); to reproduce it you need your own Vertex AI project (see "Turning on Gemini"). The model cannot select jurisdiction, change deterministic results or authorize a provider action, and the console runs without it.
 
 The current runtime adds a process-local denial-of-wallet guard around this optional path: three permanent attempt reservations total, one for each fixed stage. Disabled or invalidly configured AI requests do not consume a reservation. After enablement and deterministic context validation, reservation occurs atomically before the provider call; failures, timeouts, cancellation and invalid responses still consume the stage slot. Session reset, expiry and new sessions do not restore it. This is a local prototype control, not a production distributed quota. A public multi-worker or multi-instance deployment must use a durable shared atomic reservation store plus API-gateway rate and budget circuit breakers so restart, another worker or another instance cannot restore capacity.
 
