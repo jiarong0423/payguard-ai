@@ -6,7 +6,7 @@ Current objective state: the local product baseline is `O (Done)`. Release state
 
 ## Locked product statement
 
-PayGuard is a US-only advisory console for a PayPal Sandbox merchant journey. It applies deterministic validation before optional AI and presents three stages:
+PayGuard is a US-only advisory console for a PayPal Sandbox merchant journey. It applies deterministic validation before AI and presents three stages:
 
 1. US AUP warning before an invoice draft;
 2. sales-velocity and fulfillment evidence readiness;
