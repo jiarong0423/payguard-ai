@@ -32,14 +32,14 @@ This is a US-only, synthetic-data PayPal Sandbox demonstration with one end-to-e
 
 ## Architecture and tools at a glance
 
-**What PayGuard does well:** one merchant-side path covers policy warning, sales-velocity review and dispute preparation. Deterministic checks make each signal inspectable; AG Grid makes transaction evidence usable; the ZIP and optional Gemini brief help a person review without claiming an outcome.
+**What PayGuard does well:** one merchant-side path covers policy warning, sales-velocity review and dispute preparation. Deterministic checks make each signal inspectable; AG Grid makes transaction evidence usable; the ZIP and the Gemini brief help a person review without claiming an outcome.
 
 ```mermaid
 flowchart TB
     A["01 AUP preflight<br/>FastAPI deterministic warning"] --> H1["Merchant edits, cancels or acknowledges"]
     H1 -->|Only after acknowledgment| S["PayPal Sandbox OAuth<br/>unsent invoice draft"]
     S --> B["02 Velocity readiness<br/>Backend signal + AG Grid review"]
-    B --> C["03 Dispute evidence<br/>Internal Review ZIP + optional Gemini"]
+    B --> C["03 Dispute evidence<br/>Internal Review ZIP + Gemini"]
     C --> H2["Merchant reviews the evidence"]
     H2 -.->|Final decision stays outside PayGuard| P["PayPal or bank / card issuer"]
 ```
@@ -49,7 +49,7 @@ flowchart TB
 | PayPal Sandbox | OAuth connection, one unsent invoice draft and read-only dispute readback | Provider test environment; no payment, invoice send or dispute mutation unless the submit flag is set |
 | FastAPI + deterministic rules | AUP warning, local sales-baseline comparison, current-case evidence requests | Produce review signals before any optional AI brief |
 | React + Tailwind + AG Grid Community | Merchant console and sortable, filterable transaction evidence | Show the three stages and let a human inspect the records |
-| Optional Gemini on Vertex AI | Bounded evidence brief from fixed synthetic facts and pinned citations | Suggest what to review; no submission or decision authority |
+| Gemini on Vertex AI | Bounded evidence brief from fixed synthetic facts and pinned citations | Suggest what to review; no submission or decision authority |
 | Internal Review ZIP | Pseudonymized evidence copy | Download for human review; not a PayPal submission package |
 
 ![PayGuard AI eight-layer system architecture showing the three merchant stages, deterministic checks, UI, optional AI and provider authority boundaries](docs/decisions/2026Q4/payguard_us_architecture_status.svg)
@@ -85,7 +85,7 @@ Scope: a fictitious US Business Sandbox seller. Production eligibility and live-
 
 ## Run locally
 
-Required console prerequisites: Python 3.13, Node.js 20.19 or newer or Node.js 22.12 or newer, npm and uv. The Gemini profile is optional and separately requires Python 3.12. The optional local-model line requires a separately installed LM Studio server with the exact `nvidia-nemotron-3-nano-4b` model reachable only at `127.0.0.1:1234`. Run from the repository root. The project does not load `.env` files.
+Required console prerequisites: Python 3.13, Node.js 20.19 or newer or Node.js 22.12 or newer, npm and uv. The Gemini profile is set up separately and requires Python 3.12. The optional local-model line requires a separately installed LM Studio server with the exact `nvidia-nemotron-3-nano-4b` model reachable only at `127.0.0.1:1234`. Run from the repository root. The project does not load `.env` files.
 
 Windows users must run the POSIX `sh` commands in WSL 2; native Command Prompt and PowerShell runners are not supported.
 
@@ -98,7 +98,7 @@ uv pip install --python .venv/bin/python3 -r requirements.lock
 ./tools/run.sh api
 ```
 
-The Gemini profile is optional and is not required to start or judge the deterministic console. To validate it separately:
+The console starts without the Gemini profile. To validate it separately:
 
 ```sh
 uv venv --python python3.12 integrations/gemini/.venv
@@ -134,7 +134,7 @@ Then expand **Optional PayPal US Sandbox connection** in STEP 01 and select **Co
 
 ### Turning on Gemini
 
-Without the Gemini profile, **Generate AI brief** shows "Gemini profile not configured" instead of a brief. To enable it, create the Python 3.12 profile shown below, set `PAYGUARD_GEMINI_OUTBOUND=enabled` and `PAYGUARD_VERTEX_PROJECT=<your Google Cloud project id>` with Application Default Credentials in the API terminal, and restart `./tools/run.sh api`. `./tools/run.sh gemini-check` validates the profile without calling the model.
+Without the Gemini profile, **Generate AI brief** shows "Gemini profile not configured" instead of a brief. To enable it, create the Python 3.12 profile described under Prerequisites above, set `PAYGUARD_GEMINI_OUTBOUND=enabled` and `PAYGUARD_VERTEX_PROJECT=<your Google Cloud project id>` with Application Default Credentials in the API terminal, and restart `./tools/run.sh api`. `./tools/run.sh gemini-check` validates the profile without calling the model.
 
 See the [judge quickstart](docs/submission/quickstart.md) for the bounded walkthrough.
 
@@ -184,7 +184,7 @@ The server-owned `payguard-bounded-advisory-v2` prompt contract accepts no calle
 
 The AI integration is a dual-line adapter boundary. `./tools/run.sh api` keeps the existing default Gemini line. `./tools/run.sh local-ai-api` explicitly selects the default-off LM Studio line; it has no key, proxy, remote URL, caller-supplied model or automatic fallback. Both lines share the same stage-only request, prompt digest, closed text inventory, citation order, no-action fields and process-local three-attempt budget. The frontend accepts only the valid model/evidence pairs. The two providers are never called together.
 
-The local line fixes the endpoint to `http://127.0.0.1:1234/v1/chat/completions`, the model to `nvidia-nemotron-3-nano-4b`, structured JSON output, `reasoning_effort=none`, no tools, one serialized in-flight inference and no retry. The public source contains structural and synthetic tests for this contract. The Gemini brief was exercised against Vertex AI `gemini-3.8-flash` in a single operator-run call (no retry); it is optional, bounded to fixed synthetic facts, and the console runs without it.
+The local line fixes the endpoint to `http://127.0.0.1:1234/v1/chat/completions`, the model to `nvidia-nemotron-3-nano-4b`, structured JSON output, `reasoning_effort=none`, no tools, one serialized in-flight inference and no retry. The public source contains structural and synthetic tests for this contract. The Gemini brief was exercised against Vertex AI `gemini-3.8-flash` in a single operator-run call (no retry); Gemini writes the brief from fixed synthetic facts and fixed code validates it; the console also starts without a Gemini profile.
 
 ## Validation
 
@@ -204,7 +204,7 @@ node tests/frontend_zip_contract.mjs
 node tests/frontend_zip_api_parity.mjs
 ```
 
-Optional Gemini-profile validation remains separate:
+Gemini-profile validation remains separate:
 
 ```sh
 ./tools/run.sh gemini-check
