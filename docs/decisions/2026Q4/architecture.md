@@ -12,7 +12,7 @@ PayGuard is an advisory merchant console for a United States PayPal Sandbox demo
 
 The architecture follows four authority rules:
 
-- deterministic validation and routing run before optional AI;
+- deterministic validation and routing run before AI;
 - AI extracts and summarizes but does not choose jurisdiction, change a rule result or decide an outcome;
 - humans control local edit, cancel, acknowledge and review choices;
 - PayPal retains final authority for PayPal policy, account and internal-dispute decisions, while a bank or card issuer retains authority for an external dispute.

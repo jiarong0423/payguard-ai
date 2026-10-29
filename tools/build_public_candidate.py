@@ -94,7 +94,7 @@ EXACT_FILES = (
 TREE_FILES = {
     "backend/app": (
         "__init__.py", "ai_brief.py", "lmstudio_brief.py", "main.py", "paypal.py",
-        "paypal_tools.py", "schemas.py", "store.py",
+        "paypal_disputes.py", "paypal_tools.py", "schemas.py", "store.py",
     ),
     "frontend/src": (
         "AnalyticsDashboard.css", "AnalyticsDashboard.jsx", "App.jsx", "PolicyPanel.jsx",
@@ -112,7 +112,7 @@ TREE_FILES = {
         "test_applicability.py", "test_boundaries.py", "test_case_cards.py",
         "test_case_intake.py", "test_dispute_evidence.py", "test_document_privacy.py",
         "test_engines.py", "test_gemini_worker.py", "test_lmstudio_brief.py",
-        "test_paypal_tools.py", "test_policy_api.py", "test_policy_gateway_integration.py",
+        "test_paypal_disputes.py", "test_paypal_tools.py", "test_policy_api.py", "test_policy_gateway_integration.py",
         "test_public_export_builder.py", "test_reference_api.py", "test_reference_policy.py",
         "test_retrieval.py", "test_sandbox_receipts.py",
     ),
