@@ -23,7 +23,7 @@ uv pip install --python .venv/bin/python3 -r requirements.lock
 ./tools/run.sh api
 ```
 
-The Gemini profile is optional and is not required to start or judge the deterministic console. To validate it separately:
+The console starts without the Gemini profile. To validate it separately:
 
 ```sh
 uv venv --python python3.12 integrations/gemini/.venv
@@ -156,7 +156,7 @@ node tests/frontend_zip_contract.mjs
 node tests/frontend_zip_api_parity.mjs
 ```
 
-Optional Gemini-profile validation remains separate:
+Gemini-profile validation remains separate:
 
 ```sh
 ./tools/run.sh gemini-check

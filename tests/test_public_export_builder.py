@@ -198,7 +198,7 @@ class PublicExportBuilderTests(unittest.TestCase):
         for relative in ("README.md", "docs/submission/quickstart.md"):
             with self.subTest(relative=relative):
                 text = (self.published / relative).read_text(encoding="utf-8").casefold()
-                self.assertIn("gemini profile is optional", text)
+                self.assertIn("the console starts without the gemini profile", text)
                 self.assertIn("wsl 2", text)
                 self.assertIn("operator-attested", text)
                 self.assertNotIn("sandbox path proves", text)
