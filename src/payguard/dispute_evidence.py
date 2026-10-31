@@ -64,6 +64,15 @@ DISPUTE_STATUSES = (
 DISPUTE_STAGES = (
     "INQUIRY", "CHARGEBACK", "PRE_ARBITRATION", "ARBITRATION", "UNKNOWN",
 )
+DELIVERY_CHANNELS = ("EMAIL_LINK", "DOWNLOAD_LINK", "ACCOUNT_ACCESS")
+TIME_EVIDENCE_SCHEMA = "payguard.time_evidence.v1"
+MESSAGE_CHANNELS = ("EMAIL", "PRIVATE_MESSAGE")
+MESSAGE_DIRECTIONS = ("INBOUND", "OUTBOUND")
+MESSAGE_TOPICS = (
+    "PAYMENT_NOTICE", "ORDER_DETAILS_REQUEST", "ORDER_DETAILS_PROVIDED",
+    "DELIVERY_NOTICE", "REFUND_REQUEST", "OTHER",
+)
+MAX_MESSAGE_RECORDS = 20
 SUPPORTED_ATTACHMENT_EXTENSIONS = (".jpg", ".jpeg", ".gif", ".png", ".pdf")
 MAX_ATTACHMENT_BYTES = 10_000_000
 MAX_ATTACHMENT_SET_BYTES = 50_000_000
@@ -222,8 +231,9 @@ def _validate_snapshot(snapshot):
 _PROOF_FIELDS = {
     "FULFILLMENT": {
         "allowed": {"carrier_name", "tracking_number", "shipped_at", "delivered_at",
-                    "delivery_status", "destination_match_status"},
-        "required": {"carrier_name", "tracking_number"},
+                    "delivery_status", "destination_match_status", "delivery_channel"},
+        # Physical goods: carrier and tracking. Digital items: channel and delivery time.
+        "required_one_of": ({"carrier_name", "tracking_number"}, {"delivery_channel", "delivered_at"}),
     },
     "REFUND": {
         "allowed": {"refund_id", "amount", "currency", "refunded_at"},
@@ -242,6 +252,8 @@ def _validate_proof_fields(evidence_type, fields):
         _error("proof_record_invalid")
     if not spec.get("required", set()).issubset(fields):
         _error("proof_record_invalid")
+    if spec.get("required_one_of") and not any(group.issubset(fields) for group in spec["required_one_of"]):
+        _error("proof_record_invalid")
     if spec.get("required_any") and not set(fields).intersection(spec["required_any"]):
         _error("proof_record_invalid")
     result = {}
@@ -252,6 +264,10 @@ def _validate_proof_fields(evidence_type, fields):
             result[name] = _decimal(value, "proof_record_invalid")
         elif name == "currency":
             if type(value) is not str or _CURRENCY.fullmatch(value) is None:
+                _error("proof_record_invalid")
+            result[name] = value
+        elif name == "delivery_channel":
+            if _upper(value, "proof_record_invalid") not in DELIVERY_CHANNELS:
                 _error("proof_record_invalid")
             result[name] = value
         elif name in {"delivery_status", "destination_match_status"}:
@@ -533,3 +549,90 @@ def internal_review_narrative(routing):
 def defensive_copy(value):
     """Return a deep copy for tests and bounded adapters."""
     return deepcopy(value)
+
+
+_HEX64 = re.compile(r"[0-9a-f]{64}\Z")
+_TIME_KEYS = ("payment_at", "order_record_at", "delivered_at", "claim_at")
+_MESSAGE_KEYS = ("channel", "direction", "sent_at", "topic", "message_digest")
+_KIND_RANK = {"PAYMENT": 0, "ORDER_RECORD_CREATED": 1, "MESSAGE": 2, "DELIVERY": 3, "CLAIM_OPENED": 4}
+
+
+def message_digest(key, text):
+    """Keyed digest of a message the seller keeps. The text itself is never stored.
+
+    A plain hash of a short message can be recovered by guessing, so the digest is
+    an HMAC under a key that stays with the session or the seller.
+    """
+    if type(key) is not bytes or len(key) < 16 or type(text) is not str or not text.strip() or len(text) > 20000:
+        _error("message_digest_invalid")
+    normalized = unicodedata.normalize("NFKC", text).encode("utf-8")
+    return hmac.new(key, b"payguard.message.v1\x00" + normalized, hashlib.sha256).hexdigest()
+
+
+def build_time_evidence(times, messages):
+    """Order the time points of a payment dispute and compute the gaps between them.
+
+    It preserves and orders. It never states intent, never predicts an outcome and
+    carries no free text: messages are a channel, a direction, a time, a closed topic
+    and a keyed digest.
+    """
+    _closed(times, _TIME_KEYS, "time_evidence_invalid")
+    if type(messages) is not list or len(messages) > MAX_MESSAGE_RECORDS:
+        _error("time_evidence_invalid")
+    parsed = {}
+    for name in _TIME_KEYS:
+        value = times[name]
+        if value is None and name in {"order_record_at", "delivered_at"}:
+            parsed[name] = None
+        else:
+            parsed[name] = _time(value, "time_evidence_invalid")
+    events = [
+        ("PAYMENT", parsed["payment_at"], "SELLER_PROVIDED_UNVERIFIED", 0, {}),
+        ("CLAIM_OPENED", parsed["claim_at"], "PROVIDER", 0, {}),
+    ]
+    if parsed["order_record_at"] is not None:
+        events.append(("ORDER_RECORD_CREATED", parsed["order_record_at"], "SELLER_PROVIDED_UNVERIFIED", 0, {}))
+    if parsed["delivered_at"] is not None:
+        events.append(("DELIVERY", parsed["delivered_at"], "SELLER_PROVIDED_UNVERIFIED", 0, {}))
+    for index, record in enumerate(messages):
+        _closed(record, _MESSAGE_KEYS, "time_evidence_invalid")
+        if (record["channel"] not in MESSAGE_CHANNELS or record["direction"] not in MESSAGE_DIRECTIONS or
+                record["topic"] not in MESSAGE_TOPICS or type(record["message_digest"]) is not str or
+                _HEX64.fullmatch(record["message_digest"]) is None):
+            _error("time_evidence_invalid")
+        sent = _time(record["sent_at"], "time_evidence_invalid")
+        events.append(("MESSAGE", sent, "SELLER_PROVIDED_UNVERIFIED", index, {
+            "channel": record["channel"], "direction": record["direction"],
+            "topic": record["topic"], "message_digest": record["message_digest"],
+        }))
+    events.sort(key=lambda row: (row[1], _KIND_RANK[row[0]], row[3]))
+
+    def gap(start, end):
+        if start is None or end is None:
+            return None
+        return int((end - start).total_seconds())
+
+    payment, order, delivered, claim = (parsed[name] for name in _TIME_KEYS)
+    flags = set()
+    if order is None:
+        flags.add("ORDER_RECORD_ABSENT")
+    if delivered is None:
+        flags.add("DELIVERY_NOT_RECORDED")
+    elif delivered > claim:
+        flags.add("DELIVERY_AFTER_CLAIM")
+    if claim < payment:
+        flags.add("CLAIM_TIME_EARLIER_THAN_PAYMENT_TIME")
+    return {
+        "schema_version": TIME_EVIDENCE_SCHEMA,
+        "events": [dict({"kind": kind, "at": _iso(at), "source": source}, **extra)
+                   for kind, at, source, _index, extra in events],
+        "gaps_seconds": {
+            "payment_to_order_record": gap(payment, order),
+            "payment_to_delivery": gap(payment, delivered),
+            "delivery_to_claim": gap(delivered, claim),
+            "payment_to_claim": gap(payment, claim),
+        },
+        "flags": sorted(flags),
+        "judgement": "NOT_MADE",
+        "advisory_only": True,
+    }

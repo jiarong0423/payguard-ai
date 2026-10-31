@@ -356,6 +356,69 @@ const invalidMutations = [
   (value) => { value.document_redaction.limitations = ['Attachment private-evidence.png']; },
   (value) => { value.document_redaction.redacted_text += ' PRIVATE_REQUEST_ID_REQUEST_001'; },
 ];
+const timeEvidence = {
+  schema_version: 'payguard.time_evidence.v1',
+  events: [
+    { kind: 'PAYMENT', at: '2026-10-03T20:00:00Z', source: 'SELLER_PROVIDED_UNVERIFIED' },
+    { kind: 'MESSAGE', at: '2026-10-03T20:30:00Z', source: 'SELLER_PROVIDED_UNVERIFIED', channel: 'EMAIL',
+      direction: 'INBOUND', topic: 'PAYMENT_NOTICE', message_digest: 'a'.repeat(64) },
+    { kind: 'ORDER_RECORD_CREATED', at: '2026-10-04T08:00:00Z', source: 'SELLER_PROVIDED_UNVERIFIED' },
+    { kind: 'CLAIM_OPENED', at: '2026-10-06T08:00:00Z', source: 'PROVIDER' },
+    { kind: 'DELIVERY', at: '2026-10-06T12:00:00Z', source: 'SELLER_PROVIDED_UNVERIFIED' },
+  ],
+  gaps_seconds: { payment_to_order_record: 43200, payment_to_delivery: 230400, delivery_to_claim: -14400, payment_to_claim: 216000 },
+  flags: ['DELIVERY_AFTER_CLAIM'],
+  judgement: 'NOT_MADE',
+  advisory_only: true,
+};
+const timeDraft = { ...clone(validDraft), case_ref: 'case-ref-002', time_evidence: clone(timeEvidence) };
+const timeZip = buildInternalReviewZip(clone(timeDraft));
+assert.equal(validateInternalReviewZip(timeZip), true, 'time evidence archive must pass runtime validation');
+assert.deepEqual(timeZip, buildInternalReviewZip(clone(timeDraft)), 'time evidence ZIP bytes must be deterministic');
+const timeParsed = parseZip(timeZip);
+assert.deepEqual([...timeParsed.keys()], fixedNames, 'time evidence keeps the same six files');
+const timeTimeline = JSON.parse(decoder.decode(timeParsed.get('timeline.json')));
+assert.equal(timeTimeline.schema_version, 'payguard.internal_review_timeline.v2');
+assert.deepEqual(timeTimeline.time_evidence, timeEvidence);
+assert.equal(timeTimeline.time_evidence.judgement, 'NOT_MADE');
+assert.match(decoder.decode(timeParsed.get('README.txt')), /Time evidence: timeline\.json lists events in time order/u);
+assert.match(decoder.decode(timeParsed.get('README.txt')), /states no intent, predicts no outcome and gives no legal advice/u);
+assert.notDeepEqual(timeZip, first, 'a case with time evidence differs from a case without it');
+assert.equal(timeline.schema_version, 'payguard.internal_review_timeline.v1', 'case one keeps the original timeline schema');
+assert.equal('time_evidence' in timeline, false, 'case one timeline has no time evidence');
+for (const text of ['Synthetic message', 'summary', 'intent', 'fraud']) {
+  assert.equal(decoder.decode(timeParsed.get('timeline.json')).toLowerCase().includes(text.toLowerCase()), false, `timeline must not contain ${text}`);
+}
+const invalidTimeMutations = [
+  (value) => { value.time_evidence.unknown = true; },
+  (value) => { value.time_evidence.judgement = 'LIKELY_FRAUD'; },
+  (value) => { value.time_evidence.advisory_only = false; },
+  (value) => { value.time_evidence.schema_version = 'payguard.time_evidence.v2'; },
+  (value) => { value.time_evidence.events[1].body = 'please refund me'; },
+  (value) => { value.time_evidence.events[1].summary = 'buyer says paid'; },
+  (value) => { value.time_evidence.events[1].message_digest = 'A'.repeat(64); },
+  (value) => { value.time_evidence.events[1].message_digest = 'a'.repeat(63); },
+  (value) => { value.time_evidence.events[1].channel = 'SMS'; },
+  (value) => { value.time_evidence.events[1].topic = 'BUYER_IS_LYING'; },
+  (value) => { value.time_evidence.events[0].source = 'PROVIDER_VERIFIED'; },
+  (value) => { value.time_evidence.events[0].at = '2026-10-03T20:00:00'; },
+  (value) => { value.time_evidence.events[3].extra = 'x'; },
+  (value) => { value.time_evidence.events = [value.time_evidence.events[0]]; },
+  (value) => { value.time_evidence.gaps_seconds.intent = 1; },
+  (value) => { value.time_evidence.gaps_seconds.payment_to_claim = 1.5; },
+  (value) => { value.time_evidence.gaps_seconds.payment_to_claim = 'soon'; },
+  (value) => { value.time_evidence.flags = ['BUYER_ACTED_IN_BAD_FAITH']; },
+  (value) => { value.time_evidence.flags = ['DELIVERY_AFTER_CLAIM', 'DELIVERY_AFTER_CLAIM']; },
+  (value) => { value.time_evidence = null; },
+  (value) => { value.time_evidence = []; },
+];
+for (const mutate of invalidTimeMutations) {
+  const value = clone(timeDraft);
+  mutate(value);
+  assert.throws(() => buildInternalReviewZip(value), /internal_review_zip_invalid/u);
+}
+console.log('frontend ZIP time evidence: positive v2 timeline and ' + invalidTimeMutations.length + ' mutations rejected PASS');
+
 for (const family of ['attachment', 'file']) {
   for (const joiner of ['-', '_', ' ']) {
     for (const delimiter of [':', '=', ' ']) {

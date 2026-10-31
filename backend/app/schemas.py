@@ -1,6 +1,6 @@
 """Strict HTTP input and allowlisted response contracts."""
 
-from typing import Annotated, Literal
+from typing import Annotated, Literal, Optional, Union
 from datetime import date, datetime, timezone
 import hashlib
 import re
@@ -722,6 +722,40 @@ class RestrictedOriginalSummary(Contract):
     provider_submission: Literal["NOT_PERFORMED"]
 
 
+class TimeEvent(Contract):
+    kind: Literal["PAYMENT", "ORDER_RECORD_CREATED", "DELIVERY", "CLAIM_OPENED"]
+    at: StrictStr = Field(min_length=20, max_length=40)
+    source: Literal["PROVIDER", "SELLER_PROVIDED_UNVERIFIED"]
+
+
+class MessageTimeEvent(Contract):
+    kind: Literal["MESSAGE"]
+    at: StrictStr = Field(min_length=20, max_length=40)
+    source: Literal["SELLER_PROVIDED_UNVERIFIED"]
+    channel: Literal["EMAIL", "PRIVATE_MESSAGE"]
+    direction: Literal["INBOUND", "OUTBOUND"]
+    topic: Literal["PAYMENT_NOTICE", "ORDER_DETAILS_REQUEST", "ORDER_DETAILS_PROVIDED",
+                   "DELIVERY_NOTICE", "REFUND_REQUEST", "OTHER"]
+    message_digest: StrictStr = Field(pattern=r"^[0-9a-f]{64}$")
+
+
+class TimeGaps(Contract):
+    payment_to_order_record: Optional[StrictInt]
+    payment_to_delivery: Optional[StrictInt]
+    delivery_to_claim: Optional[StrictInt]
+    payment_to_claim: Optional[StrictInt]
+
+
+class TimeEvidence(Contract):
+    schema_version: Literal["payguard.time_evidence.v1"]
+    events: list[Union[MessageTimeEvent, TimeEvent]] = Field(min_length=2, max_length=30)
+    gaps_seconds: TimeGaps
+    flags: list[Literal["ORDER_RECORD_ABSENT", "DELIVERY_NOT_RECORDED", "DELIVERY_AFTER_CLAIM",
+                        "CLAIM_TIME_EARLIER_THAN_PAYMENT_TIME"]] = Field(max_length=4)
+    judgement: Literal["NOT_MADE"]
+    advisory_only: Literal[True]
+
+
 class DisputeDraftResponse(Contract):
     case_ref: str
     status: Literal["manual_review", "review_evidence"]
@@ -738,6 +772,7 @@ class DisputeDraftResponse(Contract):
     draft_digest: str
     identity_redaction: IdentityRedaction
     document_redaction: DocumentRedaction
+    time_evidence: Optional[TimeEvidence] = None
 
 
 class ReferenceRequest(Contract):

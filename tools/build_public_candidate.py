@@ -61,6 +61,7 @@ EXACT_FILES = (
     "docs/decisions/2026Q4/threat_model.md",
     "docs/decisions/2026Q4/us_mainline_contract.md",
     "docs/decisions/2026Q4/us_official_source_register.md",
+    "docs/evidence/RECEIPT_20261031_live.md",
     "docs/submission/quickstart.md",
     "docs/submission/devpost_story.md",
     "docs/submission/payguard_cover.png",
@@ -99,7 +100,7 @@ TREE_FILES = {
     "frontend/src": (
         "AnalyticsDashboard.css", "AnalyticsDashboard.jsx", "App.jsx", "PolicyPanel.jsx",
         "ReferencePanel.jsx", "api.js", "index.css", "main.jsx", "operatorLabels.js",
-        "pseudonymizedExport.js", "referenceContract.js", "reviewZip.js",
+        "pseudonymizedExport.js", "referenceContract.js", "reviewZip.js", "TimeEvidenceView.jsx",
     ),
     "src/payguard": (
         "__init__.py", "advisory_eval.py", "applicability.py", "case_cards.py",
@@ -114,7 +115,7 @@ TREE_FILES = {
         "test_engines.py", "test_gemini_worker.py", "test_lmstudio_brief.py",
         "test_paypal_disputes.py", "test_paypal_tools.py", "test_policy_api.py", "test_policy_gateway_integration.py",
         "test_public_export_builder.py", "test_reference_api.py", "test_reference_policy.py",
-        "test_retrieval.py", "test_sandbox_receipts.py",
+        "test_retrieval.py", "test_sandbox_receipts.py", "test_time_evidence.py",
     ),
 }
 MAPPED_FILES = {"tools/run.sh": "tools/public_run.sh"}

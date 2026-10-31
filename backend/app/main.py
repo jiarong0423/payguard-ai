@@ -290,7 +290,8 @@ def create_app(*, store=None, paypal=None, reference_loader=None, ai_brief=None)
         except (ValidationError, TypeError, ValueError):
             raise ResponseValidationError(errors=[{"type": "advisory_contract_invalid"}]) from None
 
-    @application.post("/api/v1/disputes/{case_ref}/draft", response_model=DisputeDraftResponse)
+    @application.post("/api/v1/disputes/{case_ref}/draft", response_model=DisputeDraftResponse,
+                      response_model_exclude_unset=True)
     def draft(case_ref: str, _body: EmptyRequest, session=Depends(write_session)):
         return application.state.store.draft(session, case_ref)
 

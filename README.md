@@ -10,9 +10,11 @@ This is a US-only, synthetic-data PayPal Sandbox demonstration with one end-to-e
 
 **Why these three situations:** the stages follow published decisions of the UK Financial Ombudsman Service about PayPal accounts, checked against the published PDFs on 2026-10-31. [DRN-3621543](https://www.financial-ombudsman.org.uk/decision/DRN-3621543.pdf): an e-liquid seller could no longer receive payments because the goods needed PayPal's pre-approval under its Acceptable Use Policy (complaint not upheld). [DRN-5706769](https://www.financial-ombudsman.org.uk/decision/DRN-5706769.pdf): a new business account with a sharp rise in sales had part of its funds held and a 15% rolling reserve applied (the reserve was found reasonable; GBP 150 was awarded for an unexplained delay in releasing funds). [DRN-3526295](https://www.financial-ombudsman.org.uk/decision/DRN-3526295.pdf): a buyer's Buyer Protection claim over a watch that did not match its description (upheld; this is the buyer's side, which PayGuard does not act for). These are UK decisions about PayPal's UK and European entities, not US cases, and three cases show a pattern, not an incidence rate. The author collected further public sources for the project; they are not included in this repository.
 
+**Time evidence (synthetic case 2):** a buyer pays for a digital item, no order record exists yet, the seller delivers later, and a refund claim lands inside that gap. PayGuard keeps the payment time, the order-record time, message records (a channel, a direction, a time, a closed topic and a keyed digest, never text), the delivery time and the claim time in one ordered record inside the Internal Review ZIP (`timeline.json`, schema v2), computes the gaps between them, and lists neutral timestamp flags. Every event except the claim time is marked seller-provided and not verified. It states no intent, predicts no outcome and gives no legal advice; PayPal and the card issuer decide. A digital delivery (channel and time) can stand in for a tracking number as fulfilment proof; mapping it to PayPal's `PROOF_FOR_SOFTWARE_OR_SERVICE_DELIVERED` request type is not implemented, and nothing is submitted.
+
 **Working stack:** PayPal Sandbox OAuth, an unsent invoice draft and read-only Disputes readback · FastAPI and deterministic rules · React, Tailwind and AG Grid Community · Gemini on Vertex AI for the evidence brief.
 
-**Verified against the real Sandbox:** on 2026-10-06 17:44 UTC (2026-10-07 in UTC+8) the gateway authenticated with OAuth client-credentials and created one unsent USD 10.00 invoice draft, Sandbox id `INV2-2MTA-PRPQ-4CAJ-W5UW`, status `DRAFT`. On 2026-10-31 an authenticated Sandbox `GET /v1/customer/disputes` returned HTTP 200 with an empty list (the Sandbox account holds no disputes), shown in STEP 03 as **Sandbox data**; no dispute row was read live. `./tools/run.sh test` runs 437 tests (2 skipped).
+**Verified against the real Sandbox:** on 2026-10-06 17:44 UTC (2026-10-07 in UTC+8) the gateway authenticated with OAuth client-credentials and created one unsent USD 10.00 invoice draft, Sandbox id `INV2-2MTA-PRPQ-4CAJ-W5UW`, status `DRAFT`. On 2026-10-31 the author filed one test dispute (Item Not Received, TWD 158.00) from a Sandbox buyer test account against the Sandbox seller test account. A list read 2.4 minutes after filing was empty; a read 12.7 minutes after filing returned that one case (waiting for the seller's response, inquiry stage), shown in STEP 03 as **Sandbox data**. It is a test case made with two test accounts, not a real merchant case, and a second unsent invoice draft was created the same day. The masked receipt is [docs/evidence/RECEIPT_20261031_live.md](docs/evidence/RECEIPT_20261031_live.md). `./tools/run.sh test` runs 455 tests (2 skipped). The first commit of this repository is dated 2026-10-08, inside the submission period.
 
 **Website / video:** [youtu.be/K28N9QhRp1E](https://youtu.be/K28N9QhRp1E) (2:02) · **Devpost:** [devpost.com/software/payguard-ai-zbsp9l](https://devpost.com/software/payguard-ai-zbsp9l)
 
@@ -21,8 +23,8 @@ This is a US-only, synthetic-data PayPal Sandbox demonstration with one end-to-e
 | Connect the merchant | `POST /v1/oauth2/token` (client-credentials) | Real Sandbox call with `PAYGUARD_PAYPAL_OUTBOUND=enabled` and your Sandbox app credentials; without them the call answers 503 `provider_disabled` and nothing is simulated |
 | Unsent invoice draft after the AUP preflight | `POST /v2/invoicing/invoices` | Real Sandbox call once connected, status `DRAFT`, never sent; without a connection the console shows the AUP warning and stops before the draft |
 | Webhook signature check | `POST /v1/notifications/verify-webhook-signature` | Allow-listed Sandbox endpoint; exercised in tests with hand-written mock responses; needs `PAYPAL_WEBHOOK_ID`; no UI path |
-| Read the merchant's dispute list (STEP 03) | `GET /v1/customer/disputes` | Read live once on 2026-10-31 (HTTP 200, empty list, labelled **Sandbox data**); parsing of real dispute rows is covered by mocked-transport tests. Connect your own Sandbox app to run it live. Without a connection a synthetic fixture in the same JSON shape is used, labelled **Fixture data** in the UI |
-| Read one dispute | `GET /v1/customer/disputes/{id}` | Implemented for the Sandbox and covered by mocked-transport tests; otherwise the fixture |
+| Read the merchant's dispute list (STEP 03) | `GET /v1/customer/disputes` | Read live on 2026-10-31: one author-created Sandbox test case was listed (labelled **Sandbox data**); other reasons and more rows are covered by mocked-transport tests. Connect your own Sandbox app to run it live. Without a connection a synthetic fixture in the same JSON shape is used, labelled **Fixture data** in the UI |
+| Read one dispute | `GET /v1/customer/disputes/{id}` | Read live once for the same test case (HTTP 200); other cases use mocked-transport tests or the fixture |
 | Assemble the evidence response | `POST /v1/customer/disputes/{id}/provide-evidence` | Multipart request is built and previewed from the local draft for a dispute id the console itself returned; it is sent only after the local review approval, with `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`, a Sandbox connection and an explicit `submit: true` |
 | Sales-velocity stream, dispute checklist, evidence ZIP | none | Local synthetic data by design |
 
@@ -192,7 +194,7 @@ The local line fixes the endpoint to `http://127.0.0.1:1234/v1/chat/completions`
 
 ## Validation
 
-The number you can reproduce from this repository is the one `./tools/run.sh test` prints (437 tests, 2 skipped).
+The number you can reproduce from this repository is the one `./tools/run.sh test` prints (455 tests, 2 skipped).
 
 Use the project-local runner and frontend build:
 
@@ -215,7 +217,7 @@ Gemini-profile validation remains separate:
 ./tools/run.sh gemini-test
 ```
 
-Measured scope: `./tools/run.sh test` runs 437 tests (2 skipped) against synthetic data, mocked transports and the built-in fixture; the Sandbox OAuth and invoice-draft calls are covered by an operator-run receipt (2026-10-06 UTC) and a later rehearsal, the Disputes list by one live empty-list read (2026-10-31), and dispute rows, the single-dispute read and webhook calls by MockTransport tests. Not covered: multi-instance or hosted operation and real-record behaviour.
+Measured scope: `./tools/run.sh test` runs 455 tests (2 skipped) against synthetic data, mocked transports and the built-in fixture; the Sandbox OAuth and invoice-draft calls are covered by receipts (2026-10-06 and 2026-10-31 UTC), the dispute list and one single-dispute read by one author-created Sandbox test case (2026-10-31), and other dispute rows and webhook calls by MockTransport tests. Not covered: multi-instance or hosted operation and real-record behaviour.
 
 ## Architecture, privacy and release boundary
 
@@ -227,6 +229,6 @@ Measured scope: `./tools/run.sh test` runs 437 tests (2 skipped) against synthet
 - [Standalone architecture/status visual](docs/decisions/2026Q4/payguard_us_architecture_status.svg)
 - [Security policy](SECURITY.md)
 
-The default dataset is synthetic and session-bound. Pseudonymization is not complete anonymization. What is in this release: the three-stage console, 437 tests, the Sandbox gateway (OAuth, unsent invoice draft, Disputes readback, gated provide-evidence) and the fixture data. What is not: multi-tenant auth, logistics feeds, automatic dispute ingestion, cloud deployment.
+The default dataset is synthetic and session-bound. Pseudonymization is not complete anonymization. What is in this release: the three-stage console, 455 tests, the Sandbox gateway (OAuth, unsent invoice draft, Disputes readback, gated provide-evidence) and the fixture data. What is not: multi-tenant auth, logistics feeds, automatic dispute ingestion, cloud deployment.
 
 The MIT license, contributor-rights attestation and third-party notices are present in the source package. The manifest distinguishes the default local-review state from the explicit published-source state. The demonstration video is public; the Devpost project is submitted. Later source revisions require fresh release review.

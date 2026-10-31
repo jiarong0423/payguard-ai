@@ -18,7 +18,7 @@ const TOP_LEVEL_KEYS = [
   'policy_version', 'advisory_only', 'source', 'routing', 'restricted_original_summary',
   'scenario_match', 'draft_digest', 'identity_redaction', 'document_redaction',
 ];
-const OPTIONAL_TOP_LEVEL_KEYS = ['case_ref'];
+const OPTIONAL_TOP_LEVEL_KEYS = ['case_ref', 'time_evidence'];
 const ROUTING_KEYS = [
   'schema_version', 'snapshot_class', 'reason', 'status', 'dispute_life_cycle_stage',
   'seller_response_due_date', 'due_state', 'available_actions', 'requirements',
@@ -401,6 +401,53 @@ function validateDocument(value, knownForbidden) {
   }
 }
 
+const TIME_EVENT_KINDS = ['PAYMENT', 'ORDER_RECORD_CREATED', 'DELIVERY', 'CLAIM_OPENED'];
+const TIME_EVENT_SOURCES = ['PROVIDER', 'SELLER_PROVIDED_UNVERIFIED'];
+const TIME_FLAGS = [
+  'ORDER_RECORD_ABSENT', 'DELIVERY_NOT_RECORDED', 'DELIVERY_AFTER_CLAIM', 'CLAIM_TIME_EARLIER_THAN_PAYMENT_TIME',
+];
+const MESSAGE_CHANNELS = ['EMAIL', 'PRIVATE_MESSAGE'];
+const MESSAGE_DIRECTIONS = ['INBOUND', 'OUTBOUND'];
+const MESSAGE_TOPICS = [
+  'PAYMENT_NOTICE', 'ORDER_DETAILS_REQUEST', 'ORDER_DETAILS_PROVIDED', 'DELIVERY_NOTICE', 'REFUND_REQUEST', 'OTHER',
+];
+
+function validateTimeEvidence(value) {
+  exactObject(value, ['schema_version', 'events', 'gaps_seconds', 'flags', 'judgement', 'advisory_only']);
+  if (value.schema_version !== 'payguard.time_evidence.v1') invalid();
+  if (value.judgement !== 'NOT_MADE') invalid();
+  exactBoolean(value.advisory_only, true);
+  const events = uniqueArray(value.events, 2, 30).map((row) => {
+    plainObject(row);
+    if (row.kind === 'MESSAGE') {
+      exactObject(row, ['kind', 'at', 'source', 'channel', 'direction', 'topic', 'message_digest']);
+      enumValue(row.source, ['SELLER_PROVIDED_UNVERIFIED']);
+      enumValue(row.channel, MESSAGE_CHANNELS);
+      enumValue(row.direction, MESSAGE_DIRECTIONS);
+      enumValue(row.topic, MESSAGE_TOPICS);
+      boundedText(row.message_digest, 64, /^[a-f0-9]{64}$/u);
+      return { kind: row.kind, at: timestamp(row.at), source: row.source, channel: row.channel,
+        direction: row.direction, topic: row.topic, message_digest: row.message_digest };
+    }
+    exactObject(row, ['kind', 'at', 'source']);
+    enumValue(row.kind, TIME_EVENT_KINDS);
+    enumValue(row.source, TIME_EVENT_SOURCES);
+    return { kind: row.kind, at: timestamp(row.at), source: row.source };
+  });
+  exactObject(value.gaps_seconds, [
+    'payment_to_order_record', 'payment_to_delivery', 'delivery_to_claim', 'payment_to_claim',
+  ]);
+  const gaps = {};
+  for (const name of Object.keys(value.gaps_seconds)) {
+    const gap = value.gaps_seconds[name];
+    gaps[name] = gap === null ? null : boundedInteger(gap, -31536000, 31536000);
+  }
+  const flags = uniqueArray(value.flags, 0, 4).map((flag) => enumValue(flag, TIME_FLAGS));
+  if (new Set(flags).size !== flags.length) invalid();
+  return { schema_version: value.schema_version, events, gaps_seconds: gaps, flags,
+    judgement: 'NOT_MADE', advisory_only: true };
+}
+
 function validateDraft(draft) {
   exactObjectWithOptional(draft, TOP_LEVEL_KEYS, OPTIONAL_TOP_LEVEL_KEYS);
   const draftDigest = boundedText(draft.draft_digest, 64, /^[a-f0-9]{64}$/u);
@@ -427,7 +474,9 @@ function validateDraft(draft) {
   const restrictedOriginalSummary = validateRestrictedSummary(draft.restricted_original_summary);
   const scenario = validateScenarioMatch(draft.scenario_match, knownForbidden);
   const pseudonymizedEvidence = validateDocument(draft.document_redaction, knownForbidden);
+  const timeEvidence = draft.time_evidence === undefined ? null : validateTimeEvidence(draft.time_evidence);
   return {
+    timeEvidence,
     status,
     evidence,
     reviewReasons,
@@ -441,18 +490,19 @@ function validateDraft(draft) {
   };
 }
 
-function canonicalJsonValue(value) {
+function canonicalJsonValue(value, allowNegative = false) {
   if (value === null || typeof value === 'string' || typeof value === 'boolean') return value;
   if (typeof value === 'number') {
-    if (!Number.isFinite(value) || !Number.isInteger(value) || value < 0 || Object.is(value, -0)) invalid();
+    if (!Number.isFinite(value) || !Number.isInteger(value) || (value < 0 && !allowNegative) || Object.is(value, -0)) invalid();
     return value;
   }
-  if (Array.isArray(value)) return value.map((item) => canonicalJsonValue(item));
+  if (Array.isArray(value)) return value.map((item) => canonicalJsonValue(item, allowNegative));
   plainObject(value);
   const result = {};
   for (const key of Object.keys(value).sort()) {
     if (key === '__proto__' || key === 'constructor' || key === 'prototype') invalid();
-    result[key] = canonicalJsonValue(value[key]);
+    // Only the time gaps may be negative: a negative gap means the later-named event came first.
+    result[key] = canonicalJsonValue(value[key], allowNegative || key === 'gaps_seconds');
   }
   return result;
 }
@@ -503,6 +553,12 @@ function buildFiles(draft) {
     'No provider submission was performed and no dispute verdict was made. Human review is required.',
     '',
     'Review every file before using it outside this local synthetic demo.',
+    ...(value.timeEvidence ? [
+      '',
+      'Time evidence: timeline.json lists events in time order with gaps between them.',
+      'Every event except the claim time is SELLER_PROVIDED_UNVERIFIED. Messages are a channel, a direction, a time, a topic and a keyed digest, never text.',
+      'PayGuard orders and preserves. It states no intent, predicts no outcome and gives no legal advice.',
+    ] : []),
   ].join('\n') + '\n';
   const requirements = {
     schema_version: 'payguard.internal_review_requirements.v1',
@@ -515,7 +571,12 @@ function buildFiles(draft) {
     limitations: value.limitations,
     authority: { ...AUTHORITY },
   };
-  const timeline = {
+  const timeline = value.timeEvidence ? {
+    schema_version: 'payguard.internal_review_timeline.v2',
+    timeline: value.evidence,
+    time_evidence: value.timeEvidence,
+    authority: { ...AUTHORITY },
+  } : {
     schema_version: 'payguard.internal_review_timeline.v1',
     timeline: value.evidence,
     authority: { ...AUTHORITY },
