@@ -1,7 +1,5 @@
 # PayGuard AI — Submitted Devpost Story
 
-Status: the Devpost project is submitted. Story text updated 2026-10-29 to match the repository (Disputes readback, stage auto-load, varied transaction amounts, 436 tests).
-
 Project: PayGuard AI
 
 Tagline: A merchant defense buffer for policy warnings, sales spikes, and dispute evidence.
@@ -34,4 +32,4 @@ The hardest design choice was joining three moments in a merchant's workflow wit
 
 ## Scope and access
 
-This is a **US-only, synthetic-data Sandbox demo**. PayPal decides applicable internal policy and dispute matters; a bank or card issuer decides an external dispute. Scope: a fictitious US Business Sandbox seller with synthetic data; PayPal and card issuers keep the decisions. Judges run it locally in about five minutes (quickstart in the [public repository](https://github.com/jiarong0423/payguard-ai)); hosting was not part of this entry. Measured scope: `./tools/run.sh test` runs 436 tests (2 skipped); the Sandbox path has one operator-run receipt (2026-10-07, unsent USD 10.00 draft `INV2-2MTA-PRPQ-4CAJ-W5UW`) and the Disputes calls are covered by mocked-transport tests, not yet by a live Sandbox dispute. The [2:02 demonstration](https://youtu.be/K28N9QhRp1E) shows the merchant workflow.
+This is a **US-only, synthetic-data Sandbox demo**. PayPal decides applicable internal policy and dispute matters; a bank or card issuer decides an external dispute. Scope: a fictitious US Business Sandbox seller with synthetic data; PayPal and card issuers keep the decisions. Judges run it locally in about five minutes (quickstart in the [public repository](https://github.com/jiarong0423/payguard-ai)); hosting was not part of this entry. Measured scope: `./tools/run.sh test` runs 436 tests (2 skipped); the Sandbox path has one operator-run receipt (2026-10-07, unsent USD 10.00 draft `INV2-2MTA-PRPQ-4CAJ-W5UW`) and the Disputes list was read live once on 2026-10-31 (authenticated GET, HTTP 200, empty list, labelled Sandbox data); parsing of real dispute rows and the single-dispute read are covered by mocked-transport tests, not yet by a live Sandbox dispute. The [2:02 demonstration](https://youtu.be/K28N9QhRp1E) shows the merchant workflow.
