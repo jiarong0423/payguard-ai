@@ -86,6 +86,7 @@ EXACT_FILES = (
     "tests/frontend_ai_contract.mjs",
     "tests/frontend_operator_labels.mjs",
     "tests/frontend_recording_contract.mjs",
+    "tests/frontend_time_evidence_api.mjs",
     "tests/frontend_zip_api_parity.mjs",
     "tests/frontend_zip_contract.mjs",
     "tools/build_public_candidate.py",
