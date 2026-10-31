@@ -40,6 +40,15 @@ class AupTests(unittest.TestCase):
         self.assertTrue(result["advisory_only"])
         self.assertEqual(result["compliance_decision"], "NOT_MADE")
 
+    def test_e_liquid_and_tobacco_words_raise_a_review_signal_only(self):
+        for text in ("Vape e-liquid, 30 ml bottle", "Nicotine e-cigarette starter kit", "Hand-rolled tobacco"):
+            result = check_aup(text)
+            self.assertEqual(result["match_status"], "REVIEW_SIGNAL", text)
+            self.assertEqual({item["category"] for item in result["findings"]}, {"regulated_activity"}, text)
+            self.assertEqual(result["compliance_decision"], "NOT_MADE")
+        self.assertEqual(check_aup("Insulated tumbler, 30 oz")["match_status"], "NO_MATCH")
+        self.assertEqual(check_aup("Handcrafted ceramic coffee cup")["match_status"], "NO_MATCH")
+
     def test_no_keyword_does_not_certify_compliance(self):
         result = check_aup("Synthetic handmade ceramic cup")
         self.assertEqual(result["match_status"], "NO_MATCH")
