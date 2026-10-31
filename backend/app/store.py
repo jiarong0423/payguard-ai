@@ -16,6 +16,8 @@ from payguard.engines import assess_velocity, check_aup, prepare_dispute
 from payguard.case_cards import match_cases
 from payguard.dispute_evidence import (
     DisputeEvidenceError,
+    build_time_evidence,
+    message_digest,
     internal_review_narrative,
     restricted_evidence_digest,
     resolve_dispute_requirements,
@@ -45,6 +47,70 @@ def utc_now() -> datetime:
 
 def iso(value: datetime) -> str:
     return value.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def _digital_demo_case(anchor: datetime) -> dict:
+    """Synthetic digital-goods case: a payment, no order record yet, a later delivery and a claim inside the gap."""
+    paid = anchor - timedelta(days=3, hours=12)
+    order_recorded = anchor - timedelta(days=3)
+    claim = anchor - timedelta(days=1)
+    delivered = anchor - timedelta(hours=20)
+    return {
+        "case_id": "demo-case-002", "order_id": "demo-dispute-order-002", "reason": "INR",
+        "order_created_at": iso(order_recorded), "delivered_at": iso(delivered), "opened_at": iso(claim),
+        "carrier_status": "delivered", "evidence_source": "synthetic",
+        "provider_snapshot": {
+            "schema_version": 1,
+            "snapshot_class": "SYNTHETIC_PROVIDER_FIXTURE",
+            "observed_at": iso(anchor - timedelta(hours=1)),
+            "dispute_id": "demo-case-002",
+            "order_id": "demo-dispute-order-002",
+            "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+            "status": "WAITING_FOR_SELLER_RESPONSE",
+            "dispute_life_cycle_stage": "INQUIRY",
+            "seller_response_due_date": iso(anchor + timedelta(days=2)),
+            "available_actions": ["PROVIDE_EVIDENCE"],
+            "evidences": [{
+                "request_id": "demo-request-fulfillment-002",
+                "evidence_type": "PROOF_OF_FULFILLMENT",
+                "source": "REQUESTED_FROM_SELLER",
+                "mandatory": True,
+                "action": "PROVIDE_EVIDENCE",
+            }],
+        },
+        "proof_records": [{
+            "evidence_id": "demo-proof-fulfillment-002",
+            "request_id": "demo-request-fulfillment-002",
+            "evidence_type": "FULFILLMENT",
+            "proof_fields": {"delivery_channel": "EMAIL_LINK", "delivered_at": iso(delivered)},
+            "observed_at": iso(delivered),
+            "evidence_state": "SUPPLIED_UNVERIFIED",
+            "attachment_ids": [],
+        }],
+        "attachment_candidates": [],
+        "time_evidence_input": {
+            "times": {"payment_at": iso(paid), "order_record_at": iso(order_recorded),
+                      "delivered_at": iso(delivered), "claim_at": iso(claim)},
+            "messages": [
+                {"channel": "EMAIL", "direction": "INBOUND", "sent_at": iso(paid + timedelta(minutes=30)),
+                 "topic": "PAYMENT_NOTICE", "text": "Synthetic message: payment sent, no order confirmation yet."},
+                {"channel": "EMAIL", "direction": "OUTBOUND", "sent_at": iso(paid + timedelta(hours=1)),
+                 "topic": "ORDER_DETAILS_REQUEST", "text": "Synthetic message: no order found, please send the order details."},
+                {"channel": "PRIVATE_MESSAGE", "direction": "INBOUND", "sent_at": iso(order_recorded - timedelta(hours=1)),
+                 "topic": "ORDER_DETAILS_PROVIDED", "text": "Synthetic message: here are the order details."},
+                {"channel": "EMAIL", "direction": "OUTBOUND", "sent_at": iso(delivered),
+                 "topic": "DELIVERY_NOTICE", "text": "Synthetic message: the download link was sent."},
+            ],
+        },
+    }
+
+
+def _draft_response(public: dict) -> dict:
+    """Validate a public draft; keep the response of cases without time evidence unchanged."""
+    response = DisputeDraftResponse.model_validate(public).model_dump()
+    if response.get("time_evidence") is None:
+        response.pop("time_evidence", None)
+    return response
 
 
 def _legacy_dispute_case(case: dict) -> dict:
@@ -455,6 +521,9 @@ class SessionStore:
                         }]}
                 prepare_dispute(_legacy_dispute_case(case))
                 cases[case["case_id"]] = case
+                digital = _digital_demo_case(session.anchor)
+                prepare_dispute(_legacy_dispute_case(digital))
+                cases[digital["case_id"]] = digital
             if len(rows) > 200 or len(cases) > 5:
                 raise BoundaryError(422, "sample_limit")
             self._velocity(rows, self._now())
@@ -525,6 +594,16 @@ class SessionStore:
                 except Exception:
                     raise BoundaryError(500, "response_contract_failure") from None
                 draft["routing"] = layers["routing"]
+                time_input = case.get("time_evidence_input")
+                if time_input is not None:
+                    try:
+                        records = [{"channel": row["channel"], "direction": row["direction"],
+                                    "sent_at": row["sent_at"], "topic": row["topic"],
+                                    "message_digest": message_digest(session.token_key, row["text"])}
+                                   for row in time_input["messages"]]
+                        draft["time_evidence"] = build_time_evidence(time_input["times"], records)
+                    except (DisputeEvidenceError, KeyError, TypeError):
+                        raise BoundaryError(422, "dispute_context_not_ready") from None
                 draft["restricted_original_summary"] = layers["restricted_original_summary"]
                 draft["scenario_match"] = _project_dispute_match(matched)
                 tokens = redact_identity({"name": "Synthetic Demo Person", "address": "Synthetic Demo Address",
@@ -550,9 +629,7 @@ class SessionStore:
                                          "restricted_sha256": layers["restricted"]["sha256"],
                                          "expires_at": iso(expires_at)})
                 try:
-                    response = DisputeDraftResponse.model_validate(
-                        self._public_dispute_draft(draft, case_ref, digest)
-                    ).model_dump()
+                    response = _draft_response(self._public_dispute_draft(draft, case_ref, digest))
                 except ValidationError:
                     raise BoundaryError(500, "response_contract_failure") from None
                 session.drafts[case_id] = draft
@@ -566,9 +643,7 @@ class SessionStore:
                                      "restricted_sha256": restricted_digest,
                                      "expires_at": iso(session.draft_expires[case_id])})
             try:
-                return DisputeDraftResponse.model_validate(
-                    self._public_dispute_draft(draft, case_ref, digest)
-                ).model_dump()
+                return _draft_response(self._public_dispute_draft(draft, case_ref, digest))
             except ValidationError:
                 raise BoundaryError(500, "response_contract_failure") from None
 

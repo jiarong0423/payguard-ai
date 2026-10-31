@@ -21,7 +21,7 @@ inventory-count = 25
 
 [tool.payguard-gemini.project-markers]
 "backend/app/ai_brief.py" = "e16d8c9e04e639160de11e46aaecc6e808a255de38d1b68c93aacef1a5bb0470"
-"backend/app/main.py" = "b6f2d9bc0914c2729005166b6bf41e0c5fa9b5189c1d12ad19080c842adfb04c"
-"backend/app/store.py" = "f803d76a8487c3a3702c0db3376f88d6ff0c2d7bc1673868bd45b5e0927310ea"
+"backend/app/main.py" = "81b70a909956f2f1fd4280dd16cb7b904a755736b414cd9b55a96fc1fd895812"
+"backend/app/store.py" = "4d519187e18296bca13ff8d735eaff3d2d4e6b89a2d1aed2866f3668a860cae6"
 "integrations/gemini/run.sh" = "6f276cb1cbe6905a5d04e8c107afb83487fd0898c2ab405da28fc8ee18979203"
 "integrations/gemini/worker.py" = "cb9b4d255db828208e666eab4f14302e50b980c4559fb92542f81477c469ed1d"

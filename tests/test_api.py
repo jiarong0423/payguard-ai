@@ -185,7 +185,7 @@ class ApiTests(unittest.TestCase):
     def test_independent_scenarios_idempotency_and_reset_identity(self):
         dispute = self.post("/demo/inject", {"scenario": "dispute"})
         self.assertEqual(dispute.status_code, 200, dispute.text)
-        self.assertEqual(len(dispute.json()["disputes"]), 1)
+        self.assertEqual([row["case_ref"] for row in dispute.json()["disputes"]], ["case-ref-001", "case-ref-002"])
         self.assertEqual(dispute.json()["transactions"], [])
         burst = self.post("/demo/inject", {"scenario": "burst"})
         self.assertEqual(burst.status_code, 200)
@@ -291,6 +291,29 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(self.client.get(ROOT + "/demo/state", headers=self.headers()).status_code, 200)
         self.store.max_sessions = 1
         self.assertEqual(self.client.post(ROOT + "/demo/sessions", json={}, headers={"Origin": ORIGIN}).status_code, 429)
+
+    def test_digital_time_gap_case_adds_time_evidence_and_leaves_case_one_unchanged(self):
+        self.assertEqual(self.post("/demo/inject", {"scenario": "dispute"}).status_code, 200)
+        first = self.post("/disputes/case-ref-001/draft")
+        self.assertEqual(first.status_code, 200, first.text)
+        self.assertNotIn("time_evidence", first.json())
+        second = self.post("/disputes/case-ref-002/draft")
+        self.assertEqual(second.status_code, 200, second.text)
+        body = second.json()
+        evidence = body["time_evidence"]
+        self.assertEqual(evidence["flags"], ["DELIVERY_AFTER_CLAIM"])
+        self.assertEqual(evidence["judgement"], "NOT_MADE")
+        self.assertEqual([event["kind"] for event in evidence["events"]][0], "PAYMENT")
+        self.assertEqual(sum(1 for event in evidence["events"] if event["kind"] == "MESSAGE"), 4)
+        self.assertEqual(body["routing"]["overall_state"], "READY_FOR_LOCAL_REVIEW")
+        for forbidden in ("Synthetic message", "download link", "order details"):
+            self.assertNotIn(forbidden, second.text)
+        time_json = json.dumps(evidence).lower()
+        for forbidden in ("intent", "fraud", "deliberate", "winner", "summary", "text"):
+            self.assertNotIn(forbidden, time_json)
+        again = self.post("/disputes/case-ref-002/draft").json()
+        self.assertEqual(again["draft_digest"], body["draft_digest"])
+        self.assertEqual(again["time_evidence"], evidence)
 
     def test_dispute_draft_redaction_binding_replay_and_reset(self):
         self.post("/demo/inject", {"scenario": "dispute"})

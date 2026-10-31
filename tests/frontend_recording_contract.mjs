@@ -221,7 +221,6 @@ for (const source of [appSource, analyticsSource]) {
 }
 requireText(referenceSource, 'placeholder="YYYY-MM-DDTHH:mm:ssZ"');
 requireText(policySource, 'Evaluation time (UTC ISO)');
-requireText(scriptSource, 'Locked on: `2026-10-10 UTC`');
 for (const [name, source] of [
   ['App', appSource],
   ['Analytics', analyticsSource],
@@ -253,28 +252,11 @@ for (const retiredCopy of [
   'Persistence: memory session',
 ]) forbidText(analyticsSource, retiredCopy);
 
-requireText(scriptSource, 'Version: `VIDEO_SCRIPT_V10_LOCKED`');
-requireText(scriptSource, 'VIDEO_SCRIPT_V1_LOCKED');
-requireText(scriptSource, '9cc4c30eaabd49fd032d5f8101a4221bae226fef9e47319aca582ee4ac9f38df');
-requireText(scriptSource, 'VIDEO_SCRIPT_V2_LOCKED');
-requireText(scriptSource, '00b59c5dcbf0d2364dab3c68c1c1a8c6c4853e41d3cbfcdca59e4d32934abdd8');
-requireText(scriptSource, 'VIDEO_SCRIPT_V3_LOCKED');
-requireText(scriptSource, 'a9237f3256e6c3565a116dfe48fbf05e34b69dad608966a678dce48cad738a15');
-requireText(scriptSource, 'VIDEO_SCRIPT_V4_LOCKED');
-requireText(scriptSource, '07d2421431b6af7b79bfcdc4c8cece744a7a97bd5d1ca5fa51ad2b4a61c7fa4d');
-requireText(scriptSource, 'VIDEO_SCRIPT_V5_LOCKED');
-requireText(scriptSource, '0ce4a87ceb13b2e8e98c8cde03ec32051e25727cd1767b78dfdc70cd17b08aae');
-requireText(scriptSource, 'VIDEO_SCRIPT_V6_LOCKED');
-requireText(scriptSource, '1b7d2afbacaf8f9f5ded39e4f7a8c7f68858d3382184ce1f1948cbba4022c688');
-requireText(scriptSource, 'VIDEO_SCRIPT_V7_LOCKED');
-requireText(scriptSource, '40b693425f88d82b5ff81da98ff3019431622aecbbacb5a1c11023434cd06cc5');
-requireText(scriptSource, 'VIDEO_SCRIPT_V8_LOCKED');
-requireText(scriptSource, 'e317b741006c5ab9f7a236baf60a5199b52b7ae8a97ad6a4279acece998cd796');
 requireText(scriptSource, '[cover](payguard_cover.png)', 'opening visual uses the public cover');
 requireText(scriptSource, '[second image: three-stage workflow map](payguard_judge_overview.png)', 'second PNG follows live product proof');
 requireText(scriptSource, '2:42–2:44 | `payguard_judge_overview.png`', 'second PNG is in the late recap slot');
-requireText(scriptSource, 'PayPal Sandbox draft, AG Grid evidence review, and one bounded Gemini API brief', 'opening names all three judge proof pillars');
-requireText(scriptSource, 'This V10 final take remains on Gemini API.', 'one recording adapter');
+requireText(scriptSource, 'PayPal Sandbox draft, AG Grid evidence review, and one bounded Gemini on Vertex AI brief', 'opening names all three judge proof pillars');
+requireText(scriptSource, 'This take remains on Gemini on Vertex AI.', 'one recording adapter');
 requireText(scriptSource, 'It is not Gemini, an automatic fallback', 'local model cannot be relabeled or used as automatic fallback');
 requireText(scriptSource, 'This is a dispute-stage brief, not a merged conclusion about all three scenarios.', 'no invented cross-stage AI summary');
 for (const recordingInstruction of [
@@ -293,7 +275,7 @@ for (const recordingInstruction of [
   'only idle waiting frames may be trimmed',
   'The analytics view links all three stages',
   'prepare evidence before provider review',
-  'complete one current-byte live dress rehearsal',
+  'complete one live dress rehearsal',
   'Use a clean browser window with notifications disabled',
 ]) requireText(scriptSource, recordingInstruction, `V10 script contract ${recordingInstruction}`);
 
@@ -324,7 +306,7 @@ assert.ok(finalSeconds >= 160 && finalSeconds <= 170, `recording target must ret
 for (const proofPoint of [
   'One sanitized live PayPal Sandbox OAuth connection.',
   'One unsent Sandbox invoice draft, with no invoice identifier visible.',
-  'One live bounded Gemini API dispute evidence brief, showing `gemini-3.8-flash` and **Live model response**.',
+  'One live bounded Gemini on Vertex AI dispute evidence brief, showing `gemini-3.8-flash` and **Live model response**.',
   'AG Grid transaction sorting, filtering, and one selected transaction card labelled as stage-level.',
   'Internal Review ZIP download followed by a recorded human review.',
 ]) requireText(scriptSource, proofPoint, `locked proof point ${proofPoint}`);

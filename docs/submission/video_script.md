@@ -2,7 +2,7 @@
 
 This is the recording plan used for the demonstration video. The published video is [2:02](https://youtu.be/K28N9QhRp1E) and is shorter than this plan, so check claims against the video itself.
 
-Original target duration: 2:40 to 2:50; the scene timestamps belong to the plan, not to the edited video's seek positions. Timed spoken word count: 294.
+Original target duration: 2:40 to 2:50; the scene timestamps belong to the plan, not to the edited video's seek positions. Timed spoken word count: `296`.
 
 The wording, timing, visible labels and click order below were fixed before recording, together with the five live proof points the take had to show.
 
