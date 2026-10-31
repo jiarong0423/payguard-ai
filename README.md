@@ -206,6 +206,7 @@ npm --prefix frontend run build
 node tests/frontend_ai_contract.mjs
 node tests/frontend_operator_labels.mjs
 node tests/frontend_recording_contract.mjs
+node tests/frontend_time_evidence_api.mjs
 node tests/frontend_zip_contract.mjs
 node tests/frontend_zip_api_parity.mjs
 ```

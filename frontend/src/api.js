@@ -330,7 +330,26 @@ function assertContract(path, payload, session, body) {
       && text(row.source) && typeof row.mandatory === 'boolean' && (row.action === null || text(row.action))
       && requirementStates.includes(row.requirement_state) && Number.isInteger(row.proof_count) && row.proof_count >= 0 && row.proof_count <= 128
       && Number.isInteger(row.accepted_attachment_count) && row.accepted_attachment_count >= 0 && row.accepted_attachment_count <= 20;
-    valid = valid && pk(payload,['case_ref','status','evidence','review_reasons','recommendation','limitations','policy_version','advisory_only','source','routing','restricted_original_summary','scenario_match','draft_digest','identity_redaction','document_redaction'])
+    const draftKeys = ['case_ref','status','evidence','review_reasons','recommendation','limitations','policy_version','advisory_only','source','routing','restricted_original_summary','scenario_match','draft_digest','identity_redaction','document_redaction'];
+    const hasTimeEvidence = Object.prototype.hasOwnProperty.call(payload, 'time_evidence');
+    const timeFlags = ['ORDER_RECORD_ABSENT','DELIVERY_NOT_RECORDED','DELIVERY_AFTER_CLAIM','CLAIM_TIME_EARLIER_THAN_PAYMENT_TIME'];
+    const timeEventValid = (row) => po(row) && (row.kind === 'MESSAGE'
+      ? pk(row,['kind','at','source','channel','direction','topic','message_digest'])
+        && row.source === 'SELLER_PROVIDED_UNVERIFIED' && ['EMAIL','PRIVATE_MESSAGE'].includes(row.channel)
+        && ['INBOUND','OUTBOUND'].includes(row.direction)
+        && ['PAYMENT_NOTICE','ORDER_DETAILS_REQUEST','ORDER_DETAILS_PROVIDED','DELIVERY_NOTICE','REFUND_REQUEST','OTHER'].includes(row.topic)
+        && typeof row.message_digest === 'string' && /^[a-f0-9]{64}$/u.test(row.message_digest)
+      : pk(row,['kind','at','source']) && ['PAYMENT','ORDER_RECORD_CREATED','DELIVERY','CLAIM_OPENED'].includes(row.kind)
+        && ['PROVIDER','SELLER_PROVIDED_UNVERIFIED'].includes(row.source))
+      && policyInstant(row.at) !== null;
+    const timeEvidenceValid = (value) => pk(value,['schema_version','events','gaps_seconds','flags','judgement','advisory_only'])
+      && value.schema_version === 'payguard.time_evidence.v1' && value.judgement === 'NOT_MADE' && value.advisory_only === true
+      && Array.isArray(value.events) && value.events.length >= 2 && value.events.length <= 30 && value.events.every(timeEventValid)
+      && pk(value.gaps_seconds,['payment_to_order_record','payment_to_delivery','delivery_to_claim','payment_to_claim'])
+      && Object.values(value.gaps_seconds).every((gap) => gap === null || (Number.isInteger(gap) && Math.abs(gap) <= 31536000))
+      && pl(value.flags, timeFlags, 4);
+    valid = valid && pk(payload, hasTimeEvidence ? [...draftKeys, 'time_evidence'] : draftKeys)
+      && (!hasTimeEvidence || timeEvidenceValid(payload.time_evidence))
       && payload.source === 'synthetic' && text(payload.case_ref) && digest(payload.draft_digest)
       && object(payload.evidence) && pk(payload.evidence,['reason','opened_at','order_created_at','carrier_status','delivered_at','evidence_source'])
       && payload.evidence.evidence_source === 'synthetic'
