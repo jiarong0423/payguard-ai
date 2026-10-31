@@ -27,7 +27,7 @@ _AUP_CATEGORIES = (
     ("weapons", r"\b(?:firearms?|guns?|ammunition|explosives?)\b"),
     ("controlled_substances", r"\b(?:cocaine|heroin|methamphetamine|illegal\s+drugs?)\b"),
     ("counterfeit_goods", r"\b(?:counterfeit|fake\s+(?:brands?|luxury|designer))\b"),
-    ("regulated_activity", r"\b(?:gambling|casino|betting)\b"),
+    ("regulated_activity", r"\b(?:gambling|casino|betting|e-?liquids?|vap(?:e|es|ing)|e-?cigarettes?|tobacco|nicotine)\b"),
 )
 
 

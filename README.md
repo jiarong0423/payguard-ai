@@ -12,7 +12,7 @@ This is a US-only, synthetic-data PayPal Sandbox demonstration with one end-to-e
 
 **Working stack:** PayPal Sandbox OAuth, an unsent invoice draft and read-only Disputes readback · FastAPI and deterministic rules · React, Tailwind and AG Grid Community · Gemini on Vertex AI for the evidence brief.
 
-**Verified against the real Sandbox:** on 2026-10-06 17:44 UTC (2026-10-07 in UTC+8) the gateway authenticated with OAuth client-credentials and created one unsent USD 10.00 invoice draft, Sandbox id `INV2-2MTA-PRPQ-4CAJ-W5UW`, status `DRAFT`. On 2026-10-31 an authenticated Sandbox `GET /v1/customer/disputes` returned HTTP 200 with an empty list (the Sandbox account holds no disputes), shown in STEP 03 as **Sandbox data**; no dispute row was read live. `./tools/run.sh test` runs 436 tests (2 skipped).
+**Verified against the real Sandbox:** on 2026-10-06 17:44 UTC (2026-10-07 in UTC+8) the gateway authenticated with OAuth client-credentials and created one unsent USD 10.00 invoice draft, Sandbox id `INV2-2MTA-PRPQ-4CAJ-W5UW`, status `DRAFT`. On 2026-10-31 an authenticated Sandbox `GET /v1/customer/disputes` returned HTTP 200 with an empty list (the Sandbox account holds no disputes), shown in STEP 03 as **Sandbox data**; no dispute row was read live. `./tools/run.sh test` runs 437 tests (2 skipped).
 
 **Website / video:** [youtu.be/K28N9QhRp1E](https://youtu.be/K28N9QhRp1E) (2:02) · **Devpost:** [devpost.com/software/payguard-ai-zbsp9l](https://devpost.com/software/payguard-ai-zbsp9l)
 
@@ -192,7 +192,7 @@ The local line fixes the endpoint to `http://127.0.0.1:1234/v1/chat/completions`
 
 ## Validation
 
-The number you can reproduce from this repository is the one `./tools/run.sh test` prints (436 tests, 2 skipped).
+The number you can reproduce from this repository is the one `./tools/run.sh test` prints (437 tests, 2 skipped).
 
 Use the project-local runner and frontend build:
 
@@ -215,7 +215,7 @@ Gemini-profile validation remains separate:
 ./tools/run.sh gemini-test
 ```
 
-Measured scope: `./tools/run.sh test` runs 436 tests (2 skipped) against synthetic data, mocked transports and the built-in fixture; the Sandbox OAuth and invoice-draft calls are covered by an operator-run receipt (2026-10-06 UTC) and a later rehearsal, the Disputes list by one live empty-list read (2026-10-31), and dispute rows, the single-dispute read and webhook calls by MockTransport tests. Not covered: multi-instance or hosted operation and real-record behaviour.
+Measured scope: `./tools/run.sh test` runs 437 tests (2 skipped) against synthetic data, mocked transports and the built-in fixture; the Sandbox OAuth and invoice-draft calls are covered by an operator-run receipt (2026-10-06 UTC) and a later rehearsal, the Disputes list by one live empty-list read (2026-10-31), and dispute rows, the single-dispute read and webhook calls by MockTransport tests. Not covered: multi-instance or hosted operation and real-record behaviour.
 
 ## Architecture, privacy and release boundary
 
@@ -227,6 +227,6 @@ Measured scope: `./tools/run.sh test` runs 436 tests (2 skipped) against synthet
 - [Standalone architecture/status visual](docs/decisions/2026Q4/payguard_us_architecture_status.svg)
 - [Security policy](SECURITY.md)
 
-The default dataset is synthetic and session-bound. Pseudonymization is not complete anonymization. What is in this release: the three-stage console, 436 tests, the Sandbox gateway (OAuth, unsent invoice draft, Disputes readback, gated provide-evidence) and the fixture data. What is not: multi-tenant auth, logistics feeds, automatic dispute ingestion, cloud deployment.
+The default dataset is synthetic and session-bound. Pseudonymization is not complete anonymization. What is in this release: the three-stage console, 437 tests, the Sandbox gateway (OAuth, unsent invoice draft, Disputes readback, gated provide-evidence) and the fixture data. What is not: multi-tenant auth, logistics feeds, automatic dispute ingestion, cloud deployment.
 
 The MIT license, contributor-rights attestation and third-party notices are present in the source package. The manifest distinguishes the default local-review state from the explicit published-source state. The demonstration video is public; the Devpost project is submitted. Later source revisions require fresh release review.
