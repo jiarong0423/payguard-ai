@@ -8,7 +8,7 @@ This is a US-only, synthetic-data PayPal Sandbox demonstration with one end-to-e
 
 **Working stack:** PayPal Sandbox OAuth, an unsent invoice draft and read-only Disputes readback · FastAPI and deterministic rules · React, Tailwind and AG Grid Community · Gemini on Vertex AI for the evidence brief.
 
-**Verified against the real Sandbox:** on 2026-10-06 17:44 UTC (2026-10-07 in UTC+8) the gateway authenticated with OAuth client-credentials and created one unsent USD 10.00 invoice draft, Sandbox id `INV2-2MTA-PRPQ-4CAJ-W5UW`, status `DRAFT`. A later current-byte rehearsal confirmed one OAuth and one unsent draft again and ran the three Gemini stages (see `docs/decisions/2026Q4/architecture.md`). `./tools/run.sh test` runs 436 tests (2 skipped) in about eight seconds.
+**Verified against the real Sandbox:** on 2026-10-06 17:44 UTC (2026-10-07 in UTC+8) the gateway authenticated with OAuth client-credentials and created one unsent USD 10.00 invoice draft, Sandbox id `INV2-2MTA-PRPQ-4CAJ-W5UW`, status `DRAFT`. On 2026-10-31 an authenticated Sandbox `GET /v1/customer/disputes` returned HTTP 200 with an empty list (the Sandbox account holds no disputes), shown in STEP 03 as **Sandbox data**; no dispute row was read live. `./tools/run.sh test` runs 436 tests (2 skipped).
 
 **Website / video:** [youtu.be/K28N9QhRp1E](https://youtu.be/K28N9QhRp1E) (2:02) · **Devpost:** [devpost.com/software/payguard-ai-zbsp9l](https://devpost.com/software/payguard-ai-zbsp9l)
 
@@ -17,14 +17,14 @@ This is a US-only, synthetic-data PayPal Sandbox demonstration with one end-to-e
 | Connect the merchant | `POST /v1/oauth2/token` (client-credentials) | Real Sandbox call with `PAYGUARD_PAYPAL_OUTBOUND=enabled` and your Sandbox app credentials; without them the call answers 503 `provider_disabled` and nothing is simulated |
 | Unsent invoice draft after the AUP preflight | `POST /v2/invoicing/invoices` | Real Sandbox call once connected, status `DRAFT`, never sent; without a connection the console shows the AUP warning and stops before the draft |
 | Webhook signature check | `POST /v1/notifications/verify-webhook-signature` | Allow-listed Sandbox endpoint; exercised in tests with hand-written mock responses; needs `PAYPAL_WEBHOOK_ID`; no UI path |
-| Read the merchant's dispute list (STEP 03) | `GET /v1/customer/disputes` | Implemented for the Sandbox and covered by mocked-transport tests; connect your own Sandbox app to run it live. Without a connection a synthetic fixture in the same JSON shape is used, labelled **Fixture data** in the UI |
+| Read the merchant's dispute list (STEP 03) | `GET /v1/customer/disputes` | Read live once on 2026-10-31 (HTTP 200, empty list, labelled **Sandbox data**); parsing of real dispute rows is covered by mocked-transport tests. Connect your own Sandbox app to run it live. Without a connection a synthetic fixture in the same JSON shape is used, labelled **Fixture data** in the UI |
 | Read one dispute | `GET /v1/customer/disputes/{id}` | Implemented for the Sandbox and covered by mocked-transport tests; otherwise the fixture |
 | Assemble the evidence response | `POST /v1/customer/disputes/{id}/provide-evidence` | Multipart request is built and previewed from the local draft for a dispute id the console itself returned; it is sent only after the local review approval, with `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`, a Sandbox connection and an explicit `submit: true` |
 | Sales-velocity stream, dispute checklist, evidence ZIP | none | Local synthetic data by design |
 
 ![Concept illustration of a merchant reviewing AUP warnings, sales velocity and dispute evidence with PayGuard AI](docs/submission/payguard_cover.png)
 
-*Synthetic merchant-side cover illustration. The working console is designed to demonstrate the Sandbox, AG Grid, and bounded Gemini actions live; the cover is not a product screenshot.*
+*Synthetic merchant-side cover illustration. The working console runs the Sandbox, AG Grid and bounded Gemini actions live; the cover is not a product screenshot.*
 
 ![PayGuard AI workflow map: policy warning, sales-velocity review, and dispute evidence preparation](docs/submission/payguard_judge_overview.png)
 
@@ -211,7 +211,7 @@ Gemini-profile validation remains separate:
 ./tools/run.sh gemini-test
 ```
 
-Measured scope: `./tools/run.sh test` runs 436 tests (2 skipped) against synthetic data, mocked transports and the built-in fixture; the Sandbox OAuth and invoice-draft calls are covered by an operator-run receipt (2026-10-06 UTC) and a later rehearsal, and the Disputes and webhook calls by MockTransport tests. Not covered: multi-instance or hosted operation and real-record behaviour.
+Measured scope: `./tools/run.sh test` runs 436 tests (2 skipped) against synthetic data, mocked transports and the built-in fixture; the Sandbox OAuth and invoice-draft calls are covered by an operator-run receipt (2026-10-06 UTC) and a later rehearsal, the Disputes list by one live empty-list read (2026-10-31), and dispute rows, the single-dispute read and webhook calls by MockTransport tests. Not covered: multi-instance or hosted operation and real-record behaviour.
 
 ## Architecture, privacy and release boundary
 
