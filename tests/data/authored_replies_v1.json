@@ -1,0 +1,117 @@
+{
+ "replies": {
+  "p-tumbler": {
+   "u": [
+    {
+     "a": "SELLER",
+     "b": "STATED",
+     "c": "product",
+     "h": "EXACT",
+     "k": 0,
+     "r": null,
+     "s": "P",
+     "w": null
+    },
+    {
+     "a": "SELLER",
+     "b": "STATED",
+     "c": "goods_type",
+     "h": "EXACT",
+     "k": 0,
+     "r": null,
+     "s": "P",
+     "w": null
+    }
+   ],
+   "v": 2
+  },
+  "p-vape": {
+   "u": [
+    {
+     "a": "SELLER",
+     "b": "STATED",
+     "c": "product",
+     "h": "EXACT",
+     "k": 0,
+     "r": null,
+     "s": "P",
+     "w": null
+    },
+    {
+     "a": "SELLER",
+     "b": "STATED",
+     "c": "age_or_regulated",
+     "h": "EXACT",
+     "k": 0,
+     "r": null,
+     "s": "P",
+     "w": null
+    }
+   ],
+   "v": 2
+  },
+  "v-baseline": {
+   "u": [
+    {
+     "a": "SELLER",
+     "b": "STATED",
+     "c": "baseline_period",
+     "h": "APPROX",
+     "k": 0,
+     "r": null,
+     "s": "P",
+     "w": null
+    }
+   ],
+   "v": 2
+  },
+  "v-comms": {
+   "u": [
+    {
+     "a": "SELLER",
+     "b": "STATED",
+     "c": "buyer_comms",
+     "h": "EXACT",
+     "k": 0,
+     "r": null,
+     "s": "P",
+     "w": null
+    }
+   ],
+   "v": 2
+  },
+  "v-promo": {
+   "u": [
+    {
+     "a": "SELLER",
+     "b": "STATED",
+     "c": "surge_reason",
+     "h": "EXACT",
+     "k": 0,
+     "r": null,
+     "s": "P",
+     "w": null
+    },
+    {
+     "a": "SELLER",
+     "b": "STATED",
+     "c": "surge_period",
+     "h": "EXACT",
+     "k": 0,
+     "r": "LAST",
+     "s": "P",
+     "w": null
+    }
+   ],
+   "v": 2
+  }
+ },
+ "source": {
+  "check": "Every reply must pass the same strict validator as a real model reply (tests/test_replays.py).",
+  "contract": "2 (c,k,s,w,r,h,b,a); converted by hand from contract 1 on 2026-11-01, every entry reviewed: the seller states their own product or sales, so b=STATED, a=SELLER",
+  "date": "2026-11-01",
+  "model": "none (authored by the project team)",
+  "path": "Simulated chooser output written by hand to illustrate the contract. It is NOT a model run and says nothing about model accuracy."
+ },
+ "version": 2
+}

@@ -1,0 +1,325 @@
+// Evidence deadline board for step 03: one row per dispute case, its evidence events and the
+// seller response window on a Bryntum Scheduler (MIT Community tier), with a plain list
+// that carries the same facts and stays readable on a phone. Loaded with React.lazy from App.jsx.
+//
+// (optimise r24) The case data stays read only. On top of it the seller gets one "Collect evidence" bar per case
+// that can be dragged or resized inside the response window, in whole hours, from now to the due date. A drop
+// that starts before now or ends after the due date snaps back with a short message. The plan is a planning aid:
+// it stays in this page and this tab's sessionStorage and is never sent to the backend or PayPal. The check is
+// the board's own client-side check against data it already holds (now and seller_response_due_date).
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { BryntumScheduler, available } from 'virtual:payguard-optional-timeline';
+import {
+  DUE_SOON_DAYS, PLAN_MESSAGES, PLAN_NAME, buildEvidenceBoard, defaultPlan, planEvents, planWindowOf, readStoredPlans,
+  restorePlans, shiftPlan, validatePlan, wallToUtcMs, writeStoredPlans,
+} from './boardData.js';
+import { utcWallClock } from '../optional/timelineModel.js';
+import './board.css';
+
+const ROW_HEIGHT = 56;
+
+function utcLabel(iso) {
+  const date = new Date(iso ?? '');
+  if (Number.isNaN(date.getTime())) return '—';
+  return `${date.toLocaleString('en-US', { month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'UTC' })} UTC`;
+}
+const msLabel = (ms) => utcLabel(new Date(ms).toISOString());
+const wallLabel = (date) => msLabel(wallToUtcMs(date));
+const wallOf = (ms) => utcWallClock(new Date(ms).toISOString());
+const planLabel = (plan) => (plan ? `${msLabel(plan.startMs)} → ${msLabel(plan.endMs)}` : '—');
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+}
+
+// sessionStorage may throw (blocked site data); the plan then lives in the page only.
+function tabStorage() {
+  try { return typeof window === 'undefined' ? null : window.sessionStorage; } catch { return null; }
+}
+
+// Everything that could change case data or open an editor stays off. Drag and resize are on, but only the plan
+// bars are draggable/resizable (the data events carry draggable: false, resizable: false) and the validators refuse
+// anything else (optimise r24).
+const LOCKED_FEATURES = {
+  cellEditFeature: false, cellMenuFeature: false, columnReorderFeature: false, dependenciesFeature: false,
+  eventDragCreateFeature: false, eventEditFeature: false, eventMenuFeature: false,
+  headerMenuFeature: false, resourceMenuFeature: false, scheduleMenuFeature: false,
+  scheduleTooltipFeature: false, timeAxisHeaderMenuFeature: false,
+};
+const HOUR_RESOLUTION = { unit: 'hour', increment: 1 };
+
+const COLUMNS = [
+  { text: 'Case', field: 'name', width: 150, htmlEncode: true },
+  { text: 'Due', field: 'dueText', width: 130, htmlEncode: true },
+  { text: 'Evidence', field: 'readinessLabel', width: 120, htmlEncode: true },
+  { text: 'Amount', field: 'amountText', width: 110, htmlEncode: true },
+];
+
+// Phones (phone r3 P2 #9): the list above already carries due, evidence and amount, so the timeline keeps one narrow
+// Case column. Bryntum scrolls only the time axis sideways and the locked Case column stays in view, instead of the
+// whole board sliding away with the case names.
+const PHONE_COLUMNS = [{ text: 'Case', field: 'caseRef', width: 112, htmlEncode: true }];
+const PHONE_QUERY = '(max-width: 640px)';
+const phoneMedia = () => (typeof window !== 'undefined' && typeof window.matchMedia === 'function' ? window.matchMedia(PHONE_QUERY) : null);
+function subscribePhone(onChange) {
+  const media = phoneMedia();
+  if (!media) return () => {};
+  media.addEventListener('change', onChange);
+  return () => media.removeEventListener('change', onChange);
+}
+const isPhone = () => Boolean(phoneMedia()?.matches);
+
+// Spread before the fixed props; switching between the two remounts the scheduler (board-canvas key).
+const DESKTOP_SCHEDULER = { columns: COLUMNS, forceFit: true };
+const PHONE_SCHEDULER = { columns: PHONE_COLUMNS, forceFit: false, tickSize: 72 };
+
+// Tooltips name the case, its due date and, for the plan bar, the planned window (optimise r24).
+function tooltipHtml(eventRecord, dueAtOf) {
+  const kind = eventRecord.get('kind');
+  const caseRef = String(eventRecord.resourceId ?? '');
+  const due = dueAtOf(caseRef);
+  const lines = [`<strong>${escapeHtml(eventRecord.name)} · ${escapeHtml(caseRef)}</strong>`];
+  if (kind === 'PLAN') {
+    lines.push(`Due ${escapeHtml(utcLabel(due))}`, `Planned ${escapeHtml(wallLabel(eventRecord.startDate))} → ${escapeHtml(wallLabel(eventRecord.endDate))}`, 'Your plan · this tab only, not sent');
+  } else if (kind === 'RESPONSE_WINDOW') {
+    lines.push(`Due ${escapeHtml(utcLabel(eventRecord.get('at')))}`, escapeHtml(eventRecord.get('source') || ''));
+  } else {
+    lines.push(escapeHtml(utcLabel(eventRecord.get('at'))), `Due ${escapeHtml(utcLabel(due))}`, escapeHtml(eventRecord.get('source') || ''));
+  }
+  return lines.join('<br>');
+}
+
+// "Now" and due-date lines in the TimeRanges shape, drawn with the Community coordinate API because the TimeRanges
+// feature is Business tier (optimise r24). The layer sits under the bars and ignores the pointer; the caption legend
+// names the two line styles and the list carries the same times as text.
+function drawTimeRanges(scheduler, ranges) {
+  const host = scheduler?.timeAxisSubGridElement;
+  if (!host || scheduler.isDestroyed) return;
+  let layer = host.querySelector(':scope > .payguard-board-lines');
+  if (!layer) {
+    layer = document.createElement('div');
+    layer.className = 'payguard-board-lines';
+    layer.setAttribute('aria-hidden', 'true');
+    host.appendChild(layer);
+  }
+  const lines = [];
+  for (const range of ranges) {
+    const x = scheduler.getCoordinateFromDate(range.startDate, true);
+    if (!Number.isFinite(x) || x < 0) continue;
+    const line = document.createElement('div');
+    line.className = `payguard-board-line payguard-board-line-${range.kind.toLowerCase()}`;
+    line.dataset.lineId = range.id;
+    line.style.left = `${Math.round(x)}px`;
+    if (range.resourceId) {
+      const resource = scheduler.resourceStore.getById(range.resourceId);
+      const row = resource && scheduler.getRowFor(resource);
+      if (!row) continue;
+      line.style.top = `${row.top}px`;
+      line.style.height = `${row.height}px`;
+    }
+    lines.push(line);
+  }
+  layer.replaceChildren(...lines);
+}
+
+function BoardList({ board, plans }) {
+  return <ul className="board-list" data-testid="evidence-board-list">{board.rows.map((row) => <li key={row.id} className={`board-row board-row-${row.status.toLowerCase()}${row.highlight ? ' board-row-urgent' : ''}`} data-testid="evidence-board-row" data-status={row.status}>
+    <div className="board-row-head"><strong>{row.caseRef}</strong><span className="board-row-status">{row.statusLabel}</span></div>
+    <dl><div><dt>Reason</dt><dd>{row.reason}</dd></div><div><dt>Due</dt><dd>{row.dueAt ? utcLabel(row.dueAt) : '—'}</dd></div><div><dt>Evidence</dt><dd>{row.readinessLabel}{row.readiness?.manual ? ` · ${row.readiness.manual} need manual review` : ''}</dd></div><div><dt>Amount</dt><dd>{row.amount ? `${row.amount} · synthetic` : 'Not in case data'}</dd></div><div><dt>Events</dt><dd>{row.eventCount} on the time axis</dd></div>
+      <div><dt>Plan</dt><dd data-testid="evidence-board-plan">{plans[row.id] ? `${PLAN_NAME} ${planLabel(plans[row.id])}` : row.dueAt ? PLAN_MESSAGES.NO_WINDOW : '—'}</dd></div></dl>
+  </li>)}</ul>;
+}
+
+export default function EvidenceBoard({ disputes, drafts }) {
+  // "Now" is taken when the inputs change; the board does not tick on its own. The plan check uses the live clock.
+  const board = useMemo(() => buildEvidenceBoard({ disputes, drafts, now: Date.now() }), [disputes, drafts]);
+  const phone = useSyncExternalStore(subscribePhone, isPhone, () => false);
+  const schedulerRef = useRef(null);
+  // Plans restored for this board: a stored plan that still fits, otherwise the default (optimise r24).
+  const restored = useMemo(() => (board ? restorePlans(readStoredPlans(tabStorage()), board.rows, board.nowMs) : {}), [board]);
+  const [plans, setPlans] = useState(restored);
+  const plansRef = useRef(restored);
+  const verdictRef = useRef(null);
+  const [message, setMessage] = useState('');
+  useEffect(() => {
+    plansRef.current = restored;
+    setPlans(restored);
+    if (board) writeStoredPlans(tabStorage(), restored);
+  }, [board, restored]);
+
+  const dueAtById = useMemo(() => Object.fromEntries((board?.rows || []).map((row) => [row.id, row.dueAt])), [board]);
+  const dueRef = useRef(dueAtById);
+  dueRef.current = dueAtById;
+  const dueAtOf = useCallback((ref) => dueRef.current[ref] ?? null, []);
+
+  const resources = useMemo(() => (board?.rows || []).map((row) => ({
+    id: row.id, name: `${row.caseRef} · ${row.reason}`, caseRef: row.caseRef, cls: row.cls,
+    dueText: row.dueAt ? utcLabel(row.dueAt) : 'No due date', readinessLabel: row.readinessLabel, amountText: row.amount ?? '—',
+  })), [board]);
+  // The events reach Bryntum once per board; later moves live in Bryntum's own store and in `plans`.
+  const events = useMemo(() => (board ? [...board.events, ...planEvents(board.rows, restored)] : []), [board, restored]);
+
+  // One check for drag, resize and keys: only a plan bar, in its own row, from now to its due date, whole hours.
+  const judge = useCallback((record, startDate, endDate, newResource) => {
+    let verdict;
+    if (record?.get?.('kind') !== 'PLAN') verdict = { valid: false, code: 'READ_ONLY', message: 'Case data is read only.' };
+    else if (newResource && newResource.id !== record.resourceId) verdict = { valid: false, code: 'OTHER_CASE', message: 'A plan stays on its own case.' };
+    else verdict = validatePlan({ startMs: wallToUtcMs(startDate), endMs: wallToUtcMs(endDate) }, { nowMs: Date.now(), dueMs: Date.parse(dueRef.current[record.resourceId] ?? '') });
+    verdictRef.current = verdict;
+    return verdict;
+  }, []);
+
+  const keep = useCallback((ref, plan, note) => {
+    const next = { ...plansRef.current, [ref]: plan };
+    plansRef.current = next;
+    setPlans(next);
+    const stored = writeStoredPlans(tabStorage(), next);
+    setMessage(`${ref}: ${PLAN_NAME.toLowerCase()} ${planLabel(plan)}${note ? ` ${note}` : ''}. ${stored ? 'Kept in this tab only' : 'Kept in this page only'}, not sent.`);
+  }, []);
+
+  // Applies Bryntum's result once more through the same check; anything that slipped through is put back.
+  const commit = useCallback((record) => {
+    if (!record || record.get('kind') !== 'PLAN') return;
+    const ref = String(record.resourceId);
+    const previous = plansRef.current[ref];
+    const verdict = judge(record, record.startDate, record.endDate, null);
+    if (!verdict.valid) {
+      if (previous) record.setStartEndDate(wallOf(previous.startMs), wallOf(previous.endMs));
+      setMessage(`${ref}: moved back. ${verdict.message}`);
+      return;
+    }
+    const plan = { startMs: wallToUtcMs(record.startDate), endMs: wallToUtcMs(record.endDate) };
+    if (previous && previous.startMs === plan.startMs && previous.endMs === plan.endMs) return;
+    keep(ref, plan);
+  }, [judge, keep]);
+
+  // A refused drop snaps back with the reason from this gesture's last check. The verdict is cleared when a gesture
+  // starts, so a click on a handle that changes nothing shows no stale reason.
+  const refused = useCallback((record) => {
+    if (!record || record.get?.('kind') !== 'PLAN') return;
+    const verdict = verdictRef.current;
+    if (verdict && !verdict.valid) setMessage(`${String(record.resourceId)}: moved back. ${verdict.message}`);
+  }, []);
+  const gestureStart = useCallback(() => { verdictRef.current = null; }, []);
+
+  const dragFeature = useMemo(() => ({
+    constrainDragToResource: true,
+    validatorFn: ({ eventRecords, startDate, endDate, newResource }) => {
+      const verdict = (eventRecords || []).length === 1 ? judge(eventRecords[0], startDate, endDate, newResource) : { valid: false, message: 'Move one plan at a time.' };
+      return verdict.valid ? true : { valid: false, message: verdict.message };
+    },
+  }), [judge]);
+  const resizeFeature = useMemo(() => ({
+    // The 8.0.0 resize context names the bar eventRecord (the typings say record); both are accepted.
+    validatorFn: ({ eventRecord, record, startDate, endDate }) => {
+      const verdict = judge(eventRecord ?? record, startDate, endDate, null);
+      return verdict.valid ? true : { valid: false, message: verdict.message };
+    },
+  }), [judge]);
+  const tooltipFeature = useMemo(() => ({ template: ({ eventRecord }) => tooltipHtml(eventRecord, dueAtOf) }), [dueAtOf]);
+
+  const onAfterEventDrop = useCallback(({ valid, eventRecords }) => {
+    if (valid) (eventRecords || []).forEach(commit);
+    else refused(eventRecords?.[0]);
+  }, [commit, refused]);
+  const onEventResizeEnd = useCallback(({ changed, eventRecord }) => {
+    if (changed) commit(eventRecord);
+    else refused(eventRecord);
+  }, [commit, refused]);
+
+  // Keyboard: Tab and the arrow keys reach the bars through Bryntum's own event navigation. On a focused plan bar
+  // Shift+Left/Right moves it one hour and Alt+Left/Right moves its end one hour, through the same check. The keys are
+  // taken in the capture phase, before the navigator would also move focus to the neighbouring event (optimise r24).
+  const onPlanKey = useCallback((scheduler, event) => {
+    if (!['ArrowLeft', 'ArrowRight'].includes(event.key) || !(event.shiftKey || event.altKey) || event.ctrlKey || event.metaKey) return;
+    const record = event.target?.closest?.('.b-sch-event-wrap') ? scheduler.resolveEventRecord(event.target) : null;
+    if (!record || record.get('kind') !== 'PLAN') return;
+    event.preventDefault();
+    event.stopPropagation();
+    const ref = String(record.resourceId);
+    const current = plansRef.current[ref];
+    if (!current) return;
+    const proposal = shiftPlan(current, event.key === 'ArrowRight' ? 1 : -1, { resize: event.altKey && !event.shiftKey });
+    const verdict = judge(record, wallOf(proposal.startMs), wallOf(proposal.endMs), null);
+    if (!verdict.valid) {
+      setMessage(`${ref}: not moved. ${verdict.message}`);
+      return;
+    }
+    record.setStartEndDate(wallOf(proposal.startMs), wallOf(proposal.endMs));
+    keep(ref, proposal);
+  }, [judge, keep]);
+
+  const resetPlans = useCallback(() => {
+    if (!board) return;
+    const next = {};
+    for (const row of board.rows) {
+      const plan = defaultPlan(planWindowOf(row, Date.now()));
+      if (plan) next[row.id] = plan;
+    }
+    const store = schedulerRef.current?.instance?.eventStore;
+    for (const [ref, plan] of Object.entries(next)) store?.getById(`${ref}-plan`)?.setStartEndDate(wallOf(plan.startMs), wallOf(plan.endMs));
+    plansRef.current = next;
+    setPlans(next);
+    writeStoredPlans(tabStorage(), next);
+    setMessage('Plans reset to the next 24 hours (or up to the due date).');
+  }, [board]);
+
+  // Draw "now" and due lines whenever the scheduler lays out its rows or time axis; take the plan keys.
+  const schedulerKey = board ? `${board.startDate.getTime()}-${board.endDate.getTime()}-${board.viewPreset}` : 'none';
+  useEffect(() => {
+    const scheduler = schedulerRef.current?.instance;
+    if (!scheduler || !board) return undefined;
+    let frame = 0;
+    const redraw = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => drawTimeRanges(scheduler, board.timeRanges));
+    };
+    const detachScheduler = scheduler.on({ paint: redraw, renderRows: redraw, timelineViewportResize: redraw, timeAxisChange: redraw });
+    const detachStore = scheduler.eventStore.on({ change: redraw });
+    const keydown = (event) => onPlanKey(scheduler, event);
+    scheduler.element?.addEventListener('keydown', keydown, true);
+    redraw();
+    return () => {
+      cancelAnimationFrame(frame);
+      scheduler.element?.removeEventListener('keydown', keydown, true);
+      if (typeof detachScheduler === 'function') detachScheduler();
+      if (typeof detachStore === 'function') detachStore();
+    };
+  }, [board, phone, schedulerKey, onPlanKey]);
+
+  if (!board) return <p className="board-empty" data-testid="evidence-board-empty">Load the dispute case to see its evidence and response window.</p>;
+  // Missing evidence and "no draft yet" are counted apart, so the summary never says none while a card reads "No draft yet" (r20 UX-2).
+  const soon = [board.missingSoon && `${board.missingSoon} due within ${DUE_SOON_DAYS} days with evidence missing`, board.noDraftSoon && `${board.noDraftSoon} due within ${DUE_SOON_DAYS} days with no draft yet`].filter(Boolean);
+  const timeline = available && BryntumScheduler;
+  return <div className="evidence-board" data-testid="evidence-board">
+    <p className="board-summary" data-testid="evidence-board-summary">{board.rows.length} case{board.rows.length === 1 ? '' : 's'} · {soon.length ? soon.join(' · ') : `none due within ${DUE_SOON_DAYS} days with evidence missing or no draft`} · now {utcLabel(board.nowIso)}</p>
+    <BoardList board={board} plans={plans} />
+    {timeline ? <figure className={`board-timeline${phone ? ' board-timeline-phone' : ''}`} data-testid="evidence-board-timeline">
+      <figcaption title="Bars are the seller response window up to the due date. Bryntum Scheduler Community (MIT).">
+        Times in UTC · case data read only · <span className="board-legend-now">now</span> and <span className="board-legend-due">due</span> lines{phone && <span className="board-swipe-hint" data-testid="evidence-board-swipe-hint"> · swipe the timeline sideways →</span>}
+      </figcaption>
+      <p className="board-plan-help" id="evidence-board-plan-help" data-testid="evidence-board-plan-help">
+        Drag or resize each <strong>{PLAN_NAME}</strong> bar to plan when you will gather the proof, in whole hours, between now and the due date.
+        With a bar focused (Tab, then the arrow keys), Shift+←/→ moves it one hour and Alt+←/→ moves its end. The plan stays in this tab and is not sent anywhere.
+      </p>
+      <div className="board-plan-bar">
+        <p className="board-plan-message" role="status" aria-live="polite" data-testid="evidence-board-plan-message">{message}</p>
+        <button type="button" className="board-plan-reset" data-testid="evidence-board-plan-reset" onClick={resetPlans}>Reset plans</button>
+      </div>
+      <div className="board-scroll" tabIndex={0} role="region" aria-label="Evidence deadline timeline, scrolls sideways" aria-describedby="evidence-board-plan-help">
+        {/* Keyed on the layout too: a phone and a desktop scheduler differ in columns and fit, so a fresh one is made. */}
+        <div className="board-canvas" key={phone ? 'phone' : 'desktop'}>
+          {/* Keyed on the range: when a newly prepared draft widens it, a fresh scheduler takes start and end
+              together. Updating the two props one by one let Bryntum keep the old span, so the axis ended
+              before the latest response-window bar. */}
+          <BryntumScheduler key={`${board.startDate.getTime()}-${board.endDate.getTime()}-${board.viewPreset}`} ref={schedulerRef} {...(phone ? PHONE_SCHEDULER : DESKTOP_SCHEDULER)} autoHeight rowHeight={ROW_HEIGHT} barMargin={8} startDate={board.startDate} endDate={board.endDate} viewPreset={board.viewPreset}
+            snap timeResolution={HOUR_RESOLUTION} enableDeleteKey={false}
+            detectCSSCompatibilityIssues={false} useInitialAnimation={false} zoomOnMouseWheel={false} zoomOnTimeAxisDoubleClick={false}
+            milestoneLayoutMode="estimate" milestoneTextPosition="outside" resources={resources} events={events}
+            eventDragFeature={dragFeature} eventResizeFeature={resizeFeature} eventTooltipFeature={tooltipFeature} {...LOCKED_FEATURES}
+            onEventDragStart={gestureStart} onEventResizeStart={gestureStart} onAfterEventDrop={onAfterEventDrop} onEventResizeEnd={onEventResizeEnd} />
+        </div>
+      </div>
+    </figure> : null}
+  </div>;
+}

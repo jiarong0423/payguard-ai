@@ -185,7 +185,8 @@ class ApiTests(unittest.TestCase):
     def test_independent_scenarios_idempotency_and_reset_identity(self):
         dispute = self.post("/demo/inject", {"scenario": "dispute"})
         self.assertEqual(dispute.status_code, 200, dispute.text)
-        self.assertEqual([row["case_ref"] for row in dispute.json()["disputes"]], ["case-ref-001", "case-ref-002"])
+        # case-ref-003 (round 5) is the synthetic "due within 3 days, evidence missing" case.
+        self.assertEqual([row["case_ref"] for row in dispute.json()["disputes"]], ["case-ref-001", "case-ref-002", "case-ref-003"])
         self.assertEqual(dispute.json()["transactions"], [])
         burst = self.post("/demo/inject", {"scenario": "burst"})
         self.assertEqual(burst.status_code, 200)
@@ -202,6 +203,35 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(reset["scenario"], {"burst": False, "dispute": False})
         self.assertEqual(reset["session_id"], self.session["session_id"])
         self.assertEqual(self.post("/demo/inject", {"scenario": "burst"}).status_code, 200)
+
+    def test_synthetic_dispute_summaries_carry_provider_shaped_amounts(self):
+        disputes = self.post("/demo/inject", {"scenario": "dispute"}).json()["disputes"]
+        self.assertEqual([row["dispute_amount"] for row in disputes], [
+            {"currency_code": "USD", "value": "48.00"},
+            {"currency_code": "USD", "value": "18.00"},
+            {"currency_code": "USD", "value": "125.50"},
+        ])
+        for row in disputes:
+            self.assertEqual(set(row), {"case_ref", "order_ref", "reason", "opened_at", "seller_response_due_date", "dispute_amount", "status"})
+        self.assertEqual(self.state()["disputes"], disputes)
+
+    def test_due_soon_case_has_a_missing_item_and_existing_cases_keep_their_outcomes(self):
+        self.post("/demo/inject", {"scenario": "dispute"})
+        now = self.clock()
+        drafts = {ref: self.post(f"/disputes/{ref}/draft").json() for ref in ("case-ref-001", "case-ref-002", "case-ref-003")}
+        outcome = {ref: (draft["routing"]["overall_state"], draft["routing"]["seller_response_due_date"],
+                         [row["requirement_state"] for row in draft["routing"]["requirements"]], draft["review_reasons"])
+                   for ref, draft in drafts.items()}
+        self.assertEqual(outcome["case-ref-001"], ("READY_FOR_LOCAL_REVIEW", iso(now + timedelta(days=2)), ["STRUCTURALLY_PRESENT"], []))
+        self.assertEqual(outcome["case-ref-002"], ("READY_FOR_LOCAL_REVIEW", iso(now + timedelta(days=2)), ["STRUCTURALLY_PRESENT"],
+                                                   ["delivery_not_before_dispute"]))
+        self.assertEqual(outcome["case-ref-003"], ("READY_FOR_LOCAL_REVIEW", iso(now + timedelta(days=1)),
+                                                   ["STRUCTURALLY_PRESENT", "OPTIONAL_EVIDENCE_MISSING"], []))
+        missing = drafts["case-ref-003"]["routing"]["requirements"][1]
+        self.assertEqual((missing["provider_evidence_type"], missing["mandatory"], missing["proof_count"]), ("PROOF_OF_REFUND", False, 0))
+        self.assertEqual(drafts["case-ref-003"]["source"], "synthetic")
+        self.assertEqual(drafts["case-ref-003"]["evidence"]["evidence_source"], "synthetic")
+        self.assertNotIn("time_evidence", drafts["case-ref-003"])
 
     def test_session_isolation_and_expiry_purge(self):
         other = self.new_session()
@@ -523,12 +553,14 @@ class ProviderTests(unittest.TestCase):
                 self.assertEqual(request.headers["Prefer"], "return=representation")
                 self.assertLessEqual(len(request.headers["PayPal-Request-Id"]), 38)
                 body = json.loads(request.content)
+                self.last_invoice_body = body
                 self.assertEqual(set(body), {"detail", "items"})
                 self.assertNotIn("primary_recipients", body)
                 self.assertEqual(body["items"][0]["unit_amount"], {"currency_code": "USD", "value": "10.00"})
                 return httpx.Response(201, json={"id": "INV2-DEMO-1234-5678", "status": self.invoice_status,
                                                 "recipient_email": "synthetic@example.invalid"})
             if request.url.path == "/v1/notifications/verify-webhook-signature":
+                self.last_webhook_content = request.content
                 self.assertEqual(json.loads(request.content)["webhook_id"], "synthetic-webhook-id")
                 return httpx.Response(200, json={"verification_status": self.webhook_status})
             raise AssertionError("Unexpected provider path")
@@ -561,6 +593,32 @@ class ProviderTests(unittest.TestCase):
         review = self.post("/paypal/invoices/review", bound_invoice_review(self))
         self.assertEqual(review.status_code, 200, review.text)
         return dict(invoice_payload(), review_token=review.json()["review_token"], payload_digest=review.json()["payload_digest"])
+
+    def test_the_checked_country_pair_is_written_on_the_sandbox_draft(self):
+        """Review 2026-11-03: the country check reaches the PayPal object as a note with country codes only."""
+        self.connect()
+        checked = self.post("/country-rules/check", {"seller_country": "US", "buyer_country": "GB"})
+        if checked.status_code == 404:
+            self.skipTest("country rules are held back from this build")
+        self.assertEqual(checked.status_code, 200, checked.text)
+        self.assertFalse(checked.json()["blocked"])
+        draft = self.post("/paypal/invoices/draft", self.reviewed())
+        self.assertEqual(draft.status_code, 200, draft.text)
+        self.assertEqual(self.last_invoice_body["detail"]["memo"],
+                         "PayGuard country check: ships from US to GB; goods checked: none ticked. Not a customs or legal clearance.")
+        self.assertNotIn("note", self.last_invoice_body["detail"], "nothing from the check is shown to the buyer")
+        self.assertNotIn("primary_recipients", self.last_invoice_body)
+
+    def test_a_review_made_before_the_first_country_check_cannot_make_the_draft(self):
+        """Red team r16: review with no check, then a passing check, then the old review used to draft with no memo."""
+        self.connect()
+        early = self.reviewed()
+        checked = self.post("/country-rules/check", {"seller_country": "US", "buyer_country": "GB"})
+        if checked.status_code == 404:
+            self.skipTest("country rules are held back from this build")
+        draft = self.post("/paypal/invoices/draft", early)
+        self.assertEqual((draft.status_code, draft.json()["error"]["code"]), (409, "country_check_changed"))
+        self.assertEqual(self.post("/paypal/invoices/draft", self.reviewed()).status_code, 200)
 
     def test_get_status_no_network_connect_no_credentials_echo_expiry(self):
         self.assertEqual(self.client.get(ROOT + "/paypal/status", headers=self.headers()).json()["status"], "not_configured")
@@ -658,21 +716,71 @@ class ProviderTests(unittest.TestCase):
         self.assertNotIn("invoice_id", response.json())
 
     def test_webhook_success_only_verify_no_demo_import_and_pii_rejected(self):
+        """PayPal docs r24: the event is forwarded unchanged; only id, type and status are kept after SUCCESS."""
         self.connect()
         request = webhook_payload()
         verified = self.post("/paypal/webhooks/verify", request)
         self.assertEqual(verified.status_code, 200, verified.text)
-        self.assertEqual(verified.json(), {"source": "paypal_sandbox", "verification_status": "SUCCESS", "imported_into_demo": False})
+        self.assertEqual(verified.json(), {"source": "paypal_sandbox", "verification_status": "SUCCESS", "imported_into_demo": False,
+                                           "event": {"id": "WH-DEMO", "event_type": "INVOICING.INVOICE.CREATED",
+                                                     "resource_type": "invoice", "resource_id": "INV2-DEMO-0001",
+                                                     "resource_status": "DRAFT"},
+                                           "paypal_debug_id": None})
         self.webhook_status = "FAILURE"
         self.assertEqual(self.post("/paypal/webhooks/verify", request).status_code, 403)
-        unsafe = deepcopy(request)
-        unsafe["webhook_event"]["resource"]["email"] = "synthetic-private@example.invalid"
+        self.webhook_status = "SUCCESS"
+        # A real event carries summary, links, versions, amounts and payer data: it is forwarded as is and verifies,
+        # and none of it is returned.
+        real = deepcopy(request)
+        real["webhook_event"].update({"event_version": "1.0", "resource_version": "2.0", "summary": "An invoice was created",
+                                      "links": [{"href": "https://api.sandbox.paypal.com/v1/notifications/webhooks-events/WH-DEMO",
+                                                 "rel": "self", "method": "GET"}]})
+        real["webhook_event"]["resource"].update({"amount": {"currency_code": "USD", "value": "10.00"},
+                                                  "primary_recipients": [{"billing_info": {"email_address": "synthetic-private@example.invalid"}}]})
+        response = self.post("/paypal/webhooks/verify", real)
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertEqual(json.loads(self.last_webhook_content)["webhook_event"], real["webhook_event"])
+        for marker in ("synthetic-private@example.invalid", "10.00", "summary", "links", "primary_recipients"):
+            self.assertNotIn(marker, response.text)
+        self.assertEqual(set(response.json()["event"]), {"id", "event_type", "resource_type", "resource_id", "resource_status"})
         calls = len(self.calls)
-        response = self.post("/paypal/webhooks/verify", unsafe)
-        self.assertEqual(response.status_code, 422)
-        self.assertNotIn("synthetic-private@example.invalid", response.text)
+        for change in ({"cert_url": "https://evil.invalid/cert"}, {"cert_url": "https://api.sandbox.paypal.com.evil.invalid/v1/notifications/certs/C"},
+                       {"cert_url": "https://api.sandbox.paypal.com/v1/notifications/certs/" + "C" * 460}):
+            self.assertEqual(self.post("/paypal/webhooks/verify", dict(request, **change)).json()["error"]["code"],
+                             "webhook_certificate_rejected")
+        for change in ({"transmission_id": "t" * 51}, {"auth_algo": "SHA1withRSA"}, {"transmission_time": "yesterday"},
+                       {"transmission_sig": "not base64!"}, {"webhook_event": ["not", "an", "object"]},
+                       {"webhook_event": {"event_type": "X"}}, {"extra": "field"}):
+            with self.subTest(change=str(change)[:40]):
+                refused = self.post("/paypal/webhooks/verify", dict(request, **change))
+                self.assertEqual((refused.status_code, refused.json()["error"]["code"]), (422, "webhook_schema_invalid"))
+        trimmed = dict(request)
+        del trimmed["transmission_sig"]
+        self.assertEqual(self.post("/paypal/webhooks/verify", trimmed).status_code, 422)
         self.assertEqual(len(self.calls), calls)
-        self.assertEqual(self.post("/paypal/webhooks/verify", dict(request, cert_url="https://evil.invalid/cert")).status_code, 422)
+
+    def test_webhook_event_is_forwarded_byte_for_byte(self):
+        """PayPal docs r24: no deviations in formatting, so the raw event text reaches PayPal unchanged."""
+        self.connect()
+        raw_event = ('{ "resource_type" : "invoices",\n  "id":"WH-58D329510W468432D",  "event_type":"INVOICING.INVOICE.PAID",'
+                     '"summary":"Caf\\u00e9 invoice paid","resource":{"amount":{"value":1.10,"currency_code":"USD"},'
+                     '"id":"INV2-DEMO-0001","status":"PAID","note":"\\/slash and \\"quote\\""},'
+                     '"create_time":"2026-10-04T08:00:00.000Z" ,"event_version":"1.0","resource_version":"2.0"}')
+        raw_body = ('{"transmission_id":"demo-transmission","transmission_time":"2026-10-04T08:00:00Z",'
+                    '"cert_url":"https://api.sandbox.paypal.com/v1/notifications/certs/CERT-DEMO","auth_algo":"SHA256withRSA",'
+                    '"transmission_sig":"c3ludGhldGlj","webhook_event":' + raw_event + '}')
+        response = self.client.post(ROOT + "/paypal/webhooks/verify", content=raw_body.encode("utf-8"),
+                                    headers=dict(self.headers(), **{"Content-Type": "application/json"}))
+        self.assertEqual(response.status_code, 200, response.text)
+        forwarded = self.last_webhook_content
+        marker = b',"webhook_event":'
+        self.assertEqual(forwarded.count(marker), 1)
+        self.assertEqual(forwarded.split(marker, 1)[1], raw_event.encode("utf-8") + b"}")
+        self.assertNotEqual(json.dumps(json.loads(raw_event)).encode(), raw_event.encode(), "the sample is not canonical JSON")
+        self.assertEqual(response.json()["event"], {"id": "WH-58D329510W468432D", "event_type": "INVOICING.INVOICE.PAID",
+                                                    "resource_type": "invoices", "resource_id": "INV2-DEMO-0001",
+                                                    "resource_status": "PAID"})
+        self.assertNotIn("1.10", response.text)
 
 
 class AupReceiptTests(unittest.TestCase):
@@ -1009,6 +1117,211 @@ class AupFunnelHttpTests(unittest.TestCase):
         self.assertEqual(self.post("/paypal/invoices/review", dict(request, description="x" * 201)).status_code, 422)
         self.assertEqual(self.post("/paypal/invoices/review", dict(request, description="y" * 200)).json()["error"]["code"], "aup_evaluation_binding_rejected")
         self.assertEqual(self.post("/paypal/invoices/review", request).status_code, 200)
+
+
+# ---- (attack r21) backend findings: AUP mark/look-alike bypass (I02), PayPal reported speech in the guide (G01-G04),
+# Reset demo keeps guide state (G14), aup_capacity says how long to wait (desktop S37), negative country amount (S17).
+# Kept in this file (not a new one) so the public-export inventory needs no new entry.
+import socket  # noqa: E402
+
+from app.guide_routes import GuideService  # noqa: E402
+from payguard import country_rules  # noqa: E402
+from payguard import evidence_guide as eg  # noqa: E402
+
+
+class R21Clock:
+    def __init__(self):
+        self.now = datetime(2026, 11, 3, 8, 0, tzinfo=timezone.utc)
+
+    def __call__(self):
+        return self.now
+
+    def advance(self, seconds):
+        self.now += timedelta(seconds=seconds)
+
+
+class R21ApiBase(unittest.TestCase):
+    def setUp(self):
+        guard = patch.object(socket, "create_connection", side_effect=AssertionError("network forbidden"))
+        guard.start()
+        self.addCleanup(guard.stop)
+        self.clock = R21Clock()
+        self.store = SessionStore(clock=self.clock)
+        self.app = create_app(store=self.store)
+        self.app.state.guide = GuideService(self.store, chooser_factory=lambda: None)
+        self.client = TestClient(self.app, base_url="http://127.0.0.1:8000", client=("127.0.0.1", 55321))
+        self.client.__enter__()
+        self.addCleanup(self.client.__exit__, None, None, None)
+        session = self.client.post("/api/v1/demo/sessions", json={}, headers={"Origin": ORIGIN}).json()
+        self.session_id = session["session_id"]
+        self.headers = {"Origin": ORIGIN, "X-Demo-Session": session["session_id"], "X-CSRF-Token": session["csrf_token"]}
+
+    def post(self, path, body):
+        return self.client.post("/api/v1" + path, json=body, headers=self.headers)
+
+    def get(self, path):
+        return self.client.get("/api/v1" + path, headers=self.headers)
+
+
+class R21AupMarkAndLookalikeTests(unittest.TestCase):
+    ATTACKS = {
+        "co̶caine": "controlled_substances",           # combining long stroke overlay
+        "cocäine": "controlled_substances",           # combining diaeresis
+        "cocäine": "controlled_substances",            # precomposed a with diaeresis
+        "pístol": "weapons",                           # precomposed i with acute
+        "rëplica rolex": "counterfeit_goods",
+        "ϲocaine": "controlled_substances",            # Greek lunate sigma for c
+        "ϹOCAINE": "controlled_substances",            # capital lunate sigma
+        "сосаine": "controlled_substances",  # Cyrillic c, o, c, a
+        "fireㅤarm": "weapons",                         # Hangul filler U+3164
+        "fireᅟarm": "weapons",                         # Hangul choseong filler U+115F
+        "fireᅠarm": "weapons",                         # Hangul jungseong filler U+1160
+        "héroïn": "controlled_substances",
+        "Selling a рíѕtol case": "weapons",   # mixed Cyrillic and accent
+    }
+    ORDINARY = ("café latte mug", "naïve résumé template", "piñata party kit", "Αθήνα city tour",
+                "crème brûlée torch kit", "handmade ceramic cup", "glue gun refills")
+
+    def test_each_attack_string_gives_review_signal(self):
+        for text, category in self.ATTACKS.items():
+            result = check_aup(text)
+            self.assertEqual(result["match_status"], "REVIEW_SIGNAL", repr(text))
+            self.assertIn(category, [item["category"] for item in result["findings"]], repr(text))
+
+    def test_ordinary_accented_text_stays_no_match(self):
+        for text in self.ORDINARY:
+            self.assertEqual(check_aup(text)["match_status"], "NO_MATCH", text)
+
+    def test_zero_width_characters_are_still_refused_as_input(self):
+        for char in ("​", "‌", "‍", "⁠", "﻿"):
+            with self.assertRaises(ValueError):
+                check_aup("fire" + char + "arm")
+
+
+class R21AupApiBypassTests(R21ApiBase):
+    def test_combining_mark_attack_needs_acknowledgement_over_the_api(self):
+        response = self.post("/aup/review", {"description": "co̶caine"})
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertEqual(response.json()["match_status"], "REVIEW_SIGNAL")
+
+
+class R21PayPalReportedSpeechTests(unittest.TestCase):
+    ATTACKS = ("My PayPal rep said it was delivered", "I was told by PayPal that it was delivered",
+               "Our PayPal specialist confirmed delivery", "We heard from PayPal it was signed for",
+               "According to PayPal it was delivered", "Per PayPal support, the package was delivered",
+               "The PayPal agent told me it was delivered", "PayPal confirmed the delivery",
+               "My PayPal representative already confirmed delivery", "I was informed by the PayPal team that it was signed for")
+    SELLER_OWN = ("I have the delivery confirmation", "I messaged them on PayPal last Tuesday",
+                  "I uploaded the tracking to PayPal", "I told PayPal it was delivered Monday")
+
+    def test_paypal_as_the_source_is_third_party(self):
+        for text in self.ATTACKS:
+            self.assertEqual(eg.subject_of_clause(text), "THIRD_PARTY", text)
+
+    def test_seller_actions_involving_paypal_stay_seller(self):
+        for text in self.SELLER_OWN:
+            self.assertEqual(eg.subject_of_clause(text), "SELLER", text)
+
+    def test_rule_layer_and_model_never_see_paypal_reported_speech(self):
+        today = datetime(2026, 11, 3).date()
+        for text in self.ATTACKS:
+            state = eg.new_state("dispute", "physical")
+            settled, _resolved = eg.auto_confirm(state, text, today)
+            self.assertEqual(settled, [], text)
+            self.assertEqual(state["slots"]["delivery_record"]["status"], "MISSING", text)
+            cleaned, _reason = eg.sanitize_input(text)
+            self.assertEqual(eg.model_clause_indices(eg.split_clauses(cleaned)), [], text)
+
+    def test_keyword_turn_marks_nothing(self):
+        for text in self.ATTACKS:
+            state = eg.new_state("dispute", "physical")
+            eg.guide_turn(state, text, contract=2)
+            self.assertEqual(state["slots"]["delivery_record"]["status"], "MISSING", text)
+
+
+class R21PayPalReportedSpeechApiTests(R21ApiBase):
+    def test_guide_turns_never_mark_delivery_record(self):
+        for text in R21PayPalReportedSpeechTests.ATTACKS[:4]:
+            self.assertEqual(self.post("/demo/inject", {"scenario": "reset"}).status_code, 200)
+            started = self.post("/guide/start", {"scenario": "dispute", "goods_type": "physical"})
+            self.assertEqual(started.status_code, 200, started.text)
+            response = self.post("/guide/turn", {"text": text})
+            self.assertEqual(response.status_code, 200, response.text)
+            self.app.state.guide.wait_for_analysis()
+            view = self.get("/guide/state").json()
+            status = next(item["status"] for item in view["items"] if item["id"] == "delivery_record")
+            self.assertNotIn(status, ("STRUCTURALLY_PRESENT", "PARTIAL"), text)
+
+
+class R21ResetClearsGuideTests(R21ApiBase):
+    def test_reset_demo_clears_this_sessions_guide(self):
+        self.assertEqual(self.post("/guide/start", {"scenario": "dispute", "goods_type": "physical"}).status_code, 200)
+        self.assertEqual(self.post("/guide/form", {"item": "carrier", "value": "UPS"}).status_code, 200)
+        self.assertTrue(self.get("/guide/state").json()["started"])
+        other = self.client.post("/api/v1/demo/sessions", json={}, headers={"Origin": ORIGIN}).json()
+        other_headers = {"Origin": ORIGIN, "X-Demo-Session": other["session_id"], "X-CSRF-Token": other["csrf_token"]}
+        self.assertEqual(self.client.post("/api/v1/guide/start", json={"scenario": "dispute", "goods_type": "physical"},
+                                          headers=other_headers).status_code, 200)
+        self.assertEqual(self.post("/demo/inject", {"scenario": "reset"}).status_code, 200)
+        self.assertFalse(self.get("/guide/state").json()["started"])
+        self.assertEqual(self.post("/guide/turn", {"text": "I shipped it with UPS"}).json()["error"]["code"], "guide_not_started")
+        # Another session's guide is untouched.
+        self.assertTrue(self.client.get("/api/v1/guide/state", headers=other_headers).json()["started"])
+        # A fresh start after reset begins from MISSING.
+        view = self.post("/guide/start", {"scenario": "dispute", "goods_type": "physical"}).json()
+        carrier = next(item["status"] for item in view["items"] if item["id"] == "carrier")
+        self.assertEqual(carrier, "MISSING")
+
+
+class R21AupCapacityWaitTests(R21ApiBase):
+    def test_capacity_message_says_how_long_to_wait(self):
+        for _ in range(5):
+            self.assertEqual(self.post("/aup/review", {"description": "cup"}).status_code, 200)
+            self.clock.advance(20)
+        # Oldest check: 100 s old, so 20 s are left of its 120 s window.
+        response = self.post("/aup/review", {"description": "cup"})
+        self.assertEqual(response.status_code, 429)
+        error = response.json()["error"]
+        self.assertEqual(error["code"], "aup_capacity")
+        self.assertIn("Try again in 20 seconds.", error["message"])
+        self.assertEqual(response.headers.get("Retry-After"), "20")
+        self.clock.advance(19)
+        response = self.post("/aup/review", {"description": "cup"})
+        self.assertIn("Try again in 1 second.", response.json()["error"]["message"])
+        self.clock.advance(1)
+        self.assertEqual(self.post("/aup/review", {"description": "cup"}).status_code, 200)
+
+    def test_limit_itself_is_unchanged(self):
+        session = self.store.sessions[self.session_id]
+        for _ in range(5):
+            self.store.review_aup(session, "cup")
+        with self.assertRaises(BoundaryError) as caught:
+            self.store.review_aup(session, "cup")
+        self.assertEqual((caught.exception.status, caught.exception.code, caught.exception.retry_after), (429, "aup_capacity", 120))
+        self.assertEqual(len(session.aup_evaluations), 5)
+
+    def test_other_429_messages_unchanged(self):
+        from app.main import error_response
+        body = error_response(429, "rate_limited").body.decode()
+        self.assertIn("The local request or sample limit was reached.", body)
+
+
+class R21CountryAmountTests(R21ApiBase):
+    def test_negative_amount_is_refused_by_the_check(self):
+        for amount in ("-1", "-0.01", "nan", "inf", "-inf"):
+            with self.assertRaises(country_rules.CountryRulesError) as caught:
+                country_rules.check("US", "US", amount=amount, currency="USD")
+            self.assertEqual(str(caught.exception), "country_check_invalid")
+        self.assertIn("findings", country_rules.check("US", "US", amount="0", currency="USD"))
+        self.assertIn("findings", country_rules.check("US", "US", amount="120.50", currency="USD"))
+
+    def test_negative_amount_is_422_over_the_api(self):
+        for amount in ("-1", "-0.01", "-5"):
+            response = self.post("/country-rules/check", {"seller_country": "US", "buyer_country": "US",
+                                                         "amount": amount, "currency": "USD"})
+            self.assertEqual(response.status_code, 422, amount)
+        ok = self.post("/country-rules/check", {"seller_country": "US", "buyer_country": "US", "amount": "10", "currency": "USD"})
+        self.assertEqual(ok.status_code, 200, ok.text)
 
 
 if __name__ == "__main__":

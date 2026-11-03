@@ -9,4 +9,5 @@ logs/runtime/
 *.db-wal
 *.db-shm
 node_modules/
+node_modules
 dist/

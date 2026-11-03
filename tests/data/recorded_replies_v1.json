@@ -1,0 +1,110 @@
+{
+ "replies": {
+  "h05": {
+   "u": [],
+   "v": 1
+  },
+  "h13": {
+   "u": [
+    {
+     "c": "ship_date",
+     "h": "APPROX",
+     "k": 0,
+     "r": "LAST",
+     "s": "P",
+     "w": null
+    }
+   ],
+   "v": 1
+  },
+  "h23": {
+   "u": [
+    {
+     "c": "delivery_channel",
+     "h": "EXACT",
+     "k": 0,
+     "r": null,
+     "s": "P",
+     "w": null
+    },
+    {
+     "c": "delivered_at",
+     "h": "EXACT",
+     "k": 0,
+     "r": "LAST",
+     "s": "P",
+     "w": null
+    }
+   ],
+   "v": 1
+  },
+  "h25": {
+   "u": [
+    {
+     "c": "ship_date",
+     "h": "EXACT",
+     "k": 0,
+     "r": null,
+     "s": "P",
+     "w": "MON"
+    },
+    {
+     "c": "carrier",
+     "h": "EXACT",
+     "k": 0,
+     "r": null,
+     "s": "P",
+     "w": null
+    },
+    {
+     "c": "tracking_number",
+     "h": "EXACT",
+     "k": 1,
+     "r": null,
+     "s": "P",
+     "w": null
+    }
+   ],
+   "v": 1
+  },
+  "h28": {
+   "u": [
+    {
+     "c": "ship_date",
+     "h": "APPROX",
+     "k": 0,
+     "r": "LAST",
+     "s": "P",
+     "w": "TUE"
+    }
+   ],
+   "v": 1
+  },
+  "h29": {
+   "u": [
+    {
+     "c": "ship_date",
+     "h": "EXACT",
+     "k": 0,
+     "r": "LAST",
+     "s": "P",
+     "w": "WED"
+    }
+   ],
+   "v": 1
+  },
+  "x01": {
+   "u": [],
+   "v": 1
+  }
+ },
+ "source": {
+  "corpus": "tests/data/evidence_guide_heldout_v2.json",
+  "corpus_sha256": "14857f4ba1523a445e2f5b12ca4a511049adf393c6f7950fcf51642394f82685",
+  "date": "2026-11-01",
+  "model": "3.8 (AI Studio, model name as reported by the owner)",
+  "note": "values re-entered from the pasted reply after the scratch folder was cleared; see TRIAL_heldout_v2_agy4_20261101.md",
+  "path": "Google AI Studio paste with the owner's own key, prompt v2, temperature 0; not Vertex"
+ },
+ "version": 1
+}

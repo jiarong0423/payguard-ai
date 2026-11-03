@@ -469,3 +469,125 @@ class GatewayTests(unittest.IsolatedAsyncioTestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+DISPUTE_FACTS = {"reason": "INR", "due_state": "OPEN", "requirements": [
+    {"evidence_type": "PROOF_OF_FULFILLMENT", "state": "STRUCTURALLY_PRESENT"},
+    {"evidence_type": "PROOF_OF_REFUND", "state": "OPTIONAL_EVIDENCE_MISSING"}]}
+STAGE_FACTS = {
+    "source_compliance": {"review_categories": ["counterfeit_goods", "weapons"]},
+    "velocity_guard": {"transaction_count": 50, "ratio": "5.00", "threshold": "3.50"},
+    "dispute_mediation": DISPUTE_FACTS,
+}
+
+
+def session_result(stage, facts, brief):
+    context, context_digest, corpus_digest = ai.build_fixed_context(stage, facts)
+    value = result(stage)
+    value.update(fixture_id=ai.SESSION_FIXTURE_ID, context_digest=context_digest, corpus_digest=corpus_digest,
+                 limitations=list(ai.SESSION_LIMITATIONS), brief=dict(value["brief"], **brief))
+    return value
+
+
+class SessionFactsTests(unittest.IsolatedAsyncioTestCase):
+    """Local runs: the brief is built from closed facts of the current session, and only supported sentences pass."""
+
+    def adapter(self, output):
+        fixed = ai.AiConfig(True, Path("/synthetic/python"), Path("/synthetic/worker"), "synthetic-project")
+        runner = CapturingRunner(output)
+        return ai.EvidenceBriefAdapter(config_loader=lambda: fixed, process_runner=runner), runner
+
+    def test_session_context_differs_from_fixed_and_carries_only_closed_facts(self):
+        for stage, facts in STAGE_FACTS.items():
+            with self.subTest(stage=stage):
+                fixed, fixed_digest, _ = ai.build_fixed_context(stage)
+                context, digest, _ = ai.build_fixed_context(stage, facts)
+                self.assertEqual(fixed["fixture_id"], ai.FIXED_FIXTURE_ID)
+                self.assertNotIn("session_facts", fixed)
+                self.assertEqual(context["fixture_id"], ai.SESSION_FIXTURE_ID)
+                self.assertEqual(context["session_facts"], facts)
+                self.assertNotEqual(digest, fixed_digest)
+        other = dict(STAGE_FACTS["velocity_guard"], ratio="3.80")
+        self.assertNotEqual(ai.build_fixed_context("velocity_guard", other)[1],
+                            ai.build_fixed_context("velocity_guard", STAGE_FACTS["velocity_guard"])[1])
+
+    def test_schema_offers_only_the_sentences_the_facts_support(self):
+        def offered(stage, facts, field_name):
+            schema = ai.response_schema(stage, ai._FIXTURES[stage]["citation_ids"], facts)
+            return set(schema["properties"][field_name]["items"]["enum"])
+        self.assertIn("The description matched the local review rule for weapons-related goods.",
+                      offered("source_compliance", STAGE_FACTS["source_compliance"], "evidence_points"))
+        self.assertNotIn("The description matched the local review rule for controlled substances.",
+                         offered("source_compliance", STAGE_FACTS["source_compliance"], "evidence_points"))
+        five = "Captured volume in the review window is at least five times the declared local baseline."
+        below = "Captured volume in the review window is above the review threshold and below five times the declared local baseline."
+        self.assertIn(five, offered("velocity_guard", STAGE_FACTS["velocity_guard"], "evidence_points"))
+        self.assertNotIn(below, offered("velocity_guard", STAGE_FACTS["velocity_guard"], "evidence_points"))
+        self.assertIn(below, offered("velocity_guard", dict(STAGE_FACTS["velocity_guard"], ratio="4.20"), "evidence_points"))
+        missing = offered("dispute_mediation", DISPUTE_FACTS, "missing_evidence")
+        self.assertIn("Optional proof of refund is not in the local draft.", missing)
+        self.assertNotIn("Proof of fulfillment is not yet in the local draft.", missing)
+        self.assertNotIn("Mandatory proof of refund is not in the local draft.", missing)
+        for stage in STAGE_FACTS:
+            with self.subTest(stage=stage):
+                for field_name in ("evidence_points", "missing_evidence"):
+                    self.assertEqual(offered(stage, None, field_name), set(ai.GENERATED_TEXT_INVENTORY[stage][field_name]))
+
+    def test_session_sentences_are_unique_and_absent_from_the_fixed_inventory(self):
+        fixed = {text for stage in ai.GENERATED_TEXT_INVENTORY.values() for values in stage.values() for text in values}
+        added = [text for stage in ai.SESSION_TEXT_INVENTORY.values() for values in stage.values() for text in values]
+        self.assertEqual(len(added), len(set(added)))
+        self.assertFalse(fixed & set(added))
+
+    def test_facts_outside_the_closed_shape_are_refused(self):
+        bad = (
+            ("source_compliance", {"review_categories": ["weapons", "counterfeit_goods"]}),
+            ("source_compliance", {"review_categories": ["firearms"]}),
+            ("source_compliance", {"review_categories": []}),
+            ("source_compliance", {"review_categories": ["weapons"], "description": "Synthetic firearms"}),
+            ("velocity_guard", {"transaction_count": 50, "ratio": "5x", "threshold": "3.50"}),
+            ("velocity_guard", {"transaction_count": 0, "ratio": "5.00", "threshold": "3.50"}),
+            ("velocity_guard", {"transaction_count": "50", "ratio": "5.00", "threshold": "3.50"}),
+            ("dispute_mediation", dict(DISPUTE_FACTS, reason="SNAD")),
+            ("dispute_mediation", dict(DISPUTE_FACTS, due_state="EXPIRED")),
+            ("dispute_mediation", dict(DISPUTE_FACTS, requirements=list(reversed(DISPUTE_FACTS["requirements"])))),
+            ("dispute_mediation", dict(DISPUTE_FACTS, case_ref="case-ref-001")),
+            ("dispute_mediation", STAGE_FACTS["velocity_guard"]),
+        )
+        for stage, facts in bad:
+            with self.subTest(stage=stage, facts=facts):
+                with self.assertRaises(ai.AiBriefError) as caught:
+                    ai.build_fixed_context(stage, facts)
+                self.assertEqual(caught.exception.code, "ai_request_invalid")
+
+    def test_http_request_never_accepts_facts_from_the_caller(self):
+        with self.assertRaises(ValidationError):
+            ai.AiBriefHttpRequest.model_validate({"stage": "velocity_guard", "session_facts": STAGE_FACTS["velocity_guard"]})
+        with self.assertRaises(ValidationError):
+            ai.AiBriefHttpRequest.model_validate({"stage": "dispute_mediation", "case_ref": "../case"})
+        self.assertEqual(ai.AiBriefHttpRequest.model_validate({"stage": "dispute_mediation", "case_ref": "case-ref-002"}).case_ref,
+                         "case-ref-002")
+
+    async def test_worker_receives_facts_and_a_supported_brief_passes(self):
+        brief = {"evidence_points": ["The local draft structurally includes proof of fulfillment."],
+                 "missing_evidence": ["Optional proof of refund is not in the local draft."]}
+        value = session_result("dispute_mediation", DISPUTE_FACTS, brief)
+        adapter, runner = self.adapter(envelope(value))
+        self.assertEqual(await adapter.generate({"stage": "dispute_mediation", "session_facts": DISPUTE_FACTS}), value)
+        sent = json.loads(runner.calls[0][1])
+        self.assertEqual(sent, {"operation": "generate_fixed_brief", "schema_version": "1.0",
+                                "stage": "dispute_mediation", "session_facts": DISPUTE_FACTS})
+
+    async def test_unsupported_session_sentence_or_wrong_variant_is_refused(self):
+        unsupported = session_result("dispute_mediation", DISPUTE_FACTS,
+                                     {"missing_evidence": ["Proof of fulfillment is not yet in the local draft."]})
+        fixed_variant = result("dispute_mediation")
+        fixed_limits = session_result("dispute_mediation", DISPUTE_FACTS, {})
+        fixed_limits["limitations"] = list(ai.LIMITATIONS)
+        for name, value in (("unsupported sentence", unsupported), ("fixed fixture for a session request", fixed_variant),
+                            ("fixed limitations", fixed_limits)):
+            with self.subTest(name=name):
+                adapter, _ = self.adapter(envelope(value))
+                with self.assertRaises(ai.AiBriefError) as caught:
+                    await adapter.generate({"stage": "dispute_mediation", "session_facts": DISPUTE_FACTS})
+                self.assertEqual(caught.exception.code, "ai_response_invalid")

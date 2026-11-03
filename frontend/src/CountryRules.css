@@ -1,0 +1,81 @@
+/* Per-country PayPal rules in step 01 */
+.country-rules { display: grid; gap: 12px; margin-top: 16px; padding: 16px; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-card); background: var(--pg-color-panel); }
+.country-rules-head h3 { margin: 0 0 2px; color: var(--pg-color-ink); font-size: var(--type-section-title); }
+.country-rules-head p { margin: 0; color: var(--pg-color-muted); font-size: var(--type-meta); line-height: 1.5; }
+
+/* First view: ships from / ships to + goods tags; the rest under "More details (optional)" (review r1 P0.2). */
+.country-form { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px 16px; align-items: start; }
+@media (min-width: 1024px) { .country-form { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); } }
+.country-places { display: grid; gap: 8px; min-width: 0; }
+.country-grid { display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: end; }
+.country-field { display: grid; gap: 4px; min-width: 0; color: var(--pg-color-muted); font-size: var(--type-meta); font-weight: 600; white-space: nowrap; }
+.country-field-place { flex: 1 1 180px; max-width: 240px; }
+.country-field select, .country-field input { width: 100%; min-height: 44px; padding: 0 12px; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-control); background: var(--pg-color-panel); color: var(--pg-color-ink); font: inherit; font-size: var(--type-support); font-weight: 400; }
+.country-optional .country-field { flex: 0 1 200px; }
+.country-amount { display: grid; grid-template-columns: 140px 96px; gap: 8px; }
+.country-amount input, .country-amount select { min-width: 0; width: 100%; }
+.country-optional > summary { display: flex; align-items: center; gap: 8px; width: fit-content; min-height: 36px; color: var(--pg-color-accent-strong); font-size: var(--type-meta); font-weight: 650; cursor: pointer; white-space: nowrap; }
+.country-optional[open] > summary { margin-bottom: 8px; }
+.country-tags { display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; margin: 0; padding: 0; border: 0; }
+.country-tags legend { margin-bottom: 8px; color: var(--pg-color-muted); font-size: var(--type-meta); font-weight: 600; }
+.country-tag { display: inline-flex; align-items: center; gap: 8px; min-height: 32px; padding: 0 12px; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-pill); background: var(--pg-color-panel); font-size: var(--type-meta); white-space: nowrap; cursor: pointer; }
+.country-tag.is-on { border-color: var(--pg-color-accent); background: var(--pg-color-accent-tint); color: var(--pg-color-accent-strong); font-weight: 600; }
+.country-tag input { width: 16px; height: 16px; margin: 0; }
+.country-tags-summary { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; min-width: 0; color: var(--pg-color-muted); font-size: var(--type-meta); }
+.country-tags-picked strong { color: var(--pg-color-ink); }
+.country-link-button { min-height: 32px; padding: 2px 12px; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-pill); background: var(--pg-color-panel); color: var(--pg-color-accent-strong); font-size: var(--type-meta); font-weight: 650; white-space: nowrap; }
+.country-rules > .button { justify-self: start; }
+
+/* Result: verdict banner first, then rows whose plain sentence comes first (review r1 P0.3, P0.4). */
+.country-live { display: contents; }
+.country-result { display: grid; gap: 12px; padding: 0 0 12px; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-card); background: var(--pg-color-panel); overflow: clip; scroll-margin-top: 96px; scroll-margin-bottom: calc(72px + env(safe-area-inset-bottom)); }
+.country-result:focus { outline: none; }
+.country-result > :not(.country-verdict) { margin-left: 16px; margin-right: 16px; }
+.country-verdict { display: grid; gap: 4px; padding: 12px 16px; background: var(--pg-tint-ok); color: var(--pg-color-ok); }
+.country-verdict-big { font-size: var(--type-stage-title); font-weight: 700; line-height: 1.3; }
+.country-verdict-line { font-size: var(--type-meta); line-height: 1.5; }
+.country-result.is-blocked .country-verdict { background: var(--pg-color-risk); color: #ffffff; }
+.country-result.is-caution .country-verdict { background: var(--pg-tint-watch); color: var(--pg-color-watch); }
+.country-result ul { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.country-finding { display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: 12px; align-items: start; font-size: var(--type-meta); line-height: 1.5; color: var(--pg-color-ink); }
+.country-finding-body { display: grid; gap: 2px; min-width: 0; }
+.country-finding-body small { color: var(--pg-color-muted); font-size: var(--type-meta); }
+.country-finding-body .country-statute { color: var(--pg-color-ink); font-weight: 600; overflow-wrap: anywhere; }
+.country-finding-body a { color: var(--pg-color-accent-strong); text-decoration: underline; text-underline-offset: 2px; overflow-wrap: anywhere; }
+.country-sev { display: inline-flex; align-items: center; gap: 4px; justify-self: start; padding: 2px 8px; border-radius: var(--pg-radius-chip); font-weight: 700; white-space: nowrap; }
+.sev-block .country-sev { background: var(--pg-color-risk); color: #ffffff; }
+.sev-warn .country-sev { background: var(--pg-tint-watch); color: var(--pg-color-watch); box-shadow: inset 0 0 0 1px var(--pg-color-watch); }
+/* "Note" rows are information, not a pass: indigo tint, not sage (GLM red team #5). */
+.sev-info .country-sev { background: var(--pg-color-accent-tint); color: var(--pg-color-accent-strong); }
+.country-footnote { color: var(--pg-color-muted); font-size: var(--type-meta); }
+@media (max-width: 640px) {
+  .country-rules { padding: 16px; }
+  .country-field-place { max-width: none; flex-basis: 140px; }
+  .country-finding { grid-template-columns: 1fr; gap: 8px; }
+  .country-rules > .button { justify-self: stretch; }
+  .country-amount { grid-template-columns: minmax(0, 1fr) 96px; }
+}
+@media (pointer: coarse) { .country-tag, .country-link-button { min-height: 44px; } }
+
+/* Plan r2: divider lines between rule rows, one next-step button under the verdict, the view switch, one-line goods. */
+.country-finding + .country-finding { padding-top: 12px; border-top: 1px solid var(--pg-color-rule); }
+.country-sev svg { flex-shrink: 0; }
+.country-verdict-next { margin-top: 8px; min-width: 0; }
+/* The longer amber label ("Continue with another carrier") wraps instead of widening the panel, even while the phone
+   bar hides it (phone recheck b3a1af9). */
+.country-verdict-next .button { min-height: 40px; max-width: 100%; white-space: normal; }
+.country-result > .segmented { justify-self: start; }
+.country-tags-summary { margin: 0; }
+/* Phones: the rule views wrap to a second line instead of cutting "Notes" off the edge (click-all 2026-11-03 #10). */
+@media (max-width: 640px) {
+  .country-result > .segmented { flex-wrap: wrap; overflow-x: visible; }
+}
+/* Amount field message (attack r21 phone #5): wraps under the field instead of widening it. */
+.country-field-note { color: var(--pg-color-risk); font-size: var(--type-meta); font-weight: 600; white-space: normal; max-width: 240px; }
+/* (optimise r24) Before/after card: the last Stop and the later check that cleared it, with both times. */
+.country-before-after { display: grid; gap: 2px; padding: 8px 12px; border: 1px solid var(--pg-color-ok); border-radius: var(--pg-radius-control); background: var(--pg-tint-ok); color: var(--pg-color-ink); font-size: var(--type-meta); line-height: 1.5; }
+.country-before-after strong { color: var(--pg-color-ok); font-weight: 700; overflow-wrap: anywhere; }
+/* (optimise r24) Line-by-line check status: on the verdict and per row; "checked" in the ok colour, "not yet" muted. */
+.country-verdict-check { font-weight: 600; }
+.country-line-check { color: var(--pg-color-muted); }
+.country-line-check.is-checked { color: var(--pg-color-ok); font-weight: 600; }

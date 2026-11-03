@@ -1,6 +1,6 @@
 # PayGuard AI Demonstration Script
 
-This is the recording plan used for the demonstration video. The published video is [2:02](https://youtu.be/K28N9QhRp1E) and is shorter than this plan, so check claims against the video itself.
+**Historical record.** This is the script of the published [2:02](https://youtu.be/K28N9QhRp1E) cut, kept as it was used; it does not describe the current console. That cut was recorded before the ten-country rules check, the Channel3 product reference card, the seventh Internal Review ZIP file (`product-reference.json`) and the Sandbox dispute read were added, so its "six ZIP members" and its "Defense Buffer" screen name are not current (the archive now has seven files, and the console has no screen by that name). The README and the [judge quickstart](quickstart.md) describe the current build. The published video is shorter than this plan, so check claims against the video itself.
 
 Original target duration: 2:40 to 2:50; the scene timestamps belong to the plan, not to the edited video's seek positions. Timed spoken word count: `296`.
 
@@ -22,7 +22,7 @@ Spoken script:
 
 ## 0:15 to 0:25 — Live Sandbox connection
 
-Visual: With credentials already configured off-screen, expand **PayPal US Sandbox connection**, select **Connect US Sandbox**, and show only **Live Sandbox connection verified** and **Live Sandbox response**. Keep the account, token, and technical receipt off-screen.
+Visual: With credentials already configured off-screen, expand **PayPal Sandbox draft (optional)** (closed by default), select **Connect US Sandbox**, and show only **Live Sandbox connection verified** and **Live Sandbox response**. Keep the account, token, and technical receipt off-screen.
 
 Spoken script:
 
@@ -30,7 +30,7 @@ Spoken script:
 
 ## 0:25 to 0:55 — Stage 1: AUP correction path
 
-Visual: Stay in **STEP 01 AUP preflight**. Select **High-risk Claim** and **Run Policy Check**. Show the review signal. In **PayPal US Sandbox connection**, check **I reviewed the description and amount and confirm that this action creates a Sandbox draft only.**, then select **Confirm Draft Context**. The warning dialog now opens; show **Return to edit**, **Cancel flow**, and **Acknowledge and continue**. For the filmed branch, select **Return to edit**, choose **Standard Item**, and run the policy check again. Hold on **No demo rule matched**; expand **How this result was checked** only if time permits to show **No decision made** and **Not established**.
+Visual: Stay in **STEP 01 AUP preflight**. Select **High-risk Claim** and **Run Policy Check**. Show the review signal. In **PayPal Sandbox draft (optional)**, check **I reviewed the description and amount and confirm that this action creates a Sandbox draft only.**, then select **Confirm Draft Context**. The warning dialog now opens; show **Return to edit**, **Cancel flow**, and **Acknowledge and continue**. For the filmed branch, select **Return to edit**, choose **Standard Item**, and run the policy check again. Hold on **No demo rule matched**; expand **How this result was checked** only if time permits to show **No decision made** and **Not established**.
 
 Spoken script:
 
@@ -46,7 +46,7 @@ Spoken script:
 
 ## 1:08 to 1:43 — Stage 2: velocity and fulfillment readiness
 
-Visual: Select **Next: sales burst**; the prior stage closes and STEP 02 scrolls into view. Select **Load sales burst**. Show the ratio, capture count and alert. Briefly expand **How this signal was calculated** for the synthetic baseline, comparison window and UTC labels, then close it. In the core AG Grid, sort by **AMOUNT**, use **Filter transactions** to reduce the visible rows, clear the filter, and select one row. Hold on the selected transaction card and its **Stage evidence checklist** label.
+Visual: Select **Next: sales burst**; the prior stage closes and STEP 02 scrolls into view. Select **Load sales burst**. Show the ratio, order count and alert. Briefly expand **How this signal was calculated** for the synthetic baseline, comparison window and UTC labels, then close it. Select **Orders table**, then in the AG Grid sort by **AMOUNT**, use **Filter orders** to reduce the visible rows, clear the filter, and select one row. Hold on the selected transaction card and its **Stage evidence checklist** label.
 
 Spoken script:
 
@@ -70,7 +70,7 @@ Spoken script:
 
 ## 2:35 to 2:44 — AG Grid analytics and authority
 
-Visual: Select **Grid analytics** to open the AG Grid Community workspace. Hold on **Review overview**, the three-stage review path, authority map, evidence counts, and transaction table until 2:42. Then show the second image, [three-stage workflow map](payguard_judge_overview.png), for two seconds as a visual recap. Keep expert policy panels and technical details collapsed.
+Visual: Select **All orders** to open the AG Grid Community workspace. Hold on **Review overview**, the three-stage review path, authority map, evidence counts, and transaction table until 2:42. Then show the second image, [three-stage workflow map](payguard_judge_overview.png), for two seconds as a visual recap. Keep expert policy panels and technical details collapsed.
 
 Spoken script:
 
@@ -98,7 +98,7 @@ These are target cut points, not measured provider latency. Keep action initiati
 | 0:36–0:45 | Check draft-only confirmation → **Confirm Draft Context** | Three warning-dialog choices visible |
 | 0:45–0:55 | **Return to edit** → **Standard Item** → **Run Policy Check** | No demo rule matched, no decision made |
 | 0:55–1:08 | Recheck confirmation → **Confirm Draft Context** → **Create Sandbox draft** | Draft created, unsent and not submitted |
-| 1:08–1:18 | **Next: sales burst** → **Load sales burst** | Prior stage closes; synthetic ratio and captures appear |
+| 1:08–1:18 | **Next: sales burst** → **Load sales burst** | Prior stage closes; synthetic ratio and orders appear |
 | 1:18–1:35 | AG Grid sort → filter → clear filter | Live grid interaction remains on screen |
 | 1:35–1:43 | Select one transaction row | Stage evidence checklist, not an order verdict |
 | 1:43–1:55 | **Next: dispute evidence** → **Load dispute case** → open case → **Prepare evidence draft** | Prior stage closes; deadline and review status appear |
@@ -106,7 +106,7 @@ These are target cut points, not measured provider latency. Keep action initiati
 | 2:05–2:09 | `payguard_zip_review_slide.png` | Verified six-file local archive; internal review only |
 | 2:09–2:15 | Check review box → **Confirm local draft review** | Human review, UTC time and not submitted |
 | 2:15–2:35 | Select **Generate AI brief** once | Live `gemini-3.8-flash` result and human-review status |
-| 2:35–2:42 | Open **Grid analytics** | Live three-stage path and authority map |
+| 2:35–2:42 | Open **All orders** | Live three-stage path and authority map |
 | 2:42–2:44 | `payguard_judge_overview.png` | Second static image recaps the three stages and human/provider boundary |
 | 2:44–2:50 | Return to working Defense Buffer and wordmark | Closing value line |
 
@@ -133,7 +133,7 @@ The final take must visibly contain all five items:
 7. Select **Next: sales burst**, load the sales burst, sort, filter, clear the filter, and select one core-grid row.
 8. Select **Next: dispute evidence**, load the dispute case, prepare the draft, download the review ZIP, and record the local human review.
 9. Generate exactly one live dispute-stage Gemini on Vertex AI brief and verify the visible Gemini model and live-response labels.
-10. Open Grid analytics for the final architecture and authority frame; show the second PNG only after this live view.
+10. Open All orders for the final architecture and authority frame; show the second PNG only after this live view.
 11. Cut only idle loading time while retaining the initiation and resulting state from the same take. Stop the take if a credential, identifier, raw prompt, local path, unexpected error, or provider failure appears. Do not switch to Nemotron 4B or automatically retry Gemini during the take.
 
 ## Locked positioning

@@ -26,6 +26,11 @@ class AupRequest(Contract):
     description: StrictStr = Field(min_length=1, max_length=4000)
 
 
+class AupCategorySignalRequest(Contract):
+    evaluation_id: StrictStr = Field(min_length=32, max_length=128, pattern=r"^[A-Za-z0-9_-]+$")
+    description: StrictStr = Field(min_length=1, max_length=4000)
+
+
 class AupAcknowledgeRequest(Contract):
     evaluation_id: StrictStr = Field(min_length=32, max_length=128, pattern=r"^[A-Za-z0-9_-]+$")
     description_digest: StrictStr = Field(pattern=r"^[a-f0-9]{64}$")
@@ -36,10 +41,25 @@ class ApproveRequest(Contract):
     draft_digest: StrictStr = Field(pattern=r"^[a-f0-9]{64}$")
 
 
+# PayPal docs r24 (https://developer.paypal.com/api/rest/reference/currency-codes/): TWD, JPY and HUF do not support
+# decimals, so their invoice amounts are whole numbers; USD keeps exactly two decimals.
+ZERO_DECIMAL_CURRENCIES = frozenset({"TWD", "JPY", "HUF"})
+INVOICE_WHOLE_UNITS_ERROR = "invoice_amount_whole_units"
+
+
 class InvoicePayload(Contract):
     description: StrictStr = Field(min_length=1, max_length=200)
-    amount: StrictStr = Field(pattern=r"^[0-9]{1,7}\.[0-9]{2}$")
-    currency: Literal["USD"]
+    amount: StrictStr = Field(pattern=r"^[0-9]{1,9}(?:\.[0-9]{1,2})?$")
+    currency: Literal["USD", "TWD", "JPY", "HUF"]
+
+    @model_validator(mode="after")
+    def amount_matches_currency_decimals(self):
+        if self.currency in ZERO_DECIMAL_CURRENCIES:
+            if not re.fullmatch(r"[0-9]{1,9}", self.amount):
+                raise ValueError(INVOICE_WHOLE_UNITS_ERROR)
+        elif not re.fullmatch(r"[0-9]{1,7}\.[0-9]{2}", self.amount):
+            raise ValueError("invoice_amount_two_decimals")
+        return self
 
 
 class InvoiceReviewRequest(InvoicePayload):
@@ -59,6 +79,11 @@ class HealthResponse(Contract):
     mode: Literal["demo"]
     version: str
     source: Literal["synthetic"]
+
+
+class ConnectionsResponse(Contract):
+    """Deployment mode only. Never a key, a key's presence, a value or a variable name."""
+    mode: Literal["local", "hosted_demo"]
 
 
 class SessionResponse(Contract):
@@ -111,6 +136,140 @@ class AupResponse(Contract):
         return value
 
 
+class CategorySignal(Contract):
+    category: StrictStr | None = Field(min_length=1, max_length=80, pattern=r"^[A-Za-z0-9][A-Za-z0-9 &'\-,./+()]*$")
+    confidence: Literal["HIGH", "LOW"] | None
+    source: Literal["channel3"]
+
+    @model_validator(mode="after")
+    def category_and_confidence_together(self):
+        if (self.category is None) != (self.confidence is None):
+            raise ValueError("category_signal_incomplete")
+        return self
+
+
+class AupCategorySignalResponse(Contract):
+    """Optional Channel3 signal shown next to the AUP result; it never changes the rule decision."""
+    status: Literal["OFF", "SIGNAL", "NOT_SENT", "UNAVAILABLE"]
+    signal: CategorySignal | None
+    reason: Literal["nothing_to_send", "budget_exhausted", "timeout", "upstream_error", "contract_rejected"] | None
+    affects_decision: Literal[False]
+
+    @model_validator(mode="after")
+    def status_shape(self):
+        if (self.status == "SIGNAL") != (self.signal is not None):
+            raise ValueError("category_signal_status_mismatch")
+        if (self.status in ("NOT_SENT", "UNAVAILABLE")) != (self.reason is not None):
+            raise ValueError("category_signal_reason_mismatch")
+        return self
+
+
+_CARD_TEXT = r"^[A-Za-z0-9 &'\-,./+()%\"]+$"
+
+
+class ProductCard(Contract):
+    """A Channel3 catalogue product reduced to what identifies the item; no prices, offers or buy links."""
+    product_id: StrictStr = Field(pattern=r"^[A-Za-z0-9_.:-]{1,64}$")
+    title: StrictStr = Field(min_length=2, max_length=120, pattern=_CARD_TEXT)
+    brand: StrictStr | None = Field(min_length=2, max_length=60, pattern=_CARD_TEXT)
+    category: StrictStr | None = Field(min_length=2, max_length=80, pattern=_CARD_TEXT)
+    key_features: list[Annotated[StrictStr, Field(min_length=2, max_length=100, pattern=_CARD_TEXT)]] = Field(max_length=4)
+    materials: list[Annotated[StrictStr, Field(min_length=2, max_length=40, pattern=_CARD_TEXT)]] = Field(max_length=4)
+    image_url: StrictStr | None = Field(max_length=500, pattern=r"^https://[^\s@]+$")
+
+
+class ProductReferenceRequest(Contract):
+    evaluation_id: StrictStr = Field(min_length=32, max_length=128, pattern=r"^[A-Za-z0-9_-]+$")
+    description: StrictStr = Field(min_length=1, max_length=4000)
+
+
+class ProductReferenceResponse(Contract):
+    """Up to three Channel3 products for the seller to pick from; advisory, never changes the AUP decision."""
+    status: Literal["OFF", "FOUND", "NOT_FOUND", "NOT_SENT", "UNAVAILABLE"]
+    source: Literal["channel3_live", "channel3_recorded"] | None
+    cards: list[ProductCard] = Field(max_length=3)
+    reason: Literal["nothing_to_send", "not_recorded", "budget_exhausted", "timeout", "upstream_error",
+                    "contract_rejected"] | None
+    recorded_at: StrictStr | None = Field(pattern=r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
+    affects_decision: Literal[False]
+
+    @model_validator(mode="after")
+    def status_shape(self):
+        if (self.status == "FOUND") != bool(self.cards):
+            raise ValueError("product_reference_cards_mismatch")
+        if (self.status in ("FOUND", "NOT_FOUND")) != (self.source is not None):
+            raise ValueError("product_reference_source_mismatch")
+        if (self.status in ("NOT_SENT", "UNAVAILABLE")) != (self.reason is not None):
+            raise ValueError("product_reference_reason_mismatch")
+        if (self.source == "channel3_recorded") != (self.recorded_at is not None):
+            raise ValueError("product_reference_recorded_mismatch")
+        if len({card.product_id for card in self.cards}) != len(self.cards):
+            raise ValueError("product_reference_duplicate")
+        return self
+
+
+class ProductConfirmRequest(Contract):
+    evaluation_id: StrictStr = Field(min_length=32, max_length=128, pattern=r"^[A-Za-z0-9_-]+$")
+    description: StrictStr = Field(min_length=1, max_length=4000)
+    product_id: StrictStr | None = Field(pattern=r"^[A-Za-z0-9_.:-]{1,64}$")
+
+
+class ProductConfirmResponse(Contract):
+    """The seller's own choice: one of the cards they were shown, or none of them."""
+    choice: Literal["CONFIRMED", "NONE_MATCH"]
+    evaluation_id: StrictStr = Field(min_length=32, max_length=128, pattern=r"^[A-Za-z0-9_-]+$")
+    description_digest: StrictStr = Field(pattern=r"^[a-f0-9]{64}$")
+    source: Literal["channel3_live", "channel3_recorded"]
+    recorded_at: StrictStr | None = Field(pattern=r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
+    card: ProductCard | None
+    card_digest: StrictStr | None = Field(pattern=r"^[a-f0-9]{64}$")
+    confirmed_by: Literal["seller"]
+    affects_decision: Literal[False]
+
+    @model_validator(mode="after")
+    def choice_shape(self):
+        if (self.choice == "CONFIRMED") != (self.card is not None) or (self.card is None) != (self.card_digest is None):
+            raise ValueError("product_confirm_shape")
+        return self
+
+
+class CaseRouteRequest(Contract):
+    text: StrictStr = Field(min_length=1, max_length=200)
+
+
+class CaseRouteMatch(Contract):
+    product_id: StrictStr = Field(pattern=r"^[A-Za-z0-9_.:-]{1,64}$")
+    title: StrictStr = Field(min_length=2, max_length=120, pattern=_CARD_TEXT)
+    category: StrictStr | None = Field(min_length=2, max_length=80, pattern=_CARD_TEXT)
+    score: float = Field(ge=0, le=1)
+    exact_words: list[Annotated[StrictStr, Field(min_length=1, max_length=40, pattern=r"^[a-z0-9]+$")]] = Field(max_length=8)
+    match_type: Literal["exact", "close"]
+
+
+class CaseRouteResponse(Contract):
+    """Fuzzy case routing: which goods group (and so which dispute items) applies. Code decides; advisory only."""
+    query: StrictStr | None = Field(max_length=120)
+    route: Literal["physical", "digital", "service", "unknown"]
+    reason: Literal["catalogue_match", "live_catalogue_match", "digital_word", "service_word", "filtered_conflict",
+                    "no_close_match", "nothing_to_match"]
+    matched_word: StrictStr | None = Field(max_length=40)
+    matches: list[CaseRouteMatch] = Field(max_length=3)
+    filtered_out: StrictInt = Field(ge=0, le=1000)
+    items: list[StrictStr] = Field(max_length=12)
+    decided_by: Literal["code"]
+    affects_decision: Literal[False]
+
+    @model_validator(mode="after")
+    def route_shape(self):
+        if (self.route == "physical") != bool(self.matches):
+            raise ValueError("case_route_matches_mismatch")
+        if (self.route in ("digital", "service")) != (self.matched_word is not None):
+            raise ValueError("case_route_word_mismatch")
+        if (self.route in ("physical", "digital")) != bool(self.items):
+            raise ValueError("case_route_items_mismatch")
+        return self
+
+
 class AupAcknowledgeResponse(Contract):
     source: Literal["synthetic"]
     evaluation_id: StrictStr = Field(min_length=32, max_length=128, pattern=r"^[A-Za-z0-9_-]+$")
@@ -146,11 +305,20 @@ class VelocityResponse(Contract):
     advisory_only: Literal[True]
     limitations: list[str]
 
+class SyntheticMoney(Contract):
+    """Same shape as the PayPal Disputes `dispute_amount` (ProviderMoney below); values are synthetic."""
+    currency_code: StrictStr = Field(pattern=r"^[A-Z]{3}$")
+    value: StrictStr = Field(pattern=r"^[0-9]{1,10}(?:\.[0-9]{1,2})?$")
+
+
 class DisputeSummary(Contract):
     case_ref: str
     order_ref: str
     reason: str
     opened_at: str
+    # The synthetic case's own response deadline, so each card can say how many days are left (UI/UX r16 P1).
+    seller_response_due_date: str
+    dispute_amount: SyntheticMoney
     status: Literal["needs_review", "draft_ready", "local_draft_reviewed"]
 
 
@@ -254,8 +422,13 @@ class DisputeApprovalResponse(Contract):
     source: Literal["synthetic"]
 
 
+# PayPal-Debug-Id response header (PayPal docs r24): a plain alphanumeric correlation id, never a token.
+PAYPAL_DEBUG_ID_PATTERN = r"^[A-Za-z0-9]{6,64}$"
+
+
 class SandboxEvidenceReceipt(Contract):
     schema_version: Literal[1]
+    paypal_debug_id: StrictStr | None = Field(pattern=PAYPAL_DEBUG_ID_PATTERN)
     environment: Literal["sandbox"]
     action: Literal["OAUTH_CONNECT", "CREATE_INVOICE_DRAFT"]
     status: Literal["CONNECTED", "DRAFT"]
@@ -343,32 +516,37 @@ class InvoiceDraftResponse(Contract):
         return self
 
 
-class WebhookResource(Contract):
-    id: StrictStr = Field(pattern=r"^[A-Za-z0-9_.:-]{1,128}$")
-    status: StrictStr = Field(pattern=r"^[A-Za-z0-9_.:-]{1,128}$")
+class WebhookEnvelope(Contract):
+    """The verify request envelope (PayPal docs r24: transmission_id <= 50, cert_url <= 500 characters).
 
-
-class WebhookEvent(Contract):
-    id: StrictStr = Field(min_length=1, max_length=128)
-    event_type: StrictStr = Field(min_length=1, max_length=128)
-    resource_type: StrictStr = Field(min_length=1, max_length=128)
-    create_time: StrictStr = Field(min_length=1, max_length=128)
-    resource: WebhookResource
-
-
-class WebhookVerifyRequest(Contract):
-    transmission_id: StrictStr = Field(min_length=1, max_length=128)
-    transmission_time: StrictStr = Field(min_length=1, max_length=128)
-    cert_url: StrictStr = Field(pattern=r"^https://api\.sandbox\.paypal\.com/v1/notifications/certs/[A-Za-z0-9-]+$")
+    webhook_event is checked to be an object only; the adapter forwards its original raw text, never this parse.
+    """
+    transmission_id: StrictStr = Field(pattern=r"^[A-Za-z0-9_.:-]{1,50}$")
+    transmission_time: StrictStr = Field(pattern=r"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]{1,6})?(?:Z|[+-][0-9]{2}:[0-9]{2})$")
+    cert_url: StrictStr = Field(max_length=500, pattern=r"^https://api(?:-m)?\.sandbox\.paypal\.com/v1/notifications/certs/[A-Za-z0-9._-]{1,400}$")
     auth_algo: Literal["SHA256withRSA"]
-    transmission_sig: StrictStr = Field(min_length=1, max_length=4096)
-    webhook_event: WebhookEvent
+    transmission_sig: StrictStr = Field(pattern=r"^[A-Za-z0-9+/=_-]{1,4096}$")
+    webhook_event: dict
+
+
+_WEBHOOK_VALUE = r"^[A-Za-z0-9_.:-]{1,128}$"
+
+
+class WebhookEventProjection(Contract):
+    """All that is kept after a SUCCESS: identifiers and status only, no amounts, payer data, links or summary."""
+    id: StrictStr | None = Field(pattern=_WEBHOOK_VALUE)
+    event_type: StrictStr | None = Field(pattern=_WEBHOOK_VALUE)
+    resource_type: StrictStr | None = Field(pattern=_WEBHOOK_VALUE)
+    resource_id: StrictStr | None = Field(pattern=_WEBHOOK_VALUE)
+    resource_status: StrictStr | None = Field(pattern=_WEBHOOK_VALUE)
 
 
 class WebhookVerifyResponse(Contract):
     source: Literal["paypal_sandbox"]
     verification_status: Literal["SUCCESS"]
     imported_into_demo: Literal[False]
+    event: WebhookEventProjection
+    paypal_debug_id: StrictStr | None = Field(pattern=PAYPAL_DEBUG_ID_PATTERN)
 
 
 DISPUTE_ID_PATTERN = r"^PP-[A-Z0-9][A-Z0-9-]{2,62}$"
@@ -409,10 +587,14 @@ class DisputeEnvelope(Contract):
     evidence_class: DisputeEvidenceClass
     observed_at: StrictStr = Field(min_length=20, max_length=27)
     provider_submission: Literal["NOT_PERFORMED", "PERFORMED"]
+    # PayPal-Debug-Id of the Sandbox call behind this answer (PayPal docs r24); always null for the fixture.
+    paypal_debug_id: StrictStr | None = Field(default=None, pattern=PAYPAL_DEBUG_ID_PATTERN)
 
     @model_validator(mode="after")
     def source_binding(self):
         if (self.source == "synthetic_fixture") != (self.evidence_class == "SYNTHETIC_FIXTURE"):
+            raise ValueError("dispute_source_invalid")
+        if self.source == "synthetic_fixture" and self.paypal_debug_id is not None:
             raise ValueError("dispute_source_invalid")
         if (self.source == "synthetic_fixture") != (self.data_source_label == "Fixture"):
             raise ValueError("dispute_source_invalid")
@@ -468,20 +650,43 @@ class ProvideEvidenceRequest(Contract):
     submit: StrictBool = False
 
 
+# A subset of the PayPal carrier enum (PayPal docs r24, customer-disputes/v1 schema.json); any other carrier is sent as
+# OTHER with carrier_name_other.
+PAYPAL_CARRIERS = ("USPS", "UPS", "FEDEX", "DHL", "TW_CHUNGHWA_POST", "JP_JAPANPOST")
+# PayPal docs r24 (supported-file-types-sizes): JPG, JPEG, GIF, PNG and PDF; each under 10 MB, 50 MB per call.
+EVIDENCE_MEDIA_TYPES = ("image/jpeg", "image/gif", "image/png", "application/pdf")
+EVIDENCE_FILE_MAX_BYTES = 10_000_000
+EVIDENCE_TOTAL_MAX_BYTES = 50_000_000
+
+
 class TrackingInfo(Contract):
-    carrier_name: Literal["OTHER"]
-    carrier_name_other: StrictStr = Field(min_length=1, max_length=64)
+    carrier_name: Literal["USPS", "UPS", "FEDEX", "DHL", "TW_CHUNGHWA_POST", "JP_JAPANPOST", "OTHER"]
+    carrier_name_other: StrictStr | None = Field(default=None, min_length=1, max_length=64)
     tracking_number: StrictStr = Field(min_length=1, max_length=64)
+
+    @model_validator(mode="after")
+    def other_needs_name(self):
+        # PayPal docs r24: carrier_name OTHER requires carrier_name_other; a named carrier carries none.
+        if (self.carrier_name == "OTHER") != (self.carrier_name_other is not None):
+            raise ValueError("carrier_invalid")
+        return self
 
 
 class EvidenceInfo(Contract):
-    tracking_info: list[TrackingInfo] = Field(max_length=20)
+    tracking_info: list[TrackingInfo] = Field(max_length=10)
 
 
 class EvidenceInputItem(Contract):
     evidence_type: StrictStr = Field(pattern=_UPPER_TOKEN)
     evidence_info: EvidenceInfo
     notes: StrictStr = Field(min_length=1, max_length=2000)
+
+    @model_validator(mode="after")
+    def fulfillment_has_tracking(self):
+        # PayPal docs r24: PROOF_OF_FULFILLMENT carries 1-10 tracking_info items.
+        if self.evidence_type == "PROOF_OF_FULFILLMENT" and not 1 <= len(self.evidence_info.tracking_info) <= 10:
+            raise ValueError("tracking_info_required")
+        return self
 
 
 class EvidenceInput(Contract):
@@ -491,8 +696,22 @@ class EvidenceInput(Contract):
 class MultipartFilePart(Contract):
     name: StrictStr = Field(pattern=r"^file[0-9]{1,3}$")
     filename: StrictStr = Field(max_length=255)
-    content_type: StrictStr = Field(max_length=128)
-    byte_length: StrictInt = Field(ge=0, le=10_000_000)
+    content_type: Literal["image/jpeg", "image/gif", "image/png", "application/pdf"]
+    byte_length: StrictInt = Field(ge=0, lt=10_000_000)
+
+
+class SendGuard(Contract):
+    """(r25 send guard) What a send carries and to whom, side by side; every account id is masked (first 2, last 4)."""
+    case_ref: StrictStr = Field(pattern=r"^case-ref-[0-9]{3}$")
+    case_reason: StrictStr | None = Field(default=None, pattern=_UPPER_TOKEN)
+    dispute_masked: StrictStr = Field(pattern=r"^(?:PP-[A-Z0-9-]{2}\u2026[A-Z0-9-]{2}|\u2026)$")
+    dispute_reason: StrictStr | None = Field(default=None, pattern=_UPPER_TOKEN)
+    dispute_amount: ProviderMoney | None = None
+    bound_dispute_masked: StrictStr | None = Field(default=None, pattern=r"^(?:PP-[A-Z0-9-]{2}\u2026[A-Z0-9-]{2}|\u2026)$")
+    sending_account_masked: StrictStr | None = Field(default=None, pattern=r"^(?:[0-9A-Za-z]{2}\u2026[0-9A-Za-z]{4}|\u2026)$")
+    dispute_seller_masked: StrictStr | None = Field(default=None, pattern=r"^(?:[0-9A-Za-z]{2}\u2026[0-9A-Za-z]{4}|\u2026)$")
+    account_status: Literal["MATCH", "MISMATCH", "UNKNOWN"]
+    send_refusal: Literal["account_identity_unknown", "dispute_not_this_account", "dispute_detail_required"] | None = None
 
 
 class ProvideEvidenceResponse(DisputeEnvelope):
@@ -507,6 +726,15 @@ class ProvideEvidenceResponse(DisputeEnvelope):
     external_send: Literal["FROZEN", "SUBMITTED"]
     submit_flag_enabled: StrictBool
     human_review_required: Literal[True]
+    # (optimise r24) Keyed SHA-256 of the exact multipart parts a send carries; null while the files cannot be built.
+    payload_sha256: StrictStr | None = Field(default=None, pattern=r"^[a-f0-9]{64}$")
+    send_guard: SendGuard
+
+    @model_validator(mode="after")
+    def total_size(self):
+        if sum(row.byte_length for row in self.files) > 50_000_000:
+            raise ValueError("dispute_submit_invalid")
+        return self
 
     @model_validator(mode="after")
     def submit_binding(self):
@@ -519,6 +747,58 @@ class ProvideEvidenceResponse(DisputeEnvelope):
             raise ValueError("dispute_submit_invalid")
         if self.path != f"/v1/customer/disputes/{self.dispute_id}/provide-evidence":
             raise ValueError("dispute_submit_invalid")
+        return self
+
+
+class AddTrackingRequest(Contract):
+    dispute_id: StrictStr = Field(pattern=DISPUTE_ID_PATTERN)
+    case_ref: StrictStr = Field(pattern=r"^case-ref-[0-9]{3}$")
+    submit: StrictBool = False
+
+
+class TrackerItem(Contract):
+    # The preview masks the transaction id and the tracking number ("*"); the server-side send carries the originals.
+    transaction_id: StrictStr = Field(pattern=r"^[A-Za-z0-9*._-]{1,64}$")
+    tracking_number: StrictStr = Field(min_length=1, max_length=64)
+    status: Literal["SHIPPED"]
+    carrier: Literal["USPS", "UPS", "FEDEX", "DHL", "TW_CHUNGHWA_POST", "JP_JAPANPOST", "OTHER"]
+    carrier_name_other: StrictStr | None = Field(default=None, min_length=1, max_length=64)
+
+    @model_validator(mode="after")
+    def other_needs_name(self):
+        if (self.carrier == "OTHER") != (self.carrier_name_other is not None):
+            raise ValueError("carrier_invalid")
+        return self
+
+
+class TrackerBatch(Contract):
+    trackers: list[TrackerItem] = Field(min_length=1, max_length=1)
+
+
+class AddTrackingResponse(DisputeEnvelope):
+    readback: Literal["ADD_TRACKING_PREVIEW", "ADD_TRACKING_SUBMITTED"]
+    dispute_id: StrictStr = Field(pattern=DISPUTE_ID_PATTERN)
+    case_ref: StrictStr = Field(pattern=r"^case-ref-[0-9]{3}$")
+    method: Literal["POST"]
+    path: Literal["/v1/shipping/trackers-batch"]
+    content_type: Literal["application/json"]
+    body: TrackerBatch
+    external_send: Literal["FROZEN", "SUBMITTED"]
+    submit_flag_enabled: StrictBool
+    human_review_required: Literal[True]
+    # (optimise r24) Keyed SHA-256 of the exact trackers-batch JSON body a send carries.
+    payload_sha256: StrictStr | None = Field(default=None, pattern=r"^[a-f0-9]{64}$")
+    send_guard: SendGuard
+
+    @model_validator(mode="after")
+    def submit_binding(self):
+        submitted = self.external_send == "SUBMITTED"
+        if submitted != (self.provider_submission == "PERFORMED"):
+            raise ValueError("tracking_submit_invalid")
+        if submitted != (self.readback == "ADD_TRACKING_SUBMITTED"):
+            raise ValueError("tracking_submit_invalid")
+        if submitted and (self.source != "paypal_sandbox" or not self.submit_flag_enabled):
+            raise ValueError("tracking_submit_invalid")
         return self
 
 
@@ -535,10 +815,15 @@ ReferenceTime = Annotated[StrictStr, Field(min_length=20, max_length=64)]
 def reference_instant(value):
     if not re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]{1,6})?(?:Z|[+-][0-9]{2}:[0-9]{2})", value):
         raise ValueError("reference_time_invalid")
-    parsed = datetime.fromisoformat(value)
-    if parsed.tzinfo is None or parsed.utcoffset() is None:
-        raise ValueError("reference_time_invalid")
-    return parsed.astimezone(timezone.utc)
+    try:
+        parsed = datetime.fromisoformat(value)
+        if parsed.tzinfo is None or parsed.utcoffset() is None:
+            raise ValueError("reference_time_invalid")
+        # Year 9999 minus an offset (or year 1 plus one) leaves datetime's range: OverflowError, not ValueError,
+        # which surfaced as a 500 (red team R1-DATE).
+        return parsed.astimezone(timezone.utc)
+    except OverflowError:
+        raise ValueError("reference_time_invalid") from None
 
 
 def reference_url(value):

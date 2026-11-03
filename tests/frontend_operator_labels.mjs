@@ -21,7 +21,7 @@ const required = {
   INCOMPLETE_POLICY_EVIDENCE: 'Policy evidence incomplete',
   SUMMARY_COVERAGE_INCOMPLETE: 'Source coverage is incomplete',
   CURRENT_POLICY_APPLICABILITY_NOT_ESTABLISHED: 'Current policy applicability is not established',
-  'payguard-bounded-advisory-v2': 'Fixed advisory contract',
+  'payguard-bounded-advisory-v3': 'Fixed advisory contract',
   SYNTHETIC_TEST_RESPONSE: 'Synthetic test run',
   OPERATOR_LIVE_RESPONSE: 'Live model response',
   LOCAL_RUNTIME_RESPONSE: 'Local model response',

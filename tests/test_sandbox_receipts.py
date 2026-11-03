@@ -13,7 +13,8 @@ from app.schemas import SandboxEvidenceReceipt, PaypalStatusResponse, InvoiceDra
 from app.store import BoundaryError, SessionStore, utc_now
 from app.paypal_tools import SafePaypalToolGateway
 
-FIELDS = {'schema_version','environment','action','status','observed_at','invoice_id','evidence_class','proof_kind','separate_get_readback','external_send'}
+# paypal_debug_id: the PayPal-Debug-Id response header, or None when absent (PayPal docs r24).
+FIELDS = {'schema_version','paypal_debug_id','environment','action','status','observed_at','invoice_id','evidence_class','proof_kind','separate_get_readback','external_send'}
 
 class ReceiptTests(unittest.IsolatedAsyncioTestCase):
     async def asyncSetUp(self):

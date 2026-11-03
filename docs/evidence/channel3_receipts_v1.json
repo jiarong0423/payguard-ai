@@ -1,0 +1,55 @@
+{
+ "receipts": [
+  {
+   "called_at": "2026-11-01T13:41:37Z",
+   "cards": 3,
+   "http_status": 200,
+   "latency_seconds": 1.448,
+   "query": "Handcrafted ceramic coffee cup set of two",
+   "reason": null,
+   "reply_sha256": "6a270ae419f35ed6a831020930f30dcfc9abf6017ed4be93aae6f30a43f6238d",
+   "result_status": "FOUND"
+  },
+  {
+   "called_at": "2026-11-01T13:41:38Z",
+   "cards": 3,
+   "http_status": 200,
+   "latency_seconds": 1.602,
+   "query": "Wireless noise cancelling headphones",
+   "reason": null,
+   "reply_sha256": "787526e22031620e345fadb3bb4325693230a470629b6b2617f98346e20ad221",
+   "result_status": "FOUND"
+  },
+  {
+   "called_at": "2026-11-01T13:41:40Z",
+   "cards": 3,
+   "http_status": 200,
+   "latency_seconds": 1.479,
+   "query": "Leather crossbody bag",
+   "reason": null,
+   "reply_sha256": "f81ba0ad7776fbf1808ff7a4a99b6c2e518560488b75a65c87f70d3641b90487",
+   "result_status": "FOUND"
+  },
+  {
+   "called_at": "2026-11-01T13:41:41Z",
+   "cards": 3,
+   "http_status": 200,
+   "latency_seconds": 1.122,
+   "query": "Stainless steel water bottle 32 oz",
+   "reason": null,
+   "reply_sha256": "13b80162769413a0e0277c59c273754aa964ebc0635c8208caf550dcbe1c592e",
+   "result_status": "FOUND"
+  },
+  {
+   "called_at": "2026-11-01T13:41:42Z",
+   "cards": 3,
+   "http_status": 200,
+   "latency_seconds": 1.402,
+   "query": "Kids wooden puzzle set",
+   "reason": null,
+   "reply_sha256": "fe58d392e096683c4b34cd256a83e4fe221e57cd0e6f75eec06e63f0db32c717",
+   "result_status": "FOUND"
+  }
+ ],
+ "schema_version": "payguard.channel3_receipts.v1"
+}

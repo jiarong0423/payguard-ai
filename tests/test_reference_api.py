@@ -149,7 +149,7 @@ class ReferenceApiTests(unittest.TestCase):
         self.loader.assert_not_called()
 
     def test_library_query_and_filter_errors_are_safe_422(self):
-        for changes, expected in (({"query": "   "}, "query_invalid"), ({"query": "secret\x00query"}, "query_invalid"), ({"material_types": ["official_policy", "official_policy"]}, "filter_invalid"), ({"max_source_age_days": 1}, "filter_invalid"), ({"as_of": "2026-10-04T23:00:00XX"}, "filter_invalid")):
+        for changes, expected in (({"query": "   "}, "query_invalid"), ({"query": "secret\x00query"}, "input_characters_refused"), ({"material_types": ["official_policy", "official_policy"]}, "filter_invalid"), ({"max_source_age_days": 1}, "filter_invalid"), ({"as_of": "2026-10-04T23:00:00XX"}, "filter_invalid")):
             with self.subTest(changes=changes):
                 response = self.search(request_body(**changes))
                 self.assertEqual(response.status_code, 422)

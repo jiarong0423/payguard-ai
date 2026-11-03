@@ -1,0 +1,168 @@
+{
+  "affects_decision": false,
+  "as_of": "2026-11-01T12:00:00Z",
+  "cases": [
+    {
+      "carrier_status": "delivered",
+      "case_ref": "case-ref-001",
+      "delivered_at": "2026-10-30T12:00:00Z",
+      "due_state": "OPEN",
+      "human_review_required": true,
+      "lifecycle_stage": "INQUIRY",
+      "opened_at": "2026-10-31T12:00:00Z",
+      "order_ref": "order-ref-001",
+      "overall_state": "READY_FOR_LOCAL_REVIEW",
+      "provider_reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+      "provider_status": "WAITING_FOR_SELLER_RESPONSE",
+      "provider_submission": "NOT_PERFORMED",
+      "reason": "INR",
+      "requirements": [
+        {
+          "accepted_attachment_count": 1,
+          "evidence_type": "FULFILLMENT",
+          "mandatory": true,
+          "proof_count": 1,
+          "provider_evidence_type": "PROOF_OF_FULFILLMENT",
+          "requirement_state": "STRUCTURALLY_PRESENT"
+        }
+      ],
+      "review_reasons": [],
+      "seller_response_due_date": "2026-11-03T12:00:00Z",
+      "time_evidence": null
+    },
+    {
+      "carrier_status": "delivered",
+      "case_ref": "case-ref-002",
+      "delivered_at": "2026-10-31T16:00:00Z",
+      "due_state": "OPEN",
+      "human_review_required": true,
+      "lifecycle_stage": "INQUIRY",
+      "opened_at": "2026-10-31T12:00:00Z",
+      "order_ref": "order-ref-002",
+      "overall_state": "READY_FOR_LOCAL_REVIEW",
+      "provider_reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+      "provider_status": "WAITING_FOR_SELLER_RESPONSE",
+      "provider_submission": "NOT_PERFORMED",
+      "reason": "INR",
+      "requirements": [
+        {
+          "accepted_attachment_count": 0,
+          "evidence_type": "FULFILLMENT",
+          "mandatory": true,
+          "proof_count": 1,
+          "provider_evidence_type": "PROOF_OF_FULFILLMENT",
+          "requirement_state": "STRUCTURALLY_PRESENT"
+        }
+      ],
+      "review_reasons": [
+        "delivery_not_before_dispute"
+      ],
+      "seller_response_due_date": "2026-11-03T12:00:00Z",
+      "time_evidence": {
+        "events": [
+          {
+            "at": "2026-10-29T00:00:00Z",
+            "kind": "PAYMENT",
+            "source": "SELLER_PROVIDED_UNVERIFIED"
+          },
+          {
+            "at": "2026-10-29T00:30:00Z",
+            "channel": "EMAIL",
+            "direction": "INBOUND",
+            "kind": "MESSAGE",
+            "source": "SELLER_PROVIDED_UNVERIFIED",
+            "topic": "PAYMENT_NOTICE"
+          },
+          {
+            "at": "2026-10-29T01:00:00Z",
+            "channel": "EMAIL",
+            "direction": "OUTBOUND",
+            "kind": "MESSAGE",
+            "source": "SELLER_PROVIDED_UNVERIFIED",
+            "topic": "ORDER_DETAILS_REQUEST"
+          },
+          {
+            "at": "2026-10-29T11:00:00Z",
+            "channel": "PRIVATE_MESSAGE",
+            "direction": "INBOUND",
+            "kind": "MESSAGE",
+            "source": "SELLER_PROVIDED_UNVERIFIED",
+            "topic": "ORDER_DETAILS_PROVIDED"
+          },
+          {
+            "at": "2026-10-29T12:00:00Z",
+            "kind": "ORDER_RECORD_CREATED",
+            "source": "SELLER_PROVIDED_UNVERIFIED"
+          },
+          {
+            "at": "2026-10-31T12:00:00Z",
+            "kind": "CLAIM_OPENED",
+            "source": "PROVIDER"
+          },
+          {
+            "at": "2026-10-31T16:00:00Z",
+            "channel": "EMAIL",
+            "direction": "OUTBOUND",
+            "kind": "MESSAGE",
+            "source": "SELLER_PROVIDED_UNVERIFIED",
+            "topic": "DELIVERY_NOTICE"
+          },
+          {
+            "at": "2026-10-31T16:00:00Z",
+            "kind": "DELIVERY",
+            "source": "SELLER_PROVIDED_UNVERIFIED"
+          }
+        ],
+        "flags": [
+          "DELIVERY_AFTER_CLAIM"
+        ],
+        "gaps_seconds": {
+          "delivery_to_claim": -14400,
+          "payment_to_claim": 216000,
+          "payment_to_delivery": 230400,
+          "payment_to_order_record": 43200
+        },
+        "judgement": "NOT_MADE"
+      }
+    },
+    {
+      "carrier_status": "delivered",
+      "case_ref": "case-ref-003",
+      "delivered_at": "2026-10-28T12:00:00Z",
+      "due_state": "OPEN",
+      "human_review_required": true,
+      "lifecycle_stage": "INQUIRY",
+      "opened_at": "2026-10-29T12:00:00Z",
+      "order_ref": "order-ref-003",
+      "overall_state": "READY_FOR_LOCAL_REVIEW",
+      "provider_reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+      "provider_status": "WAITING_FOR_SELLER_RESPONSE",
+      "provider_submission": "NOT_PERFORMED",
+      "reason": "INR",
+      "requirements": [
+        {
+          "accepted_attachment_count": 1,
+          "evidence_type": "FULFILLMENT",
+          "mandatory": true,
+          "proof_count": 1,
+          "provider_evidence_type": "PROOF_OF_FULFILLMENT",
+          "requirement_state": "STRUCTURALLY_PRESENT"
+        },
+        {
+          "accepted_attachment_count": 0,
+          "evidence_type": "REFUND",
+          "mandatory": false,
+          "proof_count": 0,
+          "provider_evidence_type": "PROOF_OF_REFUND",
+          "requirement_state": "OPTIONAL_EVIDENCE_MISSING"
+        }
+      ],
+      "review_reasons": [],
+      "seller_response_due_date": "2026-11-02T12:00:00Z",
+      "time_evidence": null
+    }
+  ],
+  "schema_version": "payguard.dashboard_disputes.v1",
+  "source": "Synthetic dispute cases from backend/app/store.py, read back through the real API (POST /api/v1/demo/inject, POST /api/v1/disputes/{case_ref}/draft) by tools/build_dashboard_data.py.",
+  "synthetic": true
+}

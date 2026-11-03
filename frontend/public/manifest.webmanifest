@@ -1,0 +1,18 @@
+{
+  "id": "/",
+  "name": "PayGuard AI · Merchant Evidence Buffer",
+  "short_name": "PayGuard",
+  "description": "Local PayGuard AI console: AUP warnings, transaction velocity and human-reviewed dispute evidence. Needs the local API on 127.0.0.1:8000.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#f8fafc",
+  "background_color": "#f8fafc",
+  "lang": "en",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

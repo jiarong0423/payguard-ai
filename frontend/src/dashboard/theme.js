@@ -1,0 +1,79 @@
+// PayGuard theme for AG Studio: the console's indigo accent and depth layers (docs/design/VISUAL_SPEC_r7.md D2,
+// section 6: L0 canvas #eef1f6, white L1 cards), neutrals from the grey scale AG's own site uses, and a muted
+// four-hue chart palette (one indigo highlight, teal, grey, sky), applied to the shell, grids and charts.
+import { studioTheme } from 'ag-studio';
+
+export const PAYGUARD_ACCENT = Object.freeze({
+  ink: '#0f172a', text: '#0f172a', muted: '#475569', subtle: '#5b6678', accent: '#4f46e5', accentDark: '#4338ca',
+  canvas: '#eceae5', panel: '#ffffff', border: '#dcd7cf', grid: '#f4f2ee', tint: '#ecebf3',
+  series: ['#4f46e5', '#0f766e', '#7c8799', '#0369a1'],
+});
+
+const C = PAYGUARD_ACCENT;
+const palette = Object.fromEntries(C.series.flatMap((color, index) => [
+  [`chartPaletteFills${index + 1}Color`, color],
+  [`chartPaletteStrokes${index + 1}Color`, color],
+]));
+
+export const payguardTheme = studioTheme.withParams({
+  fontFamily: 'Inter, ui-sans-serif, system-ui, -apple-system, sans-serif',
+  fontSize: 14,
+  textColor: C.text,
+  foregroundColor: C.text,
+  subtleTextColor: C.subtle,
+  accentColor: C.accent,
+  backgroundColor: C.panel,
+  borderColor: C.border,
+  borderRadius: 8,
+  rowHoverColor: C.tint,
+  // Small screens: let the canvas shrink to a phone width instead of Studio's 600/720 px minimums.
+  studioMinWidth: 320,
+  studioMinHeight: 480,
+  studioCanvasMinWidth: 320,
+  studioCanvasBackgroundColor: C.canvas,
+  studioCanvasPadding: 16,
+  studioWidgetPadding: 12,
+  studioValueWidgetFontSize: 28,
+  studioCanvasRowHeight: 16,
+  studioCanvasFontFamily: 'Inter, ui-sans-serif, system-ui, -apple-system, sans-serif',
+  studioWidgetBackgroundColor: C.panel,
+  studioWidgetBorderRadius: 12,
+  studioWidgetBorder: { color: C.border, width: 1 },
+  studioWidgetTitleFontSize: 16,
+  studioWidgetTitleFontWeight: 600,
+  studioWidgetTitleTextColor: C.ink,
+  studioWidgetSubtitleFontSize: 14,
+  studioWidgetSubtitleTextColor: C.subtle,
+  // Selected toggle: indigo tint with dark indigo text (solid accent on accent text hid the label).
+  studioToggleButtonActiveBackgroundColor: '#e0e7ff',
+  studioToggleButtonActiveBorderColor: C.accent,
+  studioToggleButtonActiveColor: '#3730a3',
+  studioWidgetNoDataOverlayBackgroundColor: C.grid,
+  gridHeaderBackgroundColor: C.grid,
+  gridHeaderTextColor: C.muted,
+  gridHeaderFontWeight: 600,
+  gridOddRowBackgroundColor: C.panel,
+  gridRowHoverColor: C.tint,
+  gridAccentColor: C.accent,
+  gridFontSize: 14,
+  // Cases table rows: 40px (44 on phones), not Studio's 24px default (plan r2 F23).
+  gridRowHeight: 40,
+  chartTextColor: C.muted,
+  chartSubtleTextColor: C.subtle,
+  chartGridLineColor: C.canvas,
+  chartAxisLineColor: C.border,
+  chartAccentColor: C.accent,
+  chartFontFamily: 'Inter, ui-sans-serif, system-ui, -apple-system, sans-serif',
+  ...palette,
+});
+
+// Phones (<= 720 px): the AI panel takes the screen width and the canvas may shrink behind it, so nothing is
+// clipped; the page shell returns to view mode after an answer so the canvas shows it.
+export function compactTheme(viewportWidth) {
+  return payguardTheme.withParams({
+    studioMinWidth: 280,
+    gridRowHeight: 44,
+    studioCanvasMinWidth: 40,
+    studioAiPanelWidth: Math.max(240, Math.min(viewportWidth - 72, 480)),
+  });
+}

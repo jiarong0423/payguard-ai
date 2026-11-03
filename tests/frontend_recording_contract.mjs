@@ -69,7 +69,7 @@ requireText(appSource, 'onClick={reviewInvoice}>Confirm Draft Context</Button>',
 
 const warningClickOrder = [
   '**Run Policy Check**',
-  '**PayPal US Sandbox connection**',
+  '**PayPal Sandbox draft (optional)**',
   'check **I reviewed the description and amount and confirm that this action creates a Sandbox draft only.**',
   'select **Confirm Draft Context**',
   'The warning dialog now opens',
@@ -117,11 +117,11 @@ for (const reset of ['setInvoiceReview(null)', 'setInvoice(null)', 'setInvoiceCh
 forbidText(preBindAmountEdit[1], 'invalidateAup()', 'pre-bind amount edit must preserve unconsumed AUP');
 forbidText(preBindAmountEdit[1], 'setAup(', 'pre-bind amount edit must not mutate AUP result');
 requireText(appSource, 'onChange={(event) => editInvoiceAmount(event.target.value)}', 'draft amount input uses the guarded editor');
-requireText(appSource, 'disabled={disabled || !invoiceChecked || !aup || aupConsumed || description.length > 200}', 'draft context requires a fresh AUP result');
-requireText(appSource, "disabled={disabled || !invoiceReview || !invoiceChecked || sandbox?.status !== 'connected'}", 'invoice creation requires a newly bound review');
+requireText(appSource, 'disabled={disabled || countryHeld || !invoiceChecked || !aup || aupConsumed || description.length > 200}', 'draft context requires a fresh AUP result and no country-rule block (or a stale one)');
+requireText(appSource, "disabled={disabled || countryHeld || !invoiceReview || !invoiceChecked || sandbox?.status !== 'connected'}", 'invoice creation requires a newly bound review and no country-rule block');
 
 for (const text of [
-  'Filter transactions',
+  'Filter orders',
   'quickFilterText={velocityQuickFilter}',
   'onRowClicked={({ data }) => setSelectedVelocityTransaction(data)}',
   'Stage evidence checklist',
@@ -148,7 +148,7 @@ for (const directPresentationLeak of [
 requireText(appSource, 'Live Sandbox connection verified · credentials remain off-screen');
 for (const reviewProof of [
   'Internal Review ZIP contents',
-  'Six fixed files · generated locally · not sent to PayPal',
+  'Seven fixed files · generated locally · not sent to PayPal',
   'operatorLabel(receipt.reviewer)',
   'dateLabel(receipt.reviewed_at)',
   'operatorLabel(receipt.retention)',
@@ -159,7 +159,7 @@ for (const providerContext of [
   "['Sandbox seller country', 'Unconfirmed until Dashboard readback']",
   "['External action', 'Disabled by default; explicit Sandbox OAuth and unsent draft only']",
 ]) requireText(appSource, providerContext, `provider-context boundary ${providerContext}`);
-requireText(appSource, 'Check capacity and tracking or delivery records; they are not supplied in this synthetic capture stream.',
+requireText(appSource, 'Check capacity and tracking or delivery records; this demo has none.',
   'Stage 2 reminder must not claim verified order proof');
 requireText(appSource, 'This stage-level signal does not verify fulfillment evidence, classify this order as fraud, or predict any PayPal action.',
   'Stage 2 limits stay visible');
@@ -169,10 +169,11 @@ requireText(
   'reselecting the reviewed case preserves its draft and receipt while a case change clears prior context',
 );
 
-const analyticsNavigation = appSource.match(/<a href="#analytics"[\s\S]*?>Grid analytics<\/a>/u);
-assert.ok(analyticsNavigation, 'Grid analytics navigation action exists');
-requireText(analyticsNavigation[0], 'setAnalyticsExpanded(true)', 'Grid analytics expands the workspace');
-requireText(analyticsNavigation[0], 'setAnalyticsOpen(true)', 'Grid analytics launches the workspace in the same action');
+const analyticsNavigation = appSource.match(/<a href="#analytics"[\s\S]*?>All orders<\/a>/u);
+assert.ok(analyticsNavigation, 'All orders navigation action exists');
+requireText(analyticsNavigation[0], 'setAnalyticsExpanded(true)', 'All orders expands the workspace');
+requireText(analyticsNavigation[0], 'setAnalyticsOpen(true)', 'All orders launches the workspace in the same action');
+forbidText(appSource, '>Grid analytics</a>', 'top navigation names the task, not the grid library');
 
 for (const mappedCopy of [
   'Live Sandbox response',
@@ -265,7 +266,7 @@ for (const recordingInstruction of [
   'Check **I reviewed the description and amount and confirm that this action creates a Sandbox draft only.**',
   'Select **Confirm Draft Context**, then **Create Sandbox draft**.',
   'sort by **AMOUNT**',
-  '**Filter transactions**',
+  '**Filter orders**',
   'Stage evidence checklist',
   'For the third input, we load a synthetic dispute.',
   'After rule checks, one bounded Gemini call.',
@@ -320,7 +321,7 @@ for (const quickstartLabel of [
   'Not established',
   'Confirm Draft Context',
   'Create Sandbox draft',
-  'Filter transactions',
+  'Filter orders',
   'Stage evidence checklist',
   'Evidence fields, requested items, and ZIP contents',
   'Download review ZIP',

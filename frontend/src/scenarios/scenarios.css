@@ -1,0 +1,62 @@
+/* Scenario work orders (/scenarios.html): r1+r2 design tokens, 4/8/12/16/24/32 spacing, status chips with icons. */
+.scenarios-main { width: min(100%, 1200px); margin: 0 auto; padding: var(--pg-space-5) clamp(16px, 2.5vw, 32px) var(--pg-space-6); display: grid; gap: var(--pg-space-5); }
+.scenarios-head { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: var(--pg-space-4); }
+.scenarios-head > div:first-child { display: grid; gap: var(--pg-space-2); min-width: 0; max-width: 720px; }
+.scenarios-head p { margin: 0; color: var(--pg-color-muted); font-size: var(--type-support); line-height: 1.5; }
+.scenarios-mode { margin-top: var(--pg-space-1); }
+.scenarios-actions { display: flex; flex-wrap: wrap; gap: var(--pg-space-3); }
+
+.scenario-chip { max-width: 100%; white-space: normal; }
+.scenario-chip svg { flex-shrink: 0; }
+
+.scenario-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr)); gap: var(--pg-space-4); align-items: start; }
+.scenario-card { display: grid; gap: var(--pg-space-3); min-width: 0; padding: var(--pg-space-4); border: 1px solid var(--pg-color-rule); border-left: 4px solid var(--pg-color-rule); border-radius: var(--pg-radius-card); background: var(--pg-color-panel); }
+.scenario-card.scenario-passed { border-left-color: var(--pg-color-ok); }
+.scenario-card.scenario-failed { border-left-color: var(--pg-color-risk); }
+.scenario-card.scenario-needs_owner { border-left-color: var(--pg-color-watch); }
+.scenario-card.scenario-running { border-left-color: var(--pg-color-accent); }
+.scenario-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--pg-space-3); }
+.scenario-card-title { display: grid; gap: var(--pg-space-1); min-width: 0; }
+.scenario-card-title h2 { margin: 0; color: var(--pg-color-ink); font-size: var(--type-section-title); font-weight: 650; line-height: 1.35; overflow-wrap: anywhere; }
+.scenario-card-title small { color: var(--pg-color-muted); }
+.scenario-id { color: var(--pg-color-accent-strong); font-family: var(--pg-font-numeric); font-size: var(--type-meta); font-weight: 700; letter-spacing: 0.04em; }
+
+.scenario-steps { display: grid; gap: var(--pg-space-2); margin: 0; padding: 0; list-style: none; }
+.scenario-step { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; align-items: start; gap: var(--pg-space-3); padding: var(--pg-space-3); border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-control); background: var(--pg-color-recede); }
+.scenario-step-manual { background: var(--pg-color-panel); border-style: dashed; }
+.scenario-step-n { width: 28px; height: 28px; display: grid; place-items: center; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-pill); background: var(--pg-color-panel); color: var(--pg-color-muted); font-size: var(--type-meta); font-weight: 700; }
+.scenario-step-body { display: grid; gap: var(--pg-space-1); min-width: 0; }
+.scenario-step-body > strong, .scenario-owner strong { color: var(--pg-color-ink); font-size: var(--type-support); font-weight: 650; overflow-wrap: anywhere; }
+.scenario-step-body dl { display: grid; gap: var(--pg-space-1); margin: 0; }
+.scenario-step-body dl > div { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: var(--pg-space-2); }
+.scenario-step-body dt { color: var(--pg-color-subtle); font-size: var(--type-meta); font-weight: 650; }
+.scenario-step-body dd { margin: 0; color: var(--pg-color-muted); font-size: var(--type-meta); overflow-wrap: anywhere; }
+.scenario-note { color: var(--pg-color-watch); }
+.scenario-owner { display: flex; align-items: flex-start; gap: var(--pg-space-2); cursor: pointer; }
+.scenario-owner input { width: 18px; height: 18px; margin: 2px 0 0; flex-shrink: 0; accent-color: var(--pg-color-accent); }
+.scenario-owner input:disabled + span { color: var(--pg-color-subtle); }
+.scenario-open { margin: 0; color: var(--pg-color-watch); font-size: var(--type-meta); font-weight: 650; }
+
+.scenario-card-foot { display: grid; gap: var(--pg-space-3); padding-top: var(--pg-space-3); border-top: 1px solid var(--pg-color-rule); }
+.scenario-card-foot > .button { justify-self: start; }
+.scenario-receipt > summary { display: flex; align-items: center; gap: var(--pg-space-2); min-height: 44px; color: var(--pg-color-muted); font-size: var(--type-meta); font-weight: 650; cursor: pointer; }
+.scenario-receipt > summary:hover { color: var(--pg-color-accent-strong); text-decoration: underline; text-underline-offset: 3px; }
+.scenario-receipt pre { max-height: 280px; margin: 0 0 var(--pg-space-2); padding: var(--pg-space-3); overflow: auto; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-control); background: var(--pg-color-recede); color: var(--pg-color-ink); font-family: var(--pg-font-mono); font-size: var(--type-meta); line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+
+/* The shared skip link is placed on the document, so when Tab wrapped round to it on a scrolled page it sat above the
+   viewport (top -52, attack r22). Here it is fixed to the viewport, so it shows wherever the page is scrolled. */
+.scenarios-shell .skip-link { position: fixed; }
+.scenario-probe-frame { position: fixed; left: -10000px; top: 0; width: 1280px; height: 800px; border: 0; visibility: hidden; pointer-events: none; }
+
+@media (max-width: 640px) {
+  .scenarios-main { padding: var(--pg-space-4) var(--pg-space-4) var(--pg-space-5); }
+  .scenarios-actions, .scenarios-actions .button { width: 100%; }
+  .scenario-card-head { flex-direction: column; }
+  .scenario-step { grid-template-columns: 28px minmax(0, 1fr); }
+  .scenario-step > .scenario-chip { grid-column: 2; justify-self: start; }
+  .scenario-step-body dl > div { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  /* Phones keep the Scenarios link on this page, next to Dashboard. */
+  .scenarios-shell .topbar nav a[data-testid="topbar-scenarios"] { display: inline-flex; padding-left: var(--pg-space-3); }
+  /* The mode chip under the title already says local or hosted; the header badge would push past 375px. */
+  .scenarios-shell .topbar .environment { display: none; }
+}

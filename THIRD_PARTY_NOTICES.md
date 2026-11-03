@@ -6,9 +6,9 @@ This inventory covers the exact dependency identities locked for the PayGuard pu
 
 | Ecosystem | Lock SHA-256 | Entries | Review basis |
 | --- | --- | ---: | --- |
-| Root Python | `1327fc9d77f256fe1f439ab80876a730f38b9616cf0c0352ddb3913fbd7d4f62` | 17 | Exact local lock; installed-wheel license metadata and declared license-file hashes reviewed; final candidate digest binding remains required |
+| Root Python | `bd163e5de790527ec4b5486ec884463c40fd8331a00e122d27f65de0938a270a` | 17 | Exact local lock; installed-wheel license metadata and declared license-file hashes reviewed; final candidate digest binding remains required |
 | Gemini Python | `36554331392d6102519a4ead5778704c4ff89e79da6bb9d6648b656f130724bb` | 25 | Exact hash-locked profile; installed-wheel license metadata and declared license-file hashes reviewed; final candidate digest binding remains required |
-| Frontend npm | `5db6bb7cf7d4e51ab42c08ffc189eebc8471efb61fbc06960c075f6490ba22aa` | 91 | License expressions copied from the exact npm lock metadata |
+| Frontend npm | `0f98893564efb5556cc0a92710feedcb9da085108f9668fee93f29940b87f09d` | 107 | License expressions copied from the exact npm lock metadata |
 
 ## Root Python inventory
 
@@ -34,7 +34,9 @@ The optional PayPal Agent Toolkit dependency profile is not distributed in this 
 
 ### MIT
 
-`@jridgewell/gen-mapping@0.3.13`, `@jridgewell/remapping@2.3.5`, `@jridgewell/resolve-uri@3.1.2`, `@jridgewell/sourcemap-codec@1.6.0`, `@jridgewell/trace-mapping@0.3.31`, `@oxc-project/types@0.152.0`, `@rolldown/binding-android-arm-eabi@1.2.12`, `@rolldown/binding-android-arm64@1.2.12`, `@rolldown/binding-darwin-arm64@1.2.12`, `@rolldown/binding-darwin-x64@1.2.12`, `@rolldown/binding-freebsd-x64@1.2.12`, `@rolldown/binding-linux-arm-gnueabihf@1.2.12`, `@rolldown/binding-linux-arm64-gnu@1.2.12`, `@rolldown/binding-linux-arm64-musl@1.2.12`, `@rolldown/binding-linux-ppc64-gnu@1.2.12`, `@rolldown/binding-linux-s390x-gnu@1.2.12`, `@rolldown/binding-linux-x64-gnu@1.2.12`, `@rolldown/binding-linux-x64-musl@1.2.12`, `@rolldown/binding-openharmony-arm64@1.2.12`, `@rolldown/binding-win32-arm64-msvc@1.2.12`, `@rolldown/binding-win32-x64-msvc@1.2.12`, `@rolldown/pluginutils@1.0.1`, `@tailwindcss/node@4.3.3`, `@tailwindcss/oxide@4.3.3`, `@tailwindcss/oxide-android-arm64@4.3.3`, `@tailwindcss/oxide-darwin-arm64@4.3.3`, `@tailwindcss/oxide-darwin-x64@4.3.3`, `@tailwindcss/oxide-freebsd-x64@4.3.3`, `@tailwindcss/oxide-linux-arm-gnueabihf@4.3.3`, `@tailwindcss/oxide-linux-arm64-gnu@4.3.3`, `@tailwindcss/oxide-linux-arm64-musl@4.3.3`, `@tailwindcss/oxide-linux-x64-gnu@4.3.3`, `@tailwindcss/oxide-linux-x64-musl@4.3.3`, `@tailwindcss/oxide-wasm32-wasi@4.3.3`, `@tailwindcss/oxide-win32-arm64-msvc@4.3.3`, `@tailwindcss/oxide-win32-x64-msvc@4.3.3`, `@tailwindcss/vite@4.3.3`, `@vitejs/plugin-react@6.1.1`, `ag-charts-types@14.2.0`, `ag-grid-community@36.2.0`, `ag-grid-react@36.2.0`, `ag-stack@36.2.0`, `enhanced-resolve@5.26.0`, `fdir@6.5.0`, `fsevents@2.3.3`, `jiti@2.7.0`, `js-tokens@4.0.0`, `loose-envify@1.4.0`, `magic-string@0.30.21`, `nanoid@3.3.19`, `object-assign@4.1.1`, `picomatch@4.0.7`, `postcss@8.5.28`, `prop-types@15.8.1`, `react@19.3.0`, `react-dom@19.3.0`, `react-is@16.13.1`, `rolldown@1.2.12`, `scheduler@0.28.0`, `tailwindcss@4.3.3`, `tapable@2.3.3`, `tinyglobby@0.2.17`, `vite@8.3.2`.
+`@bryntum/core-community@8.0.0`, `@bryntum/core-react-community@8.0.0`, `@bryntum/engine-community@8.0.0`, `@bryntum/grid-community@8.0.0`, `@bryntum/grid-react-community@8.0.0`, `@bryntum/scheduler-community@8.0.0`, `@bryntum/scheduler-react-community@8.0.0`, `@jridgewell/gen-mapping@0.3.13`, `@jridgewell/remapping@2.3.5`, `@jridgewell/resolve-uri@3.1.2`, `@jridgewell/sourcemap-codec@1.6.0`, `@jridgewell/trace-mapping@0.3.31`, `@oxc-project/types@0.152.0`, `@rolldown/binding-android-arm-eabi@1.2.12`, `@rolldown/binding-android-arm64@1.2.12`, `@rolldown/binding-darwin-arm64@1.2.12`, `@rolldown/binding-darwin-x64@1.2.12`, `@rolldown/binding-freebsd-x64@1.2.12`, `@rolldown/binding-linux-arm-gnueabihf@1.2.12`, `@rolldown/binding-linux-arm64-gnu@1.2.12`, `@rolldown/binding-linux-arm64-musl@1.2.12`, `@rolldown/binding-linux-ppc64-gnu@1.2.12`, `@rolldown/binding-linux-s390x-gnu@1.2.12`, `@rolldown/binding-linux-x64-gnu@1.2.12`, `@rolldown/binding-linux-x64-musl@1.2.12`, `@rolldown/binding-openharmony-arm64@1.2.12`, `@rolldown/binding-win32-arm64-msvc@1.2.12`, `@rolldown/binding-win32-x64-msvc@1.2.12`, `@rolldown/pluginutils@1.0.1`, `@tailwindcss/node@4.3.3`, `@tailwindcss/oxide@4.3.3`, `@tailwindcss/oxide-android-arm64@4.3.3`, `@tailwindcss/oxide-darwin-arm64@4.3.3`, `@tailwindcss/oxide-darwin-x64@4.3.3`, `@tailwindcss/oxide-freebsd-x64@4.3.3`, `@tailwindcss/oxide-linux-arm-gnueabihf@4.3.3`, `@tailwindcss/oxide-linux-arm64-gnu@4.3.3`, `@tailwindcss/oxide-linux-arm64-musl@4.3.3`, `@tailwindcss/oxide-linux-x64-gnu@4.3.3`, `@tailwindcss/oxide-linux-x64-musl@4.3.3`, `@tailwindcss/oxide-wasm32-wasi@4.3.3`, `@tailwindcss/oxide-win32-arm64-msvc@4.3.3`, `@tailwindcss/oxide-win32-x64-msvc@4.3.3`, `@tailwindcss/vite@4.3.3`, `@vitejs/plugin-react@6.1.1`, `ag-charts-community@14.2.0`, `ag-charts-core@14.2.0`, `ag-charts-locale@14.2.0`, `ag-charts-types@14.2.0`, `ag-grid-community@36.2.0`, `ag-grid-react@36.2.0`, `ag-stack@36.2.0`, `enhanced-resolve@5.26.0`, `fdir@6.5.0`, `fsevents@2.3.3`, `jiti@2.7.0`, `js-tokens@4.0.0`, `loose-envify@1.4.0`, `magic-string@0.30.21`, `nanoid@3.3.19`, `object-assign@4.1.1`, `picomatch@4.0.7`, `postcss@8.5.28`, `prop-types@15.8.1`, `react@19.3.0`, `react-dom@19.3.0`, `react-is@16.13.1`, `rolldown@1.2.12`, `scheduler@0.28.0`, `tailwindcss@4.3.3`, `tapable@2.3.3`, `tinyglobby@0.2.17`, `vite@8.3.2`.
+
+The seven `@bryntum/*-community` packages are the Bryntum Scheduler Community tier and its React wrapper, used by the evidence deadline board in step 03. Each declares `"license": "MIT"` in the lock and ships an MIT `LICENSE` file (`Copyright (c) 2009-2026 Bryntum AB`). No trial, Business or Enterprise Bryntum package is used; `frontend/src/optional/vitePlugin.js` stops the build if one is declared. See `docs/BRYNTUM_LICENSE_CHECK.md`.
 
 ### MPL-2.0
 
@@ -42,9 +44,17 @@ The optional PayPal Agent Toolkit dependency profile is not distributed in this 
 
 ### Other lock-declared licenses
 
+- OFL-1.1: `@fontsource-variable/inter@5.3.0` (the Inter variable font, self-hosted: the woff2 files are bundled into `dist` and served from the same origin; no font CDN).
 - Apache-2.0: `detect-libc@2.1.2`.
 - ISC: `graceful-fs@4.2.11`, `picocolors@1.1.1`.
 - BSD-3-Clause: `source-map-js@1.2.2`.
+- 0BSD: `tslib@2.9.1`.
+
+### Commercial (AG Studio, loaded only by /dashboard.html)
+
+`ag-charts-enterprise@14.2.0`, `ag-grid-enterprise@36.2.0`, `ag-studio@3.0.0`, `ag-studio-react@3.0.0`.
+
+These four packages are proprietary software of AG Grid Ltd under its commercial licence (lock-declared license `Commercial`). The repository does not vendor them and holds no licence key; `npm ci` fetches them from the npm registry. Without a licence key AG Studio runs in trial mode: served locally on `127.0.0.1` no watermark was seen; on a public host AG's documentation says a trial licence key is needed to remove the watermark and console warnings, and the hosted demo currently has no key. Only the separate dashboard entry imports them; the seller console and the evidence page use the MIT Community packages above. See `docs/AG_STUDIO_NOTES.md`.
 
 ## Project and provider names
 

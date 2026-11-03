@@ -165,15 +165,35 @@ class AiApiTests(unittest.TestCase):
             self.assertIs(body["external_action_authorized"], False)
             self.assertIs(body["workflow_transition_authorized"], False)
             self.assertEqual(self.state(), before)
-        self.assertEqual(self.adapter.calls, [
-            {"stage": "source_compliance"},
-            {"stage": "velocity_guard"},
-            {"stage": "dispute_mediation"},
-        ])
+        # The adapter gets the stage and the closed facts the server computed; the caller sent only the stage.
+        self.assertEqual([call["stage"] for call in self.adapter.calls],
+                         ["source_compliance", "velocity_guard", "dispute_mediation"])
+        self.assertEqual(self.adapter.calls[1]["session_facts"], {"transaction_count": 50, "ratio": "5.00", "threshold": "3.50"})
+        self.assertEqual(self.adapter.calls[2]["session_facts"], {
+            "reason": "INR", "due_state": "OPEN",
+            "requirements": [{"evidence_type": "PROOF_OF_FULFILLMENT", "state": "STRUCTURALLY_PRESENT"}]})
+        self.assertEqual(set(self.adapter.calls[0]["session_facts"]), {"review_categories"})
         fourth = self.post({"stage": "source_compliance"})
         self.assertEqual(fourth.status_code, 429, fourth.text)
         self.assertEqual(fourth.json()["error"]["code"], "ai_attempt_limit")
         self.assertEqual(len(self.adapter.calls), 3)
+
+    def test_dispute_brief_uses_the_named_case_and_refuses_one_without_a_draft(self):
+        self.prepare_stage("dispute_mediation")
+        cases = [row["case_ref"] for row in self.state()["disputes"]]
+        undrafted = next(ref for ref in cases if ref != "case-ref-001")
+        refused = self.post({"stage": "dispute_mediation", "case_ref": undrafted})
+        self.assertEqual(refused.status_code, 409, refused.text)
+        self.assertEqual(refused.json()["error"]["code"], "ai_context_not_ready")
+        for payload in ({"stage": "dispute_mediation", "case_ref": "case-ref-999"},):
+            self.assertEqual(self.post(payload).status_code, 404)
+        for payload in ({"stage": "dispute_mediation", "session_facts": {}}, {"stage": "dispute_mediation", "case_ref": "../x"},
+                        {"stage": "velocity_guard", "case_ref": "case-ref-001"}):
+            self.assertEqual(self.post(payload).status_code, 422)
+        self.assertEqual(self.adapter.calls, [])
+        named = self.post({"stage": "dispute_mediation", "case_ref": "case-ref-001"})
+        self.assertEqual(named.status_code, 200, named.text)
+        self.assertEqual(self.adapter.calls[0]["session_facts"]["reason"], "INR")
 
     def test_stage_context_is_required_before_adapter_call(self):
         for stage in ("source_compliance", "velocity_guard", "dispute_mediation"):
@@ -214,7 +234,7 @@ class AiApiTests(unittest.TestCase):
         latest = latest.json()
         allowed = self.post({"stage": "source_compliance"})
         self.assertEqual(allowed.status_code, 200, allowed.text)
-        self.assertEqual(self.adapter.calls, [{"stage": "source_compliance"}])
+        self.assertEqual(self.adapter.calls, [{"stage": "source_compliance", "session_facts": {"review_categories": ["weapons"]}}])
 
         acknowledgement = self.client.post(
             ROOT + "/aup/acknowledge",
@@ -242,7 +262,7 @@ class AiApiTests(unittest.TestCase):
         self.assertEqual(review.status_code, 200, review.text)
         blocked_after_binding = self.post({"stage": "source_compliance"})
         self.assertEqual(blocked_after_binding.status_code, 409, blocked_after_binding.text)
-        self.assertEqual(self.adapter.calls, [{"stage": "source_compliance"}])
+        self.assertEqual(self.adapter.calls, [{"stage": "source_compliance", "session_facts": {"review_categories": ["weapons"]}}])
 
     def test_dispute_mediation_rejects_non_inr_before_draft_and_adapter_call(self):
         injected = self.client.post(

@@ -1,0 +1,9 @@
+:root { color-scheme: light; }
+body { margin: 0; background: #f6f7fb; color: #0f172a; font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif; }
+.evidence-page { max-width: 1040px; margin: 0 auto; padding: 32px 20px 48px; display: grid; gap: 22px; }
+.evidence-header h1 { margin: 4px 0 8px; font-size: clamp(26px, 3vw, 34px); letter-spacing: -0.4px; }
+.evidence-header p { margin: 0; max-width: 760px; font-size: 16px; line-height: 1.55; color: #475569; }
+.evidence-eyebrow { font-size: 13px !important; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #4f46e5 !important; }
+.evidence-footer { font-size: 14px; color: #64748b; }
+.evidence-footer a { color: #4f46e5; }
+@media (max-width: 640px) { .evidence-page { padding: 20px 16px 32px; } }

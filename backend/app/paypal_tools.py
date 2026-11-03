@@ -1,6 +1,5 @@
 """One reviewed Sandbox operation; optional SDK catalog, never its executor."""
 
-import hmac
 import importlib.metadata
 import json
 import math
@@ -9,7 +8,8 @@ import re
 from pydantic import ValidationError
 
 from .schemas import InvoiceDraftRequest, InvoiceDraftResponse, InvoicePayload, PaypalStatusResponse
-from .store import BoundaryError, Session, SessionStore
+from .store import BoundaryError, Session, SessionStore, safe_equal
+from .paypal import PaypalProviderError
 
 
 MAX_ARGUMENT_BYTES = 8192
@@ -28,6 +28,10 @@ _SAFE_ERRORS = {
 
 
 def _safe_error(error):
+    # (evloop) A non-2xx PayPal answer keeps its sanitised reason (paypal.provider_error_extra re-checks it).
+    if (type(error) is PaypalProviderError and (error.status, error.code) == (502, "provider_upstream_failure")):
+        return PaypalProviderError(502, "provider_upstream_failure", paypal_issue=error.paypal_issue,
+                                   paypal_debug_id=error.paypal_debug_id)
     if (type(error) is BoundaryError and type(error.status) is int and type(error.code) is str and
             (error.status, error.code) in _SAFE_ERRORS):
         return BoundaryError(error.status, error.code)
@@ -166,7 +170,7 @@ def create_official_invoice_tool(gateway, *, session, reviewed_request):
             payload = {key: request[key] for key in ("description", "amount", "currency")}
             if (review is None or review["expires_at"] <= gateway._store._now() or
                     review["payload"] != payload or
-                    not hmac.compare_digest(review["digest"], request["payload_digest"])):
+                    not safe_equal(review["digest"], request["payload_digest"])):
                 raise BoundaryError(422, "review_binding_rejected")
         for package, expected in (("paypal-agent-toolkit", "1.11.0"),
                                   ("openai-agents", "0.0.2"), ("openai", "1.66.0")):

@@ -416,6 +416,21 @@ class PublicExportBuilderTests(unittest.TestCase):
                     with self.assertRaisesRegex(validator.CandidateRejected, reason):
                         validator.validate_public_text(root.resolve(), {"sample.txt": {}})
 
+    def test_only_the_country_rules_files_may_name_regions_and_the_time_zone_stays_forbidden(self):
+        relative = "src/payguard/country_rules.py"
+        self.assertIn(relative, validator.REGION_TEXT_FILES)
+        with tempfile.TemporaryDirectory(prefix="payguard-region-text-test-") as temporary:
+            root = Path(temporary)
+            (root / relative).parent.mkdir(parents=True)
+            (root / relative).write_text("Tai" + "wan " + chr(0x6CD5), encoding="utf-8")
+            validator.validate_public_text(root.resolve(), {relative: {}})
+            (root / relative).write_text("Asia/" + "Tai" + "pei", encoding="utf-8")
+            with self.assertRaisesRegex(validator.CandidateRejected, "US_SCOPE_RESIDUE"):
+                validator.validate_public_text(root.resolve(), {relative: {}})
+            (root / "other.py").write_text(chr(0x6CD5), encoding="utf-8")
+            with self.assertRaisesRegex(validator.CandidateRejected, "US_SCOPE_RESIDUE"):
+                validator.validate_public_text(root.resolve(), {"other.py": {}})
+
     def test_source_reader_rejects_symlink_ancestor_and_reads_regular_file(self):
         with tempfile.TemporaryDirectory(prefix="payguard-source-read-test-") as temporary:
             root = Path(temporary)
@@ -439,6 +454,117 @@ class PublicExportBuilderTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "DESTINATION_ALREADY_EXISTS"):
             builder.build_candidate(self.base)
         self.assertFalse(inside.exists())
+
+class ImportIntegrityTests(unittest.TestCase):
+    """The builder refuses a package in which an exported file imports a file that is not exported."""
+
+    def current_payloads(self):
+        return {relative: builder.read_source(relative)[0] for relative in builder.source_paths()}
+
+    def test_current_allowlist_is_import_complete(self):
+        self.assertEqual(builder.import_integrity_problems(self.current_payloads()), [])
+
+    def test_every_import_form_must_resolve(self):
+        source = {
+            "backend/app/main.py": b"from .gone import x\nfrom .ok import y\nfrom payguard import missing_mod, CONSTANT\n",
+            "backend/app/ok.py": b"",
+            "src/payguard/__init__.py": b"CONSTANT = 1\n",
+            "tests/test_x.py": b"import sys\nimport json\nimport helper_tool\nfrom app.absent import z\nfrom tools import shipped\n",
+            "tools/shipped.py": b"",
+            "frontend/src/main.jsx": (b"import App from './App.jsx';\nimport './gone.css';\n"
+                                      b"const Lazy = lazy(() => import('./Lazy.jsx'));\n"
+                                      b"export { thing } from './reexport.js';\n"
+                                      b"const css = new URL('./theme.css', import.meta.url);\n"
+                                      b"const quoted = \"import X from './only_in_a_string.js';\";\n"
+                                      b"import {\n  a,\n  b,\n} from './multi';\n"),
+            "frontend/src/App.jsx": b"import data from './data/table.json';\n",
+            "frontend/index.html": b'<link rel="icon" href="/icons/icon.svg"><script type="module" src="/src/main.jsx"></script>'
+                                   b'<a href="https://example.com/x">x</a><a href="//cdn.example/y">y</a>',
+        }
+        on_disk = set(source) | {"src/payguard/missing_mod.py", "tools/helper_tool.py"}
+        problems = builder.import_integrity_problems(source, source_exists=lambda path: path in on_disk)
+        self.assertEqual(problems, sorted([
+            "backend/app/main.py -> .gone",
+            "backend/app/main.py -> payguard import missing_mod",
+            "frontend/index.html -> /icons/icon.svg",
+            "frontend/src/App.jsx -> ./data/table.json",
+            "frontend/src/main.jsx -> ./Lazy.jsx",
+            "frontend/src/main.jsx -> ./gone.css",
+            "frontend/src/main.jsx -> ./multi",
+            "frontend/src/main.jsx -> ./reexport.js",
+            "frontend/src/main.jsx -> ./theme.css",
+            "tests/test_x.py -> app.absent",
+            "tests/test_x.py -> helper_tool",
+        ]))
+        resolved = dict(source, **{name: b"" for name in (
+            "backend/app/gone.py", "src/payguard/missing_mod.py", "tools/helper_tool.py", "backend/app/absent.py",
+            "frontend/src/Lazy.jsx", "frontend/src/gone.css", "frontend/src/multi.js", "frontend/src/reexport.js",
+            "frontend/src/theme.css", "frontend/src/data/table.json", "frontend/public/icons/icon.svg")})
+        self.assertEqual(builder.import_integrity_problems(resolved, source_exists=lambda path: path in resolved), [])
+
+    def test_unparseable_python_fails_closed(self):
+        problems = builder.import_integrity_problems({"backend/app/main.py": b"def broken(:\n"}, source_exists=lambda _p: False)
+        self.assertEqual(problems, ["backend/app/main.py -> <unparseable>"])
+
+    def test_build_fails_when_an_imported_file_is_dropped(self):
+        cases = (("backend/app", "guide_model.py", "backend/app/guide_routes.py -> .guide_model"),
+                 ("frontend/src", "pwa.js", "frontend/src/main.jsx -> ./pwa.js"),
+                 ("frontend/public", "icons/icon.svg", "frontend/index.html -> /icons/icon.svg"))
+        for tree, name, expected in cases:
+            with self.subTest(name=name), tempfile.TemporaryDirectory(prefix="payguard-import-integrity-") as temporary:
+                tree_files = dict(builder.TREE_FILES)
+                tree_files[tree] = tuple(item for item in tree_files[tree] if item != name)
+                with mock.patch.object(builder, "TREE_FILES", tree_files):
+                    with self.assertRaises(RuntimeError) as captured:
+                        builder.build_candidate(Path(temporary) / "candidate")
+                    self.assertTrue(str(captured.exception).startswith("SOURCE_IMPORT_UNRESOLVED:"))
+                    self.assertIn(expected, str(captured.exception))
+                    self.assertFalse((Path(temporary) / "candidate").exists())
+                    with mock.patch("builtins.print") as printed:
+                        self.assertEqual(builder.main([str(Path(temporary) / "candidate")]), 2)
+                    self.assertEqual(json.loads(printed.call_args.args[0])["status"], "FAILED")
+
+
+class ExportBoundaryInventoryTests(unittest.TestCase):
+    """Every file in the audited source trees is exported or excluded with a written reason."""
+
+    def source_files(self, tree):
+        root = builder.PROJECT_ROOT / tree
+        return {path.relative_to(builder.PROJECT_ROOT).as_posix() for path in root.rglob("*")
+                if path.is_file() and "__pycache__" not in path.parts and path.suffix not in {".pyc", ".pyo"}}
+
+    def test_audited_trees_are_fully_accounted_for(self):
+        exported = set(builder.source_paths()) | set(builder.MAPPED_FILES)
+        for tree in builder.AUDITED_TREES:
+            with self.subTest(tree=tree):
+                unaccounted = self.source_files(tree) - exported - set(builder.EXCLUDED_WITH_REASON)
+                self.assertEqual(unaccounted, set(), "add each file to the allowlist or to EXCLUDED_WITH_REASON")
+
+    def test_exclusions_are_disjoint_audited_and_explained(self):
+        exported = set(builder.source_paths())
+        self.assertEqual(exported & set(builder.EXCLUDED_WITH_REASON), set())
+        for relative, reason in builder.EXCLUDED_WITH_REASON.items():
+            self.assertTrue(relative.startswith(tuple(f"{tree}/" for tree in builder.AUDITED_TREES)), relative)
+            self.assertGreaterEqual(len(reason), 20, relative)
+            if (builder.PROJECT_ROOT / ".git").exists():  # a built candidate holds no excluded file by design
+                self.assertTrue((builder.PROJECT_ROOT / relative).is_file(), f"stale exclusion: {relative}")
+
+    def test_frontend_public_tree_ships_whole(self):
+        self.assertEqual(self.source_files("frontend/public") - set(builder.source_paths()), set())
+
+    def test_guided_gap_filling_ships_front_and_back(self):
+        exported = set(builder.source_paths())
+        for relative in ("backend/app/guide_routes.py", "backend/app/guide_model.py", "backend/app/demo_mode.py",
+                         "backend/app/channel3.py", "src/payguard/evidence_guide.py", "src/payguard/controlled_fallback.py",
+                         "frontend/src/GuideLive.jsx", "frontend/src/GuideLive.css", "frontend/src/GuideReplay.jsx",
+                         "frontend/src/GuideReplay.css", "frontend/src/data/guide_replays_v1.json", "frontend/src/pwa.js",
+                         "frontend/src/pwa.css", "tools/make_prompt_pack.py", "Dockerfile", ".dockerignore", "render.yaml",
+                         # (review r25) the offline scorer ships with the records that cite it
+                         "tools/score_replies.py", "docs/evidence/GUIDE_STRESS_TEST.md"):
+            self.assertIn(relative, exported)
+        for relative in ("tools/gemini_api_trial.py", "tools/vertex_trial.py", "tools/local_trial.py",
+                         "tools/compare_runs.py", "tools/trial_evidence_guide.py"):
+            self.assertNotIn(relative, exported)
 
 
 if __name__ == "__main__":

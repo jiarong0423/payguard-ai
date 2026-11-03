@@ -1,0 +1,23 @@
+# Default-deny build context: only what the Dockerfile copies.
+*
+!Dockerfile
+!requirements.lock
+!src/
+!backend/
+!data/
+!policies/
+!frontend/package.json
+!frontend/package-lock.json
+!frontend/index.html
+!frontend/evidence.html
+!frontend/dashboard.html
+!frontend/scenarios.html
+!frontend/proof.html
+!frontend/vite.config.js
+!frontend/src/
+!frontend/public/
+**/__pycache__
+**/*.py[cod]
+**/.env
+**/.env.*
+**/node_modules

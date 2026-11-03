@@ -14,7 +14,7 @@ Everything below is PayPal Sandbox test data created by the author with two Sand
 - The author filed one test dispute (Item Not Received, TWD 158.00, text marked as a hackathon test) from a Sandbox buyer test account against the Sandbox seller test account.
 - case created 2026-10-31T02:19:15Z, updated 02:22:43Z
 - list reads: 01:57:xx and 02:02:xx UTC were made before the case existed (empty, no information); 02:21:38Z (2.4 minutes after creation) was empty; 02:31:59Z (12.7 minutes after creation) listed the case. One sample only: no official delay figure is claimed.
-- list row: source paypal_sandbox, label "Sandbox data", evidence_class AUTHENTIC_SANDBOX_RESPONSE, provider_submission NOT_PERFORMED, dispute_id PP-R-OJX-... (masked), reason MERCHANDISE_OR_SERVICE_NOT_RECEIVED, status WAITING_FOR_SELLER_RESPONSE, stage INQUIRY, state REQUIRED_ACTION, seller_response_due_date 2026-11-20
+- list row: source paypal_sandbox, label "Sandbox data" (historical: the label at the time of this read; the console now shows the badge "Sandbox"), evidence_class AUTHENTIC_SANDBOX_RESPONSE, provider_submission NOT_PERFORMED, dispute_id PP-R-OJX-... (masked), reason MERCHANDISE_OR_SERVICE_NOT_RECEIVED, status WAITING_FOR_SELLER_RESPONSE, stage INQUIRY, state REQUIRED_ACTION, seller_response_due_date 2026-11-20
 - single read at 02:39:53Z (HTTP 200): the disputed transaction was HELD; evidence entries were the buyer's CREATE and a PROOF_OF_FULFILLMENT request to the seller.
 - No provide-evidence call was made. The submit button stayed disabled (flag off).
 

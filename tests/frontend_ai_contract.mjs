@@ -31,8 +31,8 @@ const valid = {
   context_digest: 'a'.repeat(64),
   corpus_digest: 'b'.repeat(64),
   model: 'gemini-3.8-flash',
-  prompt_contract_id: 'payguard-bounded-advisory-v2',
-  prompt_contract_digest: '2f870a865397a3e41a00bd51f85d96be5cce9ba77ad517d86d779dd3e15f2941',
+  prompt_contract_id: 'payguard-bounded-advisory-v3',
+  prompt_contract_digest: '98cd0bc33670027ff728ea571bc05debd5e1aa756d493521b2ea810f1bc8e5c0',
   execution_evidence: 'SYNTHETIC_TEST_RESPONSE',
   brief: {
     summary: 'Synthetic evidence requires human review.',
@@ -48,7 +48,7 @@ const valid = {
   external_action_authorized: false,
   workflow_transition_authorized: false,
   semantic_entailment: 'NOT_EVALUATED',
-  limitations: ['Fixed synthetic fixture.', 'Citation meaning is not verified.', 'No action is authorized.'],
+  limitations: ['Fixed synthetic fixture only; this brief does not describe the current session or a real merchant.', 'Citation meaning is not verified.', 'No action is authorized.'],
 };
 
 assert.deepEqual(assertAiBrief(clone(valid), request), valid);
@@ -64,7 +64,22 @@ const invalidLocalCloudEvidence = clone(validLocal);
 invalidLocalCloudEvidence.execution_evidence = 'OPERATOR_LIVE_RESPONSE';
 assert.throws(() => assertAiBrief(invalidLocalCloudEvidence, request));
 
+// Local runs: the session-facts variant, and a dispute request naming its case.
+const validSession = clone(valid);
+validSession.fixture_id = 'payguard-session-brief-v1';
+assert.throws(() => assertAiBrief(clone(validSession), request), 'session brief with the fixed first limitation');
+validSession.limitations[0] = 'Built from closed values the server computed for this demo session; the demo data is synthetic and this brief does not describe a real merchant.';
+assert.deepEqual(assertAiBrief(clone(validSession), request), validSession);
+const disputeBrief = clone(valid);
+disputeBrief.stage = 'dispute_mediation';
+disputeBrief.brief.citation_ids = ['PP-REASONS-INR', 'PP-EVIDENCE-TRACKING'];
+assert.deepEqual(assertAiBrief(clone(disputeBrief), { stage: 'dispute_mediation', case_ref: 'case-ref-002' }), disputeBrief);
+assert.throws(() => assertAiBrief(clone(disputeBrief), { stage: 'dispute_mediation', case_ref: '../case' }));
+assert.throws(() => assertAiBrief(clone(valid), { stage: 'source_compliance', case_ref: 'case-ref-001' }));
+assert.throws(() => assertAiBrief(clone(valid), { stage: 'source_compliance', session_facts: {} }));
+
 const mutations = [
+  (value) => { value.fixture_id = 'caller-fixture'; },
   (value) => { value.extra = true; },
   (value) => { value.stage = 'velocity_guard'; },
   (value) => { value.model = 'floating-model'; },
@@ -127,7 +142,8 @@ const consoleContractSource = readFileSync(resolve(projectRoot, 'docs/decisions/
 const quickstartSource = readFileSync(resolve(projectRoot, 'docs/submission/quickstart.md'), 'utf8');
 for (const required of [
   'Generate AI brief',
-  'Uses only backend-fixed synthetic facts',
+  'closed values the backend computes from this demo session',
+  'The hosted demo never calls the model.',
   'at most three model attempts per process and one attempt per stage',
   'AI brief generated',
   'aiControllerRef.current?.abort()',
@@ -265,8 +281,12 @@ assert.ok(consoleContractSource.includes('order, amount, currency and capture-ti
 assert.equal(consoleContractSource.includes('custom backend-state cell'), false);
 assert.ok(indexSource.includes('<title>PayGuard AI · Merchant Evidence Buffer</title>'));
 assert.equal(indexSource.includes('Merchant Command Center'), false);
-for (const required of ['MERCHANT EVIDENCE BUFFER', 'Three-stage evidence buffer', 'SYNTHETIC CAPTURES', 'AG Grid Community']) {
+for (const required of ['MERCHANT EVIDENCE BUFFER', 'Three-stage evidence buffer', 'DEMO ORDERS']) {
   assert.ok(appSource.includes(required), required);
+}
+// Library and sponsor names stay out of the seller-facing console; credits live in docs and README.
+for (const forbidden of ['AG Grid Community', 'AG GRID COMMUNITY', 'MERCHANT DEFENSE BUFFER', 'Category signal (Channel3)', '>Grid analytics</a>']) {
+  assert.equal(appSource.includes(forbidden), false, forbidden);
 }
 assert.equal(appSource.includes('Backend-owned data'), false, 'operator view should not show the removed engineering badge');
 for (const forbidden of ['MERCHANT COMMAND CENTER', 'Eight-layer architecture', 'Layer 8: Presentation']) {
@@ -360,6 +380,53 @@ const retiredRegionPattern = new RegExp(`\\b(?:${'T' + 'W'}|${'U' + 'K'})\\b`, '
 for (const [name, source] of [['App', appSource], ['API', apiSource], ['Reference panel', referencePanelSource], ['Policy panel', policyPanelSource]]) {
   assert.equal(nonEnglishCjkPattern.test(source), false, `${name} contains non-English CJK text or punctuation`);
   assert.equal(retiredRegionPattern.test(source), false, `${name} contains a retired jurisdiction token`);
+}
+
+// Round 2 UI/UX review: seller-facing copy, one label per panel, one role badge.
+{
+  const read = (path) => readFileSync(resolve(projectRoot, path), 'utf8');
+  const referenceSource = read('frontend/src/ReferencePanel.jsx');
+  const policySource = read('frontend/src/PolicyPanel.jsx');
+  const guideLiveSource = read('frontend/src/GuideLive.jsx');
+  for (const sellerCopy of [
+    '>Submit to PayPal Sandbox (test)</Button>',
+    'Test submission. No real dispute is affected.',
+    '<summary>Technical details</summary>',
+    'You review</span>',
+    "'Category check: not available'",
+    "'Sample sales loaded.'",
+    'const NOTICE_DISMISS_MS = 4000;',
+    "'Sample cases. Connect the Sandbox in Step 01 to see real Sandbox cases.'",
+    "'Sample PayPal cases (not real)'",
+    'subtitle="Review all orders in one table"',
+    '<Badge tone="blue">OPTIONAL</Badge>',
+    '>All orders</a>',
+    "'Evidence summary (sample)'",
+    "'What the AI can and can\\'t do'",
+    'Demo data · you decide · nothing is sent without your click',
+    'label="Sales vs. usual"',
+    'label="Orders in last hour"',
+    '<span className="tiny-dot" /> FOR SMALL PAYPAL SELLERS</div>',
+  ]) assert.ok(appSource.includes(sellerCopy), sellerCopy);
+  assert.equal(appSource.split('status={<RoleBadge />}').length - 1, 2, 'stages 01 and 03 share one role badge');
+  for (const retired of ['HUMAN CHECK</Badge>', 'HUMAN REVIEW</Badge>', 'Submit to Sandbox (requires', 'PayPal Disputes API readback', 'Fixed synthetic evidence brief', 'Why this AI call is bounded', 'deterministic advisory', 'label="Velocity ratio"', 'label="Window captures"', 'OPTIONAL SPONSOR EXPERIENCE']) {
+    assert.equal(appSource.includes(retired), false, retired);
+  }
+  // Engineering details (env var, POST path, request JSON) only appear inside Technical details.
+  const actions = appSource.match(/<div className="provider-dispute-actions">[\s\S]*?<\/div>\n/u)[0];
+  const visibleActions = actions.replace(/<details className="technical-details"[\s\S]*?<\/details>/gu, '');
+  assert.equal(visibleActions.includes('PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled</'), false, 'env var stays out of the visible helper');
+  assert.equal(visibleActions.includes('POST /v1/'), false, 'POST path stays out of the visible helper');
+  assert.ok(actions.includes('title="Requires PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled'), 'submit button keeps its title attribute');
+  const preview = appSource.match(/\{evidencePreview && <div className="evidence-preview"[\s\S]*?<\/div>\}/u)[0];
+  const visiblePreview = preview.replace(/<details className="technical-details">[\s\S]*?<\/details>/gu, '');
+  for (const engineering of ['<pre>', '{evidencePreview.method} {evidencePreview.path}', '{evidencePreview.content_type}</Badge>']) {
+    assert.ok(preview.includes(engineering), engineering);
+    assert.equal(visiblePreview.includes(engineering), false, `${engineering} sits behind Technical details`);
+  }
+  assert.ok(referenceSource.includes("const panelLabel = 'Official sources';") && referenceSource.includes('<span>{panelLabel}</span>'));
+  assert.ok(policySource.includes("const panelLabel = 'Rule check';") && policySource.includes('<span>{panelLabel}</span>'));
+  assert.ok(guideLiveSource.includes('Type as a seller. PayGuard shows which details are still missing.'));
 }
 
 console.log(JSON.stringify({ status: 'PASS', ai_mutations: mutations.length, sandbox_mutations: 4, reference_mutations: 6, source_checks: 49 }));

@@ -1,0 +1,65 @@
+# PayGuard CI (optimise r24): the Python suite, the console build and the node contract tests.
+# No secrets are used or needed: every provider is a synthetic fake, Gemini and PayPal are never called.
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Python 3.13 runtime from requirements.lock
+        run: |
+          uv venv --python 3.13 .venv
+          uv pip install --python .venv/bin/python3 --require-hashes -r requirements.lock
+
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Console dependencies
+        run: npm ci --prefix frontend --ignore-scripts --no-audit --no-fund
+
+      - name: Console build
+        run: npm --prefix frontend run build
+
+      - name: Python test suite
+        env:
+          # CI only: skips the one Gemini project-marker pin test (tests/test_gemini_worker.py). Its hashes are
+          # re-pinned by hand after each change to the marked files and are checked locally; no other test reads it.
+          PAYGUARD_SKIP_GEMINI_MARKERS: "1"
+        run: ./tools/run.sh test
+
+      - name: Node contract tests
+        env:
+          PAYGUARD_PYTHON_BIN: ${{ github.workspace }}/.venv/bin/python3
+          # CI only: tests/frontend_ag_studio_contract.mjs then skips its local .env* key check (and opens no .env*
+          # file); a CI checkout has none. No other test reads it, and every other assertion still runs.
+          PAYGUARD_SKIP_ENV_LOCAL_CHECK: "1"
+        run: |
+          status=0
+          for test_file in tests/frontend_*.mjs; do
+            printf '%s\n' "== $test_file"
+            node "$test_file" || { printf '%s\n' "ERROR: $test_file failed"; status=1; }
+          done
+          exit "$status"

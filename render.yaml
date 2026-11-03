@@ -1,0 +1,26 @@
+# Optional Render Blueprint for the PayGuard AI public demo. One free web service, no secrets.
+# The service runs PAYGUARD_DEMO_MODE=public: synthetic fixtures and committed replays only;
+# PayPal Sandbox, Gemini and local-model calls are disabled and answer 503.
+# Do not add PayPal, Gemini or Google credentials to this service.
+services:
+  - type: web
+    name: payguard-demo
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    autoDeploy: false
+    # Render polls this; the route needs no session and makes no provider call.
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: PAYGUARD_DEMO_MODE
+        value: public
+      # The service's exact onrender.com hostname (no scheme, port or path). Change it if the
+      # service gets another name; the app refuses to start on an invalid value.
+      - key: PAYGUARD_PUBLIC_HOST
+        value: payguard-demo-j2b3.onrender.com
+      # Which X-Forwarded-For entry, counted from the right, is the visitor (1 = right-most). Render does not document
+      # its hop count: read the "payguard traffic: x-forwarded-for hops=N" log lines once after deploy and set this to
+      # the number of proxy hops Render adds after the visitor (usually 1). The log holds counts only, no addresses.
+      - key: PAYGUARD_CLIENT_IP_HOP
+        value: "1"
