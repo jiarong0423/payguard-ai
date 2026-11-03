@@ -59,9 +59,19 @@ FORBIDDEN_PARTS = {
 FORBIDDEN_NAMES = {
     ".mcp.json", "credentials.json", "service-account.json", "service_account.json",
 }
-TEXT_SUFFIXES = {".css", ".html", ".js", ".json", ".jsonl", ".jsx", ".lock", ".md", ".py", ".sh", ".svg", ".toml", ".txt"}
+TEXT_SUFFIXES = {".css", ".html", ".js", ".json", ".jsonl", ".jsx", ".lock", ".md", ".py", ".sh", ".svg", ".toml", ".txt", ".yaml", ".yml"}
+# (optimise r24) The one file under a forbidden directory the package may ship: the public CI workflow (no secrets).
+ALLOWED_DOTDIR_FILES = frozenset({".github/workflows/ci.yml"})
 MARKDOWN_LINK = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
 HAN_PATTERN = re.compile(r"[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]")
+# The per-country rules (owner decision 2026-11-03: shipped) cite statutes by their official names, several of them
+# Chinese or Japanese, and name the countries they cover. Only these files may hold region names or Han text; the
+# operator time zone stays forbidden everywhere.
+REGION_TEXT_FILES = frozenset({
+    "data/country_rules/paypal_country_rules_v1.json",
+    "src/payguard/country_rules.py",
+    "tests/test_country_rules.py",
+})
 MAPPED_SOURCE_PATHS = {"tools/run.sh": "tools/public_run.sh"}
 
 
@@ -86,7 +96,7 @@ def forbidden_relative(value: str) -> bool:
     path = Path(value)
     return (
         not safe_relative(value)
-        or any(part in FORBIDDEN_PARTS for part in path.parts)
+        or (value not in ALLOWED_DOTDIR_FILES and any(part in FORBIDDEN_PARTS for part in path.parts))
         or path.name in FORBIDDEN_NAMES
         or path.name == ".env"
         or path.name.startswith(".env.")
@@ -319,7 +329,7 @@ def validate_public_text(root: Path, rows: dict[str, dict]) -> None:
     )
     for relative in sorted(rows):
         path = root / relative
-        if path.suffix.lower() not in TEXT_SUFFIXES and path.name not in {"requirements.lock"}:
+        if path.suffix.lower() not in TEXT_SUFFIXES and path.name not in {"requirements.lock", "Dockerfile", ".dockerignore"}:
             continue
         try:
             text = path.read_text(encoding="utf-8")
@@ -330,7 +340,10 @@ def validate_public_text(root: Path, rows: dict[str, dict]) -> None:
         if private_user in text or private_home in text or windows_drive.search(text) or windows_unc.search(text):
             reject("PRIVATE_ABSOLUTE_PATH_VIOLATION")
         folded = text.casefold()
-        if any(token in folded for token in region_tokens) or HAN_PATTERN.search(text):
+        if relative in REGION_TEXT_FILES:
+            if region_tokens[0] in folded:
+                reject("US_SCOPE_RESIDUE")
+        elif any(token in folded for token in region_tokens) or HAN_PATTERN.search(text):
             reject("US_SCOPE_RESIDUE")
 
 

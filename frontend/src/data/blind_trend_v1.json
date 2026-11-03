@@ -1,0 +1,62 @@
+{
+  "description": "Keyword chooser alone on blind sets written by separate writers, each measured once after the rules were frozen. Rows in the order of the source.",
+  "extracted_by": "tools/extract_evidence_charts.py",
+  "red_line_confident_wrong": 0,
+  "schema_version": "payguard.blind_trend.v1",
+  "source": {
+    "path": "docs/evidence/KEYWORD_CHOOSER_BASELINE.md",
+    "sha256": "f521b09c27cb13a893e5011f98dec52e91740e13481ddbf37a80e68c7491bdf2"
+  },
+  "steps": [
+    {
+      "attack_touched": 1,
+      "blind_set": "v1",
+      "confident_wrong": 10,
+      "precision": 0.6,
+      "recall": 0.44,
+      "rules": "original",
+      "source_line": 54,
+      "source_section": "Trend across the three blind sets"
+    },
+    {
+      "attack_touched": 1,
+      "blind_set": "v1",
+      "confident_wrong": 8,
+      "precision": 0.78,
+      "recall": 0.82,
+      "rules": "a4d4a5a",
+      "source_line": 55,
+      "source_section": "Trend across the three blind sets"
+    },
+    {
+      "attack_touched": 1,
+      "blind_set": "v2",
+      "confident_wrong": 4,
+      "precision": 0.86,
+      "recall": 0.77,
+      "rules": "adb9a32",
+      "source_line": 56,
+      "source_section": "Trend across the three blind sets"
+    },
+    {
+      "attack_touched": 1,
+      "blind_set": "v3",
+      "confident_wrong": 3,
+      "precision": 0.89,
+      "recall": 0.89,
+      "rules": "6edfa2c",
+      "source_line": 57,
+      "source_section": "Trend across the three blind sets"
+    },
+    {
+      "attack_touched": null,
+      "blind_set": "v4",
+      "confident_wrong": 4,
+      "precision": 0.87,
+      "recall": 0.9,
+      "rules": "a568d9a",
+      "source_line": 89,
+      "source_section": "Hybrid confirmation (sentence on blind set v4)"
+    }
+  ]
+}

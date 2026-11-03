@@ -22,7 +22,12 @@ Status: current US-only local prototype threat model.
 5. deterministic output to human review;
 6. backend process to fixed PayPal Sandbox endpoints;
 7. accepted structured synthetic facts to the model adapter;
-8. repository source to governance and release artifacts.
+8. repository source to governance and release artifacts;
+9. internet client to the rules-only hosted demo, through the hosting proxy (`PAYGUARD_DEMO_MODE=public`: one exact public host, `X-Forwarded-For` and `X-Forwarded-Proto: https` required, per-visitor and store-wide traffic limits, provider adapters replaced by stubs);
+10. backend to the Python 3.12 Gemini worker and from it to Vertex AI or the Gemini API, for the evidence brief, the evidence guide's optional chooser (up to three sanitised seller sentences) and AG Studio's built-in agents (Studio instructions, the operator's question, tool schemas and tool results over synthetic dashboard data);
+11. backend to the loopback LM Studio server (`127.0.0.1:1234`), the optional local brief line;
+12. backend to the Channel3 API (a sanitised product name, operator key, off by default) for the category signal, the product reference card and case routing;
+13. visitor's browser to `cdn.trychannel3.com` for the product card images, also on the hosted demo.
 
 Local synthetic sessions are not merchant authentication or durable authorization. Public sources are data, never instructions. A valid schema does not establish legal applicability, evidence authenticity or provider eligibility.
 
@@ -56,7 +61,7 @@ The existing PayPal login is a Developer-login identity. The merchant role is a 
 
 The UI may say `PayPal Sandbox` before seller-country confirmation. It may say `US Business sandbox seller` only after trusted Dashboard confirmation. Invoicing availability also requires confirmation. The Sandbox host and browser locale are not country evidence.
 
-The recorded Sandbox run covers only the sanitized authentic OAuth result and one unsent invoice `DRAFT` result. MockTransport results, screenshots and local UI state did not and cannot expand that accepted provider-evidence boundary.
+The recorded Sandbox runs cover only their sanitized authentic results: on 2026-10-06 OAuth and one unsent invoice `DRAFT`; on 2026-10-31 OAuth, a second unsent `DRAFT` and a list and detail read of one author-created Sandbox test dispute ([masked receipt](../../evidence/RECEIPT_20261031_live.md)). No `provide-evidence` call has been sent live. MockTransport results, screenshots and local UI state did not and cannot expand that accepted provider-evidence boundary.
 
 ## AUP boundary
 
@@ -72,7 +77,7 @@ The local signal cannot be labelled AML, fraud, money laundering or a predicted 
 
 ## Dispute boundary
 
-The current synthetic resolver reads a closed fixture containing reason, status, lifecycle stage, seller-response due date, normalized available actions and evidence requests with source and action. Only exact `REQUESTED_FROM_SELLER` plus `PROVIDE_EVIDENCE` rows can create preparation tasks. It accepts only separately bound synthetic proof records and attachment bytes, then discards the bytes after signature/type/size validation. Raw provider case, order and request identifiers remain restricted server-side; the browser receives non-identifying references. The restricted digest is recomputed before reuse, AI eligibility and local approval so nested tampering fails closed. A real adapter must additionally retain current PayPal response options and HATEOAS links without treating them as action authority. Every fixture field remains explicitly synthetic.
+The resolver runs on the closed synthetic fixture cases in the session. With a Sandbox connection the merchant's Sandbox disputes are read in the same response shape, projected, listed and paired with a session case for the gated `provide-evidence` preview and send; the resolver does not run on them. Either response contains reason, status, lifecycle stage, seller-response due date, normalized available actions and evidence requests with source and action. Only exact `REQUESTED_FROM_SELLER` plus `PROVIDE_EVIDENCE` rows can create preparation tasks. It accepts only separately bound synthetic proof records and attachment bytes, and validates their signature, type and size; the bytes stay in expiring session memory, never reach the browser or the Internal Review ZIP, and are read again only for the gated multipart `provide-evidence` send. For the synthetic cases, raw provider case, order and request identifiers remain restricted server-side and the browser receives non-identifying references. A connected Sandbox read returns the Sandbox `dispute_id` and `seller_transaction_id` to the console, which needs them to show and pair that test case. The restricted digest is recomputed before reuse, AI eligibility and local approval so nested tampering fails closed. A real adapter must additionally retain current PayPal response options and HATEOAS links without treating them as action authority. Every fixture field remains explicitly synthetic, and a Sandbox row carries the label `Sandbox`.
 
 PayGuard may prepare and pseudonymize a local draft. It provides evidence to PayPal only through the gated `provide-evidence` request (local reviewer approval, `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`, a connected Sandbox and an explicit `submit: true`); it cannot send a message, make an offer, accept a claim, acknowledge a return, appeal, refund or adjudicate. Internal claims remain under PayPal authority; external disputes remain under the bank/card issuer's authority.
 

@@ -97,7 +97,7 @@ The panel shows:
 - missing, conflicting and unverified evidence;
 - a local human-review control bound to the draft digest.
 
-The current action is **record local draft review**. The review control is enabled only for `READY_FOR_LOCAL_REVIEW`, and its digest binds both the visible draft and the recomputed, verified hidden restricted-layer digest. Raw provider case, order and request identifiers are never browser fields. Provide Evidence, Send Message, Make Offer, Accept Claim, Acknowledge Return, Appeal, refund and every production mutation are unavailable.
+The current action is **record local draft review**. The review control is enabled only for `READY_FOR_LOCAL_REVIEW`, and its digest binds both the visible draft and the recomputed, verified hidden restricted-layer digest. For the synthetic cases, raw provider case, order and request identifiers are never browser fields; a connected Sandbox read returns the Sandbox `dispute_id` and `seller_transaction_id` so the console can show and pair that test case. Provide Evidence exists only as the gated Sandbox `provide-evidence` request: it is built and previewed from the local draft, and sent only after the recorded local approval, with `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`, a Sandbox connection and an explicit `submit: true`; it has not been sent to the live Sandbox. Send Message, Make Offer, Accept Claim, Acknowledge Return, Appeal, refund and every production mutation are unavailable.
 
 ## Sponsor analytics UI contract
 
@@ -109,7 +109,7 @@ The sponsor analytics workspace is lazy-loaded after an explicit operator action
 - a deterministic local dashboard guide limited to the visible in-memory snapshot;
 - a dedicated single-open mobile review accordion that hides the desktop grid below 721 pixels, opens the lifecycle section by default and keeps all four evidence sections keyboard reachable.
 
-The local guide has no provider, payment, workflow or external-model tool. It stores only the current in-memory session. The active analytics dependency boundary is AG Grid Community under MIT, and no Commercial AG package is included in the current frontend contract.
+The local guide has no provider, payment, workflow or external-model tool. It stores only the current in-memory session. The active analytics dependency boundary of this workspace is AG Grid Community under MIT. The frontend also depends on AG Studio 3.0.0 (`ag-studio`, `ag-studio-react`), a commercial AG package used only by the separate evidence dashboard (`/dashboard.html`), which runs in AG's trial mode without a licence key.
 
 ## Reference panel
 
@@ -139,7 +139,7 @@ The response contract includes:
 - semantic review state;
 - `external_action_authorized=false`.
 
-The caller submits only the fixed stage enum. The server owns prompt contract `payguard-bounded-advisory-v2` and records its SHA-256 digest in each accepted response. The model receives fixed synthetic facts and opaque pinned citation IDs. It cannot accept a caller prompt, choose a model, change a stage or schema, add a citation, call a tool, retrieve a URL, browse, stream, perform a function call or request an external action. Every generated sentence must be selected verbatim from the stage-specific JSON Schema enum; backend post-validation rejects any free text, cross-stage text, reordered citation, extra field, tool/thought part or authority change.
+The caller submits only the fixed stage enum and, for dispute mediation, an optional `case-ref-NNN` naming the case. The server owns prompt contract `payguard-bounded-advisory-v3` and records its SHA-256 digest in each accepted response. The model receives fixed synthetic facts, opaque pinned citation IDs and, on a local run, closed session facts that server code computes from the current demo session (review categories; capture count, ratio and threshold; dispute reason, due state and per-type requirement states), never caller text or identifiers; the response then carries `payguard-session-brief-v1`. Sentences tied to a session fact are offered and accepted only when that fact holds. The hosted demo never reaches the adapter. It cannot accept a caller prompt, choose a model, change a stage or schema, add a citation, call a tool, retrieve a URL, browse, stream, perform a function call or request an external action. Every generated sentence must be selected verbatim from the stage-specific JSON Schema enum; backend post-validation rejects any free text, cross-stage text, reordered citation, extra field, tool/thought part or authority change.
 
 Two startup-selected adapters implement this single contract. The default `api` command uses Gemini. The explicit `local-ai-api` command uses the fixed LM Studio loopback model. A running process has one adapter only; the API has no provider field, no automatic fallback and no provider racing. Valid response identity pairs are `gemini-3.8-flash` with `SYNTHETIC_TEST_RESPONSE` or `OPERATOR_LIVE_RESPONSE`, and `nvidia-nemotron-3-nano-4b` with `LOCAL_RUNTIME_RESPONSE`.
 
@@ -162,7 +162,9 @@ The recorded Sandbox sequence (2026-10-06) is:
 7. the sanitized response receipt is reviewed by a person;
 8. no automatic retry occurs after an uncertain create result.
 
-Invoice send, reminders, QR distribution, payment, capture, refund, dispute mutation and production remain frozen. A POST create response is the accepted creation receipt, not a separate GET readback.
+Invoice send, reminders, QR distribution, payment, capture, refund, dispute mutations other than the gated `provide-evidence` request, and production remain frozen. A POST create response is the accepted creation receipt, not a separate GET readback.
+
+A second Sandbox run on 2026-10-31 repeated OAuth and one unsent invoice `DRAFT`, and read the merchant's Sandbox disputes: one author-created test dispute appeared in `GET /v1/customer/disputes` and was read once with `GET /v1/customer/disputes/{id}` (HTTP 200). When connected, the console reads Sandbox disputes in step 03; no `provide-evidence` call was made ([masked receipt](../../evidence/RECEIPT_20261031_live.md)).
 
 ## Accessibility and stale-state requirements
 

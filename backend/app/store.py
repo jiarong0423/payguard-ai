@@ -8,6 +8,7 @@ from decimal import Decimal
 import hmac
 import hashlib
 import json
+import math
 import secrets
 import threading
 from types import MappingProxyType
@@ -27,7 +28,20 @@ from payguard.privacy import redact_identity
 from payguard.document_privacy import redact_dispute_document
 from payguard.review import LocalReviewGate, payload_digest
 from pydantic import ValidationError
+from .ai_brief import AiBriefRequest
 from .schemas import AupResponse, DisputeDraftResponse, InvoicePayload, ScenarioMatch
+
+AI_FACT_EVIDENCE_TYPES = ("PROOF_OF_FULFILLMENT", "PROOF_OF_REFUND")  # equals app.ai_brief.FACT_EVIDENCE_TYPES
+AI_FACT_REQUIREMENT_STATES = ("STRUCTURALLY_PRESENT", "MANDATORY_EVIDENCE_MISSING", "OPTIONAL_EVIDENCE_MISSING")
+
+
+def safe_equal(left: object, right: object) -> bool:
+    """Constant-time equality for values that may come from a request. hmac.compare_digest raises TypeError on
+    str with non-ASCII characters (a case_ref of "case-ref-\u0661\u0662\u0663" was a 500); compare UTF-8 bytes instead
+    and treat anything that is not a string as unequal."""
+    if type(left) is not str or type(right) is not str:
+        return False
+    return hmac.compare_digest(left.encode("utf-8", "surrogatepass"), right.encode("utf-8", "surrogatepass"))
 
 
 DEMO_VELOCITY_BASELINE = MappingProxyType({
@@ -49,6 +63,73 @@ def iso(value: datetime) -> str:
     return value.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
+# Synthetic dispute amounts in the PayPal Disputes `dispute_amount` shape. The values are reused from
+# existing synthetic fixtures, not taken from any account: 48.00 and 125.50 from
+# backend/app/paypal_disputes.py fixture_disputes(), 18.00 from DEMO_BURST_AMOUNTS above.
+DEMO_DISPUTE_AMOUNTS = {
+    "demo-case-001": {"currency_code": "USD", "value": "48.00"},
+    "demo-case-002": {"currency_code": "USD", "value": "18.00"},
+    "demo-case-003": {"currency_code": "USD", "value": "125.50"},
+}
+
+
+def _due_soon_demo_case(anchor: datetime) -> dict:
+    """Synthetic physical-goods case due in one day with one requested item still missing.
+
+    Proof of fulfilment (tracking, delivery scan, attachment) is on file, so the case can be drafted;
+    the optional proof-of-refund request has no record yet. The board marks it "due soon, evidence missing".
+    """
+    ordered = anchor - timedelta(days=6)
+    delivered = anchor - timedelta(days=4)
+    opened = anchor - timedelta(days=3)
+    return {
+        "case_id": "demo-case-003", "order_id": "demo-dispute-order-003", "reason": "INR",
+        "order_created_at": iso(ordered), "delivered_at": iso(delivered), "opened_at": iso(opened),
+        "carrier_status": "delivered", "evidence_source": "synthetic",
+        "dispute_amount": dict(DEMO_DISPUTE_AMOUNTS["demo-case-003"]),
+        "provider_snapshot": {
+            "schema_version": 1,
+            "snapshot_class": "SYNTHETIC_PROVIDER_FIXTURE",
+            "observed_at": iso(anchor - timedelta(hours=1)),
+            "dispute_id": "demo-case-003",
+            "order_id": "demo-dispute-order-003",
+            "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+            "status": "WAITING_FOR_SELLER_RESPONSE",
+            "dispute_life_cycle_stage": "INQUIRY",
+            "seller_response_due_date": iso(anchor + timedelta(days=1)),
+            "available_actions": ["PROVIDE_EVIDENCE"],
+            "evidences": [
+                {"request_id": "demo-request-fulfillment-003", "evidence_type": "PROOF_OF_FULFILLMENT",
+                 "source": "REQUESTED_FROM_SELLER", "mandatory": True, "action": "PROVIDE_EVIDENCE"},
+                {"request_id": "demo-request-refund-003", "evidence_type": "PROOF_OF_REFUND",
+                 "source": "REQUESTED_FROM_SELLER", "mandatory": False, "action": "PROVIDE_EVIDENCE"},
+            ],
+        },
+        "proof_records": [{
+            "evidence_id": "demo-proof-fulfillment-003",
+            "request_id": "demo-request-fulfillment-003",
+            "evidence_type": "FULFILLMENT",
+            "proof_fields": {
+                "carrier_name": "SYNTHETIC_CARRIER",
+                "tracking_number": "SYNTHETIC_TRACKING_003",
+                "delivered_at": iso(delivered),
+                "delivery_status": "DELIVERED",
+                "destination_match_status": "MATCHED",
+            },
+            "observed_at": iso(delivered),
+            "evidence_state": "SUPPLIED_UNVERIFIED",
+            "attachment_ids": ["demo-attachment-003"],
+        }],
+        "attachment_candidates": [{
+            "attachment_id": "demo-attachment-003",
+            "evidence_id": "demo-proof-fulfillment-003",
+            "filename": "synthetic-delivery-003.pdf",
+            "declared_media_type": "application/pdf",
+            "content": b"%PDF-1.7\nSynthetic delivery evidence 003\n%%EOF\n",
+        }],
+    }
+
+
 def _digital_demo_case(anchor: datetime) -> dict:
     """Synthetic digital-goods case: a payment, no order record yet, a later delivery and a claim inside the gap."""
     paid = anchor - timedelta(days=3, hours=12)
@@ -59,6 +140,7 @@ def _digital_demo_case(anchor: datetime) -> dict:
         "case_id": "demo-case-002", "order_id": "demo-dispute-order-002", "reason": "INR",
         "order_created_at": iso(order_recorded), "delivered_at": iso(delivered), "opened_at": iso(claim),
         "carrier_status": "delivered", "evidence_source": "synthetic",
+        "dispute_amount": dict(DEMO_DISPUTE_AMOUNTS["demo-case-002"]),
         "provider_snapshot": {
             "schema_version": 1,
             "snapshot_class": "SYNTHETIC_PROVIDER_FIXTURE",
@@ -229,9 +311,11 @@ def _project_dispute_match(result: dict) -> dict:
 
 
 class BoundaryError(Exception):
-    def __init__(self, status: int, code: str):
+    def __init__(self, status: int, code: str, *, retry_after: int | None = None):
         self.status = status
         self.code = code
+        # (attack r21) Seconds until a capacity limit frees a slot, when the server knows it; None otherwise.
+        self.retry_after = retry_after
         super().__init__(code)
 
 
@@ -294,8 +378,15 @@ class Session:
     draft_expires: dict[str, datetime] = field(default_factory=dict)
     restricted_evidence: dict[str, dict] = field(default_factory=dict, repr=False)
     approved: set[str] = field(default_factory=set)
+    # (optimise r24) Per approved case, the payload hashes the approval covers ({"provide_evidence", "add_tracking"}).
+    approved_payloads: dict[str, dict] = field(default_factory=dict)
+    # Cases whose approval a provide-evidence submit has already used: one approval, one send (red team r20 D4).
+    submitted: set[str] = field(default_factory=set)
     aup_evaluations: dict[str, dict] = field(default_factory=dict)
     current_aup_evaluation_id: str | None = None
+    # (attack r22) match_status of the latest /aup/review in this session; the guide refuses a self-declared
+    # "no_signal" category answer while it is REVIEW_SIGNAL. Kept after the evaluation itself is used or expires.
+    latest_aup_match_status: str | None = None
     aup_audit: deque = field(default_factory=lambda: deque(maxlen=30))
     invoice_reviews: dict[str, dict] = field(default_factory=dict)
     invoice_attempts: int = 0
@@ -303,6 +394,22 @@ class Session:
     scenario: dict = field(default_factory=lambda: {"burst": False, "dispute": False})
     requests: deque = field(default_factory=deque)
     gate: LocalReviewGate = field(default_factory=LocalReviewGate, repr=False)
+    # Who created it, so one visitor cannot hold the whole store (owner 2026-11-03: add per-visitor limits).
+    client_key: str = "local"
+
+
+# Per-visitor limits (owner 2026-11-03, attack r21 S01/S02): one visitor may create this many sessions a minute and
+# hold this many at once; the store-wide creation limit stays as a backstop.
+# r23: a real judge flow (console, dashboard, scenarios with its hidden frame, a reload, five work orders) opens about
+# ten sessions in a minute, and 60 store-wide fitted only 7.5 visitors; the limits below leave room for both.
+CLIENT_CREATIONS_PER_MINUTE = 20
+CLIENT_MAX_LIVE_SESSIONS = 30
+STORE_CREATIONS_PER_MINUTE = 600
+HOSTED_MAX_SESSIONS = 1000
+# Hosted demo: a judge reading a page for a few minutes keeps the session (r23: 60 s idle was evicted by others).
+HOSTED_IDLE_EVICT_SECONDS = 600
+# A full store may drop a session that has made no request for this long, to admit a new visitor.
+IDLE_EVICT_SECONDS = 60
 
 
 class SessionStore:
@@ -314,6 +421,11 @@ class SessionStore:
         self.rate_limit = rate_limit
         self.sessions: dict[str, Session] = {}
         self.creation_requests: deque = deque()
+        self.client_creations: dict[str, deque] = {}
+        # On only for the hosted demo (create_app); the local console has one operator and keeps the old limit.
+        self.per_client_limits = False
+        # (optimise r24) Callables (session, case_id) -> {payload kind: hash} that approve() records; see paypal_disputes.
+        self.approval_hooks: dict = {}
         self.ai_attempt_budget = ai_attempt_budget if ai_attempt_budget is not None else AiAttemptBudget()
         if type(self.ai_attempt_budget) is not AiAttemptBudget:
             raise TypeError("ai_attempt_budget_invalid")
@@ -330,26 +442,84 @@ class SessionStore:
         for key in expired:
             del self.sessions[key]
 
-    def create(self) -> dict:
+    def creation_wait(self, client_key: str = "local") -> float:
+        """Seconds until this visitor may create a session (0 = now). Read-only, so the route can queue a request for a
+        short wait instead of refusing it (owner 2026-11-03: turn bursts into a queue)."""
         with self.lock:
             now = self._now()
             self._purge(now)
-            self._rate(self.creation_requests, now, min(self.rate_limit, 30))
-            if len(self.sessions) >= self.max_sessions:
-                raise BoundaryError(429, "session_capacity")
+            waits = [0.0]
+            # The store-wide creation limit is its own number, not capped by the per-session request rate (attack r23).
+            store_limit = STORE_CREATIONS_PER_MINUTE if self.per_client_limits else min(self.rate_limit, 30)
+            checks = [(self.creation_requests, store_limit)]
+            if self.per_client_limits:
+                checks.append((self.client_creations.get(client_key, deque()), CLIENT_CREATIONS_PER_MINUTE))
+            for requests, limit in checks:
+                live = [at for at in requests if at > now - timedelta(seconds=60)]
+                if len(live) >= limit:
+                    waits.append((live[len(live) - limit] + timedelta(seconds=60) - now).total_seconds())
+            return max(waits)
+
+    def create(self, client_key: str = "local") -> dict:
+        with self.lock:
+            now = self._now()
+            self._purge(now)
+            if not self.per_client_limits:
+                client_key = "local"
+                self._rate(self.creation_requests, now, min(self.rate_limit, 30))
+            else:
+                # The visitor's own limit first, so a refused visitor does not use up the store-wide count.
+                self._rate(self.client_creations.setdefault(client_key, deque()), now, CLIENT_CREATIONS_PER_MINUTE)
+                self._rate(self.creation_requests, now, STORE_CREATIONS_PER_MINUTE)
+            mine = [session for session in self.sessions.values() if session.client_key == client_key]
+            if self.per_client_limits and len(mine) >= CLIENT_MAX_LIVE_SESSIONS:
+                # This visitor's own least recently used session makes room; another visitor's never does.
+                oldest = min(mine, key=lambda session: session.requests[-1] if session.requests else session.created_at)
+                del self.sessions[oldest.session_id]
+            if len(self.client_creations) > 4096:
+                for key in [key for key, requests in self.client_creations.items() if not requests or requests[-1] <= now - timedelta(seconds=60)]:
+                    del self.client_creations[key]
+            capacity = max(self.max_sessions, HOSTED_MAX_SESSIONS) if self.per_client_limits else self.max_sessions
+            if len(self.sessions) >= capacity and not self._evict_idle(now):
+                raise BoundaryError(429, "session_capacity", retry_after=self._capacity_wait(now))
             session = Session(secrets.token_urlsafe(32), secrets.token_urlsafe(32), now,
-                              now + timedelta(seconds=self.ttl_seconds), now)
+                              now + timedelta(seconds=self.ttl_seconds), now, client_key=client_key)
             self.sessions[session.session_id] = session
             return {"session_id": session.session_id, "csrf_token": session.csrf_token,
                     "source": "synthetic", "expires_at": iso(session.expires_at)}
+
+    def _evict_idle(self, now: datetime) -> bool:
+        """Free one slot when the store is full: drop the session idle longest, if it has been idle at least
+        IDLE_EVICT_SECONDS. Without this, one client creating max_sessions sessions locked every new visitor out until
+        the TTL ran out (red team R4); a session in active use is never dropped."""
+        # One switch: the hosted limits all follow per_client_limits, so no store is half configured (attack r23).
+        cutoff = now - timedelta(seconds=HOSTED_IDLE_EVICT_SECONDS if self.per_client_limits else IDLE_EVICT_SECONDS)
+        idle = [(session.requests[-1] if session.requests else session.created_at, key) for key, session in self.sessions.items()]
+        idle = [entry for entry in idle if entry[0] <= cutoff]
+        if not idle:
+            return False
+        del self.sessions[min(idle)[1]]
+        return True
 
     def _rate(self, requests: deque, now: datetime, limit: int):
         cutoff = now - timedelta(seconds=60)
         while requests and requests[0] <= cutoff:
             requests.popleft()
         if len(requests) >= limit:
-            raise BoundaryError(429, "rate_limited")
+            # (optimise r24) Say when: the refusal carries Retry-After (the console's countdown reads it), the
+            # seconds until the oldest request that still counts leaves the one-minute window.
+            wait = (requests[len(requests) - limit] + timedelta(seconds=60) - now).total_seconds()
+            raise BoundaryError(429, "rate_limited", retry_after=max(1, min(60, math.ceil(wait))))
         requests.append(now)
+
+    def _capacity_wait(self, now: datetime) -> int:
+        """(optimise r24) Seconds until a full store frees a slot: the first session to expire or to become idle long
+        enough to be dropped for a new visitor."""
+        idle = timedelta(seconds=HOSTED_IDLE_EVICT_SECONDS if self.per_client_limits else IDLE_EVICT_SECONDS)
+        moments = [min(session.expires_at, (session.requests[-1] if session.requests else session.created_at) + idle)
+                   for session in self.sessions.values()]
+        wait = (min(moments) - now).total_seconds() if moments else 1
+        return max(1, min(self.ttl_seconds, math.ceil(wait)))
 
     def require(self, session_id: str | None, csrf_token: str | None = None, *, mutate=False) -> Session:
         with self.lock:
@@ -361,7 +531,7 @@ class SessionStore:
             if session is None:
                 raise BoundaryError(401, "session_required")
             if mutate and (not isinstance(csrf_token, str) or not csrf_token.isascii() or len(csrf_token) > 128 or
-                           not hmac.compare_digest(csrf_token, session.csrf_token)):
+                           not safe_equal(csrf_token, session.csrf_token)):
                 raise BoundaryError(403, "csrf_rejected")
             self._rate(session.requests, now, self.rate_limit)
             return session
@@ -373,7 +543,8 @@ class SessionStore:
             velocity = self._velocity(session.transactions, now)
             summaries = [
                 {"case_ref": f"case-ref-{index:03d}", "order_ref": f"order-ref-{index:03d}", "reason": case["reason"],
-                 "opened_at": case["opened_at"],
+                 "opened_at": case["opened_at"], "seller_response_due_date": case["provider_snapshot"]["seller_response_due_date"],
+                 "dispute_amount": deepcopy(case["dispute_amount"]),
                  "status": "local_draft_reviewed" if case_id in session.approved else
                            ("draft_ready" if case_id in session.drafts else "needs_review")}
                 for index, (case_id, case) in enumerate(session.disputes.items(), start=1)
@@ -409,23 +580,72 @@ class SessionStore:
         if stage == "velocity_guard":
             return self._velocity(session.transactions, now)["status"] == "review_velocity"
         if stage == "dispute_mediation":
-            return any(
-                type(session.drafts.get(case_id, {}).get("routing")) is dict and
-                session.drafts[case_id]["routing"].get("overall_state") == "READY_FOR_LOCAL_REVIEW" and
-                session.disputes[case_id].get("reason") == "INR" and
-                session.drafts[case_id].get("evidence", {}).get("reason") == "INR" and
-                session.drafts[case_id]["routing"].get("reason") == "MERCHANDISE_OR_SERVICE_NOT_RECEIVED" and
-                self._restricted_is_current(session, case_id) and
-                session.draft_expires.get(case_id, now) > now
-                for case_id in session.disputes
-            )
+            return any(self._case_ai_ready(session, case_id, now) for case_id in session.disputes)
         return False
+
+    def _case_ai_ready(self, session: Session, case_id: str, now: datetime) -> bool:
+        return bool(
+            type(session.drafts.get(case_id, {}).get("routing")) is dict and
+            session.drafts[case_id]["routing"].get("overall_state") == "READY_FOR_LOCAL_REVIEW" and
+            session.disputes[case_id].get("reason") == "INR" and
+            session.drafts[case_id].get("evidence", {}).get("reason") == "INR" and
+            session.drafts[case_id]["routing"].get("reason") == "MERCHANDISE_OR_SERVICE_NOT_RECEIVED" and
+            self._restricted_is_current(session, case_id) and
+            session.draft_expires.get(case_id, now) > now
+        )
+
+    def _ai_session_facts_locked(self, session: Session, stage: str, case_ref: str | None, now: datetime) -> dict:
+        """Closed values for the AI brief, computed here from session state: no description text, order, amount
+        detail or identifier leaves this method. The AI brief contract validates them again."""
+        if stage == "source_compliance":
+            evaluation = session.aup_evaluations[session.current_aup_evaluation_id]
+            return {"review_categories": sorted(set(evaluation["categories"]))}
+        if stage == "velocity_guard":
+            velocity = self._velocity(session.transactions, now)
+            two_places = lambda value: str(Decimal(str(value)).quantize(Decimal("0.01"), rounding="ROUND_DOWN"))
+            return {"transaction_count": velocity["transaction_count"], "ratio": two_places(velocity["ratio"]),
+                    "threshold": two_places(velocity["threshold"])}
+        if case_ref is None:
+            case_id = next(case_id for case_id in session.disputes if self._case_ai_ready(session, case_id, now))
+        else:
+            case_id, _case = self._resolve_case_ref(session, case_ref)
+            if not self._case_ai_ready(session, case_id, now):
+                raise BoundaryError(409, "ai_context_not_ready")
+        routing = session.drafts[case_id]["routing"]
+        # One row per evidence type; when the provider asks for a type twice, the least complete state wins.
+        rank = {"MANDATORY_EVIDENCE_MISSING": 0, "OPTIONAL_EVIDENCE_MISSING": 1, "STRUCTURALLY_PRESENT": 2}
+        rows = {}
+        for row in routing["requirements"]:
+            kind, state = row.get("provider_evidence_type"), row.get("requirement_state")
+            if row.get("source") != "REQUESTED_FROM_SELLER" or kind not in AI_FACT_EVIDENCE_TYPES or state not in rank:
+                continue
+            if kind not in rows or rank[state] < rank[rows[kind]]:
+                rows[kind] = state
+        if not rows:
+            raise BoundaryError(409, "ai_context_not_ready")
+        return {"reason": "INR", "due_state": routing["due_state"],
+                "requirements": [{"evidence_type": key, "state": rows[key]} for key in sorted(rows)]}
 
     def ai_brief_allowed(self, session: Session, stage: str) -> bool:
         with self.lock:
             now = self._now()
             self._require_live_session(session, now)
             return self._ai_context_ready_locked(session, stage, now) and self.ai_attempt_budget.can_reserve(stage)
+
+    def reserve_ai_brief(self, session: Session, stage: str, case_ref: str | None = None) -> dict:
+        """Atomically validate context, compute the closed session facts and reserve a model attempt; returns the facts."""
+        with self.lock:
+            now = self._now()
+            self._require_live_session(session, now)
+            if not self._ai_context_ready_locked(session, stage, now):
+                raise BoundaryError(409, "ai_context_not_ready")
+            facts = self._ai_session_facts_locked(session, stage, case_ref, now)
+            try:  # the facts pass the brief's own closed contract before an attempt is spent
+                AiBriefRequest.model_validate({"stage": stage, "session_facts": facts})
+            except ValidationError:
+                raise BoundaryError(409, "ai_context_not_ready") from None
+            self.ai_attempt_budget.reserve(stage, now)
+            return facts
 
     def reserve_ai_brief_attempt(self, session: Session, stage: str) -> dict:
         """Atomically validate context and permanently reserve a model attempt."""
@@ -451,9 +671,12 @@ class SessionStore:
                 session.draft_expires.clear()
                 session.restricted_evidence.clear()
                 session.approved.clear()
+                session.approved_payloads.clear()
+                session.submitted.clear()
                 session.invoice_reviews.clear()
                 session.aup_evaluations.clear()
                 session.current_aup_evaluation_id = None
+                session.latest_aup_match_status = None
                 session.aup_audit.clear()
                 session.activity.clear()
                 session.scenario = {"burst": False, "dispute": False}
@@ -478,6 +701,7 @@ class SessionStore:
                         "delivered_at": iso(session.anchor - timedelta(days=2)),
                         "opened_at": iso(session.anchor - timedelta(days=1)),
                         "carrier_status": "delivered", "evidence_source": "synthetic",
+                        "dispute_amount": dict(DEMO_DISPUTE_AMOUNTS["demo-case-001"]),
                         "provider_snapshot": {
                             "schema_version": 1,
                             "snapshot_class": "SYNTHETIC_PROVIDER_FIXTURE",
@@ -524,6 +748,9 @@ class SessionStore:
                 digital = _digital_demo_case(session.anchor)
                 prepare_dispute(_legacy_dispute_case(digital))
                 cases[digital["case_id"]] = digital
+                due_soon = _due_soon_demo_case(session.anchor)
+                prepare_dispute(_legacy_dispute_case(due_soon))
+                cases[due_soon["case_id"]] = due_soon
             if len(rows) > 200 or len(cases) > 5:
                 raise BoundaryError(422, "sample_limit")
             self._velocity(rows, self._now())
@@ -539,7 +766,7 @@ class SessionStore:
             raise BoundaryError(404, "case_not_found")
         for index, (case_id, case) in enumerate(session.disputes.items(), start=1):
             expected = f"case-ref-{index:03d}"
-            if hmac.compare_digest(case_ref, expected):
+            if safe_equal(case_ref, expected):
                 return case_id, case
         raise BoundaryError(404, "case_not_found")
 
@@ -657,12 +884,18 @@ class SessionStore:
             if case_id in session.approved:
                 raise BoundaryError(422, "review_already_used")
             current = self.draft(session, case_ref)
-            if not hmac.compare_digest(current["draft_digest"], digest):
+            if not safe_equal(current["draft_digest"], digest):
                 raise BoundaryError(422, "review_binding_rejected")
             draft = session.drafts[case_id]
             approval = session.gate.approve(draft, actor="demo-reviewer", now=now)
             receipt = session.gate.consume(approval, draft, actor="demo-reviewer", now=now)
             session.approved.add(case_id)
+            # (optimise r24) Record the hashes of the payloads this approval covers; a send whose freshly built
+            # payload differs is refused (409 evidence_changed_after_approval).
+            recorded = {}
+            for hook in list(self.approval_hooks.values()):
+                recorded.update(hook(session, case_id))
+            session.approved_payloads[case_id] = recorded
             self._activity(session, "review", "Local synthetic draft reviewed; external submission frozen")
             receipt.pop("case_id", None)
             return dict(
@@ -681,7 +914,14 @@ class SessionStore:
             session.drafts.pop(case_id, None)
             session.draft_expires.pop(case_id, None)
             session.restricted_evidence.pop(case_id, None)
-            session.approved.discard(case_id)
+            session.approved_payloads.pop(case_id, None)
+            # The used approval lapses with its draft; a new draft needs a new review before it can be sent (red team r20).
+            session.submitted.discard(case_id)
+            if case_id in session.approved:
+                # The review was bound to this draft; say so in the activity log instead of dropping it silently
+                # (red team R3). A new draft needs a new review.
+                session.approved.discard(case_id)
+                self._activity(session, "review", "Earlier local review lapsed with its expired draft; a new review is needed")
 
     def _require_live_session(self, session: Session, now: datetime):
         if (type(session) is not Session or self.sessions.get(session.session_id) is not session or
@@ -726,7 +966,10 @@ class SessionStore:
                 raise BoundaryError(500, "response_contract_failure") from None
             live = {key: value for key, value in session.aup_evaluations.items() if value["expires_at"] > now}
             if len(live) >= 5:
-                raise BoundaryError(429, "aup_capacity")
+                # (attack r21) Say how long to wait: the oldest of the five live checks leaves the window first.
+                # The limit itself (5 live checks, each live for up to 120 s) is unchanged.
+                wait = math.ceil((min(value["expires_at"] for value in live.values()) - now).total_seconds())
+                raise BoundaryError(429, "aup_capacity", retry_after=max(1, min(120, wait)))
             evaluation = {"description_digest": digest, "match_status": result["match_status"],
                           "categories": tuple(item["category"] for item in result["findings"]),
                           "evaluated_at": now, "expires_at": expires, "acknowledgement_digest": None,
@@ -734,6 +977,7 @@ class SessionStore:
             live[evaluation_id] = evaluation
             session.aup_evaluations = live
             session.current_aup_evaluation_id = evaluation_id
+            session.latest_aup_match_status = result["match_status"]
             self._aup_event(session, evaluation_id, evaluation, "EVALUATED", now)
             return response
 
@@ -742,13 +986,24 @@ class SessionStore:
         if evaluation_id is None or description_digest is None:
             raise BoundaryError(422, "aup_evaluation_required")
         evaluation = session.aup_evaluations.get(evaluation_id)
-        if evaluation is None or not hmac.compare_digest(evaluation["description_digest"], description_digest):
+        if evaluation is None or not safe_equal(evaluation["description_digest"], description_digest):
             raise BoundaryError(422, "aup_evaluation_binding_rejected")
         if evaluation["expires_at"] <= now:
             raise BoundaryError(422, "aup_evaluation_expired")
         if now < evaluation["evaluated_at"]:
             raise BoundaryError(422, "aup_evaluation_binding_rejected")
         return evaluation
+
+    def require_aup_category_binding(self, session: Session, evaluation_id: str, description: str) -> None:
+        """Bind an optional category lookup to a live AUP evaluation of the same description.
+
+        Read-only: the evaluation, its findings and its acknowledgement state are not touched.
+        """
+        with self.lock:
+            now = self._now()
+            self._require_live_session(session, now)
+            digest = hashlib.sha256(description.encode("utf-8")).hexdigest()
+            self._require_aup_evaluation(session, evaluation_id, digest, now)
 
     def acknowledge_aup(self, session: Session, request: dict) -> dict:
         with self.lock:
@@ -789,7 +1044,7 @@ class SessionStore:
         check_aup(safe["description"])
         return safe
 
-    def review_invoice(self, session: Session, payload: dict) -> dict:
+    def review_invoice(self, session: Session, payload: dict, country_route: dict | None = None) -> dict:
         with self.lock:
             now = self._now()
             self._require_live_session(session, now)
@@ -799,7 +1054,7 @@ class SessionStore:
             evaluation_id = payload.get("evaluation_id")
             evaluation = self._require_aup_evaluation(session, evaluation_id, payload.get("description_digest"), now)
             actual = hashlib.sha256(safe_payload["description"].encode("utf-8")).hexdigest()
-            if not hmac.compare_digest(evaluation["description_digest"], actual):
+            if not safe_equal(evaluation["description_digest"], actual):
                 raise BoundaryError(422, "aup_evaluation_binding_rejected")
             supplied = payload.get("acknowledgement_token")
             if evaluation["match_status"] == "REVIEW_SIGNAL":
@@ -807,7 +1062,7 @@ class SessionStore:
                     raise BoundaryError(422, "aup_acknowledgement_required")
                 received = hashlib.sha256(supplied.encode("ascii")).hexdigest()
                 if (evaluation["acknowledgement_digest"] is None or
-                        not hmac.compare_digest(received, evaluation["acknowledgement_digest"])):
+                        not safe_equal(received, evaluation["acknowledgement_digest"])):
                     raise BoundaryError(422, "aup_acknowledgement_binding_rejected")
             elif supplied is not None:
                 raise BoundaryError(422, "aup_acknowledgement_binding_rejected")
@@ -818,6 +1073,10 @@ class SessionStore:
                        "match_status": evaluation["match_status"], "warning_copy_version": "aup-warning-v1",
                        "acknowledgement_digest": evaluation["acknowledgement_digest"],
                        "acknowledged_at": iso(evaluation["acknowledged_at"]) if evaluation["acknowledged_at"] else None}
+            if country_route is not None:
+                binding["country_route"] = {"seller_country": country_route["seller_country"],
+                                            "buyer_country": country_route["buyer_country"],
+                                            "goods_tags": list(country_route.get("goods_tags") or [])}
             token = secrets.token_urlsafe(32)
             digest = payload_digest({"session_id": session.session_id, "action": "create_sandbox_invoice_draft",
                                      "payload": safe_payload, "aup_binding": binding})
@@ -845,10 +1104,12 @@ class SessionStore:
             payload = self.invoice_payload(request)
             expected = payload_digest({"session_id": session.session_id, "action": "create_sandbox_invoice_draft",
                                        "payload": payload, "aup_binding": review["aup_binding"]})
-            if not hmac.compare_digest(review["digest"], request["payload_digest"]) or not hmac.compare_digest(expected, review["digest"]):
+            if not safe_equal(review["digest"], request["payload_digest"]) or not safe_equal(expected, review["digest"]):
                 raise BoundaryError(422, "review_binding_rejected")
             if session.invoice_attempts >= 5:
                 raise BoundaryError(429, "invoice_attempt_limit")
             del session.invoice_reviews[token]
             session.invoice_attempts += 1
+            if review["aup_binding"].get("country_route"):
+                payload = dict(payload, country_route=review["aup_binding"]["country_route"])
             return payload, "pg-" + hashlib.sha256(token.encode()).hexdigest()[:32]

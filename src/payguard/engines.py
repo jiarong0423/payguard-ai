@@ -22,13 +22,195 @@ _CURRENCY = re.compile(r"[A-Z]{3}\Z")
 _DECIMAL_TEXT = re.compile(r"[+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][+-]?[0-9]+)?\Z")
 _TIMESTAMP = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]{1,6})?(?:Z|[+-][0-9]{2}:[0-9]{2})\Z")
 _BASELINE_PROVENANCE = frozenset({"SYNTHETIC_BASELINE", "CALLER_SUPPLIED_UNVERIFIED"})
+# (attack r23) A promised percentage must be non-zero: "guaranteed 0% interest financing" is a store credit offer.
+_PERCENT = r"(?<![0-9.])(?=[0-9.]*[1-9])[0-9]+(?:\.[0-9]+)?\s*(?:%|percent\b|per\s+cent\b)"
+_GAIN = r"(?:roi|returns?|profits?|yields?|gains?|interest)"
+# (attack r23) A rate per day/week/month ("earn 3% daily", "20% monthly returns") is how investment schemes are sold.
+_PERIOD = r"(?:daily|weekly|monthly|(?:a|per|each|every)\s+(?:day|week|month))\b"
+# (attack r22) The keyword table also carries the country pack's AUP-prohibited and pre-approval tags it can name
+# (shared.aup_prohibited_tags: narcotics, drug_paraphernalia, cigarettes, stolen_goods, counterfeit, weapons,
+# pyramid_schemes; shared.aup_preapproval_tags: gambling, e_cigarettes, tobacco_other), inflections ("counterfeiting",
+# "gambled", "vaporizer") and the common synonyms ("meth", "Glock", "AAA mirror", "1:1 copy", "sportsbook"). The
+# category names stay the five the API contract lists, so stolen goods sit with counterfeit goods (goods the seller has
+# no right to sell) and pyramid schemes with unsupported financial promises. Intended matches a person then reviews:
+# "fire arms of a sofa" (split "fire arm" is an evasion more often than furniture) and "vaporizer" (also a humidifier).
 _AUP_CATEGORIES = (
-    ("unsupported_financial_promise", r"\bguaranteed\b.{0,80}(?:[0-9]+(?:\.[0-9]+)?%\s*(?:roi|returns?)\b|\b(?:profit|roi)\b)"),
-    ("weapons", r"\b(?:firearms?|guns?|ammunition|explosives?)\b"),
-    ("controlled_substances", r"\b(?:cocaine|heroin|methamphetamine|illegal\s+drugs?)\b"),
-    ("counterfeit_goods", r"\b(?:counterfeit|fake\s+(?:brands?|luxury|designer))\b"),
-    ("regulated_activity", r"\b(?:gambling|casino|betting|e-?liquids?|vap(?:e|es|ing)|e-?cigarettes?|tobacco|nicotine)\b"),
+    # (attack r23) "guaranteed ... profit" needs the profit promised ("guaranteed profits", "guaranteed monthly profit"), not
+    # "satisfaction guaranteed! 10% of profit goes to a non-profit"; the rate may come before the guarantee ("earn 3% daily,
+    # guaranteed"); "risk-free returns within 30 days" is a refund policy; MLM / recruit-and-get-paid is a pyramid pitch.
+    ("unsupported_financial_promise", rf"\bguaranteed\b.{{0,80}}(?:{_PERCENT}\s*{_GAIN}\b|\b{_GAIN}\b.{{0,40}}{_PERCENT}|{_PERCENT}\s*{_PERIOD})"
+                                      r"|\bguaranteed\s+(?:[a-z]+\s+){0,2}(?:profits?|roi)\b"
+                                      rf"|{_PERCENT}\s*(?:{_GAIN}\s+)?{_PERIOD}.{{0,60}}\bguarantee[ds]?\b"
+                                      rf"|{_PERCENT}\s*{_PERIOD}\s*{_GAIN}\b"
+                                      rf"|\b(?:earn|earning|earns|make|making|get|receive|pays?|paying)\b.{{0,30}}{_PERCENT}\s*"
+                                      r"(?:daily|weekly|(?:a|per|each|every)\s+(?:day|week))\b"
+                                      r"|\b(?:double|triple)\s+your\s+(?:money|investment|cash|deposit|bitcoin|crypto)\b"
+                                      r"|\brisk[- ]?free\s+(?:returns?\b(?!\s+(?:within|in\s+[0-9]|for\s+[0-9]|on\s+(?:all|any|every|your)|"
+                                      r"policy|and\s+(?:exchanges?|refunds?)|&\s*(?:exchanges?|refunds?)|up\s+to))|profits?|investments?|income|trading)\b"
+                                      r"|\b(?:pyramid|ponzi)\s+schemes?\b|\bponzi\b|\bmlm\b|\bmulti[- ]?level\s+marketing\b"
+                                      r"|\brecruit(?:s|ed|ing)?\b.{0,40}\b(?:get|getting|earn|earning|be|are)\s+paid\b"),
+    # Tools named "gun" (glue gun, nail gun, heat gun ...) are not weapons; more tool names are masked in _AUP_BENIGN.
+    # (attack r23) AR-15 / AK-47, silencers and suppressors (not a surge or noise suppressor), switchblades, brass knuckles,
+    # stun guns and tasers.
+    ("weapons", r"\b(?:firearms?|fire\s+arms?|(?<!glue[ -])(?<!nail[ -])(?<!heat[ -])(?<!spray[ -])(?<!caulk[ -])(?<!staple[ -])(?<!massage[ -])(?<!bubble[ -])(?<!water[ -])"
+                r"(?<!caulking[ -])(?<!grease[ -])guns?|handguns?|pistols?|rifles?|shotguns?|revolvers?|ammunitions?|ammo|explosives?|"
+                r"glocks?|grenades?|detonators?|(?<!secret )weapons?|ar[- ]?15s?|ak[- ]?47s?|(?<!surge )(?<!noise )(?<!spark )(?<!exhaust )"
+                r"(?<!echo )(?<!feedback )(?:silencers?|suppressors?)|switch[- ]?blades?|brass\s+knuckles?|knuckle[- ]?dusters?|"
+                r"balisongs?|butterfly\s+kni(?:fe|ves)|tasers?)\b"),
+    # (attack r23) Street and prescription names (MDMA, ecstasy pills, LSD, ketamine, oxycodone, Xanax, molly capsules,
+    # "coke ... white powder") and common non-English spellings of cocaine (kokain, cocaína -> cocaina, kokaiini).
+    # "Heroína" is left out: in Spanish it also means a heroine.
+    ("controlled_substances", r"\b(?:cocaine|heroin|methamphetamines?|meth|crystal\s+meth|fentanyl|narcotics?|illegal\s+drugs?|"
+                              r"drug\s+paraphernalia|mdma|lsd|ketamine|oxycodone|oxycontin|hydrocodone|percocet|xanax|alprazolam|"
+                              r"psilocybin|cocaina|kokain[ae]?|kokaiini|metanfetamina|fentanilo|"
+                              r"ecstasy\s+(?:pills?|tabs?|tablets?|rolls?|caps?|capsules?|powder|crystals?)|"
+                              r"molly\s+(?:pills?|caps?|capsules?|crystals?|powder|rocks?)|blotter\s+(?:tabs?|acid|paper))\b"
+                              r"|\bcoke\b.{0,40}\b(?:powder|[0-9]+\s*(?:g|grams?)|eight[- ]?ball|8[- ]?ball)\b"
+                              r"|\bwhite\s+powder\b.{0,40}\bcoke\b"),
+    # (attack r23) Fake identity documents and fake or prop money ("prop money that passes as real" stays a review item:
+    # PayPal restricts play money that can pass as currency, so every "prop money" listing goes to a person).
+    ("counterfeit_goods", r"\b(?:counterfeit(?:s|ed|ing|ers?)?|replicas?|knock-?offs?|bootlegs?|fake\s+(?:brands?|luxury|designer|"
+                          r"rolex|gucci|chanel|prada|hermes|cartier|omega|nike|adidas|apple|louis\s+vuitton)|"
+                          r"aaa\+*\s*(?:mirror|replicas?)|mirror\s+(?:copy|copies|replicas?)|"
+                          r"fake\s+(?:passports?|ids?|id\s+cards?|identity\s+(?:cards?|documents?)|driver'?s?\s+licen[cs]es?|"
+                          r"diplomas?|degrees?|money|bills|banknotes?|currency)|"
+                          r"(?:novelty|scannable)\s+(?:ids?|id\s+cards?|driver'?s?\s+licen[cs]es?)|"
+                          r"prop\s+(?:money|cash|bills|banknotes?|currency)|"
+                          r"stolen\s+(?:goods|items|merchandise|property|products?))\b|(?<![0-9:])1\s*:\s*1\s+(?:copy|copies|replicas?|clones?)\b"),
+    # (attack r23) Lottery tickets, Juul pods, snus, shisha and chewing tobacco need PayPal pre-approval.
+    ("regulated_activity", r"\b(?:gambl(?:e|es|ed|er|ers|ing)|casinos?|betting|wagers?|sportsbooks?|e-?liquids?|vap(?:e|es|ed|er|ers|ing)|"
+                           r"vapou?ri[sz]ers?|e-?cigarettes?|cigarettes?(?![ -]lighters?)|tobacco|nicotine|"
+                           r"lottery\s+(?:tickets?|entries|entry|syndicates?)|online\s+lotter(?:y|ies)|juul|snus|shisha|"
+                           r"(?:vape|nic|nicotine)\s+pods?)\b"),
 )
+
+# (attack r23) Ordinary retail wording that contains a keyword: compound nouns ("glue gun", "pistol grip shower head",
+# "shotgun microphone"), colour words ("gun metal", "tobacco brown"), garment cuts ("bootleg jeans", "cigarette pants"),
+# brand / media titles ("Rifle Paper Co.", "Top Gun", "Revolver" LP, "Weapons of Math Destruction", "The Gambler",
+# "Grenade" protein bars, "Exploding Kittens", "Tobacco Vanille"), museum and fan replicas ("skull replica", "official
+# replica jersey"), sweets ("candy cigarettes"), party props ("casino night ... decorations") and negations ("wager-free").
+# Only the phrase itself is blanked before the keyword table runs, so any other keyword in the same text is still seen
+# ("Top Gun poster and a Glock" is still flagged). A bare "replica", "vaporizer" or "casino" stays a review signal.
+_AUP_BENIGN = re.compile(
+    r"\b(?:temperature|thermometer|label(?:l?ing|ler)?|pricing|price|tattoo|rivet|nerf|foam\s+dart|squirt|paint|soldering|"
+    r"tape|grout|sealant|silicone|radar|speed|hot\s+glue|glue|nail|heat|spray|caulk(?:ing)?|staple|massage|bubble|water|grease)"
+    r"[ -]?guns?\b"
+    r"|\bgun[ -]?(?:metal|dogs?)\b|\btop\s+gun\b"
+    r"|\brifle\s+paper\b"
+    r"|\bpistol[ -]grip\s+(?:shower\w*|hose|garden|spray\w*|nozzles?|drills?|saws?|watering|trigger\s+sprayers?)"
+    r"|\bshotgun\s+(?:mics?|microphones?|condenser)\b"
+    r"|\b(?:beatles(?:'s?)?\s+)?revolver\s+(?:vinyl|lp|album|cd|record|remix|remaster\w*|deluxe|box\s+set)\b|\bbeatles(?:'s?)?\s+revolver\b"
+    r"|\bammo[ -]cans?(?=[ -](?:style|type|storage|organi[sz]ers?|tool\s*box))"
+    r"|\bgrenade\s+(?:carb\s+killa\s+)?(?:protein|bars?|carb|shakes?)\b"
+    r"|\bweapons\s+of\s+math\s+destruction\b"
+    r"|\bexplo(?:ding|sive)\s+kittens\b"
+    r"|\bcasino[ -](?:night|party|themed?)(?=.{0,40}\b(?:decorations?|decor|kit|balloons?|banners?|props?|costumes?|"
+    r"invitations?|supplies|tablecloths?)\b)"
+    r"|\bthe\s+gambler\b"
+    r"|\bhumidifiers?\s+(?:and|&|/|or)\s+vapou?ri[sz]ers?\b|\bvapou?ri[sz]ers?\s+(?:and|&|/|or)\s+humidifiers?\b"
+    r"|\b(?:candy|chocolate|bubble\s*gum|sweet|gum)\s+cigarettes?\b"
+    r"|\bcigarette[ -](?:pants|trousers|jeans|leg|legs|skirts?|fit|cut)\b"
+    r"|\btobacco\s+(?:vanill?e|oud|honey)\b|\btobacco[ -](?:brown|colou?r(?:ed)?|suede|tan|hue|shade)\b"
+    r"|\bbootleg[ -](?:jeans|pants|trousers|denim|leggings|cut|fit|yoga\s+pants|flares?)\b"
+    r"|\b(?:official|licensed)\s+replica\s+(?:jerseys?|shirts?|kits?|football\s+shirts?)\b"
+    r"|\b(?:skull|fossil|skeleton|dinosaur|museum|tooth|teeth|claw|meteorite)\s+replicas?\b"
+    r"|\breplicas?\s+(?:of\s+(?:a|an|the)\s+)?(?:fossils?|skulls?|skeletons?|dinosaurs?|teeth|tooth|claws?)\b"
+    r"|\bwager[ -]?free\b"
+)
+_AUP_PATTERNS = tuple((category, re.compile(pattern)) for category, pattern in _AUP_CATEGORIES)
+
+
+# Wording tricks the keyword check also sees through (red team R5): look-alike letters NFKC keeps (U+0261 "ɡun",
+# Cyrillic/Greek vowels), digits for letters ("c0unterfeit"), separators inside a word ("counter-feit") and words
+# spelled out letter by letter ("c o u n t e r f e i t"). The signal only asks a person to review; it decides nothing.
+_LOOKALIKE = str.maketrans({"\u0261": "g", "\u0131": "i", "\u0430": "a", "\u0435": "e", "\u043e": "o", "\u0440": "p",
+                            "\u0441": "c", "\u0443": "y", "\u0445": "x", "\u0456": "i", "\u03bf": "o", "\u03b1": "a"})
+# (attack r22) "!" for i ("p!stol"), "(" for c ("(ocaine") and "9" for g ("9un").
+_LEET = str.maketrans({"0": "o", "1": "i", "3": "e", "4": "a", "5": "s", "7": "t", "9": "g", "@": "a", "$": "s",
+                       "!": "i", "(": "c"})
+# (attack r21) Marks and look-alikes NFKC keeps: combining marks ("co\u0336caine", "coca\u0308ine", "p\u00edstol"),
+# more Greek/Cyrillic letters ("\u03f2ocaine") and filler / zero-width characters inside a word ("fire\u3164arm").
+# Used only in an extra folded variant, so the text as typed is still checked unchanged.
+_FOLD_LOOKALIKE = str.maketrans({
+    "\u0261": "g", "\u0131": "i", "\u0251": "a", "\u025b": "e", "\u0269": "i", "\u0283": "s",
+    # Cyrillic
+    "\u0430": "a", "\u0432": "b", "\u0435": "e", "\u043a": "k", "\u043c": "m", "\u043d": "h", "\u043e": "o",
+    "\u0440": "p", "\u0441": "c", "\u0442": "t", "\u0443": "y", "\u0445": "x", "\u0455": "s", "\u0456": "i",
+    "\u0458": "j", "\u04bb": "h", "\u0501": "d", "\u051b": "q", "\u051d": "w", "\u0457": "i", "\u0491": "r",
+    # Greek
+    "\u03b1": "a", "\u03b2": "b", "\u03b5": "e", "\u03b9": "i", "\u03ba": "k", "\u03bd": "v", "\u03bf": "o",
+    "\u03c1": "p", "\u03c4": "t", "\u03c5": "u", "\u03c7": "x", "\u03f2": "c", "\u03f3": "j", "\u03b7": "n",
+    "\u03c9": "w", "\u03c3": "o", "\u03c2": "c",
+    # (attack r22) Armenian, Coptic and Latin small capitals that NFKC keeps ("c\u0585caine", "\u1d04ocaine", "c\u2c9fcaine")
+    "\u0585": "o", "\u0578": "n", "\u057d": "u", "\u0570": "h", "\u0581": "g", "\u0566": "q",
+    "\u2c81": "a", "\u2c85": "r", "\u2c89": "e", "\u2c93": "i", "\u2c95": "k", "\u2c99": "m", "\u2c9b": "n",
+    "\u2c9f": "o", "\u2ca1": "p", "\u2ca3": "p", "\u2ca5": "c", "\u2ca7": "t", "\u2ca9": "y", "\u2cad": "x",
+    "\u1d00": "a", "\u0299": "b", "\u1d04": "c", "\u1d05": "d", "\u1d07": "e", "\ua730": "f", "\u0262": "g",
+    "\u029c": "h", "\u026a": "i", "\u1d0a": "j", "\u1d0b": "k", "\u029f": "l", "\u1d0d": "m", "\u0274": "n",
+    "\u1d0f": "o", "\u1d18": "p", "\u0280": "r", "\ua731": "s", "\u1d1b": "t", "\u1d1c": "u", "\u1d20": "v",
+    "\u1d21": "w", "\u028f": "y", "\u1d22": "z",
+    # (attack r23) Cherokee capitals that look like Latin letters ("\u13df\u13be\u13df\u13aa\u13c6NE"); casefold maps the small
+    # Cherokee letters (U+AB70..) back to these capitals, and the table runs again after casefold.
+    "\u13aa": "a", "\u13f4": "b", "\u13df": "c", "\u13a0": "d", "\u13ac": "e", "\u13c0": "g", "\u13bb": "h", "\u13a5": "i",
+    "\u13c6": "i", "\u13ab": "j", "\u13e6": "k", "\u13de": "l", "\u13b7": "m", "\u13be": "o", "\u13eb": "o", "\u13e2": "p",
+    "\u13a1": "r", "\u13da": "s", "\u13a2": "t", "\u13d9": "v", "\u13b3": "w", "\u13c3": "z",
+    # (attack r23) Regional-indicator symbols (flag letters, U+1F1E6..U+1F1FF) read as a..z.
+    **{chr(0x1F1E6 + offset): chr(ord("a") + offset) for offset in range(26)},
+})
+# Filler and invisible characters (Hangul fillers, zero-width, word joiner, BOM, ...) are dropped from the folded variant.
+_FOLD_INVISIBLE = re.compile("[\u115f\u1160\u3164\uffa0\u17b4\u17b5\u180e\u200b-\u200f\u2060-\u2064\u206a-\u206f\ufeff\u034f\u00ad]")
+
+
+def _aup_fold(raw: str) -> str:
+    """(attack r21) NFKD, drop combining marks, map look-alikes to Latin and remove filler/invisible characters.
+
+    Starts from the text as typed: NFKC would turn the lunate sigma U+03F2 ("\u03f2ocaine") into a plain sigma first."""
+    text = _FOLD_INVISIBLE.sub("", raw).replace("\u03f9", "c").translate(_FOLD_LOOKALIKE)
+    decomposed = unicodedata.normalize("NFKD", text)
+    stripped = "".join(char for char in decomposed if unicodedata.category(char) not in ("Mn", "Me", "Mc"))
+    return unicodedata.normalize("NFKC", stripped).casefold().translate(_FOLD_LOOKALIKE)
+
+
+# (attack r22) Punctuation that splits a word ("co/caine", "co'caine", "co,caine", "co+caine", "co|caine", "co·caine").
+_AUP_SPLIT = "-._*/'‘’`,+|·•‧・"
+_AUP_JOIN = re.compile(rf"(?<=[a-z0-9@$!(])[{re.escape(_AUP_SPLIT)}]+(?=[a-z0-9@$!(])")
+# Runs of three or more single letters split by spaces or that punctuation, single or doubled ("c  o  c  a  i  n  e").
+_AUP_SPELLED = re.compile(rf"\b(?:[a-z][\s{re.escape(_AUP_SPLIT)}]+){{2,}}[a-z]\b")
+
+
+def _aup_forms(text: str) -> tuple[str, ...]:
+    plain = text.translate(_LOOKALIKE)
+    joined = _AUP_JOIN.sub("", plain)
+    leet = re.sub(r"[a-z0-9@$!(]+", lambda m: m.group().translate(_LEET) if re.search(r"[a-z]", m.group()) else m.group(), joined)
+    # "c o u n t e r f e i t" -> "counterfeit": runs of three or more single letters become one word.
+    spelled = _AUP_SPELLED.sub(lambda m: re.sub(rf"[\s{re.escape(_AUP_SPLIT)}]+", "", m.group()), leet)
+    return (text, plain, joined, leet, spelled)
+
+
+def _aup_unglue(cased: str) -> tuple[str, str]:
+    """(attack r22) Words glued so that \\b cannot see them: "buy_cocaine_now", "PremiumCocaine", "cocaine99".
+
+    First form: underscores and camelCase boundaries become spaces (digits kept, so leet still reads "c0caine_now").
+    Second form: a letter next to a digit is split as well ("cocaine99" -> "cocaine 99", "glock19" -> "glock 19")."""
+    spaced = re.sub(r"(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])", " ", cased).replace("_", " ").casefold()
+    digits = re.sub(r"(?<=[^\W\d_])(?=\d)|(?<=\d)(?=[^\W\d_])", " ", spaced)
+    return spaced, digits
+
+
+def _aup_variants(normalized: str, raw: str | None = None, cased: str | None = None) -> tuple[str, ...]:
+    forms = _aup_forms(normalized) + _aup_forms(_aup_fold(normalized if raw is None else raw))
+    if cased is not None:
+        for unglued in _aup_unglue(cased) + _aup_unglue(_aup_fold_cased(raw if raw is not None else cased)):
+            forms += _aup_forms(unglued)
+    return tuple(dict.fromkeys(forms))
+
+
+def _aup_fold_cased(raw: str) -> str:
+    """_aup_fold without the casefold, so camelCase is still visible after look-alikes are mapped."""
+    text = _FOLD_INVISIBLE.sub("", raw).replace("Ϲ", "c")
+    decomposed = unicodedata.normalize("NFKD", text)
+    stripped = "".join(char for char in decomposed if unicodedata.category(char) not in ("Mn", "Me", "Mc"))
+    return unicodedata.normalize("NFKC", stripped)
 
 
 def _identifier(value: object, field: str) -> str:
@@ -77,11 +259,14 @@ def check_aup(description: str) -> dict:
         raise ValueError("description must contain between 1 and 4000 characters")
     if any(unicodedata.category(char).startswith("C") for char in description):
         raise ValueError("description must not contain control or invisible characters")
-    normalized = unicodedata.normalize("NFKC", description).casefold()
+    cased = unicodedata.normalize("NFKC", description)
+    normalized = cased.casefold()
+    # (attack r23) Known ordinary phrases are blanked in every variant before the keyword table runs.
+    variants = tuple(dict.fromkeys(_AUP_BENIGN.sub(" ", variant) for variant in _aup_variants(normalized, description, cased)))
     findings = [
         {"category": category, "code": "keyword_requires_policy_review"}
-        for category, pattern in _AUP_CATEGORIES
-        if re.search(pattern, normalized)
+        for category, pattern in _AUP_PATTERNS
+        if any(pattern.search(variant) for variant in variants)
     ]
     return {
         "match_status": "REVIEW_SIGNAL" if findings else "NO_MATCH",

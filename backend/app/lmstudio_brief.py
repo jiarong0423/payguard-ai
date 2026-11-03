@@ -25,9 +25,11 @@ from .ai_brief import (
     MAX_REQUEST_BYTES,
     PROMPT_CONTRACT_DIGEST,
     PROMPT_CONTRACT_ID,
+    brief_limitations,
     build_fixed_context,
     canonical_json,
     fail,
+    generated_text_matches_inventory,
     response_schema,
     strict_json,
 )
@@ -49,7 +51,7 @@ class LmStudioConfig:
 
 def build_lmstudio_request(context: dict[str, object]) -> dict[str, object]:
     """Build the only request shape allowed to reach the local model."""
-    schema = response_schema(context["stage"], context["citation_ids"])
+    schema = response_schema(context["stage"], context["citation_ids"], context.get("session_facts"))
     for field_name in ("evidence_points", "missing_evidence"):
         schema["properties"][field_name]["maxItems"] = 1
     request = {
@@ -164,6 +166,8 @@ def validate_lmstudio_response(raw: bytes, *, stage: str, context: dict[str, obj
         fail()
     if brief["citation_ids"] != context["citation_ids"]:
         fail()
+    if not generated_text_matches_inventory(context["stage"], brief, context.get("session_facts")):
+        fail()
     return brief
 
 
@@ -171,6 +175,8 @@ class LmStudioEvidenceBriefAdapter:
     """Explicitly enabled, serialized local model adapter with no retries."""
 
     __slots__ = ("_config", "_transport")
+    # (optimise r24) The model id the per-session AI audit log records; this adapter reports no token counts.
+    MODEL_ID = MODEL
 
     def __init__(self, *, config: LmStudioConfig | None = None, transport: LocalTransport | None = None):
         self._config = LmStudioConfig() if config is None else config
@@ -190,7 +196,7 @@ class LmStudioEvidenceBriefAdapter:
             fail("ai_request_invalid", 422)
         self.validate_attempt_configuration()
 
-        context, context_digest, corpus_digest = build_fixed_context(validated.stage)
+        context, context_digest, corpus_digest = build_fixed_context(validated.stage, validated.session_facts)
         logical_request = build_lmstudio_request(context)
         try:
             async with asyncio.timeout(TOTAL_TIMEOUT_SECONDS):
@@ -202,7 +208,7 @@ class LmStudioEvidenceBriefAdapter:
                     "schema_version": "1.0",
                     "status": "completed",
                     "stage": validated.stage,
-                    "fixture_id": "payguard-fixed-synthetic-brief-v1",
+                    "fixture_id": context["fixture_id"],
                     "context_digest": context_digest,
                     "corpus_digest": corpus_digest,
                     "model": MODEL,
@@ -218,7 +224,7 @@ class LmStudioEvidenceBriefAdapter:
                     "external_action_authorized": False,
                     "workflow_transition_authorized": False,
                     "semantic_entailment": "NOT_EVALUATED",
-                    "limitations": list(LIMITATIONS),
+                    "limitations": brief_limitations(context),
                 }
             ).model_dump()
         except AiBriefError:

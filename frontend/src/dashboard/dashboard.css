@@ -1,0 +1,161 @@
+/* Page shell around AG Studio. Studio itself is themed in theme.js. Colours follow the console
+   (docs/design/VISUAL_SPEC_r7.md: indigo #4f46e5, L0 canvas #eef1f6, white L1 cards, amber only for "watch"). */
+:root {
+  color-scheme: light;
+  --pg-ink: #0f172a; --pg-muted: #475569; --pg-subtle: #5b6678; --pg-accent: #4f46e5; --pg-accent-dark: #4338ca;
+  --pg-tint: #ecebf3; --pg-canvas: #eceae5; --pg-panel: #ffffff; --pg-recede: #f4f2ee; --pg-line: #dcd7cf;
+  --pg-watch: var(--pg-color-watch); --pg-ok: var(--pg-color-ok);
+  --pg-l1: var(--pg-elev-l1);
+  /* Selected = glass + thickness, the same as the console (frontend/src/index.css). */
+  --pg-selected-glass: rgba(255, 255, 255, .72);
+  --pg-selected-edge: 0 1px 0 #c7d2fe, 0 2px 0 #c7d2fe, 0 3px 0 #a5b4fc, 0 4px 0 #a5b4fc;
+  --pg-selected-lift: 0 10px 24px rgba(79, 70, 229, .18), 0 2px 6px rgba(15, 23, 42, .08);
+  --pg-selected-highlight: inset 0 1px 0 rgba(255, 255, 255, .95), inset 0 0 0 1px rgba(79, 70, 229, .35);
+}
+html, body, #root { min-height: 100%; }
+body { margin: 0; background: var(--pg-canvas); color: var(--pg-ink); font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif; }
+.pg-dashboard { min-height: 100%; display: flex; flex-direction: column; }
+
+/* Top bar: brand, page tabs, one primary action. Glass so content scrolling under it blurs. */
+.pg-topbar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 16px; min-height: 56px; padding: 0 24px;
+  background: rgba(255, 255, 255, .82); -webkit-backdrop-filter: blur(14px) saturate(150%); backdrop-filter: blur(14px) saturate(150%);
+  box-shadow: 0 1px 0 var(--pg-line); }
+.pg-brand { margin: 0; font-size: 15px; font-weight: 700; color: var(--pg-ink); white-space: nowrap; }
+.pg-brand span { font-weight: 500; color: var(--pg-subtle); }
+.pg-back { margin-left: 12px; display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; font-weight: 600; color: var(--pg-accent); text-decoration: none; }
+.pg-back:hover { text-decoration: underline; }
+.pg-tabs { display: inline-flex; gap: 4px; margin-left: auto; padding: 4px; border-radius: var(--pg-radius-card); background: var(--pg-recede); box-shadow: inset 0 0 0 1px var(--pg-line); }
+.pg-tabs button, .pg-mode { white-space: nowrap; min-height: 44px; padding: 8px 16px; border: 0; border-radius: var(--pg-radius-control); background: transparent; color: var(--pg-muted); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+.pg-tabs button:hover { color: var(--pg-ink); }
+/* Selected tab = glass + thickness (not solid), so the one solid button on screen is the primary action. */
+.pg-tabs button.is-active { color: var(--pg-accent-dark); background: var(--pg-selected-glass); box-shadow: var(--pg-selected-highlight), var(--pg-selected-edge), var(--pg-selected-lift); transform: translateY(-1px); }
+.pg-mode { background: var(--pg-accent); color: #ffffff; box-shadow: 0 1px 2px rgba(15, 23, 42, .12); }
+.pg-mode:hover { background: var(--pg-accent-dark); }
+.pg-mode[aria-pressed="true"] { background: var(--pg-panel); color: var(--pg-accent-dark); box-shadow: inset 0 0 0 1px #c7d2fe; }
+.pg-tabs button:focus-visible, .pg-mode:focus-visible, .pg-back:focus-visible, .pg-drawer summary:focus-visible { outline: 2px solid var(--pg-accent); outline-offset: 2px; }
+
+/* Intro: title, one line, status chips. */
+.pg-intro { padding: 24px 24px 12px; }
+.pg-intro h1 { margin: 0 0 4px; font-size: 28px; line-height: 1.2; font-weight: 700; letter-spacing: -0.3px; }
+.pg-intro p { margin: 0; font-size: 15px; line-height: 1.5; color: var(--pg-muted); }
+.pg-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; padding: 0; list-style: none; }
+.pg-chips li { padding: 4px 12px; border-radius: var(--pg-radius-pill); background: var(--pg-panel); box-shadow: inset 0 0 0 1px var(--pg-line); font-size: 14px; color: var(--pg-muted); }
+.pg-chips li.is-accent { background: var(--pg-tint); box-shadow: none; color: var(--pg-accent-dark); }
+.pg-chips li.is-watch { background: var(--pg-tint-watch); box-shadow: none; color: var(--pg-watch); }
+
+/* Drawer: everything a reviewer may want, closed by default. */
+.pg-drawer { margin: 0 24px 8px; border-radius: var(--pg-radius-card); background: var(--pg-panel); box-shadow: var(--pg-l1); }
+.pg-drawer summary { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; font-size: 15px; font-weight: 600; cursor: pointer; list-style: none; }
+.pg-drawer summary::-webkit-details-marker { display: none; }
+.pg-drawer summary::after { content: ''; width: 8px; height: 8px; flex-shrink: 0; margin-left: auto; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; color: var(--pg-subtle); transform: rotate(45deg); transition: transform 150ms ease; }
+.pg-drawer[open] summary::after { transform: rotate(225deg); }
+.pg-drawer summary:hover { background: var(--pg-color-accent-tint); border-radius: var(--pg-radius-card); }
+.pg-check-more summary:hover { color: var(--pg-accent-dark); }
+.pg-drawer-body { padding: 0 16px 16px; font-size: 14px; line-height: 1.5; color: var(--pg-muted); }
+.pg-boundary { margin: 0 0 12px; padding: 8px 12px; border-left: 4px solid var(--pg-accent); border-radius: var(--pg-radius-chip); background: var(--pg-tint); color: var(--pg-ink); }
+.pg-status { display: grid; gap: 8px; margin: 0 0 12px; padding: 0; list-style: none; }
+.pg-status strong { color: var(--pg-ink); }
+.pg-sources { margin: 0; }
+
+.pg-studio { min-height: 480px; }
+/* A widget's Tab stop is an empty 0x0 element, so the focus ring goes round the widget (attack r22). */
+.pg-studio .ag-studio-layout-widget:has(> .ag-studio-layout-widget-focus-container:focus-visible) { outline: 2px solid var(--pg-accent); outline-offset: 2px; }
+.pg-footer { padding: 16px 24px 24px; font-size: 14px; color: var(--pg-subtle); }
+.pg-footer a { display: inline-flex; align-items: center; min-height: 44px; color: var(--pg-accent); }
+
+/* Custom widgets */
+.pg-widget { height: 100%; box-sizing: border-box; overflow: auto; font-size: 14px; color: var(--pg-ink); }
+.pg-empty { display: grid; place-items: center; color: var(--pg-subtle); text-align: center; }
+.pg-chip { display: inline-block; padding: 4px 8px; border-radius: var(--pg-radius-chip); font-size: 14px; font-weight: 700; line-height: 1.25; white-space: nowrap; }
+.pg-chip-info { color: var(--pg-accent-dark); background: var(--pg-color-accent-tint); }
+.pg-chip-watch { color: var(--pg-watch); background: var(--pg-tint-watch); }
+.pg-chip-ok { color: var(--pg-ok); background: var(--pg-tint-ok); }
+
+.pg-deadline { display: grid; align-content: start; gap: 12px; container-type: inline-size; }
+/* A narrow tile keeps one line per case: the day stays, the time of day goes (the Cases table has it). */
+@container (max-width: 420px) {
+  .pg-deadline-list li .pg-time { display: none; }
+  .pg-deadline-unit span { display: none; }
+}
+.pg-deadline-hero { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: var(--pg-radius-card); background: var(--pg-recede); box-shadow: inset 4px 0 0 var(--pg-accent); }
+.pg-deadline-hero.is-soon { box-shadow: inset 4px 0 0 var(--pg-watch); }
+.pg-deadline-days { font-size: 40px; font-weight: 800; line-height: 1; color: var(--pg-ink); font-variant-numeric: tabular-nums; }
+.pg-deadline-hero.is-soon .pg-deadline-days { color: var(--pg-watch); }
+.pg-deadline-unit { display: grid; gap: 2px; font-size: 14px; color: var(--pg-muted); }
+.pg-deadline-unit strong { color: var(--pg-ink); font-weight: 600; }
+.pg-deadline-list { display: grid; margin: 0; padding: 0; list-style: none; }
+.pg-deadline-list li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; min-height: 36px; border-bottom: 1px solid var(--pg-recede); }
+.pg-deadline-list li:last-child { border-bottom: 0; }
+.pg-deadline-list li strong { font-size: 15px; font-weight: 600; }
+.pg-deadline-list li > span:nth-of-type(1) { color: var(--pg-muted); font-variant-numeric: tabular-nums; }
+
+/* Evidence checklist: one case per card, paged. */
+.pg-checklist { display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 8px; overflow: hidden; }
+.pg-check-track { display: grid; grid-auto-flow: column; grid-auto-columns: 100%; gap: 12px; overflow-x: auto; overflow-y: auto;
+  scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; padding: 4px 2px 8px; }
+.pg-check-track::-webkit-scrollbar { display: none; }
+.pg-check-card { display: grid; align-content: start; gap: 8px; padding: 12px; border-radius: var(--pg-radius-card); background: var(--pg-panel); box-shadow: var(--pg-l1);
+  scroll-snap-align: start; transition: box-shadow 120ms cubic-bezier(.2, .8, .2, 1), transform 120ms cubic-bezier(.2, .8, .2, 1); }
+.pg-check-card:hover { box-shadow: 0 0 0 1px #c7d2fe, 0 2px 6px rgba(15, 23, 42, .08); }
+.pg-check-card.is-selected { background: var(--pg-selected-glass); -webkit-backdrop-filter: blur(12px) saturate(160%); backdrop-filter: blur(12px) saturate(160%);
+  box-shadow: var(--pg-selected-highlight), var(--pg-selected-edge), var(--pg-selected-lift); transform: translateY(-2px); }
+.pg-check-card.is-selected strong { color: var(--pg-accent-dark); }
+.pg-check-card.is-dimmed { background: var(--pg-recede); box-shadow: none; color: var(--pg-subtle); }
+.pg-check-case { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; width: 100%; min-height: 44px; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.pg-check-case strong { font-size: 16px; font-weight: 600; }
+.pg-check-action { margin-left: auto; font-size: 14px; font-weight: 600; color: var(--pg-accent); }
+.pg-check-case:focus-visible, .pg-pager-nav button:focus-visible { outline: 2px solid var(--pg-accent); outline-offset: 2px; border-radius: var(--pg-radius-control); }
+.pg-check-row { display: flex; gap: 8px; align-items: baseline; color: var(--pg-ink); line-height: 1.45; }
+.pg-check-more summary { display: flex; align-items: center; min-height: 44px; font-size: 14px; font-weight: 600; color: var(--pg-muted); cursor: pointer; }
+.pg-check-more[open] { display: grid; gap: 8px; }
+.pg-dot { flex: none; width: 9px; height: 9px; border-radius: var(--pg-radius-pill); transform: translateY(1px); }
+.pg-dot-ok { background: var(--pg-ok); }
+.pg-dot-gap { background: #ffffff; border: 2px solid var(--pg-watch); box-sizing: border-box; }
+.pg-dot-flag { background: var(--pg-watch); }
+.pg-pager-nav { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--pg-muted); }
+.pg-pager-nav button { width: 44px; height: 44px; border-radius: var(--pg-radius-control); border: 0; background: var(--pg-panel); box-shadow: var(--pg-l1); color: var(--pg-ink); font-size: 20px; cursor: pointer; }
+.pg-pager-nav button:disabled { color: #cbd5e1; cursor: default; box-shadow: inset 0 0 0 1px var(--pg-line); }
+.pg-pager-nav button:last-child { margin-left: auto; }
+.pg-pager-dots { display: inline-flex; gap: 8px; }
+.pg-pager-dots i { width: 6px; height: 6px; border-radius: var(--pg-radius-pill); background: #cbd5e1; }
+.pg-pager-dots i.is-on { width: 16px; background: var(--pg-accent); }
+
+@media (max-width: 960px) {
+  .pg-topbar { flex-wrap: wrap; gap: 8px; padding: 8px 16px; }
+  .pg-tabs { order: 3; width: 100%; margin-left: 0; }
+  .pg-tabs { display: flex; min-width: 0; }
+  .pg-tabs button { flex: 1 1 0; min-width: 0; padding: 8px 8px; overflow: hidden; text-overflow: ellipsis; }
+  .pg-mode { margin-left: auto; }
+}
+@media (max-width: 720px) {
+  .pg-intro { padding: 16px 16px 8px; }
+  .pg-intro h1 { font-size: 24px; }
+  .pg-drawer { margin: 0 16px 8px; }
+  .pg-studio { min-height: 0; }
+  .pg-footer { padding: 12px 16px 16px; }
+}
+/* 320-480 px (attack r22): at 320 the brand line pushed "Back to console" past the edge and both page tabs were cut
+   ("Evidence readiness" needs 148 px, a tab had 131). The brand suffix goes, the brand line may wrap, and a tab label
+   wraps onto two lines inside its 44 px target instead of being cut. */
+@media (max-width: 480px) {
+  .pg-topbar { padding: 8px 12px; }
+  .pg-brand { display: flex; flex-wrap: wrap; align-items: center; column-gap: 12px; min-width: 0; max-width: 100%; white-space: normal; }
+  .pg-brand span { display: none; }
+  .pg-back { margin-left: 0; }
+  .pg-tabs button { padding: 4px 6px; white-space: normal; line-height: 1.2; overflow: visible; text-overflow: clip; overflow-wrap: anywhere; }
+  .pg-mode { padding: 8px 12px; }
+}
+/* Very short viewports (zoom 300% is about 427x267 CSS px): the sticky top bar covered 64% of the screen (attack r22),
+   so it scrolls away with the page there. */
+@media (max-height: 480px) {
+  .pg-topbar { position: static; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pg-check-card, .pg-drawer summary::after { transition: none; }
+  .pg-check-card.is-selected, .pg-tabs button.is-active { transform: none; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .pg-topbar { background: var(--pg-panel); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .pg-check-card.is-selected, .pg-tabs button.is-active { background: var(--pg-panel); -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+.pg-loading { padding: 40px 24px; font-size: 15px; color: var(--pg-muted); }

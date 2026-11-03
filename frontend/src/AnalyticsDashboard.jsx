@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
-import { AgGridReact } from 'ag-grid-react';
-import { themeQuartz } from 'ag-grid-community';
+import { AgGridReact, themeQuartz } from './grid/agGrid.jsx';
 import './AnalyticsDashboard.css';
 
 const analyticsGridTheme = themeQuartz.withParams({
@@ -185,7 +184,7 @@ export default function AnalyticsDashboard({ aup, state }) {
 
   const stages = useMemo(() => [
     {
-      id: 'aup', phase: 'PRE-TRANSACTION', label: 'AUP preflight screen',
+      id: 'aup', phase: 'PRE-TRANSACTION', label: 'Policy pre-check',
       status: !aup ? 'Awaiting review' : aup.match_status === 'REVIEW_SIGNAL' ? 'Advisory review' : 'No demo match',
       detail: !aup ? 'Run the deterministic description check.' : `${aupFindingCount} configured review signal${aupFindingCount === 1 ? '' : 's'} visible.`,
     },
@@ -259,7 +258,7 @@ export default function AnalyticsDashboard({ aup, state }) {
         </div>
         <div className="analytics-grid-tools">
           <label htmlFor="analytics-grid-filter">Filter visible rows</label>
-          <input id="analytics-grid-filter" type="search" value={quickFilter} onChange={(event) => setQuickFilter(event.target.value)} placeholder="Order or currency" />
+          <input id="analytics-grid-filter" type="search" maxLength={200} value={quickFilter} onChange={(event) => setQuickFilter(event.target.value)} placeholder="Order or currency" />
         </div>
         <div className="analytics-grid-frame" aria-label="AG Grid Community synthetic transaction analytics">
           <AgGridReact

@@ -4,7 +4,7 @@ import { dirname, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
-import { buildInternalReviewZip, validateInternalReviewZip } from '../frontend/src/reviewZip.js';
+import { buildInternalReviewZip, canonicalCardJson, productCardDigest, validateInternalReviewZip } from '../frontend/src/reviewZip.js';
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const python = process.env.PAYGUARD_PYTHON_BIN || resolve(projectRoot, '.venv/bin/python3');
@@ -97,3 +97,28 @@ console.log(JSON.stringify({
   archive_bytes: archive.length,
   provider_calls: 0,
 }));
+
+// Card digest parity: the ZIP recomputes card_digest exactly as backend/app/channel3_products.card_digest does.
+// Every recorded Channel3 card, plus cards with quotes, a backslash, a slash, null fields, non-ASCII and an astral
+// character (the backend's own reduction keeps cards ASCII; the canonical form must still agree on anything).
+const digestProgram = String.raw`
+import json, sys
+from app.channel3_products import CARD_KEYS, RECORDED_PATH, card_digest
+recorded = json.loads(RECORDED_PATH.read_text(encoding="utf-8"))
+cards = [card for entry in recorded["entries"] for card in entry["cards"]]
+cards += [
+    {"product_id": "p.1", "title": 'Mug "Classic" 12 oz / blue', "brand": None, "category": None, "key_features": [], "materials": [], "image_url": None},
+    {"product_id": "p:2", "title": "Café cup \\ saucer — set", "brand": "Brüder", "category": "Cups", "key_features": ["\U0001F375 tea", "line\nbreak"], "materials": ["Porzellan ä"], "image_url": "https://cdn.example/x.png"},
+]
+print(json.dumps([{"card": card, "canonical": json.dumps({key: card[key] for key in CARD_KEYS}, sort_keys=True, separators=(",", ":"), ensure_ascii=True), "digest": card_digest(card)} for card in cards]))
+`;
+const digests = spawnSync(python, ['-c', digestProgram], { cwd: projectRoot, env: environment, encoding: 'utf8' });
+assert.equal(digests.status, 0, digests.stderr || digests.stdout);
+const digestCases = JSON.parse(digests.stdout.trim());
+assert.ok(digestCases.length >= 7, 'recorded cards and edge cases');
+for (const { card, canonical, digest } of digestCases) {
+  assert.equal(canonicalCardJson(card), canonical, `canonical JSON matches Python for ${card.product_id}`);
+  assert.equal(productCardDigest(card), digest, `card_digest matches Python for ${card.product_id}`);
+}
+console.log(JSON.stringify({ status: 'PASS', card_digest_parity: digestCases.length }));
+

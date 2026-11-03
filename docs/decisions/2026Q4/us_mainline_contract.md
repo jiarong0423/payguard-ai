@@ -1,6 +1,6 @@
 # PayGuard US-Only Mainline Contract
 
-Status: current accepted canonical US-only local design. The English conversion and three-stage contract are current. One recorded Sandbox OAuth plus unsent invoice `DRAFT` pair and one recorded fixed-synthetic `gemini-3.8-flash` result (both 2026-10-06) are records of their own captured executions. They do not prove current-byte live behavior or bind a later source candidate. A judge-facing execution claim requires showing the bounded path live. This contract supersedes prior product narratives for the active runtime; historical evidence retains its original claims and bytes. The Devpost project is submitted; later source revisions retain a separate release gate.
+Status: current accepted canonical US-only local design. The English conversion and three-stage contract are current. One recorded Sandbox OAuth plus unsent invoice `DRAFT` pair and one recorded fixed-synthetic `gemini-3.8-flash` result (both 2026-10-06) are records of their own captured executions; a second Sandbox run of 2026-10-31 is described under "Sandbox contract". They do not prove current-byte live behavior or bind a later source candidate. A judge-facing execution claim requires showing the bounded path live. This contract supersedes prior product narratives for the active runtime; historical evidence retains its original claims and bytes. The Devpost project is submitted; later source revisions retain a separate release gate.
 
 Current objective state: the local product baseline is `O (Done)`. Release state is determined by the package manifest and exact anonymous public readback, not by this contract or a historical receipt. When the manifest is `PUBLIC_SOURCE_PUBLISHED` with `publication_authorized=true` and the same bytes pass exact anonymous readback, public source publication is complete. In that published-source state, the Devpost project is submitted; the 2:02 demonstration is already public. A package marked `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` has not crossed the public-source gate. A hosted demo is optional and is not mandatory.
 
@@ -61,9 +61,11 @@ The recorded Gemini run is limited to one human-reviewed `gemini-3.8-flash` resp
 
 ## Sandbox contract
 
-Outbound access is disabled by default. The recorded Sandbox run is limited to the OAuth result and one unsent USD `10.00` invoice `DRAFT` creation result using the operator-confirmed US Business sandbox seller path with Invoicing available. It proves only that captured execution, not current-byte live behavior. Public source alone does not authenticate the result.
+Outbound access is disabled by default. The recorded Sandbox run of 2026-10-06 is limited to the OAuth result and one unsent USD `10.00` invoice `DRAFT` creation result using the operator-confirmed US Business sandbox seller path with Invoicing available. It proves only that captured execution, not current-byte live behavior. Public source alone does not authenticate the result.
 
-Invoice send, payment, capture, refund, dispute mutation, production and automatic retry after uncertain creation remain frozen. A create response is not described as a separate GET readback.
+A second run on 2026-10-31 repeated OAuth and one unsent invoice `DRAFT` and read one author-created Sandbox test dispute (list and detail; [masked receipt](../../evidence/RECEIPT_20261031_live.md)). When a Sandbox app is connected the console reads the merchant's Sandbox disputes. The `provide-evidence` request exists only behind a recorded local approval, `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled` and an explicit `submit: true`, and has not been sent to the live Sandbox.
+
+Invoice send, payment, capture, refund, dispute mutations other than that gated request, production and automatic retry after uncertain creation remain frozen. A create response is not described as a separate GET readback.
 
 ## Public-case limitation
 

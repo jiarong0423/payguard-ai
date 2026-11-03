@@ -1,0 +1,49 @@
+/* Evidence deadline board (step 03). Loaded with the lazy EvidenceBoard chunk only. */
+.evidence-board { display: flex; flex-direction: column; gap: 16px; min-width: 0; max-width: 100%; }
+.board-summary, .board-empty { margin: 0; font-size: 14px; line-height: 1.5; color: var(--pg-color-muted); }
+.board-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+.board-row { border: 1px solid var(--pg-color-rule); border-left: 4px solid var(--pg-color-subtle); border-radius: var(--pg-radius-control); background: var(--pg-color-panel); padding: 12px 16px; min-width: 0; }
+.board-row-open { border-left-color: var(--pg-color-accent); }
+.board-row-due_soon { border-left-color: var(--pg-color-watch); }
+.board-row-past_due, .board-row-urgent { border-left-color: var(--pg-color-risk); background: var(--pg-tint-risk); border-color: #d9b3b2; }
+.board-row-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; font-size: var(--type-section-title, 17px); font-weight: 650; color: var(--pg-color-ink); }
+.board-row-status { font-size: 14px; color: var(--pg-color-muted); }
+.board-row-urgent .board-row-status, .board-row-past_due .board-row-status { color: var(--pg-color-risk); font-weight: 600; }
+.board-row dl { margin: 8px 0 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px 12px; }
+.board-row dt { font-size: 14px; color: var(--pg-color-muted); }
+.board-row dd { margin: 0; font-size: 14px; color: var(--pg-color-ink); overflow-wrap: anywhere; }
+.board-timeline { margin: 0; min-width: 0; }
+.board-timeline figcaption { font-size: 14px; color: var(--pg-color-muted); margin-bottom: 8px; line-height: 1.5; }
+/* The page never scrolls sideways: only this box does. */
+.board-scroll { max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-control); -webkit-overflow-scrolling: touch; }
+.board-scroll:focus-visible { outline: 2px solid var(--pg-color-focus); outline-offset: 2px; }
+.board-canvas { min-width: 880px; }
+.board-canvas .b-scheduler { font-size: 14px; }
+.board-canvas .payguard-board-urgent .b-grid-cell { background: var(--pg-tint-risk); color: var(--pg-color-risk); font-weight: 600; }
+@media (max-width: 480px) {
+  .board-row dl { grid-template-columns: minmax(0, 1fr); }
+}
+/* Phones (phone r3 P2 #9): the box no longer scrolls the whole 880px board; Bryntum scrolls only the time axis, so the
+   Case column stays in view. A hint says the axis moves sideways. */
+.board-timeline-phone .board-canvas { min-width: 0; }
+.board-swipe-hint { color: var(--pg-color-accent-strong); font-weight: 600; white-space: nowrap; }
+
+/* Evidence collection plan (optimise r24): help text, live message, reset, plan bar and the now / due lines. */
+.board-plan-help { margin: 0 0 8px; font-size: 14px; line-height: 1.5; color: var(--pg-color-muted); max-width: 72ch; }
+.board-plan-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; margin-bottom: 8px; }
+.board-plan-message { margin: 0; min-height: 21px; font-size: 14px; line-height: 1.5; color: var(--pg-color-ink); }
+.board-plan-reset { min-height: 36px; padding: 0 12px; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-control); background: var(--pg-color-panel); color: var(--pg-color-ink); font: inherit; font-size: 14px; cursor: pointer; }
+.board-plan-reset:hover { border-color: var(--pg-color-accent); color: var(--pg-color-accent-strong); }
+.board-plan-reset:focus-visible { outline: 2px solid var(--pg-color-focus); outline-offset: 2px; }
+.board-legend-now { color: var(--pg-color-accent-strong); font-weight: 600; }
+.board-legend-due { color: var(--pg-color-risk); font-weight: 600; }
+/* Bryntum stacks rows at z-index 1 (white cells), bars at 1 and column lines at 2. The line layer is appended after
+   them at 1, so it paints over the cells, and the bars are lifted to 2 so they stay above the lines. */
+.board-canvas .payguard-board-lines { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+.board-canvas .b-timeline-sub-grid .b-sch-foreground-canvas { z-index: 2; }
+/* 2px backgrounds with token fallbacks, so the lines still show where the token sheet is absent (test harnesses). */
+.board-canvas .b-timeline-sub-grid .payguard-board-line { position: absolute; top: 0; width: 2px; height: 100%; margin-left: -1px; }
+.board-canvas .b-timeline-sub-grid .payguard-board-line-now { background: var(--pg-color-accent, #4f46e5); }
+.board-canvas .b-timeline-sub-grid .payguard-board-line-due { background: repeating-linear-gradient(to bottom, var(--pg-color-risk, #93454a) 0 6px, transparent 6px 10px); }
+.board-canvas .payguard-board-plan { cursor: grab; }
+.board-canvas .payguard-board-plan.b-active { outline: 2px solid var(--pg-color-focus); outline-offset: 1px; }

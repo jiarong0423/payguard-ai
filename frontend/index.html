@@ -2,13 +2,24 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#f8fafc" />
     <meta name="description" content="PayGuard AI US Sandbox console: AUP warnings, transaction velocity, and human-reviewed dispute evidence." />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="/icons/icon.svg" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="stylesheet" href="/src/theme/base.css" />
     <title>PayGuard AI · Merchant Evidence Buffer</title>
+    <!-- attack r22: a very slow first load showed a blank page for over 20 s. This message is static and needs no
+         script; the app replaces it when it renders into #root. -->
+    <style>
+      .boot-loading { box-sizing: border-box; min-height: 100vh; margin: 0; padding: 24px 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; background: #f8fafc; color: #0f172a; font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; text-align: center; }
+      .boot-loading strong { font-size: 20px; }
+      .boot-loading span { color: #475569; }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><div class="boot-loading" role="status" data-testid="boot-loading"><strong>PayGuard AI</strong><span>Loading the console. This can take a moment on a slow connection.</span><noscript><span>The console needs JavaScript. Turn it on, then reload this page.</span></noscript></div></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

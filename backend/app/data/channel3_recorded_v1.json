@@ -1,0 +1,274 @@
+{
+ "endpoint": "POST https://api.trychannel3.com/v1/search",
+ "entries": [
+  {
+   "cards": [
+    {
+     "brand": "Brunello Cucinelli",
+     "category": "Coffee & Tea Cups",
+     "image_url": "https://cdn.trychannel3.com/c97e3fee-f37d-4c44-931c-6289012aa696?aid=01M6BNG77Y87RFPKJZDHHR6SEF&mid=iYU2",
+     "key_features": [
+      "Tradition collection",
+      "Handcrafted ceramic cups",
+      "Glazed ribbed exterior",
+      "Two cups per set"
+     ],
+     "materials": [
+      "Ceramic"
+     ],
+     "product_id": "VrmItU2",
+     "title": "Tradition set of two ceramic cups"
+    },
+    {
+     "brand": "Blomus",
+     "category": "Coffee Sets",
+     "image_url": "https://cdn.trychannel3.com/654f857f-ce75-463d-bcd1-c00a189f3af9?aid=01M6BNG77Y87RFPKJZDHHR6SEF&mid=z88N",
+     "key_features": [
+      "Created with the Japanese process of reactive glazing",
+      "Inspired by Wabi Sabi philosophy, celebrating imperfection",
+      "Dishwasher safe",
+      "Microwave safe"
+     ],
+     "materials": [
+      "Ceramic"
+     ],
+     "product_id": "4ETx4zH",
+     "title": "Kumi Stoneware Coffee Cup with Saucer (Set of 2)"
+    },
+    {
+     "brand": "XIAE",
+     "category": "Coffee & Tea Cups",
+     "image_url": "https://cdn.trychannel3.com/cleaned/v1/acdeb99d-234d-482b-a5b1-9459f8c87675?aid=01M6BNG77Y87RFPKJZDHHR6SEF&mid=Z87s",
+     "key_features": [
+      "Unique handcrafted design with varied patterns",
+      "Microwave and dishwasher safe",
+      "Enhances tea flavor and aroma retention",
+      "Fired at approximately 1300 degrees for stability"
+     ],
+     "materials": [
+      "ceramic"
+     ],
+     "product_id": "78uA3zQ",
+     "title": "Ceramic Tea Coffee Mate Cup Set"
+    }
+   ],
+   "query": "Handcrafted ceramic coffee cup set of two",
+   "recorded_at": "2026-11-01T13:41:37Z"
+  },
+  {
+   "cards": [
+    {
+     "brand": "Sony",
+     "category": "Over-Ear Headphones",
+     "image_url": "https://cdn.trychannel3.com/f6063fec-4b2f-40c1-8cc2-1301819f2a86?aid=01M6BNG8M615VX0B3N8DWH7CSR&mid=n0yg",
+     "key_features": [
+      "Co-created with Mastering Audio Engineers",
+      "HD Noise Cancelling Processor QN3",
+      "Adaptive NC Optimizer",
+      "Auto Ambient Sound Mode"
+     ],
+     "materials": [
+      "synthetic leather"
+     ],
+     "product_id": "voIXYFX",
+     "title": "Sony WH-1000XM6 Wireless Noise Canceling Headphones"
+    },
+    {
+     "brand": "Sony",
+     "category": "Over-Ear Headphones",
+     "image_url": "https://cdn.trychannel3.com/cleaned/v1/b10b778a-247f-4bd2-8d59-a03a16d4ed9c?aid=01M6BNG8M615VX0B3N8DWH7CSR&mid=ZQQu",
+     "key_features": [
+      "Dual Noise Sensor Technology",
+      "HD Noise Cancelling Processor QN1",
+      "Bluetooth 5.0 Connectivity",
+      "Multi-point Bluetooth"
+     ],
+     "materials": [],
+     "product_id": "9lLepgM",
+     "title": "Sony WH-1000XM4C Gen2 Wireless Noise Cancelling Headphones with Accessories"
+    },
+    {
+     "brand": "JBL",
+     "category": "Over-Ear Headphones",
+     "image_url": "https://cdn.trychannel3.com/cleaned/v1/7b3cd265-b374-418c-9a69-5c8c32b11fdb?aid=01M6BNG8M615VX0B3N8DWH7CSR&mid=p1PB",
+     "key_features": [
+      "Hi-Res JBL Pure Bass Sound with custom 40mm drivers",
+      "Adaptive Noise Cancelling with Smart Ambient",
+      "JBL Spatial Sound for immersive listening",
+      "Up to 76 hours of battery life (ANC off) or 50 hours (ANC on)"
+     ],
+     "materials": [],
+     "product_id": "hp43o3M",
+     "title": "JBL Tune 780NC Wireless Noise Cancelling Headphones"
+    }
+   ],
+   "query": "Wireless noise cancelling headphones",
+   "recorded_at": "2026-11-01T13:41:38Z"
+  },
+  {
+   "cards": [
+    {
+     "brand": "Phase Eight",
+     "category": "Cross Body Bags",
+     "image_url": "https://cdn.trychannel3.com/cleaned/v1/178c75f7-07a5-4640-8faa-50057b9a2fb7?aid=01M6BNGA8DJRYW4NYK15V9K3R9&mid=zEmX",
+     "key_features": [
+      "100% Genuine Leather Construction",
+      "Adjustable Strap for Comfort",
+      "Secure Clasp Closure",
+      "Flap over magnetic closure"
+     ],
+     "materials": [
+      "Leather"
+     ],
+     "product_id": "b7qnMIY",
+     "title": "Leather Crossbody Bag"
+    },
+    {
+     "brand": "WANDLER",
+     "category": "Cross Body Bags",
+     "image_url": "https://cdn.trychannel3.com/cleaned/v1/a81f8125-9d94-476d-89b4-8fa6116df524?aid=01M6BNGA8DJRYW4NYK15V9K3R9&mid=EcGY",
+     "key_features": [
+      "Made in Italy",
+      "Calf leather",
+      "Smooth grain",
+      "Tonal stitching"
+     ],
+     "materials": [
+      "leather"
+     ],
+     "product_id": "v2UdDMV",
+     "title": "Trunk Leather Crossbody Bag"
+    },
+    {
+     "brand": "Mo&Co",
+     "category": "Cross Body Bags",
+     "image_url": "https://cdn.trychannel3.com/cleaned/v1/c1fac563-b52e-4760-bb19-0deac6987af7?aid=01M6BNGA8DJRYW4NYK15V9K3R9&mid=yLlR",
+     "key_features": [
+      "Polished gold-tone hardware",
+      "Adjustable shoulder strap",
+      "Practical inner space"
+     ],
+     "materials": [
+      "Cow leather",
+      "Sheep Leather"
+     ],
+     "product_id": "lbSiaUp",
+     "title": "Leather Crossbody Bag"
+    }
+   ],
+   "query": "Leather crossbody bag",
+   "recorded_at": "2026-11-01T13:41:40Z"
+  },
+  {
+   "cards": [
+    {
+     "brand": "BOXRAW",
+     "category": "Water Bottles",
+     "image_url": "https://cdn.trychannel3.com/cleaned/v1/daee7263-4db0-4d70-a063-2f6dafe52888?aid=01M6BNGBM58ZW5QAX3K2SYVCKD&mid=q2w8",
+     "key_features": [
+      "Lightweight stainless steel construction",
+      "Leak-proof design with straw",
+      "Temperature retention system",
+      "Ergonomic handle"
+     ],
+     "materials": [
+      "Stainless Steel",
+      "Polypropylene"
+     ],
+     "product_id": "3mXIB0h",
+     "title": "BOXRAW 32oz Steel Water Bottle"
+    },
+    {
+     "brand": "Chilly's",
+     "category": "Water Bottles",
+     "image_url": "https://cdn.trychannel3.com/0fe3523a-c3fe-4d4f-9e45-d77f88ffd1da?aid=01M6BNGBM58ZW5QAX3K2SYVCKD&mid=7Mul",
+     "key_features": [
+      "Keeps drinks cold for 36 hours and hot for 14 hours",
+      "100% leak-proof with built-in o-ring seal",
+      "Made from 90% post-consumer certified recycled stainless steel",
+      "Silent rubber base"
+     ],
+     "materials": [
+      "recycled stainless steel"
+     ],
+     "product_id": "kZvtncK",
+     "title": "Water Bottle"
+    },
+    {
+     "brand": "Takeya",
+     "category": "Water Bottles",
+     "image_url": "https://cdn.trychannel3.com/5005585a-f85d-41da-8dfa-f89fab20dcfd?aid=01M6BNGBM58ZW5QAX3K2SYVCKD&mid=OSzb",
+     "key_features": [
+      "High-quality 18/8 stainless steel construction",
+      "Advanced triple-wall vacuum insulation for temperature preservation",
+      "Secure and leakproof spout lid",
+      "Customizable exterior"
+     ],
+     "materials": [
+      "18/8 stainless steel"
+     ],
+     "product_id": "9htRJXZ",
+     "title": "Sport Water Bottle"
+    }
+   ],
+   "query": "Stainless steel water bottle 32 oz",
+   "recorded_at": "2026-11-01T13:41:41Z"
+  },
+  {
+   "cards": [
+    {
+     "brand": "Melissa & Doug",
+     "category": "Wooden & Pegged Puzzles",
+     "image_url": "https://cdn.trychannel3.com/cleaned/v1/68b1649e-beb1-4ac2-bfd6-204dc82f8279?aid=01M6BNGCQ5TGKM69NZFD88X41V&mid=AYbp",
+     "key_features": [
+      "Assorted wooden tray puzzles with vibrant scenes including vehicles, construction, pets, and farm",
+      "12 chunky interlocking pieces per puzzle to support hand-eye coordination and fine motor skills",
+      "Durable wood construction designed for repeated use at home, daycare, or preschool",
+      "Ideal gift for ages 3+ and a great screen-free learning activity that encourages focus and"
+     ],
+     "materials": [
+      "wood"
+     ],
+     "product_id": "XocZ5en",
+     "title": "Melissa & Doug Wooden Jigsaw Puzzle Set, Assorted"
+    },
+    {
+     "brand": "Carter's",
+     "category": "Wooden & Pegged Puzzles",
+     "image_url": "https://cdn.trychannel3.com/ede57373-6510-4123-b70f-04c3c33b4e67?aid=01M6BNGCQ5TGKM69NZFD88X41V&mid=siPo",
+     "key_features": [
+      "Engaging wooden puzzle design",
+      "Promotes fine motor skills",
+      "Encourages imaginative play",
+      "Durable and safe materials"
+     ],
+     "materials": [
+      "wood",
+      "man-made materials"
+     ],
+     "product_id": "CBqOQFR",
+     "title": "Wooden Harvest Puzzle Set"
+    },
+    {
+     "brand": "Janod",
+     "category": "Wooden & Pegged Puzzles",
+     "image_url": "https://cdn.trychannel3.com/cleaned/v1/01cbece5-87df-42dd-bdbe-1343dc199b6f?aid=01M6BNGCQ5TGKM69NZFD88X41V&mid=oBPI",
+     "key_features": [
+      "Wooden shape-matching puzzle featuring cute garden critters",
+      "Encourages fine motor skills, shape-matching, image recognition, spatial reasoning, and imaginative",
+      "Features 7 chunky, easy-to-grasp puzzle pieces fox, squirrel, badger, deer, owl, bear, duck",
+      "Pieces double as figurines for imaginative play"
+     ],
+     "materials": [
+      "FSC-certified wood"
+     ],
+     "product_id": "3ZIlbpm",
+     "title": "Chunky Wooden Forest Puzzle"
+    }
+   ],
+   "query": "Kids wooden puzzle set",
+   "recorded_at": "2026-11-01T13:41:42Z"
+  }
+ ],
+ "schema_version": "payguard.channel3_recorded.v1"
+}

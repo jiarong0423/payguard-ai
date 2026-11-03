@@ -1,0 +1,4 @@
+/* Only the optional timeline uses these rules. They load with the Bryntum chunk. */
+.time-timeline { margin: 14px 0 0; padding: 16px; border: 1px solid #e2e8f0; background: #ffffff; border-radius: 8px; }
+.time-timeline figcaption { color: #64748b; font-size: 14px; margin-bottom: 8px; }
+.time-timeline-host { border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; }

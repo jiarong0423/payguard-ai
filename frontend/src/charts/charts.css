@@ -1,0 +1,28 @@
+/* Styles for AG Charts Community and the AG Grid views added in C1. Kept out of index.css. */
+.velocity-chart { margin: 0 0 16px; padding: 12px 12px 12px; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-card); background: var(--pg-color-panel); }
+.velocity-chart-canvas { width: 100%; height: 280px; }
+.velocity-chart figcaption { margin-top: 8px; color: var(--pg-color-muted); font-size: 14px; line-height: 1.5; }
+
+.time-evidence-views { display: inline-flex; gap: 4px; margin: 4px 0 12px; padding: 3px; border: 1px solid #2a3b55; border-radius: var(--pg-radius-card); background: #0b1624; }
+.time-evidence-views button { padding: 4px 16px; border: 0; border-radius: var(--pg-radius-control); background: transparent; color: #9fb6d3; font: inherit; font-size: 14px; cursor: pointer; }
+.time-evidence-views button.is-active { background: #1c2f49; color: #e6f0ff; }
+.time-evidence-grid { min-width: 0; }
+.time-evidence-grid-caption { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 8px; color: #8ea6c4; font-size: 14px; }
+.te-kind { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
+.te-kind > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.te-kind-dot { width: 9px; height: 9px; border-radius: var(--pg-radius-pill); background: #94a3b8; flex: none; }
+.te-kind-payment .te-kind-dot { background: #60a5fa; }
+.te-kind-order_record_created .te-kind-dot { background: #a78bfa; }
+.te-kind-delivery .te-kind-dot { background: #2dd4bf; }
+.te-kind-claim_opened .te-kind-dot { background: #f87171; }
+.te-kind-message .te-kind-dot { background: #fbbf24; }
+.te-kind small { color: #8ea6c4; font-size: 14px; }
+.te-time { font-variant-numeric: tabular-nums; }
+.te-source { display: inline-block; padding: 2px 12px; border-radius: var(--pg-radius-pill); background: #1c2f49; color: #cfe0f5; font-size: 14px; line-height: 1.5; }
+.te-gap { font-variant-numeric: tabular-nums; }
+.te-gap-first { color: #6985a9; }
+.te-gap-negative { color: #fcd34d; font-weight: 600; }
+.benchmark-charts { display: grid; gap: 16px; }
+.benchmark-facts { display: grid; gap: 8px; margin: 0; padding: 16px 16px 16px 32px; border-radius: var(--pg-radius-card); background: #eef2ff; font-size: 15px; line-height: 1.5; color: #1e1b4b; }
+.benchmark-chart-canvas { width: 100%; min-height: 240px; border: 1px solid #e0e7ff; border-radius: var(--pg-radius-card); overflow: hidden; background: #ffffff; box-shadow: 0 1px 2px rgba(30, 27, 75, 0.06); }
+.benchmark-note { margin: 0; font-size: 14px; color: #64748b; }

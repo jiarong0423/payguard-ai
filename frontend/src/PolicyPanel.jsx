@@ -3,7 +3,7 @@ import { apiRequest, POLICY_CLAIM_TYPES, policyInstant } from './api.js';
 import { operatorLabel, operatorLabels } from './operatorLabels.js';
 
 const labels = { source_compliance: 'AUP preflight screen', velocity_guard: 'Velocity and account-risk signals', dispute_mediation: 'Dispute mediation' };
-const panelLabels = { source_compliance: 'Deterministic Screening', velocity_guard: 'Deterministic Rule Engine', dispute_mediation: 'Policy Assertion Engine' };
+const panelLabel = 'Rule check';
 const syntheticText = 'Authored synthetic reference statement requiring human review.';
 const authority = 'REFERENCE_ONLY_NO_ACTION_AUTHORIZATION';
 function SourceDate({ label, value, status }) {
@@ -96,7 +96,7 @@ export default function PolicyPanel({ theme, session, revision, unavailable, onS
     } finally { if (isCurrent()) { setEvaluating(false); gateController.current = null; } }
   }
   return <details open={open} onToggle={(event) => onToggle?.(event.currentTarget.open)} className="reference-panel policy-panel" data-testid={`policy-panel-${theme}`}>
-    <summary id={`${prefix}-summary`} aria-controls={`${prefix}-content`}><span>Policy evidence and synthetic-claim check</span><span>{panelLabels[theme] ?? theme}</span></summary>
+    <summary id={`${prefix}-summary`} aria-controls={`${prefix}-content`}><span>Policy evidence and synthetic-claim check</span><span>{panelLabel}</span></summary>
     <div className="reference-inner" id={`${prefix}-content`} role="region" aria-labelledby={`${prefix}-summary`}>
       <p className="reference-boundary"><strong>Human reference · not current-policy applicability certification</strong> · No payment, refund, assurance, or submission authority. This panel uses fixed public summaries and runs no AI model.</p>
       <form className="reference-form" onSubmit={assess}>
@@ -115,16 +115,16 @@ export default function PolicyPanel({ theme, session, revision, unavailable, onS
           <p>Official-policy citations by theme: {Object.entries(assessment.coverage.official_policy_chunk_count_by_theme).map(([t,n]) => `${labels[t]} ${n}`).join('; ')}. Themes without official-policy coverage: {assessment.coverage.missing_official_policy_themes.map(t=>labels[t]).join(', ') || 'none; summaries still do not equal complete policy'}</p>
           {assessment.chunks.length === 0 && <p>No reference coverage exists for this region and theme; synthetic-claim checking is disabled.</p>}
           <p className="policy-code">{operatorLabels(assessment.reason_codes).join(' · ')}</p>
-          {assessment.sources.map(source => <details key={source.source_id} className="policy-source">
-            <summary>{source.title} · {operatorLabel(source.observation_status)}</summary>
+          {assessment.sources.map(source => <div key={source.source_id} className="policy-source">
+            <p className="flat-label">{source.title} · {operatorLabel(source.observation_status)}</p>
             <p>{operatorLabel(source.material_type)} · {source.jurisdiction} · United States profile</p>
             <dl className="reference-dates"><SourceDate label="Document update date" value={source.source_updated_date} status={source.source_updated_date_status} /><SourceDate label="Effective date" value={source.effective_date} status={source.effective_date_status} /><SourceDate label="Case decision date" value={source.decision_date} status={source.decision_date_status} /><SourceDate label="Decision acceptance deadline" value={source.decision_acceptance_deadline} /><SourceDate label="Saved retrieval time" value={source.retrieved_at} /><SourceDate label="Evaluation time" value={assessment.filters_applied.as_of} /></dl>
             <p>Source-age basis: {operatorLabel(source.observation_age_basis)}. An unknown effective date does not establish applicability.</p>
             <p className="policy-code">Source ID: {source.source_id}<br />{operatorLabels(source.reason_codes).join(' · ')}</p>
             <a href={source.url} target="_blank" rel="noopener noreferrer">Open public source for human review</a>
             {assessment.chunks.filter(c=>c.source_id===source.source_id).map(c=><p className="policy-code" key={c.chunk_id}>Citation {c.chunk_id} · {operatorLabel(c.case_stage)} · {operatorLabel(c.case_outcome, 'No case outcome stated')}<br />Text SHA-256: {c.text_sha256}</p>)}
-          </details>)}
-          <details className="policy-source"><summary>Corpus identity and limitations</summary><p className="policy-code">{assessment.corpus_id}<br />{assessment.corpus_digest}<br />Sources: {assessment.corpus_digests.sources_sha256}<br />Chunks: {assessment.corpus_digests.chunks_sha256}</p>{assessment.limitations.map((s,i)=><p key={i}>{s}</p>)}</details>
+          </div>)}
+          <div className="policy-source"><p className="flat-label">Corpus identity and limitations</p><p className="policy-code">{assessment.corpus_id}<br />{assessment.corpus_digest}<br />Sources: {assessment.corpus_digests.sources_sha256}<br />Chunks: {assessment.corpus_digests.chunks_sha256}</p>{assessment.limitations.map((s,i)=><p key={i}>{s}</p>)}</div>
         </>}
       </section>
       <div className="policy-gate-form reference-form">

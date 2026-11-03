@@ -14,14 +14,94 @@ import {
 
 export { REFERENCE_TYPES } from './referenceContract.js';
 
+// (r25 send guard) Plain sentences for the dispute send refusals, used when a reply carries the code without a message.
+export const SEND_GUARD_MESSAGES = Object.freeze({
+  dispute_case_bound: 'This dispute is already paired with another case, or this case with another dispute. Nothing was sent.',
+  evidence_type_not_supported: 'PayPal asks for an evidence type PayGuard cannot send yet. Respond to this dispute in PayPal directly. Nothing was sent.',
+  dispute_not_this_account: 'This dispute belongs to a different PayPal account than the connected Sandbox account. Nothing was sent.',
+  account_identity_unknown: 'PayGuard cannot confirm which PayPal Sandbox account is connected, so it will not send. Nothing was sent.',
+  input_characters_refused: 'The request contains characters or a number format PayGuard does not accept. Remove them and try again.',
+});
+
+// (evloop) PayPal's own reason for a failed send, in words a seller can act on. The backend keeps only PayPal's error
+// `name` and up to 3 `details[].issue` codes (each ^[A-Z0-9_]{1,64}$); every code here is one PayPal's Disputes,
+// Tracking or Invoicing docs list. Any other code is shown as "PayPal said: CODE".
+export const PAYPAL_ISSUE_TEXT = Object.freeze({
+  INVALID_EVIDENCE_FILE: 'PayPal did not accept the evidence file. Use JPG, GIF, PNG or PDF, under 10 MB each and 50 MB per case.',
+  MISSING_EVIDENCE_INFO: 'PayPal needs evidence details that were not in the request.',
+  MISSING_EVIDENCE_TYPE: 'PayPal needs the evidence type for this evidence.',
+  MISSING_TRACKING_INFO: 'PayPal needs a tracking number and carrier for proof of delivery.',
+  MANDATORY_PARAMETER_MISSING: 'PayPal says a required field is missing.',
+  ACTION_NOT_ALLOWED_IN_CURRENT_DISPUTE_STATE: 'PayPal does not allow this action in the dispute\'s current state. Check the dispute in PayPal.',
+  INVALID_EVIDENCE_TYPE_PROOF_OF_FULFILLMENT: 'Proof of delivery is not a valid evidence type for this dispute\'s reason and status.',
+  ITEM_ID_IS_MANDATORY_FOR_MULTIPLE_EVIDENCES: 'PayPal needs an item ID for each piece of evidence.',
+  PERMISSION_DENIED: 'The connected PayPal account does not have permission for this request.',
+  NOT_AUTHORIZED: 'The connected PayPal account is not allowed to make this request.',
+  AUTHENTICATION_FAILURE: 'PayPal could not sign in the connected account. Connect again.',
+  INPUT_VALIDATION_ERROR: 'PayPal did not accept the tracking details. Check the transaction ID and tracking number.',
+  INVALID_PARAMETER_VALUE: 'PayPal did not accept the value of one field.',
+  INVALID_PARAMETER_SYNTAX: 'PayPal did not accept the format of one field.',
+  RESOURCE_NOT_FOUND: 'PayPal could not find this item.',
+  RATE_LIMIT_REACHED: 'PayPal is limiting requests right now. Wait and try again.',
+  INTERNAL_SERVER_ERROR: 'PayPal had an internal error. Try again later.',
+  INVALID_REQUEST: 'PayPal did not accept the request format.',
+  UNPROCESSABLE_ENTITY: 'PayPal could not process this request.',
+});
+const PAYPAL_CODE = /^[A-Z0-9_]{1,64}$/;
+const PAYPAL_DEBUG_ID = /^[A-Za-z0-9]{6,64}$/;
+
+// The optional paypal_issue of an error body: {name: code|null, issues: [up to 3 codes]}; anything else is dropped.
+export function readPaypalIssue(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
+  const keys = Object.keys(value).sort();
+  if (keys.length !== 2 || keys[0] !== 'issues' || keys[1] !== 'name') return null;
+  const { name, issues } = value;
+  if (!(name === null || (typeof name === 'string' && PAYPAL_CODE.test(name)))) return null;
+  if (!Array.isArray(issues) || issues.length > 3 || !issues.every((code) => typeof code === 'string' && PAYPAL_CODE.test(code))) return null;
+  if (name === null && issues.length === 0) return null;
+  return { name, issues: [...issues] };
+}
+
+// Plain-English lines for one paypal_issue: each issue code first (the most specific), then the name when no issue
+// explains it. Unknown codes read "PayPal said: CODE".
+export function paypalIssueLines(issue) {
+  const checked = readPaypalIssue(issue);
+  if (!checked) return [];
+  const codes = checked.issues.length ? checked.issues : [checked.name];
+  return [...new Set(codes)].map((code) => (Object.hasOwn(PAYPAL_ISSUE_TEXT, code) ? PAYPAL_ISSUE_TEXT[code] : `PayPal said: ${code}`));
+}
+
 export class ApiError extends Error {
-  constructor(message, status, code) {
+  constructor(message, status, code, retryAfter = null, { paypalIssue = null, paypalDebugId = null } = {}) {
     super(message);
     this.name = 'ApiError';
     this.status = status;
     this.code = code;
+    // (evloop) Optional, checked again here: PayPal's sanitised reason and the PayPal-Debug-Id of the failed call.
+    this.paypalIssue = readPaypalIssue(paypalIssue);
+    this.paypalDebugId = typeof paypalDebugId === 'string' && PAYPAL_DEBUG_ID.test(paypalDebugId) ? paypalDebugId : null;
+    // (attack r23) A 429 or 503 with Retry-After: seconds to wait and the instant the wait ends, so the page can count
+    // down and hold the button that hit the limit instead of letting the seller retry into it.
+    this.retryAfter = retryAfter;
+    this.retryAt = retryAfter ? Date.now() + retryAfter * 1000 : null;
   }
 }
+
+// (attack r23) Retry-After is delay-seconds or an HTTP date; anything else, or a wait over ten minutes, is ignored.
+export function parseRetryAfter(value, now = Date.now()) {
+  if (typeof value !== 'string' || !value.trim()) return null;
+  const text = value.trim();
+  const seconds = /^\d{1,6}$/.test(text) ? Number(text) : Math.ceil((Date.parse(text) - now) / 1000);
+  return Number.isFinite(seconds) && seconds >= 1 && seconds <= 600 ? seconds : null;
+}
+
+// Whole seconds left on a failure's Retry-After (0 when there is none or it has passed).
+export const retrySecondsLeft = (failure, now = Date.now()) => (failure?.retryAt ? Math.max(0, Math.ceil((failure.retryAt - now) / 1000)) : 0);
+export const waitText = (seconds) => `Try again in ${seconds} second${seconds === 1 ? '' : 's'}.`;
+// The server's own fixed wait sentence ("try again in 37 seconds", "try again in a few seconds") gives way to the live
+// countdown, so the page never shows two different numbers (attack r23).
+export const withoutFixedWait = (message) => String(message || '')
+  .replace(/[\s;,.]*(?:and )?try again(?: in (?:\d+ seconds?|a few seconds|about two minutes))?\.?\s*$/i, '.').replace(/^\.$/, '');
 
 const REFERENCE_SOURCE_IDS = new Set(Object.keys(POLICY_SOURCES));
 const REFERENCE_CHUNK_IDS = new Set(Object.keys(REFERENCE_ROWS));
@@ -102,7 +182,124 @@ export function assertReferences(payload, request) {
 }
 
 
-export const POLICY_CLAIM_TYPES = ['policy_reference', 'current_policy', 'historical_case', 'procedural_reference', 'api_reference', 'guidance_reference', 'financial_action', 'assurance'];
+const GUIDE_PATHS = ['/guide/start', '/guide/turn', '/guide/form', '/guide/review', '/guide/state'];
+const GUIDE_STATUSES = ['STRUCTURALLY_PRESENT', 'PARTIAL', 'UNCLEAR', 'CONFLICTING', 'MISSING', 'NOT_APPLICABLE'];
+export const GUIDE_TEMPLATES = ['OPEN', 'CONFIRM_DATE', 'REQUEST', 'ONE', 'COMMS', 'PROGRESS', 'UNCLEAR', 'CONFLICT', 'DONE', 'PROFESSIONAL', 'REFUSE', 'OFF_TOPIC', 'OTHER_FLOW', 'OTHER_PARTY', 'SKIP', 'NO_GUARANTEE', 'NOT_ENOUGH', 'ENGLISH_ONLY', 'PII', 'NOT_SENDABLE', 'DEADLINE', 'UPLOAD', 'BUYER_ANGER', 'BUDGET', 'REQUEST_MANY', 'ECHO', 'DESCRIBE', 'SUBTRACTION', 'REVIEW'];
+export const GUIDE_STAGES = ['funnel', 'echo', 'fill', 'review', 'done'];
+const GUIDE_CHOOSERS = ['none', 'keyword', 'model', 'keyword_fallback', 'form'];
+
+/** Guided gap filling: closed shape, statuses from the rule layer, fixed template ids, no model text and no stored values. */
+export function assertGuideState(payload, path, body) {
+  const fail = () => { throw new ApiError('API contract mismatch. Unverified content is hidden; check the backend version.', 502, 'contract_error'); };
+  const keys = ['schema_version', 'started', 'scenario', 'goods_type', 'flow_name', 'items', 'gap', 'reply', 'form_result', 'form_results', 'analysis',
+    'asked', 'stage', 'subtraction', 'deferred', 'prefill', 'auto_confirmed', 'review', 'rounds_used', 'turns_used', 'turns_limit', 'chooser_mode', 'model_requested', 'model_text_shown', 'values_stored', 'advisory_only'];
+  const id = (v) => typeof v === 'string' && /^[a-z_]{1,40}$/.test(v);
+  const short = (v, cap = 160) => typeof v === 'string' && v.length > 0 && v.length <= cap && !/[\p{C}<>]/u.test(v);
+  const count = (v, cap) => Number.isInteger(v) && v >= 0 && v <= cap;
+  if (!pk(payload, keys) || payload.schema_version !== 1 || typeof payload.started !== 'boolean' || payload.model_text_shown !== false
+    || payload.values_stored !== false || payload.advisory_only !== true || !['keyword', 'gemini'].includes(payload.chooser_mode)
+    || typeof payload.model_requested !== 'boolean' || !count(payload.turns_limit, 1000) || !count(payload.turns_used, payload.turns_limit)
+    || !Array.isArray(payload.items) || payload.items.length > 12 || !pk(payload.gap, ['missing', 'partial', 'conflicting', 'present'])
+    || !Array.isArray(payload.form_results) || payload.form_results.length > 3 || !Array.isArray(payload.asked) || payload.asked.length > 3
+    || !Array.isArray(payload.deferred) || !po(payload.prefill) || !Array.isArray(payload.auto_confirmed) || payload.auto_confirmed.length > 12 || !Array.isArray(payload.review) || payload.review.length > 12
+    || !count(payload.rounds_used, 10000)) fail();
+  if (!payload.started) {
+    if (path !== '/guide/state' || payload.scenario !== null || payload.items.length || payload.reply !== null || payload.form_result !== null || payload.analysis !== null
+      || payload.form_results.length || payload.asked.length || payload.stage !== null || payload.subtraction !== null || payload.deferred.length
+      || Object.keys(payload.prefill).length || payload.auto_confirmed.length || payload.review.length || payload.rounds_used !== 0
+      || Object.values(payload.gap).some((list) => !Array.isArray(list) || list.length)) fail();
+    return payload;
+  }
+  if (!['preflight', 'velocity', 'dispute'].includes(payload.scenario) || !short(payload.flow_name, 40)
+    || (payload.scenario === 'dispute' ? !['physical', 'digital'].includes(payload.goods_type) : payload.goods_type !== null)) fail();
+  if (path === '/guide/start' && (body?.scenario !== payload.scenario || (body?.goods_type ?? null) !== payload.goods_type)) fail();
+  // One guide per situation: an answer for another situation's guide is never shown in this one.
+  if (body?.scenario !== undefined && payload.scenario !== body.scenario) fail();
+  const ids = new Set();
+  for (const item of payload.items) {
+    if (!pk(item, ['id', 'label', 'status', 'source', 'chunk', 'form']) || !id(item.id) || ids.has(item.id) || !short(item.label, 60)
+      || !GUIDE_STATUSES.includes(item.status) || !['OFFICIAL', 'SUGGESTION'].includes(item.source)
+      || (item.source === 'OFFICIAL' ? !(typeof item.chunk === 'string' && /^[A-Z0-9-]{3,64}$/.test(item.chunk)) : item.chunk !== null)
+      || ((item.status === 'NOT_APPLICABLE') !== (item.form === null))) fail();
+    if (item.form !== null) {
+      const form = item.form;
+      if (!pk(form, ['kind', 'options', 'placeholder']) || !['date', 'choice', 'text'].includes(form.kind) || !Array.isArray(form.options)
+        || (form.kind === 'choice') !== (form.options.length > 0) || form.options.length > 8
+        || !form.options.every((option) => pk(option, ['value', 'label']) && short(option.value, 40) && short(option.label, 80))
+        || (form.kind === 'choice' ? form.placeholder !== null : !short(form.placeholder, 80))) fail();
+    }
+    ids.add(item.id);
+  }
+  const byStatus = (wanted) => payload.items.filter((item) => wanted.includes(item.status)).map((item) => item.id);
+  const same = (list, expected) => Array.isArray(list) && list.length === expected.length && list.every((value, index) => value === expected[index]);
+  if (!same(payload.gap.missing, byStatus(['MISSING'])) || !same(payload.gap.partial, byStatus(['PARTIAL', 'UNCLEAR']))
+    || !same(payload.gap.conflicting, byStatus(['CONFLICTING'])) || !same(payload.gap.present, byStatus(['STRUCTURALLY_PRESENT']))) fail();
+  const reply = payload.reply;
+  if (!pk(reply, ['template', 'text', 'chooser', 'state_changed', 'dropped', 'fallback_reason']) || !GUIDE_TEMPLATES.includes(reply.template)
+    || !short(reply.text, 400) || !GUIDE_CHOOSERS.includes(reply.chooser) || typeof reply.state_changed !== 'boolean'
+    || !Array.isArray(reply.dropped) || reply.dropped.length > 3
+    || !reply.dropped.every((row) => pk(row, ['item', 'reason']) && ids.has(row.item) && ['other_party', 'inferred'].includes(row.reason))
+    || (reply.chooser === 'keyword_fallback' ? !['budget', 'provider_error', 'invalid_reply', 'late', 'no_items'].includes(reply.fallback_reason) : reply.fallback_reason !== null)
+    || (reply.chooser === 'model' && payload.chooser_mode !== 'gemini')) fail();
+  // A turn may carry the first round's fixed inputs in the same Save; then its results match what was sent.
+  const sentWithTurn = path === '/guide/turn' && Array.isArray(body?.fields) ? body.fields.map((field) => field.item) : [];
+  if (path === '/guide/turn' && (reply.chooser === 'form' || payload.form_results.length > sentWithTurn.length
+    || !payload.form_results.every((row) => sentWithTurn.includes(row.item)) || (payload.form_result !== null) !== (payload.form_results.length > 0))) fail();
+  // Rounds: subtraction is rule arithmetic; asked holds up to three open ids; echo values are closed field values.
+  const open = new Set([...payload.gap.missing, ...payload.gap.partial, ...payload.gap.conflicting]);
+  const sub = payload.subtraction;
+  const itemCount = payload.items.filter((item) => item.status !== 'NOT_APPLICABLE').length;
+  if (!GUIDE_STAGES.includes(payload.stage) || !pk(sub, ['needed', 'taken', 'left', 'text']) || sub.needed !== itemCount
+    || sub.taken !== payload.gap.present.length || sub.left !== sub.needed - sub.taken
+    || sub.text !== `${sub.needed} items needed · ${sub.taken} taken from what you wrote · ${sub.left} left`
+    // done needs every item present; review is the one summary: nothing asked, only values from the seller's words open
+    || (payload.stage === 'done' && open.size !== 0) || (open.size === 0 && !['done', 'review'].includes(payload.stage))
+    || (['done', 'review'].includes(payload.stage)) !== (payload.asked.length === 0)
+    // The summary of items taken from the seller's words: its own round only when nothing is left to fill,
+    // otherwise on the same screen as the last round (the asked items are every open item).
+    || (payload.stage === 'review' && (!payload.review.length || open.size !== 0))
+    || (payload.review.length && payload.stage !== 'review' && !(open.size > 0 && [...open].every((item) => payload.asked.includes(item))))
+    || !payload.review.every((row) => pk(row, ['item', 'source', 'value']) && ids.has(row.item) && row.source === 'words'
+      && short(row.value, 40) && payload.gap.present.includes(row.item))
+    || new Set(payload.asked).size !== payload.asked.length || !payload.asked.every((item) => open.has(item))
+    || !payload.deferred.every((item) => open.has(item))
+    // Settled by the rule layer from the last typed sentence: present items, only on a typed turn, never twice.
+    || !payload.auto_confirmed.every((item) => payload.gap.present.includes(item)) || new Set(payload.auto_confirmed).size !== payload.auto_confirmed.length
+    || (path !== '/guide/turn' && path !== '/guide/state' && payload.auto_confirmed.length)
+    || !Object.entries(payload.prefill).every(([item, value]) => {
+      const row = payload.items.find((entry) => entry.id === item);
+      if (!row || !open.has(item) || row.form === null || typeof value !== 'string') return false;
+      return row.form.kind === 'choice' ? row.form.options.some((option) => option.value === value) : row.form.kind === 'date' && /^\d{4}-\d{2}-\d{2}$/.test(value);
+    })
+    // Echo: the confirmations come first; spare slots may carry the next open items.
+    || (payload.stage === 'echo' && (!payload.asked.length || !(payload.asked[0] in payload.prefill)
+      || payload.asked.some((item, index) => index > 0 && item in payload.prefill && !(payload.asked[index - 1] in payload.prefill))))
+    || (payload.stage === 'fill' && !payload.asked.every((item) => payload.deferred.includes(item)))) fail();
+  const analysis = payload.analysis;
+  if (analysis !== null) {
+    // One governed model step per turn: analysing, then replaced (model reply) or kept (keyword answer and a reason).
+    if (!pk(analysis, ['turn', 'status', 'reason']) || !Number.isInteger(analysis.turn) || analysis.turn < 1 || analysis.turn > 10000
+      || !['analysing', 'replaced', 'kept'].includes(analysis.status) || payload.chooser_mode !== 'gemini'
+      || (analysis.status === 'kept' ? !['budget', 'provider_error', 'invalid_reply', 'late', 'no_items', 'superseded'].includes(analysis.reason) : analysis.reason !== null)
+      || (path === '/guide/turn' && analysis.status !== 'analysing')
+      || !({ analysing: ['keyword'], replaced: ['model', 'form'], kept: ['keyword_fallback', 'form'] }[analysis.status] || []).includes(reply.chooser)) fail();
+  }
+  if (path === '/guide/review' && (reply.chooser !== 'form' || payload.form_results.length || payload.form_result !== null)) fail();
+  if (path === '/guide/form') {
+    const sent = Array.isArray(body?.fields) ? body.fields.map((field) => field.item) : [body?.item];
+    if (!pk(payload.form_result, ['item', 'valid']) || payload.form_result.item !== sent[sent.length - 1] || typeof payload.form_result.valid !== 'boolean'
+      || reply.chooser !== 'form' || payload.form_results.length !== sent.length
+      || !payload.form_results.every((row, index) => pk(row, ['item', 'valid', 'deferred']) && row.item === sent[index]
+        && typeof row.valid === 'boolean' && typeof row.deferred === 'boolean' && !(row.valid && row.deferred)
+        && (!row.valid || payload.gap.present.includes(row.item)))) fail();
+  } else if (payload.form_result !== null && !((path === '/guide/state' || sentWithTurn.length) && pk(payload.form_result, ['item', 'valid'])
+    && ids.has(payload.form_result.item))) fail();
+  return payload;
+}
+
+// The six claim types src/payguard/advisory_eval.py CLAIM_TYPES accepts; the backend has no source rule for historical
+// cases or guidance claims, so offering them only ever produced a 422 (click-all 2026-11-03 #1).
+export const POLICY_CLAIM_TYPES = ['policy_reference', 'current_policy', 'procedural_reference', 'api_reference', 'financial_action', 'assurance'];
 const POLICY_THEMES = ['source_compliance', 'velocity_guard', 'dispute_mediation'];
 const POLICY_REASONS = ['SUMMARY_COVERAGE_INCOMPLETE','CURRENT_POLICY_APPLICABILITY_NOT_ESTABLISHED','FUTURE_OBSERVATION','STALE_OBSERVATION','DOCUMENT_UPDATE_DATE_MISSING','DOCUMENT_UPDATE_IN_FUTURE','UNKNOWN_EFFECTIVE_DATE','EFFECTIVE_DATE_IN_FUTURE','API_REFERENCE_NOT_POLICY','GUIDANCE_NOT_APPLICABLE_POLICY','HISTORICAL_CASE_NOT_APPLICABLE_POLICY','PROCEDURE_NOT_APPLICABLE_POLICY','NO_OFFICIAL_POLICY_COVERAGE','NO_REFERENCE_COVERAGE'];
 const CLAIM_REASONS = ['ACTION_CLAIM_FORBIDDEN','ASSURANCE_CLAIM_FORBIDDEN','CITATION_UNKNOWN','CITATION_REGION_MISMATCH','CITATION_THEME_MISMATCH','CLAIM_REFERENCE_TYPE_MISMATCH','FUTURE_OBSERVATION','STALE_OBSERVATION','DOCUMENT_UPDATE_IN_FUTURE','CURRENT_POLICY_NOT_ESTABLISHED'];
@@ -178,8 +375,14 @@ const AI_CITATIONS = {
   velocity_guard: new Set(['PP-US-UA-VELOCITY']),
   dispute_mediation: new Set(['PP-REASONS-INR', 'PP-EVIDENCE-TRACKING']),
 };
-const AI_PROMPT_CONTRACT_ID = 'payguard-bounded-advisory-v2';
-const AI_PROMPT_CONTRACT_DIGEST = '2f870a865397a3e41a00bd51f85d96be5cce9ba77ad517d86d779dd3e15f2941';
+const AI_PROMPT_CONTRACT_ID = 'payguard-bounded-advisory-v3';
+const AI_PROMPT_CONTRACT_DIGEST = '98cd0bc33670027ff728ea571bc05debd5e1aa756d493521b2ea810f1bc8e5c0';
+// Local runs answer from this session's closed facts; the fixed fixture remains for tests and replays.
+// Each variant carries its own first limitation, so a session brief cannot be shown with the fixed wording or back.
+const AI_FIRST_LIMITATION = {
+  'payguard-session-brief-v1': 'Built from closed values the server computed for this demo session; the demo data is synthetic and this brief does not describe a real merchant.',
+  'payguard-fixed-synthetic-brief-v1': 'Fixed synthetic fixture only; this brief does not describe the current session or a real merchant.',
+};
 const AI_MODEL_EVIDENCE = {
   'gemini-3.8-flash': new Set(['SYNTHETIC_TEST_RESPONSE', 'OPERATOR_LIVE_RESPONSE']),
   'nvidia-nemotron-3-nano-4b': new Set(['LOCAL_RUNTIME_RESPONSE']),
@@ -191,9 +394,11 @@ export function assertAiBrief(payload, request) {
   const digest = (value) => typeof value === 'string' && /^[a-f0-9]{64}$/.test(value);
   const boundedText = (value, limit) => typeof value === 'string' && value.trim().length > 0
     && [...value].length <= limit && !/\p{C}/u.test(value);
-  if (!pk(payload, envelope) || !pk(request, ['stage']) || !Object.hasOwn(AI_CITATIONS, request.stage)
+  const requestKeys = request && Object.hasOwn(request, 'case_ref') ? ['stage', 'case_ref'] : ['stage'];
+  if (!pk(payload, envelope) || !pk(request, requestKeys) || !Object.hasOwn(AI_CITATIONS, request.stage)
+      || (Object.hasOwn(request, 'case_ref') && (request.stage !== 'dispute_mediation' || typeof request.case_ref !== 'string' || !/^case-ref-[0-9]{3}$/.test(request.case_ref)))
       || payload.schema_version !== '1.0' || payload.status !== 'completed' || payload.stage !== request.stage
-      || payload.fixture_id !== 'payguard-fixed-synthetic-brief-v1' || !digest(payload.context_digest) || !digest(payload.corpus_digest)
+      || !Object.hasOwn(AI_FIRST_LIMITATION, payload.fixture_id) || !digest(payload.context_digest) || !digest(payload.corpus_digest)
       || !Object.hasOwn(AI_MODEL_EVIDENCE, payload.model)
       || payload.prompt_contract_id !== AI_PROMPT_CONTRACT_ID || payload.prompt_contract_digest !== AI_PROMPT_CONTRACT_DIGEST
       || !AI_MODEL_EVIDENCE[payload.model].has(payload.execution_evidence)
@@ -211,7 +416,8 @@ export function assertAiBrief(payload, request) {
       || new Set(brief.citation_ids).size !== brief.citation_ids.length
       || !brief.citation_ids.every((value) => typeof value === 'string' && /^[A-Z0-9-]{1,128}$/.test(value) && AI_CITATIONS[request.stage].has(value))
       || !Array.isArray(payload.limitations) || payload.limitations.length !== 3
-      || !payload.limitations.every((value) => boundedText(value, 1200))) contractFailure();
+      || !payload.limitations.every((value) => boundedText(value, 1200))
+      || payload.limitations[0] !== AI_FIRST_LIMITATION[payload.fixture_id]) contractFailure();
   return payload;
 }
 
@@ -219,6 +425,7 @@ function assertContract(path, payload, session, body) {
   if (path === '/policy/assess') return assertPolicyAssessment(payload, body);
   if (path === '/advisory/evaluate') return assertAdvisoryEvaluation(payload, body);
   if (path === '/ai/evidence-brief') return assertAiBrief(payload, body);
+  if (GUIDE_PATHS.includes(path)) return assertGuideState(payload, path, body);
   const object = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
   const text = (value) => typeof value === 'string' && value.length > 0;
   const digest = (value) => typeof value === 'string' && /^[a-f0-9]{64}$/.test(value);
@@ -233,8 +440,13 @@ function assertContract(path, payload, session, body) {
       && Array.isArray(payload.transactions) && payload.transactions.length <= 200
       && payload.transactions.every((row) => object(row) && ['order_id', 'amount', 'currency', 'occurred_at'].every((key) => text(row[key])))
       && Array.isArray(payload.disputes) && payload.disputes.length <= 5
-      && payload.disputes.every((row) => object(row) && pk(row,['case_ref','order_ref','reason','opened_at','status'])
-        && ['case_ref', 'order_ref', 'reason', 'opened_at', 'status'].every((key) => text(row[key])))
+      && payload.disputes.every((row) => object(row) && pk(row,['case_ref','order_ref','reason','opened_at','seller_response_due_date','dispute_amount','status'])
+        && ['case_ref', 'order_ref', 'reason', 'opened_at', 'seller_response_due_date', 'status'].every((key) => text(row[key]))
+        && Number.isFinite(Date.parse(row.seller_response_due_date))
+        // Synthetic amount in the PayPal Disputes dispute_amount shape.
+        && pk(row.dispute_amount, ['currency_code', 'value']) && typeof row.dispute_amount.currency_code === 'string'
+        && /^[A-Z]{3}$/.test(row.dispute_amount.currency_code) && typeof row.dispute_amount.value === 'string'
+        && /^[0-9]{1,10}(\.[0-9]{1,2})?$/.test(row.dispute_amount.value))
       && Array.isArray(payload.activity) && payload.activity.length <= 30
       && payload.activity.every((row) => object(row) && ['id', 'at', 'label', 'source'].every((key) => text(row[key])) && row.source === 'synthetic')
       && object(payload.velocity) && ['normal','review_velocity','insufficient_baseline'].includes(payload.velocity.status)
@@ -263,6 +475,70 @@ function assertContract(path, payload, session, body) {
       && (payload.match_status === 'REVIEW_SIGNAL') === (payload.findings.length > 0)
       && text(payload.recommendation) && payload.recommendation.length <= 1000 && text(payload.policy_version)
       && payload.advisory_only === true && payload.source === 'synthetic';
+  } else if (path === '/aup/category-signal') {
+    // Optional Channel3 signal: a closed shape that never carries or changes the AUP decision.
+    const statusOk = ['OFF','SIGNAL','NOT_SENT','UNAVAILABLE'].includes(payload.status);
+    const reasonOk = payload.reason === null || ['nothing_to_send','budget_exhausted','timeout','upstream_error','contract_rejected'].includes(payload.reason);
+    const signal = payload.signal;
+    const signalOk = signal === null || (pk(signal,['category','confidence','source']) && signal.source === 'channel3'
+      && ((signal.category === null && signal.confidence === null)
+        || (typeof signal.category === 'string' && /^[A-Za-z0-9][A-Za-z0-9 &'\-,./+()]{0,79}$/.test(signal.category) && ['HIGH','LOW'].includes(signal.confidence))));
+    valid = valid && pk(payload,['status','signal','reason','affects_decision']) && statusOk && reasonOk && signalOk
+      && payload.affects_decision === false
+      && (payload.status === 'SIGNAL') === (signal !== null)
+      && ['NOT_SENT','UNAVAILABLE'].includes(payload.status) === (payload.reason !== null);
+  } else if (path === '/aup/product-reference' || path === '/aup/product-reference/confirm') {
+    // Channel3 reference cards: closed shape, no prices, offers or buy links; never changes the AUP decision.
+    const cardText = (v, max) => typeof v === 'string' && v.length >= 2 && v.length <= max && /^[A-Za-z0-9 &'\-,./+()%"]+$/.test(v);
+    const card = (c) => pk(c,['product_id','title','brand','category','key_features','materials','image_url'])
+      && typeof c.product_id === 'string' && /^[A-Za-z0-9_.:-]{1,64}$/.test(c.product_id) && cardText(c.title, 120)
+      && (c.brand === null || cardText(c.brand, 60)) && (c.category === null || cardText(c.category, 80))
+      && Array.isArray(c.key_features) && c.key_features.length <= 4 && c.key_features.every((f) => cardText(f, 100))
+      && Array.isArray(c.materials) && c.materials.length <= 4 && c.materials.every((m) => cardText(m, 40))
+      && (c.image_url === null || (typeof c.image_url === 'string' && c.image_url.length <= 500 && /^https:\/\/[^\s@]+$/.test(c.image_url)));
+    const sources = ['channel3_live','channel3_recorded'];
+    const stamp = (v) => v === null || (typeof v === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(v));
+    if (path === '/aup/product-reference') {
+      const cards = payload.cards;
+      valid = valid && pk(payload,['status','source','cards','reason','recorded_at','affects_decision'])
+        && ['OFF','FOUND','NOT_FOUND','NOT_SENT','UNAVAILABLE'].includes(payload.status)
+        && Array.isArray(cards) && cards.length <= 3 && cards.every(card)
+        && new Set(cards.map((c) => c.product_id)).size === cards.length
+        && (payload.status === 'FOUND') === (cards.length > 0)
+        && (['FOUND','NOT_FOUND'].includes(payload.status) ? sources.includes(payload.source) : payload.source === null)
+        && (payload.reason === null || ['nothing_to_send','not_recorded','budget_exhausted','timeout','upstream_error','contract_rejected'].includes(payload.reason))
+        && ['NOT_SENT','UNAVAILABLE'].includes(payload.status) === (payload.reason !== null)
+        && stamp(payload.recorded_at) && (payload.source === 'channel3_recorded') === (payload.recorded_at !== null)
+        && payload.affects_decision === false;
+    } else {
+      valid = valid && pk(payload,['choice','evaluation_id','description_digest','source','recorded_at','card','card_digest','confirmed_by','affects_decision'])
+        && ['CONFIRMED','NONE_MATCH'].includes(payload.choice) && payload.evaluation_id === body?.evaluation_id
+        && typeof payload.description_digest === 'string' && /^[a-f0-9]{64}$/.test(payload.description_digest)
+        && sources.includes(payload.source) && stamp(payload.recorded_at)
+        && (payload.choice === 'CONFIRMED' ? card(payload.card) && payload.card.product_id === body?.product_id
+          && typeof payload.card_digest === 'string' && /^[a-f0-9]{64}$/.test(payload.card_digest)
+          : payload.card === null && payload.card_digest === null && body?.product_id === null)
+        && payload.confirmed_by === 'seller' && payload.affects_decision === false;
+    }
+  } else if (path === '/cases/route') {
+    // Fuzzy case routing: closed shape; code decides the goods group, never a dispute outcome.
+    const routeText = (v, max) => typeof v === 'string' && v.length >= 2 && v.length <= max && /^[A-Za-z0-9 &'\-,./+()%"]+$/.test(v);
+    const match = (m) => pk(m,['product_id','title','category','score','exact_words','match_type']) && typeof m.product_id === 'string' && /^[A-Za-z0-9_.:-]{1,64}$/.test(m.product_id)
+      && routeText(m.title, 120) && (m.category === null || routeText(m.category, 80)) && typeof m.score === 'number' && m.score >= 0 && m.score <= 1
+      && Array.isArray(m.exact_words) && m.exact_words.length <= 8 && m.exact_words.every((w) => typeof w === 'string' && /^[a-z0-9]{1,40}$/.test(w))
+      && ['exact','close'].includes(m.match_type);
+    valid = valid && pk(payload,['query','route','reason','matched_word','matches','filtered_out','items','decided_by','affects_decision'])
+      && Number.isInteger(payload.filtered_out) && payload.filtered_out >= 0 && payload.filtered_out <= 1000
+      && (payload.query === null || (typeof payload.query === 'string' && payload.query.length <= 120))
+      && ['physical','digital','service','unknown'].includes(payload.route)
+      && ['catalogue_match','live_catalogue_match','digital_word','service_word','filtered_conflict','no_close_match','nothing_to_match'].includes(payload.reason)
+      && (payload.matched_word === null || (typeof payload.matched_word === 'string' && payload.matched_word.length <= 40))
+      && Array.isArray(payload.matches) && payload.matches.length <= 3 && payload.matches.every(match)
+      && Array.isArray(payload.items) && payload.items.length <= 12 && payload.items.every((item) => typeof item === 'string' && item.length > 0 && item.length <= 60)
+      && (payload.route === 'physical') === (payload.matches.length > 0)
+      && ['digital','service'].includes(payload.route) === (payload.matched_word !== null)
+      && ['physical','digital'].includes(payload.route) === (payload.items.length > 0)
+      && payload.decided_by === 'code' && payload.affects_decision === false;
   } else if (path === '/aup/acknowledge') {
     valid = valid && pk(payload,['source','evaluation_id','description_digest','choice','acknowledgement_token','expires_at','warning_copy_version','compliance_decision','external_action_authorized'])
       && payload.source === 'synthetic' && payload.evaluation_id === body?.evaluation_id
@@ -273,6 +549,9 @@ function assertContract(path, payload, session, body) {
       valid = typeof payload.acknowledgement_token === 'string' && /^[A-Za-z0-9_-]{32,128}$/.test(payload.acknowledgement_token)
         && Number.isFinite(Date.parse(payload.expires_at)) && Date.parse(payload.expires_at) <= Date.parse(session?.expires_at);
     } else if (valid) valid = payload.acknowledgement_token === null && payload.expires_at === null;
+  } else if (path === '/connections') {
+    // Deployment mode only: the console never learns whether a key is present.
+    valid = valid && pk(payload, ['mode']) && ['local', 'hosted_demo'].includes(payload.mode);
   } else if (path === '/paypal/status' || path === '/paypal/connect') {
     valid = valid && pk(payload,['configured','status','environment','last_verified_at','source','evidence_receipt'])
       && payload.source === 'paypal_sandbox' && payload.environment === 'sandbox' && typeof payload.configured === 'boolean'
@@ -281,10 +560,31 @@ function assertContract(path, payload, session, body) {
       assertSandboxReceipt(payload.evidence_receipt,'OAUTH_CONNECT');
       valid = payload.configured && payload.last_verified_at === payload.evidence_receipt.observed_at;
     } else if (valid) valid = payload.evidence_receipt === null;
-  } else if (path === '/paypal/disputes' || /^\/paypal\/disputes\/PP-[A-Z0-9][A-Z0-9-]{2,62}$/.test(path) || path === '/paypal/disputes/provide-evidence') {
+  } else if (path === '/paypal/disputes' || /^\/paypal\/disputes\/PP-[A-Z0-9][A-Z0-9-]{2,62}$/.test(path) || path === '/paypal/disputes/provide-evidence' || path === '/paypal/disputes/add-tracking') {
     const disputeId = (value) => typeof value === 'string' && /^PP-[A-Z0-9][A-Z0-9-]{2,62}$/.test(value);
     const money = (value) => object(value) && pk(value, ['currency_code', 'value']) && /^[A-Z]{3}$/.test(value.currency_code) && /^[0-9]{1,10}(\.[0-9]{1,2})?$/.test(value.value);
-    const envelopeKeys = ['source', 'data_source_label', 'environment', 'evidence_class', 'observed_at', 'provider_submission'];
+    // (optimise r24) Optional fields the backend now returns: paypal_debug_id on every dispute envelope (null, or the
+    // Sandbox call's PayPal-Debug-Id; always null for the fixture) and payload_sha256 on the provide-evidence and
+    // add-tracking previews.
+    // Each is read only when present and must match its pattern; every other key stays exact.
+    const has = (key) => Object.prototype.hasOwnProperty.call(payload, key);
+    const optional = (...keys) => keys.filter(has);
+    const debugIdValid = !has('paypal_debug_id') || payload.paypal_debug_id === null
+      || (payload.source === 'paypal_sandbox' && typeof payload.paypal_debug_id === 'string' && /^[A-Za-z0-9]{6,64}$/.test(payload.paypal_debug_id));
+    // (r25 send guard) What a send carries and to whom, side by side; account ids arrive masked (first 2, last 4).
+    const maskedDispute = (value) => typeof value === 'string' && /^(?:PP-[A-Z0-9-]{2}\u2026[A-Z0-9-]{2}|\u2026)$/.test(value);
+    const maskedAccount = (value) => value === null || (typeof value === 'string' && /^(?:[0-9A-Za-z]{2}\u2026[0-9A-Za-z]{4}|\u2026)$/.test(value));
+    const token = (value) => value === null || (typeof value === 'string' && /^[A-Z][A-Z0-9_]{0,63}$/.test(value));
+    const sendGuardValid = !has('send_guard') || (object(payload.send_guard)
+      && pk(payload.send_guard, ['case_ref', 'case_reason', 'dispute_masked', 'dispute_reason', 'dispute_amount', 'bound_dispute_masked', 'sending_account_masked', 'dispute_seller_masked', 'account_status', 'send_refusal'])
+      && payload.send_guard.case_ref === body?.case_ref && token(payload.send_guard.case_reason) && maskedDispute(payload.send_guard.dispute_masked)
+      && token(payload.send_guard.dispute_reason) && (payload.send_guard.dispute_amount === null || money(payload.send_guard.dispute_amount))
+      && (payload.send_guard.bound_dispute_masked === null || maskedDispute(payload.send_guard.bound_dispute_masked))
+      && maskedAccount(payload.send_guard.sending_account_masked) && maskedAccount(payload.send_guard.dispute_seller_masked)
+      && ['MATCH', 'MISMATCH', 'UNKNOWN'].includes(payload.send_guard.account_status)
+      && [null, 'account_identity_unknown', 'dispute_not_this_account', 'dispute_detail_required'].includes(payload.send_guard.send_refusal)
+      && (payload.send_guard.account_status === 'MATCH') === (payload.send_guard.send_refusal === null));
+    const envelopeKeys = ['source', 'data_source_label', 'environment', 'evidence_class', 'observed_at', 'provider_submission', ...optional('paypal_debug_id')];
     const recordKeys = ['dispute_id', 'reason', 'status', 'dispute_life_cycle_stage', 'dispute_state', 'dispute_amount', 'create_time', 'update_time', 'seller_response_due_date'];
     const record = (row) => object(row) && disputeId(row.dispute_id) && text(row.reason) && text(row.status) && text(row.dispute_life_cycle_stage)
       && (row.dispute_state === null || text(row.dispute_state)) && money(row.dispute_amount) && text(row.create_time)
@@ -293,14 +593,15 @@ function assertContract(path, payload, session, body) {
     valid = valid && ['paypal_sandbox', 'synthetic_fixture'].includes(payload.source) && payload.environment === 'sandbox'
       && payload.data_source_label === (fixture ? 'Fixture' : 'Sandbox')
       && (fixture ? payload.evidence_class === 'SYNTHETIC_FIXTURE' : ['AUTHENTIC_SANDBOX_RESPONSE', 'SYNTHETIC_TEST_RESPONSE'].includes(payload.evidence_class))
-      && text(payload.observed_at) && ['NOT_PERFORMED', 'PERFORMED'].includes(payload.provider_submission);
+      && text(payload.observed_at) && ['NOT_PERFORMED', 'PERFORMED'].includes(payload.provider_submission) && debugIdValid;
     if (valid && path === '/paypal/disputes') {
       valid = pk(payload, [...envelopeKeys, 'readback', 'items']) && payload.readback === 'GET_LIST' && payload.provider_submission === 'NOT_PERFORMED'
         && Array.isArray(payload.items) && payload.items.length <= 20 && payload.items.every((row) => pk(row, recordKeys) && record(row))
         && new Set(payload.items.map((row) => row.dispute_id)).size === payload.items.length;
     } else if (valid && path === '/paypal/disputes/provide-evidence') {
       const submitted = payload.external_send === 'SUBMITTED';
-      valid = pk(payload, [...envelopeKeys, 'readback', 'dispute_id', 'case_ref', 'method', 'path', 'content_type', 'input', 'files', 'external_send', 'submit_flag_enabled', 'human_review_required'])
+      valid = pk(payload, [...envelopeKeys, 'readback', 'dispute_id', 'case_ref', 'method', 'path', 'content_type', 'input', 'files', 'external_send', 'submit_flag_enabled', 'human_review_required', ...optional('payload_sha256', 'send_guard')]) && sendGuardValid
+        && (!has('payload_sha256') || payload.payload_sha256 === null || digest(payload.payload_sha256))
         && ['PROVIDE_EVIDENCE_PREVIEW', 'PROVIDE_EVIDENCE_SUBMITTED'].includes(payload.readback) && disputeId(payload.dispute_id)
         && payload.dispute_id === body?.dispute_id && payload.case_ref === body?.case_ref && payload.method === 'POST'
         && payload.path === `/v1/customer/disputes/${payload.dispute_id}/provide-evidence` && payload.content_type === 'multipart/form-data'
@@ -310,6 +611,25 @@ function assertContract(path, payload, session, body) {
         && payload.files.every((row) => pk(row, ['name', 'filename', 'content_type', 'byte_length']) && text(row.name) && Number.isInteger(row.byte_length) && row.byte_length >= 0)
         && ['FROZEN', 'SUBMITTED'].includes(payload.external_send) && typeof payload.submit_flag_enabled === 'boolean' && payload.human_review_required === true
         && submitted === (payload.provider_submission === 'PERFORMED') && submitted === (payload.readback === 'PROVIDE_EVIDENCE_SUBMITTED')
+        && (!submitted || (!fixture && payload.submit_flag_enabled));
+    } else if (valid && path === '/paypal/disputes/add-tracking') {
+      // (optimise r24) POST /v1/shipping/trackers-batch preview (masked) or, with every server gate open, the send.
+      const submitted = payload.external_send === 'SUBMITTED';
+      const carriers = ['USPS', 'UPS', 'FEDEX', 'DHL', 'TW_CHUNGHWA_POST', 'JP_JAPANPOST', 'OTHER'];
+      const tracker = (row) => object(row) && pk(row, ['transaction_id', 'tracking_number', 'status', 'carrier', 'carrier_name_other'])
+        && typeof row.transaction_id === 'string' && /^[A-Za-z0-9*._-]{1,64}$/.test(row.transaction_id)
+        && text(row.tracking_number) && row.tracking_number.length <= 64 && row.status === 'SHIPPED' && carriers.includes(row.carrier)
+        && ((row.carrier === 'OTHER') === (typeof row.carrier_name_other === 'string' && row.carrier_name_other.length > 0))
+        && (row.carrier === 'OTHER' || row.carrier_name_other === null);
+      valid = pk(payload, [...envelopeKeys, 'readback', 'dispute_id', 'case_ref', 'method', 'path', 'content_type', 'body', 'external_send', 'submit_flag_enabled', 'human_review_required', ...optional('payload_sha256', 'send_guard')]) && sendGuardValid
+        && (!has('payload_sha256') || payload.payload_sha256 === null || digest(payload.payload_sha256))
+        && ['ADD_TRACKING_PREVIEW', 'ADD_TRACKING_SUBMITTED'].includes(payload.readback) && disputeId(payload.dispute_id)
+        && payload.dispute_id === body?.dispute_id && payload.case_ref === body?.case_ref && payload.method === 'POST'
+        && payload.path === '/v1/shipping/trackers-batch' && payload.content_type === 'application/json'
+        && object(payload.body) && pk(payload.body, ['trackers']) && Array.isArray(payload.body.trackers) && payload.body.trackers.length === 1
+        && payload.body.trackers.every(tracker)
+        && ['FROZEN', 'SUBMITTED'].includes(payload.external_send) && typeof payload.submit_flag_enabled === 'boolean' && payload.human_review_required === true
+        && submitted === (payload.provider_submission === 'PERFORMED') && submitted === (payload.readback === 'ADD_TRACKING_SUBMITTED')
         && (!submitted || (!fixture && payload.submit_flag_enabled));
     } else if (valid) {
       valid = pk(payload, [...envelopeKeys, 'readback', ...recordKeys, 'dispute_channel', 'disputed_transactions', 'evidences']) && payload.readback === 'GET_DETAIL'
@@ -385,6 +705,22 @@ function assertContract(path, payload, session, body) {
       && payload.reviewer === 'DEMO_OPERATOR_UNAUTHENTICATED'
       && text(payload.reviewed_at) && Number.isFinite(Date.parse(payload.reviewed_at))
       && payload.retention === 'SESSION_MEMORY_ONLY';
+  } else if (path === '/country-rules/check') {
+    // Per-country PayPal rules: closed severities and codes, official PayPal source links only, never a decision.
+    const severities = ['BLOCK', 'WARN', 'INFO'];
+    valid = valid && pk(payload, ['schema_version','seller_country','buyer_country','cross_border','blocked','findings','retrieved_at','advisory_only','legal_advice'])
+      && payload.schema_version === 'payguard.country_rules.v1' && payload.advisory_only === true && payload.legal_advice === false
+      && typeof payload.cross_border === 'boolean' && typeof payload.blocked === 'boolean'
+      && Array.isArray(payload.findings) && payload.findings.length <= 120
+      && payload.findings.every((row) => pk(row, ['severity','code','text','source']) && severities.includes(row.severity)
+        && /^[a-z_]{3,48}$/.test(row.code) && text(row.text) && row.text.length <= 1200
+        && /^(https:\/\/((www|developer)\.paypal\.com|([a-z0-9-]+\.)*(gov|gov\.(tw|cn|uk|au|sg|hk)|go\.jp|gc\.ca|canada\.ca|europa\.eu|gesetze-im-internet\.de|zoll\.de|dhl\.de|royalmail\.com|usps\.com|canadapost-postescanada\.ca|japanpost\.jp|singpost\.com|hongkongpost\.hk|auspost\.com\.au))|http:\/\/www\.npc\.gov\.cn)\//.test(row.source))
+      && payload.blocked === payload.findings.some((row) => row.severity === 'BLOCK');
+  } else if (path === '/country-rules/countries') {
+    valid = valid && payload.schema_version === 'payguard.country_rules.v1' && Array.isArray(payload.countries)
+      && payload.countries.length > 0 && payload.countries.length <= 20
+      && payload.countries.every((row) => pk(row, ['code','name']) && /^[A-Z]{2}$/.test(row.code) && text(row.name))
+      && object(payload.goods_tags) && ['prohibited','approval','law_dependent'].every((key) => Array.isArray(payload.goods_tags[key]));
   } else if (path === '/paypal/invoices/review') {
     valid = valid && payload.source === 'synthetic' && text(payload.review_token) && digest(payload.payload_digest)
       && text(payload.expires_at) && payload.action === 'create_sandbox_invoice_draft';
@@ -414,6 +750,11 @@ export async function apiRequest(path, { method = 'GET', body, session, signal }
       controller.abort();
       throw new ApiError('Request canceled.', 0, 'request_cancelled');
     }
+    // The only query the console sends: which situation's guide state to read.
+    const [basePath, query] = path.split('?');
+    if (query !== undefined && !(basePath === '/guide/state' && /^scenario=(?:preflight|velocity|dispute)$/.test(query))) {
+      throw new ApiError('Request path is not allowed.', 0, 'request_invalid');
+    }
     const response = await fetch(`/api/v1${path}`, {
       method,
       headers,
@@ -423,17 +764,22 @@ export async function apiRequest(path, { method = 'GET', body, session, signal }
       cache: 'no-store',
       redirect: 'error',
     });
+    // (attack r23) Only a 429 or 503 carries a wait the page honours.
+    const retryAfter = [429, 503].includes(response.status) ? parseRetryAfter(response.headers.get('Retry-After')) : null;
     let payload;
     try {
       payload = await response.json();
     } catch {
+      if (retryAfter) throw new ApiError(response.status === 429 ? 'Too many requests; slow down.' : 'PayGuard is busy right now.', response.status, response.status === 429 ? 'rate_limited' : 'server_busy', retryAfter);
       throw new ApiError('The API returned invalid content; check the backend service.', response.status, 'invalid_response');
     }
     if (!response.ok) {
-      throw new ApiError(payload?.error?.message || 'Request failed; try again.', response.status, payload?.error?.code || 'request_failed');
+      const code = payload?.error?.code || 'request_failed';
+      throw new ApiError(payload?.error?.message || SEND_GUARD_MESSAGES[code] || 'Request failed; try again.', response.status, code, retryAfter,
+        { paypalIssue: payload?.error?.paypal_issue ?? null, paypalDebugId: payload?.error?.paypal_debug_id ?? null });
     }
     if (signal?.aborted) throw new ApiError('Request canceled.', 0, 'request_cancelled');
-    return assertContract(path, payload, session, body);
+    return assertContract(basePath, payload, session, query === undefined ? body : { scenario: query.slice('scenario='.length) });
   } catch (error) {
     if (error instanceof ApiError) throw error;
     if (signal?.aborted) throw new ApiError('Request canceled.', 0, 'request_cancelled');

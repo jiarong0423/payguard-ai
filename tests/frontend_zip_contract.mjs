@@ -9,6 +9,7 @@ import {
   buildInternalReviewZip,
   downloadInternalReviewZip,
   INTERNAL_REVIEW_ZIP_CONTENTS,
+  productCardDigest,
   validateInternalReviewZip,
 } from '../frontend/src/reviewZip.js';
 
@@ -16,7 +17,7 @@ const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const clone = (value) => structuredClone(value);
 const fixedNames = [
   'README.txt', 'manifest.json', 'requirements.json', 'timeline.json',
-  'public-sources.json', 'pseudonymized-evidence.json',
+  'public-sources.json', 'pseudonymized-evidence.json', 'product-reference.json',
 ];
 assert.deepEqual(INTERNAL_REVIEW_ZIP_CONTENTS, fixedNames);
 
@@ -376,7 +377,7 @@ const timeZip = buildInternalReviewZip(clone(timeDraft));
 assert.equal(validateInternalReviewZip(timeZip), true, 'time evidence archive must pass runtime validation');
 assert.deepEqual(timeZip, buildInternalReviewZip(clone(timeDraft)), 'time evidence ZIP bytes must be deterministic');
 const timeParsed = parseZip(timeZip);
-assert.deepEqual([...timeParsed.keys()], fixedNames, 'time evidence keeps the same six files');
+assert.deepEqual([...timeParsed.keys()], fixedNames, 'time evidence keeps the same seven files');
 const timeTimeline = JSON.parse(decoder.decode(timeParsed.get('timeline.json')));
 assert.equal(timeTimeline.schema_version, 'payguard.internal_review_timeline.v2');
 assert.deepEqual(timeTimeline.time_evidence, timeEvidence);
@@ -564,7 +565,7 @@ for (const required of [
   "import { downloadInternalReviewZip, INTERNAL_REVIEW_ZIP_CONTENTS } from './reviewZip.js';",
   'data-testid="internal-review-zip-contents"',
   'Internal Review ZIP contents',
-  'Six fixed files · generated locally · not sent to PayPal',
+  'Seven fixed files · generated locally · not sent to PayPal',
   'data-testid="download-internal-review-zip"',
   'data-testid="internal-review-zip-boundary"',
   'Download review ZIP',
@@ -578,6 +579,46 @@ for (const required of [
 ]) assert.ok(appSource.includes(required), required);
 
 console.log('frontend ZIP contract: 6 fixed entries, deterministic bytes, valid CRC32 and central directory PASS');
+// Channel3 product reference: fixed NOT_CONFIRMED record by default; a seller confirmation is copied in closed form.
+const productCard = { product_id: 'prod_mug_1', title: 'Handmade Stoneware Coffee Mug, 12 oz', brand: 'Clay Works', category: 'Mugs',
+  key_features: ['Dishwasher safe'], materials: ['Stoneware'], image_url: 'https://cdn.example/main.png' };
+const productConfirmation = { choice: 'CONFIRMED', evaluation_id: 'E'.repeat(43), description_digest: 'a'.repeat(64),
+  source: 'channel3_live', recorded_at: null, card: productCard, card_digest: productCardDigest(productCard), confirmed_by: 'seller', affects_decision: false };
+// The digest is the card's own sha256 over the canonical JSON (backend card_digest); parity with Python is in frontend_zip_api_parity.mjs.
+assert.equal(productConfirmation.card_digest, createHash('sha256').update('{"brand":"Clay Works","category":"Mugs","image_url":"https://cdn.example/main.png","key_features":["Dishwasher safe"],"materials":["Stoneware"],"product_id":"prod_mug_1","title":"Handmade Stoneware Coffee Mug, 12 oz"}').digest('hex'));
+const defaultReference = JSON.parse(texts['product-reference.json']);
+assert.equal(defaultReference.status, 'NOT_CONFIRMED');
+assert.equal(defaultReference.card, null);
+const confirmedZip = buildInternalReviewZip(clone(validDraft), clone(productConfirmation));
+assert.equal(validateInternalReviewZip(confirmedZip), true, 'a confirmed product reference builds a valid ZIP');
+const confirmedFiles = Object.fromEntries(buildInternalReviewFiles(clone(validDraft), clone(productConfirmation))
+  .map((file) => [file.name, new TextDecoder().decode(file.bytes)]));
+const confirmedReference = JSON.parse(confirmedFiles['product-reference.json']);
+assert.equal(confirmedReference.status, 'SELLER_CONFIRMED');
+assert.deepEqual(confirmedReference.card, productCard);
+assert.equal(confirmedReference.card_digest, productCardDigest(productCard));
+assert.equal(confirmedReference.confirmed_by, 'seller');
+assert.ok(!('evaluation_id' in confirmedReference) && !('description_digest' in confirmedReference), 'session identifiers stay out');
+assert.equal(confirmedFiles['requirements.json'], texts['requirements.json'], 'the product reference changes no other file');
+const noneMatch = JSON.parse(new TextDecoder().decode(buildInternalReviewFiles(clone(validDraft),
+  { ...clone(productConfirmation), choice: 'NONE_MATCH', card: null, card_digest: null })
+  .find((file) => file.name === 'product-reference.json').bytes));
+assert.equal(noneMatch.status, 'SELLER_SAID_NONE_MATCH');
+for (const bad of [
+  { ...productConfirmation, card: { ...productCard, price: 24 } },
+  { ...productConfirmation, card: { ...productCard, image_url: 'http://cdn.example/x.png' } },
+  { ...productConfirmation, confirmed_by: 'model' },
+  { ...productConfirmation, affects_decision: true },
+  { ...productConfirmation, choice: 'NONE_MATCH' },
+  { ...productConfirmation, extra: 1 },
+  // A well-formed digest that is not this card's own is rejected, so is a card edited after it was digested.
+  { ...productConfirmation, card_digest: 'b'.repeat(64) },
+  { ...productConfirmation, card: { ...productCard, title: 'Handmade Stoneware Coffee Mug, 16 oz' } },
+  { ...productConfirmation, card: { ...productCard, key_features: [] } },
+]) {
+  assert.throws(() => buildInternalReviewZip(clone(validDraft), clone(bad)), /internal_review_zip_invalid/u);
+}
+
 console.log(`frontend ZIP sample: ${first.length} bytes, sha256=${createHash('sha256').update(first).digest('hex')}`);
 console.log(`frontend ZIP privacy: ${invalidMutations.length} fail-closed mutations and forbidden-field exclusion PASS`);
 console.log(`frontend ZIP completed-archive gate: ${corruptions.length} binary mutations rejected before download PASS`);

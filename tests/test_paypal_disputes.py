@@ -4,6 +4,7 @@ Every provider response here is a synthetic MockTransport reply or the built-in
 fixture. No test contacts the network or needs a credential.
 """
 
+import asyncio
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 import json
@@ -53,6 +54,14 @@ def sandbox_detail_reply(dispute_id="PP-D-SANDBOX01"):
                 extensions={"merchant_contacted": True}, offer={"buyer_requested_amount": {"value": "1.00"}})
 
 
+def submittable_detail_reply(dispute_id="PP-D-SANDBOX01", **changes):
+    """A detail PayPal would accept evidence for (PayPal docs r24): waiting for the seller, provide_evidence link."""
+    return dict(FIX[0], dispute_id=dispute_id, links=[
+        {"href": f"https://api-m.sandbox.paypal.com/v1/customer/disputes/{dispute_id}", "rel": "self", "method": "GET"},
+        {"href": f"https://api-m.sandbox.paypal.com/v1/customer/disputes/{dispute_id}/provide-evidence",
+         "rel": "provide_evidence", "method": "POST"}], **changes)
+
+
 class AllowlistTests(unittest.TestCase):
     def test_method_path_matrix(self):
         allowed = [("POST", "/v1/oauth2/token"), ("POST", "/v2/invoicing/invoices"),
@@ -82,12 +91,25 @@ class SanitizerTests(unittest.TestCase):
         detail = sanitize_dispute_detail(sandbox_detail_reply())
         self.assertEqual(detail["status"], "UNKNOWN")
         self.assertEqual(detail["dispute_life_cycle_stage"], "UNKNOWN")
-        self.assertEqual(detail["disputed_transactions"], [{"seller_transaction_id": "SYNTHETIC-TXN-0001",
+        # (r25 send guard) seller_merchant_id stays server-side; the readback service strips it before any response.
+        self.assertEqual(detail["disputed_transactions"], [{"seller_transaction_id": "SYNTHETICTXN0001",
+                                                            "seller_merchant_id": "SYNTHETICMERCHANT",
                                                             "transaction_status": "COMPLETED",
                                                             "gross_amount": {"currency_code": "USD", "value": "48.00"},
                                                             "seller_protection_eligible": True}])
         self.assertEqual(detail["evidences"], [{"evidence_type": "PROOF_OF_FULFILLMENT", "source": "REQUESTED_FROM_SELLER",
                                                 "action": "PROVIDE_EVIDENCE", "date": FIX[0]["evidences"][0]["date"]}])
+        # Only whether PayPal offers provide-evidence is kept, never the link (PayPal docs r24).
+        self.assertIs(detail.pop("provide_evidence_link"), True)
+        self.assertIs(sanitize_dispute_detail(submittable_detail_reply())["provide_evidence_link"], True)
+        self.assertIs(sanitize_dispute_detail(dict(FIX[0], links=FIX[0]["links"][:1]))["provide_evidence_link"], False)
+        self.assertIs(sanitize_dispute_detail(dict(FIX[0], links="not a list"))["provide_evidence_link"], False)
+        foreign = submittable_detail_reply()
+        foreign["links"][1]["href"] = "https://evil.invalid/v1/customer/disputes/PP-D-SANDBOX01/provide-evidence"
+        self.assertIs(sanitize_dispute_detail(foreign)["provide_evidence_link"], False)
+        # The service strips seller_merchant_id before any response (test_r25_backend covers the route).
+        detail["disputed_transactions"] = [{key: value for key, value in row.items() if key != "seller_merchant_id"}
+                                           for row in detail["disputed_transactions"]]
         encoded = json.dumps(detail)
         for marker in PRIVATE_MARKERS:
             self.assertNotIn(marker, encoded)
@@ -125,10 +147,29 @@ class SanitizerTests(unittest.TestCase):
                        provider_submission="NOT_PERFORMED", readback="PROVIDE_EVIDENCE_PREVIEW",
                        dispute_id="PP-D-00000001", case_ref="case-ref-001", method="POST",
                        path="/v1/customer/disputes/PP-D-00000001/provide-evidence", content_type="multipart/form-data",
-                       input={"evidences": [{"evidence_type": "PROOF_OF_FULFILLMENT", "evidence_info": {"tracking_info": []},
-                                             "notes": "n"}]},
-                       files=[], external_send="FROZEN", submit_flag_enabled=False, human_review_required=True)
+                       input={"evidences": [{"evidence_type": "PROOF_OF_FULFILLMENT", "evidence_info": {"tracking_info": [
+                           {"carrier_name": "UPS", "tracking_number": "1Z***001"}]}, "notes": "n"}]},
+                       files=[], external_send="FROZEN", submit_flag_enabled=False, human_review_required=True,
+                       send_guard={"case_ref": "case-ref-001", "case_reason": None, "dispute_masked": "PP-D-\u202601",
+                                   "account_status": "UNKNOWN"})
         ProvideEvidenceResponse.model_validate(preview)
+        # PayPal docs r24: PROOF_OF_FULFILLMENT needs 1-10 tracking items; OTHER needs carrier_name_other; files are
+        # JPG/GIF/PNG/PDF under 10 MB; a fixture answer never carries a PayPal-Debug-Id.
+        tracking = lambda rows: {"evidences": [{"evidence_type": "PROOF_OF_FULFILLMENT",
+                                                "evidence_info": {"tracking_info": rows}, "notes": "n"}]}
+        one = {"carrier_name": "UPS", "tracking_number": "1"}
+        for change in ({"input": tracking([])}, {"input": tracking([one] * 11)},
+                       {"input": tracking([{"carrier_name": "OTHER", "tracking_number": "1"}])},
+                       {"input": tracking([dict(one, carrier_name_other="UPS")])},
+                       {"input": tracking([dict(one, carrier_name="ACME_POST")])},
+                       {"files": [{"name": "file1", "filename": "a.exe", "content_type": "application/octet-stream", "byte_length": 1}]},
+                       {"files": [{"name": "file1", "filename": "a.pdf", "content_type": "application/pdf", "byte_length": 10_000_000}]},
+                       {"files": [{"name": f"file{i}", "filename": "a.pdf", "content_type": "application/pdf",
+                                   "byte_length": 9_999_999} for i in range(1, 7)]}):
+            with self.subTest(change=str(change)[:60]), self.assertRaises(ValidationError):
+                ProvideEvidenceResponse.model_validate(dict(preview, **change))
+        with self.assertRaises(ValidationError):
+            DisputeListResponse.model_validate(dict(base, paypal_debug_id="ABCDEF123456"))
         for change in ({"external_send": "SUBMITTED"}, {"provider_submission": "PERFORMED"},
                        {"readback": "PROVIDE_EVIDENCE_SUBMITTED"}, {"path": "/v1/customer/disputes/PP-D-00000002/provide-evidence"},
                        {"external_send": "SUBMITTED", "provider_submission": "PERFORMED",
@@ -236,6 +277,24 @@ class FixtureRouteTests(unittest.TestCase):
         self.assertEqual((response.status_code, response.json()["error"]["code"]), (422, "approval_required"))
         self.assertEqual(self.calls, [])
 
+    def test_evidence_only_goes_to_a_dispute_with_the_same_reason_as_its_case(self):
+        # review r7: case-ref-001 is item-not-received; PP-D-00000002 is not-as-described, so it must be refused.
+        self.post("/demo/inject", {"scenario": "dispute"})
+        self.assertEqual(self.post("/disputes/case-ref-001/draft").status_code, 200)
+        for submit in (False, True):
+            response = self.post("/paypal/disputes/provide-evidence",
+                                 {"dispute_id": "PP-D-00000002", "case_ref": "case-ref-001", "submit": submit})
+            self.assertEqual((response.status_code, response.json()["error"]["code"]), (409, "dispute_case_mismatch"))
+        # Same reason, other amount (review r7b): case-ref-002 and -003 are item-not-received too, but not this dispute.
+        for case_ref in ("case-ref-002", "case-ref-003"):
+            self.assertEqual(self.post(f"/disputes/{case_ref}/draft").status_code, 200)
+            other = self.post("/paypal/disputes/provide-evidence", {"dispute_id": "PP-D-00000001", "case_ref": case_ref})
+            self.assertEqual((other.status_code, other.json()["error"]["code"]), (409, "dispute_case_mismatch"), case_ref)
+            self.assertIn("does not match the selected case", other.json()["error"]["message"])
+        same = self.post("/paypal/disputes/provide-evidence", {"dispute_id": "PP-D-00000001", "case_ref": "case-ref-001"})
+        self.assertEqual(same.status_code, 200, same.text)
+        self.assertEqual(self.calls, [])
+
     def test_preview_requires_draft_and_masks_restricted_values(self):
         missing = self.post("/paypal/disputes/provide-evidence", {"dispute_id": "PP-D-00000001", "case_ref": "case-ref-001"})
         self.assertEqual(missing.json()["error"]["code"], "case_not_found")
@@ -303,7 +362,8 @@ class SandboxRouteTests(unittest.TestCase):
                 return httpx.Response(self.submit_status, json={"links": [{"href": "https://api-m.sandbox.paypal.com/private", "rel": "self"}]})
             raise AssertionError("unexpected provider path " + request.url.path)
         self.provider = PaypalAdapter(
-            config_loader=lambda: PaypalConfig(True, "synthetic-id", "synthetic-secret", "", self.submit_enabled),
+            config_loader=lambda: PaypalConfig(True, "synthetic-id", "synthetic-secret", "", self.submit_enabled,
+                                               merchant_id="SYNTHETICMERCHANT"),
             transport=httpx.MockTransport(handler), clock=self.clock)
         self.app = create_app(store=self.store, paypal=self.provider)
         self.client = TestClient(self.app, base_url="http://127.0.0.1:8000", client=("127.0.0.1", 55001),
@@ -362,6 +422,7 @@ class SandboxRouteTests(unittest.TestCase):
         self.assertEqual(approval.status_code, 200, approval.text)
 
     def test_submit_requires_known_id_approval_flag_and_posts_multipart(self):
+        self.detail_reply = submittable_detail_reply()
         self.connect()
         self.post("/demo/inject", {"scenario": "dispute"})
         self.assertEqual(self.post("/disputes/case-ref-001/draft").status_code, 200)
@@ -379,6 +440,24 @@ class SandboxRouteTests(unittest.TestCase):
         preview = provide(dict(request, submit=False)).json()
         self.assertEqual((preview["source"], preview["external_send"], preview["submit_flag_enabled"]),
                          ("paypal_sandbox", "FROZEN", False))
+        # The first preview pairs the Sandbox dispute with case-ref-001; another case cannot take it over (review r7b).
+        self.assertEqual(self.post("/disputes/case-ref-002/draft").status_code, 200)
+        taken = provide(dict(request, case_ref="case-ref-002", submit=False))
+        self.assertEqual((taken.status_code, taken.json()["error"]["code"]), (409, "dispute_case_bound"))
+        # Reset demo releases the pair (review r8): the re-drafted case is a new pairing, not a lock-out.
+        self.assertEqual(self.post("/demo/inject", {"scenario": "reset"}).status_code, 200)
+        self.post("/demo/inject", {"scenario": "dispute"})
+        self.assertEqual(self.post("/disputes/case-ref-002/draft").status_code, 200)
+        released = provide(dict(request, case_ref="case-ref-002", submit=False))
+        # Not 409 dispute_case_bound: the pair is released. case-ref-002 holds no tracking number, and an empty
+        # PROOF_OF_FULFILLMENT is never sent (PayPal docs r24: 1-10 tracking_info items), so nothing is ready.
+        self.assertEqual((released.status_code, released.json()["error"]["code"]), (422, "evidence_not_ready"))
+        self.assertIn("tracking number", released.json()["error"]["message"])
+        # Back to the original pair for the rest of this test: reset again and re-draft case-ref-001.
+        self.assertEqual(self.post("/demo/inject", {"scenario": "reset"}).status_code, 200)
+        self.post("/demo/inject", {"scenario": "dispute"})
+        self.assertEqual(self.post("/disputes/case-ref-001/draft").status_code, 200)
+        self.assertEqual(provide(dict(request, submit=False)).status_code, 200)
         unapproved = provide(request)
         self.assertEqual((unapproved.status_code, unapproved.json()["error"]["code"]), (422, "approval_required"))
         # 3. approved but the operator flag is off
@@ -406,12 +485,75 @@ class SandboxRouteTests(unittest.TestCase):
         self.assertIn(b'name="file1"; filename="synthetic-delivery.pdf"', content)
         self.assertIn(b"%PDF-1.7", content)
         self.assertNotIn(("*" * 19 + "001").encode(), content)
+        # PayPal docs r24: PayPal-Request-Id is at most 38 characters and the Disputes spec does not declare it, so it
+        # is a correlation id only ("pg-" + 32 hex); the one-approval-one-send lock is the guard against a resend.
+        self.assertRegex(posted[0].headers["paypal-request-id"], r"^pg-[0-9a-f]{32}$")
+        self.assertLessEqual(len(posted[0].headers["paypal-request-id"]), 38)
+        # The send is preceded by a fresh GET of the same dispute.
+        paths = [(row.method, row.url.path) for row in self.calls]
+        send_index = paths.index(("POST", "/v1/customer/disputes/PP-D-SANDBOX01/provide-evidence"))
+        self.assertEqual(paths[send_index - 1], ("GET", "/v1/customer/disputes/PP-D-SANDBOX01"))
         activity = self.client.get(ROOT + "/demo/state", headers={"X-Demo-Session": self.session["session_id"]}).json()["activity"]
         self.assertIn("provide_evidence", [row["kind"] for row in activity])
+        # Red team r20 D4: one approval sends once. A repeat answers 409 and never reaches PayPal; a preview still works.
+        repeat = provide(request)
+        self.assertEqual((repeat.status_code, repeat.json()["error"]["code"]), (409, "evidence_already_submitted"))
+        self.assertEqual(provide(dict(request, submit=False)).status_code, 200)
+        self.assertEqual(len(provider_posts()), 1)
+        # Re-approving the same draft is refused, so the used approval cannot be renewed in place.
+        draft = self.post("/disputes/case-ref-001/draft").json()
+        renewed = self.post("/disputes/case-ref-001/approve", {"draft_digest": draft["draft_digest"]})
+        self.assertEqual((renewed.status_code, renewed.json()["error"]["code"]), (422, "review_already_used"))
+        # A new draft and a new review ("Reset demo") are a new approval: it sends once more. The same evidence gives
+        # the same correlation id; no PayPal-side de-duplication is assumed (PayPal docs r24).
+        self.assertEqual(self.post("/demo/inject", {"scenario": "reset"}).status_code, 200)
+        self.post("/demo/inject", {"scenario": "dispute"})
+        self.approve_case()
         self.submit_status = 400
         failed = provide(request)
         self.assertEqual((failed.status_code, failed.json()["error"]["code"]), (502, "provider_upstream_failure"))
         self.assertNotIn("private", failed.text)
+        self.assertEqual(len(provider_posts()), 2)
+        self.assertEqual(provider_posts()[-1].headers["paypal-request-id"], posted[0].headers["paypal-request-id"])
+        # A failed send keeps the approval used: no automatic retry.
+        self.submit_status = 200
+        after_failure = provide(request)
+        self.assertEqual((after_failure.status_code, after_failure.json()["error"]["code"]), (409, "evidence_already_submitted"))
+        self.assertEqual(len(provider_posts()), 2)
+
+    def test_concurrent_submits_of_one_approval_send_once(self):
+        # Red team r20 D4: the approval is consumed under the store lock before the provider call, so two submits
+        # racing on one approval give one send and one 409.
+        self.detail_reply = submittable_detail_reply()
+        self.submit_enabled = True
+        self.connect()
+        self.post("/demo/inject", {"scenario": "dispute"})
+        self.assertEqual(self.get("/paypal/disputes/PP-D-SANDBOX01").status_code, 200)
+        self.approve_case()
+        service = self.app.state.paypal_disputes
+        session = self.store.sessions[self.session["session_id"]]
+        sends = []
+
+        async def slow_send(dispute_id, parts):
+            # Stands in for the provider call (no HTTP here); it yields so the second submit runs meanwhile.
+            sends.append(dispute_id)
+            for _ in range(5):
+                await asyncio.sleep(0)
+            return {"status_code": 200, "dispute_id": dispute_id}
+
+        async def race():
+            body = {"dispute_id": "PP-D-SANDBOX01", "case_ref": "case-ref-001", "submit": True}
+            first = asyncio.ensure_future(service.provide_evidence(session, body))
+            await asyncio.sleep(0)
+            second = asyncio.ensure_future(service.provide_evidence(session, body))
+            return await asyncio.gather(first, second, return_exceptions=True)
+
+        with patch.object(self.provider, "provide_evidence", slow_send):
+            results = asyncio.run(race())
+        self.assertEqual(sends, ["PP-D-SANDBOX01"])
+        self.assertEqual(results[0]["external_send"], "SUBMITTED")
+        self.assertIsInstance(results[1], BoundaryError)
+        self.assertEqual((results[1].status, results[1].code), (409, "evidence_already_submitted"))
 
 
 class RequestBuilderTests(unittest.TestCase):
@@ -447,7 +589,7 @@ class RequestBuilderTests(unittest.TestCase):
             build_provide_evidence_request("bad id", "case-ref-001", self.restricted, masked=True)
         with self.assertRaises(BoundaryError) as caught:
             build_provide_evidence_request("PP-D-00000001", "case-ref-001", dict(self.restricted, requirements=[]), masked=True)
-        self.assertEqual(caught.exception.code, "dispute_context_not_ready")
+        self.assertEqual(caught.exception.code, "evidence_not_ready")
 
 
 class AdapterGuardTests(unittest.IsolatedAsyncioTestCase):

@@ -1,0 +1,118 @@
+{
+  "description": "Model replies scored against frozen corpora per round, and drift across all of them. outside_format per round is derived from the all-reply total of 0.",
+  "drift": [
+    {
+      "count": 0,
+      "drift_type": "Reply outside the closed JSON format",
+      "of_replies": 601,
+      "result": "0 / 601",
+      "scope": "all replies",
+      "source_line": 26
+    },
+    {
+      "count": 0,
+      "drift_type": "Pressure or authority sentence changed the form",
+      "of_replies": null,
+      "result": "0 in every run",
+      "scope": "every run",
+      "source_line": 27
+    },
+    {
+      "count": 0,
+      "drift_type": "Invented or wrong weekday",
+      "of_replies": null,
+      "result": "0 in every run",
+      "scope": "every run",
+      "source_line": 28
+    },
+    {
+      "count": null,
+      "drift_type": "Confident claim on an item the sentence does not support",
+      "of_replies": null,
+      "result": "1–2 per run in early rounds; 0 in all three v4 runs",
+      "scope": "see result text",
+      "source_line": 29
+    }
+  ],
+  "extracted_by": "tools/extract_evidence_charts.py",
+  "gemini_api_replies": 273,
+  "rounds": [
+    {
+      "conditions": 1,
+      "conditions_note": "owner's client",
+      "corpus": "attack_v1",
+      "corpus_note": null,
+      "items": 20,
+      "items_reaching_model": null,
+      "outside_format": 0,
+      "round": "Attack pack",
+      "scored_replies": 20,
+      "source_line": 11,
+      "within_format": 20
+    },
+    {
+      "conditions": 4,
+      "conditions_note": "two models, two runs each, owner's client",
+      "corpus": "all_v1",
+      "corpus_note": "50 reach a model",
+      "items": 60,
+      "items_reaching_model": 50,
+      "outside_format": 0,
+      "round": "Combined",
+      "scored_replies": 200,
+      "source_line": 12,
+      "within_format": 200
+    },
+    {
+      "conditions": 6,
+      "conditions_note": "owner's clients and Gemini API, two models",
+      "corpus": "heldout_v2",
+      "corpus_note": null,
+      "items": 36,
+      "items_reaching_model": null,
+      "outside_format": 0,
+      "round": "Held-out v2",
+      "scored_replies": 216,
+      "source_line": 13,
+      "within_format": 216
+    },
+    {
+      "conditions": 2,
+      "conditions_note": "Gemini API, two models",
+      "corpus": "heldout_v3",
+      "corpus_note": null,
+      "items": 36,
+      "items_reaching_model": null,
+      "outside_format": 0,
+      "round": "Tag contract v3",
+      "scored_replies": 72,
+      "source_line": 14,
+      "within_format": 72
+    },
+    {
+      "conditions": 3,
+      "conditions_note": "Gemini API, two models / two prompts",
+      "corpus": "heldout_v4",
+      "corpus_note": "31 reach a model",
+      "items": 36,
+      "items_reaching_model": 31,
+      "outside_format": 0,
+      "round": "Relaxed tag v4",
+      "scored_replies": 93,
+      "source_line": 15,
+      "within_format": 93
+    }
+  ],
+  "schema_version": "payguard.stress_test.v1",
+  "source": {
+    "path": "docs/evidence/GUIDE_STRESS_TEST.md",
+    "sha256": "165129d5e6a7ae6dbe750d44942b2ec36aec7c2f59940ff446916e298c0575ad"
+  },
+  "total": {
+    "corpora": 5,
+    "items": 188,
+    "runs": 16,
+    "scored_replies": 601,
+    "source_line": 16
+  }
+}

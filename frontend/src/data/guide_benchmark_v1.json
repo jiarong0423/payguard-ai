@@ -1,0 +1,72 @@
+{
+ "source": "docs/evidence/guide_benchmark_v1.json (commit 7091011) and docs/evidence/GUIDE_BENCHMARK.md history",
+ "cases": 268,
+ "form_only_rounds": 721,
+ "flows": [
+  {
+   "id": "every_sentence_to_ai",
+   "label": "Every sentence to the AI",
+   "model_calls": 268,
+   "rounds": null,
+   "wrong_honest": null,
+   "wrong_careless": null
+  },
+  {
+   "id": "echo_only",
+   "label": "Rules first, AI echoed",
+   "model_calls": 185,
+   "rounds": 989,
+   "wrong_honest": 0,
+   "wrong_careless": 0
+  },
+  {
+   "id": "hybrid",
+   "label": "Python settles first",
+   "model_calls": 149,
+   "rounds": 941,
+   "wrong_honest": 0,
+   "wrong_careless": 0
+  },
+  {
+   "id": "hybrid_one_save",
+   "label": "+ topology, one Save, summary on last round",
+   "model_calls": 149,
+   "rounds": 697,
+   "wrong_honest": 0,
+   "wrong_careless": 0
+  }
+ ],
+ "history_blind_v4": [
+  {
+   "step": "1 Echo only",
+   "commit": "957c885",
+   "rounds": 144,
+   "kept": true
+  },
+  {
+   "step": "2 Hybrid",
+   "commit": "a568d9a",
+   "rounds": 135,
+   "kept": true
+  },
+  {
+   "step": "3 Topology + one Save",
+   "commit": "e60d3d9",
+   "rounds": 101,
+   "kept": true
+  },
+  {
+   "step": "4 Summary as own round",
+   "commit": "fd51e9e",
+   "rounds": 110,
+   "kept": false
+  },
+  {
+   "step": "5 Summary on last round",
+   "commit": "7091011",
+   "rounds": 102,
+   "kept": true
+  }
+ ],
+ "history_form_only_rounds": 104
+}

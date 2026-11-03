@@ -11,6 +11,7 @@ export const INTERNAL_REVIEW_ZIP_CONTENTS = Object.freeze([
   'timeline.json',
   'public-sources.json',
   'pseudonymized-evidence.json',
+  'product-reference.json',
 ]);
 const FIXED_FILES = INTERNAL_REVIEW_ZIP_CONTENTS;
 const TOP_LEVEL_KEYS = [
@@ -65,7 +66,66 @@ const MEDIA_TYPES = Object.freeze({
   'timeline.json': 'application/json',
   'public-sources.json': 'application/json',
   'pseudonymized-evidence.json': 'application/json',
+  'product-reference.json': 'application/json',
 });
+const CARD_KEYS = ['product_id', 'title', 'brand', 'category', 'key_features', 'materials', 'image_url'];
+const CONFIRM_KEYS = ['choice', 'evaluation_id', 'description_digest', 'source', 'recorded_at', 'card', 'card_digest',
+  'confirmed_by', 'affects_decision'];
+const cardText = (value, max) => typeof value === 'string' && value.length >= 2 && value.length <= max
+  && /^[A-Za-z0-9 &'\-,./+()%"]+$/.test(value);
+
+// Canonical card JSON exactly as backend/app/channel3_products.card_digest builds it:
+// json.dumps({key: card[key] for key in CARD_KEYS}, sort_keys=True, separators=(",", ":"), ensure_ascii=True).
+// Python's ensure_ascii writes every character above U+007F as a lowercase \uXXXX escape (astral characters as a
+// surrogate pair); JSON.stringify already escapes the control characters the same way and leaves the rest raw.
+export function canonicalCardJson(card) {
+  const ascii = (text) => text.replace(/[\u0080-\uffff]/g, (ch) => `\\u${ch.charCodeAt(0).toString(16).padStart(4, '0')}`);
+  return `{${[...CARD_KEYS].sort().map((key) => `${JSON.stringify(key)}:${ascii(JSON.stringify(card[key]))}`).join(',')}}`;
+}
+
+export function productCardDigest(card) {
+  return sha256Hex(encoder.encode(canonicalCardJson(card)));
+}
+
+// The seller's Channel3 product confirmation from the listing check, reduced to a closed record.
+// No confirmation means a fixed NOT_CONFIRMED record, so the archive always has the same seven files.
+function productReferenceRecord(confirmation) {
+  const base = {
+    schema_version: 'payguard.product_reference.v1',
+    purpose: 'Seller-confirmed catalogue reference for what the item is; supports a reply to an item-not-as-described claim.',
+    authority: 'ADVISORY_SELLER_CONFIRMED',
+  };
+  if (confirmation === null || confirmation === undefined) {
+    return { ...base, status: 'NOT_CONFIRMED', source: null, recorded_at: null, card: null, card_digest: null, confirmed_by: null };
+  }
+  exactObject(confirmation, CONFIRM_KEYS);
+  if (!['CONFIRMED', 'NONE_MATCH'].includes(confirmation.choice) || confirmation.confirmed_by !== 'seller'
+    || confirmation.affects_decision !== false || !['channel3_live', 'channel3_recorded'].includes(confirmation.source)
+    || !(confirmation.recorded_at === null || /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(confirmation.recorded_at))) invalid();
+  let card = null;
+  if (confirmation.choice === 'CONFIRMED') {
+    const c = confirmation.card;
+    exactObject(c, CARD_KEYS);
+    if (!/^[A-Za-z0-9_.:-]{1,64}$/.test(c.product_id) || !cardText(c.title, 120)
+      || !(c.brand === null || cardText(c.brand, 60)) || !(c.category === null || cardText(c.category, 80))
+      || !Array.isArray(c.key_features) || c.key_features.length > 4 || !c.key_features.every((f) => cardText(f, 100))
+      || !Array.isArray(c.materials) || c.materials.length > 4 || !c.materials.every((m) => cardText(m, 40))
+      || !(c.image_url === null || (typeof c.image_url === 'string' && c.image_url.length <= 500 && /^https:\/\/[^\s@]+$/.test(c.image_url)))
+      || typeof confirmation.card_digest !== 'string' || !/^[a-f0-9]{64}$/.test(confirmation.card_digest)) invalid();
+    // The digest must be the card's own: recomputed here, a digest that does not match the card is rejected.
+    if (productCardDigest(c) !== confirmation.card_digest) invalid();
+    card = { ...c, key_features: [...c.key_features], materials: [...c.materials] };
+  } else if (confirmation.card !== null || confirmation.card_digest !== null) invalid();
+  return {
+    ...base,
+    status: confirmation.choice === 'CONFIRMED' ? 'SELLER_CONFIRMED' : 'SELLER_SAID_NONE_MATCH',
+    source: confirmation.source,
+    recorded_at: confirmation.recorded_at,
+    card,
+    card_digest: confirmation.card_digest,
+    confirmed_by: 'seller',
+  };
+}
 const SHA256_CONSTANTS = Object.freeze([
   0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
   0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
@@ -536,8 +596,9 @@ function verifyPayloadDeclarations(files) {
   }
 }
 
-function buildFiles(draft) {
+function buildFiles(draft, productConfirmation = null) {
   const value = validateDraft(draft);
+  const productReference = productReferenceRecord(productConfirmation);
   const readme = [
     'PayGuard AI — Internal Review ZIP',
     '',
@@ -553,6 +614,9 @@ function buildFiles(draft) {
     'No provider submission was performed and no dispute verdict was made. Human review is required.',
     '',
     'Review every file before using it outside this local synthetic demo.',
+    '',
+    'product-reference.json: the seller\'s own choice of which Channel3 catalogue product the item is (or NOT_CONFIRMED / none match).',
+    'It records what the item is for an item-not-as-described reply. Prices, shops and buy links are never included.',
     ...(value.timeEvidence ? [
       '',
       'Time evidence: timeline.json lists events in time order with gaps between them.',
@@ -592,6 +656,7 @@ function buildFiles(draft) {
     ['timeline.json', jsonBytes(timeline)],
     ['public-sources.json', jsonBytes(publicSources)],
     ['pseudonymized-evidence.json', jsonBytes(value.pseudonymizedEvidence)],
+    ['product-reference.json', jsonBytes(productReference)],
   ]);
   const entries = [...payloads].map(([path, bytes]) => ({
     path,
@@ -728,12 +793,12 @@ function concat(parts) {
   return result;
 }
 
-export function buildInternalReviewFiles(draft) {
-  return buildFiles(draft).map(({ name, bytes }) => ({ name, bytes: bytes.slice() }));
+export function buildInternalReviewFiles(draft, productConfirmation = null) {
+  return buildFiles(draft, productConfirmation).map(({ name, bytes }) => ({ name, bytes: bytes.slice() }));
 }
 
-export function buildInternalReviewZip(draft) {
-  const files = buildFiles(draft);
+export function buildInternalReviewZip(draft, productConfirmation = null) {
+  const files = buildFiles(draft, productConfirmation);
   const localParts = [];
   const centralParts = [];
   let localOffset = 0;
@@ -922,9 +987,9 @@ export function validateInternalReviewZip(bytes) {
   }
 }
 
-export function downloadInternalReviewZip(draft) {
+export function downloadInternalReviewZip(draft, productConfirmation = null) {
   if (typeof document === 'undefined' || typeof URL === 'undefined' || typeof Blob === 'undefined') invalid();
-  const bytes = buildInternalReviewZip(draft);
+  const bytes = buildInternalReviewZip(draft, productConfirmation);
   validateInternalReviewZip(bytes);
   const blob = new Blob([bytes], { type: 'application/zip' });
   const url = URL.createObjectURL(blob);

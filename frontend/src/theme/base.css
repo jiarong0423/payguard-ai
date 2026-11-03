@@ -1,0 +1,14 @@
+/* Loaded by all three pages (index.html, evidence.html, dashboard.html) before any page CSS.
+   Inter is self-hosted from @fontsource-variable/inter (pinned exactly in package.json, OFL-1.1);
+   the woff2 files are hashed into dist and served from the same origin. */
+@import '@fontsource-variable/inter/index.css';
+@import './tokens.css';
+
+:root {
+  font-family: var(--pg-font-sans);
+  /* Tabular figures for every number (spec D11). */
+  font-feature-settings: "tnum" 1;
+}
+/* evidence.css and dashboard/dashboard.css name plain "Inter" on body; this one-step-more-specific rule keeps
+   every page on the self-hosted "Inter Variable" without editing those files. */
+html body { font-family: var(--pg-font-sans); }

@@ -1,0 +1,33 @@
+/* Install button shown in the top bar only after the browser fires beforeinstallprompt. */
+.pwa-install-slot { display: contents; }
+.pwa-install-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-shrink: 0;
+  min-height: 44px;
+  padding: 6px 14px;
+  border: 1px solid var(--pg-color-rule);
+  border-radius: 7px;
+  background: var(--pg-color-accent-tint);
+  color: var(--pg-color-accent-strong);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.pwa-install-button:hover { background: var(--pg-color-accent-tint); border-color: var(--pg-color-accent); }
+.pwa-install-button:focus-visible { outline: 3px solid var(--pg-color-accent); outline-offset: 2px; }
+.pwa-install-button svg { flex-shrink: 0; }
+/* Phones: icon-only 44px square so the brand keeps its width; the accessible name stays on the button. */
+@media (max-width: 480px) {
+  .pwa-install-button { width: 44px; height: 44px; min-height: 44px; padding: 0; }
+  .pwa-install-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+}
+/* Below the 375px phones we test on there is no room next to the brand; the browser menu still offers install. */
+@media (max-width: 359px) {
+  .pwa-install-slot { display: none; }
+}
