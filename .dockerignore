@@ -16,6 +16,12 @@
 !frontend/vite.config.js
 !frontend/src/
 !frontend/public/
+# (r32) The hosted guide's Gemini worker profile; never its local .venv.
+!integrations/gemini/worker.py
+!integrations/gemini/check_runtime.py
+!integrations/gemini/pyproject.toml
+!integrations/gemini/requirements.lock
+!integrations/gemini/run.sh
 **/__pycache__
 **/*.py[cod]
 **/.env

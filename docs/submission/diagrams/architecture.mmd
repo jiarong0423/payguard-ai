@@ -1,0 +1,63 @@
+flowchart TB
+    subgraph Local["Local console (127.0.0.1, one operator)"]
+        subgraph Pages["Browser pages (React, built by Vite)"]
+            CON["Console /<br/>01 AUP preflight, country rules, Channel3 product card<br/>02 sales spike: AG Charts + AG Grid<br/>03 disputes: case queue, Bryntum board, ZIP, evidence guide<br/>rule-check, reference and advisory panels per stage"]
+            DRAFT["Invoice draft dialog<br/>tick, Continue, 3 s hold, Create draft<br/>shows INV2-… and the last 4 characters"]
+            SEND["Evidence send dialog<br/>case and PayPal dispute side by side, declared account match,<br/>tick, Continue, 3 s hold, Send to PayPal"]
+            DASH["/dashboard.html<br/>AG Studio dashboard, auditor agent,<br/>built-in agents (local live mode only)"]
+            YES["Question outside the auditor's set<br/>confirmation first, sent only after a plain yes"]
+            OTHER["/evidence.html, /scenarios.html, /proof.html<br/>evidence page, scenario work orders, proof page"]
+        end
+        subgraph API["FastAPI backend (one process)"]
+            GATE["Boundary: loopback Host/Origin, session + CSRF, body and rate limits"]
+            RULES["Deterministic engines<br/>AUP, country rules, velocity, dispute resolver, ZIP projection"]
+            subgraph GUIDE["Evidence guide: hybrid funnel, rules first and the model last"]
+                G1["1 Input gate<br/>English only, at most 4 digits, no links or personal data"]
+                G2["2 Keyword policy routes<br/>pressure and injection answered, nothing changes"]
+                G3["3 Rule layer<br/>closed values from the seller's own words"]
+                G4["4 Speaker check<br/>buyer or third-party speech never goes on"]
+                G5["5 Gemini, optional and governed<br/>only seller clauses the rules left open,<br/>closed values, temperature 0, call budgets"]
+                G6["6 Code checks<br/>closed values only, weekday must be in the clause,<br/>the model cannot mark an item present"]
+                G7["7 Fixed reply templates, then the seller confirms in the form<br/>only code marks an item present: a checked form entry<br/>or a closed value read from the seller's own words"]
+                G1 --> G2 --> G3 --> G4 --> G5 --> G6 --> G7
+            end
+            ROUTE["Case routing<br/>fuzzy match on recorded Channel3 cards"]
+            AI["Evidence brief<br/>Gemini or LM Studio line, 3-attempt budget"]
+            STUDIO["Studio agent turn<br/>governed Gemini route, data agent, 8-turn cap"]
+            PPGW["PayPal gateway<br/>OAuth, invoice draft, disputes,<br/>provide-evidence (off by default), trackers-batch (off by default),<br/>webhook check; PayPal-Debug-Id kept"]
+            C3["Channel3 adapters<br/>category signal, product search"]
+        end
+        subgraph Out["Outbound, each off by default"]
+            SBX["PayPal Sandbox"]
+            WORKER["Gemini worker (Python 3.12)<br/>Vertex AI or AI Studio key"]
+            LMS["LM Studio 127.0.0.1:1234"]
+            C3API["Channel3 API"]
+        end
+    end
+    subgraph Hosted["Hosted demo on Render (PAYGUARD_DEMO_MODE=public): no PayPal calls"]
+        HPAGES["Same pages, rules engines and synthetic scenarios<br/>Disputes fixture, recorded guide turns, recorded Channel3 searches<br/>Live guide: keywords, or Gemini if the operator opts in (5 a minute, 20 a day)"]
+        HGATE["Public host, proxy headers, traffic gate"]
+        HSTUB["PayPal, AI brief, LM Studio and Studio agent turn<br/>stubs: 503 hosted_demo_disabled, no provider call"]
+    end
+    CON --> GATE
+    CON --> DRAFT
+    CON --> SEND
+    DRAFT --> GATE
+    SEND --> GATE
+    DASH --> YES
+    YES -->|yes| GATE
+    OTHER -->|scenarios page only| GATE
+    GATE --> RULES & ROUTE & AI & STUDIO & PPGW & C3
+    GATE --> G1
+    G5 -.-> WORKER
+    STUDIO -.-> WORKER
+    AI -.-> WORKER
+    AI -.-> LMS
+    PPGW -.->|browser waits up to 45 s| SBX
+    C3 -.-> C3API
+    ROUTE -.->|unknown goods, key set| C3API
+    CON -.->|product card images| CDN["cdn.trychannel3.com"]
+    HPAGES --> HGATE --> HSTUB
+    HPAGES -.->|product card images| CDN
+    RULES --> H["Merchant reviews and decides locally"]
+    H -.->|Final decision stays outside PayGuard| P["PayPal or bank / card issuer"]

@@ -25,7 +25,7 @@ assert.ok(app.includes('request={guideRequest}'), 'App passes the jump request t
 
 // Three situations, three separate guides (owner 2026-11-02): each step mounts its own, every call names it.
 // attack r21: the guide also reports a 401 to the console's Reconnect flow.
-assert.ok(guide.includes('function GuideLive({ session, Disclosure, Badge, request, scenario, onSessionExpired })'), 'guide takes its own situation');
+assert.ok(guide.includes('function GuideLive({ session, Disclosure, Badge, request, scenario, onSessionExpired, onOpenItems, onChooser })' /* (r33 M4, r34 #1) */), 'guide takes its own situation');
 assert.ok(!guide.includes('guide-live-scenario') && !guide.includes('setScenario'), 'no situation selector inside a guide');
 assert.ok(guide.includes("body: path === '/guide/start' ? body : { ...body, scenario }"), 'every guide call names its situation');
 assert.ok(guide.includes('`/guide/state?scenario=${scenario}`'), 'state is read per situation');

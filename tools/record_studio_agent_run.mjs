@@ -23,7 +23,7 @@ import { validateRecording } from '../frontend/src/dashboard/agentRecording.js';
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const OUTPUT = resolve(projectRoot, 'frontend/src/data/studio_agent_run_v1.json');
-const DEFAULT_QUESTIONS = ['Make a widget comparing cases by days to due'];
+const DEFAULT_QUESTIONS = ['Which reason code appears most often across the three cases?'];
 const RUN_TIMEOUT_MS = 240000;
 
 function parseArguments(argv) {
@@ -53,8 +53,12 @@ async function main() {
     for (const [index, question] of options.questions.entries()) {
       await box.fill(question);
       await box.press('Enter');
+      // (foolproofing 2026-11-04) The auditor asks before delegating; the recorder answers yes for the owner's run.
+      await page.getByText(/Reply "yes" to send it/).nth(index).waitFor({ timeout: 60000 });
+      await box.fill('yes');
+      await box.press('Enter');
       // The auditor's reply after delegating ends with this sentence; one per question.
-      await page.getByText(/handed it to Studio's lead agent/).nth(index).waitFor({ timeout: RUN_TIMEOUT_MS });
+      await page.getByText(/handed it to Studio's data agent/).nth(index).waitFor({ timeout: RUN_TIMEOUT_MS });
       console.log(`recorded: ${question}`);
     }
     const recording = await page.evaluate(() => window.__payguardRecorder.finish());

@@ -28,7 +28,7 @@ from payguard.advisory_eval import AdvisoryError, evaluate_advisory
 
 from .paypal import PaypalAdapter, provider_error_extra
 from .paypal_tools import SafePaypalToolGateway
-from .paypal_disputes import DisputeReadbackService
+from .paypal_disputes import DisputeAmountMismatch, DisputeReadbackService
 from .ai_brief import AiBriefError, AiBriefHttpRequest, AiBriefResponse, EvidenceBriefAdapter
 from .ai_usage import COST_NOTE, PRICE_TABLE_SOURCE, AiUsageLog, AiUsageResponse
 from .lmstudio_brief import LmStudioConfig, LmStudioEvidenceBriefAdapter
@@ -174,6 +174,8 @@ DISPUTE_PAIRING_MESSAGES = {
     "dispute_not_awaiting_seller": "PayPal is not waiting for the seller's response on this dispute, so evidence cannot be sent now. Nothing was sent.",
     "dispute_evidence_not_offered": "PayPal does not offer evidence submission on this dispute right now. Nothing was sent.",
     "dispute_amount_mismatch": "The dispute amount in PayPal differs from the selected case's amount. Nothing was sent.",
+    # (r35 #2, E1 P1-1) Read at preview from the session's last detail read: no confirmation, no pair.
+    "seller_evidence_already_submitted": "PayPal already has seller evidence for this dispute, so PayGuard will not send more. Nothing was sent.",
     # (r25 R3 P1-1) Only proof of fulfillment with tracking is shaped; refund ids are never invented.
     "evidence_type_not_supported": "PayPal asks for an evidence type PayGuard cannot send yet (only proof of fulfillment with tracking is supported). Respond to this dispute in PayPal directly. Nothing was sent.",
     # (r25 send guard) The fresh read's disputed_transactions[].seller.merchant_id must be the connected account.
@@ -187,6 +189,10 @@ DISPUTE_PAIRING_MESSAGES = {
     # (optimise r24) The payload built for the send must be the one the local approval recorded.
     "evidence_changed_after_approval": "The evidence changed after you approved it; review it again. Nothing was sent.",
     "tracking_already_submitted": "Tracking was already sent for this approval. Reset the demo and review the case again to send it again.",
+    # (r30 J2 P2-1) The server-side send confirmation issued by the latest preview.
+    "confirmation_required": "Open the send dialog and confirm there; a send needs the confirmation from the latest preview. Nothing was sent.",
+    "confirmation_invalid": "This confirmation is used, replaced by a newer preview, or does not match what would be sent. Prepare the preview again. Nothing was sent.",
+    "confirmation_too_early": "Wait for the send button to unlock, then send. Nothing was sent.",
     # PayPal docs r24 (currency-codes): these currencies have no decimals.
     INVOICE_WHOLE_UNITS_ERROR: "TWD, JPY and HUF invoices take whole amounts only, for example 1500 rather than 1500.00.",
 }
@@ -418,8 +424,9 @@ def register_optional_guide_routes(application, read_session, write_session):
             raise
         return
     if getattr(application.state, "demo_mode", "off") == "public":
-        # Hosted demo: the guide always uses the keyword chooser, never a model.
-        application.state.guide = module.GuideService(application.state.store, chooser_factory=lambda: None)
+        # Hosted demo: the keyword chooser, unless the operator opted in to the guide's Gemini chooser (r32, free-tier
+        # key, lower caps). The evidence brief and the Studio agents stay disabled there either way.
+        application.state.guide = module.hosted_guide_service(application.state.store)
     module.register_guide_routes(application, read_session, write_session)
 
 
@@ -478,6 +485,9 @@ def create_app(*, store=None, paypal=None, reference_loader=None, ai_brief=None,
 
     @application.exception_handler(BoundaryError)
     async def boundary_handler(_request, exc):
+        if isinstance(exc, DisputeAmountMismatch):  # (r35 #6) the message names both amounts (pattern-checked)
+            return JSONResponse(status_code=exc.status, headers={"Cache-Control": "no-store", "X-Content-Type-Options": "nosniff"},
+                                content={"error": {"code": exc.code, "message": exc.public_message}})
         return error_response(exc.status, exc.code, getattr(exc, "retry_after", None), extra=provider_error_extra(exc))
 
     @application.exception_handler(RequestValidationError)

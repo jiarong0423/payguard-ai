@@ -35,7 +35,7 @@ const plural = (count, word) => `${count} ${word}${count === 1 ? '' : 's'}`;
 // reviews/r13_8922acb/2_paypal.md) and README.md step 01 ("Rules for two of the ten countries were checked line by line").
 export const LINE_CHECKED = Object.freeze({ TW: '2026-11-02', CN: '2026-11-02' });
 export const lineCheckText = (code, name) => (LINE_CHECKED[code]
-  ? `${name}: checked line by line (${LINE_CHECKED[code]})` : `${name}: not yet checked line by line`);
+  ? `${name} rules checked line by line against their sources (${LINE_CHECKED[code]})` : `${name} rules not yet checked line by line against their sources`);
 // (optimise r24) Clock time for the before/after card ("Stopped at 10:02 → Clear at 10:04"), local 24-hour time.
 const clockTime = (ms) => new Date(ms).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
 const verdictWord = (result) => (result.blocked ? 'Stopped' : result.findings.some(isPostalBan) ? 'Draft allowed (other carrier)' : 'Clear');
@@ -131,6 +131,15 @@ function findingsBySeverity(unordered) {
     info: findings.filter((row) => row.severity === 'INFO'), action: findings.filter((row) => row.severity !== 'INFO') };
 }
 
+// (optimise r24) Whether each side's rules were checked line by line against their sources (only TW and CN so far; see
+// LINE_CHECKED). (r30 J4 #6a) A coverage note of the rule audit, not of this check: it sits muted under the source
+// lines, not in bold under the verdict, where it read as "the check was not done".
+function LineCheckNote({ result, names }) {
+  const sides = [...new Set([result.seller_country, result.buyer_country])];
+  return <small className="country-footnote country-line-check-note" data-testid="country-verdict-line-check">
+    Rule audit: {sides.map((code) => lineCheckText(code, names[code] || code)).join(' · ')}.</small>;
+}
+
 // One big line, then the count line (review r1 P0.3; wording per the PayPal-side red teams: the block may come from a
 // government, postal or PayPal rule, so the big line names no country).
 function Verdict({ result, names, tags, onEdit, onContinue }) {
@@ -140,22 +149,19 @@ function Verdict({ result, names, tags, onEdit, onContinue }) {
   const seller = names[result.seller_country];
   const buyer = names[result.buyer_country];
   const noGoods = tags.length === 0 && <span className="country-verdict-line" data-testid="country-no-goods">No goods ticked: account and shipping rules only.</span>;
-  // (optimise r24) Whether each side's rules were checked line by line (only TW and CN so far; see LINE_CHECKED).
-  const sides = [...new Set([result.seller_country, result.buyer_country])];
-  const lineCheck = <span className="country-verdict-line country-verdict-check" data-testid="country-verdict-line-check">{sides.map((code) => lineCheckText(code, names[code] || code)).join(' · ')}.</span>;
   // One next step under the verdict (plan r2 E19): change the goods after a Stop, or go on to the draft.
   if (result.blocked) {
     return <><strong className="country-verdict-big">This sale is likely to be stopped.</strong>
-      <span className="country-verdict-line">No draft: {plural(block.length, 'rule')} stop{block.length === 1 ? 's' : ''} {seller} → {buyer}.</span>{noGoods}{lineCheck}
+      <span className="country-verdict-line">No draft: {plural(block.length, 'rule')} stop{block.length === 1 ? 's' : ''} {seller} → {buyer}.</span>{noGoods}
       <span className="country-verdict-next"><button type="button" className="button button-secondary" data-testid="country-edit-item" onClick={() => onEdit(accountStop)}>{accountStop ? 'Change account' : 'Edit item'}</button></span></>;
   }
   if (ban.length) {
     return <><strong className="country-verdict-big">The post will not carry this item.</strong>
-      <span className="country-verdict-line">{plural(ban.length, 'postal rule')} ban{ban.length === 1 ? 's' : ''} it {seller} → {buyer}; another carrier may differ{warn.length > ban.length ? ` · ${warn.length - ban.length} more to check` : ''}. Not a legal clearance.</span>{noGoods}{lineCheck}
+      <span className="country-verdict-line">{plural(ban.length, 'postal rule')} ban{ban.length === 1 ? 's' : ''} it {seller} → {buyer}; another carrier may differ{warn.length > ban.length ? ` · ${warn.length - ban.length} more to check` : ''}. Not a legal clearance.</span>{noGoods}
       <span className="country-verdict-next"><button type="button" className="button button-secondary" data-testid="country-continue-draft" onClick={onContinue}>Continue with another carrier</button></span></>;
   }
   return <><strong className="country-verdict-big">No cited rule stops this sale.</strong>
-    <span className="country-verdict-line">{result.cross_border ? 'Cross-border' : 'Domestic'}, {seller} → {buyer}{warn.length ? ` · ${warn.length} to check first` : ''}. Not a legal clearance; PayPal's Acceptable Use Policy still applies.</span>{noGoods}{lineCheck}
+    <span className="country-verdict-line">{result.cross_border ? 'Cross-border' : 'Domestic'}, {seller} → {buyer}{warn.length ? ` · ${warn.length} to check first` : ''}. Not a legal clearance; PayPal's Acceptable Use Policy still applies.</span>{noGoods}
     <span className="country-verdict-next"><button type="button" className="button button-secondary" data-testid="country-continue-draft" onClick={onContinue}>Continue to draft</button></span></>;
 }
 
@@ -392,6 +398,7 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
         {rows.length > 0 ? <ul>{rows.map((row) => <Finding key={`${row.code}-${row.text}`} row={row} names={names} retrievedAt={result.retrieved_at} />)}</ul> : <p className="country-footnote">No rule to check first.</p>}
       </div>
       <small className="country-footnote">Paraphrased from official sources, {result.retrieved_at}. Not legal advice.</small>
+      <LineCheckNote result={result} names={names} />
     </div>}
     </div>
   </section>;

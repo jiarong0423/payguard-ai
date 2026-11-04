@@ -164,7 +164,7 @@ The recorded Sandbox sequence (2026-10-06) is:
 
 Invoice send, reminders, QR distribution, payment, capture, refund, dispute mutations other than the gated `provide-evidence` request, and production remain frozen. A POST create response is the accepted creation receipt, not a separate GET readback.
 
-A second Sandbox run on 2026-10-31 repeated OAuth and one unsent invoice `DRAFT`, and read the merchant's Sandbox disputes: one author-created test dispute appeared in `GET /v1/customer/disputes` and was read once with `GET /v1/customer/disputes/{id}` (HTTP 200). When connected, the console reads Sandbox disputes in step 03; no `provide-evidence` call was made ([masked receipt](../../evidence/RECEIPT_20261031_live.md)).
+A second Sandbox run on 2026-10-31 repeated OAuth and one unsent invoice `DRAFT`, and read the merchant's Sandbox disputes: one author-created test dispute appeared in `GET /v1/customer/disputes` and was read once with `GET /v1/customer/disputes/{id}` (HTTP 200). When connected, the console reads Sandbox disputes in step 03; no `provide-evidence` call was made ([masked receipt](../../evidence/RECEIPT_20261031_live.md)). On 2026-11-04 one evidence send to an author-created Sandbox test dispute succeeded ([masked receipt](../../evidence/RECEIPT_20261104_live.md)); on 2026-11-05 (UTC+8) a second send to a newly filed Sandbox test dispute succeeded ([masked receipt](../../evidence/RECEIPT_20261105_live.md)).
 
 ## Accessibility and stale-state requirements
 

@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="pg-zip-title pg-zip-desc">
+<title id="pg-zip-title">The review pack, opened and verified</title>
+<desc id="pg-zip-desc">Every file in a downloaded PayGuard review ZIP checked against its manifest, with key contents.</desc>
+<style>@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&amp;family=Geist:wght@400;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap');.t{font-family:'Instrument Serif',Georgia,serif;fill:#1f1e1b}.s{font-family:Geist,Helvetica,Arial,sans-serif}.m{font-family:'Geist Mono',Menlo,monospace}</style>
+<rect width="1920" height="1080" fill="#f7f3ec"/>
+<text x="64" y="64" class="m" font-size="16" letter-spacing="2" fill="#6b6862">PAYGUARD AI · STEP 03 · DOWNLOADED REVIEW PACK</text>
+<text x="64" y="120" class="t" font-size="56">The review pack, opened and verified</text>
+<text x="64" y="160" class="s" font-size="22" fill="#55534e">7 files, 14,028 bytes. Each file below was hashed again and compared with what manifest.json declares.</text>
+<rect x="64" y="196" width="1120" height="392" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
+<text x="84" y="230" class="m" font-size="14" letter-spacing="1.5" fill="#6b6862">FILE</text>
+<text x="484" y="230" class="m" font-size="14" letter-spacing="1.5" fill="#6b6862">MANIFEST SHA256</text>
+<text x="764" y="230" class="m" font-size="14" letter-spacing="1.5" fill="#6b6862">RECOMPUTED SHA256</text>
+<text x="1044" y="230" class="m" font-size="14" letter-spacing="1.5" fill="#6b6862">CRC · SIZE</text>
+<line x1="64" y1="252" x2="1184" y2="252" stroke="#d9d3c7" stroke-width="1"/>
+<text x="84" y="287" class="s" font-size="19" font-weight="600" fill="#1f1e1b">README.txt</text>
+<text x="484" y="287" class="m" font-size="17" fill="#55534e">c30508c1ddbd9f0a…</text>
+<text x="764" y="287" class="m" font-size="17" fill="#3f6b47">c30508c1ddbd9f0a…</text>
+<text x="1044" y="287" class="m" font-size="17" fill="#3f6b47">✓ match</text>
+<line x1="64" y1="308" x2="1184" y2="308" stroke="#d9d3c7" stroke-width="1"/>
+<text x="84" y="343" class="s" font-size="19" font-weight="600" fill="#1f1e1b">requirements.json</text>
+<text x="484" y="343" class="m" font-size="17" fill="#55534e">ac8599386c4b92eb…</text>
+<text x="764" y="343" class="m" font-size="17" fill="#3f6b47">ac8599386c4b92eb…</text>
+<text x="1044" y="343" class="m" font-size="17" fill="#3f6b47">✓ match</text>
+<line x1="64" y1="364" x2="1184" y2="364" stroke="#d9d3c7" stroke-width="1"/>
+<text x="84" y="399" class="s" font-size="19" font-weight="600" fill="#1f1e1b">timeline.json</text>
+<text x="484" y="399" class="m" font-size="17" fill="#55534e">190df6530b3ec74f…</text>
+<text x="764" y="399" class="m" font-size="17" fill="#3f6b47">190df6530b3ec74f…</text>
+<text x="1044" y="399" class="m" font-size="17" fill="#3f6b47">✓ match</text>
+<line x1="64" y1="420" x2="1184" y2="420" stroke="#d9d3c7" stroke-width="1"/>
+<text x="84" y="455" class="s" font-size="19" font-weight="600" fill="#1f1e1b">public-sources.json</text>
+<text x="484" y="455" class="m" font-size="17" fill="#55534e">89ffd193ffb94015…</text>
+<text x="764" y="455" class="m" font-size="17" fill="#3f6b47">89ffd193ffb94015…</text>
+<text x="1044" y="455" class="m" font-size="17" fill="#3f6b47">✓ match</text>
+<line x1="64" y1="476" x2="1184" y2="476" stroke="#d9d3c7" stroke-width="1"/>
+<text x="84" y="511" class="s" font-size="19" font-weight="600" fill="#1f1e1b">pseudonymized-evidence.json</text>
+<text x="484" y="511" class="m" font-size="17" fill="#55534e">b0285c73ec8394b8…</text>
+<text x="764" y="511" class="m" font-size="17" fill="#3f6b47">b0285c73ec8394b8…</text>
+<text x="1044" y="511" class="m" font-size="17" fill="#3f6b47">✓ match</text>
+<line x1="64" y1="532" x2="1184" y2="532" stroke="#d9d3c7" stroke-width="1"/>
+<text x="84" y="567" class="s" font-size="19" font-weight="600" fill="#1f1e1b">product-reference.json</text>
+<text x="484" y="567" class="m" font-size="17" fill="#55534e">5216b397904b58e8…</text>
+<text x="764" y="567" class="m" font-size="17" fill="#3f6b47">5216b397904b58e8…</text>
+<text x="1044" y="567" class="m" font-size="17" fill="#3f6b47">✓ match</text>
+<rect x="1216" y="196" width="640" height="408" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
+<text x="1236" y="230" class="m" font-size="14" letter-spacing="1.5" fill="#6b6862">CHECKS</text>
+<text x="1236" y="272" class="m" font-size="17" font-weight="500" fill="#3f6b47">PASS</text>
+<text x="1300" y="272" class="s" font-size="17" fill="#1f1e1b">every file is listed in the manifest</text>
+<text x="1236" y="316" class="m" font-size="17" font-weight="500" fill="#3f6b47">PASS</text>
+<text x="1300" y="316" class="s" font-size="17" fill="#1f1e1b">every listed file is present</text>
+<text x="1236" y="360" class="m" font-size="17" font-weight="500" fill="#3f6b47">PASS</text>
+<text x="1300" y="360" class="s" font-size="17" fill="#1f1e1b">every sha256, CRC32 and size matches</text>
+<text x="1236" y="404" class="m" font-size="17" font-weight="500" fill="#3f6b47">PASS</text>
+<text x="1300" y="404" class="s" font-size="17" fill="#1f1e1b">provider submission: NOT_PERFORMED</text>
+<text x="1236" y="448" class="m" font-size="17" font-weight="500" fill="#3f6b47">PASS</text>
+<text x="1300" y="448" class="s" font-size="17" fill="#1f1e1b">dispute decision: NOT_MADE</text>
+<text x="1236" y="492" class="m" font-size="17" font-weight="500" fill="#3f6b47">PASS</text>
+<text x="1300" y="492" class="s" font-size="17" fill="#1f1e1b">human review required</text>
+<text x="1236" y="536" class="m" font-size="17" font-weight="500" fill="#3f6b47">PASS</text>
+<text x="1300" y="536" class="s" font-size="17" fill="#1f1e1b">6 identifiers replaced (HMAC-SHA256), not reversible</text>
+<text x="1236" y="580" class="m" font-size="17" font-weight="500" fill="#3f6b47">PASS</text>
+<text x="1300" y="580" class="s" font-size="17" fill="#1f1e1b">README: "No evidence was submitted to PayPal."</text>
+<rect x="64" y="700" width="1792" height="196" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
+<text x="88" y="740" class="t" font-size="28">What is inside</text>
+<text x="88" y="780" class="m" font-size="16" fill="#55534e">requirement: PROOF_OF_FULFILLMENT · STRUCTURALLY_PRESENT · seller response due 2026-11-06 · 5 official PayPal sources cited</text>
+<text x="88" y="808" class="m" font-size="16" fill="#55534e">pseudonymised: address, email, id_like, manual, name, us_phone · HMAC-SHA256 · no reverse map in the pack</text>
+<text x="88" y="836" class="m" font-size="16" fill="#55534e">left out on purpose: raw case order request identifiers, identity session draft digests, restricted proof values, attachment filenames and bytes, unknown fields</text>
+<text x="88" y="864" class="m" font-size="16" fill="#55534e">synthetic demo data · advisory only · not a PayPal attachment · PayPal or the card issuer decides</text>
+<text x="64" y="944" class="m" font-size="14" letter-spacing="1.5" fill="#6b6862">REPEAT IT YOURSELF</text>
+<text x="64" y="980" class="m" font-size="18" fill="#1f1e1b">unzip -p review.zip README.txt | shasum -a 256      # compare with manifest.json "sha256"</text>
+<text x="64" y="1016" class="m" font-size="16" fill="#6b6862">this ZIP: sha256 7db4a239418facf083392a8802757b04dfd5b6d59705330c332fd4df05d481ba</text>
+</svg>

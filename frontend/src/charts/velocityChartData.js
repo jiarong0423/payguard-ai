@@ -93,6 +93,10 @@ const SPIKE_FILL = '#0f766e';
 const REVIEW_STROKE = '#875f30';
 const AVERAGE_STROKE = '#6366f1';
 
+// (r32 J5 P3-3) Chart titles and subtitles wrap onto up to three lines instead of being cut with an ellipsis at
+// phone width.
+const CAPTION_WRAP = Object.freeze({ wrapping: 'on-space', maxHeight: 60 });
+
 export function money(value) {
   return Number(value).toFixed(2);
 }
@@ -108,8 +112,8 @@ export function velocityChartOptions({ rows, reviewLine, currency }, container, 
   return {
     container,
     data: rows,
-    title: { text: 'Hourly amount: baseline vs spike', fontSize: 14, fontWeight: 600, color: '#0f172a' },
-    subtitle: { text: 'Demo · UTC · ▲ spike', fontSize: 13, color: '#64748b' },
+    title: { text: 'Hourly amount: baseline vs spike', fontSize: 14, fontWeight: 600, color: '#0f172a', ...CAPTION_WRAP },
+    subtitle: { text: 'Demo · UTC · ▲ spike', fontSize: 13, color: '#64748b', ...CAPTION_WRAP },
     background: { fill: '#ffffff' },
     padding: { top: 12, right: 16, bottom: 8, left: 8 },
     series: [
@@ -138,7 +142,9 @@ export function velocityChartOptions({ rows, reviewLine, currency }, container, 
         label: { fontSize: 13, color: '#475569' },
         crossLines: reviewLine === null ? [] : [{
           type: 'line', value: reviewLine, stroke: REVIEW_STROKE, strokeWidth: 1.5, lineDash: [6, 4],
-          label: { text: `Review threshold ${money(reviewLine)} ${currency}/h`, position: 'top-left', color: '#92400e', fontSize: 13 },
+          // (r32 J1 J4) On a phone the long label ran under the spike bar and its "USD/h" was hidden; the short one
+          // ends before the bars, and the page legend below still names the line "Review threshold".
+          label: { text: `${compact ? 'Review' : 'Review threshold'} ${money(reviewLine)} ${currency}/h`, position: 'top-left', color: '#92400e', fontSize: 13 },
         }],
       },
     },
@@ -197,8 +203,8 @@ export function monthlyChartOptions({ rows, currency }, container) {
   return {
     container,
     data: rows,
-    title: { text: 'Monthly amount and 3-month average', fontSize: 14, fontWeight: 600, color: '#1e293b' },
-    subtitle: { text: 'Illustrative demo data · not used by the review signal', fontSize: 12, color: '#64748b' },
+    title: { text: 'Monthly amount and 3-month average', fontSize: 14, fontWeight: 600, color: '#1e293b', ...CAPTION_WRAP },
+    subtitle: { text: 'Illustrative demo data · not used by the review signal', fontSize: 12, color: '#64748b', ...CAPTION_WRAP },
     background: { fill: '#ffffff' },
     padding: { top: 12, right: 44, bottom: 8, left: 8 },
     series: [

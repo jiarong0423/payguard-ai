@@ -37,10 +37,12 @@ flowchart LR
   I --> M["Video publication<br/>O (Done): 2:02 public video"]
   M --> P["Devpost submission<br/>O (Done)"]
   J["Production hosting and provider mutations<br/>not performed"]
-  Q["Rules-only hosted demo on Render<br/>O (Done): no provider calls"]
+  Q["Hosted demo on Render<br/>O (Done): no PayPal calls; guide Gemini opt-in"]
+  D --> R["Added after the eight-layer design<br/>country rules, evidence guide, Channel3,<br/>AG Studio dashboard, Gemini worker<br/>O (Done)"]
+  R --> Q
 ```
 
-This graph describes the accepted local design and separates historical receipts from the separately reviewed current-byte rehearsal. The recorded runs of 2026-10-06 retain only their original bounded claims; a later sanitized receipt records three validated AI stages, one Sandbox OAuth and one unsent invoice DRAFT in a single session. Source publication is established only when the published manifest and exact anonymous readback agree for that candidate. The complete repository run instructions are the selected functional-demo path. The [2:02 video](https://youtu.be/K28N9QhRp1E) is public; the Devpost project is submitted. The optional rules-only hosted demo runs on Render (`PAYGUARD_DEMO_MODE=public`, no provider calls); a hosted deployment with provider calls is unperformed.
+This graph describes the accepted local design and separates historical receipts from the separately reviewed current-byte rehearsal. The recorded runs of 2026-10-06 retain only their original bounded claims; a later sanitized receipt records three validated AI stages, one Sandbox OAuth and one unsent invoice DRAFT in a single session. Source publication is established only when the published manifest and exact anonymous readback agree for that candidate. The complete repository run instructions are the selected functional-demo path. The [2:02 video](https://youtu.be/K28N9QhRp1E) is public; the Devpost project is submitted. The optional hosted demo runs on Render (`PAYGUARD_DEMO_MODE=public`, no PayPal calls; the guide may use Gemini when the operator opts in, at most 5 calls a minute and 20 a day); a hosted deployment with PayPal calls is unperformed.
 
 ## Eight layers
 
@@ -53,17 +55,20 @@ This graph describes the accepted local design and separates historical receipts
 | L5 — API and Report | `M-API`, `M-REPORT` | Enforce strict HTTP/I/O contracts and present backend-owned calculations | Loopback session/CSRF/quota controls; in the hosted demo only, one exact public host behind the proxy (`X-Forwarded-For`, `X-Forwarded-Proto: https`) and the per-visitor and store-wide `TrafficGate`; no frontend risk recomputation; fixed sanitized errors | Provider telemetry, separate readback and durable external action records remain open |
 | L6 — Governance | `M-GOVERNANCE` | Bind files, hashes, tests, source provenance, evidence and release state | One registry, one gap queue, isolation-first change, strict audit, no-op verification and historical readback preserved for its own bytes | Every changed release requires a matching manifest, release evidence and exact anonymous public readback; production deployment requires separate acceptance |
 | L7 — Human Review | `M-REVIEW` | Bind actor choice to case/action/payload digest, nonce and expiry | Short-lived local acknowledgement and draft review; edit/reset/expiry revoke prior approval | Durable authenticated actor, tenant and restart/concurrency semantics remain open |
-| L8 — Presentation | `M-PRESENT`, `M-UI` | Render backend state, references, limitations and operator controls | English US-only console, AG Grid Community, a lazy-loaded first-party analytics workspace, a four-column backend-supplied transaction stream, single-open mobile evidence accordion and a deterministic local dashboard guide | Repository instructions are the selected demo path; same-version public artifact proof requires manifest binding and exact anonymous readback; the optional rules-only hosted demo runs on Render with no provider calls; hosting with provider calls is unperformed |
+| L8 — Presentation | `M-PRESENT`, `M-UI` | Render backend state, references, limitations and operator controls | English US-only console, AG Grid Community, a lazy-loaded first-party analytics workspace, a four-column backend-supplied transaction stream, single-open mobile evidence accordion and a deterministic local dashboard guide | Repository instructions are the selected demo path; same-version public artifact proof requires manifest binding and exact anonymous readback; the optional hosted demo runs on Render with no PayPal calls (the guide may use Gemini when the operator opts in); hosting with PayPal calls is unperformed |
 
 ## Three-stage lifecycle
 
 ```mermaid
 flowchart LR
-  S1["Stage 1 — Before transaction<br/>US AUP preflight warning funnel"] --> S2["Stage 2 — Payment and fulfillment<br/>Velocity and evidence readiness"]
+  S1["Stage 1 — Before transaction<br/>US AUP preflight warning funnel,<br/>country rules, Channel3 product card"] --> S2["Stage 2 — Payment and fulfillment<br/>Velocity and evidence readiness"]
   S2 --> S3["Stage 3 — After transaction<br/>Dispute evidence mediation"]
   S1 --> H1["Human: edit, cancel, acknowledge"]
   S2 --> H2["Human: inspect capacity and missing evidence"]
   S3 --> H3["Human: review local draft"]
+  G["Evidence guide in each stage<br/>keyword chooser or governed Gemini chooser"] -.-> S1
+  G -.-> S2
+  G -.-> S3
   H1 --> P["PayPal final external authority"]
   H2 --> P
   H3 --> A["PayPal or bank/card issuer final authority"]
@@ -101,16 +106,16 @@ The deterministic resolver validates reason, lifecycle stage, status, seller-res
 
 The runtime produces two bounded products. Restricted original synthetic metadata, including the synthetic attachment bytes (kept for the gated multipart `provide-evidence` send), remains in expiring session memory and never returns file content or the synthetic cases' raw provider case, order or request identifiers to the browser. A connected Sandbox read is different: its `dispute_id` and `seller_transaction_id` are returned to the console so it can show and pair the Sandbox test case. Browser views use non-identifying session references such as `case-ref-001`, `order-ref-001` and `requirement-001`. A separate `INTERNAL_REVIEW_ONLY_V1` pseudonymized JSON copy may be downloaded for local review. The browser can also package the same safe projection into a deterministic seven-entry `INTERNAL_REVIEW_ZIP_V1` archive with a fixed README, manifest, requirement projection, timeline, pinned public sources, pseudonymized evidence and the seller's product reference (`product-reference.json`, `NOT_CONFIRMED` when none was confirmed). The completed archive is parsed before download; fixed authority values, canonical JSON, ZIP metadata and per-payload byte length, CRC-32 and SHA-256 must all match. The ZIP excludes restricted originals, raw identifiers, proof values, attachment names and attachment bytes, and it never represents a PayPal submission package.
 
-Before reuse, AI eligibility or local approval, the backend recomputes and constant-time checks the restricted object digest; the draft digest then binds the browser-visible draft to that verified hidden-layer digest. When a Sandbox app is connected, the console reads the merchant's Sandbox disputes (`GET /v1/customer/disputes` and `GET /v1/customer/disputes/{id}`); otherwise it uses the closed fixture. It builds and previews a `provide-evidence` request, and sends it only behind a recorded local approval, `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled` and an explicit `submit: true`; no evidence has been sent to the live Sandbox yet. On 2026-10-31 one author-created Sandbox test dispute was read live (list and detail; [masked receipt](../../evidence/RECEIPT_20261031_live.md)). The console does not route cases by adjudicator, persist real PII or select an external response. Raw HATEOAS links, PayPal `allowed_response_options` and live authority routing remain provider-adapter fields. PayPal or the issuer retains the applicable external authority.
+Before reuse, AI eligibility or local approval, the backend recomputes and constant-time checks the restricted object digest; the draft digest then binds the browser-visible draft to that verified hidden-layer digest. When a Sandbox app is connected, the console reads the merchant's Sandbox disputes (`GET /v1/customer/disputes` and `GET /v1/customer/disputes/{id}`); otherwise it uses the closed fixture. It builds and previews a `provide-evidence` request, and sends it only behind a recorded local approval, `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled` and an explicit `submit: true`. On 2026-10-31 one author-created Sandbox test dispute was read live (list and detail; [masked receipt](../../evidence/RECEIPT_20261031_live.md)) and no evidence was sent; on 2026-11-04 one evidence send to another Sandbox test dispute succeeded ([masked receipt](../../evidence/RECEIPT_20261104_live.md)); on 2026-11-05 (UTC+8) a second send to a newly filed Sandbox test dispute succeeded ([masked receipt](../../evidence/RECEIPT_20261105_live.md)). The console does not route cases by adjudicator, persist real PII or select an external response. Raw HATEOAS links, PayPal `allowed_response_options` and live authority routing remain provider-adapter fields. PayPal or the issuer retains the applicable external authority.
 
 ## Data and control flow
 
 ```mermaid
 flowchart TB
-  UI["L8 React, AG Grid Community and first-party analytics"] --> API["L5 loopback API"]
+  UI["L8 React console: AG Charts, AG Grid, Bryntum board,<br/>first-party analytics; AG Studio dashboard"] --> API["L5 loopback API"]
   API --> ING["L1 strict intake"]
   ING --> PRIV["L2 minimization and pseudonymization"]
-  ING --> POLICY["L3 US reference profile"]
+  ING --> POLICY["L3 US reference profile and country rules"]
   PRIV --> ENG["L4 deterministic engines"]
   POLICY --> ENG
   ENG --> REPORT["L5 typed results"]
@@ -123,6 +128,11 @@ flowchart TB
   GOV -. verifies .-> UI
   API -. "explicit opt-in only" .-> SBX["PayPal Sandbox boundary"]
   ENG -. "explicit opt-in after preflight" .-> AI["Bounded AI boundary"]
+  AI -.-> WORKER["Gemini worker (Python 3.12)<br/>evidence brief, evidence guide, AG Studio agent turns"]
+  ENG -. "off by default" .-> C3["Channel3 API"]
+  subgraph HOSTED["Hosted demo on Render (PAYGUARD_DEMO_MODE=public)"]
+    HUI["Same pages and rules engines<br/>recorded guide turns and Channel3 searches"] --> HSTUB["Provider stubs<br/>503 hosted_demo_disabled"]
+  end
 ```
 
 ### Components added after the eight-layer design (status 2026-11-04)
@@ -131,11 +141,11 @@ The layer table and graphs above predate these parts of the current runtime. Eac
 
 - **Country rules check** (L3/L4, step 01): ten country profiles and their export and import rules (`data/country_rules/`, `/api/v1/country-rules/*`); once a check exists in the session, a ban stops the Sandbox invoice draft with HTTP 409.
 - **Evidence guide** (L4/L8): guided gap filling per stage (`/api/v1/guide/*`, five routes). The chooser is a keyword baseline, or with `PAYGUARD_GUIDE_MODEL=gemini` a Gemini chooser through the Python 3.12 worker over Vertex AI or an AI Studio key, governed per session and situation.
-- **AG Studio dashboard and built-in agents** (L8, `/dashboard.html`): the agents are off unless `PAYGUARD_STUDIO_AGENTS=gemini`; each turn goes through `POST /api/v1/studio/agent-turn` to the same worker under a separate governor.
+- **AG Studio dashboard and built-in agents** (L8, `/dashboard.html`): the agents are off unless `PAYGUARD_STUDIO_AGENTS=gemini`; each turn goes through `POST /api/v1/studio/agent-turn` to the same worker under a separate governor. A question outside the auditor's fixed set goes to Studio's data agent only after a plain "yes" (8-turn cap, judgement-wording check before display).
 - **Channel3** (L4, advisory only): a category signal and a product reference card, off by default, replayed from recordings on the hosted demo; case routing (`/api/v1/cases/route`) matches goods text against the recorded catalogue and may make one live product search when a key is set. On the hosted demo the browser loads the recorded card images from `cdn.trychannel3.com`.
 - **Bryntum evidence deadline board** (L8, step 03): planning only, kept in the browser tab.
 - **PayPal shipment tracking** (`POST /v1/shipping/trackers-batch`; PayPal marks this endpoint deprecated (legacy), and Orders v2 tracking, `POST /v2/checkout/orders/{id}/track`, is the current path, not called by PayGuard) and the **webhook signature check**: both gated, neither run live.
-- **Rules-only hosted demo** (L5): `PAYGUARD_DEMO_MODE=public` replaces every provider adapter with a stub, answers 503 on provider routes, accepts the one configured public host behind the proxy and adds the `TrafficGate` limits.
+- **Hosted demo** (L5): `PAYGUARD_DEMO_MODE=public` replaces every PayPal, brief, Studio and local-model adapter with a stub (the guide may use Gemini only when the operator opts in, at most 5 calls a minute and 20 a day), answers 503 on provider routes, accepts the one configured public host behind the proxy and adds the `TrafficGate` limits.
 - **Pages** (L8): besides the console, the evidence page, `/scenarios.html` (fixed work orders) and `/proof.html` (static proof page).
 
 The browser never receives credentials or access tokens. Provider records never enter the synthetic pool. AI does not receive real merchant, buyer, payment or dispute data in the current scope.
@@ -181,7 +191,7 @@ The maximum separately reviewed evidence scope is:
 - one sanitized unsent invoice `DRAFT` creation result;
 - independent review of identity, endpoint, request class and response evidence.
 
-The existing login is only the Developer-login identity. A virtual Business sandbox seller is not the operator's live account. A create response is not a separate GET readback. Invoice send, payment, capture, refund and production are frozen. A second Sandbox run on 2026-10-31 created another unsent invoice `DRAFT` and read one author-created test dispute (list and detail); no `provide-evidence` call was made ([masked receipt](../../evidence/RECEIPT_20261031_live.md)).
+The existing login is only the Developer-login identity. A virtual Business sandbox seller is not the operator's live account. A create response is not a separate GET readback. Invoice send, payment, capture, refund and production are frozen. A second Sandbox run on 2026-10-31 created another unsent invoice `DRAFT` and read one author-created test dispute (list and detail); no `provide-evidence` call was made ([masked receipt](../../evidence/RECEIPT_20261031_live.md)). On 2026-11-04 one `provide-evidence` send to an author-created Sandbox test dispute succeeded ([masked receipt](../../evidence/RECEIPT_20261104_live.md)); on 2026-11-05 (UTC+8) a second send to a newly filed Sandbox test dispute succeeded ([masked receipt](../../evidence/RECEIPT_20261105_live.md)).
 
 ### Recorded Gemini run
 
@@ -209,7 +219,7 @@ The public source includes bounded synthetic contract tests for all three stages
 | Gemini run | One bounded `gemini-3.8-flash` execution and human semantic review | The recorded run retains its original scope; a separate current-byte rehearsal validated one bounded response for each fixed stage. Repeatability, semantic quality beyond those samples, real-record behavior and the optional full policy interpreter remain outside the claim |
 | Review authority | Durable external submission authority | Review remains local and short-lived |
 | Real data | Real PII ingestion and retention | Only synthetic bounded privacy demonstrations are allowed |
-| Source release | Pre-video public source release | Current-byte live proof, same-version release evidence and exact anonymous public readback were accepted for the bounded historical source release. The 2:02 video is public. A changed source candidate needs fresh exact-byte release acceptance; the Devpost project is submitted. The optional rules-only hosted demo runs on Render with no provider calls; hosting with provider calls is unperformed and not mandatory |
+| Source release | Pre-video public source release | Current-byte live proof, same-version release evidence and exact anonymous public readback were accepted for the bounded historical source release. The 2:02 video is public. A changed source candidate needs fresh exact-byte release acceptance; the Devpost project is submitted. The optional hosted demo runs on Render with no PayPal calls (the guide may use Gemini when the operator opts in); hosting with PayPal calls is unperformed and not mandatory |
 
 Internal machine-readable registries remain local release-owner controls and are not linked from the public package. Public documents cannot close a release gate.
 
@@ -226,7 +236,7 @@ The accepted US-only local baseline has direct evidence that:
 7. historical logs, receipts and superseded bytes remain unchanged;
 8. the 2:02 video is public; the Devpost project is submitted; later source revisions need separate evidence-driven release acceptance.
 
-The recorded Sandbox and Gemini runs remain evidence only for their captured executions; the separately reviewed current-byte rehearsal supports exactly its three fixed AI stages, one Sandbox OAuth and one unsent invoice DRAFT. Complete repository run instructions are the selected functional-demo path. Each published candidate still requires matching release evidence and exact anonymous public readback before it can carry `PUBLIC_SOURCE_PUBLISHED`. After that same-byte readback, the Devpost project is submitted and the repository copy matches the accepted public source bytes. The optional rules-only hosted demo runs on Render with no provider calls; hosting with provider calls is unperformed, and production hosting plus multi-user AI operation remain unproven and outside the accepted runtime.
+The recorded Sandbox and Gemini runs remain evidence only for their captured executions; the separately reviewed current-byte rehearsal supports exactly its three fixed AI stages, one Sandbox OAuth and one unsent invoice DRAFT. Complete repository run instructions are the selected functional-demo path. Each published candidate still requires matching release evidence and exact anonymous public readback before it can carry `PUBLIC_SOURCE_PUBLISHED`. After that same-byte readback, the Devpost project is submitted and the repository copy matches the accepted public source bytes. The optional hosted demo runs on Render with no PayPal calls (the guide may use Gemini when the operator opts in); hosting with PayPal calls is unperformed, and production hosting plus multi-user AI operation remain unproven and outside the accepted runtime.
 
 Stop if a source digest drifts, a foreign source becomes reachable, an effective date is inferred, a procedural court record is presented as a merits decision, a synthetic receipt is called authentic, or any path enables production or financial mutation.
 

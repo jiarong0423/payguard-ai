@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" font-family="Helvetica, Arial, sans-serif" role="img" aria-labelledby="a93-t a93-d">
+<title id="a93-t">PayGuard AI: how it works</title>
+<desc id="a93-d">Simplified architecture: seller console, PayGuard server funnel (input gate, rules, optional Gemini, code checks), PayPal Sandbox and Gemini services. The model never approves or sends.</desc>
+<!-- r9.3 (2026-11-04): simplified video cut of r9.2; r9.2 remains the README version. -->
+<defs>
+<marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3b3a36"/></marker>
+<marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4a6a4e"/></marker>
+<marker id="arrI" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4f46e5"/></marker>
+</defs>
+<rect width="1920" height="1080" fill="#fbf7ef"/>
+<text x="80" y="104" font-size="60" font-weight="700" fill="#1f1e1b">PayGuard AI: how it works</text>
+<text x="80" y="162" font-size="34" fill="#5b5953">Rules first. Code checks every result. The seller decides.</text>
+<text x="80" y="252" font-size="26" font-weight="700" fill="#8a877f" letter-spacing="3">SELLER</text>
+<text x="640" y="252" font-size="26" font-weight="700" fill="#8a877f" letter-spacing="3">PAYGUARD SERVER</text>
+<text x="1440" y="252" font-size="26" font-weight="700" fill="#8a877f" letter-spacing="3">SERVICES</text>
+<rect x="80" y="284" width="480" height="168" rx="18" fill="#ffffff" stroke="#4f46e5" stroke-width="3"/>
+<text x="112" y="352" font-size="38" font-weight="700" fill="#1f1e1b">Seller console</text>
+<text x="112" y="404" font-size="28" fill="#5b5953">3 steps · evidence guide</text>
+<rect x="80" y="540" width="480" height="200" rx="18" fill="#ffffff" stroke="#4f46e5" stroke-width="3"/>
+<text x="112" y="608" font-size="38" font-weight="700" fill="#1f1e1b">Two-step send</text>
+<text x="112" y="660" font-size="30" fill="#5b5953"><tspan fill="#c2410c" font-weight="700">Continue</tspan> → 3 s → <tspan fill="#4a6a4e" font-weight="700">Send</tspan></text>
+<text x="112" y="702" font-size="24" fill="#5b5953">single-use server confirmation</text>
+<rect x="640" y="284" width="720" height="560" rx="26" fill="#f1eee6" stroke="#3b3a36" stroke-width="3"/>
+<rect x="672" y="316" width="656" height="88" rx="14" fill="#3b3a36"/>
+<text x="1000" y="374" font-size="36" font-weight="700" fill="#ffffff" text-anchor="middle">Input gate</text>
+<rect x="672" y="452" width="200" height="150" rx="16" fill="#ffffff" stroke="#4f46e5" stroke-width="3"/>
+<text x="772" y="538" font-size="28" font-weight="700" fill="#1f1e1b" text-anchor="middle">Rules first</text>
+<path d="M874 527 L896 527" stroke="#3b3a36" stroke-width="3" marker-end="url(#arr)"/>
+<rect x="900" y="452" width="200" height="150" rx="16" fill="#eef0ff" stroke="#4f46e5" stroke-width="3"/>
+<text x="1000" y="522" font-size="28" font-weight="700" fill="#1f1e1b" text-anchor="middle">Gemini</text>
+<text x="1000" y="562" font-size="24" fill="#5b5953" text-anchor="middle">optional</text>
+<path d="M1102 527 L1124 527" stroke="#3b3a36" stroke-width="3" marker-end="url(#arr)"/>
+<rect x="1128" y="452" width="200" height="150" rx="16" fill="#ffffff" stroke="#4a6a4e" stroke-width="3"/>
+<text x="1228" y="538" font-size="28" font-weight="700" fill="#1f1e1b" text-anchor="middle">Code checks</text>
+<rect x="672" y="648" width="656" height="164" rx="16" fill="#fff3ea" stroke="#c2410c" stroke-width="3" stroke-dasharray="10,8"/>
+<text x="1000" y="718" font-size="32" font-weight="700" fill="#c2410c" text-anchor="middle">The model never approves,</text>
+<text x="1000" y="764" font-size="32" font-weight="700" fill="#c2410c" text-anchor="middle">sends or decides a case</text>
+<rect x="1440" y="284" width="400" height="208" rx="18" fill="#ffffff" stroke="#4a6a4e" stroke-width="3"/>
+<text x="1472" y="352" font-size="38" font-weight="700" fill="#1f1e1b">PayPal Sandbox</text>
+<text x="1472" y="404" font-size="28" fill="#5b5953">one approval = one send</text>
+<text x="1472" y="446" font-size="26" fill="#5b5953">real sends 11-04 and 11-05</text>
+<rect x="1440" y="584" width="400" height="168" rx="18" fill="#ffffff" stroke="#4f46e5" stroke-width="3"/>
+<text x="1472" y="652" font-size="38" font-weight="700" fill="#1f1e1b">Gemini</text>
+<text x="1472" y="704" font-size="28" fill="#5b5953">key in a separate worker</text>
+<path d="M564 384 L636 384" stroke="#3b3a36" stroke-width="3" marker-start="url(#arr)" marker-end="url(#arr)"/>
+<path d="M564 640 L636 640" stroke="#3b3a36" stroke-width="3" marker-end="url(#arr)"/>
+<path d="M1364 404 L1436 404" stroke="#4a6a4e" stroke-width="3" marker-end="url(#arrG)"/>
+<path d="M1364 684 L1436 684" stroke="#4f46e5" stroke-width="3" marker-end="url(#arrI)"/>
+<rect x="80" y="896" width="1760" height="120" rx="18" fill="#ffffff" stroke="#8a877f" stroke-width="2"/>
+<line x1="960" y1="920" x2="960" y2="992" stroke="#d9d3c7" stroke-width="2"/>
+<text x="112" y="968" font-size="30" fill="#1f1e1b"><tspan font-weight="700">Local console</tspan><tspan fill="#5b5953">  real Sandbox and Gemini calls</tspan></text>
+<text x="992" y="968" font-size="30" fill="#1f1e1b"><tspan font-weight="700">Hosted demo</tspan><tspan fill="#5b5953">  rules by default, no PayPal calls</tspan></text>
+</svg>

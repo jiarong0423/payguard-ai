@@ -6,6 +6,11 @@ import { downloadPseudonymizedEvidence } from './pseudonymizedExport.js';
 import { downloadInternalReviewZip, INTERNAL_REVIEW_ZIP_CONTENTS } from './reviewZip.js';
 import { operatorLabel, operatorLabels, sandboxReadbackLabel } from './operatorLabels.js';
 import { initialProductConfirmation, productConfirmationReducer } from './productConfirmation.js';
+import { createPortal } from 'react-dom';
+import { createSendConfirmTokens, MISSING_CONFIRM_NOTICE, readyWithoutToken } from './sendConfirm.js';
+import { approveLockReason, draftLockReason, sellerEvidenceOnFile, SELLER_EVIDENCE_TEXT, sendLockReason } from './lockReasons.js';
+import { hostedCopy } from './hostedCopy.js';
+import { resumedNotice } from './resumeNotice.js';
 import GuideLive, { useWaitClock, waitFailureMessage, WaitLine } from './GuideLive.jsx';
 import CountryRules, { hasPostalBan } from './CountryRules.jsx';
 import ProductReference from './ProductReference.jsx';
@@ -141,10 +146,30 @@ function SecondaryStageTabs({ stage, activeTab, onSelectTab, referenceProps, aiA
   </div>;
 }
 
+// (r34 #15) Visible times use the viewer's own clock, like the "Stopped at 22:07" and countdown lines beside them;
+// the fixed UTC form (utcLabel) stays in Technical details only.
 function dateLabel(value) {
   if (!value) return '—';
   const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? '—' : date.toLocaleString('en-US', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+}
+function utcLabel(value) {
+  if (!value) return '—';
+  const date = new Date(value);
   return Number.isNaN(date.getTime()) ? '—' : `${date.toLocaleString('en-US', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZone: 'UTC' })} UTC`;
+}
+// (r34 #15) "valid for 1:12" (relative, ticking once a second) instead of a UTC end time; "expired" once it passed.
+function ValidFor({ expiresAt, testId }) {
+  const end = Date.parse(expiresAt || '');
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    if (!Number.isFinite(end)) return undefined;
+    const interval = window.setInterval(() => { const at = Date.now(); setNow(at); if (at >= end) window.clearInterval(interval); }, 1000);
+    return () => window.clearInterval(interval);
+  }, [end]);
+  if (!Number.isFinite(end)) return null;
+  const left = Math.ceil((end - now) / 1000);
+  return <span data-testid={testId}>{left > 0 ? `valid for ${Math.floor(left / 60)}:${String(left % 60).padStart(2, '0')}` : 'expired'}</span>;
 }
 
 // "Respond in 2 days" on each case card (UI/UX r16 P1: the three sample cases looked identical and the deadline only
@@ -242,7 +267,7 @@ const HOSTED_NOTES = {
   disputes: 'Sample cases (not real). The hosted demo does not read a Sandbox account.',
   evidence: 'Evidence requests are built and sent only in a local run.',
 };
-const HOSTED_DISABLED_NOTICE = 'This needs a local run: the hosted demo makes no PayPal or Gemini calls.';
+const HOSTED_DISABLED_NOTICE = 'This needs a local run: the hosted demo makes no PayPal calls and has no AI brief.';
 
 // (attack r23) The demo session survives the top-bar Dashboard link, a reload and Back: its id and CSRF token are kept
 // in sessionStorage and resumed with GET /demo/state; a 401 (expired or evicted) starts a new session as before.
@@ -276,13 +301,18 @@ const readStoredInputs = () => {
 };
 // (attack r23) Shown as soon as the session's expires_at passes, not at the next click.
 const SESSION_EXPIRED_TEXT = 'Session expired — select Reconnect to start a new demo session. Results from the old session are cleared.';
+// (r31 J4 P1-1) The text comes from resumedNotice() (resumeNotice.js): only what the server still holds, and none
+// at all for an empty session. It can be dismissed, so on a phone it never has to sit over the form for 10 s.
 const RESUMED_INFO_MS = 10000;
-const RESUMED_TEXT = 'Session resumed: loaded samples and dispute drafts are back. Policy and country check results are not kept; run them again.';
+// (r31 J4 P1-2 A3a) Shown inside the open draft dialog when the 120 s policy result behind it runs out.
+const DRAFT_EXPIRED_TEXT = 'The check expired after 2 minutes. Run Policy Check again, then create the draft.';
 // After Confirm Draft Context the button turns disabled; focus goes to the next step instead of the page (attack r23).
 const AFTER_DRAFT_CONTEXT = ['[data-testid="invoice-create"]', '[data-testid="sandbox-connect"]', '[data-testid="phone-action-connect"]', '#compliance .stage-next .button'];
 
 // The only hosted-demo control in the top bar: a pill that opens a fixed explanation. It calls no API.
-function HostedBadge() {
+// (r34 #1) Its Gemini wording comes from `guideChooser`, the chooser status the guide API returned (hostedCopy.js).
+function HostedBadge({ guideChooser = null }) {
+  const copy = hostedCopy(guideChooser);
   const [open, setOpen] = useState(false);
   const buttonRef = useRef(null);
   const popoverRef = useRef(null);
@@ -297,23 +327,23 @@ function HostedBadge() {
     return () => { document.removeEventListener('keydown', onKey); document.removeEventListener('pointerdown', onPointer); window.removeEventListener('scroll', onScroll); };
   }, [open]);
   return <>
-    <button ref={buttonRef} type="button" className="badge badge-muted hosted-badge" data-testid="connections-hosted" aria-expanded={open} aria-controls="connections-why" onClick={() => setOpen((current) => !current)}><Icon name="info" size={14} /><span className="hosted-label-full">Hosted demo · rules only · no PayPal calls</span><span className="hosted-label-short">Hosted demo</span><span className="hosted-why-cue">Why?</span></button>
+    <button ref={buttonRef} type="button" className="badge badge-muted hosted-badge" data-testid="connections-hosted" aria-expanded={open} aria-controls="connections-why" onClick={() => setOpen((current) => !current)}><Icon name="info" size={14} /><span className="hosted-label-full">{copy.pill}</span><span className="hosted-label-short">Hosted demo</span><span className="hosted-why-cue">Why?</span></button>
     {open && <div ref={popoverRef} id="connections-why" className="hosted-why" data-testid="connections-why" role="dialog" aria-labelledby="connections-why-title">
       <span className="meta-label">Why?</span>
       <h2 id="connections-why-title">Why is this a hosted demo?</h2>
-      <p>This public copy runs the same code with no keys. It never calls PayPal or Gemini, so nobody's account or credit is used.</p>
+      <p data-testid="connections-why-intro">{copy.intro}</p>
       <strong>Works here</strong>
       <ul className="hosted-why-list hosted-why-works">
         <li>Policy pre-check, sales spike and dispute evidence (rules + your review)</li>
         <li>Review file and review ZIP downloads</li>
-        <li>Guides in rules-only mode and recorded replays</li>
+        <li>{copy.guides}</li>
       </ul>
       <strong>Local only</strong>
       <ul className="hosted-why-list hosted-why-local">
         <li>PayPal Sandbox connect, invoice draft, evidence request</li>
-        <li>Gemini evidence brief and Gemini guide</li>
+        <li>{copy.local}</li>
       </ul>
-      <dl className="hosted-why-status"><div><dt>PayPal Sandbox</dt><dd>Off in hosted demo</dd></div><div><dt>Gemini</dt><dd>Off in hosted demo</dd></div></dl>
+      <dl className="hosted-why-status"><div><dt>PayPal Sandbox</dt><dd>Off in hosted demo</dd></div><div><dt>Gemini</dt><dd data-testid="connections-why-gemini">{copy.gemini}</dd></div></dl>
       <p>See it live: the <a href={HOSTED_VIDEO_URL} target="_blank" rel="noopener noreferrer">demo video</a>, or run it locally (<a href={HOSTED_README_URL} target="_blank" rel="noopener noreferrer">README › Run locally</a>).</p>
     </div>}
   </>;
@@ -367,6 +397,14 @@ export default function App() {
   const nextStageFocusRef = useRef(null);
   const [analyticsExpanded, setAnalyticsExpanded] = useState(false);
   const [replayExpanded, setReplayExpanded] = useState(false);
+  // (r33 M4) Open items in the Step 3 guide (0 when it has not started), shown as one line in the evidence draft.
+  const [guideOpenItems, setGuideOpenItems] = useState(0);
+  // (r34 #1) The guide API's chooser status (chooser_mode, model_requested), reported by any guide on the page.
+  const [guideChooser, setGuideChooser] = useState(null);
+  // (r34 #3) Masked dispute a case was really sent to (external_send SUBMITTED), apart from a preview-only pairing.
+  const sentByCaseRef = useRef({});
+  // (r34 #7) The server's reason for the last refused preview: { kind, dispute_id, case_ref, message }.
+  const [previewRefusal, setPreviewRefusal] = useState(null);
   const [boardExpanded, setBoardExpanded] = useState(null);
   const [activityExpanded, setActivityExpanded] = useState(false);
   const [openSecondary, setOpenSecondary] = useState({ source_compliance: null, velocity_guard: null, dispute_mediation: null });
@@ -396,12 +434,27 @@ export default function App() {
   // (optimise r24) The last country check result with its time and session, for the "From step 01" block in step 03;
   // an edit clears countryCheck but not this.
   const [lastCountryCheck, setLastCountryCheck] = useState(null);
+  // (r34 #21) A check from an earlier session (Reconnect after it expired) is gone with it: say so where it was.
+  const countryLost = Boolean(state && lastCountryCheck && lastCountryCheck.session !== state.session_id && !countryCheck);
   // (optimise r24) Add-tracking preview for an item-not-received case (POST /paypal/disputes/add-tracking).
   const [trackingPreview, setTrackingPreview] = useState(null);
   // (r25 send guard) The open double-confirm dialog ('evidence' or 'tracking'), and the dispute each case was paired
   // with in this page (from the server's send_guard), so a different dispute is held before any request.
   const [sendConfirm, setSendConfirm] = useState(null);
+  // (foolproofing 2026-11-04) A real Sandbox draft and a Reset demo each need a confirmation dialog first.
+  const [draftConfirm, setDraftConfirm] = useState(false);
+  const [resetConfirm, setResetConfirm] = useState(false);
+  // (r31 J4 P1-2) True while the open draft dialog's policy result has expired: the dialog stays and says so.
+  const [draftExpired, setDraftExpired] = useState(false);
+  const draftConfirmRef = useRef(false);
+  draftConfirmRef.current = draftConfirm;
+  // (r31 A3c) The last policy result ran out (not just "never run"), so the locked draft buttons can say why.
+  const [aupExpired, setAupExpired] = useState(false);
   const boundByCaseRef = useRef({});
+  // (r30 J2 P2-1, r31 J5 A6) The server's single-use send confirmation from the dialog's last re-check, per kind
+  // (sendConfirm.js).
+  const sendConfirmTokens = useRef(null);
+  if (sendConfirmTokens.current === null) sendConfirmTokens.current = createSendConfirmTokens();
   const countryHeld = countryBlocked || countryStale;
   // Bumped by Reset demo so the country form starts empty again (click-all 2026-11-03 #2).
   const [countryResetCount, setCountryResetCount] = useState(0);
@@ -583,7 +636,7 @@ export default function App() {
     categoryControllerRef.current = null;
     setCategorySignal(null); setProductRef(null);
     setAup(null); setAupPhase('empty'); setAupConsumed(false); setWarningOpen(false);
-    setInvoiceReview(null); setInvoice(null); setInvoiceChecked(false);
+    setInvoiceReview(null); setInvoice(null); setInvoiceChecked(false); setAupExpired(false);
     // "Already checked" belongs to the result it pointed at (attack r23).
     setInfo((current) => (current?.kind === 'already' ? null : current));
   }, [invalidateAi]);
@@ -595,8 +648,11 @@ export default function App() {
   };
   useEffect(() => {
     if (!aup) return;
+    // (r31 J1 J4 A3) A neutral "needs action" message (not the green success toast); the locked draft buttons say why,
+    // and an open draft dialog stays with its own expiry line instead of closing on its own.
     const timer = setTimeout(() => {
-      invalidateAup(); setNotice('The description check expired. Run it again before continuing.');
+      invalidateAup(); setAupExpired(true); if (draftConfirmRef.current) setDraftExpired(true);
+      setNotice(''); setInfo({ kind: 'expired', text: 'The description check expired. Run it again before continuing.' });
     }, Math.max(0, Date.parse(aup.expires_at) - Date.now()));
     return () => clearTimeout(timer);
   }, [aup, invalidateAup]);
@@ -742,6 +798,7 @@ export default function App() {
     setState(null); setDraft(null); setReceipt(null); setSelectedCase('');
     setReviewChecked(false); setAup(null); setInvoiceReview(null); setInvoice(null); setInvoiceChecked(false);
     setVelocityQuickFilter(''); setSelectedVelocityTransaction(null);
+    sendConfirmTokens.current.clearAll();
     setError(failure);
   }, [invalidateReferences, invalidateAup]);
 
@@ -770,6 +827,10 @@ export default function App() {
     autoLoadedRef.current = { burst: false, dispute: false };
     providerDisputesKeyRef.current = '';
     setProviderDisputes(null); setProviderDisputeDetail(null); setEvidencePreview(null);
+    // (r31 J5) A new or resumed session starts with no send confirmation from an earlier one.
+    sendConfirmTokens.current.clearAll();
+    // (r34 #3) Pairings are per session on the server; a resumed one reports its own again at the next preview.
+    boundByCaseRef.current = {}; sentByCaseRef.current = {}; setPreviewRefusal(null);
     try {
       // (attack r23) Resume this tab's session when the server still holds it; a 401 means it expired, so a new one
       // starts as before. Any other failure (busy, offline) keeps the stored id for the next try.
@@ -809,7 +870,9 @@ export default function App() {
         if (drafts.length) setBoardDrafts({ session: session.session_id, drafts: Object.fromEntries(drafts.map((row) => [row.case_ref, row])) });
         if (wanted) setSelectedCase(wanted.case_ref);
         setDraft(drafts.find((row) => row.case_ref === wanted?.case_ref) || null);
-        setInfo({ kind: 'resumed', text: RESUMED_TEXT });
+        // (r31 J4 P1-1) Worded from what came back; an empty session (Reset demo, then reload) shows nothing.
+        const resumed = resumedNotice(nextState, drafts);
+        if (resumed) setInfo({ kind: 'resumed', text: resumed });
       }
       setState(nextState);
       setSandbox(status);
@@ -946,6 +1009,10 @@ export default function App() {
       // The server forgets the session's country check on reset; the panel and step status follow.
       setCountryCheck(null); setCountryStale(false); setCountryResetCount((count) => count + 1);
       setLastCountryCheck(null); setTrackingPreview(null);
+      // (r34 #3) Reset demo clears the server's case <-> dispute pairings; the page forgets its copies too.
+      boundByCaseRef.current = {}; sentByCaseRef.current = {}; setPreviewRefusal(null);
+      // (r31 J5) Reset demo empties the review a confirmation was issued for; the console drops both kinds too.
+      sendConfirmTokens.current.clearAll();
       autoLoadedRef.current = { burst: false, dispute: false };
     }
     // The spike chart starts below the fold at 1280x800 (UI/UX r16 P1): bring it into view once the sales load.
@@ -1001,27 +1068,46 @@ export default function App() {
   }, [activeStage, state, loading, sandbox?.status]);
   const loadProviderDispute = (disputeId) => action('provider-dispute', async (session) => {
     const result = await apiRequest(`/paypal/disputes/${disputeId}`, { session });
-    setProviderDisputeDetail(result); setEvidencePreview(null); setTrackingPreview(null);
+    setProviderDisputeDetail(result); setEvidencePreview(null); setTrackingPreview(null); setPreviewRefusal(null);
   });
+  // (r34 #7) A refused preview (409: wrong reason or amount, case already paired, PayPal already has evidence) is not
+  // a failure toast: its sentence becomes the lock line under Submit and the hold line in the send guard, in place,
+  // so on a phone nothing covers the sticky bar. Every other failure goes to the usual error banner.
+  const requestPreview = async (kind, session) => {
+    const request = { dispute_id: providerDisputeDetail.dispute_id, case_ref: caseItem.case_ref };
+    setPreviewRefusal(null);
+    try {
+      return await apiRequest(kind === 'tracking' ? '/paypal/disputes/add-tracking' : '/paypal/disputes/provide-evidence', { method: 'POST', body: { ...request, submit: false }, session });
+    } catch (failure) {
+      if (failure?.status !== 409) throw failure;
+      setPreviewRefusal({ kind, ...request, message: failure.message || 'The server refused this preview. Nothing was sent.' });
+      return null;
+    }
+  };
   const previewEvidence = () => action('evidence-preview', async (session) => {
-    const result = await apiRequest('/paypal/disputes/provide-evidence', { method: 'POST', body: { dispute_id: providerDisputeDetail.dispute_id, case_ref: caseItem.case_ref, submit: false }, session });
+    if (sellerEvidenceOnFile(providerDisputeDetail)) return;
+    const result = await requestPreview('evidence', session);
+    if (!result) return;
     rememberBinding(result);
     setEvidencePreview(result);
   });
   const submitEvidence = () => action('evidence-submit', async (session) => {
-    const result = await apiRequest('/paypal/disputes/provide-evidence', { method: 'POST', body: { dispute_id: providerDisputeDetail.dispute_id, case_ref: caseItem.case_ref, submit: true }, session });
+    const result = await apiRequest('/paypal/disputes/provide-evidence', { method: 'POST', body: sendConfirmTokens.current.submitBody('evidence', { dispute_id: providerDisputeDetail.dispute_id, case_ref: caseItem.case_ref }), session });
+    rememberSent(result);
     setEvidencePreview(result);
     setNotice('Evidence request submitted to the PayPal Sandbox after local approval.');
   });
   // (optimise r24) Tracking preview is always allowed; the send needs the same gates as evidence (recorded local review,
   // Sandbox source, server flag PAYGUARD_PAYPAL_TRACKING_SUBMIT on, preview frozen). Checks never click the send.
   const previewTracking = () => action('tracking-preview', async (session) => {
-    const result = await apiRequest('/paypal/disputes/add-tracking', { method: 'POST', body: { dispute_id: providerDisputeDetail.dispute_id, case_ref: caseItem.case_ref, submit: false }, session });
+    const result = await requestPreview('tracking', session);
+    if (!result) return;
     rememberBinding(result);
     setTrackingPreview(result);
   });
   const submitTracking = () => action('tracking-submit', async (session) => {
-    const result = await apiRequest('/paypal/disputes/add-tracking', { method: 'POST', body: { dispute_id: providerDisputeDetail.dispute_id, case_ref: caseItem.case_ref, submit: true }, session });
+    const result = await apiRequest('/paypal/disputes/add-tracking', { method: 'POST', body: sendConfirmTokens.current.submitBody('tracking', { dispute_id: providerDisputeDetail.dispute_id, case_ref: caseItem.case_ref }), session });
+    rememberSent(result);
     setTrackingPreview(result);
     setNotice('Tracking sent to the PayPal Sandbox after local approval.');
   });
@@ -1030,22 +1116,41 @@ export default function App() {
   const rememberBinding = (result) => {
     if (result?.send_guard?.bound_dispute_masked) boundByCaseRef.current[result.case_ref] = result.send_guard.bound_dispute_masked;
   };
+  const rememberSent = (result) => {
+    if (result?.external_send === 'SUBMITTED') sentByCaseRef.current[result.case_ref] = maskDisputeId(result.dispute_id);
+  };
   const boundTo = caseItem ? boundByCaseRef.current[caseItem.case_ref] || null : null;
-  const evidenceBlock = sendGuardBlock(evidencePreview?.send_guard, providerDisputeDetail, caseItem, boundTo);
-  const trackingBlock = sendGuardBlock(trackingPreview?.send_guard, providerDisputeDetail, caseItem, boundTo);
+  const sentTo = caseItem ? sentByCaseRef.current[caseItem.case_ref] || null : null;
+  const sellerEvidence = sellerEvidenceOnFile(providerDisputeDetail);
+  // Only the refusal for the dispute and case now on screen counts.
+  const refusalFor = (kind) => (previewRefusal && previewRefusal.kind === kind && previewRefusal.dispute_id === providerDisputeDetail?.dispute_id
+    && previewRefusal.case_ref === caseItem?.case_ref ? previewRefusal.message : null);
+  const evidenceRefusal = refusalFor('evidence');
+  const trackingRefusal = refusalFor('tracking');
+  const evidenceBlock = sendGuardBlock(evidencePreview?.send_guard, providerDisputeDetail, caseItem, boundTo, sentTo);
+  const trackingBlock = sendGuardBlock(trackingPreview?.send_guard, providerDisputeDetail, caseItem, boundTo, sentTo);
   // Before step 2 enables: a fresh preview must carry the same payload_sha256 and still pass every check above.
   const recheckSend = async (kind) => {
     const session = sessionRef.current;
     const before = kind === 'tracking' ? trackingPreview : evidencePreview;
+    // (r31 J5) Only the latest re-check's token may go out: a failed re-check leaves none.
+    sendConfirmTokens.current.clear(kind);
     try {
       const fresh = await apiRequest(kind === 'tracking' ? '/paypal/disputes/add-tracking' : '/paypal/disputes/provide-evidence',
         { method: 'POST', body: { dispute_id: providerDisputeDetail.dispute_id, case_ref: caseItem.case_ref, submit: false }, session });
-      const held = sendGuardBlock(fresh.send_guard, providerDisputeDetail, caseItem, boundTo);
+      const held = sendGuardBlock(fresh.send_guard, providerDisputeDetail, caseItem, boundTo, sentTo);
       if (!before?.payload_sha256 || fresh.payload_sha256 !== before.payload_sha256 || held) {
         setSendConfirm(null);
         setNotice(held || 'What would be sent changed since the preview; nothing was sent. Prepare the preview again.');
         return false;
       }
+      // (r32 J5 P3-1) Ready but no token: the send would only end in 409, so no countdown.
+      if (readyWithoutToken(fresh)) {
+        setSendConfirm(null);
+        setNotice(MISSING_CONFIRM_NOTICE);
+        return false;
+      }
+      sendConfirmTokens.current.remember(kind, fresh);
       return true;
     } catch (failure) {
       setSendConfirm(null);
@@ -1056,10 +1161,18 @@ export default function App() {
   const confirmSend = async (kind) => {
     setSendConfirm(null);
     await (kind === 'tracking' ? submitTracking() : submitEvidence());
+    sendConfirmTokens.current.clear(kind);
   };
   const trackingSubmitReady = Boolean(receipt) && trackingPreview?.submit_flag_enabled === true && trackingPreview?.source === 'paypal_sandbox' && trackingPreview?.external_send === 'FROZEN' && !trackingBlock;
   const itemNotReceived = providerDisputeDetail?.reason === 'MERCHANDISE_OR_SERVICE_NOT_RECEIVED';
-  const evidenceSubmitReady = Boolean(receipt) && evidencePreview?.submit_flag_enabled === true && evidencePreview?.source === 'paypal_sandbox' && evidencePreview?.external_send === 'FROZEN' && !evidenceBlock;
+  const evidenceSubmitReady = Boolean(receipt) && evidencePreview?.submit_flag_enabled === true && evidencePreview?.source === 'paypal_sandbox' && evidencePreview?.external_send === 'FROZEN' && !evidenceBlock && !sellerEvidence;
+  // (r31 A4) The visible line under each locked send, from the same inputs as the two Ready flags above.
+  const sessionExpired = error?.status === 401;
+  const evidenceLock = sendLockReason({ kind: 'evidence', sessionExpired, draft, receipt, preview: evidencePreview, block: evidenceBlock, disputeSelected: Boolean(providerDisputeDetail), sellerEvidence, refusal: evidenceRefusal });
+  const trackingLock = sendLockReason({ kind: 'tracking', sessionExpired, draft, receipt, preview: trackingPreview, block: trackingBlock, disputeSelected: Boolean(providerDisputeDetail), refusal: trackingRefusal });
+  // (r32 J4 P1-2, J1) One obvious primary per step: a send that is ready is the solid blue button without a lock icon;
+  // when the evidence send is ready it is the next step and a ready tracking send stays secondary beside it.
+  const trackingSendTone = !trackingSubmitReady ? 'ghost' : evidenceSubmitReady ? 'secondary' : 'blue';
   const velocity = state?.velocity;
   const chartVelocity = useMemo(() => phoneChartVelocity(velocity, narrowScreen), [velocity, narrowScreen]);
   // A review the server records for this case while this page has no receipt for it (a resumed session, attack r23).
@@ -1131,6 +1244,8 @@ export default function App() {
   // throttling six clicks sent three checks in a row, and three taps on the phone bar used the 5-per-2-minute budget
   // and turned the result into "Check incomplete". An edit, expiry, Cancel or Return to edit clears `aup`, so a new
   // check is always one edit away; after Confirm Draft Context (aupConsumed) a re-run stays possible as before.
+  // (r32 J4 P1-1) When the shown result arrived (epoch ms), for the re-press rule below.
+  const aupCheckedAtRef = useRef(0);
   const runPolicyCheck = () => {
     if (busyRef.current) return;
     if (descriptionProblem(description)) {
@@ -1139,8 +1254,11 @@ export default function App() {
     }
     if (coolingNow('aup')) return;
     if (aup && !aupConsumed) {
+      // (r32 J4 P1-1) A deliberate press 30 s or more after the shown check runs it again, so the 2-minute window starts
+      // over (the server has no endpoint that extends an evaluation). A burst of taps inside 30 s still sends nothing.
+      if (Date.now() - aupCheckedAtRef.current >= AUP_RENEW_AFTER_MS) { scan(); return; }
       // Neutral and lasting (attack r23): it stays until the description changes, not a green toast that fades.
-      setNotice(''); setInfo({ kind: 'already', text: 'Already checked. Edit the description to check it again.' });
+      setNotice(''); setInfo({ kind: 'already', text: 'Already checked. To restart the 2-minute window, press Run Policy Check again 30 seconds after a check.' });
       afterRender(() => document.querySelector('[data-testid="aup-result"]')?.scrollIntoView({ block: 'nearest' }));
       return;
     }
@@ -1166,7 +1284,7 @@ export default function App() {
     try {
       const result = await apiRequest('/aup/review', { method: 'POST', body: { description }, session, signal: controller.signal });
       if (!mounted.current || controller.signal.aborted || revision !== aupRevisionRef.current || sessionRef.current !== session) return;
-      setAup(result); setAupPhase('completed'); aupCheckedTextRef.current = description;
+      setAup(result); setAupPhase('completed'); aupCheckedTextRef.current = description; aupCheckedAtRef.current = Date.now();
       // Bring the result above the phone action bar (scroll-margin-bottom in index.css; attack r21 phone #6).
       window.requestAnimationFrame(() => document.querySelector('[data-testid="aup-result"]')?.scrollIntoView({
         block: 'nearest', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }));
@@ -1321,7 +1439,16 @@ export default function App() {
       throw failure;
     }
   });
+  // (red team r26 #3 P1) The draft dialog closes when its basis goes: the 120 s policy result, the session, the
+  // country stop or the Sandbox connection. createInvoice also refuses without a review.
+  // (r31 J4 P1-2) Except the policy result's own expiry: the dialog then stays open with DRAFT_EXPIRED_TEXT and only
+  // Back, so the seller sees why instead of a dialog that vanished and a cleared tick.
+  useEffect(() => {
+    if (draftConfirm && ((!invoiceReview && !draftExpired) || disabled || countryHeld || sandbox?.status !== 'connected')) setDraftConfirm(false);
+  }, [draftConfirm, draftExpired, invoiceReview, disabled, countryHeld, sandbox?.status]);
+  useEffect(() => { if (!draftConfirm) setDraftExpired(false); }, [draftConfirm]);
   const createInvoice = () => action('invoice', async (session) => {
+    if (!invoiceReview) return;
     const result = await apiRequest('/paypal/invoices/draft', { method: 'POST', body: { description, amount: invoiceAmountValue(invoiceAmount), currency: 'USD', review_token: invoiceReview.review_token, payload_digest: invoiceReview.payload_digest }, session });
     setInvoice(result); setInvoiceReview(null); setInvoiceChecked(false);
     setNotice(`Sandbox invoice draft created; ${sandboxReadbackLabel(result.evidence_receipt?.separate_get_readback).toLowerCase()}, and nothing was sent.`);
@@ -1339,14 +1466,21 @@ export default function App() {
       // After Confirm Draft Context the bar offers the draft step's own action, not Run Policy Check, which would drop
       // the bound draft context (attack r22 phone #10). The hosted demo has no draft action, so the bar steps aside.
       : invoiceReview ? (hosted ? null : sandbox?.status === 'connected'
-        ? { key: 'invoice', label: 'Create Sandbox draft', icon: 'file', onClick: createInvoice, disabled: disabled || countryHeld || !invoiceReview || !invoiceChecked, loading: busy === 'invoice', waiting: waitLeft('invoice') > 0 }
+        ? { key: 'invoice', label: 'Create Sandbox draft', icon: 'file', onClick: () => setDraftConfirm(true), disabled: disabled || countryHeld || !invoiceReview || !invoiceChecked, loading: busy === 'invoice', waiting: waitLeft('invoice') > 0 }
         : { key: 'connect', label: 'Connect US Sandbox', icon: 'link', onClick: connectSandbox, disabled, loading: busy === 'connect', waiting: waitLeft('connect') > 0 })
       : invoice ? null
       : { key: 'aup', label: 'Run Policy Check', icon: 'shield', onClick: runPolicyCheck, disabled: disabled || !description.trim(), blocked: Boolean(descriptionProblem(description)), loading: busy === 'aup', waiting: waitLeft('aup') > 0 })
     : activeStage === 'velocity'
       ? (velocity?.transaction_count ? null : { key: 'burst', label: 'Load sales burst', icon: 'bolt', onClick: () => inject('burst'), disabled, loading: busy === 'burst', waiting: waitLeft('burst') > 0 })
       : activeStage === 'disputes'
-        ? (!draft
+        // (r32 J4 P1-2) After the local review the bar shows the real next step: the preview, then the ready send.
+        ? (receipt && !hosted && evidenceSubmitReady
+          ? { key: 'evidence-submit', label: 'Submit to PayPal Sandbox (test)', icon: 'arrow', onClick: () => setSendConfirm('evidence'), disabled: disabled || !evidenceSubmitReady, loading: busy === 'evidence-submit' }
+          : receipt && !hosted && trackingSubmitReady
+            ? { key: 'tracking-submit', label: 'Send tracking to PayPal Sandbox (test)', icon: 'arrow', onClick: () => setSendConfirm('tracking'), disabled: disabled || !trackingSubmitReady, loading: busy === 'tracking-submit' }
+          : receipt && !hosted && providerDisputeDetail && !evidencePreview
+            ? { key: 'evidence-preview', label: 'Prepare evidence request (preview)', icon: 'file', onClick: previewEvidence, disabled: disabled || !draft || !providerDisputeDetail || sellerEvidence, loading: busy === 'evidence-preview' }
+          : !draft
           ? { key: 'draft', label: 'Prepare evidence draft', icon: 'file', onClick: getDraft, disabled: disabled || !caseItem || caseItem.status === 'local_draft_reviewed', loading: busy === 'draft', waiting: waitLeft('draft') > 0 }
           : { key: 'approve', label: receipt || reviewedOnServer ? 'Local review recorded' : 'Confirm local draft review', icon: 'check', onClick: approve, disabled: disabled || !reviewChecked || !draft.draft_digest || Boolean(receipt) || reviewedOnServer || draft.routing?.overall_state !== 'READY_FOR_LOCAL_REVIEW', loading: busy === 'approve', waiting: waitLeft('approve') > 0 })
         : null;
@@ -1362,20 +1496,27 @@ export default function App() {
 
   // Reset from step 02/03 unmounts the clicked button; focus goes to step 01's Reset demo once the reset ends
   // (attack r21 desktop #6), not to the page.
-  const resetDemoButton = <Button data-testid="demo-reset" icon="refresh" tone="ghost" disabled={disabled} loading={busy === 'reset'} waiting={waitLeft('reset') > 0} onClick={() => { openStage('compliance', { updateHash: true, scroll: true }); inject('reset'); focusWhenIdle(['#compliance [data-testid="demo-reset"]', '#stage-trigger-compliance'], { scroll: 'fallback' }); }}>Reset demo</Button>;
+  const resetDemoButton = <Button data-testid="demo-reset" icon="refresh" tone="ghost" disabled={disabled} loading={busy === 'reset'} waiting={waitLeft('reset') > 0} onClick={() => setResetConfirm(true)}>Reset demo</Button>;
+  const runReset = () => { setResetConfirm(false); openStage('compliance', { updateHash: true, scroll: true }); inject('reset'); focusWhenIdle(['#compliance [data-testid="demo-reset"]', '#stage-trigger-compliance'], { scroll: 'fallback' }); };
 
   return <div className={`app-shell${phoneAction ? ` has-phone-action phone-action-${phoneAction.key}` : ''}${typing ? ' is-typing' : ''}`}>
     <a className="skip-link" href="#main">Skip to console</a>
-    <header className="topbar" data-hosted={hosted ? 'true' : undefined} inert={warningOpen ? true : undefined}>
+    {draftConfirm && <DraftConfirmDialog description={description} amount={invoiceAmountValue(invoiceAmount)} currency="USD"
+      route={countryCheck ? `${countryCheck.seller_country} → ${countryCheck.buyer_country}` : null} expired={draftExpired}
+      returnFocus={['[data-testid="invoice-create"]', '[data-testid="phone-action-invoice"]']}
+      onCancel={() => { if (draftExpired) focusWhenIdle(['[data-testid="aup-review"]', '[data-testid="phone-action-aup"]', '#stage-trigger-compliance']); setDraftConfirm(false); }}
+      onCreate={async () => { setDraftConfirm(false); await createInvoice(); }} />}
+    {resetConfirm && <ResetConfirmDialog onCancel={() => setResetConfirm(false)} onReset={runReset} />}
+    <header className="topbar" data-hosted={hosted ? 'true' : undefined} inert={warningOpen || draftConfirm || resetConfirm ? true : undefined}>
       <a className="brand" href="#main" aria-label="PayGuard AI console"><span className="brand-mark"><Icon name="shield" size={23} /></span><span>PayGuard<span className="brand-ai"> AI</span><small>MERCHANT EVIDENCE BUFFER</small></span></a>
       <nav aria-label="Additional workspace"><a href="#analytics" onClick={() => { setAnalyticsExpanded(true); setAnalyticsOpen(true); }}>All orders</a><a href="/dashboard.html" data-testid="topbar-dashboard">Dashboard</a><a href="/scenarios.html" data-testid="topbar-scenarios">Scenarios</a><a href="/proof.html" data-testid="topbar-proof">Proof</a><a href="/evidence.html" data-testid="topbar-evidence">How it was measured</a></nav>
-      <div className={hosted ? 'environment environment-hosted' : 'environment'}><span id="pwa-install-slot" className="pwa-install-slot" />{hosted ? <HostedBadge /> : <Badge tone="blue" dot>LOCAL DEMO</Badge>}{!hosted && <TopbarSandbox connected={sandbox?.status === 'connected'} disabled={disabled} loading={busy === 'connect'} onConnect={connectSandbox} />}<span className="avatar">PG</span></div>
+      <div className={hosted ? 'environment environment-hosted' : 'environment'}><span id="pwa-install-slot" className="pwa-install-slot" />{hosted ? <HostedBadge guideChooser={guideChooser} /> : <Badge tone="blue" dot>LOCAL DEMO</Badge>}{!hosted && <TopbarSandbox connected={sandbox?.status === 'connected'} disabled={disabled} loading={busy === 'connect'} onConnect={connectSandbox} />}<span className="avatar">PG</span></div>
     </header>
 
-    <main id="main" tabIndex={-1} inert={warningOpen ? true : undefined} className="main-content" data-testid={state ? "session-ready" : "session-unavailable"}>
+    <main id="main" tabIndex={-1} inert={warningOpen || draftConfirm || resetConfirm ? true : undefined} className="main-content" data-testid={state ? "session-ready" : "session-unavailable"}>
       <div className="page-top">
       <header className="hero hero-compact" aria-labelledby="page-title">
-        <div><div className="eyebrow"><span className="tiny-dot" /> FOR SMALL PAYPAL SELLERS</div><h1 id="page-title">Fix evidence gaps before PayPal asks</h1></div>
+        <div><div className="eyebrow"><span className="tiny-dot" /> FOR SMALL PAYPAL SELLERS</div><h1 id="page-title">Find evidence gaps before PayPal asks</h1></div>
       </header>
 
       <section className="start-here" data-testid="start-here" aria-labelledby="start-here-title">
@@ -1398,16 +1539,18 @@ export default function App() {
         {loading && <div className="message message-info"><span className="spinner" />Creating an isolated demo session and loading backend state.</div>}
         {error && <div className="message message-error" role="alert" data-testid="global-error"><Icon name="alert" /><div><strong>{error.status === 401 ? 'Demo session expired' : error.code === 'backend_unavailable' ? 'No connection' : error.retryAt ? 'Please wait' : 'Action not completed'}</strong><span>{waitFailureMessage(error)}<PaypalIssueNote error={error} />{bootRetryAt > now ? <span className="wait-line" data-testid="retry-wait"> Retrying automatically in {Math.ceil((bootRetryAt - now) / 1000)} second{Math.ceil((bootRetryAt - now) / 1000) === 1 ? '' : 's'}.</span> : <WaitLine until={error.retryAt} now={now} testId="retry-wait" />}</span></div>{(!state || error.status === 401) && <Button data-testid="reconnect" disabled={loading || Boolean(busy)} waiting={waitLeft('boot') > 0 || bootRetryAt > now} icon="refresh" onClick={reconnect}>Reconnect</Button>}<button className="icon-button" aria-label="Dismiss error message" onClick={() => setError(null)}><Icon name="close" /></button></div>}
         {notice && <div className="message message-success"><Icon name="check" />{notice}</div>}
-        {info && <div className="message message-info" data-testid="console-info" data-kind={info.kind}><Icon name="info" />{info.text}</div>}
+        {info && <div className="message message-info" data-testid="console-info" data-kind={info.kind}><Icon name="info" />{info.text}<button type="button" className="icon-button" aria-label="Dismiss message" data-testid="console-info-dismiss" onClick={() => setInfo(null)}><Icon name="close" /></button></div>}
       </div>
 
       <StageAccordion id="compliance" number="01" title="Policy pre-check" subtitle="Check your item before you invoice." icon="shield" status={<RoleBadge />} actions={<div className="demo-actions">{activeStage === 'compliance' && resetDemoButton}</div>} open={activeStage === 'compliance'} onOpen={(stage) => openStage(stage, { updateHash: true })}>
-        <div className="compliance-layout"><div className="invoice-editor"><div className="description-toolbar"><label className="mini-heading description-label" htmlFor="description">Product or service</label><div className="description-presets"><span>Quick tests</span><button disabled={Boolean(busy)} onClick={() => editDescription('Handcrafted ceramic coffee cup — set of two')}>Standard Item</button><button disabled={Boolean(busy)} onClick={() => editDescription('Guaranteed 30% ROI investment package')}>High-risk Claim</button></div></div><textarea data-testid="aup-description" id="description" maxLength={4000} value={description} onChange={(event) => editDescription(event.target.value)} rows={3} disabled={Boolean(busy)} aria-invalid={description.length > DESCRIPTION_LIMIT || undefined} aria-describedby={description.length > DESCRIPTION_LIMIT ? 'description-note' : undefined} /><div className="editor-bottom"><span className={`text-dim ${description.length > 200 ? 'over-limit' : ''}`} data-testid="aup-char-count">{description.length} / 200</span><Button data-testid="aup-review" icon="shield" tone="blue" onClick={runPolicyCheck} disabled={disabled || !description.trim()} blocked={Boolean(descriptionProblem(description))} aria-describedby={descriptionProblem(description) ? 'description-note' : undefined} waiting={waitLeft('aup') > 0} loading={busy === 'aup'}>Run Policy Check</Button></div>{descriptionProblem(description) && <p id="description-note" className="field-note" role="status" data-testid="aup-description-note">{descriptionProblem(description)}</p>}</div><div data-testid="aup-result" data-state={aupPhase} aria-live="polite" className={`aup-result ${aup?.findings?.length ? 'aup-warning' : ''}`}><div className="result-heading"><span className="result-symbol"><Icon name={aup?.findings?.length ? 'alert' : 'shield'} size={25} /></span><div><span className="meta-label" data-testid="aup-result-label">{/* (optimise r24) No "REVIEW SIGNAL" before a check has run. */}{aup ? (aup.match_status === 'REVIEW_SIGNAL' ? 'REVIEW SIGNAL' : 'POLICY CHECK') : aupPhase === 'loading' ? 'CHECKING' : 'NOT CHECKED YET'}</span><h3>{aupPhase === 'loading' ? 'Checking description' : aupPhase === 'error' ? 'Check incomplete; try again' : !aup ? 'Waiting for description check' : aup.match_status === 'REVIEW_SIGNAL' ? 'Review signal matched' : 'No demo rule matched'}</h3></div></div>{aup ? <><div className="finding-list">{aup.findings.length ? aup.findings.map((finding) => <Badge tone="amber" key={finding.category}>{findingLabels[finding.category] || 'Needs review'}</Badge>) : <Badge tone="muted">No configured demo keyword matched</Badge>}</div><p>{aup.recommendation}</p><AupExpiryWarning key={aup.evaluation_id} expiresAt={aup.expires_at} onKeep={keepAupResult} blocked={Boolean(busy) || waitLeft('aup') > 0} loading={busy === 'aup'} productConfirmed={Boolean(productConfirm)} />{categorySignal?.status !== 'OFF' && <p data-testid="aup-category-signal" data-state={categorySignal?.status || 'NONE'} className="text-dim">{categorySignalLabel(categorySignal)}</p>}<ProductReference result={productRef} confirmation={productConfirm} busy={Boolean(busy)} onConfirm={confirmProduct} /></> : <><p>Results show here.</p>{productConfirm && <p className="text-dim" data-testid="product-confirmation-kept">{productConfirm.choice === 'CONFIRMED' ? `Your product confirmation is kept for the review ZIP: ${productConfirm.card.title}.` : 'Your answer that none of the catalogue products is yours is kept for the review ZIP.'}</p>}</>}</div></div>
+        <div className="compliance-layout"><div className="invoice-editor"><div className="description-toolbar"><label className="mini-heading description-label" htmlFor="description">Product or service</label><div className="description-presets"><span>Quick tests</span><button disabled={Boolean(busy)} onClick={() => editDescription('Handcrafted ceramic coffee cup — set of two')}>Standard Item</button><button disabled={Boolean(busy)} onClick={() => editDescription('Guaranteed 30% ROI investment package')}>High-risk Claim</button></div></div><textarea data-testid="aup-description" id="description" maxLength={4000} value={description} onChange={(event) => editDescription(event.target.value)} rows={3} disabled={Boolean(busy)} aria-invalid={description.length > DESCRIPTION_LIMIT || undefined} aria-describedby={description.length > DESCRIPTION_LIMIT ? 'description-note' : undefined} /><div className="editor-bottom"><span className={`text-dim ${description.length > 200 ? 'over-limit' : ''}`} data-testid="aup-char-count">{description.length} / 200</span><Button data-testid="aup-review" icon="shield" tone="blue" onClick={runPolicyCheck} disabled={disabled || !description.trim()} blocked={Boolean(descriptionProblem(description))} aria-describedby={descriptionProblem(description) ? 'description-note' : undefined} waiting={waitLeft('aup') > 0} loading={busy === 'aup'}>Run Policy Check</Button></div>{descriptionProblem(description) && <p id="description-note" className="field-note" role="status" data-testid="aup-description-note">{descriptionProblem(description)}</p>}</div><div data-testid="aup-result" data-state={aupPhase} aria-live="polite" className={`aup-result ${aup?.findings?.length ? 'aup-warning' : ''}`}><div className="result-heading"><span className="result-symbol"><Icon name={aup?.findings?.length ? 'alert' : 'shield'} size={25} /></span><div><span className="meta-label" data-testid="aup-result-label">{/* (optimise r24) No "REVIEW SIGNAL" before a check has run. */}{aup ? (aup.match_status === 'REVIEW_SIGNAL' ? 'REVIEW SIGNAL' : 'POLICY CHECK') : aupPhase === 'loading' ? 'CHECKING' : 'NOT CHECKED YET'}</span><h3>{aupPhase === 'loading' ? 'Checking description' : aupPhase === 'error' ? 'Check incomplete; try again' : !aup ? 'Waiting for description check' : aup.match_status === 'REVIEW_SIGNAL' ? 'Review signal matched' : 'No demo rule matched'}</h3></div></div>{aup ? <><div className="finding-list">{aup.findings.length ? aup.findings.map((finding) => <Badge tone="amber" key={finding.category}>{findingLabels[finding.category] || 'Needs review'}</Badge>) : <Badge tone="muted">No configured demo keyword matched</Badge>}</div><p>{aup.recommendation}</p><AupValidFor key={`valid-${aup.evaluation_id}`} expiresAt={aup.expires_at} /><AupExpiryWarning key={aup.evaluation_id} expiresAt={aup.expires_at} onKeep={keepAupResult} blocked={Boolean(busy) || waitLeft('aup') > 0} loading={busy === 'aup'} productConfirmed={Boolean(productConfirm)} />{categorySignal?.status !== 'OFF' && <p data-testid="aup-category-signal" data-state={categorySignal?.status || 'NONE'} className="text-dim">{categorySignalLabel(categorySignal)}</p>}{/* (r32 J1) "Product lookup is off" is a console setting, not a seller result: it sits in Limits and safety. */}{productRef?.status !== 'OFF' && <ProductReference result={productRef} confirmation={productConfirm} busy={Boolean(busy)} onConfirm={confirmProduct} />}</> : <><p>Results show here.</p>{productConfirm && <p className="text-dim" data-testid="product-confirmation-kept">{productConfirm.choice === 'CONFIRMED' ? `Your product confirmation is kept for the review ZIP: ${productConfirm.card.title}.` : 'Your answer that none of the catalogue products is yours is kept for the review ZIP.'}</p>}</>}</div></div>
+        {countryLost && <p className="sandbox-reminder country-lost" data-testid="country-check-lost" role="status">Run the country check again: the {lastCountryCheck.seller_country} → {lastCountryCheck.buyer_country} result ended with the expired session.</p>}
         <div className="stage-block"><CountryRules key={`country-${sessionRef.current?.session_id || 'no-session'}-${countryResetCount}`} session={sessionRef.current} onResult={onCountryResult} onContinue={continueToDraft} onSessionExpired={panelSessionExpired} onBusy={setCountryBusy} /></div>
-        <details id="sandbox-draft" className="sandbox-details stage-block-details" open={sandboxOpen} onToggle={(event) => setSandboxOpen(event.currentTarget.open)}><summary><Icon name="link" size={16} /><span>PayPal Sandbox draft (optional)</span><span data-testid="sandbox-status"><Badge tone={sandbox?.status === 'connected' ? 'green' : 'muted'} dot>{hosted ? 'Off in hosted demo' : sandbox?.status === 'not_configured' ? 'Awaiting connection' : operatorLabel(sandbox?.status, 'Status not loaded')}</Badge></span></summary><div className="sandbox-inner"><div className="sandbox-connect">{hosted ? <p className="hosted-note" data-testid="hosted-note-sandbox">{HOSTED_NOTES.sandbox}</p> : <Button data-testid="sandbox-connect" icon="link" disabled={disabled} hidden={sandbox?.status === 'connected'} loading={busy === 'connect'} waiting={waitLeft('connect') > 0} onClick={connectSandbox}>Connect US Sandbox</Button>}</div>{sandbox?.evidence_receipt && <p className="sandbox-readback">Connection evidence: {sandboxEvidenceLabel(sandbox.evidence_receipt)} · {sandboxReadbackLabel(sandbox.evidence_receipt.separate_get_readback)}</p>}<div className="invoice-draft-form"><label>Draft amount <span className="text-dim">USD</span><input id="invoice-amount" type="text" inputMode="decimal" value={invoiceAmount} maxLength={20} disabled={Boolean(busy)} aria-invalid={amountNote ? true : undefined} aria-describedby={amountNote ? 'invoice-amount-note' : undefined} onChange={(event) => editInvoiceAmount(event.target.value)} /></label>{amountNote && <p id="invoice-amount-note" className="field-note" role="alert" data-testid="invoice-amount-note">{amountNote}</p>}<label className="checkbox-label"><input data-testid="invoice-confirm" type="checkbox" checked={invoiceChecked} disabled={Boolean(busy)} onChange={(event) => setInvoiceChecked(event.target.checked)} /><span>I reviewed the description and amount and confirm that this action creates a Sandbox draft only.</span></label><Button data-testid="invoice-review" icon="check" disabled={disabled || countryHeld || !invoiceChecked || !aup || aupConsumed || description.length > 200} loading={busy === 'invoice-review'} waiting={waitLeft('invoice-review') > 0} onClick={reviewInvoice}>Confirm Draft Context</Button>{hosted ? <p className="hosted-note" data-testid="hosted-note-invoice">{HOSTED_NOTES.invoice}</p> : <Button data-testid="invoice-create" icon="file" tone="blue" disabled={disabled || countryHeld || !invoiceReview || !invoiceChecked || sandbox?.status !== 'connected'} loading={busy === 'invoice'} waiting={waitLeft('invoice') > 0} onClick={createInvoice}>Create Sandbox draft</Button>}</div>{!countryHeld && !countryCheck && <p className="sandbox-reminder" data-testid="invoice-country-reminder">Reminder: country rules are not checked for this sale. Shipping abroad? Check them above first. This does not block the draft.</p>}{countryHeld && <p className="text-dim" data-testid="invoice-country-blocked">{countryStale ? 'Draft stopped by the last country rules check. Check country rules again after your change.' : 'Draft stopped by the country rules check above.'}</p>}{invoiceReview && <p className="sandbox-readback">{operatorLabel('PAYLOAD_DIGEST_BOUND')} · valid until {dateLabel(invoiceReview.expires_at)}</p>}{invoice && <p className="sandbox-reminder" data-testid="invoice-shipping-reminder">Reminder: this draft has no shipping country. Add the buyer's country in PayPal before you send the invoice.{countryCheck ? ` The checked route (${countryCheck.seller_country} to ${countryCheck.buyer_country}) is in the draft's private memo.` : ''}</p>}{invoice && <p className="sandbox-readback">Sandbox invoice draft created · {operatorLabel(invoice.status)} · {sandboxEvidenceLabel(invoice.evidence_receipt)} · {sandboxReadbackLabel(invoice.evidence_receipt.separate_get_readback)} · {operatorLabel(invoice.external_send)}</p>}</div></details>
-        <GuideLive key={`preflight-${sessionRef.current?.session_id || 'no-session'}`} scenario="preflight" session={sessionRef.current} Disclosure={StepSection} Badge={Badge} request={guideRequest} onSessionExpired={panelSessionExpired} />
+        <details id="sandbox-draft" className="sandbox-details stage-block-details" open={sandboxOpen} onToggle={(event) => setSandboxOpen(event.currentTarget.open)}><summary><Icon name="link" size={16} /><span>PayPal Sandbox draft (optional)</span><span data-testid="sandbox-status"><Badge tone={sandbox?.status === 'connected' ? 'green' : 'muted'} dot>{hosted ? 'Off in hosted demo' : sandbox?.status === 'not_configured' ? 'Awaiting connection' : operatorLabel(sandbox?.status, 'Status not loaded')}</Badge></span></summary><div className="sandbox-inner"><div className="sandbox-connect">{hosted ? <p className="hosted-note" data-testid="hosted-note-sandbox">{HOSTED_NOTES.sandbox}</p> : <Button data-testid="sandbox-connect" icon="link" disabled={disabled} hidden={sandbox?.status === 'connected'} loading={busy === 'connect'} waiting={waitLeft('connect') > 0} onClick={connectSandbox}>Connect US Sandbox</Button>}</div>{sandbox?.evidence_receipt && <p className="sandbox-readback">Connection evidence: {sandboxEvidenceLabel(sandbox.evidence_receipt)} · {sandboxReadbackLabel(sandbox.evidence_receipt.separate_get_readback)}</p>}<div className="invoice-draft-form"><label>Draft amount <span className="text-dim">USD</span><input id="invoice-amount" type="text" inputMode="decimal" value={invoiceAmount} maxLength={20} disabled={Boolean(busy)} aria-invalid={amountNote ? true : undefined} aria-describedby={amountNote ? 'invoice-amount-note' : undefined} onChange={(event) => editInvoiceAmount(event.target.value)} /></label>{amountNote && <p id="invoice-amount-note" className="field-note" role="alert" data-testid="invoice-amount-note">{amountNote}</p>}<label className="checkbox-label"><input data-testid="invoice-confirm" type="checkbox" checked={invoiceChecked} disabled={Boolean(busy)} onChange={(event) => setInvoiceChecked(event.target.checked)} /><span>I reviewed the description and amount and confirm that this action creates a Sandbox draft only.</span></label><Button data-testid="invoice-review" icon="check" aria-describedby="invoice-lock-reason" disabled={disabled || countryHeld || !invoiceChecked || !aup || aupConsumed || description.length > 200} loading={busy === 'invoice-review'} waiting={waitLeft('invoice-review') > 0} onClick={reviewInvoice}>Confirm Draft Context</Button>{hosted ? <p className="hosted-note" data-testid="hosted-note-invoice">{HOSTED_NOTES.invoice}</p> : <Button data-testid="invoice-create" icon="file" tone="blue" aria-describedby="invoice-lock-reason" disabled={disabled || countryHeld || !invoiceReview || !invoiceChecked || sandbox?.status !== 'connected'} loading={busy === 'invoice'} waiting={waitLeft('invoice') > 0} onClick={() => setDraftConfirm(true)}>Create Sandbox draft</Button>}<LockReason testId="invoice-lock-reason" reason={draftLockReason({ sessionExpired: error?.status === 401, hosted, countryHeld, aup, aupExpired, aupConsumed,
+          descriptionTooLong: description.length > DESCRIPTION_LIMIT, invoiceChecked, invoiceReview, invoice, connected: sandbox?.status === 'connected' })} /></div>{!countryHeld && !countryCheck && <p className="sandbox-reminder" data-testid="invoice-country-reminder">Reminder: country rules are not checked for this sale. Shipping abroad? Check them above first. This does not block the draft.</p>}{countryHeld && <p className="text-dim" data-testid="invoice-country-blocked">{countryStale ? 'Draft stopped by the last country rules check. Check country rules again after your change.' : 'Draft stopped by the country rules check above.'}</p>}{invoiceReview && <p className="sandbox-readback">{operatorLabel('PAYLOAD_DIGEST_BOUND')} · <ValidFor expiresAt={invoiceReview.expires_at} testId="invoice-valid-for" /></p>}{invoice && <p className="sandbox-reminder" data-testid="invoice-shipping-reminder">Reminder: this draft has no shipping country. Add the buyer's country in PayPal before you send the invoice.{countryCheck ? ` The checked route (${countryCheck.seller_country} to ${countryCheck.buyer_country}) is in the draft's private memo.` : ''}</p>}{invoice && <p className="sandbox-readback" data-testid="invoice-readback">Sandbox invoice draft created · <span data-testid="invoice-id">{maskInvoiceId(invoice.invoice_id)}</span> · {operatorLabel(invoice.status)} · {sandboxEvidenceLabel(invoice.evidence_receipt)} · {sandboxReadbackLabel(invoice.evidence_receipt.separate_get_readback)} · {operatorLabel(invoice.external_send)}</p>}</div></details>
+        <GuideLive key={`preflight-${sessionRef.current?.session_id || 'no-session'}`} scenario="preflight" session={sessionRef.current} Disclosure={StepSection} Badge={Badge} onChooser={setGuideChooser} request={guideRequest} onSessionExpired={panelSessionExpired} />
         <StepMore id="compliance"><StepSection id="sources-source_compliance" title="Sources, policy check, and AI brief" subtitle="Official sources, demo claim check, AI summary, technical details" icon="link" open={Boolean(sourcesOpen.source_compliance)} onToggle={(next) => setSourcesOpen((current) => ({ ...current, source_compliance: next }))} testId="sources-toggle-source_compliance">
-          <SecondaryStageTabs stage="source_compliance" activeTab={openSecondary.source_compliance} onSelectTab={toggleSecondary} referenceProps={referenceProps} aiAvailable={aup?.match_status === 'REVIEW_SIGNAL' && !aupConsumed && !disabled && !busy && !aiBusyStage} brief={aiBriefs.source_compliance} notice={aiNotices.source_compliance} aiLoading={aiBusyStage === 'source_compliance'} onGenerateAi={generateAiBrief} hosted={hosted} techContent={<div className="sandbox-tech-details">{aup && <p className="result-footnote">{aup.policy_version} · {operatorLabel(aup.compliance_decision)} · <strong data-testid="aup-applicability">{operatorLabel(aup.current_policy_applicability)}</strong> · valid until {dateLabel(aup.expires_at)}</p>}<dl className="provider-context" data-testid="provider-context">{[
+          <SecondaryStageTabs stage="source_compliance" activeTab={openSecondary.source_compliance} onSelectTab={toggleSecondary} referenceProps={referenceProps} aiAvailable={aup?.match_status === 'REVIEW_SIGNAL' && !aupConsumed && !disabled && !busy && !aiBusyStage} brief={aiBriefs.source_compliance} notice={aiNotices.source_compliance} aiLoading={aiBusyStage === 'source_compliance'} onGenerateAi={generateAiBrief} hosted={hosted} techContent={<div className="sandbox-tech-details">{aup && <p className="result-footnote">{aup.policy_version} · {operatorLabel(aup.compliance_decision)} · <strong data-testid="aup-applicability">{operatorLabel(aup.current_policy_applicability)}</strong> · valid until {utcLabel(aup.expires_at)}</p>}<dl className="provider-context" data-testid="provider-context">{[
             ['Demo market', 'United States'],
             ['Provider environment', 'PayPal Sandbox'],
             ['Developer login', 'Existing PayPal login; live account type not inferred'],
@@ -1417,7 +1560,7 @@ export default function App() {
             ['Invoicing eligibility', invoice?.evidence_receipt?.evidence_class === 'AUTHENTIC_SANDBOX_RESPONSE' ? 'Sandbox draft creation observed; broader eligibility unconfirmed' : 'Unconfirmed until bounded provider evidence'],
             ['External action', 'Disabled by default; explicit Sandbox OAuth and unsent draft only'],
           ].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></div>} />
-        </StepSection><LimitsDrawer id="compliance"><p className="aup-policy-link"><a data-testid="aup-policy-link" href={AUP_POLICY_URL} target="_blank" rel="noopener noreferrer">PayPal US Acceptable Use Policy (official source)</a><span>US Acceptable Use Policy; other regions may differ. A match only prompts a review; PayGuard makes no policy decision.</span></p><p className="result-footnote">A merchant must review the actual offering and policy.</p><p data-testid="aup-invoice-limit" className="text-dim">Invoice drafts allow 200 description characters. {description.length > 200 && 'Shorten the description and run the check again before continuing.'}</p><p className="text-dim">Sandbox OAuth runs only after an explicit connect action. Credentials remain in the backend process environment. The flow creates an unsent draft only, and every receipt is labeled as live Sandbox evidence or demo test evidence.</p></LimitsDrawer></StepMore>
+        </StepSection><LimitsDrawer id="compliance">{productRef?.status === 'OFF' && <p className="text-dim" data-testid="product-lookup-off">Product lookup is off on this console (no Channel3 key), so no product cards are shown. The policy result does not use it.</p>}<p className="aup-policy-link"><a data-testid="aup-policy-link" href={AUP_POLICY_URL} target="_blank" rel="noopener noreferrer">PayPal US Acceptable Use Policy (official source)</a><span>US Acceptable Use Policy; other regions may differ. A match only prompts a review; PayGuard makes no policy decision.</span></p><p className="result-footnote">A merchant must review the actual offering and policy.</p><p data-testid="aup-invoice-limit" className="text-dim">Invoice drafts allow 200 description characters. {description.length > 200 && 'Shorten the description and run the check again before continuing.'}</p><p className="text-dim">Sandbox OAuth runs only after an explicit connect action. Credentials remain in the backend process environment. The flow creates an unsent draft only, and every receipt is labeled as live Sandbox evidence or demo test evidence.</p></LimitsDrawer></StepMore>
         <div className="stage-next"><span>Next: the orders behind a sales spike.</span><Button icon="arrow" tone="secondary" onClick={() => openStage('velocity', { updateHash: true, scroll: true, focus: true })}>Next: sales burst</Button></div>
       </StageAccordion>
 
@@ -1436,15 +1579,15 @@ export default function App() {
         <div className="transaction-grid" data-testid="velocity-grid" aria-label="Demo order table"><Suspense fallback={<span className="grid-loading" role="status">Loading the table</span>}><AgGridReact theme={gridTheme} rowData={state?.transactions || []} columnDefs={columns} defaultColDef={{ sortable: true, resizable: true, filter: true }} getRowId={({ data }) => data.order_id} getRowClass={({ data }) => data?.order_id === selectedVelocityTransaction?.order_id ? 'ag-row-selected-transaction' : ''} quickFilterText={velocityQuickFilter} onRowClicked={({ data }) => setSelectedVelocityTransaction(data)} rowHeight={46} headerHeight={46} animateRows loading={loading || !state} overlayLoadingTemplate="Loading transactions" overlayNoRowsTemplate="Select Load sales burst above to see transactions" /></Suspense></div>
         {selectedVelocityTransaction && <section className="velocity-selected-detail" data-testid="velocity-selected-detail" aria-label="Selected transaction details"><div className="velocity-selected-heading"><div><span className="meta-label">SELECTED ORDER</span><h3>{selectedVelocityTransaction.order_id}</h3></div><Badge tone={velocity?.status === 'review_velocity' ? 'amber' : velocity?.status === 'normal' ? 'green' : 'muted'}><span data-testid="velocity-stage-status">{velocityStageStatusLabel(velocity)}</span></Badge></div><dl><div><dt>Order reference</dt><dd>{selectedVelocityTransaction.order_id}</dd></div><div><dt>Amount</dt><dd>{selectedVelocityTransaction.amount ?? '—'} {selectedVelocityTransaction.currency || '—'}</dd></div><div><dt>Captured at</dt><dd>{dateLabel(selectedVelocityTransaction.occurred_at)}</dd></div><div><dt>Stage evidence checklist</dt><dd>Check capacity and tracking or delivery records; this demo has none.</dd></div></dl><p>This stage-level signal does not verify fulfillment evidence, classify this order as fraud, or predict any PayPal action.</p></section>}
         </div>
-        <GuideLive key={`velocity-${sessionRef.current?.session_id || 'no-session'}`} scenario="velocity" session={sessionRef.current} Disclosure={StepSection} Badge={Badge} request={guideRequest} onSessionExpired={panelSessionExpired} />
+        <GuideLive key={`velocity-${sessionRef.current?.session_id || 'no-session'}`} scenario="velocity" session={sessionRef.current} Disclosure={StepSection} Badge={Badge} onChooser={setGuideChooser} request={guideRequest} onSessionExpired={panelSessionExpired} />
         <StepMore id="velocity"><StepSection id="sources-velocity_guard" title="Sources, policy check, and AI brief" subtitle="Official sources, demo claim check, AI summary, technical details" icon="link" open={Boolean(sourcesOpen.velocity_guard)} onToggle={(next) => setSourcesOpen((current) => ({ ...current, velocity_guard: next }))} testId="sources-toggle-velocity_guard">
-          <SecondaryStageTabs stage="velocity_guard" activeTab={openSecondary.velocity_guard} onSelectTab={toggleSecondary} referenceProps={referenceProps} aiAvailable={velocity?.status === 'review_velocity' && !disabled && !busy && !aiBusyStage} brief={aiBriefs.velocity_guard} notice={aiNotices.velocity_guard} aiLoading={aiBusyStage === 'velocity_guard'} onGenerateAi={generateAiBrief} hosted={hosted} techContent={<div className="velocity-details"><span data-testid="velocity-baseline">Baseline {velocity?.baseline_amount_per_hour ?? '—'} USD/hour · {operatorLabel(velocity?.baseline_provenance)} · {dateLabel(velocity?.baseline_window_start)} to {dateLabel(velocity?.baseline_window_end)}</span><span>{state?.policy_version || 'POLICY —'}</span></div>} />
+          <SecondaryStageTabs stage="velocity_guard" activeTab={openSecondary.velocity_guard} onSelectTab={toggleSecondary} referenceProps={referenceProps} aiAvailable={velocity?.status === 'review_velocity' && !disabled && !busy && !aiBusyStage} brief={aiBriefs.velocity_guard} notice={aiNotices.velocity_guard} aiLoading={aiBusyStage === 'velocity_guard'} onGenerateAi={generateAiBrief} hosted={hosted} techContent={<div className="velocity-details"><span data-testid="velocity-baseline">Baseline {velocity?.baseline_amount_per_hour ?? '—'} USD/hour · {operatorLabel(velocity?.baseline_provenance)} · {utcLabel(velocity?.baseline_window_start)} to {utcLabel(velocity?.baseline_window_end)}</span><span>{state?.policy_version || 'POLICY —'}</span></div>} />
         </StepSection><LimitsDrawer id="velocity"><p><Icon name="lock" size={13} /> This signal does not predict PayPal account limitations and does not initiate payments or provider filings.</p></LimitsDrawer></StepMore>
         <div className="stage-next"><span>Next: answer a dispute.</span><Button icon="arrow" tone="secondary" onClick={() => openStage('disputes', { updateHash: true, scroll: true, focus: true })}>Next: dispute evidence</Button></div>
       </StageAccordion>
 
       <StageAccordion id="disputes" number="03" title="Dispute evidence" subtitle="Prepare, download, then you confirm." icon="file" status={<RoleBadge />} actions={<div className="demo-actions"><Button data-testid="demo-dispute" icon="file" tone="blue" hidden={Boolean(state?.disputes?.length)} disabled={disabled} loading={busy === 'dispute'} waiting={waitLeft('dispute') > 0} onClick={() => inject('dispute')}>Load dispute case</Button>{activeStage === 'disputes' && resetDemoButton}</div>} open={activeStage === 'disputes'} onOpen={(stage) => openStage(stage, { updateHash: true })}>
-        <div className="dispute-layout"><div className="case-list"><div className="mini-heading"><span>Case queue</span><span className="text-dim">Demo cases</span></div>{state?.disputes?.length ? state.disputes.map((item) => <button key={item.case_ref} className={`case-card ${caseItem?.case_ref === item.case_ref ? 'case-selected' : ''}`} disabled={Boolean(busy)} onClick={() => { if (caseItem?.case_ref === item.case_ref) return; invalidateAi(); setSelectedCase(item.case_ref); setDraft(null); setReceipt(null); setReviewChecked(false); }}><div><Icon name="file" /><strong>{item.case_ref}</strong><Badge tone="amber">{operatorLabel(item.reason)}</Badge></div><span>{item.order_ref}</span><small>{dateLabel(item.opened_at)} · {operatorLabel(item.status)}</small><small className="case-due" data-testid={`case-due-${item.case_ref}`}>{dueLabel(item.seller_response_due_date)}</small></button>) : <div className="empty-state"><Icon name="file" size={32} /><strong>No dispute cases</strong><p>Use “Load dispute case” above to start.</p></div>}<a className="case-note dashboard-cta" href="/dashboard.html" data-testid="dispute-dashboard-cta"><Icon name="layers" size={15} /><p>See all deadlines</p></a></div><div className="evidence-workspace"><div className="evidence-toolbar"><div><span className="meta-label">CASE REVIEW</span><h3>{receipt || reviewedOnServer ? 'Local draft review recorded' : draft ? 'Draft created · awaiting human review' : caseItem ? 'Prepare objective evidence draft' : 'Human in the loop'}</h3></div><Button data-testid="dispute-draft" icon="file" tone={draft ? 'secondary' : 'blue'} disabled={disabled || !caseItem || caseItem.status === 'local_draft_reviewed'} loading={busy === 'draft'} waiting={waitLeft('draft') > 0} onClick={getDraft}>Prepare evidence draft</Button></div>{draft ? <><div className="dispute-route" data-testid="dispute-route"><div><span>Response readiness</span><strong>{operatorLabel(draft.routing?.overall_state)}</strong><small>{operatorLabel(draft.routing?.reason)} · {operatorLabel(draft.routing?.dispute_life_cycle_stage)} · {operatorLabel(draft.routing?.status)}</small><small data-testid="dispute-due-at">Due {dateLabel(draft.routing?.seller_response_due_date)}</small><small data-testid="dispute-actions">Next options: {operatorLabels(draft.routing?.available_actions).join(', ') || 'None'}</small></div><Badge tone={draft.routing?.due_state === 'OPEN' ? 'green' : 'danger'}><span data-testid="dispute-due-state">{operatorLabel(draft.routing?.due_state)}</span></Badge></div><div className="requirement-list" data-testid="dispute-requirements">{draft.routing?.requirements?.map((row) => <div key={row.request_id}><div><strong>{operatorLabel(row.provider_evidence_type)}</strong><span>{operatorLabel(row.source)}</span><small>Next step: {operatorLabel(row.action, 'No action requested')}</small></div><Badge tone={row.requirement_state === 'STRUCTURALLY_PRESENT' ? 'green' : row.requirement_state.includes('MISSING') ? 'amber' : 'muted'}>{operatorLabel(row.requirement_state)}</Badge><small>{row.proof_count} proof record(s) · {row.accepted_attachment_count} accepted attachment(s)</small></div>)}</div>{draft.time_evidence && <Suspense fallback={<p className="text-dim" role="status">Loading the time evidence</p>}><TimeEvidenceView evidence={draft.time_evidence} /></Suspense>}<StepOneEvidence productConfirm={productConfirm} countryCheck={lastCountryCheck?.session === state?.session_id ? lastCountryCheck : null} /><div className="privacy-strip" data-testid="internal-review-profile"><Icon name="lock" /><div><strong>Review copy ready for download</strong><span>{draft.document_redaction?.replacement_count ?? 0} identifier replacements · check before sharing</span><small>Limited detection; manual review is required. Pseudonymization is not anonymization.</small></div><Button data-testid="download-pseudonymized-evidence" className="privacy-download" icon="file" onClick={downloadRedactedFile} disabled={disabled || !draft.document_redaction}>Download review file</Button><Button data-testid="download-internal-review-zip" icon="file" onClick={downloadReviewZip} disabled={disabled || !draft}>Download review ZIP</Button></div><div className="human-review"><label className="checkbox-label"><input type="checkbox" checked={reviewChecked || reviewedOnServer} disabled={Boolean(busy) || Boolean(receipt) || reviewedOnServer || draft.routing?.overall_state !== 'READY_FOR_LOCAL_REVIEW'} onChange={(event) => setReviewChecked(event.target.checked)} /><span>I reviewed the evidence and timeline and confirm this review is recorded only in the local demo.</span></label><Button data-testid="dispute-approve" tone={receipt || reviewedOnServer ? 'secondary' : 'blue'} icon="check" onClick={approve} disabled={disabled || !reviewChecked || !draft.draft_digest || Boolean(receipt) || reviewedOnServer || draft.routing?.overall_state !== 'READY_FOR_LOCAL_REVIEW'} loading={busy === 'approve'} waiting={waitLeft('approve') > 0}>{receipt || reviewedOnServer ? 'Local review recorded' : 'Confirm local draft review'}</Button><ApprovalPayloadCard preview={evidencePreview} caseRef={draft.case_ref} hosted={hosted} /></div>{receipt && <div className="receipt" data-testid="dispute-result" tabIndex={-1}><Icon name="check" /><span>Local draft reviewed · {operatorLabel(receipt.reviewer)} · {dateLabel(receipt.reviewed_at)} · {operatorLabel(receipt.retention)} · {operatorLabel(receipt.external_submission || 'FROZEN')}</span></div>}{reviewedOnServer && <div className="receipt" data-testid="dispute-result-restored"><Icon name="check" /><span>Local draft review recorded earlier in this session (server status) · session memory only · nothing was submitted to PayPal</span></div>}<details className="dispute-details"><summary><Icon name="layers" size={16} /> Evidence fields and ZIP contents</summary><div className="dispute-detail-content"><div className="evidence-grid">{[['Case reason', operatorLabel(draft.evidence?.reason)], ['Carrier status', operatorLabel(draft.evidence?.carrier_status)], ['Order created', dateLabel(draft.evidence?.order_created_at)], ['Delivery event', dateLabel(draft.evidence?.delivered_at)], ['Dispute opened', dateLabel(draft.evidence?.opened_at)], ['Evidence source', operatorLabel(draft.evidence?.evidence_source)]].map(([label, value]) => <div key={label}><span>{label}</span><strong>{value || '—'}</strong></div>)}</div><div className="restricted-summary" data-testid="restricted-original-summary"><Icon name="lock" /><div><strong>Original identifiers stay in this demo session</strong><span>{draft.restricted_original_summary?.proof_record_count} proof record(s) · {draft.restricted_original_summary?.attachment_count} attachment metadata record(s)</span><small>No original file content is included, and nothing is submitted externally.</small></div></div><div className="zip-contents" data-testid="internal-review-zip-contents"><strong>Internal Review ZIP contents</strong><ul>{INTERNAL_REVIEW_ZIP_CONTENTS.map((name) => <li key={name}>{name}{name === 'product-reference.json' && <span className="step-one-tag" data-testid="zip-from-step-01">From step 01</span>}</li>)}</ul><small>Seven fixed files · generated locally · not sent to PayPal</small></div><ScenarioMatchPanel match={draft.scenario_match} />{draft.review_reasons?.length > 0 && <p className="review-warning">Review flags: {operatorLabels(draft.review_reasons).join(', ')}</p>}</div></details></> : caseItem ? <div className="case-summary" data-testid="case-summary"><dl>{[['Reason', operatorLabel(caseItem.reason)], ['Amount', caseItem.dispute_amount ? `${caseItem.dispute_amount.value} ${caseItem.dispute_amount.currency_code}` : '—'], ['Deadline', dueLabel(caseItem.seller_response_due_date) || 'Shown after the draft'], ['Status', operatorLabel(caseItem.status)], ['Seller Protection', 'PayPal decides']].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl><p>Make a draft, check it, then confirm. PayPal decides the outcome.</p></div> : <div className="evidence-placeholder"><svg className="placeholder-illustration" width="180" height="56" viewBox="0 0 180 56" fill="none" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="8" y="8" width="40" height="40" rx="8" stroke="var(--pg-color-accent)" strokeWidth="1.75" /><path d="M22 22h12M22 28h12M22 34h8" stroke="var(--pg-color-accent)" strokeWidth="1.75" /><path d="M52 28h14" stroke="var(--pg-color-subtle)" strokeWidth="1.75" strokeDasharray="3 3" /><rect x="70" y="8" width="40" height="40" rx="8" stroke="var(--pg-color-subtle)" strokeWidth="1.75" /><rect x="83" y="27" width="14" height="10" rx="2" stroke="var(--pg-color-accent)" strokeWidth="1.75" /><path d="M86 27v-3a4 4 0 0 1 8 0v3" stroke="var(--pg-color-accent)" strokeWidth="1.75" /><path d="M114 28h14" stroke="var(--pg-color-subtle)" strokeWidth="1.75" strokeDasharray="3 3" /><rect x="132" y="8" width="40" height="40" rx="8" stroke="var(--pg-color-accent)" strokeWidth="1.75" /><path d="m145 28.5 4.5 4.5 9.5-10" stroke="var(--pg-color-accent)" strokeWidth="1.75" /></svg><h3>Prepare → Download → Human review</h3><p>Make a draft, check it, then confirm. PayPal decides the outcome.</p></div>}</div></div>
+        <div className="dispute-layout"><div className="case-list"><div className="mini-heading"><span>Case queue</span><span className="text-dim">Demo cases</span></div>{state?.disputes?.length ? state.disputes.map((item) => <button key={item.case_ref} className={`case-card ${caseItem?.case_ref === item.case_ref ? 'case-selected' : ''}`} disabled={Boolean(busy)} onClick={() => { if (caseItem?.case_ref === item.case_ref) return; invalidateAi(); setSelectedCase(item.case_ref); setDraft(null); setReceipt(null); setReviewChecked(false); }}><div><Icon name="file" /><strong>{item.case_ref}</strong><Badge tone="amber">{operatorLabel(item.reason)}</Badge></div><span>{item.order_ref}</span><small>{dateLabel(item.opened_at)} · {operatorLabel(item.status)}</small><small className="case-due" data-testid={`case-due-${item.case_ref}`}>{dueLabel(item.seller_response_due_date)}</small></button>) : <div className="empty-state"><Icon name="file" size={32} /><strong>No dispute cases</strong><p>Use “Load dispute case” above to start.</p></div>}<a className="case-note dashboard-cta" href="/dashboard.html" data-testid="dispute-dashboard-cta"><Icon name="layers" size={15} /><p>See all deadlines</p></a><a className="case-note dashboard-cta proof-cta" href="/proof.html" data-testid="dispute-proof-cta"><Icon name="check" size={15} /><p>See the proof records</p></a></div><div className="evidence-workspace"><div className="evidence-toolbar"><div><span className="meta-label">CASE REVIEW</span><h3>{receipt || reviewedOnServer ? 'Local draft review recorded' : draft ? 'Draft created · awaiting human review' : caseItem ? 'Prepare objective evidence draft' : 'Human in the loop'}</h3></div><Button data-testid="dispute-draft" icon="file" tone={draft ? 'secondary' : 'blue'} disabled={disabled || !caseItem || caseItem.status === 'local_draft_reviewed'} loading={busy === 'draft'} waiting={waitLeft('draft') > 0} onClick={getDraft}>Prepare evidence draft</Button></div>{draft ? <><div className="dispute-route" data-testid="dispute-route"><div><span>Response readiness</span>{/* (r34 #9) After the local review the server's routing still reads "Ready for human review"; the summary says what is next, and the server values stay in Technical details. */}<strong data-testid="dispute-readiness">{receipt || reviewedOnServer ? 'Reviewed locally · next: preview and send' : operatorLabel(draft.routing?.overall_state)}</strong><small>{operatorLabel(draft.routing?.reason)} · {operatorLabel(draft.routing?.dispute_life_cycle_stage)} · {operatorLabel(draft.routing?.status)}</small><small data-testid="dispute-due-at">Due {dateLabel(draft.routing?.seller_response_due_date)}{dueLabel(draft.routing?.seller_response_due_date) ? ` · ${dueLabel(draft.routing?.seller_response_due_date)}` : ''}</small>{!(receipt || reviewedOnServer) && <small data-testid="dispute-actions">Next options: {operatorLabels(draft.routing?.available_actions).join(', ') || 'None'}</small>}</div><Badge tone={draft.routing?.due_state === 'OPEN' ? 'green' : 'danger'}><span data-testid="dispute-due-state">{operatorLabel(draft.routing?.due_state)}</span></Badge></div><div className="requirement-list" data-testid="dispute-requirements">{draft.routing?.requirements?.map((row) => <div key={row.request_id}><div><strong>{operatorLabel(row.provider_evidence_type)}</strong><span>{operatorLabel(row.source)}</span><small>Next step: {operatorLabel(row.action, 'No action requested')}</small></div><Badge tone={row.requirement_state === 'STRUCTURALLY_PRESENT' ? 'green' : row.requirement_state.includes('MISSING') ? 'amber' : 'muted'}>{operatorLabel(row.requirement_state)}</Badge><small>{row.proof_count} proof record(s) · {row.accepted_attachment_count} accepted attachment(s)</small></div>)}</div>{/* (r33 M4) */}{guideOpenItems > 0 && <p className="guide-open-items text-dim" data-testid="guide-open-items">Guide items still open: {guideOpenItems}; they are not part of this draft.</p>}{draft.time_evidence && <Suspense fallback={<p className="text-dim" role="status">Loading the time evidence</p>}><TimeEvidenceView evidence={draft.time_evidence} /></Suspense>}<StepOneEvidence productConfirm={productConfirm} countryCheck={lastCountryCheck?.session === state?.session_id ? lastCountryCheck : null} lostCheck={countryLost ? lastCountryCheck : null} /><div className="privacy-strip" data-testid="internal-review-profile"><Icon name="lock" /><div><strong>Review copy ready for download</strong><span>{draft.document_redaction?.replacement_count ?? 0} identifier replacements · check before sharing</span><small>Limited detection; manual review is required. Pseudonymization is not anonymization.</small></div><Button data-testid="download-pseudonymized-evidence" className="privacy-download" icon="file" onClick={downloadRedactedFile} disabled={disabled || !draft.document_redaction}>Download review file</Button><Button data-testid="download-internal-review-zip" icon="file" onClick={downloadReviewZip} disabled={disabled || !draft}>Download review ZIP</Button></div><div className="human-review"><label className="checkbox-label"><input type="checkbox" checked={reviewChecked || reviewedOnServer} disabled={Boolean(busy) || Boolean(receipt) || reviewedOnServer || draft.routing?.overall_state !== 'READY_FOR_LOCAL_REVIEW'} onChange={(event) => setReviewChecked(event.target.checked)} /><span>I reviewed the evidence and timeline and confirm this review is recorded only in the local demo.</span></label><Button data-testid="dispute-approve" tone={receipt || reviewedOnServer ? 'secondary' : 'blue'} icon="check" aria-describedby="approve-lock-reason" onClick={approve} disabled={disabled || !reviewChecked || !draft.draft_digest || Boolean(receipt) || reviewedOnServer || draft.routing?.overall_state !== 'READY_FOR_LOCAL_REVIEW'} loading={busy === 'approve'} waiting={waitLeft('approve') > 0}>{receipt || reviewedOnServer ? 'Local review recorded' : 'Confirm local draft review'}</Button><LockReason testId="approve-lock-reason" reason={approveLockReason({ sessionExpired: error?.status === 401, draft, receipt, reviewedOnServer, reviewChecked })} /><ApprovalPayloadCard preview={evidencePreview} caseRef={draft.case_ref} hosted={hosted} /></div>{receipt && <div className="receipt" data-testid="dispute-result" tabIndex={-1}><Icon name="check" /><span>Local draft reviewed · {/* (r32 J1 J4) Plain words here; the full disclosure ("identity is not checked") is in Limits and safety. */}{receipt.reviewer === 'DEMO_OPERATOR_UNAUTHENTICATED' ? 'Demo operator (no sign-in)' : operatorLabel(receipt.reviewer)} · {dateLabel(receipt.reviewed_at)} · {operatorLabel(receipt.retention)} · {operatorLabel(receipt.external_submission || 'FROZEN')}</span></div>}{reviewedOnServer && <div className="receipt" data-testid="dispute-result-restored"><Icon name="check" /><span>Local draft review recorded earlier in this session (server status) · session memory only · nothing was submitted to PayPal</span></div>}<details className="dispute-details"><summary><Icon name="layers" size={16} /> Evidence fields and ZIP contents</summary><div className="dispute-detail-content"><div className="evidence-grid">{[['Case reason', operatorLabel(draft.evidence?.reason)], ['Carrier status', operatorLabel(draft.evidence?.carrier_status)], ['Order created', dateLabel(draft.evidence?.order_created_at)], ['Delivery event', dateLabel(draft.evidence?.delivered_at)], ['Dispute opened', dateLabel(draft.evidence?.opened_at)], ['Evidence source', operatorLabel(draft.evidence?.evidence_source)]].map(([label, value]) => <div key={label}><span>{label}</span><strong>{value || '—'}</strong></div>)}</div><div className="restricted-summary" data-testid="restricted-original-summary"><Icon name="lock" /><div><strong>Original identifiers stay in this demo session</strong><span>{draft.restricted_original_summary?.proof_record_count} proof record(s) · {draft.restricted_original_summary?.attachment_count} attachment metadata record(s)</span><small>No original file content is included, and nothing is submitted externally.</small></div></div><div className="zip-contents" data-testid="internal-review-zip-contents"><strong>Internal Review ZIP contents</strong><ul>{INTERNAL_REVIEW_ZIP_CONTENTS.map((name) => <li key={name}>{name}{name === 'product-reference.json' && <span className="step-one-tag" data-testid="zip-from-step-01">From step 01</span>}</li>)}</ul><small>Seven fixed files · generated locally · not sent to PayPal</small></div><ScenarioMatchPanel match={draft.scenario_match} />{draft.review_reasons?.length > 0 && <p className="review-warning">Review flags: {operatorLabels(draft.review_reasons).join(', ')}</p>}</div></details></> : caseItem ? <div className="case-summary" data-testid="case-summary"><dl>{[['Reason', operatorLabel(caseItem.reason)], ['Amount', caseItem.dispute_amount ? `${caseItem.dispute_amount.value} ${caseItem.dispute_amount.currency_code}` : '—'], ['Deadline', dueLabel(caseItem.seller_response_due_date) || 'Shown after the draft'], ['Status', operatorLabel(caseItem.status)], ['Seller Protection', 'PayPal decides']].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl><p>Make a draft, check it, then confirm. PayPal decides the outcome.</p></div> : <div className="evidence-placeholder"><svg className="placeholder-illustration" width="180" height="56" viewBox="0 0 180 56" fill="none" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="8" y="8" width="40" height="40" rx="8" stroke="var(--pg-color-accent)" strokeWidth="1.75" /><path d="M22 22h12M22 28h12M22 34h8" stroke="var(--pg-color-accent)" strokeWidth="1.75" /><path d="M52 28h14" stroke="var(--pg-color-subtle)" strokeWidth="1.75" strokeDasharray="3 3" /><rect x="70" y="8" width="40" height="40" rx="8" stroke="var(--pg-color-subtle)" strokeWidth="1.75" /><rect x="83" y="27" width="14" height="10" rx="2" stroke="var(--pg-color-accent)" strokeWidth="1.75" /><path d="M86 27v-3a4 4 0 0 1 8 0v3" stroke="var(--pg-color-accent)" strokeWidth="1.75" /><path d="M114 28h14" stroke="var(--pg-color-subtle)" strokeWidth="1.75" strokeDasharray="3 3" /><rect x="132" y="8" width="40" height="40" rx="8" stroke="var(--pg-color-accent)" strokeWidth="1.75" /><path d="m145 28.5 4.5 4.5 9.5-10" stroke="var(--pg-color-accent)" strokeWidth="1.75" /></svg><h3>Prepare → Download → Human review</h3><p>Make a draft, check it, then confirm. PayPal decides the outcome.</p></div>}</div></div>
         <details className="sandbox-details provider-disputes" data-testid="provider-disputes"><summary><Icon name="link" size={16} /><span>{providerDisputes?.source === 'paypal_sandbox' ? 'PayPal Sandbox disputes' : 'Sample PayPal cases (not real)'}</span><span data-testid="dispute-data-source"><Badge tone={providerDisputes?.source === 'paypal_sandbox' ? 'green' : 'muted'} dot>{providerDisputes?.source === 'paypal_sandbox' ? 'Sandbox' : providerDisputes?.data_source_label ? 'Sample' : providerDisputes?.error ? 'Readback unavailable' : 'Loading'}</Badge></span></summary>
           <div className="provider-disputes-body">
             <p>{providerDisputes?.source === 'paypal_sandbox' ? 'Rows come from GET /v1/customer/disputes on the connected Sandbox account. Names, messages, offers and links are dropped before display.' : hosted ? <span data-testid="hosted-note-disputes">{HOSTED_NOTES.disputes}</span> : 'Sample cases. Connect the Sandbox in Step 01 to see real Sandbox cases.'}</p>
@@ -1458,25 +1601,30 @@ export default function App() {
               ['Amount', `${providerDisputeDetail.dispute_amount.value} ${providerDisputeDetail.dispute_amount.currency_code}`],
               ['Transactions', providerDisputeDetail.disputed_transactions.map((row) => `${row.seller_transaction_id} (${operatorLabel(row.transaction_status, 'status not stated')})`).join(', ') || 'None returned'],
               ['Evidence requests', providerDisputeDetail.evidences.map((row) => `${operatorLabel(row.evidence_type, row.evidence_type)} · ${operatorLabel(row.source, row.source)}`).join('; ') || 'None returned'],
-              ['Provider submission', operatorLabel(providerDisputeDetail.provider_submission)],
+              ['Provider submission', sellerEvidence ? SELLER_EVIDENCE_TEXT : operatorLabel(providerDisputeDetail.provider_submission)],
               ['Seller Protection', sellerProtectionLabel(providerDisputeDetail)],
             ].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>}
-            {!hosted && <SendGuardSummary guard={(trackingPreview || evidencePreview)?.send_guard} detail={providerDisputeDetail} caseItem={caseItem} boundTo={boundTo} block={evidencePreview || trackingPreview ? (evidencePreview ? evidenceBlock : trackingBlock) : sendGuardBlock(null, providerDisputeDetail, caseItem, boundTo)} />}
-            {sendConfirm && <SendConfirmDialog kind={sendConfirm} caseRef={caseItem?.case_ref}
+            {!hosted && <SendGuardSummary guard={(trackingPreview || evidencePreview)?.send_guard} detail={providerDisputeDetail} caseItem={caseItem} boundTo={boundTo} sentTo={sentTo} block={evidencePreview || trackingPreview ? (evidencePreview ? evidenceBlock : trackingBlock) : evidenceRefusal || trackingRefusal || sendGuardBlock(null, providerDisputeDetail, caseItem, boundTo, sentTo)} />}
+            {sendConfirm && !(sendConfirm === 'evidence' && sellerEvidence) && <SendConfirmDialog kind={sendConfirm} detail={providerDisputeDetail} caseRef={caseItem?.case_ref} caseAmount={caseItem?.dispute_amount}
+              returnFocus={[`[data-testid="${sendConfirm}-submit"]`, `[data-testid="phone-action-${sendConfirm}-submit"]`]}
               guard={(sendConfirm === 'tracking' ? trackingPreview : evidencePreview)?.send_guard}
               item={sendItemText(sendConfirm, sendConfirm === 'tracking' ? trackingPreview : evidencePreview)}
               onCancel={() => setSendConfirm(null)} onRecheck={() => recheckSend(sendConfirm)} onSend={() => confirmSend(sendConfirm)} />}
-            <div className="provider-dispute-actions">{hosted ? <p className="hosted-note" data-testid="hosted-note-evidence">{HOSTED_NOTES.evidence}</p> : <><Button data-testid="evidence-preview" icon="file" disabled={disabled || !draft || !providerDisputeDetail} loading={busy === 'evidence-preview'} onClick={previewEvidence}>Prepare evidence request (preview)</Button><Button data-testid="evidence-submit" icon="lock" tone="ghost" disabled={disabled || !evidenceSubmitReady} loading={busy === 'evidence-submit'} onClick={() => setSendConfirm('evidence')} title="Requires PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled, a Sandbox connection and a recorded local approval">Submit to PayPal Sandbox (test)</Button><span className="text-dim">Test submission. No real dispute is affected.</span>{itemNotReceived && <><Button data-testid="tracking-preview" icon="file" disabled={disabled || !draft || !providerDisputeDetail} loading={busy === 'tracking-preview'} waiting={waitLeft('tracking-preview') > 0} onClick={previewTracking}>Preview tracking for PayPal</Button><Button data-testid="tracking-submit" icon="lock" tone="ghost" disabled={disabled || !trackingSubmitReady} loading={busy === 'tracking-submit'} onClick={() => setSendConfirm('tracking')} title="Requires PAYGUARD_PAYPAL_TRACKING_SUBMIT=enabled, a Sandbox connection and a recorded local approval">Send tracking to PayPal Sandbox (test)</Button></>}</>}<details className="technical-details" data-testid="evidence-technical-details"><summary>Technical details</summary><p>Builds the multipart POST /v1/customer/disputes/{'{id}'}/provide-evidence from the local draft. Select a dispute and prepare the evidence draft first. The send button stays disabled until the operator sets PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled, the Sandbox is connected, a person has recorded the local approval and a preview has been prepared.</p></details></div>
-            {evidencePreview && <div className="evidence-preview" data-testid="evidence-preview-result"><div className="ai-brief-badges"><Badge tone={evidencePreview.external_send === 'SUBMITTED' ? 'green' : 'amber'}>{operatorLabel(evidencePreview.external_send)}</Badge><Badge tone="muted">{evidencePreview.data_source_label} data</Badge></div><details className="technical-details"><summary>Technical details</summary><div className="ai-brief-badges"><Badge tone="blue">{evidencePreview.method} {evidencePreview.path}</Badge><Badge tone="muted">{evidencePreview.content_type}</Badge></div><pre>{JSON.stringify(evidencePreview.input, null, 2)}</pre></details><ul>{evidencePreview.files.map((part) => <li key={part.name}>{part.name}: {part.filename} · {part.content_type} · {part.byte_length} bytes (file bytes stay on the server)</li>)}</ul><p className="text-dim">Tracking numbers are masked in this preview. Submit flag: {evidencePreview.submit_flag_enabled ? 'enabled' : 'off'}. A person reviews before any submission.</p></div>}
+            <div className="provider-dispute-actions">{hosted ? <p className="hosted-note" data-testid="hosted-note-evidence">{HOSTED_NOTES.evidence}</p> : <><Button data-testid="evidence-preview" icon="file" disabled={disabled || !draft || !providerDisputeDetail || sellerEvidence} loading={busy === 'evidence-preview'} onClick={previewEvidence}>Prepare evidence request (preview)</Button><Button data-testid="evidence-submit" icon={evidenceSubmitReady ? 'arrow' : 'lock'} tone={evidenceSubmitReady ? 'blue' : 'ghost'} aria-describedby={evidenceLock ? 'evidence-lock-reason' : undefined} disabled={disabled || !evidenceSubmitReady} loading={busy === 'evidence-submit'} onClick={() => setSendConfirm('evidence')} title="Requires PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled, a Sandbox connection and a recorded local approval">Submit to PayPal Sandbox (test)</Button><LockReason testId="evidence-lock-reason" reason={evidenceLock} /><span className="text-dim">Test submission. No real dispute is affected.</span>{itemNotReceived && <><Button data-testid="tracking-preview" icon="file" disabled={disabled || !draft || !providerDisputeDetail} loading={busy === 'tracking-preview'} waiting={waitLeft('tracking-preview') > 0} onClick={previewTracking}>Preview tracking for PayPal</Button><Button data-testid="tracking-submit" icon={trackingSubmitReady ? 'arrow' : 'lock'} tone={trackingSendTone} aria-describedby={trackingLock ? 'tracking-lock-reason' : undefined} disabled={disabled || !trackingSubmitReady} loading={busy === 'tracking-submit'} onClick={() => setSendConfirm('tracking')} title="Requires PAYGUARD_PAYPAL_TRACKING_SUBMIT=enabled, a Sandbox connection and a recorded local approval">Send tracking to PayPal Sandbox (test)</Button><LockReason testId="tracking-lock-reason" reason={trackingLock} /></>}</>}</div>
+            {evidencePreview && <div className="evidence-preview" data-testid="evidence-preview-result"><div className="ai-brief-badges"><Badge tone={evidencePreview.external_send === 'SUBMITTED' ? 'green' : 'amber'}>{operatorLabel(evidencePreview.external_send)}</Badge><Badge tone="muted">{evidencePreview.data_source_label} data</Badge></div>{evidencePreview.paypal_debug_id && <p className="evidence-debug-id" data-testid="evidence-debug-id">PayPal-Debug-Id: {evidencePreview.paypal_debug_id}</p>}<ul>{evidencePreview.files.map((part) => <li key={part.name}>{part.name}: {part.filename} · {part.content_type} · {part.byte_length} bytes (file bytes stay on the server)</li>)}</ul><p className="text-dim">Tracking numbers are masked in this preview. Submit flag: {evidencePreview.submit_flag_enabled ? 'enabled' : 'off'}. A person reviews before any submission.</p></div>}
             {trackingPreview && <div className="evidence-preview tracking-preview" data-testid="tracking-preview-result"><div className="ai-brief-badges"><Badge tone={trackingPreview.external_send === 'SUBMITTED' ? 'green' : 'amber'}>{operatorLabel(trackingPreview.external_send)}</Badge><Badge tone="muted">{trackingPreview.data_source_label} data</Badge></div><dl className="approval-payload-list"><div><dt>Request</dt><dd>{trackingPreview.method} {trackingPreview.path}</dd></div>{trackingPreview.body.trackers.map((row) => <div key={`${row.transaction_id}-${row.tracking_number}`}><dt>Tracker (masked)</dt><dd data-testid="tracking-preview-row">Transaction {row.transaction_id} · {row.carrier === 'OTHER' ? row.carrier_name_other : row.carrier} {row.tracking_number} · {row.status}</dd></div>)}<div><dt>Payload sha256</dt><dd className="approval-payload-hash" data-testid="tracking-preview-sha256">{trackingPreview.payload_sha256 || '—'}</dd></div>{trackingPreview.paypal_debug_id && <div><dt>PayPal-Debug-Id</dt><dd>{trackingPreview.paypal_debug_id}</dd></div>}</dl><p className="text-dim">Transaction id and tracking number are masked in this preview; the server sends the originals only after every gate passes. Submit flag: {trackingPreview.submit_flag_enabled ? 'enabled' : 'off'}.</p></div>}
+            {/* (r33 M1) One Technical details for the whole evidence area, collapsed and last: the send helper text and,
+                once prepared, the evidence request (method, path, content type, input JSON) that had its own disclosure. */}
+            {/* (r34 #13) Set apart at the very bottom of the send area, well below the preview and its Debug-Id line. */}
+            <details className="technical-details" data-testid="evidence-technical-details"><summary>Technical details</summary><p>Builds the multipart POST /v1/customer/disputes/{'{id}'}/provide-evidence from the local draft. Select a dispute and prepare the evidence draft first. The send button stays disabled until the operator sets PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled, the Sandbox is connected, a person has recorded the local approval and a preview has been prepared.</p>{evidencePreview && <div className="evidence-technical-request" data-testid="evidence-technical-request"><div className="ai-brief-badges"><Badge tone="blue">{evidencePreview.method} {evidencePreview.path}</Badge><Badge tone="muted">{evidencePreview.content_type}</Badge></div><pre>{JSON.stringify(evidencePreview.input, null, 2)}</pre></div>}</details>
           </div>
         </details>
         <StepSection id="evidence-board" title="Evidence deadline board" subtitle="Deadlines on a timeline" icon="clock" open={boardOpen} onToggle={setBoardExpanded} testId="optional-toggle-evidence-board">{boardOpen ? <Suspense fallback={<div className="analytics-loading" role="status"><span className="spinner" />Loading the evidence deadline board.</div>}><EvidenceBoard disputes={state?.disputes} drafts={boardDraftsForState} /></Suspense> : null}</StepSection>
-        <GuideLive key={`dispute-${sessionRef.current?.session_id || 'no-session'}`} scenario="dispute" session={sessionRef.current} Disclosure={StepSection} Badge={Badge} request={guideRequest} onSessionExpired={panelSessionExpired} />
+        <GuideLive key={`dispute-${sessionRef.current?.session_id || 'no-session'}`} scenario="dispute" session={sessionRef.current} Disclosure={StepSection} Badge={Badge} onChooser={setGuideChooser} onOpenItems={setGuideOpenItems} request={guideRequest} onSessionExpired={panelSessionExpired} />
         <StepMore id="disputes"><StepSection id="guide-replay" title="Guided gap filling: examples" subtitle="Replayed examples, never a live model call" icon="layers" open={replayExpanded} onToggle={setReplayExpanded} testId="optional-toggle-replay">{replayExpanded ? <Suspense fallback={<div className="analytics-loading" role="status"><span className="spinner" />Loading the replay examples.</div>}><GuideReplay /></Suspense> : null}</StepSection>
         <StepSection id="sources-dispute_mediation" title="Sources, policy check, and AI brief" subtitle="Official sources, demo claim check, AI summary, technical details" icon="link" open={Boolean(sourcesOpen.dispute_mediation)} onToggle={(next) => setSourcesOpen((current) => ({ ...current, dispute_mediation: next }))} testId="sources-toggle-dispute_mediation">
-          <SecondaryStageTabs stage="dispute_mediation" activeTab={openSecondary.dispute_mediation} onSelectTab={toggleSecondary} referenceProps={referenceProps} aiAvailable={Boolean(draft) && caseItem?.reason === 'INR' && draft?.evidence?.reason === 'INR' && draft?.routing?.overall_state === 'READY_FOR_LOCAL_REVIEW' && !draft?.review_reasons?.includes('unsupported_reason') && !disabled && !busy && !aiBusyStage} brief={aiBriefs.dispute_mediation} notice={aiNotices.dispute_mediation} aiLoading={aiBusyStage === 'dispute_mediation'} onGenerateAi={generateAiBrief} hosted={hosted} techContent={<div className="velocity-details"><p>Dispute readback uses GET /v1/customer/disputes and GET /v1/customer/disputes/{'{id}'}; evidence preview prepares multipart POST /v1/customer/disputes/{'{id}'}/provide-evidence.</p><span>{state?.policy_version || 'POLICY —'}</span></div>} />
-        </StepSection><LimitsDrawer id="disputes"><div className="case-note"><Icon name="shield" size={15} /><p>Delivery records help review a case; they do not decide it.</p></div><p className="review-warning review-warning-short"><strong>Internal review only.</strong> This ZIP is not a PayPal attachment. Nothing was submitted; a person checks it before any external use.</p><p className="review-warning" data-testid="internal-review-zip-boundary"><strong>INTERNAL REVIEW ONLY</strong> — This synthetic, pseudonymized preparation package is not a PayPal-supported attachment. Required fields present does not prove authenticity, sufficiency, eligibility, completeness, or outcome. PayPal or the external issuer keeps final authority, and nothing was submitted.</p></LimitsDrawer></StepMore>
+          <SecondaryStageTabs stage="dispute_mediation" activeTab={openSecondary.dispute_mediation} onSelectTab={toggleSecondary} referenceProps={referenceProps} aiAvailable={Boolean(draft) && caseItem?.reason === 'INR' && draft?.evidence?.reason === 'INR' && draft?.routing?.overall_state === 'READY_FOR_LOCAL_REVIEW' && !draft?.review_reasons?.includes('unsupported_reason') && !disabled && !busy && !aiBusyStage} brief={aiBriefs.dispute_mediation} notice={aiNotices.dispute_mediation} aiLoading={aiBusyStage === 'dispute_mediation'} onGenerateAi={generateAiBrief} hosted={hosted} techContent={<div className="velocity-details"><p>Dispute readback uses GET /v1/customer/disputes and GET /v1/customer/disputes/{'{id}'}; evidence preview prepares multipart POST /v1/customer/disputes/{'{id}'}/provide-evidence.</p>{draft?.routing && <p data-testid="dispute-route-server">Server routing: {operatorLabel(draft.routing.overall_state)} · next options: {operatorLabels(draft.routing.available_actions).join(', ') || 'None'} · due {utcLabel(draft.routing.seller_response_due_date)}</p>}<span>{state?.policy_version || 'POLICY —'}</span></div>} />
+        </StepSection><LimitsDrawer id="disputes"><p className="text-dim" data-testid="reviewer-identity-note">The local review is recorded for a demo operator. This demo has no sign-in, so the reviewer's identity is not checked.</p><div className="case-note"><Icon name="shield" size={15} /><p>Delivery records help review a case; they do not decide it.</p></div><p className="review-warning review-warning-short"><strong>Internal review only.</strong> This ZIP is not a PayPal attachment. Nothing was submitted; a person checks it before any external use.</p><p className="review-warning" data-testid="internal-review-zip-boundary"><strong>INTERNAL REVIEW ONLY</strong> — This synthetic, pseudonymized preparation package is not a PayPal-supported attachment. Required fields present does not prove authenticity, sufficiency, eligibility, completeness, or outcome. PayPal or the external issuer keeps final authority, and nothing was submitted.</p></LimitsDrawer></StepMore>
       </StageAccordion>
 
       <OptionalDisclosure id="analytics" title="Merchant Evidence Buffer" subtitle="Review all orders in one table" icon="layers" badge={<Badge tone="blue">OPTIONAL</Badge>} open={analyticsExpanded} onToggle={setAnalyticsExpanded} testId="optional-toggle-analytics">{analyticsOpen ? <Suspense fallback={<div className="analytics-loading" role="status"><span className="spinner" />Loading the isolated analytics workspace.</div>}><AnalyticsDashboard aup={aup} state={state} /></Suspense> : <div className="analytics-launch-card"><div className="analytics-launch-copy"><span className="meta-label">OPTIONAL</span><strong>Review all orders in one table</strong><p>See every order with quick filtering, the three-stage progress view, and a read-only guide to what is on screen.</p><div className="analytics-launch-tags"><span>Quick filtering</span><span>Human review</span></div></div><Button data-testid="analytics-launch" icon="layers" tone="blue" disabled={!state} onClick={() => setAnalyticsOpen(true)}>Open all orders</Button></div>}</OptionalDisclosure>
@@ -1484,7 +1632,7 @@ export default function App() {
       <OptionalDisclosure id="activity" title="Session activity" subtitle={`${state?.activity?.length || 0} local events · maximum 30`} icon="clock" open={activityExpanded} onToggle={setActivityExpanded} testId="optional-toggle-activity"><section className="activity-panel" aria-label="Demo activity log"><ol>{state?.activity?.length ? state.activity.slice().reverse().map((event) => <li key={event.id}><span className="activity-dot" /><time>{dateLabel(event.at)}</time><strong>{event.label}</strong><Badge tone="muted">{event.source}</Badge></li>) : <li className="activity-empty">No activity yet. Demo actions will appear here.</li>}</ol></section></OptionalDisclosure>
       <footer><span><Icon name="shield" size={15} /> PayGuard AI <span className="footer-divider">/</span> {hosted ? <span data-testid="hosted-note-footer">Hosted demo</span> : 'Local prototype'}</span><span className="footer-independent" data-testid="footer-independent">PayGuard is an independent hackathon demo. Not affiliated with or endorsed by PayPal.</span><span>Demo data · you decide · nothing is sent without your click</span></footer>
     </main>
-    {phoneAction && <div className="phone-action-bar" data-testid="phone-action-bar" role="region" aria-label="Current step action" inert={warningOpen ? true : undefined}><Button data-testid={`phone-action-${phoneAction.key}`} icon={phoneAction.icon} tone="blue" disabled={phoneAction.disabled} loading={phoneAction.loading} blocked={phoneAction.blocked} waiting={phoneAction.waiting} aria-describedby={phoneAction.blocked ? 'description-note' : undefined} onClick={phoneActionClick}>{phoneAction.label}</Button></div>}
+    {phoneAction && <div className="phone-action-bar" data-testid="phone-action-bar" role="region" aria-label="Current step action" inert={warningOpen || draftConfirm || resetConfirm || sendConfirm ? true : undefined}><Button data-testid={`phone-action-${phoneAction.key}`} icon={phoneAction.icon} tone="blue" disabled={phoneAction.disabled} loading={phoneAction.loading} blocked={phoneAction.blocked} waiting={phoneAction.waiting} aria-describedby={phoneAction.blocked ? 'description-note' : undefined} onClick={phoneActionClick}>{phoneAction.label}</Button></div>}
     {warningOpen && <div className="aup-warning-backdrop" onMouseDown={holdWarningFocus}><div ref={warningRef} className="aup-warning-dialog" role="dialog" aria-modal="true" aria-labelledby="aup-warning-title" aria-describedby="aup-warning-copy" data-testid="aup-warning-dialog" onKeyDown={warningKeys} tabIndex={-1}>
       <Badge tone="amber">Second reminder · Needs review</Badge>
       <h2 id="aup-warning-title">Review the actual goods or activity before continuing</h2>
@@ -1505,6 +1653,23 @@ export default function App() {
 // evaluation, so Keep runs the same check again, and only while the description is unchanged; that new check counts
 // against the server's 5 open policy checks per 2 minutes, which the message says.
 const AUP_WARN_MS = 30000;
+// (r32 J4 P1-1) A second Run Policy Check press runs a new check (and a new 2-minute window) only this long after the
+// shown one; a quicker repeat is treated as a double tap. At most 4 renewals fit in the server's 5 checks per 2 minutes.
+const AUP_RENEW_AFTER_MS = 30000;
+// (r32 J4 P2-3) "Check valid for 1:12 more" next to the result, so the operator can read the 2-minute window off the
+// screen. The ticking time is aria-hidden (the result is a live region); a screen reader gets one fixed sentence.
+function AupValidFor({ expiresAt }) {
+  const end = Date.parse(expiresAt || '');
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    if (!Number.isFinite(end)) return undefined;
+    const interval = window.setInterval(() => { const at = Date.now(); setNow(at); if (at >= end) window.clearInterval(interval); }, 1000);
+    return () => window.clearInterval(interval);
+  }, [end]);
+  const left = Math.ceil((end - now) / 1000);
+  if (!Number.isFinite(end) || left <= 0) return null;
+  return <p className="aup-valid-for text-dim" data-testid="aup-valid-for"><Icon name="clock" size={14} /><span aria-hidden="true">Check valid for {Math.floor(left / 60)}:{String(left % 60).padStart(2, '0')} more</span><span className="sr-only">This check is valid for 2 minutes.</span></p>;
+}
 function AupExpiryWarning({ expiresAt, onKeep, blocked, loading, productConfirmed }) {
   const end = Date.parse(expiresAt || '');
   const [now, setNow] = useState(() => Date.now());
@@ -1584,7 +1749,8 @@ function SpikeRecordsCard({ velocity, transactions }) {
     <div className="spike-records-row" data-testid="spike-records-backed"><span className="meta-label">Records that back it</span>
       <p>{withCapture} of {count} orders in the window have an order record with amount and capture time.</p></div>
     <div className="spike-records-row" data-testid="spike-records-missing"><span className="meta-label">Missing</span>
-      <ul>{missing.map(([label, present]) => <li key={label}>{label}: {present} of {count}</li>)}</ul></div>
+      {/* (r34 #8) Counted as missing, not present: "0 of 50" read as "none missing" when all 50 lacked the record. */}
+      <ul>{missing.map(([label, present]) => <li key={label}>{label}: missing in {count - present} of {count} orders</li>)}</ul></div>
     <p className="spike-records-case" data-testid="spike-records-case">Related published case: <a href={RESERVE_CASE_URL} target="_blank" rel="noopener noreferrer">DRN-5706769 ↗</a>, a new business account with a sharp rise in sales had part of its funds held and a 15% rolling reserve applied.</p>
   </section>;
 }
@@ -1593,20 +1759,30 @@ function SpikeRecordsCard({ velocity, transactions }) {
 // dispute binding, fresh read, account identity, one send per approval); the console shows the same facts side by
 // side, disables a send that would be refused, and asks twice before any real send (submit: true).
 const SEND_HOLD_SECONDS = 3;
+// (rehearsal 2026-11-04) The draft line shows the last 4 characters so the video can match the PayPal Sandbox
+// Invoices page; the full id stays off screen like the other raw ids.
+const maskInvoiceId = (value) => (typeof value === 'string' && /^INV2-[A-Z0-9-]{8,64}$/.test(value) ? `INV2-…${value.slice(-4)}` : '…');
 const maskDisputeId = (value) => (typeof value === 'string' && value.length > 8 ? `${value.slice(0, 5)}…${value.slice(-2)}` : '…');
 const ACCOUNT_LINES = {
   account_identity_unknown: 'PayGuard cannot confirm which PayPal Sandbox account is connected, so it will not send.',
   dispute_not_this_account: 'This dispute belongs to a different PayPal account than the connected Sandbox account.',
   dispute_detail_required: 'Open this dispute\'s details first, so its seller account can be checked.',
+  // (r34 E1 P1-1) The dispute itself cannot take evidence now; the account may still match.
+  seller_evidence_already_submitted: 'PayPal already has seller evidence for this dispute, so PayGuard will not send more.',
+  dispute_not_awaiting_seller: 'This dispute is not waiting for the seller, so PayPal would not take evidence now.',
+  dispute_evidence_not_offered: 'PayPal does not offer evidence upload for this dispute right now.',
 };
 const sameMoney = (left, right) => Boolean(left && right) && left.currency_code === right.currency_code && Number(left.value) === Number(right.value);
 
 // One plain line saying why a send is held, or null when the case and the dispute agree.
-function sendGuardBlock(guard, detail, caseItem, boundTo) {
+// (r34 #3) "already sent" only after a real send from this page (`sentTo`); a pairing made by a preview says so and
+// names Reset demo, which clears it on the server.
+function sendGuardBlock(guard, detail, caseItem, boundTo, sentTo = null) {
   if (!detail) return 'Select a PayPal dispute first.';
   const here = maskDisputeId(detail.dispute_id);
   const bound = boundTo || guard?.bound_dispute_masked;
-  if (bound && bound !== here) return `This case was already sent to ${bound}; it cannot also go to ${here}.`;
+  if (bound && bound !== here) return sentTo === bound ? `This case was already sent to ${bound}; it cannot also go to ${here}.`
+    : `Paired with ${bound} (preview only). Reset demo to pair it with another dispute.`;
   if (!guard) return 'Prepare the preview for this dispute first.';
   if (guard.dispute_masked !== here) return 'The preview is for another dispute; prepare it again for this one.';
   if (guard.case_reason !== detail.reason) return `The case reason (${operatorLabel(guard.case_reason, 'not stated')}) does not match this dispute (${operatorLabel(detail.reason)}).`;
@@ -1630,7 +1806,7 @@ function sendItemText(kind, preview) {
 }
 
 // Case on the left, PayPal dispute on the right, plus the binding and the account check.
-function SendGuardSummary({ guard, detail, caseItem, boundTo, block }) {
+function SendGuardSummary({ guard, detail, caseItem, boundTo, sentTo = null, block }) {
   if (!detail) return null;
   const amount = detail.dispute_amount;
   return <div className="send-guard" data-testid="send-guard">
@@ -1639,7 +1815,7 @@ function SendGuardSummary({ guard, detail, caseItem, boundTo, block }) {
     <Icon name="link" size={16} />
     <div className="send-guard-side" data-testid="send-guard-dispute"><span className="send-guard-label">To PayPal dispute</span>
       <strong>{maskDisputeId(detail.dispute_id)}</strong><span>{operatorLabel(detail.reason)} · {amount.value} {amount.currency_code}</span></div>
-    {(boundTo || guard?.bound_dispute_masked) && <p className="send-guard-bound" data-testid="send-guard-bound">This case is bound to {boundTo || guard.bound_dispute_masked}.</p>}
+    {(boundTo || guard?.bound_dispute_masked) && <p className="send-guard-bound" data-testid="send-guard-bound">{sentTo && sentTo === (boundTo || guard?.bound_dispute_masked) ? `This case was sent to ${sentTo}.` : `This case is paired with ${boundTo || guard.bound_dispute_masked} (preview only).`}</p>}
     {guard && <p className="send-guard-account" data-testid="send-guard-account">Sending as: Sandbox account {guard.sending_account_masked || 'unknown'} · dispute seller: {guard.dispute_seller_masked || 'unknown'}</p>}
     {block && <p className="send-guard-block" role="status" data-testid="send-guard-block"><Icon name="alert" size={15} />{block}</p>}
   </div>;
@@ -1648,7 +1824,7 @@ function SendGuardSummary({ guard, detail, caseItem, boundTo, block }) {
 // Two steps before a real send: (1) the summary and a tick, "Continue"; (2) "This sends to PayPal and cannot be undone
 // here.", "Send to PayPal" held for SEND_HOLD_SECONDS with a visible countdown. Back and Escape cancel; focus stays
 // inside while open and returns to the trigger when it closes.
-function SendConfirmDialog({ kind, guard, caseRef, item, onCancel, onRecheck, onSend }) {
+function SendConfirmDialog({ kind, guard, detail, caseRef, caseAmount = null, item, returnFocus = [], onCancel, onRecheck, onSend }) {
   const [step, setStep] = useState(1);
   const [checked, setChecked] = useState(false);
   const [left, setLeft] = useState(SEND_HOLD_SECONDS);
@@ -1658,8 +1834,8 @@ function SendConfirmDialog({ kind, guard, caseRef, item, onCancel, onRecheck, on
   useEffect(() => {
     const trigger = document.activeElement;
     boxRef.current?.querySelector('input, button')?.focus();
-    return () => { if (trigger && typeof trigger.focus === 'function') trigger.focus(); };
-  }, []);
+    return () => restoreFocus(trigger, returnFocus);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (step !== 2 || left <= 0) return undefined;
     const timer = setTimeout(() => setLeft((value) => value - 1), 1000);
@@ -1683,13 +1859,20 @@ function SendConfirmDialog({ kind, guard, caseRef, item, onCancel, onRecheck, on
   };
   const send = async () => { if (sending) return; setSending(true); await onSend(); };
   const title = kind === 'tracking' ? 'Send tracking to PayPal Sandbox' : 'Send evidence to PayPal Sandbox';
-  return <div className="send-confirm-backdrop" data-testid="send-confirm-backdrop">
+  // (r32 J5 P3-2, J4 P2-2) Drawn on document.body: inside the Disputes <details> a closed parent hid the fixed
+  // dialog, and the body's muted paragraph colour turned the orange warning grey.
+  return createPortal(<div className="send-confirm-backdrop" data-testid="send-confirm-backdrop">
     <div className="send-confirm" ref={boxRef} role="dialog" aria-modal="true" aria-labelledby="send-confirm-title" data-testid="send-confirm" onKeyDown={keyDown}>
       <h3 id="send-confirm-title">{title}</h3>
       {step === 1 ? <>
         <dl className="send-confirm-summary" data-testid="send-confirm-summary">
           <div><dt>Case</dt><dd data-testid="send-confirm-case">{caseRef} · {operatorLabel(guard?.case_reason, 'Reason not stated')}</dd></div>
           <div><dt>PayPal dispute</dt><dd data-testid="send-confirm-dispute">{guard?.dispute_masked}</dd></div>
+          {/* (red team A 2026-11-04 P2) The masked id keeps 2 characters; amount and opening date tell two look-alike disputes apart. */}
+          {/* (r34 #6) The case's own amount beside PayPal's, so a 48 USD case against a 158 TWD dispute is visible here. */}
+          <div><dt>Case amount</dt><dd data-testid="send-confirm-case-amount">{caseAmount ? `${caseAmount.value} ${caseAmount.currency_code}` : '—'}</dd></div>
+          <div><dt>Dispute amount</dt><dd data-testid="send-confirm-amount">{detail?.dispute_amount ? `${detail.dispute_amount.value} ${detail.dispute_amount.currency_code}` : '—'}</dd></div>
+          <div><dt>Opened</dt><dd data-testid="send-confirm-opened">{typeof detail?.create_time === 'string' ? dateLabel(detail.create_time) : '—'}</dd></div>
           <div><dt>Account</dt><dd data-testid="send-confirm-account">Sending as: Sandbox account {guard?.sending_account_masked || 'unknown'} · dispute seller: {guard?.dispute_seller_masked || 'unknown'}</dd></div>
           <div><dt>Item</dt><dd data-testid="send-confirm-item">{item}</dd></div>
         </dl>
@@ -1703,9 +1886,118 @@ function SendConfirmDialog({ kind, guard, caseRef, item, onCancel, onRecheck, on
         <p className="send-confirm-countdown" aria-live="polite" data-testid="send-confirm-countdown">{left > 0 ? `Send is available in ${left} second${left === 1 ? '' : 's'}.` : 'You can send now.'}</p>
         <div className="send-confirm-actions">
           <Button data-testid="send-confirm-back" tone="ghost" onClick={onCancel}>Back</Button>
-          <Button data-testid="send-confirm-send" className={`button-confirm-send${left > 0 ? ' is-holding' : ''}`} icon="lock" disabled={left > 0 || sending} loading={sending} onClick={send}>Send to PayPal{left > 0 ? ` (${left})` : ''}</Button>
+          <Button data-testid="send-confirm-send" className={`button-confirm-send${left > 0 ? ' is-holding' : ''}`} icon={left > 0 ? 'lock' : 'arrow'} disabled={left > 0 || sending} loading={sending} onClick={send}>Send to PayPal{left > 0 ? ` (${left})` : ''}</Button>
         </div>
       </>}
+    </div>
+  </div>, document.body);
+}
+
+// (r31 J2 J4 J5 A4) One visible line under a locked primary action (lockReasons.js), not only the button's title,
+// which touch screens never show and screen readers may skip on a disabled button.
+// (r32 J4 a11y) The test id is also the element id, so the button it locks points at it with aria-describedby and a
+// screen reader reads the reason with the button.
+function LockReason({ reason, testId }) {
+  if (!reason) return null;
+  return <p className="lock-reason" id={testId} data-testid={testId}><Icon name="lock" size={14} /><span>{reason}</span></p>;
+}
+
+// (r32 J4 a11y) Focus goes back to the button that opened the dialog. Safari does not focus a clicked button, so
+// document.activeElement at open time can be another element (after a local review it was the receipt); then, or
+// when that element is gone or disabled, the first usable `returnFocus` selector (the opening button) gets focus.
+function restoreFocus(trigger, returnFocus) {
+  const usable = (element) => element && element.isConnected && !element.disabled && element.getClientRects().length > 0;
+  const opener = returnFocus.some((selector) => trigger?.matches?.(selector)) && usable(trigger) ? trigger
+    : returnFocus.map((selector) => document.querySelector(selector)).find(usable) || (usable(trigger) ? trigger : null);
+  if (opener && typeof opener.focus === 'function') opener.focus();
+}
+
+// (foolproofing 2026-11-04) Shared dialog behaviour: focus moves inside, Tab stays inside, Escape cancels, focus
+// returns to the trigger on close.
+function useDialogFocus(boxRef, onCancel, returnFocus = []) {
+  useEffect(() => {
+    const trigger = document.activeElement;
+    boxRef.current?.querySelector('input, button')?.focus();
+    return () => restoreFocus(trigger, returnFocus);
+  }, [boxRef]); // eslint-disable-line react-hooks/exhaustive-deps
+  return (event) => {
+    if (event.key === 'Escape') { event.preventDefault(); onCancel(); return; }
+    if (event.key !== 'Tab') return;
+    const focusable = [...(boxRef.current?.querySelectorAll('input:not([disabled]), button:not([disabled])') || [])];
+    if (!focusable.length) return;
+    const first = focusable[0]; const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  };
+}
+
+// (foolproofing 2026-11-04) The Sandbox invoice draft is a real PayPal write, so it gets the same two steps as a
+// send: (1) what will be created and a tick, orange "Continue"; (2) green "Create draft" held for SEND_HOLD_SECONDS.
+// (r31 J4 P1-2) `expired`: the policy result behind the draft ran out while the dialog was open. Either step is
+// replaced by DRAFT_EXPIRED_TEXT and Back, so nothing can be created and the seller knows what to do next.
+function DraftConfirmDialog({ description, amount, currency, route, expired = false, returnFocus = [], onCancel, onCreate }) {
+  const [step, setStep] = useState(1);
+  const [checked, setChecked] = useState(false);
+  const [left, setLeft] = useState(SEND_HOLD_SECONDS);
+  const [creating, setCreating] = useState(false);
+  const boxRef = useRef(null);
+  const keyDown = useDialogFocus(boxRef, onCancel, returnFocus);
+  useEffect(() => {
+    if (step !== 2 || left <= 0) return undefined;
+    const timer = setTimeout(() => setLeft((value) => value - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [step, left]);
+  useEffect(() => { if (step === 2) boxRef.current?.querySelector('[data-testid="draft-confirm-back"]')?.focus(); }, [step]);
+  // The focused Continue or Create goes away on expiry; focus stays inside the dialog, on Back.
+  useEffect(() => { if (expired) boxRef.current?.querySelector('[data-testid="draft-confirm-expired-back"]')?.focus(); }, [expired]);
+  const create = async () => { if (creating) return; setCreating(true); await onCreate(); };
+  const shown = typeof description === 'string' && description.length > 120 ? `${description.slice(0, 117)}...` : description;
+  // (r32 J5 P3) On document.body like the send dialog, so no ancestor's overflow or transform can clip it.
+  return createPortal(<div className="send-confirm-backdrop" data-testid="draft-confirm-backdrop">
+    <div className="send-confirm" ref={boxRef} role="dialog" aria-modal="true" aria-labelledby="draft-confirm-title" data-testid="draft-confirm" onKeyDown={keyDown}>
+      <h3 id="draft-confirm-title">Create a PayPal Sandbox invoice draft</h3>
+      {expired ? <>
+        <p className="send-confirm-expired" role="alert" data-testid="draft-confirm-expired"><Icon name="clock" size={16} />{DRAFT_EXPIRED_TEXT}</p>
+        <div className="send-confirm-actions">
+          <Button data-testid="draft-confirm-expired-back" tone="ghost" onClick={onCancel}>Back</Button>
+        </div>
+      </> : step === 1 ? <>
+        <dl className="send-confirm-summary" data-testid="draft-confirm-summary">
+          <div><dt>Item</dt><dd data-testid="draft-confirm-description">{shown || '—'}</dd></div>
+          <div><dt>Amount</dt><dd data-testid="draft-confirm-amount">{amount} {currency}</dd></div>
+          <div><dt>Route</dt><dd data-testid="draft-confirm-route">{route || 'No country check run'}</dd></div>
+          <div><dt>What happens</dt><dd>A draft is created in PayPal Sandbox. It is not sent to the buyer.</dd></div>
+        </dl>
+        <label className="send-confirm-check"><input type="checkbox" data-testid="draft-confirm-tick" checked={checked} onChange={(event) => setChecked(event.target.checked)} /> I checked the item and the amount</label>
+        <div className="send-confirm-actions">
+          <Button data-testid="draft-confirm-cancel" tone="ghost" onClick={onCancel}>Back</Button>
+          <Button data-testid="draft-confirm-continue" className="button-confirm-continue" icon="arrow" disabled={!checked} onClick={() => { setLeft(SEND_HOLD_SECONDS); setStep(2); }}>Continue</Button>
+        </div>
+      </> : <>
+        <p className="send-confirm-warning" data-testid="draft-confirm-warning"><Icon name="alert" size={16} />This creates a real draft in PayPal Sandbox.</p>
+        <p className="send-confirm-countdown" aria-live="polite" data-testid="draft-confirm-countdown">{left > 0 ? `Create is available in ${left} second${left === 1 ? '' : 's'}.` : 'You can create it now.'}</p>
+        <div className="send-confirm-actions">
+          <Button data-testid="draft-confirm-back" tone="ghost" onClick={onCancel}>Back</Button>
+          <Button data-testid="draft-confirm-create" className={`button-confirm-send${left > 0 ? ' is-holding' : ''}`} icon="file" disabled={left > 0 || creating} loading={creating} onClick={create}>Create draft{left > 0 ? ` (${left})` : ''}</Button>
+        </div>
+      </>}
+    </div>
+  </div>, document.body);
+}
+
+// (foolproofing 2026-11-04) Reset demo empties the session (inputs, guide answers, drafts, the local review), so it
+// asks once. The Sandbox connection stays.
+function ResetConfirmDialog({ onCancel, onReset }) {
+  const boxRef = useRef(null);
+  const keyDown = useDialogFocus(boxRef, onCancel);
+  return <div className="send-confirm-backdrop" data-testid="reset-confirm-backdrop">
+    <div className="send-confirm" ref={boxRef} role="dialog" aria-modal="true" aria-labelledby="reset-confirm-title" data-testid="reset-confirm" onKeyDown={keyDown}>
+      <h3 id="reset-confirm-title">Reset the demo?</h3>
+      <p data-testid="reset-confirm-text">This clears this session's checks, sales, dispute cases, evidence drafts and the local review. Your text and the Sandbox connection stay. A draft already in PayPal Sandbox is not deleted.</p>
+      <div className="send-confirm-actions">
+        <Button data-testid="reset-confirm-cancel" tone="ghost" onClick={onCancel}>Back</Button>
+        <Button data-testid="reset-confirm-reset" className="button-confirm-continue" icon="refresh" onClick={onReset}>Reset demo</Button>
+      </div>
     </div>
   </div>;
 }
@@ -1740,11 +2032,12 @@ function ApprovalPayloadCard({ preview, caseRef, hosted = false }) {
 }
 
 // (optimise r24) Step 03 lists what came from step 01, so the three steps read as one flow.
-function StepOneEvidence({ productConfirm, countryCheck }) {
+function StepOneEvidence({ productConfirm, countryCheck, lostCheck = null }) {
   const product = productConfirm?.choice === 'CONFIRMED' ? `Confirmed product card: ${productConfirm.card.title}. Added to the review ZIP as product-reference.json.`
     : productConfirm ? 'Your answer that none of the catalogue products is yours. Added to the review ZIP as product-reference.json.'
     : 'No product card confirmed in step 01.';
   const country = countryCheck ? `Country check ${countryCheck.seller_country} → ${countryCheck.buyer_country}: ${countryCheck.blocked ? 'Stopped' : countryCheck.postal ? 'post will not carry it' : 'no cited rule stops it'} at ${new Date(countryCheck.at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })}. Shown here for context; not in the review ZIP.`
+    : lostCheck ? `Run the country check again in step 01: the ${lostCheck.seller_country} → ${lostCheck.buyer_country} result ended with the expired session.`
     : 'No country check run in step 01.';
   return <div className="step-one-evidence" data-testid="step-one-evidence"><span className="step-one-tag">From step 01</span>
     <ul><li data-testid="step-one-product">{product}</li><li data-testid="step-one-country">{country}</li></ul></div>;

@@ -64,6 +64,9 @@ TEXT_SUFFIXES = {".css", ".html", ".js", ".json", ".jsonl", ".jsx", ".lock", ".m
 ALLOWED_DOTDIR_FILES = frozenset({".github/workflows/ci.yml"})
 MARKDOWN_LINK = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
 HAN_PATTERN = re.compile(r"[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]")
+# (r37) A PayPal dispute id with its digits is a real Sandbox record; public text keeps the masked prefix (PP-R-OJX-...).
+# Synthetic test ids use the TST prefix.
+DISPUTE_ID_PATTERN = re.compile(r"PP-[A-Z]-(?!TST-)[A-Z0-9]{3}-\d{5,}")
 # The per-country rules (owner decision 2026-11-03: shipped) cite statutes by their official names, several of them
 # Chinese or Japanese, and name the countries they cover. Only these files may hold region names or Han text; the
 # operator time zone stays forbidden everywhere.
@@ -345,6 +348,8 @@ def validate_public_text(root: Path, rows: dict[str, dict]) -> None:
                 reject("US_SCOPE_RESIDUE")
         elif any(token in folded for token in region_tokens) or HAN_PATTERN.search(text):
             reject("US_SCOPE_RESIDUE")
+        if DISPUTE_ID_PATTERN.search(text):
+            reject("UNMASKED_DISPUTE_ID")
 
 
 def validate_release_docs(root: Path, manifest: dict) -> None:

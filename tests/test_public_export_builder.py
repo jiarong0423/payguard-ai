@@ -543,10 +543,13 @@ class ExportBoundaryInventoryTests(unittest.TestCase):
     def test_exclusions_are_disjoint_audited_and_explained(self):
         exported = set(builder.source_paths())
         self.assertEqual(exported & set(builder.EXCLUDED_WITH_REASON), set())
+        # (r34 E2 P1-1) A built candidate, and the public clone made from it, hold no excluded file by design, so the
+        # stale check runs only in the source tree. ".git" cannot tell them apart: the public clone has one too.
+        source_tree = any((builder.PROJECT_ROOT / relative).is_file() for relative in builder.EXCLUDED_WITH_REASON)
         for relative, reason in builder.EXCLUDED_WITH_REASON.items():
             self.assertTrue(relative.startswith(tuple(f"{tree}/" for tree in builder.AUDITED_TREES)), relative)
             self.assertGreaterEqual(len(reason), 20, relative)
-            if (builder.PROJECT_ROOT / ".git").exists():  # a built candidate holds no excluded file by design
+            if source_tree:
                 self.assertTrue((builder.PROJECT_ROOT / relative).is_file(), f"stale exclusion: {relative}")
 
     def test_frontend_public_tree_ships_whole(self):
@@ -565,6 +568,17 @@ class ExportBoundaryInventoryTests(unittest.TestCase):
         for relative in ("tools/gemini_api_trial.py", "tools/vertex_trial.py", "tools/local_trial.py",
                          "tools/compare_runs.py", "tools/trial_evidence_guide.py"):
             self.assertNotIn(relative, exported)
+
+    def test_unmasked_dispute_id_is_refused(self):
+        # (r37) A Sandbox dispute id with its digits must not reach public text; masked and synthetic TST ids pass.
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            (root / "note.md").write_text("see PP-R-ABC-" + "12345678", encoding="utf-8")
+            with self.assertRaises(validator.CandidateRejected) as caught:
+                validator.validate_public_text(root, {"note.md": {}})
+            self.assertEqual(str(caught.exception), "UNMASKED_DISPUTE_ID")
+            (root / "note.md").write_text("see PP-R-OJX-... (masked) and PP-R-TST-00000001", encoding="utf-8")
+            validator.validate_public_text(root, {"note.md": {}})
 
 
 if __name__ == "__main__":

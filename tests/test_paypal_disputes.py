@@ -22,6 +22,7 @@ from app.paypal_disputes import (fixture_disputes, build_provide_evidence_reques
                                  sanitize_dispute_detail, sanitize_dispute_list, sanitize_dispute_summary)
 from app.schemas import DisputeDetailResponse, DisputeListResponse, ProvideEvidenceResponse
 from app.store import BoundaryError, DEMO_BURST_AMOUNTS, SessionStore
+from send_confirmation import with_confirmation
 
 
 ORIGIN = "http://localhost:5173"
@@ -225,6 +226,9 @@ class FixtureRouteTests(unittest.TestCase):
         return self.client.get(ROOT + route, headers={"X-Demo-Session": self.session["session_id"]})
 
     def post(self, route, payload=None):
+        return with_confirmation(self._post, route, payload)
+
+    def _post(self, route, payload=None):
         return self.client.post(ROOT + route, json={} if payload is None else payload, headers=self.headers())
 
     def test_fixture_list_and_detail_are_labelled_and_sanitized(self):
@@ -382,6 +386,9 @@ class SandboxRouteTests(unittest.TestCase):
         return self.client.get(ROOT + route, headers={"X-Demo-Session": self.session["session_id"]})
 
     def post(self, route, payload=None):
+        return with_confirmation(self._post, route, payload)
+
+    def _post(self, route, payload=None):
         return self.client.post(ROOT + route, json={} if payload is None else payload, headers=self.headers())
 
     def connect(self):
@@ -542,13 +549,18 @@ class SandboxRouteTests(unittest.TestCase):
             return {"status_code": 200, "dispute_id": dispute_id}
 
         async def race():
-            body = {"dispute_id": "PP-D-SANDBOX01", "case_ref": "case-ref-001", "submit": True}
+            # (r30 J2 P2-1) Both submits carry the one confirmation the dialog's preview issued.
+            preview = await service.provide_evidence(session, {"dispute_id": "PP-D-SANDBOX01", "case_ref": "case-ref-001",
+                                                               "submit": False})
+            body = {"dispute_id": "PP-D-SANDBOX01", "case_ref": "case-ref-001", "submit": True,
+                    "confirm_token": preview["confirm_token"]}
             first = asyncio.ensure_future(service.provide_evidence(session, body))
             await asyncio.sleep(0)
             second = asyncio.ensure_future(service.provide_evidence(session, body))
             return await asyncio.gather(first, second, return_exceptions=True)
 
-        with patch.object(self.provider, "provide_evidence", slow_send):
+        with patch.object(self.provider, "provide_evidence", slow_send), \
+                patch("app.paypal_disputes.CONFIRM_HOLD_SECONDS", 0):
             results = asyncio.run(race())
         self.assertEqual(sends, ["PP-D-SANDBOX01"])
         self.assertEqual(results[0]["external_send"], "SUBMITTED")

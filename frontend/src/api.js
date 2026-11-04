@@ -352,8 +352,17 @@ export function assertAdvisoryEvaluation(p, request) {
   return p;
 }
 
+export const PAYPAL_WRITE_PATHS = ['/paypal/invoices/draft', '/paypal/disputes/provide-evidence', '/paypal/disputes/add-tracking'];
+export const PAYPAL_WRITE_TIMEOUT_MESSAGE = 'No answer within 45 seconds. It may still have reached PayPal Sandbox: check the dispute or the Sandbox invoices before you try again.';
+
 export function assertSandboxReceipt(receipt, action, invoiceId = null) {
-  const fields = ['schema_version','environment','action','status','observed_at','invoice_id','evidence_class','proof_kind','separate_get_readback','external_send'];
+  // (rehearsal 2026-11-04) The backend receipt has carried paypal_debug_id since 653111a: always present, null or the
+  // call's PayPal-Debug-Id (schemas.SandboxEvidenceReceipt, no default). Missing it here made every real Sandbox
+  // connect and draft fail as a contract mismatch; tests/frontend_receipt_parity.mjs now feeds the backend's own
+  // receipts through this check.
+  const fields = ['schema_version','paypal_debug_id','environment','action','status','observed_at','invoice_id','evidence_class','proof_kind','separate_get_readback','external_send'];
+  const debugId = receipt?.paypal_debug_id;
+  if (debugId !== null && !(typeof debugId === 'string' && /^[A-Za-z0-9]{6,64}$/.test(debugId))) contractFailure();
   const time = receipt?.observed_at;
   const utc = typeof time === 'string' && time.length >= 20 && time.length <= 27
     && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?Z$/.test(time)
@@ -575,6 +584,8 @@ function assertContract(path, payload, session, body) {
     const maskedDispute = (value) => typeof value === 'string' && /^(?:PP-[A-Z0-9-]{2}\u2026[A-Z0-9-]{2}|\u2026)$/.test(value);
     const maskedAccount = (value) => value === null || (typeof value === 'string' && /^(?:[0-9A-Za-z]{2}\u2026[0-9A-Za-z]{4}|\u2026)$/.test(value));
     const token = (value) => value === null || (typeof value === 'string' && /^[A-Z][A-Z0-9_]{0,63}$/.test(value));
+    const ACCOUNT_REFUSALS = ['account_identity_unknown', 'dispute_not_this_account', 'dispute_detail_required'];
+    const READINESS_REFUSALS = ['seller_evidence_already_submitted', 'dispute_not_awaiting_seller', 'dispute_evidence_not_offered'];
     const sendGuardValid = !has('send_guard') || (object(payload.send_guard)
       && pk(payload.send_guard, ['case_ref', 'case_reason', 'dispute_masked', 'dispute_reason', 'dispute_amount', 'bound_dispute_masked', 'sending_account_masked', 'dispute_seller_masked', 'account_status', 'send_refusal'])
       && payload.send_guard.case_ref === body?.case_ref && token(payload.send_guard.case_reason) && maskedDispute(payload.send_guard.dispute_masked)
@@ -582,8 +593,13 @@ function assertContract(path, payload, session, body) {
       && (payload.send_guard.bound_dispute_masked === null || maskedDispute(payload.send_guard.bound_dispute_masked))
       && maskedAccount(payload.send_guard.sending_account_masked) && maskedAccount(payload.send_guard.dispute_seller_masked)
       && ['MATCH', 'MISMATCH', 'UNKNOWN'].includes(payload.send_guard.account_status)
-      && [null, 'account_identity_unknown', 'dispute_not_this_account', 'dispute_detail_required'].includes(payload.send_guard.send_refusal)
-      && (payload.send_guard.account_status === 'MATCH') === (payload.send_guard.send_refusal === null));
+      && [null, ...ACCOUNT_REFUSALS, ...READINESS_REFUSALS].includes(payload.send_guard.send_refusal)
+      // (r34 E1 P1-1) A matched account can still be refused for the dispute's state; an account refusal never matches.
+      && (payload.send_guard.account_status === 'MATCH') === !ACCOUNT_REFUSALS.includes(payload.send_guard.send_refusal)
+      && (payload.send_guard.account_status === 'MATCH' || payload.send_guard.send_refusal !== null));
+    // (r30 J2 P2-1) The single-use send confirmation a preview issues: null, or 32 URL-safe characters.
+    const confirmTokenValid = !has('confirm_token') || payload.confirm_token === null
+      || (typeof payload.confirm_token === 'string' && /^[A-Za-z0-9_-]{32}$/.test(payload.confirm_token));
     const envelopeKeys = ['source', 'data_source_label', 'environment', 'evidence_class', 'observed_at', 'provider_submission', ...optional('paypal_debug_id')];
     const recordKeys = ['dispute_id', 'reason', 'status', 'dispute_life_cycle_stage', 'dispute_state', 'dispute_amount', 'create_time', 'update_time', 'seller_response_due_date'];
     const record = (row) => object(row) && disputeId(row.dispute_id) && text(row.reason) && text(row.status) && text(row.dispute_life_cycle_stage)
@@ -600,7 +616,7 @@ function assertContract(path, payload, session, body) {
         && new Set(payload.items.map((row) => row.dispute_id)).size === payload.items.length;
     } else if (valid && path === '/paypal/disputes/provide-evidence') {
       const submitted = payload.external_send === 'SUBMITTED';
-      valid = pk(payload, [...envelopeKeys, 'readback', 'dispute_id', 'case_ref', 'method', 'path', 'content_type', 'input', 'files', 'external_send', 'submit_flag_enabled', 'human_review_required', ...optional('payload_sha256', 'send_guard')]) && sendGuardValid
+      valid = pk(payload, [...envelopeKeys, 'readback', 'dispute_id', 'case_ref', 'method', 'path', 'content_type', 'input', 'files', 'external_send', 'submit_flag_enabled', 'human_review_required', ...optional('payload_sha256', 'send_guard', 'confirm_token')]) && sendGuardValid && confirmTokenValid
         && (!has('payload_sha256') || payload.payload_sha256 === null || digest(payload.payload_sha256))
         && ['PROVIDE_EVIDENCE_PREVIEW', 'PROVIDE_EVIDENCE_SUBMITTED'].includes(payload.readback) && disputeId(payload.dispute_id)
         && payload.dispute_id === body?.dispute_id && payload.case_ref === body?.case_ref && payload.method === 'POST'
@@ -621,7 +637,7 @@ function assertContract(path, payload, session, body) {
         && text(row.tracking_number) && row.tracking_number.length <= 64 && row.status === 'SHIPPED' && carriers.includes(row.carrier)
         && ((row.carrier === 'OTHER') === (typeof row.carrier_name_other === 'string' && row.carrier_name_other.length > 0))
         && (row.carrier === 'OTHER' || row.carrier_name_other === null);
-      valid = pk(payload, [...envelopeKeys, 'readback', 'dispute_id', 'case_ref', 'method', 'path', 'content_type', 'body', 'external_send', 'submit_flag_enabled', 'human_review_required', ...optional('payload_sha256', 'send_guard')]) && sendGuardValid
+      valid = pk(payload, [...envelopeKeys, 'readback', 'dispute_id', 'case_ref', 'method', 'path', 'content_type', 'body', 'external_send', 'submit_flag_enabled', 'human_review_required', ...optional('payload_sha256', 'send_guard', 'confirm_token')]) && sendGuardValid && confirmTokenValid
         && (!has('payload_sha256') || payload.payload_sha256 === null || digest(payload.payload_sha256))
         && ['ADD_TRACKING_PREVIEW', 'ADD_TRACKING_SUBMITTED'].includes(payload.readback) && disputeId(payload.dispute_id)
         && payload.dispute_id === body?.dispute_id && payload.case_ref === body?.case_ref && payload.method === 'POST'
@@ -736,7 +752,10 @@ function assertContract(path, payload, session, body) {
 
 export async function apiRequest(path, { method = 'GET', body, session, signal } = {}) {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), path === '/ai/evidence-brief' ? 65000 : 15000);
+  // (red team r26 #1 P1) A PayPal write can take two provider calls of up to 15 s each behind the adapter lock, so
+  // the browser waits 45 s for them, and a timeout says the write may have happened instead of "try again".
+  const paypalWrite = PAYPAL_WRITE_PATHS.includes(path);
+  const timeout = setTimeout(() => controller.abort(), path === '/ai/evidence-brief' ? 65000 : paypalWrite ? 45000 : 15000);
   const abort = () => controller.abort();
   signal?.addEventListener('abort', abort, { once: true });
   const headers = { Accept: 'application/json' };
@@ -783,6 +802,7 @@ export async function apiRequest(path, { method = 'GET', body, session, signal }
   } catch (error) {
     if (error instanceof ApiError) throw error;
     if (signal?.aborted) throw new ApiError('Request canceled.', 0, 'request_cancelled');
+    if (error.name === 'AbortError' && paypalWrite) throw new ApiError(PAYPAL_WRITE_TIMEOUT_MESSAGE, 0, 'request_timeout');
     throw new ApiError(error.name === 'AbortError' ? 'Request timed out; try again.' : 'Cannot connect to the backend service; confirm that the API is running.', 0, error.name === 'AbortError' ? 'request_timeout' : 'backend_unavailable');
   } finally {
     clearTimeout(timeout);

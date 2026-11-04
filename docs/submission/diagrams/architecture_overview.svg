@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" font-family="Helvetica, Arial, sans-serif">
+  <!-- r9.2 (2026-11-04): r9.1 labels updated for HEAD 310486a per CHECK_r9_1_vs_e00b0f0.md items 1-7. -->
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3b3a36"/>
+    </marker>
+    <marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#4a6a4e"/>
+    </marker>
+    <marker id="arrI" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#4f46e5"/>
+    </marker>
+  </defs>
+  <rect width="1920" height="1080" fill="#fbf7ef"/>
+
+  <text x="80" y="92" font-size="50" font-weight="700" fill="#1f1e1b">PayGuard AI: how it works</text>
+  <text x="80" y="138" font-size="27" fill="#5b5953">Rules first. The model only matches sentences to fields. Code checks every result. The seller decides.</text>
+
+  <text x="80" y="204" font-size="23" font-weight="700" fill="#8a877f" letter-spacing="2">SELLER (BROWSER)</text>
+  <text x="560" y="204" font-size="23" font-weight="700" fill="#8a877f" letter-spacing="2">PAYGUARD SERVER</text>
+  <text x="1480" y="204" font-size="23" font-weight="700" fill="#8a877f" letter-spacing="2">SERVICES</text>
+
+  <!-- Seller column: 6 boxes -->
+  <g font-size="25" fill="#1f1e1b">
+    <rect x="80" y="224" width="400" height="98" rx="16" fill="#ffffff" stroke="#4f46e5" stroke-width="3"/>
+    <text x="104" y="264" font-weight="700">Console: 3 steps</text>
+    <text x="104" y="300" font-size="21" fill="#5b5953">charts: AG Charts · tables: AG Grid</text>
+
+    <rect x="80" y="336" width="400" height="98" rx="16" fill="#ffffff" stroke="#4f46e5" stroke-width="3"/>
+    <text x="104" y="376" font-weight="700">Evidence guide</text>
+    <text x="104" y="412" font-size="21" fill="#5b5953">seller types what happened</text>
+
+    <rect x="80" y="448" width="400" height="98" rx="16" fill="#ffffff" stroke="#4f46e5" stroke-width="3"/>
+    <text x="104" y="488" font-weight="700">Evidence deadline board</text>
+    <text x="104" y="524" font-size="21" fill="#5b5953">Bryntum Scheduler</text>
+
+    <rect x="80" y="560" width="400" height="98" rx="16" fill="#ffffff" stroke="#4f46e5" stroke-width="3"/>
+    <text x="104" y="600" font-weight="700">Evidence dashboard</text>
+    <text x="104" y="636" font-size="21" fill="#5b5953">AG Studio · built-in agents (local)</text>
+
+    <rect x="80" y="672" width="400" height="98" rx="16" fill="#ffffff" stroke="#4f46e5" stroke-width="3"/>
+    <text x="104" y="706" font-size="22" font-weight="700">Two-step confirm: draft and send</text>
+    <text x="104" y="736" font-size="21" fill="#5b5953"><tspan fill="#c2410c" font-weight="700">Continue</tspan> → 3 s → <tspan fill="#4a6a4e" font-weight="700">Create / Send</tspan></text>
+    <text x="104" y="761" font-size="18" fill="#5b5953">send needs a single-use server confirmation</text>
+
+    <rect x="80" y="784" width="400" height="98" rx="16" fill="#ffffff" stroke="#4f46e5" stroke-width="3"/>
+    <text x="104" y="824" font-weight="700">Proof page · review ZIP</text>
+    <text x="104" y="860" font-size="21" fill="#5b5953">receipts · pseudonymised export</text>
+  </g>
+
+  <!-- Server box -->
+  <rect x="560" y="224" width="840" height="658" rx="22" fill="#f1eee6" stroke="#3b3a36" stroke-width="3"/>
+
+  <rect x="592" y="252" width="776" height="76" rx="14" fill="#3b3a36"/>
+  <text x="980" y="288" font-size="25" font-weight="700" fill="#ffffff" text-anchor="middle">Input gate</text>
+  <text x="980" y="316" font-size="20" fill="#e7e4dc" text-anchor="middle">session + CSRF · locked characters and numbers · rate limits</text>
+
+  <g font-size="24" fill="#1f1e1b">
+    <rect x="592" y="350" width="240" height="196" rx="14" fill="#ffffff" stroke="#8a877f" stroke-width="2"/>
+    <text x="612" y="390" font-weight="700">1 Before selling</text>
+    <text x="612" y="428" font-size="20" fill="#5b5953">PayPal policy check</text>
+    <text x="612" y="458" font-size="20" fill="#5b5953">10 countries · 681 rules</text>
+    <text x="612" y="488" font-size="20" fill="#5b5953">export + import</text>
+    <text x="612" y="522" font-size="20" fill="#c2410c" font-weight="700">ban found → no draft</text>
+
+    <rect x="860" y="350" width="240" height="196" rx="14" fill="#ffffff" stroke="#8a877f" stroke-width="2"/>
+    <text x="880" y="390" font-weight="700">2 Sales spike</text>
+    <text x="880" y="428" font-size="20" fill="#5b5953">last hour vs baseline</text>
+    <text x="880" y="458" font-size="20" fill="#5b5953">review above 3.5×</text>
+    <text x="880" y="488" font-size="20" fill="#5b5953">missing records count</text>
+
+    <rect x="1128" y="350" width="240" height="196" rx="14" fill="#ffffff" stroke="#8a877f" stroke-width="2"/>
+    <text x="1148" y="390" font-weight="700">3 Dispute</text>
+    <text x="1148" y="428" font-size="20" fill="#5b5953">evidence checklist</text>
+    <text x="1148" y="458" font-size="20" fill="#5b5953">deadlines</text>
+    <text x="1148" y="488" font-size="20" fill="#5b5953">case ↔ dispute</text>
+    <text x="1148" y="518" font-size="20" fill="#5b5953">account match</text>
+  </g>
+
+  <text x="592" y="590" font-size="23" font-weight="700" fill="#4f46e5">Evidence guide funnel</text>
+  <text x="1368" y="590" font-size="18" fill="#5b5953" text-anchor="end">model calls shown per turn</text>
+  <g font-size="22" fill="#1f1e1b">
+    <rect x="592" y="608" width="232" height="104" rx="14" fill="#ffffff" stroke="#4f46e5" stroke-width="2"/>
+    <text x="708" y="650" font-weight="700" text-anchor="middle">Rules first</text>
+    <text x="708" y="676" font-size="18" fill="#5b5953" text-anchor="middle">fill from the</text>
+    <text x="708" y="698" font-size="18" fill="#5b5953" text-anchor="middle">seller's own words</text>
+
+    <rect x="864" y="608" width="232" height="104" rx="14" fill="#eef0ff" stroke="#4f46e5" stroke-width="2"/>
+    <text x="980" y="650" font-weight="700" text-anchor="middle">Gemini</text>
+    <text x="980" y="676" font-size="17" fill="#5b5953" text-anchor="middle">picks fields, closed values;</text>
+    <text x="980" y="698" font-size="17" fill="#5b5953" text-anchor="middle">never marks present</text>
+
+    <rect x="1136" y="608" width="232" height="104" rx="14" fill="#ffffff" stroke="#4a6a4e" stroke-width="2"/>
+    <text x="1252" y="650" font-weight="700" text-anchor="middle">Code checks</text>
+    <text x="1252" y="686" font-size="19" fill="#5b5953" text-anchor="middle">unsure → ask again</text>
+  </g>
+  <line x1="826" y1="660" x2="860" y2="660" stroke="#3b3a36" stroke-width="3" marker-end="url(#arr)"/>
+  <line x1="1098" y1="660" x2="1132" y2="660" stroke="#3b3a36" stroke-width="3" marker-end="url(#arr)"/>
+
+  <rect x="592" y="738" width="776" height="116" rx="14" fill="#ffffff" stroke="#c2410c" stroke-width="2" stroke-dasharray="8 6"/>
+  <text x="980" y="776" font-size="22" font-weight="700" fill="#c2410c" text-anchor="middle">The model never approves, sends or decides a case</text>
+  <text x="980" y="808" font-size="19" fill="#5b5953" text-anchor="middle">fixed reply templates · closed values · call budgets</text>
+  <text x="980" y="836" font-size="19" fill="#5b5953" text-anchor="middle">a person approves; one approval = one send · keys stay on the server</text>
+
+  <!-- Services -->
+  <g font-size="25" fill="#1f1e1b">
+    <rect x="1480" y="224" width="360" height="318" rx="16" fill="#ffffff" stroke="#4a6a4e" stroke-width="3"/>
+    <text x="1504" y="266" font-weight="700">PayPal Sandbox</text>
+    <text x="1504" y="304" font-size="20" fill="#5b5953">OAuth</text>
+    <text x="1504" y="334" font-size="20" fill="#5b5953">Invoicing v2: draft only</text>
+    <text x="1504" y="364" font-size="20" fill="#5b5953">Disputes: read</text>
+    <text x="1504" y="394" font-size="20" fill="#5b5953">Provide evidence (off by default)</text>
+    <text x="1524" y="418" font-size="17" fill="#5b5953">one send per approval · Debug-Id receipt</text>
+    <text x="1504" y="450" font-size="20" fill="#5b5953">Tracking (off by default)</text>
+    <text x="1504" y="480" font-size="20" fill="#5b5953">Webhook signature check</text>
+    <text x="1504" y="510" font-size="19" fill="#4a6a4e" font-weight="700">path allow-list · Debug-Id kept</text>
+
+    <rect x="1480" y="560" width="360" height="190" rx="16" fill="#ffffff" stroke="#4f46e5" stroke-width="3"/>
+    <text x="1504" y="602" font-weight="700">Gemini</text>
+    <text x="1504" y="634" font-size="20" fill="#5b5953">guide field matching</text>
+    <text x="1524" y="656" font-size="17" fill="#5b5953">local; hosted only if opted in</text>
+    <text x="1504" y="684" font-size="20" fill="#5b5953">AG Studio agents (after yes)</text>
+    <text x="1504" y="710" font-size="20" fill="#5b5953">evidence brief</text>
+    <text x="1504" y="732" font-size="19" fill="#4f46e5" font-weight="700">key held by a separate worker</text>
+
+    <rect x="1480" y="768" width="360" height="114" rx="16" fill="#ffffff" stroke="#8a877f" stroke-width="3"/>
+    <text x="1504" y="810" font-weight="700">Channel3</text>
+    <text x="1504" y="846" font-size="20" fill="#5b5953">product reference; never changes</text>
+    <text x="1504" y="872" font-size="20" fill="#5b5953">the policy decision</text>
+  </g>
+
+  <!-- Browser to server -->
+  <line x1="484" y1="290" x2="556" y2="290" stroke="#3b3a36" stroke-width="3" marker-end="url(#arr)" marker-start="url(#arr)"/>
+  <line x1="484" y1="386" x2="588" y2="646" stroke="#3b3a36" stroke-width="3" marker-end="url(#arr)"/>
+  <line x1="484" y1="720" x2="588" y2="790" stroke="#3b3a36" stroke-width="3" marker-end="url(#arr)"/>
+
+  <!-- Server to services -->
+  <line x1="1402" y1="400" x2="1476" y2="400" stroke="#4a6a4e" stroke-width="3" marker-end="url(#arrG)"/>
+  <line x1="1370" y1="650" x2="1476" y2="650" stroke="#4f46e5" stroke-width="3" marker-end="url(#arrI)"/>
+  <line x1="1402" y1="826" x2="1476" y2="826" stroke="#8a877f" stroke-width="3" marker-end="url(#arr)"/>
+
+  <!-- Bottom band -->
+  <rect x="80" y="908" width="1760" height="132" rx="18" fill="#ffffff" stroke="#3b3a36" stroke-width="2"/>
+  <text x="112" y="954" font-size="25" font-weight="700" fill="#1f1e1b">Local console</text>
+  <text x="112" y="992" font-size="21" fill="#5b5953">real PayPal Sandbox and Gemini calls, started by the seller</text>
+  <line x1="960" y1="928" x2="960" y2="1020" stroke="#d6d2c8" stroke-width="2"/>
+  <text x="992" y="950" font-size="25" font-weight="700" fill="#1f1e1b">Public hosted demo (Render)</text>
+  <text x="992" y="980" font-size="19" fill="#5b5953">rules by default; no PayPal calls</text>
+  <text x="992" y="1004" font-size="19" fill="#5b5953">the guide may use Gemini only if the operator opts in (free-tier key, 5 a minute, 20 a day)</text>
+  <text x="992" y="1028" font-size="19" fill="#5b5953">replays recorded guide turns and Channel3 searches</text>
+</svg>

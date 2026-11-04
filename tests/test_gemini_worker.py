@@ -13,7 +13,7 @@ import unittest
 from unittest.mock import patch
 
 
-CLAUDE_C1_PARAPHRASES = (
+REVIEWER_C1_PARAPHRASES = (
     "PayPal has cleared this activity.",
     "Seller Protection applies to this case.",
     "The seller is protected under Seller Protection.",
@@ -137,8 +137,8 @@ class GeminiWorkerInventoryTests(unittest.TestCase):
                 self.assertEqual(brief.model_dump(), document)
                 self.assertEqual(metadata.model_version, worker.MODEL)
 
-    def test_worker_rejects_all_claude_c1_paraphrases(self):
-        for claim in CLAUDE_C1_PARAPHRASES:
+    def test_worker_rejects_all_reviewer_c1_paraphrases(self):
+        for claim in REVIEWER_C1_PARAPHRASES:
             document = generated()
             document["summary"] = claim
             with self.subTest(claim=claim):

@@ -36,3 +36,7 @@
 .guide-replay-tools button { padding: 8px 16px; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-control); background: var(--pg-color-panel); color: var(--pg-color-ink); font: inherit; font-size: 14px; cursor: pointer; }
 .guide-replay-tools output { color: var(--pg-color-subtle); font-size: 14px; }
 @media (max-width: 760px) { .guide-replay-layout { grid-template-columns: minmax(0, 1fr); } }
+
+/* (r34 #14) Wrapped gap-table cells: chips and labels break onto a second line, with room above and below. */
+.guide-replay-grid .ag-cell-wrap-text { white-space: normal; word-break: normal; overflow-wrap: anywhere; line-height: 1.4; padding-top: 8px; padding-bottom: 8px; }
+.guide-replay-grid .ag-cell-wrap-text .gap-chip { white-space: normal; max-width: 100%; }

@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { apiRequest } from '../frontend/src/api.js';
+import { hostedCopy } from '../frontend/src/hostedCopy.js';
 
 // Hosted demo (PAYGUARD_DEMO_MODE=public, GET /api/v1/connections -> {"mode":"hosted_demo"}): no control that the
 // backend answers 503 hosted_demo_disabled is rendered; each is replaced by one line with a hosted-note-* test id.
@@ -36,21 +37,27 @@ for (const payload of [{ mode: 'public' }, { mode: 'hosted_demo', paypal: { conf
 }
 
 // 3. Top bar: the hosted pill replaces LOCAL DEMO; the Why? popover is fixed text and calls no API.
-assert.ok(app.includes("{hosted ? <HostedBadge /> : <Badge tone=\"blue\" dot>LOCAL DEMO</Badge>}"), 'LOCAL DEMO stays the local badge');
-const badge = app.slice(app.indexOf('function HostedBadge()'), app.indexOf('export default function App()'));
+assert.ok(app.includes("{hosted ? <HostedBadge guideChooser={guideChooser} /> : <Badge tone=\"blue\" dot>LOCAL DEMO</Badge>}"), 'LOCAL DEMO stays the local badge');
+const badge = app.slice(app.indexOf('function HostedBadge({ guideChooser = null })'), app.indexOf('export default function App()'));
 assert.ok(badge.length > 0, 'HostedBadge component present');
 assert.ok(!/apiRequest|fetch\(|connectSandbox|generateAiBrief/.test(badge), 'the popover calls no API');
 assert.ok(badge.includes('data-testid="connections-hosted"') && badge.includes('aria-expanded={open}'), 'pill is the popover toggle');
-assert.ok(badge.includes('Hosted demo · rules only · no PayPal calls'), 'pill text');
+// (r34 #1) The pill and the Gemini lines come from hostedCopy(guideChooser), the guide API's chooser status.
+assert.ok(badge.includes('const copy = hostedCopy(guideChooser);') && badge.includes('<span className="hosted-label-full">{copy.pill}</span>'), 'pill text from the chooser status');
+assert.equal(hostedCopy({ chooser_mode: 'keyword', model_requested: false }).pill, 'Hosted demo · rules only · no PayPal calls', 'pill text, rules only');
 assert.ok(badge.includes('<span className="hosted-label-short">Hosted demo</span>'), 'narrow-screen pill text');
 assert.ok(badge.includes('data-testid="connections-why"') && badge.includes('>Why?<'), 'Why? popover');
 for (const text of [
   'Why is this a hosted demo?',
-  "This public copy runs the same code with no keys. It never calls PayPal or Gemini, so nobody's account or credit is used.",
   'Works here', 'Policy pre-check, sales spike and dispute evidence (rules + your review)', 'Review file and review ZIP downloads',
-  'Guides in rules-only mode and recorded replays', 'Local only', 'PayPal Sandbox connect, invoice draft, evidence request',
-  'Gemini evidence brief and Gemini guide', 'Off in hosted demo', 'demo video', 'README › Run locally',
+  'Local only', 'PayPal Sandbox connect, invoice draft, evidence request', 'demo video', 'README › Run locally',
+  '{copy.intro}', '{copy.guides}', '{copy.local}', '<dd data-testid="connections-why-gemini">{copy.gemini}</dd>',
 ]) assert.ok(badge.includes(text), `popover text: ${text}`);
+const off = hostedCopy({ chooser_mode: 'keyword', model_requested: false });
+assert.equal(off.intro, "This public copy runs the same code with no keys. It never calls PayPal or Gemini, so no account or API credit is used.");
+assert.equal(off.guides, 'Guides in rules-only mode and recorded replays');
+assert.equal(off.local, 'Gemini evidence brief and Gemini guide');
+assert.equal(off.gemini, 'Off in hosted demo');
 assert.equal((badge.match(/<button|<Button|<input/g) || []).length, 1, 'no switch or button inside the popover: the pill is the only control');
 assert.ok(badge.includes("event.key === 'Escape'") && badge.includes('buttonRef.current?.focus()'), 'Esc closes and returns focus');
 assert.ok(badge.includes("'pointerdown'"), 'outside click closes');
@@ -73,7 +80,10 @@ const swaps = [
 ];
 // The top-bar Sandbox card (owner 2026-11-03) is one other place, and it renders only when not hosted. The phone bar
 // after Confirm Draft Context (attack r22) is the other: it offers Connect or Create Sandbox draft only when not hosted.
-const extraPlaces = { 'Connect US Sandbox': 2, 'Create Sandbox draft': 1 };
+// (r32 J4 P1-2) The phone bar's Dispute step offers the preview after the local review, only when not hosted.
+const extraPlaces = { 'Connect US Sandbox': 2, 'Create Sandbox draft': 1, 'Prepare evidence request (preview)': 1 };
+assert.ok(app.includes("receipt && !hosted && providerDisputeDetail && !evidencePreview\n            ? { key: 'evidence-preview', label: 'Prepare evidence request (preview)'"), 'phone bar preview is local only');
+assert.ok(app.includes("? (receipt && !hosted && evidenceSubmitReady\n") && app.includes(": receipt && !hosted && trackingSubmitReady\n"), 'phone bar sends are local only');
 assert.ok(app.includes('{!hosted && <TopbarSandbox '), 'top-bar Sandbox card is local only');
 assert.ok(app.includes(": invoiceReview ? (hosted ? null : sandbox?.status === 'connected'"), 'phone bar draft actions are local only');
 for (const [swap, label] of swaps) {

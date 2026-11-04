@@ -16,6 +16,7 @@ from app.main import MAX_BODY_BYTES, create_app
 from app.paypal import PaypalAdapter, PaypalConfig, SANDBOX_BASE
 from app.schemas import ScenarioMatch, VelocityResponse
 from app.store import AiAttemptBudget, BoundaryError, SessionStore, iso
+from send_confirmation import with_confirmation
 from payguard.case_cards import match_cases as match_authored_cases
 from payguard.engines import check_aup
 from payguard.review import payload_digest
@@ -145,6 +146,9 @@ class ApiTests(unittest.TestCase):
         return {"Origin": ORIGIN, "X-Demo-Session": session["session_id"], "X-CSRF-Token": session["csrf_token"]}
 
     def post(self, route, payload=None, session=None):
+        return with_confirmation(lambda r, p: self._post(r, p, session), route, payload)
+
+    def _post(self, route, payload=None, session=None):
         return self.client.post(ROOT + route, json={} if payload is None else payload, headers=self.headers(session))
 
     def state(self, session=None):
@@ -582,6 +586,9 @@ class ProviderTests(unittest.TestCase):
         return {"Origin": ORIGIN, "X-Demo-Session": session["session_id"], "X-CSRF-Token": session["csrf_token"]}
 
     def post(self, route, payload=None, session=None):
+        return with_confirmation(lambda r, p: self._post(r, p, session), route, payload)
+
+    def _post(self, route, payload=None, session=None):
         return self.client.post(ROOT + route, json={} if payload is None else payload, headers=self.headers(session))
 
     def connect(self):
@@ -1026,6 +1033,7 @@ class AupFunnelHttpTests(unittest.TestCase):
     new_session = ApiTests.new_session
     headers = ApiTests.headers
     post = ApiTests.post
+    _post = ApiTests._post
 
     def test_full_engine_result_invalid_output_is_atomic_and_capacity_recovers(self):
         self.assertEqual(self.post("/aup/review", {"description": "existing valid evaluation"}).status_code, 200)

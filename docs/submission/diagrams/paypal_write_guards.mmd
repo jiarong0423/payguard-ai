@@ -1,0 +1,12 @@
+flowchart LR
+    S1["1 Off by default<br/>PAYGUARD_PAYPAL_DISPUTE_SUBMIT;<br/>the hosted demo refuses all writes"] --> S2["2 A person approves<br/>reviewed draft bound by digest,<br/>approval expires after 5 min"]
+    S2 --> S3["3 One case, one dispute<br/>the first preview binds them;<br/>evidence goes only to the bound dispute"]
+    S3 --> S4["4 Two-step confirm in the browser<br/>tick, Continue, 3 s, Send;<br/>single-use server confirmation"]
+    S4 --> S5["5 Same payload as approved<br/>rebuilt at Send, hash must match"]
+    S5 --> S6["6 Fresh read from PayPal<br/>still waiting for the seller,<br/>upload offered, same reason and amount"]
+    S6 --> S7["7 Declared account match<br/>dispute seller = configured merchant id<br/>(not verified by PayPal)"]
+    S7 --> S8["8 Re-checked under a lock<br/>confirmation used up first;<br/>a repeat is refused"]
+    S8 --> S9["9 The call and its receipt<br/>allowed path only, 15 s limit;<br/>PayPal-Debug-Id kept"]
+    S3 -.->|wrong case, already answered,<br/>different amount| R["Refused with a plain reason;<br/>nothing is sent"]
+    S6 -.-> R
+    S7 -.-> R

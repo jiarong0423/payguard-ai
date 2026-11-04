@@ -20,7 +20,7 @@ import { fileURLToPath } from 'node:url';
 
 import { benchmarkRows, caseRows, daysBetween, rebaseDisputes, receiptRows, requirementRows, studioData, timeEventRows } from '../frontend/src/dashboard/dashboardData.js';
 import { ANSWER_SLOT as LAYOUT_SLOT, ANSWER_SLOT_ID, CHECKLIST_WIDGET, compactLayout, DEADLINE_WIDGET, GUIDE_ANSWER_SLOT_ID, initialReport, READINESS_PAGE_ID } from '../frontend/src/dashboard/layout.js';
-import { ANSWER_PAGE_ID, ANSWER_SLOT, ANSWER_SLOTS, ANSWER_WIDGET_ID, BOUNDARY, BUILT_IN_OFF, createEvidenceAuditor, matchQuestion, PROMPT_STARTERS, QUESTIONS } from '../frontend/src/dashboard/auditor.js';
+import { ANSWER_PAGE_ID, ANSWER_SLOT, ANSWER_SLOTS, ANSWER_WIDGET_ID, BOUNDARY, BUILT_IN_OFF, createEvidenceAuditor, matchQuestion, pageSelections, PROMPT_STARTERS, QUESTIONS } from '../frontend/src/dashboard/auditor.js';
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const frontendRoot = join(projectRoot, 'frontend');
@@ -199,11 +199,12 @@ const stateWithSlot = initialReport();
 async function ask(text, { failOn, state = stateWithSlot } = {}) {
   const { studio, calls } = standInStudio(failOn);
   const pages = [];
-  const agent = createEvidenceAuditor({ studio, getState: () => state, data: tables, onAnswer: (page) => pages.push(page) });
+  const technical = [];
+  const agent = createEvidenceAuditor({ studio, getState: () => state, data: tables, onAnswer: (page, steps) => { pages.push(page); technical.push(steps); } });
   const events = [];
   for await (const event of agent.run({ threadId: 't1', runId: `r-${events.length}`, messages: [{ id: 'u1', role: 'user', content: text }], tools: [], state: null, context: [], forwardedProps: {} })) events.push(event);
   const reply = events.filter((event) => event.type === 'TEXT_MESSAGE_CONTENT').map((event) => event.delta).join('');
-  return { events, calls, reply, pages, finished: events.find((event) => event.type === 'RUN_FINISHED') };
+  return { events, calls, reply, pages, technical, finished: events.find((event) => event.type === 'RUN_FINISHED') };
 }
 function applyFilter(filter, row) {
   const value = row[filter.field.id.split('.').pop()];
@@ -235,7 +236,7 @@ const keyOf = { cases: 'case_ref', time_events: 'event_id', requirements: 'requi
 // Which Studio tool calls each question makes, recorded (round 6, item 2).
 const studioCalls = {};
 for (const [question, want] of Object.entries(expected)) {
-  const { events, calls, reply, pages, finished } = await ask(question);
+  const { events, calls, reply, pages, technical, finished } = await ask(question);
   assert.ok(want.refs.length > 0, `${question}: the data has an answer`);
   assert.equal(events[0].type, 'RUN_STARTED');
   assert.equal(events.at(-1).type, 'RUN_FINISHED', `${question}: run finishes`);
@@ -253,7 +254,20 @@ for (const [question, want] of Object.entries(expected)) {
   assert.deepEqual(tables[want.table].filter((row) => applyFilter(filter, row)).map((row) => row[keyOf[want.table]]), want.refs, `${question}: canvas filter selects the same rows`);
   assert.equal(events.filter((event) => event.type === 'TOOL_CALL_START').length, 4);
   assert.equal(events.filter((event) => event.type === 'TOOL_CALL_RESULT').length, 4);
-  assert.match(reply, /How I built this: 1\. `remove_widget`.*2\. `add_widget`.*3\. `configure_widget`.*4\. `add_widget_filter`/u, `${question}: build steps shown in the AI panel`);
+  // (r31 J1 J4) The AI panel says the four steps in plain words, in the order of the Studio calls; no tool name or
+  // backtick on screen. The exact tool names reach the dashboard's collapsed "Technical steps" in the same order.
+  const tableWords = want.table.replace(/_/gu, ' ');
+  const pageWords = want.page === 'guide' ? 'Guide and Channel3 evidence' : 'Evidence readiness';
+  const op = { equals: '=', lessThanOrEqual: '≤', greaterThan: '>', greaterThanOrEqual: '≥' }[filter.model.operator];
+  const filterWords = `${filter.field.id.split('.').pop().replace(/_/gu, ' ')} ${op} ${typeof filter.model.value === 'string' ? `"${filter.model.value}"` : filter.model.value}`;
+  // (r32 J3 P3) On a fresh page the slot holds the page's own table, so the first step names it.
+  const pageTable = stateWithSlot.pages.find((page) => page.id === want.page).widgets[slot].format.title.text;
+  assert.ok(reply.includes(`How I built this: 1. Replaced the page's ${pageTable} table with the answer. 2. Added a table under the headline tiles of the ${pageWords} page. 3. Showed ${calls[2].args.value.dataMapping.cols.length} columns from ${tableWords}. 4. Filtered: ${filterWords}. `),
+    `${question}: build steps shown in plain words in the AI panel`);
+  assert.equal(/`|remove_widget|add_widget|configure_widget|add_widget_filter|_[a-z]/u.test(reply.slice(reply.indexOf('How I built this'))), false, `${question}: no tool name, id or backtick in the reply`);
+  assert.equal(technical.length, 1, `${question}: technical steps handed to the dashboard once`);
+  assert.deepEqual(technical[0].map((step) => step.tool), calls.map((call) => call.tool), `${question}: technical steps name the exact tools in call order`);
+  assert.equal(technical[0][3].detail, `${filter.field.id} ${op} ${JSON.stringify(filter.model.value)}`, `${question}: technical filter keeps the exact field id`);
   assert.ok(reply.includes(BOUNDARY), `${question}: boundary stated`);
   assert.deepEqual(pages, [want.page], `${question}: the dashboard shows the page that changed`);
   assert.equal(FORBIDDEN_REPLY.test(reply.replace(BOUNDARY, '')), false, `${question}: no decision language`);
@@ -261,6 +275,7 @@ for (const [question, want] of Object.entries(expected)) {
 const unknown = await ask('Please approve case-ref-001 and refund it');
 assert.equal(matchQuestion('Please approve case-ref-001 and refund it').id, 'unknown');
 assert.equal(matchQuestion('Make a widget comparing cases by days to due').id, 'unknown', 'the delegation example is not one of the fixed questions');
+assert.equal(matchQuestion('Which reason code appears most often across the three cases?').id, 'unknown', 'the live starter question is delegated, not answered by a fixed question');
 assert.deepEqual(unknown.calls, [], 'an unknown request changes nothing on the canvas');
 assert.ok(unknown.reply.includes('I answer fixed questions with code'));
 const builtIn = await ask('Are the built-in agents on?');
@@ -268,6 +283,66 @@ assert.deepEqual(builtIn.calls, []);
 assert.ok(builtIn.reply.includes(BUILT_IN_OFF));
 const noSlot = await ask('Which cases lack proof of delivery?', { state: { selectedPageId: 'readiness', pages: [{ id: 'readiness', widgets: {}, widgetLayout: {} }] } });
 assert.deepEqual(noSlot.calls.map((call) => call.name), ['addWidget', 'configureWidget', 'addWidgetFilter'], 'nothing to remove when the slot is gone');
+assert.deepEqual(noSlot.technical[0].map((step) => step.tool), ['add_widget', 'configure_widget', 'add_widget_filter'], 'technical steps follow the calls');
+assert.ok(noSlot.reply.includes('How I built this: 1. Added a table under the headline tiles of the Evidence readiness page. 2. Showed 5 columns from cases.'), 'plain steps renumber without the remove step');
+// (r31 J1 J4) The dashboard: tool names only under the collapsed "Technical steps" in the drawer; no "Changes stay in
+// this tab" chip (the drawer's "Edit mode:" line keeps that information).
+const dashMain = read('frontend/src/dashboard/main.jsx');
+assert.ok(dashMain.includes('const onAnswer = (page, technical) => {') && dashMain.includes('if (technical) setTechnical(technical);'), 'the dashboard keeps the tool steps of the last answer');
+assert.ok(dashMain.includes('{technical && <details className="pg-technical" data-testid="dashboard-technical-steps">\n            <summary>Technical steps</summary>'), 'collapsed Technical steps');
+assert.equal(/<details className="pg-technical"[^>]*\sopen/u.test(dashMain), false, 'Technical steps collapsed by default');
+const drawerBody = dashMain.slice(dashMain.indexOf('<div className="pg-drawer-body">'), dashMain.indexOf('</details>\n      <main'));
+assert.ok(drawerBody.includes('data-testid="dashboard-technical-steps"'), 'Technical steps sit inside the collapsed drawer');
+assert.ok(drawerBody.includes('<strong>Edit mode:</strong> the auditor and layout changes stay in this tab and are not saved.'), 'the tab-only information is kept in the drawer');
+assert.equal(dashMain.includes('Changes stay in this tab</li>'), false, 'no tab chip on camera');
+// (r32 J3 P3) After an answer, the slot holds the auditor's grid, and the step says the previous answer went.
+const afterAnswer = structuredClone(stateWithSlot);
+afterAnswer.pages.find((page) => page.id === 'readiness').widgets[ANSWER_SLOTS.readiness].format.title.text = 'Evidence auditor · Cases due within 3 days';
+const second = await ask('Which cases lack proof of delivery?', { state: afterAnswer });
+assert.ok(second.reply.includes('How I built this: 1. Removed the previous answer. 2. Added a table'), 'second answer: removed the previous answer');
+assert.equal(second.technical[0][0].detail, 'the previous answer');
+// (r32 J3 P2) A case selection on the page (cross filter from a click, or Filter by case) would narrow the answer
+// grid, so "3 of 3" would sit next to 1 row. The auditor clears it first and says so; the grid then shows exactly
+// the rows of the reply. Without the clear hook the reply names the selection instead.
+const selectedState = structuredClone(stateWithSlot);
+const readinessPage = selectedState.pages.find((page) => page.id === 'readiness');
+readinessPage.crossFilter = { values: { checklist: [{ type: 'value', group: 0, field: { id: 'cases.case_ref' }, values: ['case-ref-002'] }],
+  [ANSWER_SLOTS.readiness]: [{ type: 'value', group: 0, field: { id: 'cases.case_ref' }, values: ['case-ref-001'] }] } };
+readinessPage.filter = { ...(readinessPage.filter || {}), page: [...(readinessPage.filter?.page || []).map((entry) => ({ ...entry, model: undefined })),
+  { field: { id: 'cases.reason' }, filterWidgetId: 'stand-in', model: { operator: 'equals', value: 'Item not received' } }] };
+assert.deepEqual(pageSelections(selectedState, 'readiness'), ['case ref = case-ref-002', 'reason = Item not received'],
+  "the answer grid's own selection is not counted; page filters with a value are");
+assert.deepEqual(pageSelections(selectedState, 'guide'), [], 'a selection on one page does not touch the other');
+assert.deepEqual(pageSelections(stateWithSlot, 'readiness'), [], 'the initial dashboard has no selection');
+{
+  const cleared = [];
+  const { studio, calls } = standInStudio();
+  const live = { state: selectedState };
+  const agent = createEvidenceAuditor({ studio, getState: () => live.state, data: tables,
+    clearSelections: (pageId) => { cleared.push(pageId); live.state = structuredClone(stateWithSlot); } });
+  const events = [];
+  for await (const event of agent.run({ threadId: 't9', runId: 'r9', messages: [{ id: 'u9', role: 'user', content: 'Which are due within 3 days?' }], tools: [], state: null, context: [], forwardedProps: {} })) events.push(event);
+  const reply = events.filter((event) => event.type === 'TEXT_MESSAGE_CONTENT').map((event) => event.delta).join('');
+  assert.deepEqual(cleared, ['readiness'], 'the selection on the answer page is cleared once, before the Studio calls');
+  assert.deepEqual(calls.map((call) => call.tool), ['remove_widget', 'add_widget', 'configure_widget', 'add_widget_filter'], 'clearing is not a Studio tool call');
+  const due = tables.cases.filter((row) => row.days_to_due <= 3);
+  assert.ok(reply.startsWith(`${due.length} of ${tables.cases.length} synthetic case`), 'the count is over every case');
+  assert.ok(reply.includes("How I built this: 1. Cleared the page's own selection (case ref = case-ref-002; reason = Item not received) so the table shows every matching row. 2. Replaced the page's Cases table with the answer."),
+    'the reply says the selection was cleared');
+  assert.equal(/_[a-z]/u.test(reply.slice(reply.indexOf('How I built this'), reply.indexOf(' 2. '))), false, 'plain step: no field id');
+  assert.equal(tables.cases.filter((row) => applyFilter(calls[3].args.value, row)).length, due.length, 'with no selection left, the grid rows equal the count in the reply');
+  assert.equal(events.filter((event) => event.type === 'TOOL_CALL_START').length, 4);
+}
+{
+  const noHook = await ask('Which are due within 3 days?', { state: selectedState });
+  assert.ok(noHook.reply.includes('The page also has its own selection (case ref = case-ref-002; reason = Item not received), so the table shows only the matching rows inside it.'),
+    'without the clear hook the reply names the selection');
+  assert.equal(noHook.reply.includes('Cleared the page'), false);
+}
+const dashMainR32 = read('frontend/src/dashboard/main.jsx');
+assert.ok(dashMainR32.includes('clearSelections: (pageId) => clearPageSelections(api, pageId),'), 'the dashboard gives the auditor the clear hook');
+assert.ok(/function clearPageSelections\(api, pageId\) \{[\s\S]*?crossFilter: undefined,[\s\S]*?page\.filter\.page\?\.map\(\(\{ model, \.\.\.rest \}\) => rest\)/u.test(dashMainR32),
+  'the hook clears the cross filter and the page filter values of that page');
 const cleared = await ask('clear the answers');
 assert.deepEqual(cleared.calls.map((call) => `${call.tool}:${call.args.widgetId}`), ['remove_widget:auditor-answer', 'remove_widget:auditor-answer-guide']);
 const failed = await ask('Which are due within 3 days?', { failOn: 'addWidgetFilter' });

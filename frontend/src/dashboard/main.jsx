@@ -15,7 +15,7 @@ import { resolveAsOf } from '../shared/asOf.js';
 import { initialReport, PAGE_TITLES, pageTracks } from './layout.js';
 import { compactTheme, payguardTheme } from './theme.js';
 import { CUSTOM_WIDGETS } from './widgets.jsx';
-import { AUDITOR_ID, BOUNDARY, BUILT_IN_AGENT_IDS, createEvidenceAuditor, promptStarters } from './auditor.js';
+import { AUDITOR_ID, BOUNDARY, BUILT_IN_AGENT_IDS, createEvidenceAuditor, plainSummary, promptStarters } from './auditor.js';
 import { createGeminiAdapter, createSessionClient, fetchAgentStatus } from './studioAgentClient.js';
 import { createRecorder, recordingLabel, validateRecording } from './agentRecording.js';
 import './dashboard.css';
@@ -54,16 +54,35 @@ async function bootstrap() {
   return { mode: status === 'live' ? 'live' : RECORDING ? 'replay' : 'off', client };
 }
 
-function makeHarness({ mode, client, onAnswer, recorder }) {
+const STUDIO_MAX_TURNS = 8;
+
+// (r32 J3) Before an answer, the auditor clears the seller's own selections on that page (the cross filter from a
+// click and the values of page filters such as "Filter by case"), so its grid shows exactly the rows of the reply.
+// The page filters themselves stay; only their values are reset.
+function clearPageSelections(api, pageId) {
+  const state = api.getState();
+  api.setState({
+    ...state,
+    pages: state.pages.map((page) => (page.id !== pageId ? page : {
+      ...page,
+      crossFilter: undefined,
+      ...(page.filter ? { filter: { ...page.filter, page: page.filter.page?.map(({ model, ...rest }) => rest) } } : {}),
+    })),
+  });
+}
+
+function makeHarness({ mode, client, onAnswer, onDelegated, recorder }) {
   return ({ api }) => createAiHarness(api, ({ tools, builtIn }) => {
     const live = mode === 'live';
     const adapter = live ? createGeminiAdapter(client) : null;
     const auditor = createEvidenceAuditor({
-      studio: tools.studio, getState: () => api.getState(), data: tables, onAnswer, recorder,
-      delegate: live ? tools.delegateTo(['lead']) : null, recording: live ? null : RECORDING,
+      studio: tools.studio, getState: () => api.getState(), data: tables, onAnswer, onDelegated, recorder,
+      delegate: live ? tools.delegateTo(['data']) : null, recording: live ? null : RECORDING,
+      clearSelections: (pageId) => clearPageSelections(api, pageId),
     });
     return {
-      agents: [auditor, ...(live ? BUILT_IN_AGENT_IDS.map((id) => directLlmRunner({ ...builtIn[id], adapter })) : [])],
+      // (red team r27 A) A hard turn cap behind the adapter's forced finish at turn five.
+      agents: [auditor, ...(live ? BUILT_IN_AGENT_IDS.map((id) => directLlmRunner({ ...builtIn[id], adapter, maxTurns: STUDIO_MAX_TURNS })) : [])],
       primary: AUDITOR_ID,
       promptStarters: promptStarters({ mode, recording: RECORDING }),
       observers: recorder ? [recorder.observer] : [],
@@ -72,12 +91,13 @@ function makeHarness({ mode, client, onAnswer, recorder }) {
 }
 
 const AGENT_STATUS = {
-  live: "on: lead and its specialists use Gemini through the console's governed route (local live mode). The auditor hands them questions outside its own set.",
+  live: "on: they use Gemini through the console's governed route (local live mode). The auditor hands questions outside its own set to Studio's data agent.",
   replay: RECORDING ? `replayed: ${recordingLabel(RECORDING)}` : '',
   off: 'off: no model is configured, and the hosted demo makes no model calls.',
 };
 
-// Phone or desktop layout follows the window, not only the first load (plan r2 F22): Studio remounts on a change.
+// Phone or desktop layout is chosen at load (plan r2 F22). Studio is no longer remounted on a size change (red team
+// r27 B: that dropped the AI thread mid-answer); the new layout applies on the next load.
 // AG Studio names its widget toolbar buttons with raw locale keys (aria-label "widgetToolbarDelete" and so on). This
 // page is read only: duplicate and delete are hidden, and export or download buttons get readable names
 // (click-all 2026-11-03 #13).
@@ -157,6 +177,25 @@ function scrollStudioIntoView(studio) {
   const top = window.scrollY + studio.getBoundingClientRect().top - offset;
   const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   window.scrollTo({ top: Math.max(0, top), behavior: smooth ? 'smooth' : 'auto' });
+}
+
+// (r33 M3) The starter answer was left above the viewport on a phone (scrollY 712, J4 r32): the smooth scroll ran
+// while the panel was closing and the page below it still moved (Back restores the old scroll position, Studio
+// lays the canvas out again). The answer is scrolled to just under the sticky top bar now and again once the layout
+// has settled, the second time only if its top is still outside the screen.
+function scrollAnswerIntoView(widget) {
+  const go = (behavior) => {
+    if (!widget.isConnected) return;
+    const topbar = document.querySelector('.pg-topbar');
+    const offset = topbar && window.getComputedStyle(topbar).position === 'sticky' ? topbar.getBoundingClientRect().height : 0;
+    window.scrollTo({ top: Math.max(0, window.scrollY + widget.getBoundingClientRect().top - offset - 8), behavior });
+  };
+  const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  go(smooth ? 'smooth' : 'auto');
+  setTimeout(() => {
+    const top = widget.getBoundingClientRect().top;
+    if (top < 0 || top > window.innerHeight * 0.5) go('auto');
+  }, 700);
 }
 
 function Dashboard({ setup }) {
@@ -274,15 +313,16 @@ function Dashboard({ setup }) {
     const target = widget?.querySelector('.ag-studio-layout-widget-focus-container[tabindex]') || null;
     if (target) {
       target.focus({ preventScroll: true });
-      widget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      scrollAnswerIntoView(widget);
     } else if (triesLeft > 0) setTimeout(() => focusAnswer(triesLeft - 1), 150);
     else studioRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
   // When the auditor answers on the other page, show that page. On a phone the AI panel covers the canvas, so
   // the dashboard goes back to view mode and moves to the answer slot under the headline tiles. The breakpoint is
   // read when the answer comes, not when the harness was made.
-  const onAnswer = (page) => {
+  const onAnswer = (page, technical) => {
     const phone = compactQuery.matches;
+    if (technical) setTechnical(technical);
     setTimeout(() => {
       showPage(page);
       if (phone) {
@@ -291,7 +331,11 @@ function Dashboard({ setup }) {
       }
     }, phone ? 900 : 0);
   };
-  const ai = useMemo(() => makeHarness({ ...setup, recorder, onAnswer }), [setup, recorder]); // eslint-disable-line react-hooks/exhaustive-deps
+  // (red team r27 B) The data agent's last answer, shown above the canvas so a Studio remount cannot hide it.
+  const [delegated, setDelegated] = useState(null);
+  // (r31 J1 J4) The exact Studio tool steps of the auditor's last answer; the reply itself says them in plain words.
+  const [technical, setTechnical] = useState(null);
+  const ai = useMemo(() => makeHarness({ ...setup, recorder, onAnswer, onDelegated: setDelegated }), [setup, recorder]); // eslint-disable-line react-hooks/exhaustive-deps
   const currentPage = report.pages.find((page) => page.id === pageId) || report.pages[0];
   // One scroll: in view mode Studio is exactly as tall as the current page; in edit mode it fills the screen under
   // the sticky top bar so the AI panel has room.
@@ -318,8 +362,9 @@ function Dashboard({ setup }) {
           <li>Auditor: on</li>
           <li className={setup.mode === 'off' ? '' : 'is-accent'}>Built-in agents: {setup.mode}</li>
           <li>Licence: {LICENSE_KEY ? 'key' : 'trial'}</li>
-          {mode === 'edit' && <li className="is-watch">Edit mode: not saved</li>}
+          {/* (r31 J1 J4) No "Changes stay in this tab" chip: the drawer below says it in edit mode ("Edit mode: ..."). */}
         </ul>
+        {delegated && <p className="pg-delegated" role="status" aria-live="polite" data-testid="dashboard-delegated"><strong>Data agent:</strong> {plainSummary(delegated.summary)}</p>}
       </section>
       <details className="pg-drawer">
         <summary>About this data and its limits</summary>
@@ -331,11 +376,16 @@ function Dashboard({ setup }) {
             <li data-testid="dashboard-licence"><strong>Licence:</strong> {LICENSE_KEY ? 'AG Studio key supplied at build time.' : 'no key in this build: AG Studio runs as a trial, logs a licence notice and may show its watermark.'}</li>
             {mode === 'edit' && <li><strong>Edit mode:</strong> the auditor and layout changes stay in this tab and are not saved.</li>}
           </ul>
+          {technical && <details className="pg-technical" data-testid="dashboard-technical-steps">
+            <summary>Technical steps</summary>
+            <ol>{technical.map((step) => <li key={step.tool}><code>{step.tool}</code>: {step.detail}</li>)}</ol>
+          </details>}
           <p className="pg-sources">Sources: frontend/src/data/dashboard_disputes_v1.json (tools/build_dashboard_data.py), guide_benchmark_v1.json, channel3_receipts_v1.json; the recorded guide benchmark and the recorded Channel3 searches. Method and limits: docs/AG_STUDIO_NOTES.md.</p>
         </div>
       </details>
       <main className="pg-studio" data-testid="dashboard-studio" ref={studioRef} style={{ height: studioHeight }}>
-        <AgStudioProvider licenseKey={LICENSE_KEY} key={compact ? 'compact' : 'wide'} modules={[AgStudioAiModule]}>
+        {/* (red team r27 B) No key: a key that flips with the layout remounted Studio and dropped the thread and the canvas. */}
+        <AgStudioProvider licenseKey={LICENSE_KEY} modules={[AgStudioAiModule]}>
           <AgStudio
             style={{ height: '100%', width: '100%' }}
             theme={theme}
@@ -352,7 +402,7 @@ function Dashboard({ setup }) {
         </AgStudioProvider>
       </main>
       <footer className="pg-footer">
-        <a href="/">Merchant console</a> · <a href="/evidence.html">Evidence page</a>
+        <a href="/">Merchant console</a> · <a href="/evidence.html">Evidence page</a> · <a href="/proof.html" data-testid="dashboard-footer-proof">Proof</a>
       </footer>
     </div>
   );

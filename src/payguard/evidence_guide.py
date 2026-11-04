@@ -535,10 +535,11 @@ def keyword_chooser(request):
         # (attack r22) Two weekdays in one clause ("last Tuesday or Monday") give no weekday hint, so no date is echoed.
         named_days = [code for word, code in _WEEKDAY_WORDS.items() if word in words]
         weekday = named_days[0] if len(named_days) == 1 else None
-        relative = "LAST" if "last" in words else ("THIS" if "this" in words else None)
+        # (red team r26 #2 P1) The week word counts only next to the weekday, and not across two time verbs.
+        relative = _adjacent_week_word(lowered, weekday) if len(_TIME_VERBS.findall(lowered)) <= 1 else None
         hedge = "APPROX" if _HEDGE_WORDS.search(lowered) else "EXACT"
         if request.get("contract") == 2:
-            subject = subject_of_clause(clause)
+            subject = reported_speaker(clause)
             actor = subject if subject in ("BUYER", "THIRD_PARTY") else (
                 "BUYER" if _BUYER_VOICE.search(lowered) else ("THIRD_PARTY" if _THIRD_PARTY_VOICE.search(lowered) else "SELLER"))
         for slot_id in picked:
@@ -622,13 +623,29 @@ _REPORTED_EXTRA = re.compile(r"\b(?:buyer|customer|client|purchaser)(?:'s)?\b.{0
                              r"mentioned|reads|noted|stated|asked|insists?)\b|\b(?:her|his|their)\s+(?:reply|note|message|email|answer)\b")
 
 
+# (red team r26 #2 P1) A clause can open with the seller and still carry someone else's words: "I heard from the
+# buyer that it arrived", "We got a message from the customer saying ...", "I was told it arrived", "I shipped it,
+# the buyer says it never came". These are reported speech even though the subject is the seller.
+_SELLER_REPORTED = re.compile(
+    r"\b(?:was|were|been|got|get|gets|getting)\s+told\b|"
+    r"\b(?:heard|learned|learnt|found out|got word)\b.{0,24}\bfrom\b|"
+    r"\b(?:message|email|e-mail|note|text|word|reply|call)\s+from\s+(?:the\s+|my\s+|a\s+|our\s+)?"
+    r"(?:buyer|customer|client|purchaser|guy|person|recipient)\b|"
+    r"\b(?:buyer|customer|client|purchaser|recipient|guy who bought|person who bought)\b[^.]{0,24}?\b"
+    r"(?:says|said|claims|claimed|confirms|confirmed|insists|insisted|told|tells|reports|reported)\b")
+
+
 def reported_speaker(clause):
     """BUYER or THIRD_PARTY when the clause reports another speaker anywhere in it; otherwise subject_of_clause."""
     subject = subject_of_clause(clause)
-    # A clause that opens with the seller or a record ("I wrote to the buyer and they replied") keeps that subject.
+    lowered = clause.casefold()
+    # A clause that opens with the seller or a record ("I wrote to the buyer and they replied") keeps that subject,
+    # unless it reports someone else's words (_SELLER_REPORTED).
+    if subject in ("SELLER", "UNKNOWN") and _SELLER_REPORTED.search(lowered):
+        return "THIRD_PARTY" if _THIRD_PARTY_VOICE.search(lowered) and not re.search(
+            r"\b(?:buyer|customer|client|purchaser|recipient|bought)\b", lowered) else "BUYER"
     if subject in ("BUYER", "THIRD_PARTY", "SELLER"):
         return subject
-    lowered = clause.casefold()
     if _BUYER_VOICE.search(lowered) or _REPORTED_EXTRA.search(lowered):
         return "BUYER"
     if _THIRD_PARTY_VOICE.search(lowered):
@@ -650,7 +667,8 @@ def ground_hints(increments, clauses):
         else:
             if row["w"] is not None and WEEKDAY_NAMES[row["w"]].casefold() not in words:
                 row["w"] = None
-            if row["r"] is not None and RELATIVE_NAMES[row["r"]] not in words:
+            if row["r"] is not None and (RELATIVE_NAMES[row["r"]] not in words
+                                         or (row["w"] is not None and _adjacent_week_word(clause, row["w"]) != row["r"])):
                 row["r"] = None
             if row["w"] is None:
                 row["r"] = None
@@ -1024,6 +1042,21 @@ def _yes_no(item, clause):
     return "yes"
 
 
+_TIME_VERBS = re.compile(r"\b(?:shipped|sent|posted|mailed|dropped|handed|dispatched|went out|left|arrived|delivered|"
+                         r"came|reached|got it|received)\b", re.IGNORECASE)
+
+
+def _adjacent_week_word(clause, weekday):
+    """LAST or THIS only when the week word is next to the weekday; None otherwise."""
+    if weekday is None:
+        return None
+    name = WEEKDAY_NAMES[weekday].casefold()
+    match = re.search(rf"\b(last|this)\s+{name}\b|\b{name}\s+(?:of\s+)?(last|this)\s+week\b", clause.casefold())
+    if not match:
+        return None
+    return "LAST" if (match.group(1) or match.group(2)) == "last" else "THIS"
+
+
 def _clause_date(clause, today):
     """A date only from words that fix it: today, yesterday, or a weekday with this/last week."""
     words = set(re.findall(r"[a-z]+", clause))
@@ -1035,8 +1068,12 @@ def _clause_date(clause, today):
         return today.isoformat()
     if "yesterday" in words:
         return (today - datetime.timedelta(days=1)).isoformat()
+    # (red team r26 #2 P1) Two time-bearing verbs ("shipped it last week and it arrived this Friday") fix no ship
+    # date, and the week word must sit next to the weekday ("last Friday", "this Friday", "Friday last week").
+    if len(_TIME_VERBS.findall(clause)) > 1:
+        return None
     weekday = next(iter(named), None)
-    relative = "LAST" if "last" in words else ("THIS" if "this" in words else None)
+    relative = _adjacent_week_word(clause, weekday)
     return prefill_date({"w": weekday, "r": relative}, today)
 
 
@@ -1186,7 +1223,8 @@ def auto_confirm(state, text, today):
         lowered = clause.casefold()
         # Positive evidence only: the clause starts with the seller (I, we, my, our) or a record (UPS, the tracking,
         # the portal). An unknown speaker ("Buyer is complaining ...", "Another crafter recommended ...") is echoed.
-        subject = subject_of_clause(clause)
+        # (red team r26 #2 P1) Same speaker check as the model gate: reported speech settles nothing.
+        subject = reported_speaker(clause)
         own_sale = scenario == "velocity" and subject == "UNKNOWN" and _OWN_SALE_EVENT.search(lowered) is not None
         if (subject != "SELLER" and not own_sale) or _HEDGE_WORDS.search(lowered):
             continue

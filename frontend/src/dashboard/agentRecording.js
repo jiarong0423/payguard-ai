@@ -90,7 +90,7 @@ export function findRecordedRun(doc, question) {
 }
 
 // Collects one run from Studio's telemetry stream. The auditor calls begin() when it hands a question to the
-// lead agent and end() with the final reply; every tool execution in between, by any agent, is a step.
+// data agent and end() with the final reply; every tool execution in between, by any agent, is a step.
 export function createRecorder({ now = () => Date.now(), getState } = {}) {
   let current = null;
   const runs = [];

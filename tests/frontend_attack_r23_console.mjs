@@ -83,7 +83,7 @@ assert.ok(app.includes("focusWhenIdle(AFTER_DRAFT_CONTEXT, { scroll: 'fallback' 
 assert.ok(app.includes("if (how === 'ACKNOWLEDGE_AND_CONTINUE') return;"), 'the dialog close does not steal it back');
 
 // P2 #5: "Already checked" is neutral info and stays until the description changes.
-assert.ok(app.includes("setInfo({ kind: 'already', text: 'Already checked. Edit the description to check it again.' });"), 'neutral info');
+assert.ok(app.includes("setInfo({ kind: 'already', text: 'Already checked. To restart the 2-minute window, press Run Policy Check again 30 seconds after a check.' });"), 'neutral info');
 assert.ok(app.includes("setInfo((current) => (current?.kind === 'already' ? null : current));"), 'cleared with the result it points at');
 assert.ok(app.includes('<div className="message message-info" data-testid="console-info" data-kind={info.kind}>'), 'info style');
 assert.ok(css.includes('.wait-line { font-variant-numeric: tabular-nums; }'), 'steady countdown width');
