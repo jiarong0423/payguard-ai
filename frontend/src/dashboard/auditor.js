@@ -3,11 +3,15 @@
 // For a closed set of questions, one per part of the dashboard (deadlines, missing proof, time flags, time
 // evidence, requested evidence, guide benchmark, Channel3 receipts), it computes the answer from the
 // dashboard's rows with plain code, then builds the answer on the canvas with Studio's own tools
-// (remove_widget, add_widget, configure_widget, add_widget_filter) and lists those steps in its reply. The canvas
-// filter tests the same field as the code, so the grid shows exactly the rows named in the reply.
+// (remove_widget, add_widget, configure_widget, add_widget_filter) and lists those steps in its reply in plain words
+// (the tool names go to the dashboard's collapsed "Technical steps", r31 J1 J4). The canvas
+// filter tests the same field as the code, so the grid shows exactly the rows named in the reply. (r32 J3) A case
+// selection the seller made on that page (a cross filter from a click, or a page filter such as "Filter by case")
+// would narrow the grid as well, so the auditor first clears it through the dashboard (`clearSelections`, not a
+// Studio tool) and says so in its steps; without that hook the reply names the selection instead.
 //
-// Anything outside that set goes to Studio's lead agent when the console has a model configured (local live
-// mode, through the governed backend route), to a recorded run of the lead agent when one exists (replayed with
+// Anything outside that set goes to Studio's data agent when the console has a model configured (local live
+// mode, through the governed backend route), to a recorded run of the data agent when one exists (replayed with
 // the same Studio tools, no model call), or gets the list of questions. The auditor never decides a dispute,
 // predicts no outcome, writes no data and calls no network service itself.
 // Pure module: no Studio import, so node tests drive it with stand-in tools.
@@ -24,7 +28,9 @@ export const BUILT_IN_AGENT_IDS = Object.freeze(['lead', 'data', 'page', 'planni
 export const BOUNDARY = 'Read only: this orders and shows synthetic records. It makes no dispute decision, predicts no outcome and submits nothing to PayPal.';
 export const BUILT_IN_OFF = 'Studio\'s built-in agents (lead, data, page, planning, widget) are off: no model is configured, and the hosted demo makes no model calls.';
 export const BUILT_IN_LIVE = 'Studio\'s built-in agents (lead, data, page, planning, widget) are on: they use Gemini through the console\'s governed route (local live mode, call caps, no key in the browser).';
-export const DELEGATE_EXAMPLE = 'Make a widget comparing cases by days to due';
+// (rehearsal 2026-11-04) The widget example used all 20 Studio calls and ended with no widget; this question ran in
+// six agent turns on 2026-11-04 and matched the rows.
+export const DELEGATE_EXAMPLE = 'Which reason code appears most often across the three cases?';
 
 const count = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
 const maxBy = (rows, key) => rows.reduce((best, row) => (row[key] !== null && (best === null || row[key] > best) ? row[key] : best), null);
@@ -47,7 +53,7 @@ export const QUESTIONS = Object.freeze([
     table: 'cases', page: 'readiness', title: 'Cases due within 3 days',
     columns: ['case_ref', 'due_date', 'days_to_due', 'readiness', 'submission'],
     value: () => 3, field: 'days_to_due', operator: 'lessThanOrEqual',
-    say: (matched, all) => `${matched.length} of ${count(all.length, 'synthetic case')}: ${matched.map((row) => `${row.case_ref} in ${row.days_to_due} days`).join('; ') || 'none'}. Days run from the dashboard's as-of time to the seller response due date in the synthetic provider snapshot.`,
+    say: (matched, all) => `${matched.length} of ${count(all.length, 'synthetic case')}: ${matched.map((row) => `${row.case_ref} in ${count(row.days_to_due, 'day')}`).join('; ') || 'none'}. Days run from the dashboard's as-of time to the seller response due date in the synthetic provider snapshot.`,
   },
   {
     id: 'time_flags', label: 'Which cases have time flags?',
@@ -102,13 +108,59 @@ export function matchQuestion(text) {
   return QUESTIONS.find((question) => question.match.test(value)) || { id: 'unknown' };
 }
 
+const OPERATOR_WORDS = { equals: '=', lessThanOrEqual: '≤', greaterThan: '>', greaterThanOrEqual: '≥' };
+// Technical form, for the collapsed "Technical steps": exact table and field ids.
 function describeFilter(question, value) {
-  const words = { equals: '=', lessThanOrEqual: '≤', greaterThan: '>', greaterThanOrEqual: '≥' };
-  return `${question.table}.${question.field} ${words[question.operator]} ${JSON.stringify(value)}`;
+  return `${question.table}.${question.field} ${OPERATOR_WORDS[question.operator]} ${JSON.stringify(value)}`;
+}
+// (r31 J1 J4) Seller form: ids as words ("time_events" -> "time events", "gap_hours" -> "gap hours").
+const plainName = (id) => id.replace(/_/gu, ' ');
+const plainFilter = (question, value) => `${plainName(question.field)} ${OPERATOR_WORDS[question.operator]} ${typeof value === 'string' ? `"${value}"` : value}`;
+
+// (r32 J3) The seller's own selections on a page, in plain words: cross filters set by clicking another widget
+// (state.pages[].crossFilter.values, keyed by the widget that set them) and page filters with a value
+// (state.pages[].filter.page, for example "Filter by case"). Either narrows the answer grid on that page.
+const fieldWords = (field) => plainName(String(field?.id ?? '').split('.').pop() || 'field');
+const valueWords = (values) => [].concat(values ?? []).map(String).join(' or ');
+function selectionWords(selection) {
+  if (selection?.type === 'value') return `${fieldWords(selection.field)} = ${valueWords(selection.values)}`;
+  if (selection?.type === 'range') return `${fieldWords(selection.field)} from ${selection.from ?? 'the start'} to ${selection.to ?? 'the end'}`;
+  return 'a selection on another widget';
+}
+export function pageSelections(state, pageId) {
+  const page = state?.pages?.find((entry) => entry.id === pageId);
+  if (!page) return [];
+  const words = [];
+  for (const [widgetId, selections] of Object.entries(page.crossFilter?.values || {})) {
+    if (widgetId === ANSWER_SLOTS[pageId]) continue;  // the answer grid's own selection does not narrow itself
+    for (const selection of selections || []) words.push(selectionWords(selection));
+  }
+  for (const filter of page.filter?.page || []) {
+    if (!filter?.model) continue;
+    const value = filter.model.value;
+    words.push(value === undefined || value === null || (Array.isArray(value) && value.length === 0)
+      ? `a filter on ${fieldWords(filter.field)}` : `${fieldWords(filter.field)} = ${valueWords(value)}`);
+  }
+  return words;
+}
+// (r32 J3 P3) The slot starts out holding the page's own table; after an answer it holds the auditor's grid.
+const ANSWER_TITLE_PREFIX = 'Evidence auditor · ';
+export function slotTitle(state, pageId) {
+  const widget = state?.pages?.find((entry) => entry.id === pageId)?.widgets?.[ANSWER_SLOTS[pageId]];
+  return widget ? String(widget.format?.title?.text ?? '') : null;
+}
+const isPageTable = (title) => typeof title === 'string' && !title.startsWith(ANSWER_TITLE_PREFIX);
+function removeStep(title) {
+  if (!isPageTable(title)) return { tool: 'remove_widget', plain: 'Removed the previous answer', detail: 'the previous answer' };
+  const name = title.trim();
+  return { tool: 'remove_widget', plain: name ? `Replaced the page's ${name} table with the answer` : 'Replaced the page\'s table with the answer',
+    detail: `the page's own table${name ? ` "${name}"` : ''} in the answer slot` };
 }
 
 // The answer as data: which rows, the reply text and the Studio tool calls that show it.
-export function planAnswer(text, data, { slotExists = {} } = {}) {
+//   slotExists  { page: bool }   slotTitles  { page: title of the widget in the slot }
+//   selections  { page: [plain words] } from pageSelections   canClear  the auditor can clear them first
+export function planAnswer(text, data, { slotExists = {}, slotTitles = {}, selections = {}, canClear = false } = {}) {
   const question = matchQuestion(text);
   if (question.id === 'clear') {
     const calls = Object.entries(ANSWER_SLOTS).filter(([page]) => slotExists[page])
@@ -121,7 +173,10 @@ export function planAnswer(text, data, { slotExists = {} } = {}) {
   const matched = rows.filter((row) => row[question.field] !== null && APPLY[question.operator](row[question.field], value));
   const widgetId = ANSWER_SLOTS[question.page];
   const filter = { field: { id: `${question.table}.${question.field}` }, model: { operator: question.operator, value } };
+  const selected = selections[question.page] || [];
+  const clearing = canClear && selected.length > 0;
   const calls = [
+    ...(clearing ? [{ tool: 'clearSelections', page: question.page, args: {} }] : []),
     ...(slotExists[question.page] ? [{ tool: 'removeWidget', page: question.page, args: { widgetId } }] : []),
     { tool: 'addWidget', page: question.page, args: { widgetId, type: 'grid', ...ANSWER_SLOT } },
     { tool: 'configureWidget', page: question.page, args: { widgetId, op: 'patch', value: {
@@ -132,16 +187,57 @@ export function planAnswer(text, data, { slotExists = {} } = {}) {
     } } },
     { tool: 'addWidgetFilter', page: question.page, args: { widgetId, op: 'append', value: filter } },
   ];
-  const steps = [
-    ...(slotExists[question.page] ? ['`remove_widget`: the previous answer'] : []),
-    `\`add_widget\`: a grid in the answer slot under the headline tiles of the ${question.page === 'guide' ? 'Guide and Channel3 evidence' : 'Evidence readiness'} page`,
-    `\`configure_widget\`: title and ${question.columns.length} columns from ${question.table}`,
-    `\`add_widget_filter\`: ${describeFilter(question, value)}`,
+  // (r31 J1 J4) The reply says each step in plain words for a seller; the exact Studio tool names stay in `technical`,
+  // which the dashboard shows under a collapsed "Technical steps" (main.jsx), in the same order as `calls`.
+  const pageName = question.page === 'guide' ? 'Guide and Channel3 evidence' : 'Evidence readiness';
+  const technical = [
+    ...(clearing ? [{ tool: 'clear_selections', plain: `Cleared the page's own selection (${selected.join('; ')}) so the table shows every matching row`,
+      detail: `the page's cross filter and page filter values (${selected.join('; ')}), reset through the dashboard, not a Studio tool` }] : []),
+    ...(slotExists[question.page] ? [removeStep(slotTitles[question.page])] : []),
+    { tool: 'add_widget', plain: `Added a table under the headline tiles of the ${pageName} page`,
+      detail: `a grid in the answer slot under the headline tiles of the ${pageName} page` },
+    { tool: 'configure_widget', plain: `Showed ${question.columns.length} columns from ${plainName(question.table)}`,
+      detail: `title and ${question.columns.length} columns from ${question.table}` },
+    { tool: 'add_widget_filter', plain: `Filtered: ${plainFilter(question, value)}`, detail: describeFilter(question, value) },
   ];
-  const reply = `${question.say(matched, rows)} How I built this: ${steps.map((step, index) => `${index + 1}. ${step}`).join(' ')}. ${BOUNDARY}`;
+  // (r32 J3) Without the clear hook the selection stays, so the reply says the table shows only rows inside it.
+  const narrowed = !clearing && selected.length > 0
+    ? ` The page also has its own selection (${selected.join('; ')}), so the table shows only the matching rows inside it.` : '';
+  const reply = `${question.say(matched, rows)} How I built this: ${technical.map((step, index) => `${index + 1}. ${step.plain}.`).join(' ')}${narrowed} ${BOUNDARY}`;
   const key = { cases: 'case_ref', time_events: 'event_id', requirements: 'requirement_id', benchmark: 'flow_id', receipts: 'receipt_id' }[question.table];
-  return { intent: question.id, refs: matched.map((row) => row[key]), calls, page: question.page, reply, filter };
+  return { intent: question.id, refs: matched.map((row) => row[key]), calls, page: question.page, reply, filter, technical };
 }
+
+// (foolproofing 2026-11-04) A delegated question can use the whole Studio allowance (20 Gemini calls per client per
+// day, controlled_fallback.CALLS_PER_CLIENT_PER_DAY), so the auditor asks first and delegates only after a plain yes.
+export const DELEGATE_CONFIRM_TEXT = 'This question goes to Studio\'s data agent (Gemini, paid). One question usually uses 3 to 6 Gemini calls (hard stop at 8) of the 20 allowed per day on this console. Reply "yes" to send it, or ask something else.';
+// (red team r27 A) The question goes to the data agent, not the lead orchestrator, with a short scope so it answers
+// in a few turns: the lead added planning, renaming and verify turns and once used all 20 calls with no summary.
+// Kept short and digit-free so prefix plus question stays inside the 600-character user item (studio_agent.py).
+export const DELEGATE_PREFIX = 'Question mode, not exploration. Use at most two rounds of execute_query, then call complete_task. Answer in plain text from the rows only: counts and field values. No opinion about any party or result. Do not create widgets.';
+export const DELEGATE_INSTRUCTIONS_MAX = 600;
+export const delegateInstructions = (question) => {
+  const room = DELEGATE_INSTRUCTIONS_MAX - DELEGATE_PREFIX.length - ' Question: '.length;
+  return `${DELEGATE_PREFIX} Question: ${String(question).slice(0, Math.max(0, room))}`;
+};
+// (red team r27 A) Shown in place of the summary when the agent did not finish inside the call limit.
+export const NO_SUMMARY = '(the delegate finished without a summary)';
+export const NOT_FINISHED_TEXT = 'The data agent did not finish this question within the call limit, so there is no answer to show. Ask a narrower question, or try again after the console restarts.';
+// (red team r27 A) The summary is shown only when it reads as a report of the rows, not a judgement about the dispute.
+const JUDGEMENT_WORDS = /\b(?:wins?|won|winning|lose[sd]?|losing|lost|prevails?|prevailed|liable|at fault|guilty|in (?:the )?(?:seller|buyer|merchant|customer)'?s? favou?r|(?:likely|chance|probability) (?:to|of) (?:win|succeed|prevail)|should (?:win|lose|be refunded)|(?:strong|weak)(?:er)? case|supports? the (?:seller|buyer|merchant|customer))\b/iu;
+export const WITHHELD_TEXT = 'The answer was withheld: it read as a judgement about the dispute, which this dashboard does not make.';
+export const readsAsJudgement = (text) => typeof text === 'string' && JUDGEMENT_WORDS.test(text);
+// (live run 2026-11-04) Studio writes mentions such as @table[cases] and @field[cases.reason] and markdown; the chat
+// renders them, the status line above the canvas shows plain text.
+export const plainSummary = (text) => String(text ?? '')
+  .replace(/@table\[([^\]]+)\]/gu, '$1')
+  .replace(/@field\[(?:[^\].]+\.)?([^\]]+)\]/gu, '$1')
+  .replace(/[`*]/gu, '')
+  .replace(/:?\s+-\s+/gu, ' · ')
+  .replace(/\s+/gu, ' ')
+  .trim();
+const CONFIRM_WORDS = /^\s*(yes|y|ok|okay|send it|continue)\s*[.!]?\s*$/iu;
+export const isDelegateConfirmation = (text) => typeof text === 'string' && CONFIRM_WORDS.test(text);
 
 function lastUserText(messages) {
   for (let index = messages.length - 1; index >= 0; index -= 1) {
@@ -168,11 +264,14 @@ function* say(messageId, text) {
 // Build the runnable agent.
 //   studio     Studio's built tools (harness `tools.studio`)      getState  reads the dashboard state
 //   data       { cases, requirements, time_events, benchmark, receipts } rows the dashboard was built from
-//   delegate   optional `tools.delegateTo(['lead'])`, only when the built-in agents are live
+//   delegate   optional `tools.delegateTo(['data'])`, only when the built-in agents are live
 //   recording  optional validated recording (agentRecording.js), replayed when the agents are not live
 //   recorder   optional recorder, in record mode only            onAnswer  called with the page that changed
-export function createEvidenceAuditor({ studio, getState, data, delegate = null, recording = null, recorder = null, onAnswer = () => {} }) {
+//   clearSelections  optional (pageId) => void, clears that page's cross filter and page filter values (r32 J3)
+export function createEvidenceAuditor({ studio, getState, data, delegate = null, recording = null, recorder = null, onAnswer = () => {}, onDelegated = () => {}, clearSelections = null }) {
   let sequence = 0;
+  // (red team r26 #2 P2) Pending questions are kept per Studio thread, and a confirmation word is never stored.
+  const pendingByThread = new Map();
   const mode = delegate ? 'live' : recording ? 'replay' : 'off';
   return {
     id: AUDITOR_ID,
@@ -184,11 +283,21 @@ export function createEvidenceAuditor({ studio, getState, data, delegate = null,
       const messageId = `${runId}-reply`;
       yield { type: 'RUN_STARTED', threadId, runId };
       try {
-        const question = lastUserText(input.messages || []);
+        const typed = lastUserText(input.messages || []);
+        const pending = pendingByThread.get(threadId) ?? null;
+        const confirmed = mode === 'live' && pending !== null && isDelegateConfirmation(typed);
+        const question = confirmed ? pending : typed;
+        pendingByThread.delete(threadId);
         const state = getState();
         const slotExists = Object.fromEntries(Object.entries(ANSWER_SLOTS)
           .map(([page, widgetId]) => [page, Boolean(state?.pages?.find((entry) => entry.id === page)?.widgets?.[widgetId])]));
-        const plan = planAnswer(question, data, { slotExists });
+        const pageIds = Object.keys(ANSWER_SLOTS);
+        const plan = planAnswer(question, data, {
+          slotExists,
+          slotTitles: Object.fromEntries(pageIds.map((page) => [page, slotTitle(state, page)])),
+          selections: Object.fromEntries(pageIds.map((page) => [page, pageSelections(state, page)])),
+          canClear: typeof clearSelections === 'function',
+        });
         if (plan.intent === 'built_in') {
           const recorded = recording ? ` A run recorded on ${recording.recorded_at.slice(0, 10)} can be replayed here: ask "${recording.runs[0].question}".` : '';
           yield* say(messageId, `${mode === 'live' ? BUILT_IN_LIVE : `${BUILT_IN_OFF}${recorded}`} I am the evidence auditor: I answer my own questions with code. ${BOUNDARY}`);
@@ -196,20 +305,30 @@ export function createEvidenceAuditor({ studio, getState, data, delegate = null,
           return;
         }
         if (plan.intent === 'unknown') {
+          if (mode === 'live' && !confirmed) {
+            if (!isDelegateConfirmation(question)) pendingByThread.set(threadId, question);
+            yield* say(messageId, `${DELEGATE_CONFIRM_TEXT} ${BOUNDARY}`);
+            yield { type: 'RUN_FINISHED', threadId, runId, result: { intent: 'confirm_delegation' } };
+            return;
+          }
           if (mode === 'live') {
-            // Hand the question to Studio's lead agent; it plans and delegates to the page and widget agents.
+            // Hand the question to Studio's data agent (type data) with a short scope; it answers from the rows.
             recorder?.begin(question, state?.selectedPageId || ANSWER_PAGE_ID);
             const tool = delegate;
             const toolCallId = `${runId}-delegate`;
-            const args = { type: { id: 'lead' }, instructions: question };
+            const args = { type: { id: 'data' }, instructions: delegateInstructions(question) };
             yield { type: 'TOOL_CALL_START', toolCallId, toolCallName: tool.name };
             yield { type: 'TOOL_CALL_ARGS', toolCallId, delta: JSON.stringify(args) };
             yield { type: 'TOOL_CALL_END', toolCallId };
             const result = await tool.execute({ toolCallId, name: tool.name, args }, toolCtx);
-            const summary = result.success ? result.response : result.issues.map((issue) => issue.message).join('; ');
+            const raw = result.success ? result.response : result.issues.map((issue) => issue.message).join('; ');
+            const finished = result.success && typeof raw === 'string' && raw.trim() !== '' && raw.trim() !== NO_SUMMARY;
+            const summary = !finished ? NOT_FINISHED_TEXT : readsAsJudgement(raw) ? WITHHELD_TEXT : raw;
             yield { type: 'TOOL_CALL_RESULT', messageId: `${toolCallId}-result`, toolCallId, role: 'tool', content: summary };
             recorder?.end(summary);
-            yield* say(messageId, `That is outside my fixed questions, so I handed it to Studio's lead agent (Gemini, through the console's governed route). Its summary: ${summary} ${BOUNDARY}`);
+            // (red team r27 B) Also reported outside the Studio thread, so a Studio remount cannot hide the answer.
+            onDelegated({ question, summary, ok: finished && summary === raw });
+            yield* say(messageId, `That is outside my fixed questions, so I handed it to Studio's data agent (Gemini, through the console's governed route). Its answer: ${summary} ${BOUNDARY}`);
             yield { type: 'RUN_FINISHED', threadId, runId, result: { intent: 'delegated', ok: result.success } };
             return;
           }
@@ -217,16 +336,20 @@ export function createEvidenceAuditor({ studio, getState, data, delegate = null,
           if (recorded) {
             yield* replayRun(recorded, { studio, getState, toolContext: toolCtx, idPrefix: `${runId}-replay` });
             onAnswer(recorded.page_id);
-            yield* say(messageId, `${recordingLabel(recording)} The lead agent's answer then: ${recorded.reply} ${BOUNDARY}`);
+            yield* say(messageId, `${recordingLabel(recording)} The data agent's answer then: ${recorded.reply} ${BOUNDARY}`);
             yield { type: 'RUN_FINISHED', threadId, runId, result: { intent: 'replayed' } };
             return;
           }
-          const offer = mode === 'replay' ? ` A recorded run of Studio's lead agent can be replayed for: ${recording.runs.map((run) => `"${run.question}"`).join(', ')}.` : ` ${BUILT_IN_OFF}`;
+          const offer = mode === 'replay' ? ` A recorded run of Studio's data agent can be replayed for: ${recording.runs.map((run) => `"${run.question}"`).join(', ')}.` : ` ${BUILT_IN_OFF}`;
           yield* say(messageId, `I answer fixed questions with code: ${QUESTIONS.map((entry) => entry.label).join(' ')}${offer} ${BOUNDARY}`);
           yield { type: 'RUN_FINISHED', threadId, runId, result: { intent: 'unknown' } };
           return;
         }
         for (const call of plan.calls) {
+          if (call.tool === 'clearSelections') {
+            clearSelections(call.page);  // dashboard state, not a Studio tool: no tool-call events
+            continue;
+          }
           sequence += 1;
           const tool = call.tool === 'configureWidget'
             ? studio.configureWidget({ widgetType: 'grid', widgetId: call.args.widgetId }, { pageId: call.page })
@@ -240,7 +363,8 @@ export function createEvidenceAuditor({ studio, getState, data, delegate = null,
             content: result.success ? result.response : result.issues.map((issue) => issue.message).join('; ') };
           if (!result.success) throw new Error(`${tool.name} failed: ${result.issues.map((issue) => issue.message).join('; ')}`);
         }
-        if (plan.page) onAnswer(plan.page);
+        // (r31 J1 J4) The tool-name steps go to the dashboard's collapsed "Technical steps", not into the reply.
+        if (plan.page) onAnswer(plan.page, plan.technical);
         yield* say(messageId, plan.reply);
         yield { type: 'RUN_FINISHED', threadId, runId, result: { intent: plan.intent, refs: plan.refs } };
       } catch (failure) {

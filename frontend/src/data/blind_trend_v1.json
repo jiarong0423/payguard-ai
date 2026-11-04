@@ -5,7 +5,7 @@
   "schema_version": "payguard.blind_trend.v1",
   "source": {
     "path": "docs/evidence/KEYWORD_CHOOSER_BASELINE.md",
-    "sha256": "f521b09c27cb13a893e5011f98dec52e91740e13481ddbf37a80e68c7491bdf2"
+    "sha256": "b622f60cb961bf83547427fe39b5d5209e952613459ca075fb50046ce16b502c"
   },
   "steps": [
     {

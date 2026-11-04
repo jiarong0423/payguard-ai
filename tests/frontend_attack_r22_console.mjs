@@ -40,7 +40,10 @@ assert.ok(css.includes('.button.is-blocked { cursor: not-allowed; opacity: .45; 
   assert.ok(guard.indexOf('if (busyRef.current) return;') > -1 && guard.indexOf('if (busyRef.current) return;') < guard.indexOf('scan();'), 'busy clicks ignored');
   assert.ok(guard.includes('if (aup && !aupConsumed) {') && guard.indexOf('if (aup && !aupConsumed) {') < guard.indexOf('scan();'), 'fresh result: no repeat request');
   // attack r23: neutral info that stays until the description changes, not the green toast.
-  assert.ok(guard.includes("setInfo({ kind: 'already', text: 'Already checked. Edit the description to check it again.' });"), 'repeat click says why');
+  // (r32 J4 P1-1) A press 30 s or more after the check runs it again (new 2-minute window); a burst still sends nothing.
+  assert.ok(guard.includes("setInfo({ kind: 'already', text: 'Already checked. To restart the 2-minute window, press Run Policy Check again 30 seconds after a check.' });"), 'repeat click says why');
+  assert.ok(guard.includes('if (Date.now() - aupCheckedAtRef.current >= AUP_RENEW_AFTER_MS) { scan(); return; }'), 'renewal only after the settle time');
+  assert.ok(app.includes('const AUP_RENEW_AFTER_MS = 30000;'), 'renewal settle time');
 }
 
 // P2: the phone bar's Check country rules shows loading and aria-busy from the panel's own request.
@@ -50,7 +53,8 @@ assert.ok(app.includes('onBusy={setCountryBusy}') && app.includes('loading: coun
 
 // P2: after Confirm Draft Context the bar offers the draft step's action, not Run Policy Check.
 assert.ok(app.includes(": invoiceReview ? (hosted ? null : sandbox?.status === 'connected'"), 'bar follows the bound draft context');
-assert.ok(app.includes("{ key: 'invoice', label: 'Create Sandbox draft', icon: 'file', onClick: createInvoice,"), 'connected: Create Sandbox draft');
+// (foolproofing 2026-11-04) The bar's Create Sandbox draft opens the two-step dialog, like the in-page button.
+assert.ok(app.includes("{ key: 'invoice', label: 'Create Sandbox draft', icon: 'file', onClick: () => setDraftConfirm(true),"), 'connected: Create Sandbox draft');
 assert.ok(app.includes("{ key: 'connect', label: 'Connect US Sandbox', icon: 'link', onClick: connectSandbox,"), 'not connected: connect first');
 assert.ok(css.includes('.app-shell.phone-action-invoice [data-testid="invoice-create"]'), 'in-page twin hides like the others');
 

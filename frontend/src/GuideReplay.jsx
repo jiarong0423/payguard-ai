@@ -55,12 +55,13 @@ export function SourceChip({ data }) {
 
 // Gap table shared by the replay and the live guide: AG Grid Community with floating text
 // filters, a quick filter, a shown-rows counter and CSV export of every row passed in.
+// (r34 #14) Item, Status and Source wrap and grow the row (wrapText + autoHeight) instead of ending in "…" at 1280 px.
 const GAP_COLUMNS = [
-  { field: 'label', headerName: 'Item', flex: 1.4, minWidth: 180, sortable: true, filter: 'agTextColumnFilter', floatingFilter: true },
-  { field: 'status', headerName: 'Status', flex: 1.6, minWidth: 220, cellRenderer: ({ value }) => <StatusChip value={value} />, sortable: true,
+  { field: 'label', headerName: 'Item', flex: 1.4, minWidth: 180, wrapText: true, autoHeight: true, sortable: true, filter: 'agTextColumnFilter', floatingFilter: true },
+  { field: 'status', headerName: 'Status', flex: 1.6, minWidth: 160, wrapText: true, autoHeight: true, cellRenderer: ({ value }) => <StatusChip value={value} />, sortable: true,
     filter: 'agTextColumnFilter', floatingFilter: true, filterValueGetter: ({ data }) => statusText(data.status),
     getQuickFilterText: ({ data }) => statusText(data.status) },
-  { field: 'source', headerName: 'Source', flex: 1, minWidth: 150, cellRenderer: ({ data }) => <SourceChip data={data} />, sortable: true,
+  { field: 'source', headerName: 'Source', flex: 1, minWidth: 120, wrapText: true, autoHeight: true, cellRenderer: ({ data }) => <SourceChip data={data} />, sortable: true,
     filter: 'agTextColumnFilter', floatingFilter: true, filterValueGetter: ({ data }) => sourceText(data),
     getQuickFilterText: ({ data }) => sourceText(data) },
 ];

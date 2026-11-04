@@ -354,3 +354,57 @@ class DefaultsUnchangedTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class HostedGuideModelTests(unittest.TestCase):
+    """(r32 hosted guide) Gemini for the hosted guide is an explicit opt-in on a free-tier key, under lower caps."""
+
+    GUIDE_ENV = {"PAYGUARD_GUIDE_MODEL": "gemini", "PAYGUARD_GEMINI_TRANSPORT": "api_key"}
+
+    def build(self, **values):
+        with clean_env(**DEMO_ENV, **values):
+            return create_app(store=SessionStore()).state.guide
+
+    def test_without_the_switch_the_hosted_guide_never_builds_a_chooser(self):
+        # Even with every guide model variable set, the hosted guide stays on the keyword chooser.
+        guide = self.build(**self.GUIDE_ENV)
+        with mock.patch("app.guide_routes.select_guide_chooser", side_effect=AssertionError("no chooser")):
+            self.assertIsNone(guide.chooser_factory())
+        self.assertEqual(guide._chooser_status(), ("keyword", False))
+
+    def test_any_other_switch_value_is_off(self):
+        for value in ("", "on", "true", "Gemini", "gemini "):
+            with self.subTest(value=value):
+                guide = self.build(**self.GUIDE_ENV, PAYGUARD_HOSTED_GUIDE_MODEL=value)
+                self.assertIsNone(guide.chooser_factory())
+
+    def test_with_the_switch_the_default_factory_decides_under_lower_caps(self):
+        from app import guide_routes
+        guide = self.build(**self.GUIDE_ENV, PAYGUARD_HOSTED_GUIDE_MODEL="gemini")
+        sentinel = object()
+        with mock.patch("app.guide_routes.select_guide_chooser", return_value=sentinel):
+            self.assertIs(guide.chooser_factory(), sentinel)
+        self.assertEqual(guide.governor._global_per_minute, guide_routes.HOSTED_GUIDE_CALLS_PER_MINUTE)
+        self.assertEqual(guide.governor._global_per_day, guide_routes.HOSTED_GUIDE_CALLS_PER_DAY)
+        self.assertLessEqual(guide_routes.HOSTED_GUIDE_CALLS_PER_MINUTE, 5)
+        self.assertLessEqual(guide_routes.HOSTED_GUIDE_CALLS_PER_DAY, 20)
+
+    def test_switch_on_without_a_key_stays_on_keywords(self):
+        # No GEMINI_API_KEY in the environment: the api-key profile is not configured, so no worker can start.
+        with clean_env(**DEMO_ENV, **self.GUIDE_ENV, PAYGUARD_HOSTED_GUIDE_MODEL="gemini"):
+            os.environ.pop("GEMINI_API_KEY", None)
+            guide = create_app(store=SessionStore()).state.guide
+            self.assertIsNone(guide.chooser_factory())
+
+    def test_the_other_ai_routes_stay_disabled_with_the_switch_on(self):
+        self.assertIn(("POST", "/api/v1/ai/evidence-brief"), DISABLED_ROUTES)
+        self.assertIn(("POST", "/api/v1/studio/agent-turn"), DISABLED_ROUTES)
+
+    def test_lower_caps_can_never_raise_the_shared_ones(self):
+        from payguard import controlled_fallback as cf
+        governor = cf.Governor(global_per_minute=cf.GLOBAL_CALLS_PER_MINUTE * 10, global_per_day=cf.GLOBAL_CALLS_PER_DAY * 10)
+        self.assertEqual((governor._global_per_minute, governor._global_per_day),
+                         (cf.GLOBAL_CALLS_PER_MINUTE, cf.GLOBAL_CALLS_PER_DAY))
+        small = cf.Governor(clock=lambda: 1000.0, min_spacing=0, global_per_minute=2)
+        admitted = [small.admit(f"s{n}", client_id=f"c{n}")[0] is None for n in range(4)]
+        self.assertEqual(admitted, [True, True, False, False])

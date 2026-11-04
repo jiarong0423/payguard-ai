@@ -105,15 +105,26 @@ export async function fetchAgentStatus(client) {
   }
 }
 
+// (red team r27 A) From this turn of one thread on, a request that offers complete_task must call it, so a delegated
+// question ends with a summary instead of running into the 20-call budget. Studio's own forced-terminator retry uses
+// the same tool_choice, which the backend accepts (studio_agent.validate_turn).
+export const FORCE_FINISH_AFTER_TURNS = 5;
+
 export function createGeminiAdapter(client) {
   let turns = 0;
+  const perThread = new Map();
   return {
     executeTurn(request, options = {}) {
       turns += 1;
       const turnId = `turn-${turns}`;
+      const thread = options.trace?.threadId ?? 'default';
+      const count = (perThread.get(thread) || 0) + 1;
+      perThread.set(thread, count);
+      const offersFinish = Array.isArray(request?.tools) && request.tools.some((tool) => tool?.name === 'complete_task');
+      const sent = count >= FORCE_FINISH_AFTER_TURNS && offersFinish ? { ...request, toolChoice: { name: 'complete_task' } } : request;
       const pending = (async () => {
         try {
-          const reply = await client.json(TURN_PATH, { method: 'POST', body: toWireTurn(request), signal: options.signal });
+          const reply = await client.json(TURN_PATH, { method: 'POST', body: toWireTurn(sent), signal: options.signal });
           return { ok: true, ...toStudioResponse(reply, turnId) };
         } catch (error) {
           return { ok: false, error: { code: error.code || 'studio_agent_failed', message: error.message || 'The agent turn failed.' } };

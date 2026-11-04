@@ -342,6 +342,7 @@ textarea:focus, input[type="text"]:focus, input[type="number"]:focus, select:foc
 .case-note p { margin: 0; line-height: 1.5; }
 .dashboard-cta { padding: 12px 12px; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-control); background: var(--pg-color-panel); color: var(--pg-color-accent-strong); font-weight: 600; }
 .dashboard-cta:hover { background: var(--pg-color-accent-tint); }
+.proof-cta { margin-top: 8px; }
 
 .evidence-workspace { padding: 16px; background: var(--pg-color-panel); }
 .evidence-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
@@ -428,6 +429,8 @@ textarea:focus, input[type="text"]:focus, input[type="number"]:focus, select:foc
 .provider-dispute-actions > .text-dim { flex: 1 1 260px; font-size: var(--type-meta); line-height: 1.5; }
 .provider-dispute-actions > .technical-details { flex-basis: 100%; }
 .technical-details { margin-top: 8px; border-top: 1px dashed var(--pg-color-rule); }
+/* (r33 M4) Step 3 draft: one plain line for the guide items that are not part of this draft. */
+.guide-open-items { margin: 0; font-size: var(--type-meta); }
 .technical-details > summary { display: flex; align-items: center; min-height: 44px; color: var(--pg-color-muted); font-size: var(--type-meta); font-weight: 650; cursor: pointer; }
 .technical-details p, .technical-details pre { font-size: var(--type-meta); }
 .evidence-preview pre { margin: 12px 0; padding: 12px; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-control); background: var(--pg-color-recede); color: var(--pg-color-ink); line-height: 1.5; overflow: auto; max-height: 260px; }
@@ -554,9 +557,10 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 .footer-divider { margin: 0 4px; color: var(--pg-color-rule); }
 
 /* Feedback toasts and modal dialog */
-/* Toasts sit bottom-left: bottom-right hid the step 02 spike bar (UI/UX r13 P1) and the top covered the sticky step
-   bar (r14 P2). */
-.feedback-region { position: fixed; left: max(18px, calc((100vw - 1200px) / 2)); bottom: 16px; z-index: 45; width: min(420px, calc(100vw - 28px)); pointer-events: none; }
+/* (r32 J1 J4) Toasts sit top-right, below the sticky step bar (it ends near 150px on an unscrolled page, r14 P2): at
+   the bottom-left they covered form content (desk_11, desk_21), and bottom-right hid the step 02 spike bar (r13 P1).
+   Phones show them inline under the step bar instead (see the max-width: 640px block). */
+.feedback-region { position: fixed; right: max(18px, calc((100vw - 1200px) / 2)); top: 164px; z-index: 45; width: min(380px, calc(100vw - 28px)); pointer-events: none; }
 /* Success and info toasts never take a tap (r16 P2); an error keeps its buttons. */
 .feedback-region .message-success, .feedback-region .message-info { pointer-events: none; }
 .message { display: flex; align-items: center; gap: 12px; margin: 0 0 12px; padding: 12px 16px; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-control); box-shadow: var(--pg-elev-l3); font-size: var(--type-meta); pointer-events: auto; }
@@ -616,7 +620,12 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
   }
   .phone-action-bar .button { width: 100%; justify-content: center; }
   .app-shell.has-phone-action { padding-bottom: calc(56px + 16px + env(safe-area-inset-bottom)); }
-  .app-shell.has-phone-action .feedback-region { left: 10px; bottom: calc(56px + 12px + env(safe-area-inset-bottom)); width: calc(100vw - 20px); }
+  /* (r32 J4) Inline on phones, in the page flow under the step bar, so a message never sits over the form; only an
+     error, which blocks the next action anyway, stays fixed above the action bar. */
+  .feedback-region { position: static; width: auto; margin: 0 16px; }
+  .feedback-region .message { box-shadow: none; }
+  .feedback-region .message-error { position: fixed; left: 10px; right: 10px; bottom: 12px; z-index: 45; }
+  .app-shell.has-phone-action .feedback-region .message-error { bottom: calc(56px + 12px + env(safe-area-inset-bottom)); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -695,8 +704,8 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
   .stage-block, .stage-block-details, .step-more { margin-left: 16px; margin-right: 16px; }
   .stage-block { padding: 0; margin-top: 0; }
   .compliance-layout { padding: 16px; }
-  .main-content .button { white-space: nowrap; }
-  .demo-actions .button, .stage-next .button { white-space: normal; }
+  /* Long labels wrap instead of being cut at the button edge (phone click-all 2026-11-04). */
+  .main-content .button { white-space: normal; text-align: center; }
   .stage-title { white-space: normal; }
   .invoice-draft-form .checkbox-label { max-width: none; }
   /* Hide the action bar while the keyboard is up, so it never covers the field being typed in. */
@@ -777,6 +786,21 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
   .app-shell.phone-action-approve [data-testid="dispute-approve"] { visibility: hidden; }
   /* The bar hides while the keyboard is up, so the in-page button comes back. */
   .app-shell.has-phone-action.is-typing :is([data-testid="aup-review"], [data-testid="country-check"], [data-testid="country-continue-draft"], [data-testid="demo-burst"], [data-testid="dispute-draft"], [data-testid="dispute-approve"]) { visibility: visible; }
+  /* (r33 M5) The kept space read as a blank gap (J4 r32 phone_06). It still keeps its size (no layout jump, r2 P0), but
+     now shows one small muted line pointing at the bar. The line is drawn out of flow inside the hidden button, so the
+     button's size does not change, and taps pass through it (the hidden button itself takes no taps). */
+  :is(.app-shell.phone-action-aup [data-testid="aup-review"],
+    .app-shell.phone-action-country [data-testid="country-check"],
+    .app-shell.phone-action-country-next [data-testid="country-continue-draft"],
+    .app-shell.phone-action-burst [data-testid="demo-burst"],
+    .app-shell.phone-action-draft [data-testid="dispute-draft"],
+    .app-shell.phone-action-approve [data-testid="dispute-approve"],
+    .app-shell.phone-action-invoice [data-testid="invoice-create"],
+    .app-shell.phone-action-connect [data-testid="sandbox-connect"]) { position: relative; }
+  .app-shell.has-phone-action:not(.is-typing) :is(.phone-action-aup [data-testid="aup-review"], .phone-action-country [data-testid="country-check"], .phone-action-country-next [data-testid="country-continue-draft"], .phone-action-burst [data-testid="demo-burst"], .phone-action-draft [data-testid="dispute-draft"], .phone-action-approve [data-testid="dispute-approve"], .phone-action-invoice [data-testid="invoice-create"], .phone-action-connect [data-testid="sandbox-connect"])::after {
+    content: "Use the button at the bottom ↓"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: flex-start;
+    padding: 0 2px; visibility: visible; pointer-events: none; white-space: nowrap; color: var(--pg-color-muted); font-size: var(--type-meta); font-weight: 500;
+  }
   /* Tabs scroll sideways with snap points instead of wrapping. */
   .secondary-tabs { flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
   .secondary-tab { flex: none; scroll-snap-align: start; }
@@ -789,7 +813,8 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 /* Phone: the step tabs already offer Policy / Sales / Dispute, so the start-here row would repeat them. Kept last so
    the layout rules above cannot override it. */
 @media (max-width: 640px) { .page-top .start-here, .start-here { display: none; } }
-/* Phones keep one header link, the dashboard; the other two have in-page entries (click-all 2026-11-03 #11). */
+/* Phones keep one header link, the dashboard; the other two have in-page entries (click-all 2026-11-03 #11;
+   Proof: dispute case list and dashboard footer, 2026-11-04). */
 @media (max-width: 640px) {
   .topbar nav { display: flex; gap: 0; }
   .topbar nav a:not([data-testid="topbar-dashboard"]) { display: none; }
@@ -1065,7 +1090,8 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 .send-confirm-summary dt { color: #475569; }
 .send-confirm-summary dd { margin: 0; overflow-wrap: anywhere; }
 .send-confirm-check { display: flex; gap: 8px; align-items: center; margin: 0 0 16px; font-weight: 600; }
-.send-confirm-warning { display: flex; gap: 8px; align-items: center; margin: 0 0 8px; font-weight: 650; color: #9a3412; }
+/* (r32 J4 P2-2) Both dialog warnings in the same orange; the dialog's own class wins over any page paragraph rule. */
+.send-confirm .send-confirm-warning { display: flex; gap: 8px; align-items: center; margin: 0 0 8px; font-weight: 650; color: #9a3412; }
 .send-confirm-countdown { margin: 0 0 16px; color: #334155; }
 .send-confirm-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
 .button.button-confirm-continue { background: #c2410c; border-color: #c2410c; color: #fff; }
@@ -1075,3 +1101,43 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 @media (max-width: 560px) { .send-guard { grid-template-columns: 1fr; } .send-confirm-summary div { grid-template-columns: 1fr; } }
 .button.button-confirm-continue:hover:not(:disabled) { background: #9a3412; border-color: #9a3412; color: #fff; }
 .button.button-confirm-send:hover:not(:disabled):not(.is-holding) { background: #3b5640; border-color: #3b5640; color: #fff; }
+
+/* (phone test 2026-11-04, 360 CSS px) The draft amount field and long badges stayed on one line and ran past the card edge. */
+@media (max-width: 640px) {
+  .invoice-draft-form > label:first-child input { width: 96px; }
+  .badge { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+}
+
+/* ---- r31 judges (2026-11-04) ---- */
+/* (r31 A4) A locked primary action says why in one visible line under it (lockReasons.js); muted, not an error. On a
+   360 px phone it wraps under the button inside the same row, with no extra card. */
+.lock-reason { display: flex; flex-basis: 100%; gap: 6px; align-items: flex-start; margin: 0; color: var(--pg-color-muted); font-size: var(--type-meta); line-height: 1.45; }
+.lock-reason > svg { flex-shrink: 0; margin-top: 2px; }
+.lock-reason > span { min-width: 0; overflow-wrap: anywhere; }
+.provider-dispute-actions > .lock-reason, .human-review > .lock-reason { margin-top: -4px; }
+/* (r31 J4 P1-2 A3a) The draft dialog's expiry line replaces its steps; the same orange as the dialog's warning. */
+.send-confirm-expired { display: flex; gap: 8px; align-items: flex-start; margin: 0 0 16px; font-weight: 650; color: #9a3412; line-height: 1.5; }
+.send-confirm-expired > svg { flex-shrink: 0; margin-top: 3px; }
+/* (r31 J4 P1-1 A2) "Session resumed" can be closed: that one info toast takes taps, with a 44 px close target. */
+.feedback-region .message-info[data-testid="console-info"] { pointer-events: auto; }
+/* (r32 J4 P2-3) The remaining time of the policy result, next to the result. */
+.aup-valid-for { display: flex; align-items: center; gap: 6px; margin: 4px 0 0; font-size: var(--type-meta); }
+.message-info .icon-button { min-width: 44px; min-height: 44px; margin: -12px -14px -12px auto; flex-shrink: 0; }
+
+/* ---- r34 console fixes ---- */
+/* (r34 #14) Labels that ran past their box wrap instead: the reason badge on a dispute card (KTG at 1280/1440), the
+   step tab titles at 768 px ("Policy pre-ch…"), and the text of a toast. */
+.case-card .badge { white-space: normal; max-width: 100%; overflow-wrap: anywhere; text-align: left; }
+@media (max-width: 900px) {
+  .journey-step strong { white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: anywhere; line-height: 1.25; }
+}
+.feedback-region .message { overflow-wrap: anywhere; }
+.feedback-region .message > div, .feedback-region .message > span { min-width: 0; }
+/* (r34 #13) The evidence area's Technical details sits apart at the very bottom, below the preview and Debug-Id. */
+.provider-disputes-body > .technical-details:last-child { margin-top: 32px; padding-top: 16px; border-top: 1px dashed var(--pg-color-rule); }
+/* (r34 #21) The country check that ended with an expired session, in step 01 where its result was. */
+.country-lost { margin: 0 16px 8px; }
+@media (max-width: 640px) {
+  /* (r34 #7) A phone error stays above the sticky bar and never grows over it; a refused preview is shown in place. */
+  .feedback-region .message-error { max-height: 40vh; max-height: 40dvh; overflow-y: auto; }
+}

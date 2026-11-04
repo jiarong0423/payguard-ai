@@ -9,6 +9,9 @@ body { margin: 0; background: var(--pg-color-canvas); color: var(--pg-color-ink)
 .proof-band-inner span { color: var(--pg-color-band-muted); }
 .proof-main { width: min(100%, var(--pg-layout-max-width)); margin: 0 auto; padding: var(--pg-space-5) clamp(16px, 2.5vw, 32px) var(--pg-space-7); box-sizing: border-box; display: grid; gap: var(--pg-space-5); }
 .proof-main:focus { outline: none; }
+/* Grid children may shrink, and long evidence file names wrap (phone click-all 2026-11-04: 7px overflow). */
+.proof-main > * { min-width: 0; }
+.proof-section code, .proof-section a { overflow-wrap: anywhere; }
 .proof-intro { display: grid; gap: var(--pg-space-2); max-width: 760px; }
 .proof-intro h1 { margin: 0; font-size: 28px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01em; }
 .proof-intro p { margin: 0; color: var(--pg-color-muted); font-size: 16px; }
@@ -46,7 +49,7 @@ body { margin: 0; background: var(--pg-color-canvas); color: var(--pg-color-ink)
 .proof-meta dd { margin: 0; color: var(--pg-color-muted); font-size: 14px; overflow-wrap: anywhere; }
 .proof-meta code, .proof-foot code { font-family: var(--pg-font-mono); font-size: 14px; color: var(--pg-color-ink); overflow-wrap: anywhere; }
 .proof-foot { display: grid; gap: var(--pg-space-2); color: var(--pg-color-subtle); font-size: 14px; }
-.proof-foot p { margin: 0; max-width: 90ch; }
+.proof-foot p { margin: 0; max-width: 90ch; min-width: 0; overflow-wrap: anywhere; }
 
 @media (max-width: 640px) {
   .proof-intro h1 { font-size: 24px; }

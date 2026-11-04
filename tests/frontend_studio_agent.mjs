@@ -3,7 +3,7 @@
 //      session and CSRF headers, failures surface as a failed turn, the status probe says "off" on any doubt.
 //   2. Recording: schema, personal data and key-like strings refused, recorder output from telemetry events.
 //   3. Replay: the recorded Studio tool calls run again with Studio's tools; read-only and failed steps do not.
-//   4. Auditor: questions outside its set go to the lead agent when live, to a recorded run when not.
+//   4. Auditor: questions outside its set go to the data agent (after a yes) when live, to a recorded run when not.
 //   5. Wiring in main.jsx: live agents only when the backend says live; record mode only when live.
 //   6. Browser (skipped without Playwright): a fresh build, the real Studio agent loop driven by a fake model
 //      behind route interception; the lead agent delegates, the page agent adds a widget, the recorder records it.
@@ -16,9 +16,9 @@ import { tmpdir } from 'node:os';
 import { dirname, extname, join, normalize, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { createGeminiAdapter, createSessionClient, fetchAgentStatus, toStudioResponse, toWireTurn, TURN_PATH } from '../frontend/src/dashboard/studioAgentClient.js';
+import { createGeminiAdapter, createSessionClient, FORCE_FINISH_AFTER_TURNS, fetchAgentStatus, toStudioResponse, toWireTurn, TURN_PATH } from '../frontend/src/dashboard/studioAgentClient.js';
 import { createRecorder, findRecordedRun, READ_ONLY_TOOLS, RECORDING_SCHEMA, recordingLabel, REPLAYED_TOOLS, replayRun, validateRecording } from '../frontend/src/dashboard/agentRecording.js';
-import { createEvidenceAuditor, DELEGATE_EXAMPLE, promptStarters } from '../frontend/src/dashboard/auditor.js';
+import { createEvidenceAuditor, DELEGATE_CONFIRM_TEXT, DELEGATE_EXAMPLE, DELEGATE_INSTRUCTIONS_MAX, delegateInstructions, isDelegateConfirmation, NO_SUMMARY, NOT_FINISHED_TEXT, plainSummary, promptStarters, readsAsJudgement, WITHHELD_TEXT } from '../frontend/src/dashboard/auditor.js';
 import { studioData } from '../frontend/src/dashboard/dashboardData.js';
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -42,6 +42,21 @@ const studioRequest = {
   responseFormat: { type: 'text' },
 };
 const wire = toWireTurn(studioRequest);
+{
+  // (red team r27 A) From turn FORCE_FINISH_AFTER_TURNS of one thread, a request offering complete_task must call it.
+  const sentBodies = [];
+  const fakeClient = { json: async (path, { body }) => { sentBodies.push(body); return { output: [{ type: 'text', text: 'ok' }], model: 'gemini', affects_decision: false }; } };
+  const adapter = createGeminiAdapter(fakeClient);
+  const finishing = { ...studioRequest, toolChoice: 'auto', tools: [...studioRequest.tools, { name: 'complete_task', description: 'Finish.', parameters: { type: 'object' } }] };
+  for (let index = 0; index < 6; index += 1) await adapter.executeTurn(finishing, { trace: { threadId: 'child-1' } }).complete;
+  await adapter.executeTurn(finishing, { trace: { threadId: 'child-2' } }).complete;
+  await adapter.executeTurn({ ...studioRequest, toolChoice: 'auto' }, { trace: { threadId: 'child-1' } }).complete;
+  assert.equal(FORCE_FINISH_AFTER_TURNS, 5);
+  assert.deepEqual(sentBodies.slice(0, 4).map((body) => body.tool_choice), ['auto', 'auto', 'auto', 'auto']);
+  assert.deepEqual(sentBodies.slice(4, 6).map((body) => body.tool_choice), [{ name: 'complete_task' }, { name: 'complete_task' }], 'forced from the fifth turn');
+  assert.equal(sentBodies[6].tool_choice, 'auto', 'another thread counts on its own');
+  assert.equal(sentBodies[7].tool_choice, 'auto', 'no forcing when complete_task is not offered');
+}
 assert.deepEqual(Object.keys(wire).sort(), ['instructions', 'items', 'response_format', 'tool_choice', 'tools']);
 assert.deepEqual(wire.items, [
   { kind: 'user', text: DELEGATE_EXAMPLE },
@@ -127,7 +142,7 @@ for (const [label, mutate] of [
   assert.throws(() => validateRecording(doc), /studio_recording_invalid/u, label);
 }
 for (const tool of Object.keys(REPLAYED_TOOLS)) assert.ok(!READ_ONLY_TOOLS.includes(tool));
-assert.equal(findRecordedRun(recording, '  make a WIDGET comparing cases by days to due! ')?.question, DELEGATE_EXAMPLE, 'question match ignores case and punctuation');
+assert.equal(findRecordedRun(recording, '  which REASON code appears most often across the three cases!! ')?.question, DELEGATE_EXAMPLE, 'question match ignores case and punctuation');
 assert.equal(findRecordedRun(recording, 'something else'), null);
 assert.equal(existsSync(resolve(projectRoot, 'frontend/src/data/studio_agent_run_v1.json'))
   ? validateRecording(json('frontend/src/data/studio_agent_run_v1.json')).source : 'none', existsSync(resolve(projectRoot, 'frontend/src/data/studio_agent_run_v1.json')) ? 'gemini_live_local' : 'none',
@@ -168,28 +183,79 @@ assert.equal(replayEvents.filter((event) => event.type === 'TOOL_CALL_RESULT').l
 // 4. Auditor: delegation when live, replay when recorded ----------------------------------------------------------
 const tables = Object.fromEntries(studioData({ disputes: json('frontend/src/data/dashboard_disputes_v1.json'), benchmark: json('frontend/src/data/guide_benchmark_v1.json'), receipts: json('frontend/src/data/channel3_receipts_v1.json') })
   .sources.map((source) => [source.id, source.data]));
-async function runAuditor(options, text) {
+async function runTurns(options, texts) {
   const agent = createEvidenceAuditor({ studio: standInStudio().studio, getState: () => ({ selectedPageId: 'readiness', pages: [] }), data: tables, ...options });
-  const events = [];
-  for await (const event of agent.run({ threadId: 't', runId: 'r', messages: [{ id: 'u', role: 'user', content: text }] })) events.push(event);
-  return { events, reply: events.filter((event) => event.type === 'TEXT_MESSAGE_CONTENT').map((event) => event.delta).join('') };
+  const turns = [];
+  for (const text of texts) {
+    const events = [];
+    for await (const event of agent.run({ threadId: 't', runId: 'r', messages: [{ id: 'u', role: 'user', content: text }] })) events.push(event);
+    turns.push({ events, reply: events.filter((event) => event.type === 'TEXT_MESSAGE_CONTENT').map((event) => event.delta).join('') });
+  }
+  return turns;
 }
+const runAuditor = async (options, text) => (await runTurns(options, [text]))[0];
 const delegated = [];
 const delegate = { name: 'delegate_to', kind: 'client', schema: () => ({}), async execute(invocation, toolCtx) { delegated.push(invocation.args); return toolCtx.success('Added a column chart days-chart.'); } };
 const begun = [];
-const liveRun = await runAuditor({ delegate, recorder: { begin: (...args) => begun.push(['begin', ...args]), end: (summary) => begun.push(['end', summary]) } }, DELEGATE_EXAMPLE);
-assert.deepEqual(delegated, [{ type: { id: 'lead' }, instructions: DELEGATE_EXAMPLE }], 'handed to the lead agent with the question only');
+// (foolproofing 2026-11-04) The first turn only asks; nothing is delegated until a plain yes.
+const [askFirst, liveRun] = await runTurns({ delegate, recorder: { begin: (...args) => begun.push(['begin', ...args]), end: (summary) => begun.push(['end', summary]) } }, [DELEGATE_EXAMPLE, 'yes']);
+assert.ok(askFirst.reply.includes(DELEGATE_CONFIRM_TEXT), 'the auditor asks before spending Studio calls');
+assert.equal(askFirst.events.at(-1).result.intent, 'confirm_delegation');
+assert.deepEqual(delegated, [{ type: { id: 'data' }, instructions: delegateInstructions(DELEGATE_EXAMPLE) }], 'handed to the data agent with the scope prefix and the question');
 assert.deepEqual(begun, [['begin', DELEGATE_EXAMPLE, 'readiness'], ['end', 'Added a column chart days-chart.']]);
-assert.match(liveRun.reply, /handed it to Studio's lead agent.*Added a column chart days-chart\./u);
+assert.match(liveRun.reply, /handed it to Studio's data agent.*Its answer: Added a column chart days-chart\./u);
+// (red team r27 A) Scope, length, unfinished runs and judgement wording.
+assert.ok(delegateInstructions(DELEGATE_EXAMPLE).endsWith(`Question: ${DELEGATE_EXAMPLE}`));
+assert.ok(delegateInstructions('x'.repeat(2000)).length <= DELEGATE_INSTRUCTIONS_MAX, 'prefix plus question fits the 600-character user item');
+assert.equal(/\d/u.test(delegateInstructions('')), false, 'the prefix carries no digits (the 9-digit check)');
+for (const [reply, success, shown, ok] of [
+  [NO_SUMMARY, true, NOT_FINISHED_TEXT, false],
+  ['', true, NOT_FINISHED_TEXT, false],
+  ['agent turn failed', false, NOT_FINISHED_TEXT, false],
+  ['The buyer is likely to win this one.', true, WITHHELD_TEXT, false],
+  ['Item not received appears in all 3 cases.', true, 'Item not received appears in all 3 cases.', true],
+]) {
+  const told = [];
+  const fake = { name: 'delegate_to', kind: 'client', schema: () => ({}), async execute(invocation, toolCtx) { return success ? toolCtx.success(reply) : toolCtx.error(reply); } };
+  const [, run] = await runTurns({ delegate: fake, onDelegated: (value) => told.push(value) }, [DELEGATE_EXAMPLE, 'yes']);
+  assert.ok(run.reply.includes(`Its answer: ${shown}`), `${reply} -> ${shown}`);
+  assert.deepEqual(told, [{ question: DELEGATE_EXAMPLE, summary: shown, ok }], 'the answer is also reported outside the Studio thread');
+}
+assert.equal(plainSummary('In @table[cases], the reason is "Item not received". Breakdown by @field[cases.case_ref]: - @field[cases.case_ref] `case-ref-001`: @field[cases.reason] = `Item not received`'),
+  'In cases, the reason is "Item not received". Breakdown by case_ref · case_ref case-ref-001: reason = Item not received', 'status line shows plain text');
+for (const text of ['in the seller\'s favour', 'the merchant is at fault', 'a strong case', 'the buyer won']) assert.ok(readsAsJudgement(text), text);
+for (const text of ['Item not received appears 3 times.', 'Two cases have no delivery attachment.', 'refund record missing']) assert.equal(readsAsJudgement(text), false, text);
 assert.equal(liveRun.events.at(-1).result.intent, 'delegated');
+const [, notYes] = await runTurns({ delegate }, [DELEGATE_EXAMPLE, 'no, which cases are due soon?']);
+assert.equal(delegated.length, 1, 'anything but a plain yes cancels the pending delegation');
+assert.equal(notYes.events.at(-1).result.intent === 'delegated', false);
+const yesAlone = await runAuditor({ delegate }, 'yes');
+assert.equal(delegated.length, 1, 'a yes with nothing pending delegates nothing');
+assert.equal(yesAlone.events.at(-1).result.intent, 'confirm_delegation');
+await runTurns({ delegate }, ['yes', 'yes']);
+assert.equal(delegated.length, 1, 'two bare yeses never delegate the word "yes"');
+{
+  // Two Studio threads share one auditor object: a yes in thread B never confirms thread A's question.
+  const handed = [];
+  const own = { ...delegate, async execute(invocation, toolCtx) { handed.push(invocation.args); return toolCtx.success('done'); } };
+  const agent = createEvidenceAuditor({ studio: standInStudio().studio, getState: () => ({ selectedPageId: 'readiness', pages: [] }), data: tables, delegate: own });
+  const turn = async (threadId, text) => { for await (const event of agent.run({ threadId, runId: `${threadId}-r`, messages: [{ id: 'u', role: 'user', content: text }] })) void event; };
+  await turn('A', DELEGATE_EXAMPLE);
+  await turn('B', 'yes');
+  assert.equal(handed.length, 0, 'a yes in another thread does not delegate');
+  await turn('A', 'yes');
+  assert.deepEqual(handed, [{ type: { id: 'data' }, instructions: delegateInstructions(DELEGATE_EXAMPLE) }], 'the yes in the same thread delegates its own question');
+}
+for (const word of ['yes', 'Yes.', ' ok ', 'send it', 'continue!']) assert.ok(isDelegateConfirmation(word), word);
+for (const word of ['yes please do the widget', 'yesterday', 'no', '', null]) assert.equal(isDelegateConfirmation(word), false, String(word));
 const ownQuestion = await runAuditor({ delegate }, 'Which cases lack proof of delivery?');
 assert.equal(delegated.length, 1, 'fixed questions are never delegated');
 assert.match(ownQuestion.reply, /How I built this/u);
 const replayRunResult = await runAuditor({ recording }, DELEGATE_EXAMPLE);
-assert.match(replayRunResult.reply, /Recorded on 2026-11-02 with Gemini; replayed here, no model call\. The lead agent's answer then: I added a column chart/u);
+assert.match(replayRunResult.reply, /Recorded on 2026-11-02 with Gemini; replayed here, no model call\. The data agent's answer then: I added a column chart/u);
 assert.equal(replayRunResult.events.filter((event) => event.type === 'TOOL_CALL_START').length, 2);
 const offer = await runAuditor({ recording }, 'Something else entirely');
-assert.match(offer.reply, /can be replayed for: "Make a widget comparing cases by days to due"/u);
+assert.match(offer.reply, /can be replayed for: "Which reason code appears most often across the three cases\?"/u);
 assert.deepEqual(promptStarters({ mode: 'live' }).map((entry) => entry.prompt).slice(-2), [DELEGATE_EXAMPLE, 'Are the built-in agents on?']);
 assert.equal(promptStarters({ mode: 'replay', recording }).at(-2).label, `${DELEGATE_EXAMPLE} (recorded)`);
 
@@ -197,12 +263,15 @@ assert.equal(promptStarters({ mode: 'replay', recording }).at(-2).label, `${DELE
 const mainSource = read('frontend/src/dashboard/main.jsx');
 for (const text of [
   "mode: status === 'live' ? 'live' : RECORDING ? 'replay' : 'off'",
-  "BUILT_IN_AGENT_IDS.map((id) => directLlmRunner({ ...builtIn[id], adapter }))",
-  "delegate: live ? tools.delegateTo(['lead']) : null, recording: live ? null : RECORDING,",
+  "BUILT_IN_AGENT_IDS.map((id) => directLlmRunner({ ...builtIn[id], adapter, maxTurns: STUDIO_MAX_TURNS }))",
+  "const STUDIO_MAX_TURNS = 8;",
+  "delegate: live ? tools.delegateTo(['data']) : null, recording: live ? null : RECORDING,",
+  'data-testid="dashboard-delegated"',
   "import.meta.glob('../data/studio_agent_run_v1.json', { eager: true, import: 'default' })",
   "RECORD_MODE && setup.mode === 'live' ? createRecorder(",
   "observers: recorder ? [recorder.observer] : [],",
 ]) assert.ok(mainSource.includes(text), `main.jsx: ${text}`);
+assert.equal(/<AgStudioProvider[^>]*\bkey=/u.test(mainSource), false, 'no remount key on the Studio provider (red team r27 B)');
 assert.ok(read('backend/app/demo_mode.py').includes('("POST", "/api/v1/studio/agent-turn")'), 'the hosted demo refuses the turn route');
 assert.ok(read('tools/record_studio_agent_run.mjs').includes("if (mode !== 'live') throw new Error"), 'the recorder refuses to run unless live');
 
@@ -234,19 +303,14 @@ if (chromium && existsSync(join(frontendRoot, 'node_modules', '.bin', 'vite'))) 
     page.on('request', (request) => hosts.add(new URL(request.url()).origin));
     await page.route('**/api/v1/demo/sessions', (route) => route.fulfill({ status: 201, json: session }));
     await page.route('**/api/v1/studio/agent-status', (route) => route.fulfill({ json: { built_in_agents: 'live', reason: null, affects_decision: false } }));
-    // The fake model: the lead agent delegates to the page agent once; the page agent adds one widget; then text.
+    // The fake model plays the data agent: it never finishes on its own, so the adapter must force complete_task.
     await page.route(`**${TURN_PATH}`, (route) => {
       const body = route.request().postDataJSON();
       assert.equal(route.request().headers()['x-csrf-token'], session.csrf_token);
-      const names = body.tools.map((tool) => tool.name);
-      const called = (name) => body.items.some((item) => item.kind === 'call' && item.name === name);
-      turns.push(names.includes('view_plan') && names.includes('delegate_to') ? 'lead' : 'page');
-      let output = [{ type: 'text', text: 'Done.' }];
-      if (names.includes('delegate_to') && names.includes('view_plan') && !called('delegate_to')) {
-        output = [{ type: 'call', call_id: 'call_lead_1', name: 'delegate_to', arguments: JSON.stringify({ type: { id: 'page', pageId: 'readiness' }, instructions: 'Add a column chart.' }) }];
-      } else if (names.includes('add_widget') && !called('add_widget')) {
-        output = [{ type: 'call', call_id: 'call_page_1', name: 'add_widget', arguments: JSON.stringify({ widgetId: 'days-chart', type: 'column-chart-grouped', xTrack: 0, yTrack: 120, xSpan: 12, ySpan: 14 }) }];
-      }
+      turns.push(body.tool_choice);
+      const output = typeof body.tool_choice === 'object' && body.tool_choice?.name === 'complete_task'
+        ? [{ type: 'call', call_id: `call_finish_${turns.length}`, name: 'complete_task', arguments: JSON.stringify({ summary: 'Item not received appears in all 3 cases.' }) }]
+        : [{ type: 'text', text: 'Looking at the rows.' }];
       route.fulfill({ json: { output, model: 'gemini', affects_decision: false } });
     });
     await page.goto(`${origin}/dashboard.html?record=1`);
@@ -256,12 +320,13 @@ if (chromium && existsSync(join(frontendRoot, 'node_modules', '.bin', 'vite'))) 
     const box = page.getByPlaceholder('Ask the AI Assistant...');
     await box.fill(DELEGATE_EXAMPLE);
     await box.press('Enter');
-    await page.getByText(/handed it to Studio's lead agent/).first().waitFor({ timeout: 30000 });
-    const doc = await page.evaluate(() => window.__payguardRecorder.finish({ recordedAt: '2026-11-02T10:00:00Z' }));
-    validateRecording(doc);
-    assert.ok(doc.runs[0].steps.some((step) => step.agent === 'page' && step.tool === 'add_widget' && step.ok), 'the page agent added the widget through Studio');
-    assert.ok('days-chart' in doc.final_layout.widgets, 'the widget is on the recorded layout');
-    assert.ok(turns.includes('lead') && turns.includes('page'), 'lead and page agents both took model turns through the adapter');
+    await page.getByText(/Reply "yes" to send it/).first().waitFor({ timeout: 30000 });
+    await box.fill('yes');
+    await box.press('Enter');
+    await page.getByText(/handed it to Studio's data agent/).first().waitFor({ timeout: 30000 });
+    assert.match(await page.getByTestId('dashboard-delegated').innerText(), /Item not received appears in all 3 cases\./u);
+    assert.ok(turns.length <= 8, `at most 8 model turns (${turns.length})`);
+    assert.ok(turns.some((choice) => choice?.name === 'complete_task'), 'the adapter forced complete_task');
     assert.deepEqual([...hosts], [origin], 'nothing leaves the page origin');
     assert.deepEqual(errors, []);
     browserStage = `PASS (${turns.length} fake model turns)`;

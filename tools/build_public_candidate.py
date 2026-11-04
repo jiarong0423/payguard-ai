@@ -78,15 +78,31 @@ EXACT_FILES = (
     # (review r25) The guide measurement records AI_DRIFT_CONTROL.md and the README cite, with the scorer and the
     # corpora it reads, so the published numbers can be checked against the frozen corpora.
     "docs/evidence/GUIDE_BENCHMARK.md",
+    # (r34 E2 P1-1) tests/frontend_benchmark_chart.mjs reads the benchmark record behind the chart data.
+    "docs/evidence/guide_benchmark_v1.json",
     "docs/evidence/GUIDE_STEPS12_LIVE.md",
     "docs/evidence/GUIDE_STRESS_TEST.md",
     "docs/evidence/RECEIPT_20261031_live.md",
+    "docs/evidence/RECEIPT_20261104_live.md",
+    "docs/evidence/RECEIPT_20261105_live.md",
     "docs/evidence/channel3_receipts_v1.json",
     "docs/submission/quickstart.md",
     "docs/submission/devpost_story.md",
     "docs/submission/payguard_cover.png",
     "docs/submission/payguard_cover.svg",
     "docs/submission/payguard_judge_overview.png",
+    "docs/submission/diagrams/architecture_overview.png",
+    "docs/submission/diagrams/architecture_simple.png",
+    "docs/submission/diagrams/evidence_guide_funnel.png",
+    "docs/submission/diagrams/paypal_write_guards.png",
+    "docs/submission/diagrams/review_zip_verified.png",
+    "docs/submission/diagrams/architecture_overview.svg",
+    "docs/submission/diagrams/architecture_simple.svg",
+    "docs/submission/diagrams/evidence_guide_funnel.svg",
+    "docs/submission/diagrams/paypal_write_guards.svg",
+    "docs/submission/diagrams/review_zip_verified.svg",
+    "docs/submission/diagrams/architecture.mmd",
+    "docs/submission/diagrams/paypal_write_guards.mmd",
     "docs/submission/payguard_judge_overview.svg",
     "docs/submission/payguard_zip_review_slide.png",
     "docs/submission/video_script.md",
@@ -133,6 +149,7 @@ EXACT_FILES = (
     "tests/frontend_bryntum_board_render.mjs",
     "tests/frontend_bundle_budget.mjs",
     "tests/frontend_bryntum_render.mjs",
+    "tests/frontend_guide_funnel_r30.mjs",
     "tests/frontend_guide_live_api.mjs",
     "tests/frontend_hosted_contract.mjs",
     "tests/frontend_topbar_sandbox_contract.mjs",
@@ -146,6 +163,14 @@ EXACT_FILES = (
     "tests/frontend_recording_contract.mjs",
     "tests/frontend_send_guard_r25.mjs",
     "tests/frontend_paypal_issue.mjs",
+    "tests/frontend_receipt_parity.mjs",
+    "tests/frontend_foolproof_20261104.mjs",
+    "tests/frontend_send_confirm_r31.mjs",
+    "tests/frontend_lock_reasons_r31.mjs",
+    "tests/frontend_console_r32.mjs",
+    "tests/frontend_console_r32_followup.mjs",
+    "tests/frontend_ui_r33.mjs",
+    "tests/frontend_ui_r34.mjs",
     "tests/frontend_scenarios_contract.mjs",
     "tests/frontend_start_here.mjs",
     "tests/frontend_time_evidence_api.mjs",
@@ -187,9 +212,9 @@ TREE_FILES = {
     ),
     "frontend/src": (
         "AnalyticsDashboard.css", "AnalyticsDashboard.jsx", "App.jsx", "CountryRules.css", "CountryRules.jsx", "GuideLive.css", "GuideLive.jsx",
-        "GuideReplay.css", "GuideReplay.jsx", "PolicyPanel.jsx", "ProductReference.css", "ProductReference.jsx", "ReferencePanel.jsx", "api.js", "evidence.jsx", "index.css",
-        "main.jsx", "operatorLabels.js", "productConfirmation.js", "pseudonymizedExport.js", "pwa.css", "pwa.js", "referenceContract.js",
-        "reviewZip.js", "tabKeys.js", "TimeEvidenceView.jsx",
+        "GuideReplay.css", "GuideReplay.jsx", "hostedCopy.js", "PolicyPanel.jsx", "ProductReference.css", "ProductReference.jsx", "ReferencePanel.jsx", "api.js", "evidence.jsx", "index.css",
+        "lockReasons.js", "main.jsx", "operatorLabels.js", "productConfirmation.js", "pseudonymizedExport.js", "pwa.css", "pwa.js", "referenceContract.js",
+        "resumeNotice.js", "reviewZip.js", "sendConfirm.js", "tabKeys.js", "TimeEvidenceView.jsx",
     ),
     "frontend/src/board": ("EvidenceBoard.jsx", "board.css", "boardData.js"),
     "frontend/src/grid": ("agGrid.jsx",),
@@ -219,11 +244,12 @@ TREE_FILES = {
         "test_case_intake.py", "test_console_static.py", "test_controlled_fallback.py", "test_country_rules.py", "test_demo_mode.py",
         "test_demo_mode_integration.py", "test_dispute_evidence.py", "test_document_privacy.py",
         "test_engines.py", "test_evidence_chart_data.py", "test_evidence_guide.py", "test_gemini_worker.py", "test_guide_hybrid.py", "test_guide_live_contract.py", "test_guide_rounds.py", "test_guide_routes.py",
-        "test_hosted_image_layout.py", "test_lmstudio_brief.py",
+        "test_hosted_claims_consistency.py", "test_hosted_image_layout.py", "test_lmstudio_brief.py",
         "test_paypal_disputes.py", "test_paypal_r24.py", "test_paypal_tools.py", "test_policy_api.py", "test_policy_gateway_integration.py",
         "test_public_export_builder.py", "test_redteam_input_matrix.py", "test_reference_api.py", "test_reference_policy.py", "test_replays.py",
         "test_retrieval.py", "test_sandbox_receipts.py", "test_studio_agent.py", "test_time_evidence.py", "test_traffic.py", "test_attack_r22.py", "test_attack_r23_aup.py",
-        "test_optimise_r24.py", "test_r25_backend.py", "test_paypal_issue.py",
+        "test_optimise_r24.py", "test_r25_backend.py", "test_paypal_issue.py", "test_r26_guide.py",
+        "send_confirmation.py", "test_send_confirmation.py", "test_r35_send_flow.py",
     ),
 }
 MAPPED_FILES = {"tools/run.sh": "tools/public_run.sh"}
@@ -308,6 +334,8 @@ JS_IMPORT_PATTERNS = (
     re.compile(r"""\bimport\(\s*['"](\.{1,2}/[^'"]*)['"]\s*\)"""),
     re.compile(r"""\bnew\s+URL\(\s*['"](\.{1,2}/[^'"]+)['"]\s*,\s*import\.meta\.url"""),
 )
+# (r34 E2 P1-1) Shipped node tests read repository files by literal path (resolve(root, 'docs/...')); each must ship.
+TEST_FILE_REFERENCE = re.compile(r"""\bresolve\(\s*(?:root|projectRoot)\s*,\s*['"]([^'"]+)['"]\s*\)""")
 HTML_ROOT_REFERENCE = re.compile(r"""\b(?:src|href)\s*=\s*["'](/(?!/)[^"'?#]+)["']""")
 
 
@@ -377,6 +405,24 @@ def _js_import_targets(relative: str, payload: bytes) -> list[tuple[str, tuple[s
     return targets
 
 
+def _test_file_targets(relative: str, payload: bytes) -> list[tuple[str, tuple[str, ...]]]:
+    """Literal repository paths a shipped tests/*.mjs file reads through resolve(root, '...').
+
+    Only paths that name a file of this source tree count (not directories, not the local .venv or node_modules,
+    and not a file a test treats as optional because it is absent from the source).
+    """
+    if not (relative.startswith("tests/") and relative.endswith(".mjs")):
+        return []
+    targets = []
+    for match in TEST_FILE_REFERENCE.finditer(payload.decode("utf-8")):
+        path = os.path.normpath(match.group(1)).replace(os.sep, "/")
+        if path.startswith((".venv/", "node_modules/", "frontend/node_modules/", "../")):
+            continue
+        if (PROJECT_ROOT / path).is_file():
+            targets.append((path, (path,)))
+    return targets
+
+
 def _html_reference_targets(relative: str, payload: bytes) -> list[tuple[str, tuple[str, ...]]]:
     """Root-relative src/href in the console HTML: Vite serves them from frontend/ or frontend/public/."""
     if not relative.startswith("frontend/"):
@@ -402,7 +448,7 @@ def import_integrity_problems(payloads: dict[str, bytes], source_exists=None) ->
             if relative.endswith(".py"):
                 targets = _python_import_targets(relative, payload, source_exists)
             elif relative.endswith(JS_SUFFIXES):
-                targets = _js_import_targets(relative, payload)
+                targets = _js_import_targets(relative, payload) + _test_file_targets(relative, payload)
             elif relative.endswith(".html"):
                 targets = _html_reference_targets(relative, payload)
             else:

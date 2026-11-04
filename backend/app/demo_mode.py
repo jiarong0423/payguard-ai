@@ -4,7 +4,8 @@
 replaces every provider adapter (PayPal Sandbox, Gemini worker, LM Studio) with
 a stub that owns no HTTP client, no subprocess and no credential, and the routes
 that would reach a provider answer 503 ``hosted_demo_disabled`` before any body
-parsing. Only the synthetic fixtures, the local engines and the committed replays
+parsing (requests that fail the earlier host, origin or content-type checks are
+refused there first). Only the synthetic fixtures, the local engines and the committed replays
 remain. The hosted demo therefore needs no keys and holds none.
 
 ``PAYGUARD_PUBLIC_HOST`` is read only in that mode, and that mode refuses to start

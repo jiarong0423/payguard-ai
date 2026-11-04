@@ -23,7 +23,7 @@ Status: current US-only local prototype threat model.
 6. backend process to fixed PayPal Sandbox endpoints;
 7. accepted structured synthetic facts to the model adapter;
 8. repository source to governance and release artifacts;
-9. internet client to the rules-only hosted demo, through the hosting proxy (`PAYGUARD_DEMO_MODE=public`: one exact public host, `X-Forwarded-For` and `X-Forwarded-Proto: https` required, per-visitor and store-wide traffic limits, provider adapters replaced by stubs);
+9. internet client to the hosted demo (no PayPal calls; guide Gemini only when the operator opts in), through the hosting proxy (`PAYGUARD_DEMO_MODE=public`: one exact public host, `X-Forwarded-For` and `X-Forwarded-Proto: https` required, per-visitor and store-wide traffic limits, provider adapters replaced by stubs);
 10. backend to the Python 3.12 Gemini worker and from it to Vertex AI or the Gemini API, for the evidence brief, the evidence guide's optional chooser (up to three sanitised seller sentences) and AG Studio's built-in agents (Studio instructions, the operator's question, tool schemas and tool results over synthetic dashboard data);
 11. backend to the loopback LM Studio server (`127.0.0.1:1234`), the optional local brief line;
 12. backend to the Channel3 API (a sanitised product name, operator key, off by default) for the category signal, the product reference card and case routing;
@@ -61,7 +61,7 @@ The existing PayPal login is a Developer-login identity. The merchant role is a 
 
 The UI may say `PayPal Sandbox` before seller-country confirmation. It may say `US Business sandbox seller` only after trusted Dashboard confirmation. Invoicing availability also requires confirmation. The Sandbox host and browser locale are not country evidence.
 
-The recorded Sandbox runs cover only their sanitized authentic results: on 2026-10-06 OAuth and one unsent invoice `DRAFT`; on 2026-10-31 OAuth, a second unsent `DRAFT` and a list and detail read of one author-created Sandbox test dispute ([masked receipt](../../evidence/RECEIPT_20261031_live.md)). No `provide-evidence` call has been sent live. MockTransport results, screenshots and local UI state did not and cannot expand that accepted provider-evidence boundary.
+The recorded Sandbox runs cover only their sanitized authentic results: on 2026-10-06 OAuth and one unsent invoice `DRAFT`; on 2026-10-31 OAuth, a second unsent `DRAFT` and a list and detail read of one author-created Sandbox test dispute ([masked receipt](../../evidence/RECEIPT_20261031_live.md)). As of 2026-10-31 no `provide-evidence` call had been sent; on 2026-11-04 one evidence send to an author-created Sandbox test dispute succeeded ([masked receipt](../../evidence/RECEIPT_20261104_live.md)); on 2026-11-05 (UTC+8) a second send to a newly filed Sandbox test dispute succeeded ([masked receipt](../../evidence/RECEIPT_20261105_live.md)). MockTransport results, screenshots and local UI state did not and cannot expand that accepted provider-evidence boundary.
 
 ## AUP boundary
 

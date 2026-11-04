@@ -25,7 +25,8 @@ for (const method of METHOD_ORDER) assert.ok(facts.methods[method].label && fact
 assert.match(facts.source_note, /tests\/frontend_proof_contract\.mjs/u, 'source note names the check');
 
 // 2. Rows: unique ids, known scenario and method, ISO dates, a committed source file, quotes found verbatim in it.
-const SOURCES = new Set(['docs/evidence/RECEIPT_20261031_live.md', 'docs/evidence/channel3_receipts_v1.json', 'docs/evidence/GEMINI_GUIDE_RUNS_20261103.md', 'docs/evidence/RED_TEAM_ROUNDS_20261104.md']);
+const SANDBOX_RECEIPTS = ['docs/evidence/RECEIPT_20261031_live.md', 'docs/evidence/RECEIPT_20261104_live.md', 'docs/evidence/RECEIPT_20261105_live.md'];
+const SOURCES = new Set([...SANDBOX_RECEIPTS, 'docs/evidence/channel3_receipts_v1.json', 'docs/evidence/GEMINI_GUIDE_RUNS_20261103.md', 'docs/evidence/RED_TEAM_ROUNDS_20261104.md']);
 const ids = new Set();
 for (const row of facts.rows) {
   assert.ok(!ids.has(row.id), `${row.id} unique`);
@@ -45,17 +46,28 @@ for (const row of facts.rows) {
   }
 }
 for (const scenario of facts.scenarios) assert.ok(facts.rows.filter((row) => row.scenario === scenario.id).length >= 2, `${scenario.id} has rows`);
-// The Sandbox rows come from the live receipt and only from it; the sales burst is the synthetic one.
-assert.deepEqual(facts.rows.filter((row) => row.method === 'REAL_SANDBOX').map((row) => row.id), ['policy-invoice-draft', 'dispute-list-read', 'dispute-single-read']);
-assert.ok(facts.rows.filter((row) => row.method === 'REAL_SANDBOX').every((row) => row.source === 'docs/evidence/RECEIPT_20261031_live.md'));
+// The Sandbox rows come from the three masked live receipts (10-31 reads, 11-04 send, 11-05 recorded send) only; the sales burst is the synthetic one.
+assert.deepEqual(facts.rows.filter((row) => row.method === 'REAL_SANDBOX').map((row) => row.id), ['policy-invoice-draft', 'dispute-list-read', 'dispute-single-read', 'dispute-evidence-sent', 'dispute-mismatch-refused', 'dispute-unauthorized-refused', 'dispute-evidence-sent-recorded', 'dispute-resend-amount-refused']);
+// (r34) Each send row names the PayPal-Debug-Id from its receipt, and the page footer names every Sandbox receipt.
+assert.ok(facts.rows.find((row) => row.id === 'dispute-evidence-sent').how.includes('PayPal-Debug-Id f908765a01293'), 'send row names the Debug-Id');
+assert.ok(facts.rows.find((row) => row.id === 'dispute-evidence-sent-recorded').how.includes('PayPal-Debug-Id f2088142a6218'), 'recorded send row names the Debug-Id');
+for (const receipt of SANDBOX_RECEIPTS) {
+  assert.ok(facts.source_note.includes(receipt), `footer source list names ${receipt}`);
+}
+// (2026-11-04) Each real evidence send has its own masked receipt.
+assert.ok(facts.rows.filter((row) => row.method === 'REAL_SANDBOX').every((row) => SANDBOX_RECEIPTS.includes(row.source)));
 assert.deepEqual(facts.rows.filter((row) => row.method === 'SYNTHETIC').map((row) => row.id), ['velocity-synthetic-burst']);
 assert.ok(facts.rows.filter((row) => row.source === 'docs/evidence/RED_TEAM_ROUNDS_20261104.md').every((row) => row.method === 'TEST'), 'attack rounds are tests');
 // Dates agree with the files they come from.
 assert.ok(read('docs/evidence/RECEIPT_20261031_live.md').startsWith('# PayGuard live Sandbox receipt, 2026-10-31'));
+assert.ok(read('docs/evidence/RECEIPT_20261104_live.md').startsWith('# PayGuard live Sandbox receipt, 2026-11-04'));
+assert.ok(read('docs/evidence/RECEIPT_20261105_live.md').startsWith('# PayGuard live Sandbox receipt, 2026-11-05'));
 assert.ok(read('docs/evidence/GEMINI_GUIDE_RUNS_20261103.md').includes('Run 2026-11-03'));
 assert.ok(read('docs/evidence/RED_TEAM_ROUNDS_20261104.md').startsWith('# Red-team and stress-test rounds (2026-11-03 to 2026-11-04)'));
 for (const row of facts.rows) {
   if (row.source.includes('RECEIPT_20261031')) assert.equal(row.date, '2026-10-31', row.id);
+  if (row.source.includes('RECEIPT_20261104')) assert.equal(row.date, '2026-11-04', row.id);
+  if (row.source.includes('RECEIPT_20261105')) assert.equal(row.date, '2026-11-05', row.id);
   if (row.source.includes('GEMINI_GUIDE_RUNS_20261103')) assert.equal(row.date, '2026-11-03', row.id);
   if (row.source.includes('RED_TEAM_ROUNDS_20261104')) assert.equal(dateLabel(row), '2026-11-03 to 2026-11-04', row.id);
 }
@@ -74,8 +86,16 @@ const factsText = read('frontend/src/data/proof_facts_v1.json');
 for (const masked of ['INV2-U3KH-...-PQCK (masked)', 'PP-R-OJX-... (masked)']) {
   assert.ok(factsText.includes(masked) && read('docs/evidence/RECEIPT_20261031_live.md').includes(masked), `${masked} kept masked`);
 }
+// (2026-11-04) The send receipt keeps dispute ids at the type prefix only (PP-R-WAH-...), with no digits after it.
+const receipt1104 = read('docs/evidence/RECEIPT_20261104_live.md');
+assert.equal(/PP-[A-Z]-[A-Z0-9]{3}-[^.]/u.test(receipt1104), false, '11-04 receipt ids masked to the prefix');
+for (const masked of ['PP-R-WAH-...', 'PP-R-KTG-...', 'PP-R-BHF-...']) assert.ok(receipt1104.includes(masked), `${masked} kept masked`);
+// (2026-11-05) The recorded send receipt follows the same rule.
+const receipt1105 = read('docs/evidence/RECEIPT_20261105_live.md');
+assert.equal(/PP-[A-Z]-[A-Z0-9]{3}-[^.]/u.test(receipt1105), false, '11-05 receipt ids masked to the prefix');
+for (const masked of ['PP-R-QIL-...', 'PP-R-KTG-...', 'PP-R-BHF-...', 'PP-R-OJX-...']) assert.ok(receipt1105.includes(masked), `${masked} kept masked`);
 const pageSources = ['frontend/src/proof/main.jsx', 'frontend/src/proof/proofData.js', 'frontend/src/proof/proof.css', 'frontend/proof.html'].map(read);
-for (const text of [factsText, ...pageSources]) {
+for (const text of [factsText, receipt1104, receipt1105, ...pageSources]) {
   assert.equal(/INV2(?:-[A-Z0-9]{4}){4}/u.test(text), false, 'no full invoice id');
   assert.equal(/PP-[A-Z]-[A-Z0-9]{3}-\d+|PP-D-\d{3,}/u.test(text), false, 'no full dispute id');
   assert.equal(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/u.test(text), false, 'no e-mail address');

@@ -23,6 +23,7 @@ from app.paypal import PaypalAdapter, PaypalConfig, SANDBOX_BASE, allowed_reques
 from app.paypal_disputes import build_provide_evidence_request, fixture_disputes, map_carrier
 from app.schemas import InvoicePayload
 from app.store import BoundaryError, SessionStore
+from send_confirmation import with_confirmation
 
 
 ORIGIN = "http://localhost:5173"
@@ -100,6 +101,9 @@ class LiveHarness(unittest.TestCase):
         return self.client.get(ROOT + route, headers={"X-Demo-Session": self.session["session_id"]})
 
     def post(self, route, payload=None):
+        return with_confirmation(self._post, route, payload)
+
+    def _post(self, route, payload=None):
         return self.client.post(ROOT + route, json={} if payload is None else payload, headers=self.headers())
 
     def ready(self, approve=True):
@@ -117,11 +121,22 @@ class LiveHarness(unittest.TestCase):
 class ProvideEvidencePrecheckTests(LiveHarness):
     REQUEST = {"dispute_id": "PP-D-SANDBOX01", "case_ref": "case-ref-001", "submit": True}
 
-    def test_a_live_dispute_in_another_currency_is_held_to_its_own_read_amount_not_the_case(self):
-        # The owner's Sandbox test dispute is TWD 158.00 while the synthetic case is USD 48.00: the send must compare the
-        # fresh read with the amount this session read before, not with the synthetic case (r24 review of the r24 fix).
+    def test_a_live_dispute_in_another_currency_is_refused_at_preview_with_both_amounts(self):
+        # (r35 #6) The owner's Sandbox test dispute is TWD 158.00 while the synthetic case is USD 48.00: the preview
+        # already refuses (no confirmation, no pair) and the message names both amounts; nothing reaches PayPal.
         self.detail = submittable(dispute_amount={"currency_code": "TWD", "value": "158.00"})
         self.ready()
+        for submit in (False, True):
+            refused = self.post("/paypal/disputes/provide-evidence", dict(self.REQUEST, submit=submit))
+            self.assertEqual((refused.status_code, refused.json()["error"]["code"]), (409, "dispute_amount_mismatch"))
+            self.assertEqual(refused.json()["error"]["message"],
+                             "The dispute amount in PayPal (158.00 TWD) differs from the selected case's amount "
+                             "(48.00 USD). Select the case it belongs to. Nothing was sent.")
+        self.assertEqual(self.posts("/provide-evidence"), [])
+        self.assertEqual(self.app.state.paypal_disputes._bindings.get(self.session["session_id"], {}), {})
+
+    def test_a_live_dispute_with_the_case_amount_still_sends(self):
+        self.ready()  # FIX[0] carries the case's USD 48.00
         sent = self.post("/paypal/disputes/provide-evidence", self.REQUEST)
         self.assertEqual(sent.status_code, 200, sent.text)
         self.assertEqual(sent.json()["external_send"], "SUBMITTED")

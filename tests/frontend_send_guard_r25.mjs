@@ -23,7 +23,9 @@ const guard = { case_ref: 'case-ref-001', case_reason: 'MERCHANDISE_OR_SERVICE_N
   account_status: 'MATCH', send_refusal: null };
 const caseItem = { case_ref: 'case-ref-001', reason: 'INR', dispute_amount: { currency_code: 'USD', value: '48.00' } };
 assert.equal(sendGuardBlock(guard, detail, caseItem, null), null, 'matching case and dispute: no hold');
-assert.equal(sendGuardBlock(guard, detail, caseItem, 'PP-D-…01'), 'This case was already sent to PP-D-…01; it cannot also go to PP-D-…02.');
+// (r34 #3) A pairing from a preview is not a send; "already sent" only after a real send (5th argument).
+assert.equal(sendGuardBlock(guard, detail, caseItem, 'PP-D-…01'), 'Paired with PP-D-…01 (preview only). Reset demo to pair it with another dispute.');
+assert.equal(sendGuardBlock(guard, detail, caseItem, 'PP-D-…01', 'PP-D-…01'), 'This case was already sent to PP-D-…01; it cannot also go to PP-D-…02.');
 assert.match(sendGuardBlock({ ...guard, case_reason: 'MERCHANDISE_OR_SERVICE_NOT_AS_DESCRIBED' }, detail, caseItem, null), /^The case reason .* does not match this dispute/);
 assert.match(sendGuardBlock(guard, { ...detail, dispute_amount: { currency_code: 'USD', value: '49.00' } }, caseItem, null), /^The amount does not match/);
 assert.match(sendGuardBlock(guard, { ...detail, dispute_amount: { currency_code: 'TWD', value: '48.00' } }, caseItem, null), /^The currency does not match/);
@@ -38,7 +40,7 @@ assert.match(sendItemText('evidence', { input: { evidences: [{ evidence_type: 'P
 // (a) Side by side, with the binding line and the account line; both send buttons are held by the guard.
 for (const id of ['send-guard-case', 'send-guard-dispute', 'send-guard-bound', 'send-guard-account', 'send-guard-block']) assert.ok(section.includes(`data-testid="${id}"`), id);
 assert.ok(section.includes('<span className="send-guard-label">From case</span>') && section.includes('<span className="send-guard-label">To PayPal dispute</span>'));
-assert.ok(app.includes("trackingPreview?.external_send === 'FROZEN' && !trackingBlock;") && app.includes("evidencePreview?.external_send === 'FROZEN' && !evidenceBlock;"), 'sends held by the guard');
+assert.ok(app.includes("trackingPreview?.external_send === 'FROZEN' && !trackingBlock;") && app.includes("evidencePreview?.external_send === 'FROZEN' && !evidenceBlock && !sellerEvidence;"), 'sends held by the guard');
 assert.ok(app.includes("onClick={() => setSendConfirm('evidence')}") && app.includes("onClick={() => setSendConfirm('tracking')}"), 'real sends open the dialog');
 assert.ok(app.includes('onClick={previewEvidence}') && app.includes('onClick={previewTracking}'), 'previews stay one click');
 
@@ -53,7 +55,8 @@ assert.ok(section.includes('aria-live="polite" data-testid="send-confirm-countdo
 assert.ok(section.includes('disabled={left > 0 || sending}') && section.includes("const send = async () => { if (sending) return; setSending(true); await onSend(); };"), 'held 3 s, then one click; disabled on the first click');
 assert.ok(section.includes("if (event.key === 'Escape') { event.preventDefault(); onCancel(); return; }"), 'Escape cancels');
 assert.ok(section.includes("if (event.key !== 'Tab') return;") && section.includes('last.focus()') && section.includes('first.focus()'), 'focus trapped');
-assert.ok(section.includes('return () => { if (trigger && typeof trigger.focus === \'function\') trigger.focus(); };'), 'focus returns to the trigger');
+// (r32 J4 a11y) restoreFocus: the opening button (or the trigger when it is usable), never a stale element.
+assert.ok(section.includes('return () => restoreFocus(trigger, returnFocus);') && section.includes("if (opener && typeof opener.focus === 'function') opener.focus();"), 'focus returns to the trigger');
 assert.ok(section.includes('data-testid="send-confirm-back" tone="ghost" onClick={onCancel}>Back</Button>'), 'Back cancels');
 assert.ok(app.includes("if (!before?.payload_sha256 || fresh.payload_sha256 !== before.payload_sha256 || held) {"), 'step 2 re-checks the fresh preview hash');
 assert.ok(app.includes("setNotice(held || 'What would be sent changed since the preview; nothing was sent. Prepare the preview again.');"), 'plain message on a changed preview');
@@ -102,6 +105,7 @@ assert.equal(Number(contrast(orange).toFixed(2)), 5.18);
 assert.equal(Number(contrast(green).toFixed(2)), 6.06);
 assert.ok(contrast('#e06c1e') < 4.5, 'the original orange would fail AA, hence the darker shade');
 assert.ok(css.includes('.button.button-confirm-send.is-holding, .button.button-confirm-send:disabled { background: #cbd5d0;'), 'muted during the hold');
-assert.ok(section.includes('icon="arrow"') && section.includes('icon="lock"'), 'colour always with a label and an icon');
+// (r32 J4 P1-2) The green Send shows the lock only during the hold, then the arrow: always a label and an icon.
+assert.ok(section.includes('icon="arrow"') && section.includes("icon={left > 0 ? 'lock' : 'arrow'}"), 'colour always with a label and an icon');
 
 console.log('frontend send guard r25: ok');

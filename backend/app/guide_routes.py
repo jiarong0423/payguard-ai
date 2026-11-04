@@ -14,7 +14,9 @@ breaker caps
 plus a timeout. On a refusal, a timeout, a provider error or an invalid reply the keyword chooser answers
 and the response says chooser "keyword_fallback".
 
-Only /guide/form can make an item STRUCTURALLY_PRESENT, and only when the rule check below passes.
+Only code marks an item STRUCTURALLY_PRESENT, never the model: a form value (/guide/form, or the fixed fields
+sent with /guide/turn) that passes the rule check below, or a closed value the rule layer reads from the
+seller's words (evidence_guide.auto_confirm in /guide/turn, same validator) (r32 J3).
 Neither seller text nor form values are stored or echoed; the server keeps statuses and weekday hints.
 """
 
@@ -26,6 +28,7 @@ from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta, timezone
 import hashlib
 import json
+import os
 import re
 import threading
 import time
@@ -50,6 +53,13 @@ MAX_GUIDE_FORM_ROUNDS = 60
 PERIOD_ITEMS = ("baseline_period", "surge_period")
 GUIDE_MODEL_CALLS_PER_SESSION = 10
 GUIDE_MODEL_MIN_SPACING_SECONDS = 2.0
+# (r32 hosted guide, owner decision 2026-11-04) The hosted demo may use Gemini for the guide only, on a free-tier key,
+# when the operator sets this to "gemini" (plus the usual PAYGUARD_GUIDE_MODEL / transport / key). Unset, it stays on
+# the keyword chooser and no worker can start. Its shared caps sit under the free tier, which owner checks on 2026-11-04
+# put at about 5 to 15 requests a minute and about 20 a day for gemini-3.8-flash; past them the guide stays on keywords.
+HOSTED_GUIDE_MODEL_ENV = "PAYGUARD_HOSTED_GUIDE_MODEL"
+HOSTED_GUIDE_CALLS_PER_MINUTE = 5
+HOSTED_GUIDE_CALLS_PER_DAY = 20
 GUIDE_MODEL_DEADLINE_SECONDS = 30.0  # governed: the model result must arrive within this, or the keyword answer stays
 MIN_RESEND_SECONDS = 1.0  # the one identical resend is skipped when less time than this is left
 assert GUIDE_WORKER_TIMEOUT_SECONDS < GUIDE_MODEL_DEADLINE_SECONDS
@@ -356,6 +366,17 @@ def select_guide_chooser():
 
 def _new_governor():
     return Governor(max_calls=GUIDE_MODEL_CALLS_PER_SESSION, min_spacing=GUIDE_MODEL_MIN_SPACING_SECONDS)
+
+
+def hosted_guide_service(store, environ=None):
+    """(r32) The hosted demo's guide: the keyword chooser, unless the operator opted in with HOSTED_GUIDE_MODEL_ENV.
+    Opted in, it takes the default factory (so PAYGUARD_GUIDE_MODEL and the transport still decide) under lower caps."""
+    environ = os.environ if environ is None else environ
+    if environ.get(HOSTED_GUIDE_MODEL_ENV) != "gemini":
+        return GuideService(store, chooser_factory=lambda: None)
+    governor = Governor(max_calls=GUIDE_MODEL_CALLS_PER_SESSION, min_spacing=GUIDE_MODEL_MIN_SPACING_SECONDS,
+                        global_per_minute=HOSTED_GUIDE_CALLS_PER_MINUTE, global_per_day=HOSTED_GUIDE_CALLS_PER_DAY)
+    return GuideService(store, governor=governor)
 
 
 class GuideService:

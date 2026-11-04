@@ -644,10 +644,15 @@ class DisputeDetailResponse(DisputeEnvelope, DisputeRecord):
         return self
 
 
+# (r30 J2 P2-1) Single-use send confirmation the preview issues; a send must carry the latest one.
+CONFIRM_TOKEN_PATTERN = r"^[A-Za-z0-9_-]{32}$"
+
+
 class ProvideEvidenceRequest(Contract):
     dispute_id: StrictStr = Field(pattern=DISPUTE_ID_PATTERN)
     case_ref: StrictStr = Field(pattern=r"^case-ref-[0-9]{3}$")
     submit: StrictBool = False
+    confirm_token: StrictStr | None = Field(default=None, pattern=CONFIRM_TOKEN_PATTERN)
 
 
 # A subset of the PayPal carrier enum (PayPal docs r24, customer-disputes/v1 schema.json); any other carrier is sent as
@@ -711,7 +716,10 @@ class SendGuard(Contract):
     sending_account_masked: StrictStr | None = Field(default=None, pattern=r"^(?:[0-9A-Za-z]{2}\u2026[0-9A-Za-z]{4}|\u2026)$")
     dispute_seller_masked: StrictStr | None = Field(default=None, pattern=r"^(?:[0-9A-Za-z]{2}\u2026[0-9A-Za-z]{4}|\u2026)$")
     account_status: Literal["MATCH", "MISMATCH", "UNKNOWN"]
-    send_refusal: Literal["account_identity_unknown", "dispute_not_this_account", "dispute_detail_required"] | None = None
+    # (r35 #2) Also why the session's last detail read rules out an evidence send (no confirmation, no pair).
+    send_refusal: Literal["account_identity_unknown", "dispute_not_this_account", "dispute_detail_required",
+                          "seller_evidence_already_submitted", "dispute_not_awaiting_seller",
+                          "dispute_evidence_not_offered"] | None = None
 
 
 class ProvideEvidenceResponse(DisputeEnvelope):
@@ -729,6 +737,8 @@ class ProvideEvidenceResponse(DisputeEnvelope):
     # (optimise r24) Keyed SHA-256 of the exact multipart parts a send carries; null while the files cannot be built.
     payload_sha256: StrictStr | None = Field(default=None, pattern=r"^[a-f0-9]{64}$")
     send_guard: SendGuard
+    # (r30 J2 P2-1) Issued by a preview whose payload can be sent; null on a send and while nothing can be sent.
+    confirm_token: StrictStr | None = Field(default=None, pattern=CONFIRM_TOKEN_PATTERN)
 
     @model_validator(mode="after")
     def total_size(self):
@@ -754,6 +764,7 @@ class AddTrackingRequest(Contract):
     dispute_id: StrictStr = Field(pattern=DISPUTE_ID_PATTERN)
     case_ref: StrictStr = Field(pattern=r"^case-ref-[0-9]{3}$")
     submit: StrictBool = False
+    confirm_token: StrictStr | None = Field(default=None, pattern=CONFIRM_TOKEN_PATTERN)
 
 
 class TrackerItem(Contract):
@@ -789,6 +800,8 @@ class AddTrackingResponse(DisputeEnvelope):
     # (optimise r24) Keyed SHA-256 of the exact trackers-batch JSON body a send carries.
     payload_sha256: StrictStr | None = Field(default=None, pattern=r"^[a-f0-9]{64}$")
     send_guard: SendGuard
+    # (r30 J2 P2-1) Issued by a preview whose payload can be sent; null on a send and while nothing can be sent.
+    confirm_token: StrictStr | None = Field(default=None, pattern=CONFIRM_TOKEN_PATTERN)
 
     @model_validator(mode="after")
     def submit_binding(self):

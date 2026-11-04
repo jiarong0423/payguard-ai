@@ -18,6 +18,7 @@ import hashlib
 import hmac
 import json
 import re
+import secrets
 from urllib.parse import urlsplit
 
 from pydantic import ValidationError
@@ -64,6 +65,9 @@ _CARRIER_ALIASES = {"FED_EX": "FEDEX", "FEDERAL_EXPRESS": "FEDEX", "DHL_EXPRESS"
 _EXTENSIONS = {".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".gif": "image/gif", ".png": "image/png",
                ".pdf": "application/pdf"}
 TRACKING_PATH = "/v1/shipping/trackers-batch"
+# (r30 J2 P2-1) The send dialog holds "Send to PayPal" for 3 seconds (App.jsx SEND_HOLD_SECONDS); the server holds the
+# confirmation it issued for the same time, so a script that skips the dialog cannot send straight after a preview.
+CONFIRM_HOLD_SECONDS = 3
 # (r25 R3 P1-1) Evidence types this console can shape for provide-evidence. PayPal (customer-disputes/v1 schema.json)
 # expects evidence_info for PROOF_OF_FULFILLMENT (tracking_info, minItems 1), PROOF_OF_REFUND (refund_ids) and
 # PROOF_OF_RETURN; refund ids are never invented, so only PROOF_OF_FULFILLMENT with real tracking is sent. A dispute
@@ -437,6 +441,55 @@ def _same_money(left, right) -> bool:
         return False
 
 
+_MONEY_TEXT = re.compile(r"^[A-Z]{3} [0-9]{1,15}(?:\.[0-9]{1,6})?$")
+
+
+def _money_text(amount) -> str:
+    """(r35 #6) "158.00 TWD"-style text for a refusal message; anything off-pattern reads "unknown"."""
+    if type(amount) is not dict:
+        return "unknown"
+    code, value = amount.get("currency_code"), amount.get("value")
+    if type(code) is not str or type(value) is not str or _MONEY_TEXT.fullmatch(f"{code} {value}") is None:
+        return "unknown"
+    return f"{value} {code}"
+
+
+class DisputeAmountMismatch(BoundaryError):
+    """(r35 #6) 409 dispute_amount_mismatch with both amounts in its message (main.py boundary_handler reads
+    public_message only from this class; both parts are pattern-checked by _money_text)."""
+
+    def __init__(self, dispute_amount, case_amount):
+        super().__init__(409, "dispute_amount_mismatch")
+        self.public_message = (f"The dispute amount in PayPal ({_money_text(dispute_amount)}) differs from the selected "
+                               f"case's amount ({_money_text(case_amount)}). Select the case it belongs to. "
+                               "Nothing was sent.")
+
+
+def evidence_readiness(detail: dict) -> dict:
+    """(r35 #2, E1 P1-1) What a detail read says about sending evidence now; kept per session and dispute."""
+    return {
+        "status": detail.get("status"),
+        "offered": detail.get("provide_evidence_link") is True,
+        "seller_submitted": any(type(row) is dict and row.get("source") == "SUBMITTED_BY_SELLER"
+                                for row in detail.get("evidences") or []),
+    }
+
+
+def readiness_refusal(readiness) -> str | None:
+    """(r35 #2) Why the session's last detail read already rules out an evidence send; None when it does not.
+    PayPal docs r24 (customer-disputes/v1): evidence only while WAITING_FOR_SELLER_RESPONSE with a provide_evidence
+    link. Seller evidence PayPal already lists is named first, so the console can say so instead of offering a send."""
+    if type(readiness) is not dict:
+        return "dispute_detail_required"
+    if readiness.get("seller_submitted"):
+        return "seller_evidence_already_submitted"
+    if readiness.get("status") != "WAITING_FOR_SELLER_RESPONSE":
+        return "dispute_not_awaiting_seller"
+    if readiness.get("offered") is not True:
+        return "dispute_evidence_not_offered"
+    return None
+
+
 def submit_refusal(fresh: dict, case_reason, case_amount, evidence_input: dict) -> str | None:
     """Why a provide-evidence send must not happen, read from a fresh GET of the dispute; None when it may.
 
@@ -557,6 +610,14 @@ class DisputeReadbackService:
         self._unsupported: dict[str, dict[str, list]] = {}
         # (r25 send guard) Seller merchant ids of each read dispute (server-side only; masked in responses).
         self._sellers: dict[str, dict[str, set]] = {}
+        # (r30 J2 P2-1) The latest send confirmation per (kind, dispute): (token, case id, payload hash, issued at,
+        # review gate). A preview replaces it, a send consumes it under the store lock; a send without the latest one is
+        # refused. (r31 J2 J5) "Reset demo" replaces the gate, so it also ends every confirmation issued before it.
+        # (r35 #5, E1 P2-2) The tuple also holds the approval record itself (session.approved_payloads[case_id], a new
+        # object per review), so a re-draft and re-review ends older confirmations even without "Reset demo".
+        self._confirmations: dict[str, dict[tuple, tuple]] = {}
+        # (r35 #2, E1 P1-1) Status, provide_evidence link and seller-submitted flag of each dispute's latest detail read.
+        self._readiness: dict[str, dict[str, dict]] = {}
         # (optimise r24) The local approval records the payload hashes it approved; a send is held to them.
         hooks = getattr(store, "approval_hooks", None)
         if isinstance(hooks, dict):
@@ -592,7 +653,7 @@ class DisputeReadbackService:
     def _remember(self, session: Session, source: str, ids, reasons: dict[str, str] | None = None,
                   amounts: dict[str, dict | None] | None = None) -> None:
         for table in (self._seen, self._reasons, self._amounts, self._bindings, self._transactions, self._tracking_sent,
-                      self._unsupported, self._sellers):
+                      self._unsupported, self._sellers, self._readiness):
             for stale in [key for key in table if key not in self._store.sessions]:
                 del table[stale]
         if reasons:
@@ -662,6 +723,39 @@ class DisputeReadbackService:
                                "MATCH" if refusal is None else "MISMATCH"),
             "send_refusal": refusal,
         }
+
+    def _issue_confirmation(self, session: Session, kind: str, dispute_id: str, case_id: str, payload_sha256, now,
+                            sendable: bool):
+        """(r30 J2 P2-1) Called under the store lock by a preview. (r31 J2 J5) Issued only when this send could go out
+        now (Sandbox connected, send switch on, case reviewed, payload built); otherwise the old one is dropped too."""
+        # Sessions the store expired or evicted take their confirmations with them.
+        for gone in [key for key in self._confirmations if key not in self._store.sessions]:
+            del self._confirmations[gone]
+        if payload_sha256 is None or not sendable:
+            self._confirmations.get(session.session_id, {}).pop((kind, dispute_id), None)
+            return None
+        token = secrets.token_urlsafe(24)
+        self._confirmations.setdefault(session.session_id, {})[(kind, dispute_id)] = (
+            token, case_id, payload_sha256, now, session.gate, self._approval_record(session, case_id))
+        return token
+
+    @staticmethod
+    def _approval_record(session: Session, case_id: str):
+        return (getattr(session, "approved_payloads", None) or {}).get(case_id)
+
+    def _confirmation_refusal(self, session: Session, kind: str, dispute_id: str, case_id: str, payload_sha256,
+                              token, now) -> str | None:
+        """(r30 J2 P2-1) Called under the store lock; the send consumes the confirmation only after every check passed."""
+        if not token:
+            return "confirmation_required"
+        held = self._confirmations.get(session.session_id, {}).get((kind, dispute_id))
+        if (held is None or not hmac.compare_digest(held[0], token) or held[1] != case_id or payload_sha256 is None
+                or not hmac.compare_digest(held[2], payload_sha256) or held[4] is not session.gate
+                or held[5] is None or held[5] is not self._approval_record(session, case_id)):
+            return "confirmation_invalid"
+        if now - held[3] < timedelta(seconds=CONFIRM_HOLD_SECONDS):
+            return "confirmation_too_early"
+        return None
 
     def _check_binding(self, session: Session, dispute_id: str, case_id: str) -> dict:
         """(review r7b, r25 R5 P1-1) One dispute <-> one case per session, for evidence and tracking alike.
@@ -746,6 +840,7 @@ class DisputeReadbackService:
             detail = sanitize_dispute_detail(deepcopy(match[0]))
         detail = dict(detail)
         debug_id = detail.pop("paypal_debug_id", None)
+        readiness = evidence_readiness(detail)  # (r35 #2) read before the link flag is dropped from the response
         detail.pop("provide_evidence_link", None)
         sellers = dispute_sellers(detail)
         detail["disputed_transactions"] = [{key: value for key, value in row.items() if key != "seller_merchant_id"}
@@ -759,6 +854,7 @@ class DisputeReadbackService:
             self._unsupported.setdefault(session.session_id, {})[dispute_id] = unsupported_requested_types(
                 detail.get("evidences"))
             self._sellers.setdefault(session.session_id, {})[dispute_id] = sellers
+            self._readiness.setdefault(session.session_id, {})[dispute_id] = readiness
         try:
             return DisputeDetailResponse.model_validate(dict(self._envelope(live, "GET_DETAIL", debug_id), **detail)).model_dump()
         except ValidationError:
@@ -768,6 +864,7 @@ class DisputeReadbackService:
         dispute_id = body["dispute_id"]
         case_ref = body["case_ref"]
         submit = body["submit"] is True
+        confirm_token = body.get("confirm_token")
         live = self._connected()
         if not self._known(session, live, dispute_id):
             raise BoundaryError(404, "dispute_not_found")
@@ -782,7 +879,6 @@ class DisputeReadbackService:
             if self._provider_reason(session, live, dispute_id) != session.drafts[case_id].get("routing", {}).get("reason"):
                 raise BoundaryError(409, "dispute_case_mismatch")
             # Fixture disputes carry the same amount as the synthetic case they stand for, so the amount must match too.
-            # A live Sandbox dispute's amount never equals a synthetic case's, so live pairs rely on the binding below.
             if not live and self._provider_amount(session, live, dispute_id) != _case.get("dispute_amount"):
                 raise BoundaryError(409, "dispute_case_mismatch")
             digest = self._store._verified_restricted_digest(session, case_id)
@@ -797,21 +893,35 @@ class DisputeReadbackService:
             attachment_bytes = self._attachment_bytes(session, case_id)
             # Built before the pair is written, so a case with nothing PayPal would accept does not take the dispute.
             preview = build_provide_evidence_request(dispute_id, case_ref, restricted, masked=True)
+            # (r35 #6) A live Sandbox dispute is held to the case amount at preview too (the amount this session read),
+            # so a 158 TWD dispute never pairs with a 48 USD case; the message names both amounts. After the pair, type and
+            # evidence-shape checks, so a dispute taken by another case or a case with nothing to send still says so first.
+            if live and not _same_money(self._provider_amount(session, live, dispute_id), _case.get("dispute_amount")):
+                raise DisputeAmountMismatch(self._provider_amount(session, live, dispute_id), _case.get("dispute_amount"))
             # (optimise r24) The hash of the exact parts a send would carry (None while the files cannot be assembled).
             try:
                 payload_sha256 = evidence_payload_sha256(session, build_provide_evidence_request(
                     dispute_id, case_ref, restricted, masked=False, attachment_bytes=attachment_bytes))
             except BoundaryError:
                 payload_sha256 = None
-            bindings[dispute_id] = (case_id, digest)
+            # (r35 #2, E1 P1-1) A live dispute whose last detail read rules out a send (seller evidence already listed,
+            # not waiting for the seller, no provide_evidence link, or no detail read) keeps the preview but gets no
+            # confirmation and no pair, so the console never offers a send PayPal would refuse.
+            not_ready = readiness_refusal(self._readiness.get(session.session_id, {}).get(dispute_id)) if live else None
+            if not_ready is None:
+                bindings[dispute_id] = (case_id, digest)
             guard = self._send_guard(session, live, dispute_id, case_id, case_ref,
                                      session.drafts[case_id].get("routing", {}).get("reason"),
                                      self._provider_amount(session, live, dispute_id))
+            if not_ready is not None:
+                guard["send_refusal"] = not_ready
             if submit:
                 if case_id not in session.approved:
                     raise BoundaryError(422, "approval_required")
                 if not live or not submit_enabled:
                     raise BoundaryError(503, "provider_action_frozen")
+                if not_ready is not None:
+                    raise BoundaryError(409, not_ready)
                 # Built before the approval is consumed, so a request that cannot be assembled does not use it up.
                 unmasked = build_provide_evidence_request(dispute_id, case_ref, restricted, masked=False,
                                                           attachment_bytes=attachment_bytes)
@@ -823,19 +933,30 @@ class DisputeReadbackService:
                 if approved_sha256 is None or not hmac.compare_digest(approved_sha256, payload_sha256):
                     raise BoundaryError(409, "evidence_changed_after_approval")
                 case_reason = session.drafts[case_id].get("routing", {}).get("reason")
-                # A live Sandbox dispute never carries a synthetic case's amount: hold it to the amount it had when this
-                # session read it, so the send stops if the dispute changed since the preview. A fixture keeps the
-                # case amount it stands for.
-                case_amount = deepcopy(self._provider_amount(session, live, dispute_id) if live else _case.get("dispute_amount"))
+                # (r35 #6) Live and fixture alike: the fresh read must still carry the case amount (which the amount
+                # this session read already matched above), so the send stops if the dispute changed since the preview.
+                case_amount = deepcopy(_case.get("dispute_amount"))
+                # Checked before the fresh read, so a send without the dialog's confirmation never reaches PayPal.
+                refusal = self._confirmation_refusal(session, "provide_evidence", dispute_id, case_id, payload_sha256,
+                                                     confirm_token, now)
+                if refusal is not None:
+                    raise BoundaryError(409, refusal)
+                issued = None
+            else:
+                issued = self._issue_confirmation(session, "provide_evidence", dispute_id, case_id, payload_sha256, now,
+                                                  live and submit_enabled and case_id in session.approved
+                                                  and case_id not in session.submitted and not_ready is None)
         envelope = self._envelope(live, "PROVIDE_EVIDENCE_PREVIEW")
         result = dict(envelope, dispute_id=dispute_id, case_ref=case_ref, external_send="FROZEN",
                       submit_flag_enabled=submit_enabled, human_review_required=True, payload_sha256=payload_sha256,
-                      send_guard=guard, **preview)
+                      send_guard=guard, confirm_token=issued, **preview)
         if submit:
             # PayPal docs r24: read the dispute again right before sending; PayPal accepts evidence only while it waits
             # for the seller and offers the provide_evidence link, and the amount and requested types must still fit.
             fresh = await self._adapter.get_dispute(dispute_id)
             refusal = submit_refusal(fresh, case_reason, case_amount, unmasked["input"])
+            if refusal == "dispute_amount_mismatch":
+                raise DisputeAmountMismatch(fresh.get("dispute_amount"), case_amount)
             if refusal is not None:
                 raise BoundaryError(409, refusal)
             # (r25 send guard) The fresh read's seller must be the connected account.
@@ -859,6 +980,11 @@ class DisputeReadbackService:
                 approved_sha256 = self._approved_hash(session, case_id, "provide_evidence")
                 if approved_sha256 is None or not hmac.compare_digest(approved_sha256, payload_sha256):
                     raise BoundaryError(409, "evidence_changed_after_approval")
+                refusal = self._confirmation_refusal(session, "provide_evidence", dispute_id, case_id, payload_sha256,
+                                                     confirm_token, self._store._now())
+                if refusal is not None:
+                    raise BoundaryError(409, refusal)
+                self._confirmations[session.session_id].pop(("provide_evidence", dispute_id))
                 session.submitted.add(case_id)
             try:
                 sent = await self._adapter.provide_evidence(dispute_id, multipart_parts(unmasked))
@@ -887,6 +1013,7 @@ class DisputeReadbackService:
         a connected Sandbox adapter, and a fresh GET whose transaction, reason and amount still fit the case.
         """
         dispute_id, case_ref, submit = body["dispute_id"], body["case_ref"], body["submit"] is True
+        confirm_token = body.get("confirm_token")
         live = self._connected()
         if not self._known(session, live, dispute_id):
             raise BoundaryError(404, "dispute_not_found")
@@ -903,13 +1030,13 @@ class DisputeReadbackService:
                 raise BoundaryError(409, "dispute_case_mismatch")
             if case_reason != "MERCHANDISE_OR_SERVICE_NOT_RECEIVED":
                 raise BoundaryError(409, "tracking_not_applicable")
-            # Same rule as provide-evidence: a live dispute is held to the amount read in this session, a fixture to its case.
-            case_amount = deepcopy(self._provider_amount(session, live, dispute_id) if live else _case.get("dispute_amount"))
-            if not live and not _same_money(self._provider_amount(session, live, dispute_id), case_amount):
-                raise BoundaryError(409, "dispute_amount_mismatch")
+            # (r35 #6) Same rule as provide-evidence: live or fixture, the amount this session read must be the case's.
+            case_amount = deepcopy(_case.get("dispute_amount"))
             digest = self._store._verified_restricted_digest(session, case_id)
             # (r25 R5 P1-1) The same two-way binding as provide-evidence.
             bindings = self._check_binding(session, dispute_id, case_id)
+            if not _same_money(self._provider_amount(session, live, dispute_id), case_amount):
+                raise DisputeAmountMismatch(self._provider_amount(session, live, dispute_id), case_amount)
             if live:
                 transaction_id = self._transactions.get(session.session_id, {}).get(dispute_id)
             else:
@@ -932,10 +1059,19 @@ class DisputeReadbackService:
                     raise BoundaryError(503, "provider_action_frozen")
                 if self._tracking_used(session, case_id):
                     raise BoundaryError(409, "tracking_already_submitted")
+                refusal = self._confirmation_refusal(session, "add_tracking", dispute_id, case_id, payload_sha256,
+                                                     confirm_token, now)
+                if refusal is not None:
+                    raise BoundaryError(409, refusal)
+                issued = None
+            else:
+                issued = self._issue_confirmation(session, "add_tracking", dispute_id, case_id, payload_sha256, now,
+                                                  live and submit_enabled and case_id in session.approved
+                                                  and not self._tracking_used(session, case_id))
         result = dict(self._envelope(live, "ADD_TRACKING_PREVIEW"), readback="ADD_TRACKING_PREVIEW",
                       dispute_id=dispute_id, case_ref=case_ref, external_send="FROZEN",
                       submit_flag_enabled=submit_enabled, human_review_required=True, payload_sha256=payload_sha256,
-                      send_guard=guard, **preview)
+                      send_guard=guard, confirm_token=issued, **preview)
         if submit:
             fresh = await self._adapter.get_dispute(dispute_id)
             rows = fresh.get("disputed_transactions") or []
@@ -945,7 +1081,7 @@ class DisputeReadbackService:
             if fresh.get("reason") != case_reason:
                 raise BoundaryError(409, "dispute_case_mismatch")
             if not _same_money(fresh.get("dispute_amount"), case_amount):
-                raise BoundaryError(409, "dispute_amount_mismatch")
+                raise DisputeAmountMismatch(fresh.get("dispute_amount"), case_amount)
             refusal = account_refusal(self._account_id(live), dispute_sellers(fresh))  # (r25 send guard)
             if refusal is not None:
                 raise BoundaryError(409, refusal)
@@ -971,6 +1107,11 @@ class DisputeReadbackService:
                         tracking_content_sha256(session, current) != sent_sha256):
                     raise BoundaryError(409, "evidence_changed_after_approval")
                 result["payload_sha256"] = tracking_payload_sha256(session, unmasked)
+                refusal = self._confirmation_refusal(session, "add_tracking", dispute_id, case_id, result["payload_sha256"],
+                                                     confirm_token, self._store._now())
+                if refusal is not None:
+                    raise BoundaryError(409, refusal)
+                self._confirmations[session.session_id].pop(("add_tracking", dispute_id))
                 # Consumed before the provider call; a failed send stays consumed (no automatic retry).
                 self._tracking_sent.setdefault(session.session_id, []).append((session.gate, case_id))
             try:

@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="pg-paypal-guards-title pg-paypal-guards-desc">
+<title id="pg-paypal-guards-title">Sending evidence to PayPal: nine checks, one person</title>
+<desc id="pg-paypal-guards-desc">Nine ordered checks before PayGuard sends dispute evidence to PayPal Sandbox, and the invoice draft chain.</desc>
+<style>@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&amp;family=Geist:wght@400;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap');
+.t{font-family:'Instrument Serif',Georgia,serif;fill:#1f1e1b}
+.s{font-family:Geist,Helvetica,Arial,sans-serif}
+.m{font-family:'Geist Mono',Menlo,monospace}
+</style>
+<defs><marker id="pg-paypal-guards-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#55534e"/></marker><marker id="pg-paypal-guards-am" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#4f46e5"/></marker><pattern id="pg-paypal-guards-dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#e6e0d4"/></pattern></defs>
+<rect width="1920" height="1080" fill="#f7f3ec"/>
+<rect width="1920" height="1080" fill="url(#pg-paypal-guards-dots)"/>
+<text x="64" y="60" class="m" font-size="18" letter-spacing="2" fill="#6b6862">PAYGUARD AI · ARCHITECTURE 3/3</text>
+<text x="64" y="116" class="t" font-size="56">Sending evidence to PayPal: nine checks, one person</text>
+<text x="64" y="156" class="s" font-size="24" fill="#55534e">One approval allows exactly one send, and every check runs again at the moment of sending.</text>
+<path d="M488 281 L516 281" fill="none" stroke="#55534e" stroke-width="2" marker-end="url(#pg-paypal-guards-ar)"/>
+<path d="M944 281 L972 281" fill="none" stroke="#55534e" stroke-width="2" marker-end="url(#pg-paypal-guards-ar)"/>
+<path d="M1400 281 L1428 281" fill="none" stroke="#55534e" stroke-width="2" marker-end="url(#pg-paypal-guards-ar)"/>
+<path d="M1644 370 L1644 398" fill="none" stroke="#55534e" stroke-width="2" marker-end="url(#pg-paypal-guards-ar)"/>
+<path d="M1432 491 L1404 491" fill="none" stroke="#55534e" stroke-width="2" marker-end="url(#pg-paypal-guards-ar)"/>
+<path d="M976 491 L948 491" fill="none" stroke="#55534e" stroke-width="2" marker-end="url(#pg-paypal-guards-ar)"/>
+<path d="M520 491 L492 491" fill="none" stroke="#55534e" stroke-width="2" marker-end="url(#pg-paypal-guards-ar)"/>
+<path d="M276 580 L276 600" fill="none" stroke="#55534e" stroke-width="2" marker-end="url(#pg-paypal-guards-ar)"/>
+<rect x="64" y="192" width="424" height="178" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
+<rect x="64" y="192" width="6" height="178" rx="2" fill="#3f6b47"/>
+<rect x="88" y="206" width="87" height="28" rx="2" fill="none" stroke="#3f6b47" stroke-width="1.4"/>
+<text x="96" y="226" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#3f6b47">SERVER</text>
+<text x="88" y="268" class="s" font-size="24" font-weight="600" fill="#1f1e1b">1 Off by default</text>
+<text x="88" y="300" class="m" font-size="18" fill="#55534e">each write needs its own</text>
+<text x="88" y="326" class="m" font-size="18" fill="#55534e">switch; the public demo</text>
+<text x="88" y="352" class="m" font-size="18" fill="#55534e">refuses all</text>
+<rect x="520" y="192" width="424" height="178" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
+<rect x="520" y="192" width="6" height="178" rx="2" fill="#c2410c"/>
+<rect x="544" y="206" width="87" height="28" rx="2" fill="none" stroke="#c2410c" stroke-width="1.4"/>
+<text x="552" y="226" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#c2410c">PERSON</text>
+<text x="544" y="268" class="s" font-size="24" font-weight="600" fill="#1f1e1b">2 A person approves</text>
+<text x="544" y="300" class="m" font-size="18" fill="#55534e">reviewed draft, bound by digest</text>
+<text x="544" y="326" class="m" font-size="18" fill="#55534e">approval expires after 5 min</text>
+<text x="544" y="352" class="m" font-size="18" fill="#55534e">names pseudonymised first</text>
+<rect x="976" y="192" width="424" height="178" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
+<rect x="976" y="192" width="6" height="178" rx="2" fill="#3f6b47"/>
+<rect x="1000" y="206" width="87" height="28" rx="2" fill="none" stroke="#3f6b47" stroke-width="1.4"/>
+<text x="1008" y="226" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#3f6b47">SERVER</text>
+<text x="1000" y="268" class="s" font-size="24" font-weight="600" fill="#1f1e1b">3 One case, one dispute</text>
+<text x="1000" y="300" class="m" font-size="18" fill="#55534e">the first preview binds them;</text>
+<text x="1000" y="326" class="m" font-size="18" fill="#55534e">evidence goes only to</text>
+<text x="1000" y="352" class="m" font-size="18" fill="#55534e">the bound dispute</text>
+<rect x="1432" y="192" width="424" height="178" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
+<rect x="1432" y="192" width="6" height="178" rx="2" fill="#c2410c"/>
+<rect x="1456" y="206" width="87" height="28" rx="2" fill="none" stroke="#c2410c" stroke-width="1.4"/>
+<text x="1464" y="226" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#c2410c">PERSON</text>
+<text x="1456" y="268" class="s" font-size="24" font-weight="600" fill="#1f1e1b">4 Two-step confirm</text>
+<text x="1456" y="300" class="m" font-size="18" fill="#55534e">case and dispute side by side</text>
+<text x="1456" y="326" class="m" font-size="18" fill="#55534e">tick, Continue, 3 s, Send</text>
+<text x="1456" y="352" class="m" font-size="18" fill="#55534e">single-use server confirmation</text>
+<rect x="1432" y="402" width="424" height="178" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
+<rect x="1432" y="402" width="6" height="178" rx="2" fill="#3f6b47"/>
+<rect x="1456" y="416" width="87" height="28" rx="2" fill="none" stroke="#3f6b47" stroke-width="1.4"/>
+<text x="1464" y="436" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#3f6b47">SERVER</text>
+<text x="1456" y="478" class="s" font-size="24" font-weight="600" fill="#1f1e1b">5 Same payload as approved</text>
+<text x="1456" y="510" class="m" font-size="18" fill="#55534e">the request is rebuilt at Send;</text>
+<text x="1456" y="536" class="m" font-size="18" fill="#55534e">its hash must equal the</text>
+<text x="1456" y="562" class="m" font-size="18" fill="#55534e">approved hash</text>
+<rect x="976" y="402" width="424" height="178" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
+<rect x="976" y="402" width="6" height="178" rx="2" fill="#3f6b47"/>
+<rect x="1000" y="416" width="87" height="28" rx="2" fill="none" stroke="#3f6b47" stroke-width="1.4"/>
+<text x="1008" y="436" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#3f6b47">PAYPAL</text>
+<text x="1000" y="478" class="s" font-size="24" font-weight="600" fill="#1f1e1b">6 Fresh read from PayPal</text>
+<text x="1000" y="510" class="m" font-size="18" fill="#55534e">still waiting for the seller,</text>
+<text x="1000" y="536" class="m" font-size="18" fill="#55534e">upload offered, same reason</text>
+<text x="1000" y="562" class="m" font-size="18" fill="#55534e">and amount</text>
+<rect x="520" y="402" width="424" height="178" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
+<rect x="520" y="402" width="6" height="178" rx="2" fill="#3f6b47"/>
+<rect x="544" y="416" width="87" height="28" rx="2" fill="none" stroke="#3f6b47" stroke-width="1.4"/>
+<text x="552" y="436" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#3f6b47">SERVER</text>
+<text x="544" y="478" class="s" font-size="24" font-weight="600" fill="#1f1e1b">7 Declared account match</text>
+<text x="544" y="510" class="m" font-size="18" fill="#55534e">the dispute's seller must be</text>
+<text x="544" y="536" class="m" font-size="18" fill="#55534e">the merchant id the operator</text>
+<text x="544" y="562" class="m" font-size="18" fill="#55534e">set (not verified by PayPal)</text>
+<rect x="64" y="402" width="424" height="178" rx="6" fill="#eef5ef" stroke="#3f6b47" stroke-width="2.5"/>
+<rect x="64" y="402" width="6" height="178" rx="2" fill="#3f6b47"/>
+<rect x="88" y="416" width="63" height="28" rx="2" fill="none" stroke="#3f6b47" stroke-width="1.4"/>
+<text x="96" y="436" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#3f6b47">CODE</text>
+<text x="88" y="478" class="s" font-size="24" font-weight="600" fill="#1f1e1b">8 Re-checked under a lock</text>
+<text x="88" y="510" class="m" font-size="18" fill="#55534e">approval, binding, hash again;</text>
+<text x="88" y="536" class="m" font-size="18" fill="#55534e">confirmation used up first:</text>
+<text x="88" y="562" class="m" font-size="18" fill="#55534e">a repeat is refused</text>
+<rect x="64" y="604" width="1792" height="108" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
+<rect x="64" y="604" width="6" height="108" rx="2" fill="#3f6b47"/>
+<rect x="88" y="618" width="87" height="28" rx="2" fill="none" stroke="#3f6b47" stroke-width="1.4"/>
+<text x="96" y="638" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#3f6b47">PAYPAL</text>
+<text x="189" y="640" class="s" font-size="24" font-weight="600" fill="#1f1e1b">9 The call and its receipt</text>
+<text x="88" y="670" class="m" font-size="18" fill="#55534e">allowed paths only · no redirects · 15 s limit · replies capped at 64 KiB · PayPal's reason in plain English</text>
+<text x="88" y="696" class="m" font-size="18" fill="#55534e">PayPal-Debug-Id kept as the receipt · real Sandbox sends 2026-11-04 and 2026-11-05, each to its own author-created test dispute</text>
+<rect x="64" y="728" width="1792" height="168" rx="6" fill="#fbf9f5" stroke="#d9d3c7" stroke-width="1.5"/>
+<text x="88" y="766" class="t" font-size="30">The invoice draft has its own chain</text>
+<text x="88" y="800" class="m" font-size="18" fill="#55534e">country rule stops the sale: draft refused · review token used once, 120 s, bound to the latest check</text>
+<text x="88" y="830" class="m" font-size="18" fill="#55534e">two-step confirm: tick, Continue, 3 s, Create draft · status must come back DRAFT · never sent to the buyer</text>
+<text x="88" y="860" class="m" font-size="18" fill="#55534e">every refusal names a plain reason: wrong account, case sent elsewhere, amount or reason changed</text>
+<line x1="64" y1="944" x2="1856" y2="944" stroke="#d9d3c7" stroke-width="1"/>
+<rect x="64" y="956" width="87" height="28" rx="2" fill="none" stroke="#3f6b47" stroke-width="1.4"/>
+<text x="72" y="976" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#3f6b47">SERVER</text>
+<text x="163" y="977" class="s" font-size="20" fill="#55534e">enforced by the server</text>
+<rect x="423" y="956" width="87" height="28" rx="2" fill="none" stroke="#3f6b47" stroke-width="1.4"/>
+<text x="431" y="976" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#3f6b47">PAYPAL</text>
+<text x="522" y="977" class="s" font-size="20" fill="#55534e">read from or sent to PayPal</text>
+<rect x="832" y="956" width="87" height="28" rx="2" fill="none" stroke="#c2410c" stroke-width="1.4"/>
+<text x="840" y="976" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#c2410c">PERSON</text>
+<text x="931" y="977" class="s" font-size="20" fill="#55534e">a person, in the browser</text>
+<rect x="1211" y="956" width="63" height="28" rx="2" fill="none" stroke="#3f6b47" stroke-width="1.4"/>
+<text x="1219" y="976" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#3f6b47">CODE</text>
+<text x="1286" y="977" class="s" font-size="20" fill="#55534e">the race guard</text>
+<text x="64" y="1016" class="s" font-size="19" fill="#6b6862">Steps 1 to 3 and 5 to 9 run on the server; step 4 is in the browser.</text>
+<text x="64" y="1044" class="s" font-size="19" fill="#6b6862">PayPal or the card issuer decides the dispute; PayGuard only prepares and sends evidence.</text>
+</svg>

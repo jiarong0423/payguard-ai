@@ -19,7 +19,7 @@ from pydantic import ValidationError
 from app import ai_brief as ai
 
 
-CLAUDE_C1_PARAPHRASES = (
+REVIEWER_C1_PARAPHRASES = (
     "PayPal has cleared this activity.",
     "Seller Protection applies to this case.",
     "The seller is protected under Seller Protection.",
@@ -339,9 +339,9 @@ class GatewayTests(unittest.IsolatedAsyncioTestCase):
             with self.subTest(raw=raw[:80]):
                 await self.failure(raw)
 
-    async def test_parent_rejects_all_claude_c1_paraphrases(self):
+    async def test_parent_rejects_all_reviewer_c1_paraphrases(self):
         fields = ("summary", "evidence_points", "missing_evidence")
-        for index, claim in enumerate(CLAUDE_C1_PARAPHRASES):
+        for index, claim in enumerate(REVIEWER_C1_PARAPHRASES):
             value = result()
             field = fields[index % len(fields)]
             value["brief"][field] = claim if field == "summary" else [claim]

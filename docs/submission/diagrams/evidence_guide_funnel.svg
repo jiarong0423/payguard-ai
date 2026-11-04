@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="pg-guide-funnel-title pg-guide-funnel-desc">
+<title id="pg-guide-funnel-title">Evidence guide: a hybrid funnel</title>
+<desc id="pg-guide-funnel-desc">Seven steps a seller sentence passes in the evidence guide, with three real sentences and where each stops.</desc>
+<style>@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&amp;family=Geist:wght@400;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap');
+.t{font-family:'Instrument Serif',Georgia,serif;fill:#1f1e1b}
+.s{font-family:Geist,Helvetica,Arial,sans-serif}
+.m{font-family:'Geist Mono',Menlo,monospace}
+</style>
+<defs><marker id="pg-guide-funnel-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#55534e"/></marker><marker id="pg-guide-funnel-am" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#4f46e5"/></marker><pattern id="pg-guide-funnel-dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#e6e0d4"/></pattern></defs>
+<rect width="1920" height="1080" fill="#f7f3ec"/>
+<rect width="1920" height="1080" fill="url(#pg-guide-funnel-dots)"/>
+<text x="64" y="60" class="m" font-size="18" letter-spacing="2" fill="#6b6862">PAYGUARD AI · ARCHITECTURE 1/3</text>
+<text x="64" y="116" class="t" font-size="56">Evidence guide: a hybrid funnel</text>
+<text x="64" y="156" class="s" font-size="24" fill="#55534e">Rules answer first. The model only sees what the rules could not settle. Code checks every reply.</text>
+<rect x="64" y="196" width="1160" height="82" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
+<rect x="64" y="196" width="6" height="82" rx="2" fill="#1f1e1b"/>
+<rect x="88" y="210" width="63" height="28" rx="2" fill="none" stroke="#1f1e1b" stroke-width="1.4"/>
+<text x="96" y="230" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#1f1e1b">GATE</text>
+<text x="165" y="232" class="s" font-size="24" font-weight="600" fill="#1f1e1b">1  Input gate</text>
+<text x="88" y="262" class="m" font-size="18" fill="#55534e">English only · at most 4 digits · no links, card numbers or personal data</text>
+<rect x="104" y="284" width="1080" height="82" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
+<rect x="104" y="284" width="6" height="82" rx="2" fill="#1f1e1b"/>
+<rect x="128" y="298" width="63" height="28" rx="2" fill="none" stroke="#1f1e1b" stroke-width="1.4"/>
+<text x="136" y="318" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#1f1e1b">RULE</text>
+<text x="205" y="320" class="s" font-size="24" font-weight="600" fill="#1f1e1b">2  Keyword policy routes</text>
+<text x="128" y="350" class="m" font-size="18" fill="#55534e">pressure ("just tick it") and injection get a fixed answer</text>
+<rect x="144" y="372" width="1000" height="82" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
+<rect x="144" y="372" width="6" height="82" rx="2" fill="#1f1e1b"/>
+<rect x="168" y="386" width="63" height="28" rx="2" fill="none" stroke="#1f1e1b" stroke-width="1.4"/>
+<text x="176" y="406" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#1f1e1b">RULE</text>
+<text x="245" y="408" class="s" font-size="24" font-weight="600" fill="#1f1e1b">3  Rule layer</text>
+<text x="168" y="438" class="m" font-size="18" fill="#55534e">closed values read from the seller's own words, no model call</text>
+<rect x="184" y="460" width="920" height="82" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
+<rect x="184" y="460" width="6" height="82" rx="2" fill="#1f1e1b"/>
+<rect x="208" y="474" width="63" height="28" rx="2" fill="none" stroke="#1f1e1b" stroke-width="1.4"/>
+<text x="216" y="494" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#1f1e1b">RULE</text>
+<text x="285" y="496" class="s" font-size="24" font-weight="600" fill="#1f1e1b">4  Speaker check</text>
+<text x="208" y="526" class="m" font-size="18" fill="#55534e">buyer or third-party speech is never counted</text>
+<rect x="224" y="548" width="840" height="108" rx="6" fill="#eef0ff" stroke="#4f46e5" stroke-width="2.5"/>
+<rect x="224" y="548" width="6" height="108" rx="2" fill="#4f46e5"/>
+<rect x="248" y="562" width="75" height="28" rx="2" fill="none" stroke="#4f46e5" stroke-width="1.4"/>
+<text x="256" y="582" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#4f46e5">MODEL</text>
+<text x="337" y="584" class="s" font-size="24" font-weight="600" fill="#1f1e1b">5  Gemini, optional and governed</text>
+<text x="248" y="614" class="m" font-size="18" fill="#55534e">only clauses the rules left open · closed values</text>
+<text x="248" y="640" class="m" font-size="18" fill="#55534e">separate worker · prompt hash checked on every reply</text>
+<rect x="184" y="662" width="920" height="82" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
+<rect x="184" y="662" width="6" height="82" rx="2" fill="#3f6b47"/>
+<rect x="208" y="676" width="63" height="28" rx="2" fill="none" stroke="#3f6b47" stroke-width="1.4"/>
+<text x="216" y="696" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#3f6b47">CODE</text>
+<text x="285" y="698" class="s" font-size="24" font-weight="600" fill="#1f1e1b">6  Code checks</text>
+<text x="208" y="728" class="m" font-size="18" fill="#55534e">closed values only · weekday must be in the clause</text>
+<rect x="104" y="750" width="1080" height="108" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
+<rect x="104" y="750" width="6" height="108" rx="2" fill="#c2410c"/>
+<rect x="128" y="764" width="87" height="28" rx="2" fill="none" stroke="#c2410c" stroke-width="1.4"/>
+<text x="136" y="784" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#c2410c">PERSON</text>
+<text x="229" y="786" class="s" font-size="24" font-weight="600" fill="#1f1e1b">7  Fixed templates, then the seller confirms</text>
+<text x="128" y="816" class="m" font-size="18" fill="#55534e">replies come from reviewed templates, never model text</text>
+<text x="128" y="842" class="m" font-size="18" fill="#55534e">only code marks an item present</text>
+<rect x="64" y="868" width="1160" height="64" rx="6" fill="#fff3ea" stroke="#c2410c" stroke-width="1.5" stroke-dasharray="6,5"/>
+<text x="88" y="894" class="s" font-size="20" font-weight="600" fill="#c2410c">Fallback at every step</text>
+<text x="88" y="920" class="s" font-size="18" fill="#55534e">over budget, late (30 s), invalid or empty reply: the keyword answer stays, labelled with the reason</text>
+<text x="1288" y="186" class="m" font-size="18" letter-spacing="2" fill="#6b6862">THREE REAL SENTENCES</text>
+<path d="M1288 325 L1190 325" fill="none" stroke="#55534e" stroke-width="2" marker-end="url(#pg-guide-funnel-ar)"/>
+<rect x="1288" y="212" width="568" height="136" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
+<text x="1308" y="246" class="t" font-size="26" font-style="italic">"The buyer says it never arrived, so just</text>
+<text x="1308" y="274" class="t" font-size="26" font-style="italic">tick the tracking box for me."</text>
+<text x="1308" y="306" class="s" font-size="20" font-weight="600" fill="#c2410c">Stopped at 2</text>
+<text x="1308" y="334" class="s" font-size="18" fill="#55534e">fixed answer · 0 items filled · no model call</text>
+<path d="M1288 501 L1110 501" fill="none" stroke="#55534e" stroke-width="2" marker-end="url(#pg-guide-funnel-ar)"/>
+<rect x="1288" y="384" width="568" height="136" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
+<text x="1308" y="418" class="t" font-size="26" font-style="italic">"I heard from the buyer that it arrived</text>
+<text x="1308" y="446" class="t" font-size="26" font-style="italic">last Monday."</text>
+<text x="1308" y="478" class="s" font-size="20" font-weight="600" fill="#c2410c">Stopped at 4</text>
+<text x="1308" y="506" class="s" font-size="18" fill="#55534e">reported speech · never counted or sent</text>
+<path d="M1288 602 L1070 602" fill="none" stroke="#4f46e5" stroke-width="2" marker-end="url(#pg-guide-funnel-am)"/>
+<rect x="1288" y="536" width="568" height="164" rx="6" fill="#ffffff" stroke="#4f46e5" stroke-width="2"/>
+<text x="1308" y="570" class="t" font-size="26" font-style="italic">"It went out on Thursday."</text>
+<text x="1308" y="602" class="s" font-size="20" font-weight="600" fill="#4f46e5">Reaches 5, checked at 6</text>
+<text x="1308" y="630" class="s" font-size="18" fill="#55534e">Gemini maps it to ship date; no week given,</text>
+<text x="1308" y="654" class="s" font-size="18" fill="#55534e">so no date is set ("mentioned, not confirmed")</text>
+<text x="1308" y="678" class="s" font-size="18" fill="#55534e">and the seller is asked for carrier and date</text>
+<rect x="1288" y="712" width="568" height="220" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
+<text x="1308" y="750" class="t" font-size="30">Measured, 2026-11-03</text>
+<text x="1308" y="816" class="t" font-size="48" fill="#4f46e5">36</text>
+<text x="1412" y="796" class="s" font-size="19" fill="#1f1e1b">Gemini API calls, 12 per situation:</text>
+<text x="1412" y="820" class="s" font-size="19" fill="#1f1e1b">0 wrong fills, 0 calls failed</text>
+<text x="1308" y="882" class="t" font-size="48" fill="#4f46e5">1.00</text>
+<text x="1412" y="862" class="s" font-size="19" fill="#1f1e1b">precision in all three situations;</text>
+<text x="1412" y="886" class="s" font-size="19" fill="#1f1e1b">0 attack sentences changed an item</text>
+<text x="1308" y="916" class="m" font-size="18" fill="#6b6862">Synthetic corpora · small sample · no user study</text>
+<line x1="64" y1="944" x2="1856" y2="944" stroke="#d9d3c7" stroke-width="1"/>
+<rect x="64" y="956" width="63" height="28" rx="2" fill="none" stroke="#1f1e1b" stroke-width="1.4"/>
+<text x="72" y="976" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#1f1e1b">RULE</text>
+<text x="139" y="977" class="s" font-size="20" fill="#55534e">rules, no model</text>
+<rect x="329" y="956" width="75" height="28" rx="2" fill="none" stroke="#4f46e5" stroke-width="1.4"/>
+<text x="337" y="976" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#4f46e5">MODEL</text>
+<text x="416" y="977" class="s" font-size="20" fill="#55534e">Gemini, optional</text>
+<rect x="616" y="956" width="63" height="28" rx="2" fill="none" stroke="#3f6b47" stroke-width="1.4"/>
+<text x="624" y="976" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#3f6b47">CODE</text>
+<text x="691" y="977" class="s" font-size="20" fill="#55534e">checked by code</text>
+<rect x="881" y="956" width="87" height="28" rx="2" fill="none" stroke="#c2410c" stroke-width="1.4"/>
+<text x="889" y="976" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#c2410c">PERSON</text>
+<text x="980" y="977" class="s" font-size="20" fill="#55534e">the seller decides</text>
+<text x="64" y="1016" class="s" font-size="19" fill="#6b6862">Budget: 10 model calls per session and situation, 2 s apart, 20 a day · breaker after 3 failures · timeouts nested up to 30 s · off by default.</text>
+<text x="64" y="1044" class="s" font-size="19" fill="#6b6862">Hosted demo: the guide may use Gemini only when the operator opts in, at most 5 a minute and 20 a day.</text>
+</svg>

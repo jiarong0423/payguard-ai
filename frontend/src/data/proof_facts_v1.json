@@ -1,6 +1,6 @@
 {
   "schema_version": "payguard.proof_facts.v1",
-  "source_note": "Facts copied by hand on 2026-11-04 (optimise r24) from the evidence files named in each row: docs/evidence/RECEIPT_20261031_live.md, docs/evidence/channel3_receipts_v1.json, docs/evidence/GEMINI_GUIDE_RUNS_20261103.md and docs/evidence/RED_TEAM_ROUNDS_20261104.md. Each row's quotes are checked word for word against its source by tests/frontend_proof_contract.mjs; the Channel3 row is recomputed from the receipts. Identifiers stay masked exactly as in the receipts. No secret, token, e-mail address or response body is copied.",
+  "source_note": "Facts copied by hand on 2026-11-04 and 2026-11-05 (optimise r24, r36) from the evidence files named in each row: docs/evidence/RECEIPT_20261031_live.md, docs/evidence/RECEIPT_20261104_live.md, docs/evidence/RECEIPT_20261105_live.md, docs/evidence/channel3_receipts_v1.json, docs/evidence/GEMINI_GUIDE_RUNS_20261103.md and docs/evidence/RED_TEAM_ROUNDS_20261104.md. Each row's quotes are checked word for word against its source by tests/frontend_proof_contract.mjs; the Channel3 row is recomputed from the receipts. Identifiers stay masked exactly as in the receipts. No secret, token, e-mail address or response body is copied.",
   "methods": {
     "REAL_SANDBOX": { "label": "Real Sandbox call", "simulated": false, "meaning": "A real call to PayPal's Sandbox through PayGuard, made by the author with two Sandbox test accounts. Sandbox test data, not a real merchant case." },
     "RECORDED": { "label": "Recorded real run", "simulated": false, "meaning": "A real run against an outside service (Channel3 search, Gemini) made once and recorded in the file named. This page shows the record; it calls nothing." },
@@ -49,7 +49,7 @@
       "id": "policy-prescreen-attacks",
       "scenario": "policy",
       "proven": "Pre-screen evasions found by the attack rounds are fixed: 44 to 0 in r22; in r23 false positives 30 to 0 and misses 27 to 0 on the attack lists.",
-      "how": "Attack agents ran against an isolated copy; every fix is pinned as a test (tests/test_attack_r22.py, tests/test_attack_r23_aup.py). The pre-screen is a keyword screen that asks a person to review; it decides nothing.",
+      "how": "Attack agents ran against an isolated copy; code fixes are pinned as tests (tests/test_attack_r22.py, tests/test_attack_r23_aup.py). The pre-screen is a keyword screen that asks a person to review; it decides nothing.",
       "method": "TEST",
       "date": "2026-11-03",
       "date_end": "2026-11-04",
@@ -107,10 +107,60 @@
       "quotes": ["single read at 02:39:53Z (HTTP 200): the disputed transaction was HELD; evidence entries were the buyer's CREATE and a PROOF_OF_FULFILLMENT request to the seller."]
     },
     {
+      "id": "dispute-evidence-sent",
+      "scenario": "dispute",
+      "proven": "PayGuard sent evidence to a Sandbox dispute after the local review and the two-step send dialog; PayPal Sandbox accepted the request and the dispute moved to waiting for the buyer.",
+      "how": "POST /v1/customer/disputes/{id}/provide-evidence through PayGuard on an item-not-received test dispute (USD 48.00), returning PayPal-Debug-Id f908765a01293; a fresh read then showed the dispute waiting for the buyer and the seller's proof of fulfilment recorded. Dispute id masked.",
+      "method": "REAL_SANDBOX",
+      "date": "2026-11-04",
+      "source": "docs/evidence/RECEIPT_20261104_live.md",
+      "quotes": ["result: external_send SUBMITTED, readback PROVIDE_EVIDENCE_SUBMITTED, PayPal-Debug-Id f908765a01293", "status WAITING_FOR_BUYER_RESPONSE (before: WAITING_FOR_SELLER_RESPONSE)", "PROOF_OF_FULFILLMENT SUBMITTED_BY_SELLER"]
+    },
+    {
+      "id": "dispute-mismatch-refused",
+      "scenario": "dispute",
+      "proven": "PayGuard refused to pair an item-not-as-described dispute with an item-not-received case, and sent nothing to it.",
+      "how": "Preview on the second test dispute with the item-not-received case selected; the send stayed locked.",
+      "method": "REAL_SANDBOX",
+      "date": "2026-11-04",
+      "source": "docs/evidence/RECEIPT_20261104_live.md",
+      "quotes": ["refused with \"This dispute does not match the selected case (reason or amount differ).\" The send stayed locked and no provide-evidence call was made for it."]
+    },
+    {
+      "id": "dispute-unauthorized-refused",
+      "scenario": "dispute",
+      "proven": "PayGuard read an unauthorized Sandbox test dispute in the chargeback stage, refused to pair it with the item-not-received case, and sent nothing to it.",
+      "how": "GET of the third test dispute after the send, then a preview with the item-not-received case selected; the send stayed locked. Dispute id masked.",
+      "method": "REAL_SANDBOX",
+      "date": "2026-11-04",
+      "source": "docs/evidence/RECEIPT_20261104_live.md",
+      "quotes": ["Later read of the unauthorized dispute PP-R-BHF-...: reason UNAUTHORISED, stage CHARGEBACK", "Preview with case-ref-001 selected: refused with the same message; the send stayed locked and nothing was sent."]
+    },
+    {
+      "id": "dispute-evidence-sent-recorded",
+      "scenario": "dispute",
+      "proven": "PayGuard sent evidence to a second, newly filed Sandbox dispute while the demo video was recorded; a send attempted after the local session expired was refused first and nothing went out.",
+      "how": "Same POST /v1/customer/disputes/{id}/provide-evidence path on an item-not-received test dispute (USD 48.00), returning PayPal-Debug-Id f2088142a6218 at 2026-11-04 17:16 UTC (2026-11-05 in UTC+8); a fresh read then showed the dispute waiting for the buyer. Dispute id masked.",
+      "method": "REAL_SANDBOX",
+      "date": "2026-11-05",
+      "source": "docs/evidence/RECEIPT_20261105_live.md",
+      "quotes": ["the server refused it and nothing was sent", "result: Submitted to Sandbox, PayPal-Debug-Id f2088142a6218", "status WAITING_FOR_BUYER_RESPONSE (before: WAITING_FOR_SELLER_RESPONSE)", "PROOF_OF_FULFILLMENT SUBMITTED_BY_SELLER"]
+    },
+    {
+      "id": "dispute-resend-amount-refused",
+      "scenario": "dispute",
+      "proven": "PayGuard would not send to a dispute PayPal already has seller evidence for, and refused a dispute whose amount differs from the case, sending nothing to either.",
+      "how": "Previews after the second send with the item-not-received case selected; the send stayed locked each time. Dispute ids masked.",
+      "method": "REAL_SANDBOX",
+      "date": "2026-11-05",
+      "source": "docs/evidence/RECEIPT_20261105_live.md",
+      "quotes": ["Locked: PayPal already has seller evidence for this dispute.", "The dispute amount in PayPal (158.00 TWD) differs from the selected case's amount (48.00 USD). Select the case it belongs to. Nothing was sent."]
+    },
+    {
       "id": "dispute-submit-gated",
       "scenario": "dispute",
-      "proven": "Nothing was submitted to PayPal: the submit button stayed disabled and no provide-evidence call was made.",
-      "how": "The submission path is covered by tests with a mocked transport only; it is built and gated, not used against Sandbox.",
+      "proven": "On 2026-10-31 nothing was submitted to PayPal: the submit button stayed disabled and no provide-evidence call was made.",
+      "how": "On that date the submission path was covered by mocked-transport tests only; the first Sandbox send is the 2026-11-04 row above.",
       "method": "TEST",
       "date": "2026-10-31",
       "source": "docs/evidence/RECEIPT_20261031_live.md",
@@ -130,7 +180,7 @@
       "id": "cross-gemini-total",
       "scenario": "cross",
       "proven": "36 Gemini API calls across the three scenarios, 0 errors. The model maps sentences to form items; it never decides a dispute, a policy question or a PayPal action.",
-      "how": "12 calls per scenario, a small sample and not a guarantee. Fixed rules validate each reply and code decides what counts.",
+      "how": "36 calls, 12 per scenario, 0 errors. Fixed rules validate each reply and code decides what counts.",
       "method": "RECORDED",
       "date": "2026-11-03",
       "source": "docs/evidence/GEMINI_GUIDE_RUNS_20261103.md",
@@ -139,8 +189,8 @@
     {
       "id": "cross-input-matrix",
       "scenario": "cross",
-      "proven": "Twelve review and attack rounds (r13 to r24) were run; malformed and hostile requests across every route end with 0 broken and 0 gaps.",
-      "how": "Independent reviewer and attack agents; each finding re-checked by the author, each fix followed by the full suite and pinned in tests/test_redteam_input_matrix.py. The r24 fixes landed in commit 653111a.",
+      "proven": "Fifteen review and attack rounds (r13 to r27) were run; malformed and hostile requests across every route end with 0 broken and 0 gaps.",
+      "how": "Independent reviewer and attack agents; each finding re-checked by the author, each fix followed by the full suite, code fixes pinned in tests such as tests/test_redteam_input_matrix.py. The r24 fixes landed in commit 653111a.",
       "method": "TEST",
       "date": "2026-11-03",
       "date_end": "2026-11-04",
@@ -161,13 +211,13 @@
     {
       "id": "cross-no-live",
       "scenario": "cross",
-      "proven": "No review or attack round called PayPal Live, a paid model or a real payment.",
+      "proven": "No review or attack round called PayPal Live or a real payment; r27 and the later r31 and r32 judge rounds used the owner's Gemini key on the local console.",
       "how": "Backend attacks ran in-process with a mocked PayPal transport; browser and phone attacks ran against an isolated rules-only copy with PayPal not configured.",
       "method": "TEST",
       "date": "2026-11-03",
       "date_end": "2026-11-04",
       "source": "docs/evidence/RED_TEAM_ROUNDS_20261104.md",
-      "quotes": ["Nothing in these rounds called PayPal Live, a paid model, or a real payment.", "browser and phone attacks ran against an isolated rules-only copy of the console with PayPal not configured"]
+      "quotes": ["Nothing in these rounds called PayPal Live or a real payment; r27 used the owner's Gemini key (a paid model) on the local console, as did the later r31 and r32 judge rounds.", "browser and phone attacks ran against an isolated rules-only copy of the console with PayPal not configured"]
     }
   ]
 }

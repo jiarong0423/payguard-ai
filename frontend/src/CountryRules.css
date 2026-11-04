@@ -75,7 +75,6 @@
 /* (optimise r24) Before/after card: the last Stop and the later check that cleared it, with both times. */
 .country-before-after { display: grid; gap: 2px; padding: 8px 12px; border: 1px solid var(--pg-color-ok); border-radius: var(--pg-radius-control); background: var(--pg-tint-ok); color: var(--pg-color-ink); font-size: var(--type-meta); line-height: 1.5; }
 .country-before-after strong { color: var(--pg-color-ok); font-weight: 700; overflow-wrap: anywhere; }
-/* (optimise r24) Line-by-line check status: on the verdict and per row; "checked" in the ok colour, "not yet" muted. */
-.country-verdict-check { font-weight: 600; }
+/* (optimise r24) Line-by-line check status: a muted note under the sources (r30 J4 #6a) and per row; "checked" in the ok colour, "not yet" muted. */
 .country-line-check { color: var(--pg-color-muted); }
 .country-line-check.is-checked { color: var(--pg-color-ok); font-weight: 600; }

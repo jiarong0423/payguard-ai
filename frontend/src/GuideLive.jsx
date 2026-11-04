@@ -71,13 +71,58 @@ function changedLabels(before, after) {
   return (after || []).filter((item) => item.id in was && was[item.id] !== item.status).map((item) => item.label);
 }
 
-// Badge at the top of a reply bubble (review r1 P1.12): who answered and what it filled.
-function whoBadge(reply, before, after) {
+// Badge at the top of a reply bubble (review r1 P1.12): who answered and what it filled. `ruled` are items the rule
+// layer settled in the same turn, so a Gemini badge never claims them (r30 J3 #1).
+function whoBadge(reply, before, after, ruled = []) {
   if (!reply || reply.chooser === 'form' || reply.chooser === 'none') return '';
   const who = reply.chooser === 'model' ? 'Gemini' : 'Rules';
-  const moved = changedLabels(before, after);
+  const moved = changedLabels(before, after).filter((label) => who === 'Rules' || !ruled.includes(label));
   return `${who} → ${moved.length ? moved.join(', ') : 'nothing counted'}`;
 }
+
+// (r30 J3 #1) The hybrid funnel under each reply, in one plain line: model calls this turn and what the rules did.
+// A model step counts as 1 from the moment it is started ("analysing"), whatever its outcome; with no step it is 0.
+// The step is the backend's single governed step (governed_model_rows: one call, one identical resend only when the
+// first reply fails the strict check), and a budget refusal can come before or after its first call.
+const MODEL_CALLS_TEXT = {
+  analysing: '1 (Gemini, running)',
+  replaced: '1 (Gemini, checked by rules)',
+  kept: '1 (Gemini, answer not used)',
+  budget: 'at most 1 (model limit reached)',
+};
+// Rules filled = marked present by the rule layer from the seller's words (auto_confirmed) or by a form entry that
+// passed the rule check; rules marked = a keyword match that moved an item's status without filling it.
+// (r31 J3) Gemini marked = items the accepted model answer moved, with the status it set, so a Gemini turn that
+// marked ship date "Mentioned, not confirmed" no longer reads "Nothing filled" under "Gemini → ship date".
+function funnelLine(model, filled, marked = [], filledBy = 'Rules filled', modelMarked = []) {
+  const rules = [filled.length ? `${filledBy}: ${filled.join(', ')}` : '', marked.length ? `Rules marked: ${marked.join(', ')}` : '',
+    modelMarked.length ? `Gemini marked: ${modelMarked.join(', ')}` : ''].filter(Boolean);
+  return `Model calls this turn: ${model ? MODEL_CALLS_TEXT[model] : '0'} · ${rules.length ? rules.join(' · ') : 'Nothing filled'}`;
+}
+// (r32 J1) While the Gemini step runs, the reply bubble shows a neutral running state instead of the quick word-match
+// answer: "No word matched" for 5 to 10 s before Gemini's answer replaced it read as a miss on camera. The quick
+// answer is held back and shown only when the model answer is not used (kept, limit, late or superseded); the funnel
+// line counts the call from the start ("1 (Gemini, running)"), and the gap table is the backend's, unchanged.
+const RUNNING_TEXT = 'Checking with Gemini…';
+const RUNNING_NOTE = 'Gemini is reading this sentence. If its answer is not used, the word-match answer is shown here.';
+function runningRow(funnel) {
+  return { text: RUNNING_TEXT, template: undefined, meta: '', badge: '', dropped: '', analysing: true, funnel };
+}
+// (r31 J3) The status an item was moved to, in the words of the gap table (GuideReplay STATUS_TEXT), short form.
+const MARKED_TEXT = {
+  PARTIAL: 'not confirmed',
+  UNCLEAR: 'unclear',
+  CONFLICTING: 'two different answers',
+  STRUCTURALLY_PRESENT: 'filled in, not checked',
+  MISSING: 'not filled in',
+};
+// Items the model answer moved (same rule as the Gemini badge: never an item the rule layer settled this turn).
+function modelMarks(before, after, ruled = []) {
+  const was = Object.fromEntries((before || []).map((item) => [item.id, item.status]));
+  return (after || []).filter((item) => item.id in was && was[item.id] !== item.status && !ruled.includes(item.label))
+    .map((item) => (MARKED_TEXT[item.status] ? `${item.label} (${MARKED_TEXT[item.status]})` : item.label));
+}
+const autoLabels = (view) => (view?.auto_confirmed || []).map((id) => view.items.find((item) => item.id === id)?.label).filter(Boolean);
 
 function droppedText(reply, labels) {
   if (!reply?.dropped?.length) return '';
@@ -223,7 +268,7 @@ export function useWaitClock(until) {
 // The countdown line: "Try again in N seconds." while waiting, then "You can try again now."
 export const WaitLine = ({ until, now, testId }) => (until ? <span className="wait-line" data-testid={testId} aria-live="off">{' '}{until > now ? waitText(Math.max(1, Math.ceil((until - now) / 1000))) : 'You can try again now.'}</span> : null);
 
-export default function GuideLive({ session, Disclosure, Badge, request, scenario, onSessionExpired }) {
+export default function GuideLive({ session, Disclosure, Badge, request, scenario, onSessionExpired, onOpenItems, onChooser }) {
   const [open, setOpen] = useState(false);
   const [goods, setGoods] = useState('physical');
   const [view, setView] = useState(null);
@@ -261,7 +306,18 @@ export default function GuideLive({ session, Disclosure, Badge, request, scenari
     return () => { live = false; };
   }, [open, session, view]);
 
-  useEffect(() => { logRef.current?.scrollTo?.({ top: logRef.current.scrollHeight }); }, [log]);
+  // (r33 M3) After a turn the newest reply's top (its badge) stays in view: scrolling only to the bottom pushed the
+  // "Gemini → ship date" badge out of the box on a phone, where a long reply is taller than the log. A reply that fits
+  // is shown whole (bottom); a taller one is scrolled to its own top.
+  useEffect(() => {
+    const box = logRef.current;
+    if (!box?.scrollTo) return;
+    const newest = box.lastElementChild;
+    if (!newest) return;
+    const pad = 8;
+    const newestTop = box.scrollTop + newest.getBoundingClientRect().top - box.getBoundingClientRect().top - pad;
+    box.scrollTo({ top: Math.max(0, Math.min(newestTop, box.scrollHeight - box.clientHeight)) });
+  }, [log]);
 
   // "Start here" jump for this situation: open its guide, start it if it has not started (a running one is kept as it
   // is), and bring its form on screen. Other situations' guides are separate and never touched.
@@ -305,11 +361,13 @@ export default function GuideLive({ session, Disclosure, Badge, request, scenari
     pendingRef.current = null;
     if (analysis && analysis.turn === pending.turn && analysis.status === 'replaced' && result.reply.chooser === 'model') {
       patchRow(pending.rowId, { text: result.reply.text, template: result.reply.template, analysing: false,
-        meta: `${chooserText(result.reply)} · replaced the quick answer`, badge: whoBadge(result.reply, pending.before, result.items),
-        dropped: droppedText(result.reply, labels) });
+        meta: `${chooserText(result.reply)} · used instead of the quick answer`, badge: whoBadge(result.reply, pending.before, result.items, pending.filled),
+        dropped: droppedText(result.reply, labels),
+        funnel: funnelLine('replaced', pending.filled, [], 'Rules filled', modelMarks(pending.before, result.items, pending.filled)) });
     } else {
       const reason = analysis && analysis.turn === pending.turn && analysis.status === 'kept' ? analysis.reason : 'superseded';
-      patchRow(pending.rowId, { analysing: false, note: KEPT_TEXT[reason] || KEPT_TEXT.provider_error });
+      patchRow(pending.rowId, { ...pending.quick, analysing: false, note: KEPT_TEXT[reason] || KEPT_TEXT.provider_error,
+        funnel: funnelLine(reason === 'budget' ? 'budget' : 'kept', pending.filled, pending.marked) });
     }
   };
 
@@ -321,7 +379,8 @@ export default function GuideLive({ session, Disclosure, Badge, request, scenari
       if (!pendingRef.current) { clearInterval(timer); return; }
       if (Date.now() - startedAt > POLL_LIMIT_MS) {
         clearInterval(timer);
-        patchRow(pendingRef.current.rowId, { analysing: false, note: KEPT_TEXT.late });
+        const { rowId, filled, marked, quick } = pendingRef.current;
+        patchRow(rowId, { ...quick, analysing: false, note: KEPT_TEXT.late, funnel: funnelLine('kept', filled, marked) });
         pendingRef.current = null;
         return;
       }
@@ -385,7 +444,7 @@ export default function GuideLive({ session, Disclosure, Badge, request, scenari
     const result = await call('/guide/start', { scenario, goods_type: scenario === 'dispute' ? goods : null });
     if (result) {
       setLog([]);
-      push('payguard', { text: result.reply.text, template: result.reply.template, meta: 'New guide started' });
+      push('payguard', { text: result.reply.text, template: result.reply.template, meta: 'New guide started', funnel: funnelLine(null, []) });
     }
   };
 
@@ -404,9 +463,15 @@ export default function GuideLive({ session, Disclosure, Badge, request, scenari
     patchRow(sentId, { meta: '' });
     setText((current) => (current.trim() === message ? '' : current));
     const analysing = result.analysis?.status === 'analysing';
-    const rowId = push('payguard', { text: result.reply.text, template: result.reply.template, meta: chooserText(result.reply),
-      badge: analysing ? '' : whoBadge(result.reply, before, result.items), dropped: droppedText(result.reply, labels), analysing });
-    pendingRef.current = analysing ? { turn: result.analysis.turn, rowId, before } : null;
+    // The rule layer acts before any model step, so its part of the funnel line is known now and stays as it is.
+    const filled = autoLabels(result);
+    const marked = changedLabels(before, result.items).filter((label) => !filled.includes(label));
+    // (r32 J1) The quick answer; while Gemini runs it is held back and shown only if the model answer is not used.
+    const quick = { text: result.reply.text, template: result.reply.template, meta: chooserText(result.reply),
+      badge: analysing ? '' : whoBadge(result.reply, before, result.items), dropped: droppedText(result.reply, labels) };
+    const rowId = push('payguard', analysing ? runningRow(funnelLine('analysing', filled, marked))
+      : { ...quick, analysing: false, funnel: funnelLine(null, filled, marked) });
+    pendingRef.current = analysing ? { turn: result.analysis.turn, rowId, before, filled, marked, quick } : null;
   };
 
   const saveRound = async (fields, confirmReview = false) => {
@@ -414,24 +479,34 @@ export default function GuideLive({ session, Disclosure, Badge, request, scenari
     if (!result) return;
     const lines = result.form_results.map((row) => `${labels[row.item] || row.item}: ${row.valid ? 'passed the rule check, taken' : row.deferred ? 'not sure, asked later in your own words' : 'did not pass the rule check'}`);
     push('form', { text: lines.join(' · ') });
-    push('payguard', { text: result.reply.text, template: result.reply.template, meta: chooserText(result.reply) });
+    const taken = result.form_results.filter((row) => row.valid).map((row) => labels[row.item] || row.item);
+    push('payguard', { text: result.reply.text, template: result.reply.template, meta: chooserText(result.reply), funnel: funnelLine(null, taken, [], 'Form check filled') });
   };
 
   const review = async (body) => {
     const result = await call('/guide/review', body);
     if (!result) return;
     push('form', { text: body.confirm ? 'Summary confirmed.' : `Reopened: ${body.change.map((id) => labels[id] || id).join(', ')}` });
-    push('payguard', { text: result.reply.text, template: result.reply.template, meta: chooserText(result.reply) });
+    push('payguard', { text: result.reply.text, template: result.reply.template, meta: chooserText(result.reply), funnel: funnelLine(null, []) });
   };
 
   const started = Boolean(view?.started);
+  // (r33 M4) Items the guide still needs (same rule as the backend's open_items: applicable and not structurally
+  // present), reported to the page so Step 3's draft can say they are not part of it. 0 until the guide has started.
+  const openCount = started ? (view.items || []).filter((item) => item.status !== 'STRUCTURALLY_PRESENT' && item.status !== 'NOT_APPLICABLE').length : 0;
+  useEffect(() => { onOpenItems?.(openCount); }, [openCount]); // eslint-disable-line react-hooks/exhaustive-deps -- onOpenItems: a setState from the page
+  useEffect(() => () => onOpenItems?.(0), []); // eslint-disable-line react-hooks/exhaustive-deps -- a remounted guide (new session) starts at 0
   const modeBadge = view?.chooser_mode === 'gemini' ? <Badge tone="muted">Rules + Gemini</Badge> : <Badge tone="muted">Rules only</Badge>;
+  // (r34 #1) The same chooser status the badge above reads goes to the page, so the hosted "Why?" panel says what
+  // this guide really does instead of a fixed "Gemini: Off".
+  useEffect(() => {
+    if (view?.chooser_mode) onChooser?.({ chooser_mode: view.chooser_mode, model_requested: view.model_requested === true });
+  }, [view?.chooser_mode, view?.model_requested]); // eslint-disable-line react-hooks/exhaustive-deps -- onChooser: a setState from the page
 
   return <Disclosure id={sectionId} title={`Step ${stepNumber} guide: ${title}`} subtitle="Tell it what happened" icon="layers"
     open={open} onToggle={setOpen} testId={`optional-toggle-guide-live-${scenario}`}>
     {open ? <section className="guide-live" data-testid={`guide-live-${scenario}`} data-scenario={scenario} aria-label={`Guided gap filling, live: ${title}`}>
       <p className="guide-live-intro">Type as a seller. PayGuard shows which details are still missing.</p>
-      <details className="technical-details"><summary>Technical details</summary><p className="guide-live-label">A chooser may only point a sentence at a form item and say who said it. Fixed rules decide what counts, compute the gap and pick the wording. Only a form field that passes the rule check counts as filled in. Your text and form values are not stored.</p></details>
       <div className="guide-live-controls">
         {scenario === 'dispute' && <form className="guide-route" data-testid="guide-route" onSubmit={(event) => { event.preventDefault(); findRoute(); }}>
           <label>What did you sell?
@@ -455,12 +530,14 @@ export default function GuideLive({ session, Disclosure, Badge, request, scenari
           <ol className="guide-live-log" ref={logRef} role="log" aria-live="polite" data-testid="guide-live-log">
             {log.map((row) => <li key={row.id} className={`guide-live-msg guide-live-msg-${row.who}`}>
               <span className="guide-live-tag">{row.who === 'seller' ? 'You' : row.who === 'form' ? 'Form' : 'PayGuard'}</span>
+              {/* (r34 #12) First line of the reply: on a phone the line under a long reply fell below the log box. */}
+              {row.funnel && <small className="guide-live-funnel" data-testid="guide-live-funnel">{row.funnel}</small>}
               {row.badge && <span className="guide-live-who" data-testid="guide-live-who">{row.badge}</span>}
-              <p>{row.text}</p>
+              <p className={row.analysing ? 'guide-live-running' : undefined} data-testid={row.analysing ? 'guide-live-running' : undefined}>{row.text}</p>
               {row.dropped && <small className="guide-live-dropped"><span className="guide-live-chip">Not counted</span>{row.dropped}</small>}
               {/* The fixed template id is kept for tests and support, not shown to the seller (review r8). */}
               {row.meta && <small data-template={row.template || undefined}>{row.meta}</small>}
-              {row.analysing && <small className="guide-live-analysing" role="status" data-testid="guide-live-analysing"><span className="guide-live-dot" aria-hidden="true" />Analysing with the governed model. The quick answer above stays if it does not finish.</small>}
+              {row.analysing && <small className="guide-live-analysing" role="status" data-testid="guide-live-analysing"><span className="guide-live-dot" aria-hidden="true" />{RUNNING_NOTE}</small>}
               {row.note && <small className="guide-live-note" data-testid="guide-live-note">{row.note}</small>}
             </li>)}
           </ol>
@@ -483,6 +560,8 @@ export default function GuideLive({ session, Disclosure, Badge, request, scenari
               view={view} disabled={busy} onSave={saveRound} onReview={review} />}
         </div>
       </div>}
+      {/* (r30 J4 #6c) Kept, but collapsed at the very end of the panel, out of the main reading path. */}
+      <details className="technical-details guide-live-technical" data-testid="guide-live-technical"><summary>Technical details</summary><p className="guide-live-label">A chooser may only point a sentence at a form item and say who said it. Fixed rules decide what counts, compute the gap and pick the wording. Only code marks an item filled in: a form value that passes the rule check, or a closed value the rule layer reads from your own words, which you confirm in the summary. Your text and form values are not stored.</p></details>
     </section> : null}
   </Disclosure>;
 }

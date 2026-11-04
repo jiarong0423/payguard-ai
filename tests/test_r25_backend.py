@@ -24,6 +24,7 @@ from app.paypal import PaypalAdapter, PaypalConfig
 from app.paypal_disputes import (FIXTURE_DISPUTE_IDS, SUPPORTED_EVIDENCE_TYPES, build_provide_evidence_request,
                                  build_tracking_request, fixture_disputes, submit_refusal)
 from app.store import BoundaryError, SessionStore
+from send_confirmation import with_confirmation
 from payguard import controlled_fallback as cf
 from payguard.controlled_fallback import Governor
 
@@ -111,6 +112,9 @@ class TwoDisputeHarness(unittest.TestCase):
         self.session_id = session["session_id"]
 
     def post(self, route, payload=None):
+        return with_confirmation(self._post, route, payload)
+
+    def _post(self, route, payload=None):
         return self.client.post(ROOT + route, json={} if payload is None else payload, headers=self.headers)
 
     def get(self, route):

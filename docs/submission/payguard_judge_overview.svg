@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 760" width="1280" height="760" role="img" aria-labelledby="title description" data-embed-width="640" font-family="Inter, Arial, sans-serif">
   <title id="title">PayGuard AI merchant defense buffer</title>
-  <desc id="description">Two swim lanes separate the deterministic code boundary from the bounded AI layer across three stages: policy warnings before an unsent PayPal Sandbox invoice draft, sales-spike review in AG Grid, and dispute evidence with guided gap filling and a local review ZIP. Rules come first, nothing is submitted automatically, and PayPal or the issuer decides. Sandbox proof is limited to OAuth and one unsent invoice draft; sales and dispute scenarios use synthetic records. Designed for a 640 px wide thumbnail: the smallest text, 28 units in a 1280-unit viewBox, renders at 14 px.</desc>
+  <desc id="description">Two swim lanes separate the deterministic code boundary from the bounded AI layer across three stages: policy warnings before an unsent PayPal Sandbox invoice draft, sales-spike review on an AG Charts chart with an AG Grid orders table, and dispute evidence with guided gap filling and a local review ZIP. Rules come first, nothing is submitted automatically, and PayPal or the issuer decides. Sandbox proof covers OAuth, unsent invoice drafts, and dispute list and detail reads; sales and dispute scenarios use synthetic records. Designed for a 640 px wide thumbnail: the smallest text, 28 units in a 1280-unit viewBox, renders at 14 px.</desc>
   <defs>
     <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4f46e5"/></marker>
     <marker id="arr-ai" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#0f766e"/></marker>
@@ -37,7 +37,7 @@
     <rect x="474" y="276" width="276" height="42" rx="21" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5"/>
     <text x="494" y="306" fill="#4338ca" font-size="28" font-weight="700">02 FULFILLMENT</text>
     <text x="474" y="376" fill="#0f172a" font-size="38" font-weight="800">Sales spikes</text>
-    <text x="474" y="438" fill="#475569" font-size="28">AG Grid review</text>
+    <text x="474" y="438" fill="#475569" font-size="28">AG Charts + AG Grid</text>
   </g>
   <g class="box" id="focal">
     <rect x="860" y="256" width="380" height="224" rx="16" fill="#ffffff" stroke="#4f46e5" stroke-opacity="0.45" stroke-width="2" filter="url(#l2)"/>
@@ -75,5 +75,5 @@
   </g>
   <path d="M624 622 L639 622 L654 622" stroke="#0f766e" stroke-width="2.5" fill="none" marker-end="url(#arr-ai)"/>
 
-  <text x="24" y="732" fill="#475569" font-size="28">Synthetic records · Sandbox proof: OAuth and one unsent draft</text>
+  <text x="24" y="732" fill="#475569" font-size="28">Synthetic records · Sandbox: OAuth, unsent drafts, dispute reads, two evidence sends</text>
 </svg>

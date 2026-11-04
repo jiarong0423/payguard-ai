@@ -166,10 +166,16 @@ def chooser_request(query, flow, previous_route, attempt):
 class Governor:
     """In-memory limits: per session, global rate, failure breaker and in-flight cap."""
 
-    def __init__(self, clock=time.monotonic, max_calls=None, min_spacing=None):
+    def __init__(self, clock=time.monotonic, max_calls=None, min_spacing=None, global_per_minute=None,
+                 global_per_day=None):
         self._clock = clock
         self._max_calls = MAX_CALLS_PER_SESSION if max_calls is None else max_calls
         self._min_spacing = MIN_SECONDS_BETWEEN_CALLS if min_spacing is None else min_spacing
+        # (r32 hosted guide) The hosted demo runs on a free-tier key, so it may only lower the shared caps, never raise
+        # them above the module defaults.
+        self._global_per_minute = GLOBAL_CALLS_PER_MINUTE if global_per_minute is None else min(global_per_minute,
+                                                                                                GLOBAL_CALLS_PER_MINUTE)
+        self._global_per_day = GLOBAL_CALLS_PER_DAY if global_per_day is None else min(global_per_day, GLOBAL_CALLS_PER_DAY)
         self._lock = threading.Lock()
         self._sessions = OrderedDict()
         self._global = []
@@ -182,7 +188,7 @@ class Governor:
 
     def _take_global(self, now):
         self._global = [stamp for stamp in self._global if now - stamp < 60.0]
-        if len(self._global) >= GLOBAL_CALLS_PER_MINUTE:
+        if len(self._global) >= self._global_per_minute:
             return False
         self._global.append(now)
         return True
@@ -224,7 +230,7 @@ class Governor:
                 return "limit_reached", None
             stamps = [stamp for stamp in self._daily.get(daily_key, ()) if now - stamp < DAY_SECONDS]
             self._global_day = [stamp for stamp in self._global_day if now - stamp < DAY_SECONDS]
-            if len(stamps) >= CALLS_PER_CLIENT_PER_DAY or len(self._global_day) >= GLOBAL_CALLS_PER_DAY:
+            if len(stamps) >= CALLS_PER_CLIENT_PER_DAY or len(self._global_day) >= self._global_per_day:
                 self._release_probe()
                 return "limit_reached", None
             if not self._take_global(now):
@@ -261,7 +267,7 @@ class Governor:
         with self._lock:
             now = self._clock()
             self._global_day = [stamp for stamp in self._global_day if now - stamp < DAY_SECONDS]
-            if len(self._global_day) >= GLOBAL_CALLS_PER_DAY or not self._take_global(now):
+            if len(self._global_day) >= self._global_per_day or not self._take_global(now):
                 return False
             self._global_day.append(now)
             return True

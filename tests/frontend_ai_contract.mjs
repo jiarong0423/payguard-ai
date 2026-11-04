@@ -104,6 +104,7 @@ for (const mutate of mutations) {
 
 const receipt = {
   schema_version: 1,
+  paypal_debug_id: null,
   environment: 'sandbox',
   action: 'OAUTH_CONNECT',
   status: 'CONNECTED',
@@ -118,6 +119,19 @@ assert.deepEqual(assertSandboxReceipt(clone(receipt), 'OAUTH_CONNECT'), receipt)
 const authentic = clone(receipt);
 authentic.evidence_class = 'AUTHENTIC_SANDBOX_RESPONSE';
 assert.deepEqual(assertSandboxReceipt(authentic, 'OAUTH_CONNECT'), authentic);
+// The backend receipt carries paypal_debug_id (schemas.SandboxEvidenceReceipt): null or the PayPal-Debug-Id.
+for (const debugId of [null, 'ca550dd96ddb1']) {
+  const withDebug = { ...clone(authentic), paypal_debug_id: debugId };
+  assert.deepEqual(assertSandboxReceipt(clone(withDebug), 'OAUTH_CONNECT'), withDebug);
+}
+for (const debugId of ['', 'abc', 'has space 123', 7, 'x'.repeat(65), undefined]) {
+  assert.throws(() => assertSandboxReceipt({ ...clone(authentic), paypal_debug_id: debugId }, 'OAUTH_CONNECT'));
+}
+{
+  const missing = clone(authentic);
+  delete missing.paypal_debug_id;
+  assert.throws(() => assertSandboxReceipt(missing, 'OAUTH_CONNECT'), 'the backend always sends paypal_debug_id');
+}
 for (const mutate of [
   (value) => { value.evidence_class = 'OPERATOR_LIVE_RESPONSE'; },
   (value) => { value.proof_kind = 'GET_READBACK'; },
@@ -327,7 +341,9 @@ for (const retired of [
 ]) {
   assert.equal(analyticsSource.includes(retired), false, retired);
 }
-assert.ok(apiSource.includes("path === '/ai/evidence-brief' ? 65000 : 15000"));
+// (red team r26 #1) PayPal writes wait 45 s; a timeout there says the write may have happened.
+assert.ok(apiSource.includes("path === '/ai/evidence-brief' ? 65000 : paypalWrite ? 45000 : 15000"))
+assert.ok(apiSource.includes("if (error.name === 'AbortError' && paypalWrite) throw new ApiError(PAYPAL_WRITE_TIMEOUT_MESSAGE, 0, 'request_timeout');"));
 for (const required of ['**Synthetic baseline**', '`compliance_decision=NOT_MADE`', '`current_policy_applicability=NOT_ESTABLISHED`']) {
   assert.ok(quickstartSource.includes(required), required);
 }
@@ -418,11 +434,13 @@ for (const [name, source] of [['App', appSource], ['API', apiSource], ['Referenc
   assert.equal(visibleActions.includes('PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled</'), false, 'env var stays out of the visible helper');
   assert.equal(visibleActions.includes('POST /v1/'), false, 'POST path stays out of the visible helper');
   assert.ok(actions.includes('title="Requires PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled'), 'submit button keeps its title attribute');
+  // (r33 M1) The evidence request moved from the preview's own disclosure into the one Technical details at the end.
   const preview = appSource.match(/\{evidencePreview && <div className="evidence-preview"[\s\S]*?<\/div>\}/u)[0];
-  const visiblePreview = preview.replace(/<details className="technical-details">[\s\S]*?<\/details>/gu, '');
-  for (const engineering of ['<pre>', '{evidencePreview.method} {evidencePreview.path}', '{evidencePreview.content_type}</Badge>']) {
-    assert.ok(preview.includes(engineering), engineering);
-    assert.equal(visiblePreview.includes(engineering), false, `${engineering} sits behind Technical details`);
+  const merged = appSource.match(/<details className="technical-details" data-testid="evidence-technical-details">[\s\S]*?<\/details>/u)[0];
+  assert.equal(preview.includes('<details'), false, 'the preview has no disclosure of its own');
+  for (const engineering of ['<pre>', '{evidencePreview.method} {evidencePreview.path}', '{evidencePreview.content_type}</Badge>', 'POST /v1/customer/disputes/', 'PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled']) {
+    assert.ok(merged.includes(engineering), `${engineering} sits behind Technical details`);
+    assert.equal(preview.includes(engineering), false, `${engineering} stays out of the visible preview`);
   }
   assert.ok(referenceSource.includes("const panelLabel = 'Official sources';") && referenceSource.includes('<span>{panelLabel}</span>'));
   assert.ok(policySource.includes("const panelLabel = 'Rule check';") && policySource.includes('<span>{panelLabel}</span>'));

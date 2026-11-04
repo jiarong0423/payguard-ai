@@ -36,6 +36,8 @@
 @media (max-width: 900px) { .guide-live-layout { grid-template-columns: minmax(0, 1fr); } .guide-live-field { grid-template-columns: minmax(0, 1fr) auto; } .guide-live-field label { grid-column: 1 / -1; } }
 .guide-live .guide-live-analysing { display: flex; align-items: center; gap: 8px; color: var(--pg-color-accent-strong); }
 .guide-live .guide-live-note { color: var(--gl-muted); font-style: italic; }
+/* (r32 J1) The neutral running state while Gemini reads the sentence. */
+.guide-live .guide-live-msg p.guide-live-running { color: var(--gl-muted); }
 .guide-live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--pg-color-accent); animation: guide-live-pulse 1s ease-in-out infinite; }
 @keyframes guide-live-pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .guide-live-dot { animation: none; } }
@@ -74,7 +76,8 @@
 
 /* UI redesign r1: who answered at the top of a reply, a "Not counted" chip, phone cards and a sticky message box. */
 .guide-live { container-type: inline-size; }
-.guide-live-who { justify-self: start; padding: 2px 12px; border-radius: var(--pg-radius-chip); background: var(--pg-color-accent-tint); color: var(--pg-color-accent-strong); font-size: 16px; font-weight: 650; white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+/* (r34 #14) Wraps instead of cutting to "Rules → reason fo…" on a phone. */
+.guide-live-who { justify-self: start; padding: 2px 12px; border-radius: var(--pg-radius-chip); background: var(--pg-color-accent-tint); color: var(--pg-color-accent-strong); font-size: 16px; font-weight: 650; white-space: normal; max-width: 100%; overflow-wrap: anywhere; }
 .guide-live-chip { display: inline-block; margin-right: 8px; padding: 1px 8px; border-radius: var(--pg-radius-chip); background: var(--pg-tint-watch); color: var(--pg-color-watch); font-weight: 700; white-space: nowrap; }
 .guide-live-tag, .guide-live-msg small, .guide-live-count { font-size: 14px; }
 .guide-live-tag { text-transform: none; letter-spacing: 0; }
@@ -98,3 +101,8 @@
   .app-shell.has-phone-action .guide-live-input { bottom: calc(64px + env(safe-area-inset-bottom)); }
   .app-shell.has-phone-action:has(input:focus, textarea:focus, select:focus) .guide-live-input { bottom: 0; }
 }
+/* (r30 J3 #1) One muted line per reply: model calls this turn and what the rules filled; wraps on a 360px phone. */
+.guide-live .guide-live-funnel { color: var(--gl-muted); font-size: 12px; line-height: 1.4; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+/* (r30 J4 #6c) Technical details: last in the panel, collapsed, smaller and muted, so it is not in the reading path. */
+.guide-live > .guide-live-technical { margin-top: 0; }
+.guide-live > .guide-live-technical > summary { min-height: 36px; font-size: 12px; font-weight: 500; }

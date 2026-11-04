@@ -5,7 +5,9 @@
 .board-row { border: 1px solid var(--pg-color-rule); border-left: 4px solid var(--pg-color-subtle); border-radius: var(--pg-radius-control); background: var(--pg-color-panel); padding: 12px 16px; min-width: 0; }
 .board-row-open { border-left-color: var(--pg-color-accent); }
 .board-row-due_soon { border-left-color: var(--pg-color-watch); }
-.board-row-past_due, .board-row-urgent { border-left-color: var(--pg-color-risk); background: var(--pg-tint-risk); border-color: #d9b3b2; }
+/* Urgency is the red left edge and the red status line; the card stays white so the red response-window bar below
+   still stands out (owner review 2026-11-04: an all-pink area hid the bars). */
+.board-row-past_due, .board-row-urgent { border-left: 6px solid var(--pg-color-risk); }
 .board-row-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; font-size: var(--type-section-title, 17px); font-weight: 650; color: var(--pg-color-ink); }
 .board-row-status { font-size: 14px; color: var(--pg-color-muted); }
 .board-row-urgent .board-row-status, .board-row-past_due .board-row-status { color: var(--pg-color-risk); font-weight: 600; }
@@ -19,7 +21,7 @@
 .board-scroll:focus-visible { outline: 2px solid var(--pg-color-focus); outline-offset: 2px; }
 .board-canvas { min-width: 880px; }
 .board-canvas .b-scheduler { font-size: 14px; }
-.board-canvas .payguard-board-urgent .b-grid-cell { background: var(--pg-tint-risk); color: var(--pg-color-risk); font-weight: 600; }
+.board-canvas .payguard-board-urgent .b-grid-cell:first-child { color: var(--pg-color-risk); font-weight: 600; box-shadow: inset 4px 0 0 var(--pg-color-risk); }
 @media (max-width: 480px) {
   .board-row dl { grid-template-columns: minmax(0, 1fr); }
 }
