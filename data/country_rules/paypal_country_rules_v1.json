@@ -7629,7 +7629,7 @@
    "id": "US-holds_reserves-1",
    "page_title": "User Agreement",
    "retrieved_at": "2026-11-02",
-   "text": "Risk-based holds usually last up to 21 days; reserves may be rolling (e.g. 10% for 90 days) or minimum/upfront; balances may be held up to 180 days on breach.",
+   "text": "Risk-based holds usually last up to 21 days, longer while a dispute is open; reserves may be rolling (e.g. 10% for 90 days) or minimum/upfront; balances may be held up to 180 days on breach.",
    "url": "https://www.paypal.com/us/legalhub/paypal/useragreement-full"
   },
   {
@@ -7662,7 +7662,7 @@
    "id": "TW-holds_reserves-1",
    "page_title": "User Agreement",
    "retrieved_at": "2026-11-02",
-   "text": "Risk-based holds usually last up to 30 days from receipt; earlier release possible after uploading tracking.",
+   "text": "Risk-based holds usually last up to 30 days from receipt, longer while a dispute is open; earlier release possible after uploading tracking.",
    "url": "https://www.paypal.com/tw/legalhub/paypal/useragreement-full"
   },
   {
@@ -7673,7 +7673,7 @@
    "id": "CN-holds_reserves-1",
    "page_title": "User Agreement",
    "retrieved_at": "2026-11-02",
-   "text": "Risk-based holds usually last up to 30 days from receipt unless PayPal has reason to keep holding.",
+   "text": "Risk-based holds usually last up to 30 days from receipt, longer while a dispute is open or PayPal has other reason to keep holding.",
    "url": "https://www.paypal.com/c2/legalhub/paypal/useragreement-full"
   },
   {
@@ -7750,7 +7750,7 @@
    "id": "CN-cross_border_currency-1",
    "page_title": "User Agreement",
    "retrieved_at": "2026-11-02",
-   "text": "Personal accounts registered after 30 Jun 2026 cannot accept goods-and-services payments (only friends and family) and cannot convert to business. Business accounts must also open an account with PayPal Payment (Beijing) Co., Ltd. (贝宝支付), a PayPal affiliate, or risk suspension.",
+   "text": "Personal accounts registered after 30 Jun 2026 (or a later date PayPal announces) are restricted from accepting payments other than friends and family, including goods-and-services payments, and cannot convert to business. Business accounts must also open an account with PayPal Payment (Beijing) Co., Ltd. (贝宝支付), a PayPal affiliate, or risk suspension.",
    "url": "https://www.paypal.com/c2/legalhub/paypal/useragreement-full"
   },
   {

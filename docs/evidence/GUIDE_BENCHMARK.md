@@ -1,5 +1,7 @@
 # Guide benchmark: the optimisation baseline (2026-11-01)
 
+> Note: `tools/run_guide_benchmark.py` and `tools/simulate_guide_flow.py` stay with the private source and are not in this repository; the committed baseline is `guide_benchmark_v1.json`.
+
 Every change to the guided gap filling is measured the same way and compared with this page. A change counts as an improvement only if **wrong values stay 0** and rounds or model calls fall. Regenerate with `python3 tools/run_guide_benchmark.py --check` (writes `guide_benchmark_current.json`). The benchmark tools, the blind corpora and the result JSON are kept with the private source; the frozen totals the evidence page shows ship as `frontend/src/data/guide_benchmark_v1.json`.
 
 **How it is measured.** `tools/simulate_guide_flow.py` sends each test sentence once to the real guide service (same routes and code as the console; no network). A simulated seller then finishes the form: the honest seller confirms only what their own sentence settled and corrects anything else; the careless seller confirms everything shown without reading. 268 cases from seven corpora, four of them blind (written by separate writers who never saw the rules, each measured once after the rules were frozen). A plain fixed-input form needs 721 rounds for the same cases.

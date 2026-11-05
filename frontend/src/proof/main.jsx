@@ -5,7 +5,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import facts from '../data/proof_facts_v1.json';
 import receipts from '../data/channel3_receipts_v1.json';
-import { METHOD_ORDER, channel3Summary, dateLabel, groupProof, methodCounts } from './proofData.js';
+import { METHOD_ORDER, REFUSED_LABEL, channel3Summary, dateLabel, groupProof, methodCounts, refusedCount } from './proofData.js';
 import './proof.css';
 
 const ICONS = {
@@ -35,10 +35,13 @@ function MethodChip({ method }) {
 
 function Legend() {
   const counts = methodCounts(facts);
+  const refused = refusedCount(facts);
   return <section className="proof-legend" aria-labelledby="proof-legend-title" data-testid="proof-legend">
     <h2 id="proof-legend-title">Real vs simulated</h2>
     <dl>{METHOD_ORDER.map((method) => <div key={method} className="proof-legend-item">
-      <dt><MethodChip method={method} /> <span className="proof-legend-count">{counts[method]} row{counts[method] === 1 ? '' : 's'}</span></dt>
+      <dt><MethodChip method={method} /> <span className="proof-legend-count">{method === 'REAL_SANDBOX' && refused
+        ? `${counts[method] - refused} rows, plus ${refused} ${REFUSED_LABEL}`
+        : `${counts[method]} row${counts[method] === 1 ? '' : 's'}`}</span></dt>
       <dd>{facts.methods[method].meaning}</dd>
     </div>)}</dl>
   </section>;
@@ -46,7 +49,7 @@ function Legend() {
 
 function ProofRow({ row }) {
   return <li className="proof-row" data-testid="proof-row" data-row-id={row.id} data-method={row.method}>
-    <div className="proof-row-head"><MethodChip method={row.method} /><time dateTime={row.date}>{dateLabel(row)}</time></div>
+    <div className="proof-row-head"><MethodChip method={row.method} />{row.refused && <span className="proof-chip proof-chip-muted" data-testid="proof-refused">{REFUSED_LABEL}</span>}<time dateTime={row.date}>{dateLabel(row)}</time></div>
     <p className="proof-proven">{row.proven}</p>
     <dl className="proof-meta">
       <div><dt>How</dt><dd>{row.how}</dd></div>

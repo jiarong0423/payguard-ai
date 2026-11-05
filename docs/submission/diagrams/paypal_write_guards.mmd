@@ -1,5 +1,5 @@
 flowchart LR
-    S1["1 Off by default<br/>PAYGUARD_PAYPAL_DISPUTE_SUBMIT;<br/>the hosted demo refuses all writes"] --> S2["2 A person approves<br/>reviewed draft bound by digest,<br/>approval expires after 5 min"]
+    S1["1 Off by default<br/>PAYGUARD_PAYPAL_DISPUTE_SUBMIT;<br/>the hosted demo refuses all writes"] --> S2["2 A person approves<br/>reviewed draft bound by digest,<br/>draft and its approval lapse<br/>5 min after drafting"]
     S2 --> S3["3 One case, one dispute<br/>the first preview binds them;<br/>evidence goes only to the bound dispute"]
     S3 --> S4["4 Two-step confirm in the browser<br/>tick, Continue, 3 s, Send;<br/>single-use server confirmation"]
     S4 --> S5["5 Same payload as approved<br/>rebuilt at Send, hash must match"]

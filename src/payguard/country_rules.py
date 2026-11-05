@@ -21,7 +21,7 @@ from pathlib import Path
 import re
 
 PACK_PATH = Path(__file__).resolve().parents[2] / "data" / "country_rules" / "paypal_country_rules_v1.json"
-PACK_SHA256 = "c2c67640c11cd98413ef60d1429d60f816ef917635b06acf4278943fbece42cb"
+PACK_SHA256 = "48175ca8221202ff5452c8c4b9b96c6bdae15e056f51b0f1d0eb2bd54b8b4a8c"
 SCHEMA = "payguard.country_rules.v1"
 ACCOUNT_TYPES = ("personal", "business")
 ACCOUNT_OPENED = ("unknown", "before_cutoff", "after_cutoff")
@@ -29,7 +29,7 @@ CHECKOUTS = ("paypal_account", "guest_card")
 SEVERITY_ORDER = {"BLOCK": 0, "WARN": 1, "INFO": 2}
 TIER_SEVERITY = {"prohibited": "BLOCK", "restricted": "WARN", "general": "INFO"}
 # The policy names these more narrowly than the tag (review r10): say what it says.
-AUP_WORDING = {"weapons": "firearms, ammunition and certain weapons or knives regulated by law"}
+AUP_WORDING = {"weapons": "firearms, ammunition and certain regulated weapons or knives"}
 # Seller-facing names for tags, the same words as the panel's TAG_LABELS (red team 2026-11-03: "E cigarettes").
 TAG_TEXT = {"e_cigarettes": "E-cigarettes", "tobacco_other": "Tobacco (not e-cigarettes)", "prescription": "Prescription items",
             "medical_devices": "Medical devices", "jewellery_precious_metals": "Jewellery or precious metals",

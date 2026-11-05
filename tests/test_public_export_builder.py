@@ -90,6 +90,12 @@ class PublicExportBuilderTests(unittest.TestCase):
         self.assertLess(readme.index("Screens from the 2:50 demo"), screens_order[0])
         for removed in ("payguard_cover.png", "payguard_cover.svg", "payguard_zip_review_slide.png"):
             self.assertFalse((self.base / "docs/submission" / removed).exists(), removed)
+        # the 2026-10 status map is retired: README embeds the current architecture overview instead
+        self.assertFalse((self.base / "docs/decisions/2026Q4/payguard_us_architecture_status.svg").exists())
+        self.assertNotIn("payguard_us_architecture_status", readme)
+        self.assertIn("docs/submission/diagrams/architecture_overview.svg", readme)
+        for retired in ("merchant defense buffer", "drawn before the country rules check"):
+            self.assertNotIn(retired, readme.casefold())
         self.assertLess(
             readme.index("docs/submission/payguard_judge_overview.png"),
             readme.index("1. **Before a draft — AUP preflight:**"),
@@ -219,7 +225,6 @@ class PublicExportBuilderTests(unittest.TestCase):
             "docs/submission/quickstart.md",
             "docs/decisions/2026Q4/architecture.md",
             "docs/decisions/2026Q4/us_mainline_contract.md",
-            "docs/decisions/2026Q4/payguard_us_architecture_status.svg",
         ):
             text = (self.published / relative).read_text(encoding="utf-8").casefold()
             self.assertIn("the devpost project is submitted", text)
@@ -321,7 +326,7 @@ class PublicExportBuilderTests(unittest.TestCase):
             validator.validate_candidate(candidate)
 
     def test_published_source_assets_reject_stale_current_state_claims(self):
-        self.assertEqual(sum(len(items) for items in validator.PUBLISHED_RELEASE_ASSETS.values()), 11)
+        self.assertEqual(sum(len(items) for items in validator.PUBLISHED_RELEASE_ASSETS.values()), 9)
         for relative, contradictions in validator.PUBLISHED_RELEASE_ASSETS.items():
             for index, contradiction in enumerate(contradictions):
                 with self.subTest(relative=relative, contradiction=contradiction):

@@ -1,6 +1,6 @@
 # PayGuard US Case Intake and Evidence Contract
 
-Status: current US-only local contract. This is an authored review schema, not a PayPal submission schema and not a substitute for the live provider response.
+Status: current local contract (US Sandbox seller; the optional ten-country rules check is advisory). This is an authored review schema, not a PayPal submission schema and not a substitute for the live provider response.
 
 ## Processing order
 
@@ -81,7 +81,7 @@ These are local labels. The output remains `NO_MATCH` or `REVIEW_SIGNAL`, `compl
 
 Acknowledgement is bound to the description digest, session, actor role, policy source, evaluation identity and expiry. Editing, reset, session change or expiry revokes it. Acknowledgement does not certify compliance.
 
-## Route 2 — Fulfillment and velocity evidence readiness
+## Route 2 — Fulfillment and sales spike evidence readiness
 
 ### Executable fields
 
@@ -170,7 +170,7 @@ This requires two different data products:
 1. **Restricted original evidence.** The unmodified carrier, transaction, listing, communication, photo, receipt, address-match and refund records needed for provider review. Required proof fields must not be removed merely to make an AI-safe copy. The current synthetic runtime validates proof joins and attachment signatures/types/sizes, reduces attachment bytes to content-free metadata, stores the resulting restricted object only in expiring session memory and returns only a count/custody summary to the browser. Raw provider case, order and request identifiers remain in this layer; the browser receives only non-identifying session references. The backend recomputes and constant-time checks the restricted object digest before reuse, AI eligibility or local approval. Real-record storage, access control, deletion and retention remain frozen under `PG-004`; the current demo does not persist such records.
 2. **Pseudonymized internal review copy.** A derived, minimum-field document for local human review or bounded AI summarization. It must carry the backend-issued `INTERNAL_REVIEW_ONLY_V1` export profile and may contain only backend-produced redacted text, redaction method/counts/types, limitations and advisory authority flags. It must exclude raw identity fields, case/order identifiers, session identifiers, identity tokens, draft digests, credentials and provider submission authority. A missing or different export profile fails closed.
 
-Frontend downloads contain the second product only. The operator may download the pseudonymized document as a standalone JSON file or create a deterministic six-entry Internal Review ZIP containing `README.txt`, `manifest.json`, the response-driven requirement projection, the synthetic timeline, pinned public-source citations and the same pseudonymized document. The ZIP manifest binds every non-manifest payload by byte length, CRC-32 and SHA-256. Before browser download, PayGuard parses the completed ZIP and revalidates its fixed names and order, ZIP metadata, canonical JSON, manifest semantics and payload digests. Both formats are internal review artifacts and are not PayPal-supported evidence attachment formats.
+Frontend downloads contain the second product only. The operator may download the pseudonymized document as a standalone JSON file or create a deterministic seven-entry Internal Review ZIP (six listed files plus `manifest.json`) containing `README.txt`, `manifest.json`, the response-driven requirement projection, the synthetic timeline, pinned public-source citations, the same pseudonymized document and `product-reference.json` (the seller's confirmed product card, or `NOT_CONFIRMED`). The ZIP manifest binds every non-manifest payload by byte length, CRC-32 and SHA-256. Before browser download, PayGuard parses the completed ZIP and revalidates its fixed names and order, ZIP metadata, canonical JSON, manifest semantics and payload digests. Both formats are internal review artifacts and are not PayPal-supported evidence attachment formats.
 
 The ZIP carries only a non-sensitive custody/count summary for the restricted layer. It excludes raw provider and local identifiers, session references, identity tokens, restricted digests, proof values, attachment names and attachment bytes. Its fixed authority remains `provider_submission=NOT_PERFORMED`, `dispute_decision=NOT_MADE` and `human_review_required=true`. A malformed, mutated or semantically altered package fails closed before download.
 
@@ -243,6 +243,6 @@ It may not add facts, authenticate documents, choose jurisdiction, resolve confl
 - order identifiers embedded in the synthetic narrative are pseudonymized before export;
 - export failure is fail-closed and performs no provider submission;
 - a pseudonymized internal JSON file and Internal Review ZIP are never labeled as PayPal-supported evidence attachments;
-- the ZIP contains exactly six fixed entries and no restricted original, raw attachment, raw identifier, proof value or credential;
+- the ZIP contains exactly seven fixed entries (six listed files plus the manifest) and no restricted original, raw attachment, raw identifier, proof value or credential;
 - completed ZIP bytes are parsed before download and must match the manifest's fixed authority, canonical JSON, byte length, CRC-32 and SHA-256 declarations;
 - binary corruption, manifest semantic mutation and sensitive free-text markers fail closed before download.

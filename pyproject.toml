@@ -1,7 +1,7 @@
 [project]
 name = "payguard-ai"
 version = "0.2.0"
-description = "US-only PayPal Sandbox risk-warning and evidence prototype"
+description = "PayPal Sandbox risk-warning and evidence prototype for a US Sandbox seller, with an advisory ten-country rules check"
 requires-python = "==3.13.*"
 dependencies = ["fastapi==0.142.2", "uvicorn==0.54.0", "httpx==0.28.1"]
 

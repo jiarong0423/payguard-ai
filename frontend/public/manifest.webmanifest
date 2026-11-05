@@ -2,7 +2,7 @@
   "id": "/",
   "name": "PayGuard AI · Merchant Evidence Buffer",
   "short_name": "PayGuard",
-  "description": "Local PayGuard AI console: AUP warnings, transaction velocity and human-reviewed dispute evidence. Needs the local API on 127.0.0.1:8000.",
+  "description": "PayGuard AI console: Acceptable Use Policy (AUP) and ten-country checks, sales spike review and human-reviewed dispute evidence with a gated PayPal Sandbox send. The hosted demo makes no PayPal calls; the Sandbox path needs the local API.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

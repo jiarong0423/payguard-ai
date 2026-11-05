@@ -1,14 +1,14 @@
-# PayGuard US-Only Eight-Layer Architecture
+# PayGuard Eight-Layer Architecture (US Sandbox seller; the optional ten-country rules check is advisory)
 
-Status: accepted US-only local design. The recorded Sandbox and Gemini runs of 2026-10-06 are evidence for their own captured executions; they do not prove current-byte live behavior or bind a later source candidate. Release state is determined by the package manifest and exact anonymous public readback. When the manifest is `PUBLIC_SOURCE_PUBLISHED` with `publication_authorized=true` and the same bytes pass exact anonymous readback, public source publication is complete. In that published-source state, the Devpost project is submitted; the 2:50 video is already public. A package marked `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` has not crossed the public-source gate.
+Status: accepted local design, updated 2026-11-05. Real PayPal Sandbox runs: OAuth and unsent invoice drafts on 2026-10-06, 2026-10-31 and one during the video recording on 2026-11-05 (UTC+8); dispute list and detail reads on 2026-10-31, and again around each send; two gated `provide-evidence` sends on 2026-11-04 (PayPal-Debug-Id `f908765a01293`) and 2026-11-05 in UTC+8 (PayPal-Debug-Id `f2088142a6218`), each to its own author-created test dispute, with refusals for an already-answered dispute, a different reason and a different amount (masked receipts in `docs/evidence/`). PayPal Sandbox accepting a request is not PayPal accepting the evidence. Each recorded Sandbox and Gemini run is evidence for its own captured execution; they do not prove current-byte live behavior or bind a later source candidate. Release state is determined by the package manifest and exact anonymous public readback. When the manifest is `PUBLIC_SOURCE_PUBLISHED` with `publication_authorized=true` and the same bytes pass exact anonymous readback, public source publication is complete. In that published-source state, the Devpost project is submitted; the 2:50 video is already public. A package marked `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` has not crossed the public-source gate.
 
 ## Product boundary
 
 PayGuard is an advisory merchant console for a United States PayPal Sandbox demonstration. It implements three linked stages:
 
-1. pre-transaction US AUP preflight warning funnel;
-2. payment and fulfillment velocity evidence readiness;
-3. post-transaction dispute evidence mediation.
+1. pre-transaction US Acceptable Use Policy (AUP) preflight warning funnel and the optional ten-country rules check;
+2. payment and fulfillment sales spike evidence readiness;
+3. post-transaction dispute evidence mediation, ending in a gated Sandbox send after one human approval.
 
 The architecture follows four authority rules:
 
@@ -17,18 +17,21 @@ The architecture follows four authority rules:
 - humans control local edit, cancel, acknowledge and review choices;
 - PayPal retains final authority for PayPal policy, account and internal-dispute decisions, while a bank or card issuer retains authority for an external dispute.
 
-PayGuard does not freeze funds, approve compliance, predict hidden provider thresholds, send invoices, pay, capture, refund, appeal or adjudicate. It submits dispute evidence only through the gated `provide-evidence` request (local reviewer approval, `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`, a connected Sandbox and an explicit `submit: true`).
+PayGuard does not freeze funds, approve compliance, predict hidden provider thresholds, send invoices, pay, capture, refund, appeal or adjudicate. It submits dispute evidence only through the gated `provide-evidence` request (local reviewer approval, `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`, a connected Sandbox, an explicit `submit: true` and the server's single-use send confirmation).
 
 ## Current status map
 
 ```mermaid
 flowchart LR
-  A["US-only product contract<br/>O (Done)"] --> B["US v2 corpus and policy package<br/>O (Done)"]
+  A["US Sandbox seller product contract<br/>O (Done)"] --> B["US v2 corpus and policy package<br/>O (Done)"]
   B --> C["Backend, API and schema consumers<br/>O (Done)"]
   C --> D["English console and current documents<br/>O (Done)"]
   D --> E["Focused and full local validation<br/>O (Done)"]
   E --> F["Canonical readback and no-op audit<br/>O (Done)"]
   F -. historical receipt .-> G["Recorded Sandbox run (2026-10-06)<br/>OAuth + one unsent DRAFT"]
+  G --> SB1["Sandbox run (2026-10-31)<br/>second unsent DRAFT + dispute list and detail read"]
+  SB1 --> SB2["Sandbox evidence send (2026-11-04)<br/>after one human approval; refusals recorded"]
+  SB2 --> SB3["Second Sandbox evidence send (2026-11-05, UTC+8)<br/>new test dispute; fresh readback"]
   F -. historical receipt .-> H["Recorded Gemini run (2026-10-06)<br/>fixed synthetic input, one response"]
   F --> K["Local 4B loopback adapter and bounded stress<br/>O (Done): candidate runtime"]
   K --> L["Local-model distribution<br/>not part of this package"]
@@ -42,7 +45,7 @@ flowchart LR
   R --> Q
 ```
 
-This graph describes the accepted local design and separates historical receipts from the separately reviewed current-byte rehearsal. The recorded runs of 2026-10-06 retain only their original bounded claims; a later sanitized receipt records three validated AI stages, one Sandbox OAuth and one unsent invoice DRAFT in a single session. Source publication is established only when the published manifest and exact anonymous readback agree for that candidate. The complete repository run instructions are the selected functional-demo path. The [2:50 video](https://youtu.be/_GORnHWShU4) is public; the Devpost project is submitted. The optional hosted demo runs on Render (`PAYGUARD_DEMO_MODE=public`, no PayPal calls; the guide may use Gemini when the operator opts in, at most 5 calls a minute and 20 a day); a hosted deployment with PayPal calls is unperformed.
+This graph describes the accepted local design and separates historical receipts from the separately reviewed current-byte rehearsal. The recorded runs of 2026-10-06 retain only their original bounded claims; a later sanitized receipt (kept by the author, not in this repository) records three validated AI stages, one Sandbox OAuth and one unsent invoice DRAFT in a single session. The 2026-10-31, 2026-11-04 and 2026-11-05 Sandbox runs have masked receipts in `docs/evidence/`. Source publication is established only when the published manifest and exact anonymous readback agree for that candidate. The complete repository run instructions are the selected functional-demo path. The [2:50 video](https://youtu.be/_GORnHWShU4) is public; the Devpost project is submitted. The optional hosted demo runs on Render (`PAYGUARD_DEMO_MODE=public`, no PayPal calls; the guide may use Gemini when the operator opts in, at most 5 calls a minute and 20 a day); a hosted deployment with PayPal calls is unperformed.
 
 ## Eight layers
 
@@ -51,17 +54,17 @@ This graph describes the accepted local design and separates historical receipts
 | L1 — Ingest | `M-INGEST` | Validate event source, request kind, identifiers, timestamps, required fields and deterministic route | Accept bounded synthetic input and an explicit US context; reject unsupported or ambiguous routes | Authentic provider event ingestion and durable replay inbox remain open |
 | L2 — Privacy | `M-PRIVACY` | Minimize, pseudonymize and classify sensitive fields | Process fixed synthetic evidence in memory; return redacted text and limited metadata | Real PII, vault, retention enforcement and complete recall remain open |
 | L3 — Policy | `M-POLICY` | Load a versioned policy profile, bind source identity and preserve time semantics | Load one pinned US `REFERENCE_ONLY` package; effective interval and account applicability stay unestablished | Full rule lifecycle, promotion, legal review and account-specific applicability remain open |
-| L4 — Engines | `M-ENGINES` | Run deterministic AUP, velocity, completeness, retrieval and advisory gates | Emit warnings, local anomaly signals, missing evidence and bounded citations; the current-byte rehearsal validated one bounded AI response per fixed stage | Full declarative interpretation, repeatability, semantic quality beyond the fixed samples and real-record behavior remain open |
+| L4 — Engines | `M-ENGINES` | Run deterministic AUP, sales spike, completeness, retrieval and advisory gates | Emit warnings, local anomaly signals, missing evidence and bounded citations; the current-byte rehearsal validated one bounded AI response per fixed stage | Full declarative interpretation, repeatability, semantic quality beyond the fixed samples and real-record behavior remain open |
 | L5 — API and Report | `M-API`, `M-REPORT` | Enforce strict HTTP/I/O contracts and present backend-owned calculations | Loopback session/CSRF/quota controls; in the hosted demo only, one exact public host behind the proxy (`X-Forwarded-For`, `X-Forwarded-Proto: https`) and the per-visitor and store-wide `TrafficGate`; no frontend risk recomputation; fixed sanitized errors | Provider telemetry, separate readback and durable external action records remain open |
 | L6 — Governance | `M-GOVERNANCE` | Bind files, hashes, tests, source provenance, evidence and release state | One registry, one gap queue, isolation-first change, strict audit, no-op verification and historical readback preserved for its own bytes | Every changed release requires a matching manifest, release evidence and exact anonymous public readback; production deployment requires separate acceptance |
 | L7 — Human Review | `M-REVIEW` | Bind actor choice to case/action/payload digest, nonce and expiry | Short-lived local acknowledgement and draft review; edit/reset/expiry revoke prior approval | Durable authenticated actor, tenant and restart/concurrency semantics remain open |
-| L8 — Presentation | `M-PRESENT`, `M-UI` | Render backend state, references, limitations and operator controls | English US-only console, AG Grid Community, a lazy-loaded first-party analytics workspace, a four-column backend-supplied transaction stream, single-open mobile evidence accordion and a deterministic local dashboard guide | Repository instructions are the selected demo path; same-version public artifact proof requires manifest binding and exact anonymous readback; the optional hosted demo runs on Render with no PayPal calls (the guide may use Gemini when the operator opts in); hosting with PayPal calls is unperformed |
+| L8 — Presentation | `M-PRESENT`, `M-UI` | Render backend state, references, limitations and operator controls | English console for a US Sandbox seller (the optional ten-country rules check is advisory), AG Grid Community, a lazy-loaded first-party analytics workspace, a four-column backend-supplied transaction stream, single-open mobile evidence accordion and a deterministic local dashboard guide | Repository instructions are the selected demo path; same-version public artifact proof requires manifest binding and exact anonymous readback; the optional hosted demo runs on Render with no PayPal calls (the guide may use Gemini when the operator opts in); hosting with PayPal calls is unperformed |
 
 ## Three-stage lifecycle
 
 ```mermaid
 flowchart LR
-  S1["Stage 1 — Before transaction<br/>US AUP preflight warning funnel,<br/>country rules, Channel3 product card"] --> S2["Stage 2 — Payment and fulfillment<br/>Velocity and evidence readiness"]
+  S1["Stage 1 — Before transaction<br/>US AUP preflight warning funnel,<br/>country rules, Channel3 product card"] --> S2["Stage 2 — Payment and fulfillment<br/>sales spike and evidence readiness"]
   S2 --> S3["Stage 3 — After transaction<br/>Dispute evidence mediation"]
   S1 --> H1["Human: edit, cancel, acknowledge"]
   S2 --> H2["Human: inspect capacity and missing evidence"]
@@ -90,7 +93,7 @@ Processing order:
 
 Required-field validation may stop an incomplete local draft. The AUP warning does not create a local compliance hard block. A no-match does not grant clearance.
 
-### Stage 2 — Fulfillment and velocity evidence readiness
+### Stage 2 — Fulfillment and sales spike evidence readiness
 
 Input: bounded synthetic transactions, a documented local baseline and fulfillment evidence fields.
 
@@ -100,7 +103,7 @@ The UI uses the official terms `hold`, `limitation` and `reserve` when explainin
 
 ### Stage 3 — Dispute evidence mediation
 
-Input: a bounded synthetic provider-response fixture plus separately bound synthetic proof records and attachment bytes, Sandbox disputes read through a connected Sandbox app are a separate path: they are projected, listed and paired with a session case for the `provide-evidence` preview and send, and the resolver below does not run on them.
+Input: a bounded synthetic provider-response sample (contract name: fixture) plus separately bound synthetic proof records and attachment bytes, Sandbox disputes read through a connected Sandbox app are a separate path: they are projected, listed and paired with a session case for the `provide-evidence` preview and send, and the resolver below does not run on them.
 
 The deterministic resolver validates reason, lifecycle stage, status, seller-response due date, normalized available actions, current evidence requests, request source, evidence joins, chronology, file signatures, file types and file-size limits. A seller requirement is created only when the current request has both `source=REQUESTED_FROM_SELLER` and `action=PROVIDE_EVIDENCE`; null or unknown actions remain context-only. Static reason templates never invent a missing request.
 
@@ -215,7 +218,7 @@ The public source includes bounded synthetic contract tests for all three stages
 
 | Gap | Boundary | Current consequence |
 | --- | --- | --- |
-| Sandbox run | One bounded Sandbox OAuth plus unsent invoice `DRAFT` pair | The recorded run retains its original scope; a separate current-byte rehearsal confirmed one OAuth and one unsent DRAFT through source-bound sanitized receipts. Independent provider telemetry, separate GET, send, payment, production and broader account behavior remain unavailable |
+| Sandbox run | OAuth and unsent invoice drafts (2026-10-06, 2026-10-31), dispute list and detail reads (2026-10-31), two gated evidence sends (2026-11-04, 2026-11-05) | Each masked receipt keeps its own scope. Invoice send, payment, capture, refund, shipment tracking, webhook verification, production and broader account behavior are not run |
 | Gemini run | One bounded `gemini-3.8-flash` execution and human semantic review | The recorded run retains its original scope; a separate current-byte rehearsal validated one bounded response for each fixed stage. Repeatability, semantic quality beyond those samples, real-record behavior and the optional full policy interpreter remain outside the claim |
 | Review authority | Durable external submission authority | Review remains local and short-lived |
 | Real data | Real PII ingestion and retention | Only synthetic bounded privacy demonstrations are allowed |
@@ -225,19 +228,19 @@ Internal machine-readable registries remain local release-owner controls and are
 
 ## Accepted local baseline and external promotion conditions
 
-The accepted US-only local baseline has direct evidence that:
+The accepted local baseline (US Sandbox seller; the optional ten-country rules check is advisory) has direct evidence that:
 
-1. active runtime, data, policy, UI and docs contain no foreign policy/case selector, source or fallback;
+1. the AUP and dispute reference profile covers the US only: no foreign policy or case profile, source or fallback; the separate ten-country rules pack is advisory, selects no jurisdiction and has no fallback;
 2. unsupported jurisdiction requests fail before loader access;
 3. official source identities, dates, classes, limitations and hashes validate;
-4. deterministic warning, velocity and dispute contracts remain unchanged in authority;
+4. deterministic warning, sales spike and dispute contracts remain unchanged in authority;
 5. AI remains post-validation and advisory;
 6. focused and full tests, frontend build, rendered desktop/mobile/keyboard review, audit publication, second no-op audit and canonical readback pass;
 7. historical logs, receipts and superseded bytes remain unchanged;
 8. the 2:50 video is public; the Devpost project is submitted; later source revisions need separate evidence-driven release acceptance.
 
-The recorded Sandbox and Gemini runs remain evidence only for their captured executions; the separately reviewed current-byte rehearsal supports exactly its three fixed AI stages, one Sandbox OAuth and one unsent invoice DRAFT. Complete repository run instructions are the selected functional-demo path. Each published candidate still requires matching release evidence and exact anonymous public readback before it can carry `PUBLIC_SOURCE_PUBLISHED`. After that same-byte readback, the Devpost project is submitted and the repository copy matches the accepted public source bytes. The optional hosted demo runs on Render with no PayPal calls (the guide may use Gemini when the operator opts in); hosting with PayPal calls is unperformed, and production hosting plus multi-user AI operation remain unproven and outside the accepted runtime.
+The recorded Sandbox and Gemini runs remain evidence only for their captured executions: the 2026-10-31 receipt for the second draft and the dispute reads, the 2026-11-04 and 2026-11-05 receipts for the two gated evidence sends and their refusals; the separately reviewed current-byte rehearsal (receipt kept by the author) supports exactly its three fixed AI stages, one Sandbox OAuth and one unsent invoice DRAFT. Complete repository run instructions are the selected functional-demo path. Each published candidate still requires matching release evidence and exact anonymous public readback before it can carry `PUBLIC_SOURCE_PUBLISHED`. After that same-byte readback, the Devpost project is submitted and the repository copy matches the accepted public source bytes. The optional hosted demo runs on Render with no PayPal calls (the guide may use Gemini when the operator opts in); hosting with PayPal calls is unperformed, and production hosting plus multi-user AI operation remain unproven and outside the accepted runtime.
 
 Stop if a source digest drifts, a foreign source becomes reachable, an effective date is inferred, a procedural court record is presented as a merits decision, a synthetic receipt is called authentic, or any path enables production or financial mutation.
 
-See the [standalone architecture/status visual](payguard_us_architecture_status.svg), [source register](us_official_source_register.md) and [US mainline contract](us_mainline_contract.md).
+See the [architecture overview diagram](../../submission/diagrams/architecture_overview.svg), [source register](us_official_source_register.md) and [US mainline contract](us_mainline_contract.md).

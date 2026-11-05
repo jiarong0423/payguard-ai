@@ -6,11 +6,12 @@ import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { METHOD_ORDER, PROOF_SCHEMA, channel3Summary, dateLabel, groupProof, methodCounts } from '../frontend/src/proof/proofData.js';
+import { METHOD_ORDER, PROOF_SCHEMA, REFUSED_LABEL, channel3Summary, dateLabel, groupProof, methodCounts, refusedCount } from '../frontend/src/proof/proofData.js';
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (path) => readFileSync(join(projectRoot, path), 'utf8');
 const json = (path) => JSON.parse(read(path));
+const pageMain = () => read('frontend/src/proof/main.jsx');
 
 const facts = json('frontend/src/data/proof_facts_v1.json');
 const receipts = json('frontend/src/data/channel3_receipts_v1.json');
@@ -47,10 +48,19 @@ for (const row of facts.rows) {
 }
 for (const scenario of facts.scenarios) assert.ok(facts.rows.filter((row) => row.scenario === scenario.id).length >= 2, `${scenario.id} has rows`);
 // The Sandbox rows come from the three masked live receipts (10-31 reads, 11-04 send, 11-05 recorded send) only; the sales burst is the synthetic one.
-assert.deepEqual(facts.rows.filter((row) => row.method === 'REAL_SANDBOX').map((row) => row.id), ['policy-invoice-draft', 'dispute-list-read', 'dispute-single-read', 'dispute-evidence-sent', 'dispute-mismatch-refused', 'dispute-unauthorized-refused', 'dispute-evidence-sent-recorded', 'dispute-resend-amount-refused']);
+assert.deepEqual(facts.rows.filter((row) => row.method === 'REAL_SANDBOX').map((row) => row.id), ['policy-invoice-draft', 'policy-invoice-draft-recorded', 'dispute-list-read', 'dispute-single-read', 'dispute-evidence-sent', 'dispute-mismatch-refused', 'dispute-unauthorized-refused', 'dispute-evidence-sent-recorded', 'dispute-resend-amount-refused', 'dispute-submit-gated']);
+// (2026-11-05) The gate row states the current fact: two gated Sandbox sends, not the retired 2026-10-31 "mocked-transport tests only" wording.
+assert.ok(!JSON.stringify(facts).includes('mocked-transport tests only'), 'no retired submit wording on /proof.html');
+assert.ok(/two sends/u.test(facts.rows.find((row) => row.id === 'dispute-submit-gated').proven), 'gate row names the two sends');
 // (r34) Each send row names the PayPal-Debug-Id from its receipt, and the page footer names every Sandbox receipt.
 assert.ok(facts.rows.find((row) => row.id === 'dispute-evidence-sent').how.includes('PayPal-Debug-Id f908765a01293'), 'send row names the Debug-Id');
 assert.ok(facts.rows.find((row) => row.id === 'dispute-evidence-sent-recorded').how.includes('PayPal-Debug-Id f2088142a6218'), 'recorded send row names the Debug-Id');
+// (r48) The recorded send row names its readback Debug-Id; refusals are labelled apart from the real calls.
+assert.ok(facts.rows.find((row) => row.id === 'dispute-evidence-sent-recorded').how.includes('ca5554cf42ef6'), 'recorded send row names the readback Debug-Id');
+assert.deepEqual(facts.rows.filter((row) => row.refused).map((row) => row.id), ['dispute-mismatch-refused', 'dispute-unauthorized-refused', 'dispute-resend-amount-refused']);
+assert.equal(refusedCount(facts), 3);
+assert.equal(REFUSED_LABEL, 'refused before any send call');
+assert.ok(pageMain().includes('data-testid="proof-refused">{REFUSED_LABEL}</span>'), 'refusal rows carry their own label');
 for (const receipt of SANDBOX_RECEIPTS) {
   assert.ok(facts.source_note.includes(receipt), `footer source list names ${receipt}`);
 }

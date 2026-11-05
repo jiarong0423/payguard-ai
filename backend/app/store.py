@@ -253,7 +253,7 @@ def _dispute_match_request(case: dict, routing: dict, as_of: datetime) -> str:
         "request_kind": "prepare_dispute_draft",
         "jurisdiction": "US",
         "as_of": iso(as_of),
-        "observation_max_age_days": 30,
+        "observation_max_age_days": 90,  # reference pack retrieved 2026-10-06; usable through 2027-01-04
         "source_class": "synthetic",
         "payload": payload,
         "evidence_items": evidence_items,

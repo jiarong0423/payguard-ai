@@ -95,13 +95,14 @@ assert.ok(section.slice(details).includes('Only code marks an item filled in: a 
 assert.equal(/<details[^>]*\sopen/u.test(section), false, 'collapsed by default');
 assert.equal(section.includes('Only a form field that passes the rule check counts as filled in'), false, 'old form-only claim gone (r32 J3: the rule layer also fills items)');
 
-// (d) Country rule audit: same meaning (TW and CN checked line by line), muted under the sources, not in the verdict.
-assert.ok(panel.includes('`${name} rules not yet checked line by line against their sources`'), 'not-yet wording keeps the audit meaning');
-assert.ok(panel.includes('`${name} rules checked line by line against their sources (${LINE_CHECKED[code]})`'), 'checked wording keeps the date');
+// (d) Country rule audit (r48): a 36-rule TW and CN sample, muted under the sources, not in the verdict.
+assert.ok(panel.includes("export const ruleAuditText = (names = {}) => `a sample of 36 ${names.TW || 'TW'} and ${names.CN || 'CN'} rules was compared with their sources on 2026-11-02; the other rules are not yet checked line by line`;"), 'audit wording states the sample, not whole countries');
+assert.ok(panel.includes('Rule audit: {ruleAuditText(names)}.'), 'footnote shows the sample wording');
+assert.equal(panel.includes('rules checked line by line against their sources'), false, 'no whole-country line-check claim');
 const verdict = panel.slice(panel.indexOf('function Verdict('), panel.indexOf('// Optional amount'));
 assert.equal(verdict.includes('lineCheck'), false, 'no audit line under the verdict');
 const footnote = panel.indexOf('Paraphrased from official sources, {result.retrieved_at}. Not legal advice.</small>');
-assert.ok(footnote > 0 && panel.indexOf('<LineCheckNote result={result} names={names} />') > footnote, 'audit note sits under the source lines');
+assert.ok(footnote > 0 && panel.indexOf('<LineCheckNote names={names} />') > footnote, 'audit note sits under the source lines');
 assert.ok(panel.includes('<small className="country-footnote country-line-check-note" data-testid="country-verdict-line-check">'), 'muted footnote style');
 assert.equal(panelCss.includes('.country-verdict-check'), false, 'no bold audit style left');
 

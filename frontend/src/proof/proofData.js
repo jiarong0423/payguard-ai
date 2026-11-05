@@ -30,6 +30,13 @@ export function groupProof(facts) {
   return scenarios.map((scenario) => ({ ...scenario, rows: rows.filter((row) => row.scenario === scenario.id) }));
 }
 
+// (r48) Real Sandbox rows that are refusals: PayGuard sent no evidence to that dispute. Counted apart so the real-call
+// count is not read as sends.
+export const REFUSED_LABEL = 'refused before any send call';
+export function refusedCount(facts) {
+  return (facts?.rows || []).filter((row) => row.refused === true && row.method === 'REAL_SANDBOX').length;
+}
+
 export function methodCounts(facts) {
   const counts = Object.fromEntries(METHOD_ORDER.map((method) => [method, 0]));
   for (const row of facts?.rows || []) if (row.method in counts) counts[row.method] += 1;

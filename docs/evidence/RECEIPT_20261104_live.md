@@ -8,7 +8,7 @@ Everything below is PayPal Sandbox test data created by the author with Sandbox 
 
 ## Flow 3: evidence sent to the item-not-received dispute (POST /v1/customer/disputes/{id}/provide-evidence through PayGuard)
 - Local case case-ref-001 (item not received, USD 48.00) paired with PP-R-WAH-... (item not received, USD 48.00); declared account check MATCH, compared with the configured merchant id and not verified with PayPal (sending account and dispute seller both TV...CP2C, masked).
-- Before the send: evidence draft prepared, review file 2328 bytes and review ZIP 14028 bytes downloaded, all 7 ZIP entries matched the manifest sha256, size and CRC-32, local draft review recorded at 2026-11-04T13:04:50Z.
+- Before the send: evidence draft prepared, review file 2328 bytes and review ZIP 14028 bytes downloaded (7 entries: 6 listed files and the manifest; the 6 listed files matched the manifest sha256, size and CRC-32), local draft review recorded at 2026-11-04T13:04:50Z.
 - The send went out within the 5-minute local review window, after the tick, the orange Continue and the 3-second hold, on the green Send.
 - result: external_send SUBMITTED, readback PROVIDE_EVIDENCE_SUBMITTED, PayPal-Debug-Id f908765a01293
 - fresh read after the send (GET /v1/customer/disputes/{id}): status WAITING_FOR_BUYER_RESPONSE (before: WAITING_FOR_SELLER_RESPONSE), stage INQUIRY; evidence entries were the buyer's CREATE and PROOF_OF_FULFILLMENT SUBMITTED_BY_SELLER.

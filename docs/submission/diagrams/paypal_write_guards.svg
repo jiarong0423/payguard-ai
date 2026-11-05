@@ -9,7 +9,7 @@
 <defs><marker id="pg-paypal-guards-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#55534e"/></marker><marker id="pg-paypal-guards-am" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#4f46e5"/></marker><pattern id="pg-paypal-guards-dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#e6e0d4"/></pattern></defs>
 <rect width="1920" height="1080" fill="#f7f3ec"/>
 <rect width="1920" height="1080" fill="url(#pg-paypal-guards-dots)"/>
-<text x="64" y="60" class="m" font-size="18" letter-spacing="2" fill="#6b6862">PAYGUARD AI · ARCHITECTURE 3/3</text>
+<text x="64" y="60" class="m" font-size="18" letter-spacing="2" fill="#6b6862">PAYGUARD AI · ARCHITECTURE</text>
 <text x="64" y="116" class="t" font-size="56">Sending evidence to PayPal: nine checks, one person</text>
 <text x="64" y="156" class="s" font-size="24" fill="#55534e">One approval allows exactly one send, and every check runs again at the moment of sending.</text>
 <path d="M488 281 L516 281" fill="none" stroke="#55534e" stroke-width="2" marker-end="url(#pg-paypal-guards-ar)"/>
@@ -25,17 +25,17 @@
 <rect x="88" y="206" width="87" height="28" rx="2" fill="none" stroke="#3f6b47" stroke-width="1.4"/>
 <text x="96" y="226" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#3f6b47">SERVER</text>
 <text x="88" y="268" class="s" font-size="24" font-weight="600" fill="#1f1e1b">1 Off by default</text>
-<text x="88" y="300" class="m" font-size="18" fill="#55534e">each write needs its own</text>
-<text x="88" y="326" class="m" font-size="18" fill="#55534e">switch; the public demo</text>
-<text x="88" y="352" class="m" font-size="18" fill="#55534e">refuses all</text>
+<text x="88" y="300" class="m" font-size="18" fill="#55534e">evidence send has its own switch</text>
+<text x="88" y="326" class="m" font-size="18" fill="#55534e">PAYGUARD_PAYPAL_DISPUTE_SUBMIT;</text>
+<text x="88" y="352" class="m" font-size="18" fill="#55534e">hosted demo refuses all writes</text>
 <rect x="520" y="192" width="424" height="178" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
 <rect x="520" y="192" width="6" height="178" rx="2" fill="#c2410c"/>
 <rect x="544" y="206" width="87" height="28" rx="2" fill="none" stroke="#c2410c" stroke-width="1.4"/>
 <text x="552" y="226" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#c2410c">PERSON</text>
 <text x="544" y="268" class="s" font-size="24" font-weight="600" fill="#1f1e1b">2 A person approves</text>
 <text x="544" y="300" class="m" font-size="18" fill="#55534e">reviewed draft, bound by digest</text>
-<text x="544" y="326" class="m" font-size="18" fill="#55534e">approval expires after 5 min</text>
-<text x="544" y="352" class="m" font-size="18" fill="#55534e">names pseudonymised first</text>
+<text x="544" y="326" class="m" font-size="18" fill="#55534e">both lapse 5 min after drafting</text>
+<text x="544" y="352" class="m" font-size="18" fill="#55534e">names pseudonymized first</text>
 <rect x="976" y="192" width="424" height="178" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
 <rect x="976" y="192" width="6" height="178" rx="2" fill="#3f6b47"/>
 <rect x="1000" y="206" width="87" height="28" rx="2" fill="none" stroke="#3f6b47" stroke-width="1.4"/>
@@ -90,7 +90,7 @@
 <text x="96" y="638" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#3f6b47">PAYPAL</text>
 <text x="189" y="640" class="s" font-size="24" font-weight="600" fill="#1f1e1b">9 The call and its receipt</text>
 <text x="88" y="670" class="m" font-size="18" fill="#55534e">allowed paths only · no redirects · 15 s limit · replies capped at 64 KiB · PayPal's reason in plain English</text>
-<text x="88" y="696" class="m" font-size="18" fill="#55534e">PayPal-Debug-Id kept as the receipt · real Sandbox sends 2026-11-04 and 2026-11-05, each to its own author-created test dispute</text>
+<text x="88" y="696" class="m" font-size="18" fill="#55534e">PayPal-Debug-Id kept as the receipt · two real Sandbox sends on 2026-11-04 UTC (the second at 17:16 UTC, 11-05 in UTC+8), each to its own test dispute</text>
 <rect x="64" y="728" width="1792" height="168" rx="6" fill="#fbf9f5" stroke="#d9d3c7" stroke-width="1.5"/>
 <text x="88" y="766" class="t" font-size="30">The invoice draft has its own chain</text>
 <text x="88" y="800" class="m" font-size="18" fill="#55534e">country rule stops the sale: draft refused · review token used once, 120 s, bound to the latest check</text>
@@ -109,6 +109,6 @@
 <rect x="1211" y="956" width="63" height="28" rx="2" fill="none" stroke="#3f6b47" stroke-width="1.4"/>
 <text x="1219" y="976" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#3f6b47">CODE</text>
 <text x="1286" y="977" class="s" font-size="20" fill="#55534e">the race guard</text>
-<text x="64" y="1016" class="s" font-size="19" fill="#6b6862">Steps 1 to 3 and 5 to 9 run on the server; step 4 is in the browser.</text>
+<text x="64" y="1016" class="s" font-size="19" fill="#6b6862">Step 4's tick and 3 s hold are in the browser; its single-use confirmation and every other step are checked on the server.</text>
 <text x="64" y="1044" class="s" font-size="19" fill="#6b6862">PayPal or the card issuer decides the dispute; PayGuard only prepares and sends evidence.</text>
 </svg>

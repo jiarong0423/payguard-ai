@@ -1,5 +1,7 @@
 # Guided gap filling, steps 1 and 2: first live round (2026-11-02)
 
+> Superseded by [GEMINI_GUIDE_RUNS_20261103.md](GEMINI_GUIDE_RUNS_20261103.md) (2026-11-03); this page is kept unchanged as the record of the first live round.
+
 Until this round every guide measurement (`GUIDE_BENCHMARK.md`, `GUIDE_STRESS_TEST.md`) covered step 3, dispute
 evidence, only. This round applies the same method to step 1 (policy pre-check) and step 2 (sales spike).
 

@@ -29,13 +29,11 @@ const CARRIER_HOSTS = /^https:\/\/([a-z0-9-]+\.)*(usps\.com|canadapost-postescan
 const sourceLabel = (url) => (/^https:\/\/(www|developer)\.paypal\.com\//.test(url) ? 'PayPal source'
   : CARRIER_HOSTS.test(url) ? 'Postal operator rule' : 'Official government source');
 const plural = (count, word) => `${count} ${word}${count === 1 ? '' : 's'}`;
-// (optimise r24) Countries whose rules were checked line by line against their sources, with the audit date. The rules
-// pack has no per-country or per-rule audit field, so this is hard-coded from the record: the r10 rules-accuracy audit
-// (2026-11-02, 36 rules, TW and CN only; isolation run reviews/r10_e768aaf/5_rules_accuracy.md, restated in
-// reviews/r13_8922acb/2_paypal.md) and README.md step 01 ("Rules for two of the ten countries were checked line by line").
-export const LINE_CHECKED = Object.freeze({ TW: '2026-11-02', CN: '2026-11-02' });
-export const lineCheckText = (code, name) => (LINE_CHECKED[code]
-  ? `${name} rules checked line by line against their sources (${LINE_CHECKED[code]})` : `${name} rules not yet checked line by line against their sources`);
+// (optimise r24, r48) Countries in the rules-accuracy sample audit, with its date. The rules pack has no per-country or
+// per-rule audit field, so this is hard-coded from the record: the r10 audit (2026-11-02) compared a sample of 36 TW and
+// CN rules with their sources; no country's rules were all checked line by line. Names come from the pack at run time.
+export const RULE_AUDIT_SAMPLE = Object.freeze({ TW: '2026-11-02', CN: '2026-11-02' });
+export const ruleAuditText = (names = {}) => `a sample of 36 ${names.TW || 'TW'} and ${names.CN || 'CN'} rules was compared with their sources on 2026-11-02; the other rules are not yet checked line by line`;
 // (optimise r24) Clock time for the before/after card ("Stopped at 10:02 → Clear at 10:04"), local 24-hour time.
 const clockTime = (ms) => new Date(ms).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
 const verdictWord = (result) => (result.blocked ? 'Stopped' : result.findings.some(isPostalBan) ? 'Draft allowed (other carrier)' : 'Clear');
@@ -85,7 +83,7 @@ function SevIcon({ severity }) {
 function Finding({ row, names, retrievedAt }) {
   const { sentence, scope, statute } = splitRule(row.text);
   const label = statute ? `Source: ${statute}` : sourceLabel(row.source);
-  // (optimise r24) Each row says when its source was read and whether its country was checked line by line.
+  // (optimise r24, r48) Each row says when its source was read and whether its country was in the sample audit.
   const country = rowCountry(row, names);
   return <li className={`country-finding sev-${row.severity.toLowerCase()}`} data-testid={`country-finding-${row.code}`}>
     <span className="country-sev"><SevIcon severity={row.severity} />{SEVERITY_TEXT[row.severity]}</span>
@@ -94,7 +92,7 @@ function Finding({ row, names, retrievedAt }) {
       <small>{scope && <span>{scope} · </span>}<a href={row.source} target="_blank" rel="noopener noreferrer" title={label}
         aria-label={`${label}${scope ? ` (${scope})` : ''}, opens in a new tab`}>Source ↗</a>
         {retrievedAt && <span data-testid="country-row-source-date"> · source read {retrievedAt}</span>}
-        {country && <span className={`country-line-check${LINE_CHECKED[country] ? ' is-checked' : ''}`} data-testid="country-row-line-check"> · {LINE_CHECKED[country] ? `checked line by line ${LINE_CHECKED[country]}` : 'not yet checked line by line'}</span>}</small></span>
+        {country && <span className={`country-line-check${RULE_AUDIT_SAMPLE[country] ? ' is-checked' : ''}`} data-testid="country-row-line-check"> · {RULE_AUDIT_SAMPLE[country] ? `country in the ${RULE_AUDIT_SAMPLE[country]} sample check of 36 rules` : 'not yet checked line by line'}</span>}</small></span>
   </li>;
 }
 
@@ -131,13 +129,12 @@ function findingsBySeverity(unordered) {
     info: findings.filter((row) => row.severity === 'INFO'), action: findings.filter((row) => row.severity !== 'INFO') };
 }
 
-// (optimise r24) Whether each side's rules were checked line by line against their sources (only TW and CN so far; see
-// LINE_CHECKED). (r30 J4 #6a) A coverage note of the rule audit, not of this check: it sits muted under the source
-// lines, not in bold under the verdict, where it read as "the check was not done".
-function LineCheckNote({ result, names }) {
-  const sides = [...new Set([result.seller_country, result.buyer_country])];
+// (optimise r24, r48) The rule audit's coverage (a 36-rule TW and CN sample; see RULE_AUDIT_SAMPLE). (r30 J4 #6a)
+// A coverage note of the rule audit, not of this check: it sits muted under the source lines, not in bold under the
+// verdict, where it read as "the check was not done".
+function LineCheckNote({ names }) {
   return <small className="country-footnote country-line-check-note" data-testid="country-verdict-line-check">
-    Rule audit: {sides.map((code) => lineCheckText(code, names[code] || code)).join(' · ')}.</small>;
+    Rule audit: {ruleAuditText(names)}.</small>;
 }
 
 // One big line, then the count line (review r1 P0.3; wording per the PayPal-side red teams: the block may come from a
@@ -398,7 +395,7 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
         {rows.length > 0 ? <ul>{rows.map((row) => <Finding key={`${row.code}-${row.text}`} row={row} names={names} retrievedAt={result.retrieved_at} />)}</ul> : <p className="country-footnote">No rule to check first.</p>}
       </div>
       <small className="country-footnote">Paraphrased from official sources, {result.retrieved_at}. Not legal advice.</small>
-      <LineCheckNote result={result} names={names} />
+      <LineCheckNote names={names} />
     </div>}
     </div>
   </section>;

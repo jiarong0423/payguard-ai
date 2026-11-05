@@ -219,7 +219,7 @@ def _synthetic_bytes(region, theme, claim_type, citation, *, as_of="2026-10-05T0
 
 
 def benchmark():
-    """Fixed US-only authored fixtures; reports no candidate prose or model accuracy."""
+    """Fixed authored fixtures for the US reference profile; reports no candidate prose or model accuracy."""
     snapshot = applicability._load_snapshot()
     def select(theme, kind):
         identifiers = sorted(row["chunk_id"] for row in snapshot.chunks.values()

@@ -46,10 +46,6 @@ PUBLISHED_RELEASE_ASSETS = {
         "security, rights, export, repository-visibility, video and submission gates",
         "public repository, video or devpost submission readiness",
     ),
-    "docs/decisions/2026Q4/payguard_us_architecture_status.svg": (
-        "frozen public release",
-        "public not ready",
-    ),
 }
 FORBIDDEN_PARTS = {
     ".cache", ".codex", ".cursor", ".git", ".github", ".pytest_cache", ".venv",

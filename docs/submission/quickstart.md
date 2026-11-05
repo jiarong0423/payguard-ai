@@ -1,14 +1,14 @@
 # PayGuard Judge Quickstart
 
-This walkthrough uses synthetic data, a US official-reference profile for the AUP check and a ten-country rules pack for the country check. It does not require a new outbound provider call. Any recorded provider or model evidence supports only its exact sanitized request and response.
+This walkthrough uses synthetic data, a US official-reference profile for the Acceptable Use Policy (AUP) check and a ten-country rules pack for the country check. It does not require a new outbound provider call. Any recorded provider or model evidence supports only its exact sanitized request and response.
 
-![The three-stage PayGuard workflow](payguard_judge_overview.svg)
+![PayGuard workflow: policy and ten-country rules check, sales spike review, dispute evidence and a gated Sandbox send after one human approval](payguard_judge_overview.svg)
 
-The overview was drawn before the country rules check was added to step 01.
+The overview shows the policy and ten-country rules check before a draft and the Sandbox send that runs only after one human approval.
 
-For the competition recording sequence and exact opening narration, see [PayGuard AI Demonstration Script](video_script.md); the script has no country rules scene.
+The current demo video is the [2:50 cut](https://youtu.be/_GORnHWShU4). The [historical demonstration script](video_script.md) is the plan for the earlier 2:02 cut and has no country rules scene.
 
-The [published 2:50 demonstration](https://youtu.be/_GORnHWShU4) is the final edited video. The script preserves the longer pre-edit recording plan; its timestamps are not final-cut seek positions.
+The [published 2:50 demonstration](https://youtu.be/_GORnHWShU4) is the final edited video; the script's timestamps belong to the earlier 2:02 cut and are not seek positions in the current video.
 
 Status: the Devpost project is submitted and the 2:50 video is public. The complete repository run instructions here are the selected functional-demo path. An optional hosted demo also runs (README, "Hosted demo"); it makes no PayPal calls, only its evidence guide can use Gemini when the operator opts in (at most 5 calls a minute and 20 a day), and a hosted deployment with PayPal calls is unperformed. A new local export stays `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` until its exact bytes pass security review, independent acceptance and repository readback; only an accepted same-byte public source release records `PUBLIC_SOURCE_PUBLISHED`. Neither state establishes a public or production-hosted service.
 
@@ -72,7 +72,7 @@ In the console this stage is titled **Policy pre-check** (step 01).
 
 Expected boundary: PayGuard surfaces a public-policy category and a warning. It does not declare the product compliant, prohibited, legal, approved or safe. It does not send an invoice.
 
-### Stage 2 — Fulfillment and velocity evidence readiness
+### Stage 2 — Fulfillment and sales spike evidence readiness
 
 1. Select **Next: sales burst**. Confirm step 01 closes, step 02 opens, and the page scrolls naturally to it. The synthetic sales burst loads automatically on entry; **Load sales burst** stays in the step header to reload it (the phone action bar drops it once the orders exist) and never duplicates records.
 2. Confirm the backend-calculated ratio (5 times baseline), window sales of 500.00 USD and 50 orders. Open **More: sources, limits, examples** and its **Technical details** tab to see the baseline rate, the **Synthetic baseline** label and the baseline window.
@@ -91,9 +91,9 @@ Expected boundary: the signal means the synthetic activity exceeded a local demo
 4. Inspect the response deadline, readiness and requested items (for example **Proof of fulfillment**, **Requested from seller**) in the primary view. Expand **Evidence fields and ZIP contents** (named **Evidence fields, requested items, and ZIP contents** in earlier builds) to inspect the evidence fields, the original-identifier summary and the seven ZIP files.
 5. Confirm the details say **Original identifiers stay in this demo session** and **No original file content is included, and nothing is submitted externally.**
 6. Select **Download review file** and confirm the provider-submission boundary remains **Not submitted**.
-7. Select **Download review ZIP**. The ZIP list under **Evidence fields and ZIP contents** reads **Seven fixed files · generated locally · not sent to PayPal**. The fixed archive contains a README, manifest, response-driven requirements, timeline, public citations, pseudonymized evidence and `product-reference.json` (the seller-confirmed Channel3 product card, or `NOT_CONFIRMED`); it contains no raw case ID, order ID, request ID, identity token, session ID, draft digest, proof value, attachment name or attachment bytes.
+7. Select **Download review ZIP**. The ZIP list under **Evidence fields and ZIP contents** reads **Seven fixed files · generated locally · not sent to PayPal** (7 entries: 6 listed files and the manifest). The fixed archive contains a README, manifest, response-driven requirements, timeline, public citations, pseudonymized evidence and `product-reference.json` (the seller-confirmed Channel3 product card, or `NOT_CONFIRMED`); it contains no raw case ID, order ID, request ID, identity token, session ID, draft digest, proof value, attachment name or attachment bytes.
 8. Check the human-review box and record the local review.
-9. In **Sample PayPal cases (not real)** (titled **PayPal Sandbox disputes** once connected; the fixture's response dates are relative to now, so they never show as expired), confirm the data-source badge. Without a Sandbox connection it reads **Sample** and lists two synthetic disputes in the PayPal Disputes API JSON shape; with a connection made in step 01 it reads **Sandbox** from `GET /v1/customer/disputes`. Select a dispute to read its detail (`GET /v1/customer/disputes/{id}`), then select **Prepare evidence request (preview)** to see the multipart `POST /v1/customer/disputes/{id}/provide-evidence` built from the local draft: the JSON `input` part with masked tracking numbers, the file part metadata and the **Not submitted** boundary. The **Submit to PayPal Sandbox (test)** button stays disabled until the operator sets `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`, the Sandbox is connected, the local review approval (step 8) is recorded and a preview exists; an id the console did not return is refused with 404 and a missing approval with 422. When enabled, the button opens a dialog that shows the case and the PayPal dispute side by side with the dispute amount, the opening date and the declared account match (the merchant id you configured, not verified with PayPal); tick **I checked this is the right dispute**, select the orange **Continue**, wait for the 3-second hold and select the green **Send to PayPal**. After a send the result shows the PayPal-Debug-Id. The browser waits up to 45 seconds for a PayPal write; a timeout says the write may still have reached PayPal Sandbox.
+9. In **Sample PayPal cases (not real)** (titled **PayPal Sandbox disputes** once connected; the sample disputes' response dates are relative to now, so they never show as expired), confirm the data-source badge. Without a Sandbox connection it reads **Sample** and lists two synthetic disputes in the PayPal Disputes API JSON shape; with a connection made in step 01 it reads **Sandbox** from `GET /v1/customer/disputes`. Select a dispute to read its detail (`GET /v1/customer/disputes/{id}`), then select **Prepare evidence request (preview)** to see the multipart `POST /v1/customer/disputes/{id}/provide-evidence` built from the local draft: the JSON `input` part with masked tracking numbers, the file part metadata and the **Not submitted** boundary. The **Submit to PayPal Sandbox (test)** button stays disabled until the operator sets `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`, the Sandbox is connected, the local review approval (step 8) is recorded and a preview exists; an id the console did not return is refused with 404 and a missing approval with 422. When enabled, the button opens a dialog that shows the case and the PayPal dispute side by side with the dispute amount, the opening date and the declared account match (the merchant id you configured, not verified with PayPal); tick **I checked this is the right dispute**, select the orange **Continue**, wait for the 3-second hold and select the green **Send to PayPal**. After a send the result shows the PayPal-Debug-Id. The browser waits up to 45 seconds for a PayPal write; a timeout says the write may still have reached PayPal Sandbox.
 
 **Reset demo** asks **Reset the demo?** first. It clears this session's checks, sales, dispute cases, evidence drafts and the local review; your text and the Sandbox connection stay, and a draft already in PayPal Sandbox is not deleted.
 
@@ -114,7 +114,7 @@ On a viewport 720px wide or narrower:
 1. Expand **Merchant Evidence Buffer** and select **Open all orders**. The responsive evidence summary opens; the desktop AG Grid table, mode switch and guide controls are not shown at this width. At 641–720px, the top-bar **All orders** link also opens this summary.
 2. Confirm the single-column review summary. Opening item counts, the compact transaction preview or the authority map closes the prior accordion section. To demonstrate AG Grid sorting and filtering, use a viewport wider than 720px.
 
-Expected boundary: the analytics workspace presents validated synthetic workflow status through AG Grid Community and first-party React components. The local guide never changes the AUP, velocity or dispute results. The exact source-release state comes from the export manifest; the video is public and the Devpost project is submitted.
+Expected boundary: the analytics workspace presents validated synthetic workflow status through AG Grid Community and first-party React components. The local guide never changes the AUP, sales spike or dispute results. The exact source-release state comes from the export manifest; the video is public and the Devpost project is submitted.
 
 ## AG Studio evidence dashboard
 
@@ -141,14 +141,14 @@ No reviewed official case proves that rapid sales growth alone caused an account
 
 ## Bounded Sandbox evidence
 
-The recorded Sandbox run (2026-10-06 17:44 UTC, 2026-10-07 in UTC+8; recorded by the operator) is one OAuth connection plus one unsent USD `10.00` invoice `DRAFT`, id `INV2-...-W5UW`. A second unsent draft was created on 2026-10-31 ([masked receipt](../evidence/RECEIPT_20261031_live.md)). Both used the operator's own Sandbox app; to replay them, set `PAYGUARD_PAYPAL_OUTBOUND=enabled` with yours (README, "Turning on PayPal").
+The recorded Sandbox run (2026-10-06 17:44 UTC, 2026-10-07 in UTC+8; recorded by the operator) is one OAuth connection plus one unsent USD `10.00` invoice `DRAFT`, id `INV2-...-W5UW`. A second unsent draft was created on 2026-10-31 ([masked receipt](../evidence/RECEIPT_20261031_live.md)) and a third during the video recording on 2026-11-05, UTC+8 (`INV2-...RG5U`, [masked receipt](../evidence/RECEIPT_20261105_live.md)). All three used the operator's own Sandbox app; to replay them, set `PAYGUARD_PAYPAL_OUTBOUND=enabled` with yours (README, "Turning on PayPal").
 
 - Use a fictitious Business sandbox seller for the merchant role.
 - Confirm its country as US before calling it a US seller.
 - Confirm Invoicing availability before attempting the draft.
 - Keep outbound access off until the operator explicitly enables the bounded attempt.
 - Do not retry an uncertain successful create automatically.
-- Do not send the invoice or perform payment, capture, refund or dispute mutation.
+- Do not send the invoice or perform payment, capture, refund or dispute mutation, other than the gated provide-evidence send (README, "Turning on PayPal").
 
 Mock transport, screenshots and local UI state do not count as authentic provider evidence.
 
@@ -180,14 +180,14 @@ These commands validate the local runtime and source contract. The export manife
 
 - A deterministic warning funnel can surface public US AUP categories before an invoice draft.
 - A ten-country rules pack can stop an invoice draft on the server (HTTP 409) when PayPal or a government bans the goods on that route.
-- A backend calculation can show a local velocity anomaly against a declared synthetic baseline and preceding comparison window.
+- A backend calculation can show a local sales spike against a declared synthetic baseline and preceding comparison window.
 - A deterministic intake can organize a synthetic dispute and produce an integrity-checked internal review ZIP while preserving the correct adjudicator boundary.
 - A bounded AI adapter can be placed after deterministic validation without receiving decision authority.
 
 ## Scope of testing
 
 - A production or live account: only a fictitious US Business Sandbox seller was used.
-- A Sandbox dispute through the Disputes calls: the list and one detail were read live on 2026-10-31 for one author-created Sandbox test case; on 2026-11-04 one provide-evidence send to another Sandbox test dispute succeeded ([masked receipt](../evidence/RECEIPT_20261104_live.md)); on 2026-11-05 (UTC+8) a second send to a newly filed Sandbox test dispute succeeded ([masked receipt](../evidence/RECEIPT_20261105_live.md)); other rows run against mocked transport and the fixture; connect your own Sandbox app to run them live.
+- A Sandbox dispute through the Disputes calls: the list and one detail were read live on 2026-10-31 for one author-created Sandbox test case, and again before and after each send; on 2026-11-04 one provide-evidence send to another Sandbox test dispute succeeded ([masked receipt](../evidence/RECEIPT_20261104_live.md)); on 2026-11-05 (UTC+8) a second send to a newly filed Sandbox test dispute succeeded ([masked receipt](../evidence/RECEIPT_20261105_live.md)); other rows run against mocked transport and the sample disputes; connect your own Sandbox app to run them live.
 - Authentic Gemini output on your machine: the brief needs your own Vertex AI project; the guide can use Vertex AI or an AI Studio API key.
 - Hosted operation with provider calls, or multi-user operation: the console is a loopback demo; the optional hosted demo makes no PayPal calls, and only its guide can use Gemini when the operator opts in.
 

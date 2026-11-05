@@ -1,13 +1,13 @@
 # PayGuard Unified Console Contract
 
-Status: current US-only local contract. The console is an advisory and evidence-readiness interface, not a PayPal decision system.
+Status: current local contract (US Sandbox seller; the optional ten-country rules check is advisory). The console is an advisory and evidence-readiness interface, not a PayPal decision system.
 
 ## User journey
 
 The console presents one fixed sequence:
 
 1. **US AUP Preflight Warning Funnel** — inspect a product description before an invoice draft; the operator-facing screen is labeled `AUP Preflight Screen`.
-2. **Velocity and Fulfillment Readiness** — inspect a local anomaly and missing fulfillment evidence.
+2. **Sales Spike and Fulfillment Readiness** — inspect a local anomaly and missing fulfillment evidence.
 3. **Dispute Evidence Mediation** — organize a synthetic dispute draft for human review.
 
 The three stages remain separate. Stage 1 does not collect arrival photos. Stage 2 does not claim a provider threshold or account outcome. Stage 3 does not auto-submit evidence, refund or adjudicate.
@@ -33,7 +33,7 @@ The backend owns:
 
 - input validation and deterministic routing;
 - AUP findings and warning state;
-- velocity windows, baselines, ratios and limitations;
+- sales spike windows, baselines, ratios and limitations;
 - dispute chronology, missing evidence and adjudicator route;
 - source identities, dates, digests and applicability limitations;
 - acknowledgement/review identity, digest, nonce and expiry;
@@ -113,7 +113,7 @@ The local guide has no provider, payment, workflow or external-model tool. It st
 
 ## Reference panel
 
-The active profile is US-only. There is no region selector and no cross-region fallback. The reference panel may display:
+The active reference profile covers the US only (US Sandbox seller). The optional ten-country rules check in step 01 is advisory and does not switch this profile; there is no cross-region fallback. The reference panel may display:
 
 - official PayPal US policy sources;
 - jurisdiction-neutral PayPal Developer API/process sources;
@@ -164,7 +164,7 @@ The recorded Sandbox sequence (2026-10-06) is:
 
 Invoice send, reminders, QR distribution, payment, capture, refund, dispute mutations other than the gated `provide-evidence` request, and production remain frozen. A POST create response is the accepted creation receipt, not a separate GET readback.
 
-A second Sandbox run on 2026-10-31 repeated OAuth and one unsent invoice `DRAFT`, and read the merchant's Sandbox disputes: one author-created test dispute appeared in `GET /v1/customer/disputes` and was read once with `GET /v1/customer/disputes/{id}` (HTTP 200). When connected, the console reads Sandbox disputes in step 03; no `provide-evidence` call was made ([masked receipt](../../evidence/RECEIPT_20261031_live.md)). On 2026-11-04 one evidence send to an author-created Sandbox test dispute succeeded ([masked receipt](../../evidence/RECEIPT_20261104_live.md)); on 2026-11-05 (UTC+8) a second send to a newly filed Sandbox test dispute succeeded ([masked receipt](../../evidence/RECEIPT_20261105_live.md)).
+Two gated `provide-evidence` sends have been made, each to its own author-created Sandbox test dispute: on 2026-11-04 ([masked receipt](../../evidence/RECEIPT_20261104_live.md)) and on 2026-11-05 in UTC+8 ([masked receipt](../../evidence/RECEIPT_20261105_live.md)); already-answered, different-reason and different-amount disputes were refused before any send. Earlier, a Sandbox run on 2026-10-31 repeated OAuth and one unsent invoice `DRAFT` and read the seller's Sandbox disputes: one author-created test dispute appeared in `GET /v1/customer/disputes` and was read once with `GET /v1/customer/disputes/{id}` (HTTP 200); no evidence was sent that day ([masked receipt](../../evidence/RECEIPT_20261031_live.md)). When connected, the console reads Sandbox disputes in step 03.
 
 ## Accessibility and stale-state requirements
 
