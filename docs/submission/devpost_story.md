@@ -44,7 +44,7 @@ Sandbox acceptance means PayPal Sandbox recorded the request and moved the dispu
 
 ## How I built it
 
-The working stack is the PayPal Sandbox REST APIs and OAuth behind one reviewed gateway, FastAPI on Python 3.13, deterministic policy and country rules, React with Tailwind built by Vite, AG Grid, AG Charts and AG Studio, Bryntum Scheduler Community, and Gemini (`gemini-3.8-flash`) in a separate Python 3.12 worker. Rules run before AI, and fixed code keeps every decision: the policy findings, the country-rule stop, the sales-spike signal, the dispute checklist, the pinned citations and every output stays advisory: a person reviews it and nothing acts outside the app on its own.
+The working stack is the PayPal Sandbox REST APIs and OAuth behind one reviewed gateway, FastAPI on Python 3.13, deterministic policy and country rules, React with Tailwind built by Vite, AG Grid, AG Charts and AG Studio, Bryntum Scheduler Community, and Gemini (`gemini-3.8-flash`) in a separate Python 3.12 worker. Rules run before AI, and fixed code keeps every decision: the policy findings, the country-rule stop, the sales-spike signal, the dispute checklist and the pinned citations. Every output stays advisory: a person reviews it, and nothing acts outside the app on its own.
 
 Gemini only chooses among closed options. For the evidence brief it selects each sentence from a closed, pre-approved inventory for the stage, and the backend rejects anything outside the schema. In the evidence guide it maps a seller sentence to closed form items, and code never lets it mark evidence present; the guide ran live on 2026-11-03 (36 calls, 0 errors). No model has tool authority to change a rule, send an invoice, submit evidence or decide a dispute.
 

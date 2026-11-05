@@ -14,7 +14,7 @@ Keep every visible merchant, transaction, and dispute record synthetic. Never sh
 
 ## 0:00 to 0:15 — Problem, product, and lifecycle
 
-Visual: Start on the working PayGuard console for three seconds. Show the [cover](payguard_cover.png) for five seconds so the three lifecycle stages and their tools are legible, then return to the working console. The [second image: three-stage workflow map](payguard_judge_overview.png) appears only after the live analytics proof near the end. The cover is a synthetic merchant-side concept illustration, not a product screenshot; show the Sandbox, AG Grid and Gemini on Vertex AI executions live in their timed segments. Do not show a fabricated PayPal limitation notice or third-party stock footage.
+Visual: Start on the working PayGuard console for three seconds. Show the cover (no longer shipped) for five seconds so the three lifecycle stages and their tools are legible, then return to the working console. The [second image: three-stage workflow map](payguard_judge_overview.png) appears only after the live analytics proof near the end. The cover is a synthetic merchant-side concept illustration, not a product screenshot; show the Sandbox, AG Grid and Gemini on Vertex AI executions live in their timed segments. Do not show a fabricated PayPal limitation notice or third-party stock footage.
 
 Spoken script:
 
@@ -54,7 +54,7 @@ Spoken script:
 
 ## 1:43 to 2:15 — Stage 3: dispute evidence preparation
 
-Visual: Select **Next: dispute evidence**; STEP 02 closes and STEP 03 scrolls into view. Select **Load dispute case**, open the synthetic case, and select **Prepare evidence draft**. Show the UTC response deadline and response readiness. Briefly expand **Evidence fields, requested items, and ZIP contents** to show the requested seller proof and six ZIP members, then close it. Select **Download review ZIP**. Insert [the verified local ZIP slide](payguard_zip_review_slide.png) for four seconds; it shows the six archive members and the internal-review boundary. Then check the human-review box and select **Confirm local draft review**. Hold on the local review receipt, UTC review time, session-only retention, and **Not submitted**.
+Visual: Select **Next: dispute evidence**; STEP 02 closes and STEP 03 scrolls into view. Select **Load dispute case**, open the synthetic case, and select **Prepare evidence draft**. Show the UTC response deadline and response readiness. Briefly expand **Evidence fields, requested items, and ZIP contents** to show the requested seller proof and six ZIP members, then close it. Select **Download review ZIP**. Insert the verified local ZIP slide (no longer shipped) for four seconds; it shows the six archive members and the internal-review boundary. Then check the human-review box and select **Confirm local draft review**. Hold on the local review receipt, UTC review time, session-only retention, and **Not submitted**.
 
 Spoken script:
 
@@ -91,7 +91,7 @@ These are target cut points, not measured provider latency. Keep action initiati
 | Time | On-screen material and exact action | Proof to hold |
 | --- | --- | --- |
 | 0:00–0:03 | Working PayGuard three-stage console | Real product opens the film |
-| 0:03–0:08 | `payguard_cover.png` | Merchant-view concept of three stages and PayPal Sandbox, AG Grid, Gemini on Vertex AI tools |
+| 0:03–0:08 | `payguard_cover.png` (no longer shipped) | Merchant-view concept of three stages and PayPal Sandbox, AG Grid, Gemini on Vertex AI tools |
 | 0:08–0:15 | Working console and stage navigation | Defense Buffer path before the first click |
 | 0:15–0:25 | Expand Sandbox section; select **Connect US Sandbox** | Sanitized live connection status |
 | 0:25–0:36 | **High-risk Claim** → **Run Policy Check** | `REVIEW_SIGNAL`, not a verdict |
@@ -103,7 +103,7 @@ These are target cut points, not measured provider latency. Keep action initiati
 | 1:35–1:43 | Select one transaction row | Stage evidence checklist, not an order verdict |
 | 1:43–1:55 | **Next: dispute evidence** → **Load dispute case** → open case → **Prepare evidence draft** | Prior stage closes; deadline and review status appear |
 | 1:55–2:05 | Open evidence details briefly → **Download review ZIP** | Six members and local package boundary |
-| 2:05–2:09 | `payguard_zip_review_slide.png` | Verified six-file local archive; internal review only |
+| 2:05–2:09 | `payguard_zip_review_slide.png` (no longer shipped) | Verified six-file local archive; internal review only |
 | 2:09–2:15 | Check review box → **Confirm local draft review** | Human review, UTC time and not submitted |
 | 2:15–2:35 | Select **Generate AI brief** once | Live `gemini-3.8-flash` result and human-review status |
 | 2:35–2:42 | Open **All orders** | Live three-stage path and authority map |

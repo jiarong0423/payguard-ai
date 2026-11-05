@@ -2,7 +2,7 @@
 
 This walkthrough uses synthetic data, a US official-reference profile for the AUP check and a ten-country rules pack for the country check. It does not require a new outbound provider call. Any recorded provider or model evidence supports only its exact sanitized request and response.
 
-![The three-stage PayGuard defense buffer](payguard_judge_overview.svg)
+![The three-stage PayGuard workflow](payguard_judge_overview.svg)
 
 The overview was drawn before the country rules check was added to step 01.
 

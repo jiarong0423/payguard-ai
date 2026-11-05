@@ -84,11 +84,15 @@ On the [hosted demo](https://payguard-demo-j2b3.onrender.com) (synthetic data, n
 | Assemble the evidence response | `POST /v1/customer/disputes/{id}/provide-evidence` | Multipart request is built and previewed from the local draft for a dispute id the console itself returned; it is sent only after the local review approval, with `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`, a Sandbox connection and an explicit `submit: true`. In the console the send opens a dialog that shows the case and the PayPal dispute side by side with the dispute amount, opening date and declared account match (the merchant id is set by the operator, not verified with PayPal); the operator ticks, selects the orange **Continue**, waits 3 seconds and selects the green **Send to PayPal**. After a send the result shows the PayPal-Debug-Id |
 | Sales-velocity stream, dispute checklist, evidence ZIP | none | Local synthetic data by design |
 
-![Concept illustration of a merchant reviewing AUP warnings, sales velocity and dispute evidence with PayGuard AI](docs/submission/payguard_cover.png)
+![A real send to a PayPal Sandbox test dispute after one human approval, with the PayPal-Debug-Id and the fresh read that followed](docs/submission/screens/real_send_trace.png)
 
-*AI-generated merchant-side cover illustration (synthetic scene; the product thumbnails on its mock screens are blurred). The working console shows its transaction and evidence tables with AG Grid (at 720 px and narrower the analytics workspace replaces its AG Grid table with a single-column summary) and can run the Sandbox calls and bounded Gemini actions live once you turn them on; the cover is not a product screenshot.*
+![PayGuard AI workflow: policy pre-check, sales spike review, dispute evidence and a gated Sandbox send](docs/submission/payguard_judge_overview.png)
 
-![PayGuard AI workflow map: policy warning, sales-velocity review, and dispute evidence preparation](docs/submission/payguard_judge_overview.png)
+Screens from the 2:50 demo:
+
+- ![Wrong sends are locked: already answered, different reason, different amount; nothing was sent](docs/submission/screens/refusals_locked.png)
+- ![AG Studio readiness dashboard and the AG components PayGuard uses](docs/submission/screens/ag_studio_trace.png)
+- ![The downloaded evidence pages: pseudonymized records, the pack's own note, PayPal's before/after readback](docs/submission/screens/evidence_pages.png)
 
 More diagrams: [architecture](docs/submission/diagrams/architecture_overview.png) ([simplified](docs/submission/diagrams/architecture_simple.png)), [evidence guide funnel](docs/submission/diagrams/evidence_guide_funnel.png), [the nine checks before evidence is sent to PayPal](docs/submission/diagrams/paypal_write_guards.png) and [a downloaded review ZIP, re-hashed and verified](docs/submission/diagrams/review_zip_verified.png).
 
