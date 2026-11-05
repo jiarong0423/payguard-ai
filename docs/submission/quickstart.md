@@ -8,9 +8,9 @@ The overview was drawn before the country rules check was added to step 01.
 
 For the competition recording sequence and exact opening narration, see [PayGuard AI Demonstration Script](video_script.md); the script has no country rules scene.
 
-The [published 2:02 demonstration](https://youtu.be/K28N9QhRp1E) is the final edited video. The script preserves the longer pre-edit recording plan; its timestamps are not final-cut seek positions.
+The [published 2:50 demonstration](https://youtu.be/_GORnHWShU4) is the final edited video. The script preserves the longer pre-edit recording plan; its timestamps are not final-cut seek positions.
 
-Status: the Devpost project is submitted and the 2:02 video is public. The complete repository run instructions here are the selected functional-demo path. An optional hosted demo also runs (README, "Hosted demo"); it makes no PayPal calls, only its evidence guide can use Gemini when the operator opts in (at most 5 calls a minute and 20 a day), and a hosted deployment with PayPal calls is unperformed. A new local export stays `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` until its exact bytes pass security review, independent acceptance and repository readback; only an accepted same-byte public source release records `PUBLIC_SOURCE_PUBLISHED`. Neither state establishes a public or production-hosted service.
+Status: the Devpost project is submitted and the 2:50 video is public. The complete repository run instructions here are the selected functional-demo path. An optional hosted demo also runs (README, "Hosted demo"); it makes no PayPal calls, only its evidence guide can use Gemini when the operator opts in (at most 5 calls a minute and 20 a day), and a hosted deployment with PayPal calls is unperformed. A new local export stays `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` until its exact bytes pass security review, independent acceptance and repository readback; only an accepted same-byte public source release records `PUBLIC_SOURCE_PUBLISHED`. Neither state establishes a public or production-hosted service.
 
 ## Start the console
 
@@ -141,7 +141,7 @@ No reviewed official case proves that rapid sales growth alone caused an account
 
 ## Bounded Sandbox evidence
 
-The recorded Sandbox run (2026-10-06 17:44 UTC, 2026-10-07 in UTC+8; recorded by the operator) is one OAuth connection plus one unsent USD `10.00` invoice `DRAFT`, id `INV2-2MTA-PRPQ-4CAJ-W5UW`. A second unsent draft was created on 2026-10-31 ([masked receipt](../evidence/RECEIPT_20261031_live.md)). Both used the operator's own Sandbox app; to replay them, set `PAYGUARD_PAYPAL_OUTBOUND=enabled` with yours (README, "Turning on PayPal").
+The recorded Sandbox run (2026-10-06 17:44 UTC, 2026-10-07 in UTC+8; recorded by the operator) is one OAuth connection plus one unsent USD `10.00` invoice `DRAFT`, id `INV2-...-W5UW`. A second unsent draft was created on 2026-10-31 ([masked receipt](../evidence/RECEIPT_20261031_live.md)). Both used the operator's own Sandbox app; to replay them, set `PAYGUARD_PAYPAL_OUTBOUND=enabled` with yours (README, "Turning on PayPal").
 
 - Use a fictitious Business sandbox seller for the merchant role.
 - Confirm its country as US before calling it a US seller.

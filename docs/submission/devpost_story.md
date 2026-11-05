@@ -2,36 +2,115 @@
 
 Project: PayGuard AI
 
-Tagline: A merchant defense buffer for policy warnings, sales spikes, and dispute evidence.
+Tagline: Turns a seller's records into a reviewed dispute evidence package and, after one human approval, sends it to PayPal Sandbox. Policy and ten-country checks run first.
 
 Devpost: https://devpost.com/software/payguard-ai-zbsp9l
 
 Repository: https://github.com/jiarong0423/payguard-ai
 
-Video: https://youtu.be/K28N9QhRp1E (public, 2:02)
+Video: https://youtu.be/_GORnHWShU4 (public, 2:50)
 
 ---
 
+**A small seller gets a PayPal dispute. PayGuard AI turns the order records into a reviewed evidence package, and after one human approval sends it to the PayPal Sandbox dispute.** PayPal Sandbox accepted that request twice (2026-11-04 and 2026-11-05, UTC+8) and the dispute moved to waiting for the buyer.
+
+**Try it:** [hosted demo](https://payguard-demo-j2b3.onrender.com) (synthetic data, no PayPal calls) · [Proof page](https://payguard-demo-j2b3.onrender.com/proof.html) · [2:50 video](https://youtu.be/_GORnHWShU4) · [public repository](https://github.com/jiarong0423/payguard-ai) (MIT)
+
 ## Why I built PayGuard AI
 
-A merchant may notice a policy warning, a sudden sales spike, or a dispute only after the records have become difficult to assemble. PayGuard AI is a **merchant defense buffer layer**: it helps the merchant identify evidence gaps early and prepare evidence, while keeping every decision with the merchant and the relevant payment provider.
+A seller may notice a policy warning, a sudden sales spike, or a dispute only after the records have become difficult to assemble. PayGuard AI helps a small seller find evidence gaps early and prepare the evidence, while every decision stays with the seller and the payment provider. It works alongside PayPal's Resolution Center and seller protection and decides no case.
 
-**Why these three situations:** the stages follow published decisions of the UK Financial Ombudsman Service about PayPal accounts, checked against the published PDFs on 2026-10-31. [DRN-3621543](https://www.financial-ombudsman.org.uk/decision/DRN-3621543.pdf): an e-liquid seller could no longer receive payments because the goods needed PayPal's pre-approval under its Acceptable Use Policy (complaint not upheld). [DRN-5706769](https://www.financial-ombudsman.org.uk/decision/DRN-5706769.pdf): a new business account with a sharp rise in sales had part of its funds held and a 15% rolling reserve applied (the reserve was found reasonable; GBP 150 was awarded for an unexplained delay in releasing funds). [DRN-3526295](https://www.financial-ombudsman.org.uk/decision/DRN-3526295.pdf): a buyer's Buyer Protection claim over a watch that did not match its description (upheld; this is the buyer's side, which PayGuard does not act for). These are UK decisions about PayPal's UK and European entities, not US cases, and three cases show a pattern, not an incidence rate. The author collected further public sources for the project; they are not included in this repository.
+**Why these three situations:** the stages follow three published decisions of the UK Financial Ombudsman Service about PayPal accounts, checked against the published PDFs on 2026-10-31: [DRN-3621543](https://www.financial-ombudsman.org.uk/decision/DRN-3621543.pdf) (goods that needed pre-approval under the Acceptable Use Policy), [DRN-5706769](https://www.financial-ombudsman.org.uk/decision/DRN-5706769.pdf) (a sharp rise in sales, funds held and a 15% rolling reserve) and [DRN-3526295](https://www.financial-ombudsman.org.uk/decision/DRN-3526295.pdf) (an item-not-as-described claim, decided on the buyer's side, which PayGuard does not act for). They are UK decisions, not US cases, and three cases show a pattern, not an incidence rate.
 
 ## What it does
 
-1. **Before an invoice draft — AUP preflight.** Deterministic checks compare a synthetic product description with pinned public PayPal US AUP references. The merchant can edit, cancel, or acknowledge the warning. Only after that review does the PayPal Sandbox path create one **unsent** invoice draft.
-2. **During fulfillment — sales-velocity readiness.** A backend comparison flags a synthetic increase against a declared local baseline. **AG Grid Community** makes the transaction stream sortable and filterable, so a reviewer can select an order and inspect missing fulfillment records. This is a local preparation signal, not a PayPal risk score or account-hold prediction.
-3. **After a dispute — evidence preparation.** The stage lists disputes through `GET /v1/customer/disputes` and `GET /v1/customer/disputes/{id}` (Sandbox when connected, otherwise a labelled fixture), a case-specific checklist identifies requested seller items, and PayGuard builds a pseudonymized, integrity-checked **Internal Review ZIP**, previews the multipart `provide-evidence` request and can request a Gemini evidence brief (Gemini selects each sentence from a closed, pre-approved inventory and fixed code validates the choice). A person reviews the package; the request is sent only after the local approval, with `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled` and a Sandbox connection.
+1. **Before an invoice draft: policy pre-check.** Deterministic checks compare the product description with pinned references to PayPal's published US Acceptable Use Policy; the seller can edit, cancel, or acknowledge the warning. An optional **ten-country rules check** answers from two layers, each row linked to its source: 140 clauses paraphrased from PayPal's legal hub pages for ten country profiles, and 681 official export and import rules (313 export, 368 import) from government pages and postal operators. Once a check has found a PayPal or government ban in the session, the server refuses the Sandbox invoice draft (HTTP 409), not only the button. Two of the ten countries were checked line by line against their sources; the check is advisory, not legal advice, and PayPal's Acceptable Use Policy still applies. After review, the PayPal Sandbox path creates one **unsent** invoice draft.
+2. **When sales jump.** A backend comparison flags a synthetic burst (50 orders, 500.00 USD, 5 times the declared local baseline). **AG Charts** draws the last hour against the review line, and **AG Grid** renders the order stream with sorting, filters, quick-filter search, custom cell renderers, value formatters, stable row ids and the Quartz theme; selecting an order shows its amount, currency and capture time. The card lists the records that back the signal and the ones still missing. It is a local preparation signal, not a PayPal risk score or a prediction of a hold.
+3. **After a dispute: evidence preparation and a gated send.** Step 03 reads the seller's disputes (`GET /v1/customer/disputes`, `GET /v1/customer/disputes/{id}`), builds a pseudonymized, integrity-checked **Internal Review ZIP** (7 entries; the 6 files its manifest lists are re-hashed against it), and previews the multipart `provide-evidence` request. A person reviews the package; only then can the request be sent, through a two-step dialog that shows the case and the PayPal dispute side by side. A **Bryntum Scheduler** board shows each case's response window up to its due date.
+
+An **AG Studio** evidence dashboard (`/dashboard.html`) shows the synthetic cases, their requested evidence and their time evidence. Its custom evidence auditor answers fixed questions with plain code; a question outside that set asks for confirmation first, then goes to Studio's built-in agents through a governed Gemini route with call caps (20 per session, an 8-turn stop). The built-in agents answered one live question on a local console on 2026-11-04 (six agent turns, all HTTP 200).
+
+## Proven against the PayPal Sandbox
+
+All Sandbox data below was created by the author with Sandbox test accounts; it is not a real seller case. Identifiers are masked as in the receipts in `docs/evidence/`.
+
+- **2026-10-06 17:44 UTC:** OAuth client-credentials, then one unsent USD 10.00 invoice draft (`INV2-...-W5UW`, status `DRAFT`). A second unsent draft followed on 2026-10-31.
+- **2026-10-31:** one author-filed test dispute (item not received) was listed 12.7 minutes after filing (a read at 2.4 minutes was empty) and read back in detail with HTTP 200 (`PP-R-...`, waiting for the seller's response).
+- **2026-11-04:** evidence sent to a second test dispute (item not received, USD 48.00) after the local review and the two-step dialog. PayPal Sandbox accepted the request (PayPal-Debug-Id `f908765a01293`) and a fresh read showed `WAITING_FOR_BUYER_RESPONSE`.
+- **2026-11-05 (UTC+8):** evidence sent to a newly filed test dispute of the same kind while the video was recorded (PayPal-Debug-Id `f2088142a6218`). The fresh read after the send (PayPal-Debug-Id `ca5554cf42ef6`) showed `WAITING_FOR_BUYER_RESPONSE` and the seller's proof of fulfillment as submitted. The review ZIP from that session (14028 bytes, 7 entries) passed all 8 local checks.
+- **Refusals, nothing sent:** a dispute that already had seller evidence ("Locked: PayPal already has seller evidence for this dispute."), disputes with a different reason (item not as described; unauthorized chargeback), and a dispute with a different amount (158.00 TWD against a 48.00 USD case). An attempt after the local session expired was also refused.
+
+Sandbox acceptance means PayPal Sandbox recorded the request and moved the dispute to waiting for the buyer. It is not PayPal accepting the evidence or deciding the case for the seller.
 
 ## How I built it
 
-The working stack is PayPal Sandbox REST APIs and OAuth, FastAPI, deterministic US policy-reference rules, React, Tailwind, AG Grid Community, and bounded Gemini on Vertex AI. Rules run before AI. The AI path receives fixed synthetic facts and pinned citation identities, produces advisory text, and has no tool authority to change a rule, send an invoice, submit evidence, or decide a dispute. The public repository includes an MIT license, a runnable local setup path, tests, a visual architecture map, and the source for all three stages.
+The working stack is the PayPal Sandbox REST APIs and OAuth behind one reviewed gateway, FastAPI on Python 3.13, deterministic policy and country rules, React with Tailwind built by Vite, AG Grid, AG Charts and AG Studio, Bryntum Scheduler Community, and Gemini (`gemini-3.8-flash`) in a separate Python 3.12 worker. Rules run before AI, and fixed code keeps every decision: the policy findings, the country-rule stop, the sales-spike signal, the dispute checklist, the pinned citations and every output stays advisory: a person reviews it and nothing acts outside the app on its own.
+
+Gemini only chooses among closed options. For the evidence brief it selects each sentence from a closed, pre-approved inventory for the stage, and the backend rejects anything outside the schema. In the evidence guide it maps a seller sentence to closed form items, and code never lets it mark evidence present; the guide ran live on 2026-11-03 (36 calls, 0 errors). No model has tool authority to change a rule, send an invoice, submit evidence or decide a dispute.
+
+Sending evidence passes nine checks: off by default, a person approves a reviewed draft bound by digest, one case is bound to one dispute, a two-step confirm with a single-use server confirmation, the same payload as approved, a fresh read from PayPal, a declared account match, a re-check under a lock, and an allow-listed call that keeps the PayPal-Debug-Id as the receipt.
 
 ## Challenge and learning
 
-The hardest design choice was joining three moments in a merchant's workflow without implying that an AI system can replace provider review. I separated deterministic signals, evidence inspection, bounded semantic summarization, and human action. The result is a coherent merchant-side workflow rather than an automated verdict engine.
+The hard part was letting the app write to PayPal Sandbox without letting AI decide anything. Rules decide, AI only picks from closed options that code checks, and every send needs one person's approval. Every verdict stays with PayPal or the card issuer.
 
 ## Scope and access
 
-This is a **US-only, synthetic-data Sandbox demo**. Scope: a fictitious US Business Sandbox seller with synthetic data. PayPal and card issuers make every decision; PayGuard prepares the merchant side. Judges run it locally in about five minutes (quickstart in the [public repository](https://github.com/jiarong0423/payguard-ai)). An optional hosted demo at https://payguard-demo-j2b3.onrender.com shows the synthetic stages in demo mode; its server makes no PayPal or live Channel3 call, and only its evidence guide can use Gemini when the operator opts in (free-tier key held as a Render secret, at most 5 calls a minute and 20 a day, guide only). The Sandbox steps, the AI brief and the Studio agents need the local run. Measured scope: `./tools/run.sh test` runs the automated Python tests and prints the count, and the frontend scripts (`node tests/frontend_*.mjs`) pass; the Sandbox path has receipts for an unsent invoice draft (2026-10-06 17:44 UTC, 2026-10-07 in UTC+8; draft `INV2-2MTA-PRPQ-4CAJ-W5UW`, and a second one on 2026-10-31), and on 2026-10-31 PayGuard listed one Sandbox test dispute that the author filed between two Sandbox test accounts (labelled Sandbox data; an earlier read 2.4 minutes after filing was empty, a read 12.7 minutes after filing listed it; it is not a real merchant case); on 2026-11-04 PayGuard sent evidence to one more author-created Sandbox test dispute and PayPal Sandbox accepted the request (masked receipt `docs/evidence/RECEIPT_20261104_live.md`), and on 2026-11-05 (UTC+8) a second send to a newly filed test dispute was accepted the same way (`docs/evidence/RECEIPT_20261105_live.md`); other dispute rows are covered by mocked-transport tests. A synthetic digital-goods case shows the time evidence: payment, order record, message digests, delivery and claim, with the gaps between them, preserved and ordered but never judged. The first commit of the repository is dated 2026-10-08, inside the submission period. The [2:02 demonstration](https://youtu.be/K28N9QhRp1E) shows the merchant workflow. PayGuard works alongside PayPal's Resolution Center and seller protection. The problem framing comes from the published ombudsman decisions cited above.
+This is a **US Sandbox demo with synthetic data** and author-created Sandbox test accounts. It gives the seller local preparation signals, not a PayPal risk score; PayPal decides policy and dispute matters, and a bank or card issuer decides an external dispute.
+
+The [hosted demo](https://payguard-demo-j2b3.onrender.com) runs the synthetic stages, the country rules check, the review ZIP, the AG Studio dashboard and the [Proof page](https://payguard-demo-j2b3.onrender.com/proof.html), which lists each claim, how it was shown, the date and the source file. It makes no PayPal calls; its evidence guide can use Gemini only when the operator opts in (at most 5 calls a minute and 20 a day). It runs on Render's free plan, so the first load after an idle period can take about a minute. The Sandbox steps, the AI brief and the Studio agents need the local run (Testing instructions below). The first commit of the repository is dated 2026-10-08. The [2:50 video](https://youtu.be/_GORnHWShU4) shows the seller workflow.
+
+## Turning on PayPal and Gemini (for judges running it)
+
+The console and all three stages run in sample-data mode with no keys. Set these in the shell that starts the API (`./tools/run.sh api`):
+
+- **PayPal Sandbox reads and drafts:** `PAYGUARD_PAYPAL_OUTBOUND=enabled`, plus `PAYPAL_CLIENT_ID` and `PAYPAL_CLIENT_SECRET` from your own PayPal Developer Sandbox app. Then select **Connect US Sandbox**; step 03 lists your Sandbox disputes with the badge **Sandbox**. Without credentials the connection answers `provider_disabled` and nothing is simulated.
+- **Sandbox evidence send (optional):** also export `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`, record the local review for the case, then use the send dialog (tick, orange **Continue**, 3-second hold, green **Send to PayPal**). Without the server's single-use confirmation a send gets 409 `confirmation_required` and nothing is sent. The console never sets the flag for you.
+- **Gemini evidence brief:** `PAYGUARD_GEMINI_OUTBOUND=enabled` and `PAYGUARD_VERTEX_PROJECT=<your Google Cloud project id>`, signed in with Application Default Credentials (`gcloud auth application-default login`). It calls `gemini-3.8-flash` on Vertex AI (location `global`), billed to your project. Leave `GEMINI_API_KEY`, `GOOGLE_API_KEY`, `GOOGLE_GENAI_USE_VERTEXAI`, `GOOGLE_GENAI_USE_ENTERPRISE`, `OPENAI_API_KEY`, `PAYGUARD_OPENAI_OUTBOUND` and `PAYGUARD_GEMINI_PYTHON_BIN` unset in that terminal, and use the same project for Application Default Credentials and `PAYGUARD_VERTEX_PROJECT`; otherwise the brief refuses with `ai_configuration_ambiguous`. Set up the separate Python 3.12 Gemini profile first (README, Run locally).
+- **Gemini evidence guide (optional):** `PAYGUARD_GUIDE_MODEL=gemini` with the Vertex AI setup above, or `PAYGUARD_GEMINI_TRANSPORT=api_key` with an AI Studio `GEMINI_API_KEY` and no Vertex or outbound switch set (so the brief stays off in that terminal). It has its own call caps.
+
+## What really calls PayPal (and what uses sample data)
+
+PayGuard calls the **PayPal Sandbox REST API** (`api-m.sandbox.paypal.com`) through one reviewed gateway with an allow-list of paths.
+
+| Call | Endpoint | Real or sample |
+|---|---|---|
+| Seller connection | `POST /v1/oauth2/token` (client-credentials) | Real Sandbox call, 2026-10-06 and 2026-10-31; needs `PAYGUARD_PAYPAL_OUTBOUND=enabled` and your Sandbox app credentials |
+| Unsent invoice draft after the policy pre-check | `POST /v2/invoicing/invoices` | Real Sandbox call, 2026-10-06 and 2026-10-31; status `DRAFT`, never sent; refused by the server (HTTP 409) after a country-rules ban |
+| Dispute list | `GET /v1/customer/disputes` | Real Sandbox read, 2026-10-31 (one author-created test dispute). Without a connection sample data in the same JSON shape is used, labelled **Sample** |
+| Dispute detail | `GET /v1/customer/disputes/{id}` | Real Sandbox read, 2026-10-31 (HTTP 200), and the fresh reads after each send on 2026-11-04 and 2026-11-05 |
+| Evidence send | `POST /v1/customer/disputes/{id}/provide-evidence` | Real Sandbox send, 2026-11-04 and 2026-11-05 (UTC+8), each to its own author-created test dispute; PayPal Sandbox accepted the request and the dispute moved to waiting for the buyer (not a decision on the evidence). Sent only after the local review, `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`, `submit: true` and the single-use confirmation; mismatched, already-answered and different-amount disputes are refused |
+| Sales-spike orders, dispute checklist, evidence ZIP | local synthetic data | Sample data by design |
+
+Shipment tracking and webhook signature checks are also built and tested, but have not yet been run against the Sandbox.
+
+Masked receipts: `docs/evidence/RECEIPT_20261031_live.md`, `RECEIPT_20261104_live.md`, `RECEIPT_20261105_live.md`. Credentials never enter the repository, logs, browser or evidence files.
+
+## Testing instructions (judges)
+
+**Fastest path, no install:** open the [hosted demo](https://payguard-demo-j2b3.onrender.com) and use **Start here**: (1) in the country rules card ship from **United States** to **Singapore**, tick **E-cigarettes** and select **Check country rules**; the result reads "This sale is likely to be stopped" and the server refuses the draft; untick it and check again for "No cited rule stops this sale"; (2) in step 02, read the AG Charts spike and the records behind it; (3) in step 03, open the **Evidence deadline board** and select **Download review ZIP**; (4) open **Proof** in the top bar.
+
+**Full local run** (Sandbox, AI brief, Studio agents). It needs Python 3.13 and uv, Node 20.19+ or 22.12+, and Python 3.12 for the Gemini profile (Windows: WSL 2):
+
+```sh
+git clone https://github.com/jiarong0423/payguard-ai
+cd payguard-ai
+python3.13 -m venv .venv
+uv pip install --python .venv/bin/python3 -r requirements.lock
+./tools/run.sh test        # runs the Python suite and prints the count
+./tools/run.sh api         # API on http://127.0.0.1:8000
+```
+
+Second terminal:
+
+```sh
+cd frontend && npm ci --ignore-scripts --no-audit --no-fund && npm run dev   # open http://127.0.0.1:5173
+```
+
+(`./tools/run.sh start` instead builds the console and serves it on `http://127.0.0.1:8000`.)
+
+What to look for: (1) the policy warning and the optional country check appear before any draft; (2) the AG Grid order stream sorts and filters the synthetic spike against the declared baseline; (3) the dispute checklist builds the Internal Review ZIP; with a Sandbox connection, step 03 lists your Sandbox disputes and previews the `provide-evidence` request. **Generate AI brief** shows "Gemini profile not configured" until the Gemini settings are present; `./tools/run.sh gemini-check` validates the profile without calling the model.
+
+## Update log
+
+- 2026-11-05: Dispute list and detail ran against a live Sandbox test dispute on 2026-10-31. The gated `provide-evidence` request was accepted by PayPal Sandbox for two author-created test disputes (2026-11-04 and 2026-11-05, UTC+8); already-answered, different-reason and different-amount test disputes were refused with nothing sent. Added the ten-country rules check, AG Charts, the AG Studio dashboard, the Bryntum deadline board, the hosted demo with its Proof page, and the new 2:50 video.
