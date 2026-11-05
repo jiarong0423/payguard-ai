@@ -12,7 +12,7 @@ Everything below is PayPal Sandbox test data created by the author with Sandbox 
 - First attempt: the local demo session (15 minutes) had expired by the time the send was confirmed; the server refused it and nothing was sent. A read right after still showed WAITING_FOR_SELLER_RESPONSE and the seller's proof of fulfillment still REQUESTED_FROM_SELLER.
 - After Reconnect, the draft, local review and preview were redone and the owner pressed the green Send; PayPal recorded the seller's evidence at 2026-11-04 17:16 UTC.
 - result: Submitted to Sandbox, PayPal-Debug-Id f2088142a6218
-- fresh read after the send (GET /v1/customer/disputes/{id}): status WAITING_FOR_BUYER_RESPONSE (before: WAITING_FOR_SELLER_RESPONSE), stage INQUIRY; evidence entries were the buyer's CREATE and PROOF_OF_FULFILLMENT SUBMITTED_BY_SELLER.
+- fresh read after the send (GET /v1/customer/disputes/{id}): status WAITING_FOR_BUYER_RESPONSE (before: WAITING_FOR_SELLER_RESPONSE), stage INQUIRY; evidence entries were the buyer's CREATE and PROOF_OF_FULFILLMENT SUBMITTED_BY_SELLER. PayPal-Debug-Id of that read: ca5554cf42ef6.
 - The review ZIP downloaded in that session (14028 bytes, 7 entries) passed all 8 local checks; the 6 listed files matched the manifest sha256, size and CRC-32.
 
 ## Refusals recorded after the send (new session, case-ref-001 selected, nothing sent)
