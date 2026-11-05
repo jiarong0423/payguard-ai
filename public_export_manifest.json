@@ -1,11 +1,11 @@
 {
-  "created_at_utc": "2026-11-05T03:41:00Z",
+  "created_at_utc": "2026-11-05T03:49:22Z",
   "dependency_locks": {
     "frontend_npm": "0f98893564efb5556cc0a92710feedcb9da085108f9668fee93f29940b87f09d",
     "gemini_python": "36554331392d6102519a4ead5778704c4ff89e79da6bb9d6648b656f130724bb",
     "root_python": "bd163e5de790527ec4b5486ec884463c40fd8331a00e122d27f65de0938a270a"
   },
-  "file_count": 320,
+  "file_count": 321,
   "files": [
     {
       "bytes": 662,
@@ -43,11 +43,11 @@
       "source_sha256": "bb3e4ececbe261e1f0851c331a8377cf24f1209cbe0bb8df6ce76f4b5a3d0447"
     },
     {
-      "bytes": 73288,
+      "bytes": 73336,
       "path": "README.md",
-      "sha256": "1a8be77ab44b8e8cd0c9de193826903bd40cc4da3de16546b61834f20e0d4f5f",
+      "sha256": "b3cc0f915432188342976674db02e48efccb225bcf8558b50a0522b56f417a61",
       "source_path": "README.md",
-      "source_sha256": "1a8be77ab44b8e8cd0c9de193826903bd40cc4da3de16546b61834f20e0d4f5f"
+      "source_sha256": "b3cc0f915432188342976674db02e48efccb225bcf8558b50a0522b56f417a61"
     },
     {
       "bytes": 11374,
@@ -393,11 +393,11 @@
       "source_sha256": "9b1f641cbadf95177207e17c1a220c6d0b80c8fbb42c4c0d744cb857ca0bcbce"
     },
     {
-      "bytes": 15550,
+      "bytes": 15551,
       "path": "docs/submission/devpost_story.md",
-      "sha256": "07f075540022ad380b92fa75bd91b7036dd26047d49109fa336ac6fe517127fc",
+      "sha256": "4f067f90be644d80c75ff9f3748f981b51f0363b57c3b292616b413ac436e4c6",
       "source_path": "docs/submission/devpost_story.md",
-      "source_sha256": "07f075540022ad380b92fa75bd91b7036dd26047d49109fa336ac6fe517127fc"
+      "source_sha256": "4f067f90be644d80c75ff9f3748f981b51f0363b57c3b292616b413ac436e4c6"
     },
     {
       "bytes": 4256,
@@ -484,20 +484,6 @@
       "source_sha256": "2daa92b3db5f2c146df09da96eadcd97efd318ce3bfecafc55ae64d6adb506fd"
     },
     {
-      "bytes": 1718101,
-      "path": "docs/submission/payguard_cover.png",
-      "sha256": "50d2808d70e6cdef3381543728d1bee137259b7a4840ff7d2a5290ac0ded58cd",
-      "source_path": "docs/submission/payguard_cover.png",
-      "source_sha256": "50d2808d70e6cdef3381543728d1bee137259b7a4840ff7d2a5290ac0ded58cd"
-    },
-    {
-      "bytes": 799,
-      "path": "docs/submission/payguard_cover.svg",
-      "sha256": "b3ddab953154478f23280b5f2c66912d9de4c440080930eb17b8c13d9254bb77",
-      "source_path": "docs/submission/payguard_cover.svg",
-      "source_sha256": "b3ddab953154478f23280b5f2c66912d9de4c440080930eb17b8c13d9254bb77"
-    },
-    {
       "bytes": 195018,
       "path": "docs/submission/payguard_judge_overview.png",
       "sha256": "31b8a22e5c3dae1018e239ae38ef4651fffdc8ee084fa589e2d787429a7ed6a1",
@@ -512,25 +498,46 @@
       "source_sha256": "91292c33745784456da407222a1b0535fd168abd41a362d4d66b6bde482546dd"
     },
     {
-      "bytes": 201837,
-      "path": "docs/submission/payguard_zip_review_slide.png",
-      "sha256": "cfc23b8c7e2eb3f2bfe8d6d7ab420dbc5ff76c8cb4a7c19033bca564c2e9f938",
-      "source_path": "docs/submission/payguard_zip_review_slide.png",
-      "source_sha256": "cfc23b8c7e2eb3f2bfe8d6d7ab420dbc5ff76c8cb4a7c19033bca564c2e9f938"
-    },
-    {
-      "bytes": 20090,
+      "bytes": 20084,
       "path": "docs/submission/quickstart.md",
-      "sha256": "fa2b5446e4b29e56885e50ce43d83a1bbc68a2bb2d0c11791d723f462eb0d114",
+      "sha256": "9572765a10e6e02f7ac2db4c86abab8d4c164a2eb4def06ba3a23943bc96e190",
       "source_path": "docs/submission/quickstart.md",
-      "source_sha256": "fa2b5446e4b29e56885e50ce43d83a1bbc68a2bb2d0c11791d723f462eb0d114"
+      "source_sha256": "9572765a10e6e02f7ac2db4c86abab8d4c164a2eb4def06ba3a23943bc96e190"
     },
     {
-      "bytes": 16009,
+      "bytes": 418216,
+      "path": "docs/submission/screens/ag_studio_trace.png",
+      "sha256": "f352f055d7c5871391d59b61e422463adf0729cea5e4a737f220cb76501f5453",
+      "source_path": "docs/submission/screens/ag_studio_trace.png",
+      "source_sha256": "f352f055d7c5871391d59b61e422463adf0729cea5e4a737f220cb76501f5453"
+    },
+    {
+      "bytes": 463637,
+      "path": "docs/submission/screens/evidence_pages.png",
+      "sha256": "8ec6f9f35fc9c5c0be9fea6b615939b7037ae8b3f36fc1e0fdce5423c531b7d5",
+      "source_path": "docs/submission/screens/evidence_pages.png",
+      "source_sha256": "8ec6f9f35fc9c5c0be9fea6b615939b7037ae8b3f36fc1e0fdce5423c531b7d5"
+    },
+    {
+      "bytes": 582517,
+      "path": "docs/submission/screens/real_send_trace.png",
+      "sha256": "25751bdbb842ac588abd04336b900fdf0ea138226e78e750dd3ff150e3745de6",
+      "source_path": "docs/submission/screens/real_send_trace.png",
+      "source_sha256": "25751bdbb842ac588abd04336b900fdf0ea138226e78e750dd3ff150e3745de6"
+    },
+    {
+      "bytes": 609489,
+      "path": "docs/submission/screens/refusals_locked.png",
+      "sha256": "dd855bf8b296f525ac9e12f289ec8a2244079624e4b44e07a07b3b6e11bf7e2f",
+      "source_path": "docs/submission/screens/refusals_locked.png",
+      "source_sha256": "dd855bf8b296f525ac9e12f289ec8a2244079624e4b44e07a07b3b6e11bf7e2f"
+    },
+    {
+      "bytes": 16034,
       "path": "docs/submission/video_script.md",
-      "sha256": "93a8a80dc03cd6ecdc05cb2c2c3b8eb9becd39695f8e84b6d68630eb7ff5d2c7",
+      "sha256": "4d8f867108f5eb5d61a929a44df9036f423428dd8d2807d02e2abf84cb77655c",
       "source_path": "docs/submission/video_script.md",
-      "source_sha256": "93a8a80dc03cd6ecdc05cb2c2c3b8eb9becd39695f8e84b6d68630eb7ff5d2c7"
+      "source_sha256": "4d8f867108f5eb5d61a929a44df9036f423428dd8d2807d02e2abf84cb77655c"
     },
     {
       "bytes": 697,
@@ -1695,11 +1702,11 @@
       "source_sha256": "a63ca91b959bc8096d160f50df4584f2d6c501eae8d485fffd270260c441f090"
     },
     {
-      "bytes": 19108,
+      "bytes": 19318,
       "path": "tests/frontend_recording_contract.mjs",
-      "sha256": "2af1acbbcaf901c4c365a20145affae6ba8dff522a220ffc4c18911c844c5a2c",
+      "sha256": "999465bc6e58b73e148121a2d2d099cb7fea22223c8c6563fdc0ac9b55d84874",
       "source_path": "tests/frontend_recording_contract.mjs",
-      "source_sha256": "2af1acbbcaf901c4c365a20145affae6ba8dff522a220ffc4c18911c844c5a2c"
+      "source_sha256": "999465bc6e58b73e148121a2d2d099cb7fea22223c8c6563fdc0ac9b55d84874"
     },
     {
       "bytes": 15166,
@@ -2066,11 +2073,11 @@
       "source_sha256": "c2d05abc6cc2ad00a7fdddab6093706b97ae357ae87441395a4545f22f48b922"
     },
     {
-      "bytes": 34525,
+      "bytes": 35541,
       "path": "tests/test_public_export_builder.py",
-      "sha256": "a706acb1616877f70566fea5877751d8d8d1bfcfe2901d18116a37dd7ec89f4d",
+      "sha256": "3cb5235db487e29384e654917995ac5fdc7b66c4d5dce8e7538a1943c334e5d0",
       "source_path": "tests/test_public_export_builder.py",
-      "source_sha256": "a706acb1616877f70566fea5877751d8d8d1bfcfe2901d18116a37dd7ec89f4d"
+      "source_sha256": "3cb5235db487e29384e654917995ac5fdc7b66c4d5dce8e7538a1943c334e5d0"
     },
     {
       "bytes": 37718,
@@ -2171,11 +2178,11 @@
       "source_sha256": "0d9bc04fee0ad12622326c03a74a116ce14ef80c47c4608c219a7c4c241a2e62"
     },
     {
-      "bytes": 34550,
+      "bytes": 34616,
       "path": "tools/build_public_candidate.py",
-      "sha256": "de5448c1a41801e8f20edbaadfc8bfeb13f1fa852132c0ceace565b9f487c540",
+      "sha256": "7a35242007e0749af10cc6027be61028fd0c587015d74db2450a71ef40cd2ed4",
       "source_path": "tools/build_public_candidate.py",
-      "source_sha256": "de5448c1a41801e8f20edbaadfc8bfeb13f1fa852132c0ceace565b9f487c540"
+      "source_sha256": "7a35242007e0749af10cc6027be61028fd0c587015d74db2450a71ef40cd2ed4"
     },
     {
       "bytes": 7653,
@@ -2253,8 +2260,8 @@
     "scope": "RECORDED_OWNER_RIGHTS_AND_ENTRANT_ELIGIBILITY"
   },
   "package_digest_algorithm": "sha256(sorted utf-8 '<file_sha256>  <relative_path>\\n' records; manifest and detached hash excluded)",
-  "package_digest_sha256": "d879bd400475fc77030aa872cdcd24c0efa1f6d68ae468a82cc6465cbcd73aa1",
-  "public_artifact_id": "payguard-public-source-d879bd400475fc77",
+  "package_digest_sha256": "c1cdcb74c5a7b3ddc6d3ae8c182dcad76d71590c1f8f715cf802a251086b760e",
+  "public_artifact_id": "payguard-public-source-c1cdcb74c5a7b3dd",
   "publication_authorized": true,
   "raw_bounded_prompt_disclosure": {
     "intent": "INTENTIONAL_PUBLIC_EXECUTABLE_PRODUCT_SOURCE",

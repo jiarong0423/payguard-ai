@@ -253,7 +253,9 @@ for (const retiredCopy of [
   'Persistence: memory session',
 ]) forbidText(analyticsSource, retiredCopy);
 
-requireText(scriptSource, '[cover](payguard_cover.png)', 'opening visual uses the public cover');
+requireText(scriptSource, 'Show the cover (no longer shipped)', 'historical script marks the retired cover as no longer shipped');
+forbidText(scriptSource, '(payguard_cover.png)', 'retired cover is not linked');
+forbidText(scriptSource, '(payguard_zip_review_slide.png)', 'retired ZIP slide is not linked');
 requireText(scriptSource, '[second image: three-stage workflow map](payguard_judge_overview.png)', 'second PNG follows live product proof');
 requireText(scriptSource, '2:42–2:44 | `payguard_judge_overview.png`', 'second PNG is in the late recap slot');
 requireText(scriptSource, 'PayPal Sandbox draft, AG Grid evidence review, and one bounded Gemini on Vertex AI brief', 'opening names all three judge proof pillars');
