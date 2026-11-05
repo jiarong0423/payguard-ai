@@ -1,6 +1,6 @@
 # PayGuard US-Only Eight-Layer Architecture
 
-Status: accepted US-only local design. The recorded Sandbox and Gemini runs of 2026-10-06 are evidence for their own captured executions; they do not prove current-byte live behavior or bind a later source candidate. Release state is determined by the package manifest and exact anonymous public readback. When the manifest is `PUBLIC_SOURCE_PUBLISHED` with `publication_authorized=true` and the same bytes pass exact anonymous readback, public source publication is complete. In that published-source state, the Devpost project is submitted; the 2:02 video is already public. A package marked `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` has not crossed the public-source gate.
+Status: accepted US-only local design. The recorded Sandbox and Gemini runs of 2026-10-06 are evidence for their own captured executions; they do not prove current-byte live behavior or bind a later source candidate. Release state is determined by the package manifest and exact anonymous public readback. When the manifest is `PUBLIC_SOURCE_PUBLISHED` with `publication_authorized=true` and the same bytes pass exact anonymous readback, public source publication is complete. In that published-source state, the Devpost project is submitted; the 2:50 video is already public. A package marked `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` has not crossed the public-source gate.
 
 ## Product boundary
 
@@ -34,7 +34,7 @@ flowchart LR
   K --> L["Local-model distribution<br/>not part of this package"]
   F --> N["Current-byte bounded live rehearsal<br/>O (Done): three AI stages + Sandbox DRAFT"]
   N --> I["Public source and anonymous byte readback<br/>O (Done): pre-video release"]
-  I --> M["Video publication<br/>O (Done): 2:02 public video"]
+  I --> M["Video publication<br/>O (Done): 2:50 public video"]
   M --> P["Devpost submission<br/>O (Done)"]
   J["Production hosting and provider mutations<br/>not performed"]
   Q["Hosted demo on Render<br/>O (Done): no PayPal calls; guide Gemini opt-in"]
@@ -42,7 +42,7 @@ flowchart LR
   R --> Q
 ```
 
-This graph describes the accepted local design and separates historical receipts from the separately reviewed current-byte rehearsal. The recorded runs of 2026-10-06 retain only their original bounded claims; a later sanitized receipt records three validated AI stages, one Sandbox OAuth and one unsent invoice DRAFT in a single session. Source publication is established only when the published manifest and exact anonymous readback agree for that candidate. The complete repository run instructions are the selected functional-demo path. The [2:02 video](https://youtu.be/K28N9QhRp1E) is public; the Devpost project is submitted. The optional hosted demo runs on Render (`PAYGUARD_DEMO_MODE=public`, no PayPal calls; the guide may use Gemini when the operator opts in, at most 5 calls a minute and 20 a day); a hosted deployment with PayPal calls is unperformed.
+This graph describes the accepted local design and separates historical receipts from the separately reviewed current-byte rehearsal. The recorded runs of 2026-10-06 retain only their original bounded claims; a later sanitized receipt records three validated AI stages, one Sandbox OAuth and one unsent invoice DRAFT in a single session. Source publication is established only when the published manifest and exact anonymous readback agree for that candidate. The complete repository run instructions are the selected functional-demo path. The [2:50 video](https://youtu.be/_GORnHWShU4) is public; the Devpost project is submitted. The optional hosted demo runs on Render (`PAYGUARD_DEMO_MODE=public`, no PayPal calls; the guide may use Gemini when the operator opts in, at most 5 calls a minute and 20 a day); a hosted deployment with PayPal calls is unperformed.
 
 ## Eight layers
 
@@ -219,7 +219,7 @@ The public source includes bounded synthetic contract tests for all three stages
 | Gemini run | One bounded `gemini-3.8-flash` execution and human semantic review | The recorded run retains its original scope; a separate current-byte rehearsal validated one bounded response for each fixed stage. Repeatability, semantic quality beyond those samples, real-record behavior and the optional full policy interpreter remain outside the claim |
 | Review authority | Durable external submission authority | Review remains local and short-lived |
 | Real data | Real PII ingestion and retention | Only synthetic bounded privacy demonstrations are allowed |
-| Source release | Pre-video public source release | Current-byte live proof, same-version release evidence and exact anonymous public readback were accepted for the bounded historical source release. The 2:02 video is public. A changed source candidate needs fresh exact-byte release acceptance; the Devpost project is submitted. The optional hosted demo runs on Render with no PayPal calls (the guide may use Gemini when the operator opts in); hosting with PayPal calls is unperformed and not mandatory |
+| Source release | Pre-video public source release | Current-byte live proof, same-version release evidence and exact anonymous public readback were accepted for the bounded historical source release. The 2:50 video is public. A changed source candidate needs fresh exact-byte release acceptance; the Devpost project is submitted. The optional hosted demo runs on Render with no PayPal calls (the guide may use Gemini when the operator opts in); hosting with PayPal calls is unperformed and not mandatory |
 
 Internal machine-readable registries remain local release-owner controls and are not linked from the public package. Public documents cannot close a release gate.
 
@@ -234,7 +234,7 @@ The accepted US-only local baseline has direct evidence that:
 5. AI remains post-validation and advisory;
 6. focused and full tests, frontend build, rendered desktop/mobile/keyboard review, audit publication, second no-op audit and canonical readback pass;
 7. historical logs, receipts and superseded bytes remain unchanged;
-8. the 2:02 video is public; the Devpost project is submitted; later source revisions need separate evidence-driven release acceptance.
+8. the 2:50 video is public; the Devpost project is submitted; later source revisions need separate evidence-driven release acceptance.
 
 The recorded Sandbox and Gemini runs remain evidence only for their captured executions; the separately reviewed current-byte rehearsal supports exactly its three fixed AI stages, one Sandbox OAuth and one unsent invoice DRAFT. Complete repository run instructions are the selected functional-demo path. Each published candidate still requires matching release evidence and exact anonymous public readback before it can carry `PUBLIC_SOURCE_PUBLISHED`. After that same-byte readback, the Devpost project is submitted and the repository copy matches the accepted public source bytes. The optional hosted demo runs on Render with no PayPal calls (the guide may use Gemini when the operator opts in); hosting with PayPal calls is unperformed, and production hosting plus multi-user AI operation remain unproven and outside the accepted runtime.
 

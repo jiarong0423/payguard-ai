@@ -1,5 +1,5 @@
 {
-  "created_at_utc": "2026-11-05T02:46:19Z",
+  "created_at_utc": "2026-11-05T03:41:00Z",
   "dependency_locks": {
     "frontend_npm": "0f98893564efb5556cc0a92710feedcb9da085108f9668fee93f29940b87f09d",
     "gemini_python": "36554331392d6102519a4ead5778704c4ff89e79da6bb9d6648b656f130724bb",
@@ -43,18 +43,18 @@
       "source_sha256": "bb3e4ececbe261e1f0851c331a8377cf24f1209cbe0bb8df6ce76f4b5a3d0447"
     },
     {
-      "bytes": 73332,
+      "bytes": 73288,
       "path": "README.md",
-      "sha256": "5be6ab7fdd36625603a816cd71d70c6ca9f589c5c0ee49fae6699980418bf2ee",
+      "sha256": "1a8be77ab44b8e8cd0c9de193826903bd40cc4da3de16546b61834f20e0d4f5f",
       "source_path": "README.md",
-      "source_sha256": "5be6ab7fdd36625603a816cd71d70c6ca9f589c5c0ee49fae6699980418bf2ee"
+      "source_sha256": "1a8be77ab44b8e8cd0c9de193826903bd40cc4da3de16546b61834f20e0d4f5f"
     },
     {
       "bytes": 11374,
       "path": "SECURITY.md",
-      "sha256": "4a3cddafa3c37d07c3be373c785362ea97033dad2a9e362a58105589ba45a4d8",
+      "sha256": "a7b8fbe119bc891cb438dca8c433c05163c9f5c42abec8b2a5f07d8a332e3493",
       "source_path": "SECURITY.md",
-      "source_sha256": "4a3cddafa3c37d07c3be373c785362ea97033dad2a9e362a58105589ba45a4d8"
+      "source_sha256": "a7b8fbe119bc891cb438dca8c433c05163c9f5c42abec8b2a5f07d8a332e3493"
     },
     {
       "bytes": 8557,
@@ -262,9 +262,9 @@
     {
       "bytes": 25983,
       "path": "docs/decisions/2026Q4/architecture.md",
-      "sha256": "5c99f69aa9b3da33e536e4b275f86b2934f77200fa2bd7d838443a91670c6a26",
+      "sha256": "a7471fd6a5bc29e403ca03d4a05086981ccd5a0b4ffbfb1547a3945017834ec3",
       "source_path": "docs/decisions/2026Q4/architecture.md",
-      "source_sha256": "5c99f69aa9b3da33e536e4b275f86b2934f77200fa2bd7d838443a91670c6a26"
+      "source_sha256": "a7471fd6a5bc29e403ca03d4a05086981ccd5a0b4ffbfb1547a3945017834ec3"
     },
     {
       "bytes": 19061,
@@ -283,9 +283,9 @@
     {
       "bytes": 9675,
       "path": "docs/decisions/2026Q4/payguard_us_architecture_status.svg",
-      "sha256": "c10f57332cb84cfe757f68d80810d49e4219c6f505a070de2d5159230dfcb87b",
+      "sha256": "6ff32648951875d863ba588a17f42bb16e471046058f0804e16d3466083bd02e",
       "source_path": "docs/decisions/2026Q4/payguard_us_architecture_status.svg",
-      "source_sha256": "c10f57332cb84cfe757f68d80810d49e4219c6f505a070de2d5159230dfcb87b"
+      "source_sha256": "6ff32648951875d863ba588a17f42bb16e471046058f0804e16d3466083bd02e"
     },
     {
       "bytes": 8850,
@@ -304,9 +304,9 @@
     {
       "bytes": 8530,
       "path": "docs/decisions/2026Q4/us_mainline_contract.md",
-      "sha256": "f08192b69a09e3d24463cb4c80fa2fb55aeee57149f28d6183fb9c904bfe4cb4",
+      "sha256": "c5306d30b475bfaf8f787ab667cf8ee5e1da52b89443b4f90d281449cf4a1948",
       "source_path": "docs/decisions/2026Q4/us_mainline_contract.md",
-      "source_sha256": "f08192b69a09e3d24463cb4c80fa2fb55aeee57149f28d6183fb9c904bfe4cb4"
+      "source_sha256": "c5306d30b475bfaf8f787ab667cf8ee5e1da52b89443b4f90d281449cf4a1948"
     },
     {
       "bytes": 9017,
@@ -393,11 +393,11 @@
       "source_sha256": "9b1f641cbadf95177207e17c1a220c6d0b80c8fbb42c4c0d744cb857ca0bcbce"
     },
     {
-      "bytes": 6416,
+      "bytes": 15550,
       "path": "docs/submission/devpost_story.md",
-      "sha256": "6dee0393700bde2822725c915cdf69bdffc1e280e7aa59cb30ca8bacbb2eca30",
+      "sha256": "07f075540022ad380b92fa75bd91b7036dd26047d49109fa336ac6fe517127fc",
       "source_path": "docs/submission/devpost_story.md",
-      "source_sha256": "6dee0393700bde2822725c915cdf69bdffc1e280e7aa59cb30ca8bacbb2eca30"
+      "source_sha256": "07f075540022ad380b92fa75bd91b7036dd26047d49109fa336ac6fe517127fc"
     },
     {
       "bytes": 4256,
@@ -519,18 +519,18 @@
       "source_sha256": "cfc23b8c7e2eb3f2bfe8d6d7ab420dbc5ff76c8cb4a7c19033bca564c2e9f938"
     },
     {
-      "bytes": 20101,
+      "bytes": 20090,
       "path": "docs/submission/quickstart.md",
-      "sha256": "4b3fff49698e2138b0c9efb4223eb2497232b02409bfba07227da95a9d2c5d8e",
+      "sha256": "fa2b5446e4b29e56885e50ce43d83a1bbc68a2bb2d0c11791d723f462eb0d114",
       "source_path": "docs/submission/quickstart.md",
-      "source_sha256": "4b3fff49698e2138b0c9efb4223eb2497232b02409bfba07227da95a9d2c5d8e"
+      "source_sha256": "fa2b5446e4b29e56885e50ce43d83a1bbc68a2bb2d0c11791d723f462eb0d114"
     },
     {
-      "bytes": 15965,
+      "bytes": 16009,
       "path": "docs/submission/video_script.md",
-      "sha256": "8a2413ab1cf560a0ec2abc180ee90f2587b19c85db8e654d6824320dc32242a1",
+      "sha256": "93a8a80dc03cd6ecdc05cb2c2c3b8eb9becd39695f8e84b6d68630eb7ff5d2c7",
       "source_path": "docs/submission/video_script.md",
-      "source_sha256": "8a2413ab1cf560a0ec2abc180ee90f2587b19c85db8e654d6824320dc32242a1"
+      "source_sha256": "93a8a80dc03cd6ecdc05cb2c2c3b8eb9becd39695f8e84b6d68630eb7ff5d2c7"
     },
     {
       "bytes": 697,
@@ -661,9 +661,9 @@
     {
       "bytes": 193863,
       "path": "frontend/src/App.jsx",
-      "sha256": "780529dc912ae234713a51a06b78ae93279476858f42e9a05bc63db91ebd2c4e",
+      "sha256": "fd44d83ae39e7c0214662701bc91bbffcfb45bdddf442bc3fd7352c25dc2b071",
       "source_path": "frontend/src/App.jsx",
-      "source_sha256": "780529dc912ae234713a51a06b78ae93279476858f42e9a05bc63db91ebd2c4e"
+      "source_sha256": "fd44d83ae39e7c0214662701bc91bbffcfb45bdddf442bc3fd7352c25dc2b071"
     },
     {
       "bytes": 7939,
@@ -2066,11 +2066,11 @@
       "source_sha256": "c2d05abc6cc2ad00a7fdddab6093706b97ae357ae87441395a4545f22f48b922"
     },
     {
-      "bytes": 34469,
+      "bytes": 34525,
       "path": "tests/test_public_export_builder.py",
-      "sha256": "8589ac35cc09093c42be9af6fae93e2c7d7a3cf7a02916e530a2e409868fc067",
+      "sha256": "a706acb1616877f70566fea5877751d8d8d1bfcfe2901d18116a37dd7ec89f4d",
       "source_path": "tests/test_public_export_builder.py",
-      "source_sha256": "8589ac35cc09093c42be9af6fae93e2c7d7a3cf7a02916e530a2e409868fc067"
+      "source_sha256": "a706acb1616877f70566fea5877751d8d8d1bfcfe2901d18116a37dd7ec89f4d"
     },
     {
       "bytes": 37718,
@@ -2253,8 +2253,8 @@
     "scope": "RECORDED_OWNER_RIGHTS_AND_ENTRANT_ELIGIBILITY"
   },
   "package_digest_algorithm": "sha256(sorted utf-8 '<file_sha256>  <relative_path>\\n' records; manifest and detached hash excluded)",
-  "package_digest_sha256": "c73301fb7abc8511dff583f974faf9353182723ef94f3c52b6ebc0043cf5d54c",
-  "public_artifact_id": "payguard-public-source-c73301fb7abc8511",
+  "package_digest_sha256": "d879bd400475fc77030aa872cdcd24c0efa1f6d68ae468a82cc6465cbcd73aa1",
+  "public_artifact_id": "payguard-public-source-d879bd400475fc77",
   "publication_authorized": true,
   "raw_bounded_prompt_disclosure": {
     "intent": "INTENTIONAL_PUBLIC_EXECUTABLE_PRODUCT_SOURCE",
