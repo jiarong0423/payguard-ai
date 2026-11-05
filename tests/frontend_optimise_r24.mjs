@@ -11,8 +11,8 @@ const css = readFileSync(new URL('../frontend/src/index.css', import.meta.url), 
 const panelCss = readFileSync(new URL('../frontend/src/CountryRules.css', import.meta.url), 'utf8');
 
 // Scenario 1: before/after card, line-by-line status, expiry warning, different default countries, neutral label.
-assert.ok(panel.includes('export const LINE_CHECKED = Object.freeze({ TW: \'2026-11-02\', CN: \'2026-11-02\' });'), 'only TW and CN are line-checked');
-assert.ok(panel.includes('reviews/r10_e768aaf/5_rules_accuracy.md'), 'line-check list cites its source');
+assert.ok(panel.includes('export const RULE_AUDIT_SAMPLE = Object.freeze({ TW: \'2026-11-02\', CN: \'2026-11-02\' });'), 'only TW and CN are in the sample audit');
+assert.ok(panel.includes('the r10 audit (2026-11-02) compared a sample of 36 TW and'), 'sample list cites its audit');
 assert.ok(panel.includes('data-testid="country-verdict-line-check"') && panel.includes('data-testid="country-row-line-check"'), 'verdict and rows show the status');
 assert.ok(panel.includes('data-testid="country-row-source-date"> · source read {retrievedAt}'), 'rows show the source date');
 assert.ok(panel.includes('Stopped at {clockTime(before.at)} → {after.word} at {clockTime(after.at)}'), 'before/after line with both times');

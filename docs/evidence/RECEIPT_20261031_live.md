@@ -1,5 +1,7 @@
 # PayGuard live Sandbox receipt, 2026-10-31 (masked)
 
+> Later sends: the first `provide-evidence` sends came after this receipt, on 2026-11-04 ([RECEIPT_20261104_live.md](RECEIPT_20261104_live.md)) and 2026-11-05 ([RECEIPT_20261105_live.md](RECEIPT_20261105_live.md)); this receipt is kept unchanged as the record of 2026-10-31.
+
 Everything below is PayPal Sandbox test data created by the author with two Sandbox test accounts. It is not a real merchant case, and it proves only that PayGuard can make and read Sandbox calls. Identifiers are masked; no response body, e-mail address, token or secret is kept here.
 
 ## Flow 1: policy preflight, then an unsent invoice draft (POST /v2/invoicing/invoices through PayGuard)
@@ -19,4 +21,4 @@ Everything below is PayPal Sandbox test data created by the author with two Sand
 - No provide-evidence call was made. The submit button stayed disabled (flag off).
 
 ## Limits to state
-One test dispute made by the author between two Sandbox accounts, not a real merchant case. First live read of a non-empty list. The submission path is covered by mocked-transport tests only.
+One test dispute made by the author between two Sandbox accounts, not a real merchant case. First live read of a non-empty list. The submission path was covered by mocked-transport tests only as of 2026-10-31; the first Sandbox send is in RECEIPT_20261104_live.md.

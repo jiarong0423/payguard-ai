@@ -1,6 +1,6 @@
 # PayGuard Threat Model
 
-Status: current US-only local prototype threat model.
+Status: current local prototype threat model (US Sandbox seller; the optional ten-country rules check is advisory).
 
 ## Assets
 
@@ -17,7 +17,7 @@ Status: current US-only local prototype threat model.
 
 1. browser to loopback API;
 2. untrusted HTTP input to strict schema validation;
-3. request jurisdiction to the US-only package/corpus loader;
+3. request jurisdiction to the single US package/corpus loader;
 4. synthetic evidence to deterministic engines;
 5. deterministic output to human review;
 6. backend process to fixed PayPal Sandbox endpoints;
@@ -37,7 +37,7 @@ Local synthetic sessions are not merchant authentication or durable authorizatio
 | --- | --- | --- |
 | Host/Origin abuse, CSRF and cross-session leakage | Loopback binding, exact Host/Origin allowlists, opaque session IDs, session-bound CSRF and no browser persistence | No production tenant authentication |
 | Memory exhaustion, repeated injection and partial mutation | Session/body/row/activity/rate limits, TTL, idempotent synthetic scenarios, validation before mutation and reset | Local process remains a prototype |
-| Foreign policy or case fallback | US-only request enum, validation before loader invocation, one active package, pinned corpus and no fallback | Source completeness and legal review remain open |
+| Foreign policy or case fallback | single-value US request enum, validation before loader invocation, one active package, pinned corpus and no fallback | Source completeness and legal review remain open |
 | Source substitution, stale data or hash drift | Exact URL/host/path allowlists, source class, separate dates, pinned hashes and fail-closed loader | Public pages may later change and require a new versioned refresh |
 | Policy laundering | `REFERENCE_ONLY`, `NOT_ESTABLISHED`, `NOT_MADE`, warning-only result and explicit limitations | Full current-policy applicability is unverified |
 | Prompt injection or source-content execution | Stage-only caller request, server-owned prompt contract and digest, fixed typed synthetic facts, opaque citation IDs, closed JSON Schema enums, no raw HTML, no caller model/config/path/schema/tool, disabled tools/function calling/retrieval/streaming and strict post-validation | A permitted enum can still be semantically poor; inventory review remains required whenever the sentence set changes |
@@ -51,7 +51,7 @@ Local synthetic sessions are not merchant authentication or durable authorizatio
 | Evidence overclaim | Separate presence, authenticity, verification, sufficiency, eligibility and outcome states | A human can still misinterpret a draft; UI limitations remain mandatory |
 | Dispute-authority confusion | Documented authority distinction and explicit statement that the current demo performs no provider-case routing | A real case requires current provider fields and an independently validated adapter |
 | Procedural record promoted to merits | Source class `HISTORICAL_US_COURT_PROCEDURE`, explicit limitations and final-decision rejection | No complete official individual-outcome library exists |
-| Velocity signal promoted to fraud/AML | Local baseline provenance, backend-owned calculation and forbidden-label tests | Proprietary provider criteria are unavailable by design |
+| Sales spike signal promoted to fraud/AML | Local baseline provenance, backend-owned calculation and forbidden-label tests | Proprietary provider criteria are unavailable by design |
 | Approval reuse or stale UI state | Case/action/payload digest, nonce, actor role, expiry, abort controllers and generation checks | Durable restart/concurrency authority remains open |
 | Supply-chain and artifact drift | Locked dependencies, disabled npm lifecycle scripts, one writer, isolation diff, module audit and no-op readback | Full SAST, history scan and vendor review remain release gates |
 
@@ -61,7 +61,7 @@ The existing PayPal login is a Developer-login identity. The merchant role is a 
 
 The UI may say `PayPal Sandbox` before seller-country confirmation. It may say `US Business sandbox seller` only after trusted Dashboard confirmation. Invoicing availability also requires confirmation. The Sandbox host and browser locale are not country evidence.
 
-The recorded Sandbox runs cover only their sanitized authentic results: on 2026-10-06 OAuth and one unsent invoice `DRAFT`; on 2026-10-31 OAuth, a second unsent `DRAFT` and a list and detail read of one author-created Sandbox test dispute ([masked receipt](../../evidence/RECEIPT_20261031_live.md)). As of 2026-10-31 no `provide-evidence` call had been sent; on 2026-11-04 one evidence send to an author-created Sandbox test dispute succeeded ([masked receipt](../../evidence/RECEIPT_20261104_live.md)); on 2026-11-05 (UTC+8) a second send to a newly filed Sandbox test dispute succeeded ([masked receipt](../../evidence/RECEIPT_20261105_live.md)). MockTransport results, screenshots and local UI state did not and cannot expand that accepted provider-evidence boundary.
+The recorded Sandbox runs cover only their sanitized authentic results: on 2026-10-06 OAuth and one unsent invoice `DRAFT`; on 2026-10-31 OAuth, a second unsent `DRAFT` and a list and detail read of one author-created Sandbox test dispute ([masked receipt](../../evidence/RECEIPT_20261031_live.md)). Two gated `provide-evidence` sends followed, each to its own author-created Sandbox test dispute: 2026-11-04 ([masked receipt](../../evidence/RECEIPT_20261104_live.md)) and 2026-11-05 in UTC+8 ([masked receipt](../../evidence/RECEIPT_20261105_live.md)); none was made before 2026-11-04, and PayPal Sandbox accepting a request is not PayPal accepting the evidence. MockTransport results, screenshots and local UI state did not and cannot expand that accepted provider-evidence boundary.
 
 ## AUP boundary
 
@@ -69,7 +69,7 @@ The deterministic matcher can surface public US AUP categories and distinguish p
 
 The second warning offers edit, cancel, or acknowledge and continue. Acknowledgement authorizes only a local next step and is revoked by content/session changes or expiry. Required-field validation may stop an incomplete local draft; the AUP warning itself is not a substitute PayPal block.
 
-## Velocity boundary
+## Sales spike boundary
 
 The public US User Agreement supports the narrow statement that rapidly increasing typical sales volume is one of several listed risk examples and that some criteria may be confidential. PayGuard does not know a provider threshold or hidden model.
 
@@ -77,7 +77,7 @@ The local signal cannot be labelled AML, fraud, money laundering or a predicted 
 
 ## Dispute boundary
 
-The resolver runs on the closed synthetic fixture cases in the session. With a Sandbox connection the merchant's Sandbox disputes are read in the same response shape, projected, listed and paired with a session case for the gated `provide-evidence` preview and send; the resolver does not run on them. Either response contains reason, status, lifecycle stage, seller-response due date, normalized available actions and evidence requests with source and action. Only exact `REQUESTED_FROM_SELLER` plus `PROVIDE_EVIDENCE` rows can create preparation tasks. It accepts only separately bound synthetic proof records and attachment bytes, and validates their signature, type and size; the bytes stay in expiring session memory, never reach the browser or the Internal Review ZIP, and are read again only for the gated multipart `provide-evidence` send. For the synthetic cases, raw provider case, order and request identifiers remain restricted server-side and the browser receives non-identifying references. A connected Sandbox read returns the Sandbox `dispute_id` and `seller_transaction_id` to the console, which needs them to show and pair that test case. The restricted digest is recomputed before reuse, AI eligibility and local approval so nested tampering fails closed. A real adapter must additionally retain current PayPal response options and HATEOAS links without treating them as action authority. Every fixture field remains explicitly synthetic, and a Sandbox row carries the label `Sandbox`.
+The resolver runs on the closed synthetic sample cases in the session. With a Sandbox connection the merchant's Sandbox disputes are read in the same response shape, projected, listed and paired with a session case for the gated `provide-evidence` preview and send; the resolver does not run on them. Either response contains reason, status, lifecycle stage, seller-response due date, normalized available actions and evidence requests with source and action. Only exact `REQUESTED_FROM_SELLER` plus `PROVIDE_EVIDENCE` rows can create preparation tasks. It accepts only separately bound synthetic proof records and attachment bytes, and validates their signature, type and size; the bytes stay in expiring session memory, never reach the browser or the Internal Review ZIP, and are read again only for the gated multipart `provide-evidence` send. For the synthetic cases, raw provider case, order and request identifiers remain restricted server-side and the browser receives non-identifying references. A connected Sandbox read returns the Sandbox `dispute_id` and `seller_transaction_id` to the console, which needs them to show and pair that test case. The restricted digest is recomputed before reuse, AI eligibility and local approval so nested tampering fails closed. A real adapter must additionally retain current PayPal response options and HATEOAS links without treating them as action authority. Every fixture field remains explicitly synthetic, and a Sandbox row carries the label `Sandbox`.
 
 PayGuard may prepare and pseudonymize a local draft. It provides evidence to PayPal only through the gated `provide-evidence` request (local reviewer approval, `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`, a connected Sandbox and an explicit `submit: true`); it cannot send a message, make an offer, accept a claim, acknowledge a return, appeal, refund or adjudicate. Internal claims remain under PayPal authority; external disputes remain under the bank/card issuer's authority.
 
@@ -85,7 +85,7 @@ Counterfeit goods may be a Purchase Protection SNAD condition. SNAD is outside U
 
 ## Data retention and privacy
 
-- no real business or personal data enters default fixtures;
+- no real business or personal data enters the default sample data;
 - queries and filters remain bounded in request memory and are not logged;
 - session state expires and is not durable authorization;
 - pseudonymization keys remain memory-only;

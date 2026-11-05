@@ -1,4 +1,4 @@
-# PayGuard AI Demonstration Script
+# PayGuard AI Demonstration Script (historical: the earlier 2:02 cut; the current video is the 2:50 cut)
 
 **Historical record.** This is the script of an earlier 2:02 cut, now replaced by the public [2:50 demonstration](https://youtu.be/_GORnHWShU4), kept as it was used; it does not describe the current console. That cut was recorded before the ten-country rules check, the Channel3 product reference card, the seventh Internal Review ZIP file (`product-reference.json`) and the Sandbox dispute read were added, so its "six ZIP members" and its "Defense Buffer" screen name are not current (the archive now has seven files, and the console has no screen by that name). The README and the [judge quickstart](quickstart.md) describe the current build. The published video is shorter than this plan, so check claims against the video itself.
 

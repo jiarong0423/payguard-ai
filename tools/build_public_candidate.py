@@ -67,7 +67,6 @@ EXACT_FILES = (
     "docs/decisions/2026Q4/architecture.md",
     "docs/decisions/2026Q4/case_intake_contract.md",
     "docs/decisions/2026Q4/console_contract.md",
-    "docs/decisions/2026Q4/payguard_us_architecture_status.svg",
     "docs/decisions/2026Q4/policy_engine_v1.md",
     "docs/decisions/2026Q4/threat_model.md",
     "docs/decisions/2026Q4/us_mainline_contract.md",

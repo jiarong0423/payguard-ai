@@ -1,15 +1,15 @@
-# PayGuard US-Only Mainline Contract
+# PayGuard Mainline Contract (US Sandbox seller; the optional ten-country rules check is advisory)
 
-Status: current accepted canonical US-only local design. The English conversion and three-stage contract are current. One recorded Sandbox OAuth plus unsent invoice `DRAFT` pair and one recorded fixed-synthetic `gemini-3.8-flash` result (both 2026-10-06) are records of their own captured executions; a second Sandbox run of 2026-10-31 is described under "Sandbox contract". They do not prove current-byte live behavior or bind a later source candidate. A judge-facing execution claim requires showing the bounded path live. This contract supersedes prior product narratives for the active runtime; historical evidence retains its original claims and bytes. The Devpost project is submitted; later source revisions retain a separate release gate.
+Status: current accepted canonical local design for a US Sandbox seller; the optional ten-country rules check is advisory. The English conversion and three-stage contract are current. Real PayPal Sandbox runs: OAuth and unsent invoice drafts (2026-10-06, 2026-10-31 and one during the video recording on 2026-11-05, UTC+8), dispute list and detail reads (2026-10-31) and two gated `provide-evidence` sends, each to its own author-created test dispute (2026-11-04 and 2026-11-05 in UTC+8; see "Sandbox contract"). One recorded fixed-synthetic `gemini-3.8-flash` result is from 2026-10-06. Each is a record of its own captured execution. They do not prove current-byte live behavior or bind a later source candidate. A judge-facing execution claim requires showing the bounded path live. This contract supersedes prior product narratives for the active runtime; historical evidence retains its original claims and bytes. The Devpost project is submitted; later source revisions retain a separate release gate.
 
 Current objective state: the local product baseline is `O (Done)`. Release state is determined by the package manifest and exact anonymous public readback, not by this contract or a historical receipt. When the manifest is `PUBLIC_SOURCE_PUBLISHED` with `publication_authorized=true` and the same bytes pass exact anonymous readback, public source publication is complete. In that published-source state, the Devpost project is submitted; the 2:50 demonstration is already public. A package marked `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` has not crossed the public-source gate. A hosted demo is optional and is not mandatory.
 
 ## Locked product statement
 
-PayGuard is a US-only advisory console for a PayPal Sandbox merchant journey. It applies deterministic validation before AI and presents three stages:
+PayGuard is an advisory console for a PayPal Sandbox merchant journey of a US Sandbox seller; the optional ten-country rules check is advisory. It applies deterministic validation before AI and presents three stages:
 
 1. US AUP warning before an invoice draft;
-2. sales-velocity and fulfillment evidence readiness;
+2. sales spike and fulfillment evidence readiness;
 3. dispute evidence mediation after a transaction.
 
 The product is an interception and evidence-preparation funnel. It does not replace PayPal review. Humans control local edit, cancel, acknowledge and review actions. PayPal retains final authority for PayPal policy, account and internal-dispute decisions. A bank or card issuer retains authority for an external dispute.
@@ -48,7 +48,7 @@ The active corpus contains official PayPal US policy summaries, jurisdiction-neu
 | Stage | Local output | Human choice | External authority |
 | --- | --- | --- | --- |
 | US AUP warning | `NO_MATCH` or `REVIEW_SIGNAL`; source and limitations | Edit, cancel, acknowledge and continue | PayPal |
-| Velocity readiness | Local baseline ratio, provenance and window; `review_velocity` when the local threshold is exceeded | Inspect capacity and prepare records | PayPal |
+| Sales spike readiness | Local baseline ratio, provenance and window; `review_velocity` when the local threshold is exceeded | Inspect capacity and prepare records | PayPal |
 | Dispute mediation | Reason-bound chronology, requested-evidence draft and review flags; no provider-case routing | Review local draft | PayPal or the bank/card issuer, according to the actual external process |
 
 No stage produces approval, prohibition, hidden provider risk, evidence authenticity, program eligibility, outcome prediction or financial action.
@@ -63,13 +63,13 @@ The recorded Gemini run is limited to one human-reviewed `gemini-3.8-flash` resp
 
 Outbound access is disabled by default. The recorded Sandbox run of 2026-10-06 is limited to the OAuth result and one unsent USD `10.00` invoice `DRAFT` creation result using the operator-confirmed US Business sandbox seller path with Invoicing available. It proves only that captured execution, not current-byte live behavior. Public source alone does not authenticate the result.
 
-A second run on 2026-10-31 repeated OAuth and one unsent invoice `DRAFT` and read one author-created Sandbox test dispute (list and detail; [masked receipt](../../evidence/RECEIPT_20261031_live.md)). When a Sandbox app is connected the console reads the merchant's Sandbox disputes. The `provide-evidence` request exists only behind a recorded local approval, `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled` and an explicit `submit: true`; as of 2026-10-31 it had not been sent, and on 2026-11-04 one evidence send to an author-created Sandbox test dispute succeeded ([masked receipt](../../evidence/RECEIPT_20261104_live.md)); on 2026-11-05 (UTC+8) a second send to a newly filed Sandbox test dispute succeeded ([masked receipt](../../evidence/RECEIPT_20261105_live.md)).
+A second run on 2026-10-31 repeated OAuth and one unsent invoice `DRAFT` and read one author-created Sandbox test dispute (list and detail; [masked receipt](../../evidence/RECEIPT_20261031_live.md)). When a Sandbox app is connected the console reads the seller's Sandbox disputes. The `provide-evidence` request is sent only behind a recorded local approval, `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`, an explicit `submit: true` and the server's single-use send confirmation. Two sends went out this way: on 2026-11-04 to an author-created Sandbox test dispute ([masked receipt](../../evidence/RECEIPT_20261104_live.md)) and on 2026-11-05 (UTC+8) to a newly filed one ([masked receipt](../../evidence/RECEIPT_20261105_live.md)); already-answered, different-reason and different-amount disputes were refused. PayPal Sandbox accepting a request is not PayPal accepting the evidence.
 
 Invoice send, payment, capture, refund, dispute mutations other than that gated request, production and automatic retry after uncertain creation remain frozen. A create response is not described as a separate GET readback.
 
 ## Public-case limitation
 
-The active official U.S. court records establish settlement approval or arbitration procedure and preserve historical allegations. They do not establish current policy, final individual merits, a rapid-volume-only trigger or a provider threshold. The supported velocity story comes from the public US User Agreement's risk examples, with confidential-model limitations preserved.
+The active official U.S. court records establish settlement approval or arbitration procedure and preserve historical allegations. They do not establish current policy, final individual merits, a rapid-volume-only trigger or a provider threshold. The supported sales spike story comes from the public US User Agreement's risk examples, with confidential-model limitations preserved.
 
 ## Readiness
 
@@ -85,4 +85,4 @@ Local code, tests, source integrity and rendered UI can establish only local con
 
 Canonical state remains governed by `config/module_registry.json` and `config/missing_registry.json`. No document closes a gap.
 
-See [architecture](architecture.md), [source register](us_official_source_register.md), [policy engine](policy_engine_v1.md), [case intake](case_intake_contract.md), [console contract](console_contract.md), [threat model](threat_model.md) and the [standalone architecture/status visual](payguard_us_architecture_status.svg).
+See [architecture](architecture.md), [source register](us_official_source_register.md), [policy engine](policy_engine_v1.md), [case intake](case_intake_contract.md), [console contract](console_contract.md), [threat model](threat_model.md) and the [architecture overview diagram](../../submission/diagrams/architecture_overview.svg).

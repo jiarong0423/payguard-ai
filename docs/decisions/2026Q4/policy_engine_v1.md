@@ -1,6 +1,6 @@
 # PayGuard Policy Engine v1 — US Advisory Contract
 
-Status: design locked for the US-only warning funnel and `REFERENCE_ONLY` metadata runtime. A full declarative policy interpreter, effective-policy certification and enforced workflow tier remain pending.
+Status: design locked for the US warning funnel (US Sandbox seller; the optional ten-country rules check is advisory) and `REFERENCE_ONLY` metadata runtime. A full declarative policy interpreter, effective-policy certification and enforced workflow tier remain pending.
 
 ## Non-negotiable invariants
 

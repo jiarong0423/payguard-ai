@@ -5,7 +5,7 @@
 <rect width="1920" height="1080" fill="#f7f3ec"/>
 <text x="64" y="64" class="m" font-size="16" letter-spacing="2" fill="#6b6862">PAYGUARD AI · STEP 03 · DOWNLOADED REVIEW PACK</text>
 <text x="64" y="120" class="t" font-size="56">The review pack, opened and verified</text>
-<text x="64" y="160" class="s" font-size="22" fill="#55534e">7 files, 14,028 bytes. Each file below was hashed again and compared with what manifest.json declares.</text>
+<text x="64" y="160" class="s" font-size="22" fill="#55534e">7 entries (6 files + manifest.json), 14,028 bytes. Each of the 6 files below was hashed again and compared with manifest.json.</text>
 <rect x="64" y="196" width="1120" height="392" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
 <text x="84" y="230" class="m" font-size="14" letter-spacing="1.5" fill="#6b6862">FILE</text>
 <text x="484" y="230" class="m" font-size="14" letter-spacing="1.5" fill="#6b6862">MANIFEST SHA256</text>
@@ -62,8 +62,8 @@
 <rect x="64" y="700" width="1792" height="196" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
 <text x="88" y="740" class="t" font-size="28">What is inside</text>
 <text x="88" y="780" class="m" font-size="16" fill="#55534e">requirement: PROOF_OF_FULFILLMENT · STRUCTURALLY_PRESENT · seller response due 2026-11-06 · 5 official PayPal sources cited</text>
-<text x="88" y="808" class="m" font-size="16" fill="#55534e">pseudonymised: address, email, id_like, manual, name, us_phone · HMAC-SHA256 · no reverse map in the pack</text>
-<text x="88" y="836" class="m" font-size="16" fill="#55534e">left out on purpose: raw case order request identifiers, identity session draft digests, restricted proof values, attachment filenames and bytes, unknown fields</text>
+<text x="88" y="808" class="m" font-size="16" fill="#55534e">pseudonymized: address, email, id_like, manual, name, us_phone · HMAC-SHA256 · no reverse map in the pack</text>
+<text x="88" y="836" class="m" font-size="16" fill="#55534e">left out on purpose: raw case, order and request identifiers; identity, session and draft digests; restricted proof values; attachment filenames and bytes; unknown fields</text>
 <text x="88" y="864" class="m" font-size="16" fill="#55534e">synthetic demo data · advisory only · not a PayPal attachment · PayPal or the card issuer decides</text>
 <text x="64" y="944" class="m" font-size="14" letter-spacing="1.5" fill="#6b6862">REPEAT IT YOURSELF</text>
 <text x="64" y="980" class="m" font-size="18" fill="#1f1e1b">unzip -p review.zip README.txt | shasum -a 256      # compare with manifest.json "sha256"</text>

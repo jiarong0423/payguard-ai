@@ -150,6 +150,7 @@ Also made and tested in the same round (`tests/test_r25_backend.py`):
 ## Test records
 
 ### Suite (run 2026-11-04, offline, no model or PayPal call)
+Historical counts from 2026-11-04; the suite has grown since. Run `./tools/run.sh test` for the current count.
 - `./tools/run.sh test` at commit 2518957: **Ran 1005 tests, OK (skipped=2)**. After the r25 fixes the same command printed **Ran 1039 tests, OK (skipped=2)**; after the r26 and r27 fixes it printed **Ran 1055 tests, OK (skipped=2)**. The two skips are `test_paypal_tools` cases that need an optional SDK absent from the formal runtime.
 - `./tools/run.sh gemini-test` (Python 3.12 profile): runtime check printed `GEMINI_PROFILE_READY` (25 locked distributions, google-genai 2.28.0), then **Ran 33 tests, OK**. These include `test_worker.GeminiStudioWorkerTests.test_studio_history_is_regrouped_into_signed_gemini_steps`, `test_function_call_turn_round_trips_tools_and_signatures`, `GeminiGuideWorkerTests.test_guide_reply_failing_the_closed_contract_is_rejected` and `test_guide_call_uses_its_situation_prompt_and_contract_2_schema`.
 - `node tests/frontend_studio_agent.mjs`: `PASS` (adapter closed, recording schema `payguard.studio_agent_run.v1`). The browser stage was skipped because Playwright was not available.

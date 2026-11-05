@@ -1,6 +1,6 @@
 # PayGuard US Official Source Register
 
-Status: current public-reference register for the US-only profile. Review date: 2026-10-06 UTC. This document records reviewed public facts and limitations; it is not legal advice or account-specific policy certification.
+Status: current public-reference register for the US reference profile (US Sandbox seller; the optional ten-country rules check is advisory). Review date: 2026-10-06 UTC. This document records reviewed public facts and limitations; it is not legal advice or account-specific policy certification.
 
 ## Date rule
 
@@ -47,7 +47,7 @@ For PayPal pages, `Visible date` is the page's displayed `Last updated` value ob
 | Stage | Sources | Supported statement | Unsupported statement |
 | --- | --- | --- | --- |
 | AUP warning | `PP-US-AUP`, `PP-US-UA` | The description matched a category in the public US AUP and requires human/provider review. | The merchant violated policy, is approved, or becomes compliant after rewording. |
-| Velocity readiness | `PP-US-UA`, seller and Sandbox sources | Rapidly increasing typical sales volume is one of several public risk examples; local evidence readiness can be checked. | A known PayPal threshold, AML/fraud finding, predicted limitation or guaranteed release. |
+| Sales spike readiness | `PP-US-UA`, seller and Sandbox sources | Rapidly increasing typical sales volume is one of several public risk examples; local evidence readiness can be checked. | A known PayPal threshold, AML/fraud finding, predicted limitation or guaranteed release. |
 | Dispute mediation | Purchase/Seller Protection and Disputes sources | Route by actual reason/stage/requested evidence; prepare a human-reviewed draft. | Automatic eligibility, evidence sufficiency, dispute victory, refund or submission authority. |
 
 No reviewed official individual case proves that rapid sales growth alone caused an account limitation. The public US User Agreement is the controlling source for the narrower risk-example statement.

@@ -12,7 +12,7 @@ function SourceDate({ label, value, status }) {
 
 export default function PolicyPanel({ theme, session, revision, unavailable, onSessionExpired, open = false, onToggle }) {
   const [asOf, setAsOf] = useState(() => new Date().toISOString());
-  const [budget, setBudget] = useState('30');
+  const [budget, setBudget] = useState('90');
   const [claimType, setClaimType] = useState('policy_reference');
   const [citation, setCitation] = useState('');
   const [assessment, setAssessment] = useState(null);
