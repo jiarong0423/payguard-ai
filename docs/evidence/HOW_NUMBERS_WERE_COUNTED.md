@@ -25,7 +25,7 @@ The file set is the public candidate: every path in `public_export_manifest.json
 | Node test files / lines | 49 / 6,912 | `tests/frontend_*.mjs` (the two other `.mjs` files are a token-writer and a recorder, not tests) |
 | Python tests | 1,089 (9 skipped) | `unittest` discovery over `tests/`, loaded and counted, not run |
 | Red-team requests | 1,727 | run-time only, see below |
-| Words in documents | 74,377 (page says about 74,377; the script allows 1% either way) | see below |
+| Words in documents | 74,503 (page says about 74,503; the script allows 1% either way) | see below |
 | Evidence files | 24 | files directly in `docs/evidence/` (22 `.md`, 2 `.json`) |
 | Diagrams and images | 22 | every `*.png` and `*.svg` in the file set: 16 under `docs/`, 6 application icons under `frontend/public/icons`; `.mmd` sources are not counted |
 | PayPal clauses | 140 | `len(snippets)` in `data/country_rules/paypal_country_rules_v1.json` |
@@ -56,9 +56,9 @@ The script counts with the `ast` module (decorated functions whose decorator is 
 
 13,691 is the physical line count of the 73 files `frontend/src/**/*.jsx`, `*.js` and `*.css`. It excludes the JSON data files (adding them gives 15,407), `.mjs` files, the HTML pages and `frontend/public/` (adding HTML and public gives 13,733). JS and JSX without CSS is 10,729. The earlier public page said 13,463, the count of the published tree before 2026-11-08; the 15 more lines are the CSS added that day (`frontend/src/index.css` grew from 1,143 to 1,158 lines: the hint box before a draft and the toast placement rule). An independent reviewer's count of 13,553 uses the same scope.
 
-### Document words: 74,377
+### Document words: 74,503
 
-74,377 is the whitespace-token count of all 42 Markdown files in the file set (README, the security and notices files, and everything under `docs/`), with code fences and tables included. Limited to `docs/**` it is 59,470; `docs/**` plus README is 71,596. Earlier pages quoted "about 48,700" (the tree before 2026-11-08, documents only); the count grew because evidence files and a README walkthrough were added that day. The page says "about 74,377"; the script accepts one percent either way because the documents are still being edited. `tools/verify_public_numbers.py` prints the current figure and the variants.
+74,503 is the whitespace-token count of all 42 Markdown files in the file set (README, the security and notices files, and everything under `docs/`), with code fences and tables included. Limited to `docs/**` it is 59,594; `docs/**` plus README is 71,722. Earlier pages quoted "about 48,700" (the tree before 2026-11-08, documents only); the count grew because evidence files and a README walkthrough were added that day. The page says "about 74,503"; the script accepts one percent either way because the documents are still being edited. `tools/verify_public_numbers.py` prints the current figure and the variants.
 
 ### Receipts with a Debug-Id
 

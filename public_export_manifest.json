@@ -1,5 +1,5 @@
 {
-  "created_at_utc": "2026-11-08T23:20:32Z",
+  "created_at_utc": "2026-11-08T23:33:54Z",
   "dependency_locks": {
     "frontend_npm": "0f98893564efb5556cc0a92710feedcb9da085108f9668fee93f29940b87f09d",
     "gemini_python": "36554331392d6102519a4ead5778704c4ff89e79da6bb9d6648b656f130724bb",
@@ -43,11 +43,11 @@
       "source_sha256": "62559450a061410394f0cac8c43083a999f045200e5ad5c18c9e15096ab128be"
     },
     {
-      "bytes": 85835,
+      "bytes": 85854,
       "path": "README.md",
-      "sha256": "fbd20a8ca67ad1611a73417d9d91a7f4c29433495731e092f2d60392120eab88",
+      "sha256": "0c77e94a897b8ba53dd6c5b625088ecbb32962329e2d9bf5daa8317160a89fb7",
       "source_path": "README.md",
-      "source_sha256": "fbd20a8ca67ad1611a73417d9d91a7f4c29433495731e092f2d60392120eab88"
+      "source_sha256": "0c77e94a897b8ba53dd6c5b625088ecbb32962329e2d9bf5daa8317160a89fb7"
     },
     {
       "bytes": 11450,
@@ -423,9 +423,9 @@
     {
       "bytes": 8332,
       "path": "docs/evidence/HOW_NUMBERS_WERE_COUNTED.md",
-      "sha256": "e1644d25b8be3512a6e7f1b261b0fed5941661e08dfd9cb416e16ae416422da8",
+      "sha256": "cb25531b71ccaee99214920a2da681f604c8b1f7ae4deda39c4ab0d62690e2dc",
       "source_path": "docs/evidence/HOW_NUMBERS_WERE_COUNTED.md",
-      "source_sha256": "e1644d25b8be3512a6e7f1b261b0fed5941661e08dfd9cb416e16ae416422da8"
+      "source_sha256": "cb25531b71ccaee99214920a2da681f604c8b1f7ae4deda39c4ab0d62690e2dc"
     },
     {
       "bytes": 1692,
@@ -442,11 +442,11 @@
       "source_sha256": "1442f2a6c8912dad2291f0201d7e6915150669ea80e4fd41f14c072595fea5fb"
     },
     {
-      "bytes": 2873,
+      "bytes": 3730,
       "path": "docs/evidence/READBACK_20261109.md",
-      "sha256": "3f7e1565fc5bfd3438bdcae42dccdef3766ee153887aba74f63e2bf47975df7c",
+      "sha256": "3246ee1a18588b8af83b29bc5797b03aa15f20dd421552ff19e7e82a0c98bc38",
       "source_path": "docs/evidence/READBACK_20261109.md",
-      "source_sha256": "3f7e1565fc5bfd3438bdcae42dccdef3766ee153887aba74f63e2bf47975df7c"
+      "source_sha256": "3246ee1a18588b8af83b29bc5797b03aa15f20dd421552ff19e7e82a0c98bc38"
     },
     {
       "bytes": 22765,
@@ -533,11 +533,11 @@
       "source_sha256": "9b1f641cbadf95177207e17c1a220c6d0b80c8fbb42c4c0d744cb857ca0bcbce"
     },
     {
-      "bytes": 27732,
+      "bytes": 27734,
       "path": "docs/submission/devpost_story.md",
-      "sha256": "45f08921d42b2b11a7fa5116d5fe8771aadce718ffa4ef7200a9eaa52148cb74",
+      "sha256": "2644f37ff0c1bb924df94752ea9dc6cbceca1297dcb7fcd6e1e7491462963687",
       "source_path": "docs/submission/devpost_story.md",
-      "source_sha256": "45f08921d42b2b11a7fa5116d5fe8771aadce718ffa4ef7200a9eaa52148cb74"
+      "source_sha256": "2644f37ff0c1bb924df94752ea9dc6cbceca1297dcb7fcd6e1e7491462963687"
     },
     {
       "bytes": 4259,
@@ -2565,9 +2565,9 @@
     {
       "bytes": 14792,
       "path": "tools/verify_public_numbers.py",
-      "sha256": "535a4c837ca0daf642b2d3f425f1a3af932fab700dffcd8347d09196672cec3a",
+      "sha256": "cc9103d4fcf123665dbe4d36fbbb3999a5babc8da7f3488c082fb50b4fb07038",
       "source_path": "tools/verify_public_numbers.py",
-      "source_sha256": "535a4c837ca0daf642b2d3f425f1a3af932fab700dffcd8347d09196672cec3a"
+      "source_sha256": "cc9103d4fcf123665dbe4d36fbbb3999a5babc8da7f3488c082fb50b4fb07038"
     }
   ],
   "owner_attestation": {
@@ -2575,8 +2575,8 @@
     "scope": "RECORDED_OWNER_RIGHTS_AND_ENTRANT_ELIGIBILITY"
   },
   "package_digest_algorithm": "sha256(sorted utf-8 '<file_sha256>  <relative_path>\\n' records; manifest and detached hash excluded)",
-  "package_digest_sha256": "5aa48bf80d801603c2fd2c5c87ed9babaa8cb2a189f6fd38ecbc2b0da09b0c92",
-  "public_artifact_id": "payguard-public-source-5aa48bf80d801603",
+  "package_digest_sha256": "7a63323c5f34804500eab991d002303b41786e2b5ec7c71b8967d177b473d141",
+  "public_artifact_id": "payguard-public-source-7a63323c5f348045",
   "publication_authorized": false,
   "raw_bounded_prompt_disclosure": {
     "intent": "INTENTIONAL_PUBLIC_EXECUTABLE_PRODUCT_SOURCE",
