@@ -267,6 +267,10 @@ The PayPal Sandbox seller is a US business account and the provider environment 
 
 Scope: a fictitious US Business Sandbox seller. Production eligibility and live-account behaviour were not tested.
 
+## MCP server (read-only, optional)
+
+An AI agent can call the console's rule checks through MCP: `PYTHONPATH=src python3 -B -m payguard.mcp_server` starts a stdio server with five read-only tools (acceptable-use check, ten-country rules, clause search, sales-spike comparison). No tool sends, connects or writes, and nothing leaves your computer. It does not use PayPal's own MCP server. Tools, client configuration and how it was checked (14 tests, plus the official MCP Python SDK client): [docs/MCP_SERVER.md](docs/MCP_SERVER.md).
+
 ## Run locally
 
 Required console prerequisites: Python 3.13, Node.js 20.19 or newer or Node.js 22.12 or newer, npm and uv. The Gemini profile is set up separately and requires Python 3.12. The optional local-model line requires a separately installed LM Studio server with the exact `nvidia-nemotron-3-nano-4b` model reachable only at `127.0.0.1:1234`. Run from the repository root. The backend reads no `.env` file. The frontend build (Vite) reads `frontend/.env.local` when it exists; that file is only for the optional AG Studio licence key and is excluded by `.gitignore`.
