@@ -139,7 +139,7 @@ function ScenariosPage() {
   return <div className="app-shell scenarios-shell">
     <a className="skip-link" href="#main">Skip to work orders</a>
     <header className="topbar">
-      <a className="brand" href="/" aria-label="TradeGlot console"><span className="brand-mark"><Icon name="shield" size={23} /></span><span>TradeGlot<span className="brand-ai"> AI</span><small>MERCHANT EVIDENCE BUFFER</small></span></a>
+      <a className="brand" href="/" aria-label="TradeGlot console"><span className="brand-mark"><Icon name="shield" size={23} /></span><span>TradeGlot<small>MERCHANT EVIDENCE BUFFER</small></span></a>
       <nav aria-label="Additional workspace"><a href="/">Console</a><a href="/dashboard.html" data-testid="topbar-dashboard">Dashboard</a><a href="/scenarios.html" aria-current="page" data-testid="topbar-scenarios">Scenarios</a></nav>
       <div className="environment"><span className="badge badge-blue">{mode?.hosted ? 'HOSTED DEMO' : 'LOCAL DEMO'}</span></div>
     </header>

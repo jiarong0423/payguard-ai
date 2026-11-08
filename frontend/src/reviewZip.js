@@ -997,7 +997,7 @@ export function downloadInternalReviewZip(draft, productConfirmation = null) {
   try {
     anchor = document.createElement('a');
     anchor.href = url;
-    anchor.download = 'payguard-internal-review.zip';
+    anchor.download = 'tradeglot-internal-review.zip';
     document.body.appendChild(anchor);
     anchor.click();
   } finally {

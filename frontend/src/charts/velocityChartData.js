@@ -91,6 +91,8 @@ export function buildVelocityHourlyRows(velocity, transactions) {
 const BASELINE_FILL = '#94a3b8';
 const SPIKE_FILL = '#0f766e';
 const REVIEW_STROKE = '#875f30';
+// A bar above the review line is drawn in amber so the hour to look at stands out; the rest stay teal.
+const FLAG_FILL = '#b45309';
 const AVERAGE_STROKE = '#6366f1';
 
 // (r32 J5 P3-3) Chart titles and subtitles wrap onto up to three lines instead of being cut with an ellipsis at
@@ -113,7 +115,7 @@ export function velocityChartOptions({ rows, reviewLine, currency }, container, 
     container,
     data: rows,
     title: { text: 'Hourly amount: baseline vs spike', fontSize: 14, fontWeight: 600, color: '#0f172a', ...CAPTION_WRAP },
-    subtitle: { text: 'Demo · UTC · ▲ spike', fontSize: 13, color: '#64748b', ...CAPTION_WRAP },
+    subtitle: { text: 'Sample data · times in UTC · amber = above the review line', fontSize: 13, color: '#64748b', ...CAPTION_WRAP },
     background: { fill: '#ffffff' },
     padding: { top: 12, right: 16, bottom: 8, left: 8 },
     series: [
@@ -128,6 +130,7 @@ export function velocityChartOptions({ rows, reviewLine, currency }, container, 
       {
         type: 'bar', xKey: 'label', yKey: 'spike', yName: 'Spike window · orders', fill: SPIKE_FILL,
         cornerRadius: 3,
+        itemStyler: ({ datum }) => (reviewLine !== null && datum && datum.spike > reviewLine ? { fill: FLAG_FILL } : {}),
         label: { enabled: true, placement: 'outside-end', fontSize: 16, fontWeight: 700, color: SPIKE_FILL,
           formatter: ({ value }) => (value && baselineRate > 0 ? `×${(value / baselineRate).toFixed(1)}` : '') },
         tooltip: { renderer: ({ datum }) => ({ heading: 'Spike window', title: rangeLabel(datum),

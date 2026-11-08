@@ -171,7 +171,7 @@ for (const required of [
   'data-testid="velocity-baseline"',
   'data-testid="dispute-scenario-match"',
   'Bound synthetic scenario',
-  'DETERMINISTIC CASE MATCH',
+  'RULE-BASED CASE MATCH',
   "aup?.match_status === 'REVIEW_SIGNAL' && !aupConsumed",
   "caseItem?.reason === 'INR' && draft?.evidence?.reason === 'INR' && draft?.routing?.overall_state === 'READY_FOR_LOCAL_REVIEW' && !draft?.review_reasons?.includes('unsupported_reason')",
   'data-testid="dispute-route"',
@@ -187,7 +187,7 @@ for (const required of [
   'data-testid="internal-review-profile"',
   'data-testid="download-pseudonymized-evidence"',
   'Download review file',
-  'Pseudonymized evidence file downloaded locally; no file was submitted to PayPal.',
+  'Evidence file with personal details replaced was saved on this computer; nothing was sent to PayPal.',
 ]) assert.ok(appSource.includes(required), required);
 for (const required of [
   'NOT_MADE',
