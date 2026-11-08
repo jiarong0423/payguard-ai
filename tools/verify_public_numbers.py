@@ -33,7 +33,7 @@ MANIFEST_SHA = "public_export_manifest.sha256"
 CLAIMS = {
     "tracked_files": 342,
     "python_source_lines": 21153,
-    "python_test_lines": 17623,
+    "python_test_lines": 17626,
     "frontend_lines": 13534,
     "jsx_files": 21,
     "frontend_pages": 5,

@@ -54,7 +54,7 @@ Every action that writes to PayPal Sandbox, spends the Studio allowance or wipes
 
 Counted on the public repository on 2026-11-08 with `.venv/bin/python3 -B tools/verify_public_numbers.py` (no network):
 
-- 342 tracked files. Python: 21,153 lines of backend, source and tools plus 17,623 lines of tests. Front end: 13,534 lines (21 JSX components, 5 pages). 37 API routes.
+- 342 tracked files. Python: 21,153 lines of backend, source and tools plus 17,626 lines of tests. Front end: 13,534 lines (21 JSX components, 5 pages). 37 API routes.
 - 1,070 Python tests (9 skipped) passed in the author's last local run of this file set (recorded in `docs/evidence/TEST_RUN_20261108.md`; the earlier CI run covered 1,058), plus 46 Node contract and browser tests (6,775 lines) and a red-team request matrix of 1,727 requests (0 broken, 0 gaps); the test count and the matrix line are printed at the end of `./tools/run.sh test`.
 - 35 Markdown files, about 70,078 words; 18 evidence files; 22 diagrams and images.
 - Data: 140 PayPal clauses and 681 export and import rules for ten countries; a 268-case evidence-guide benchmark; 601 scored guide replies.

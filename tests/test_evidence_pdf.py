@@ -1,5 +1,6 @@
 import hashlib
 import re
+import shutil
 import sys
 import subprocess
 import tempfile
@@ -10,7 +11,7 @@ from payguard.dispute_evidence import MAX_ATTACHMENT_BYTES, validate_attachment_
 from payguard.evidence_pdf import (EvidencePdfError, FOOTER, build_evidence_pdf, evidence_pdf_for_case,
                                    fields_from_case)
 
-PDFTOTEXT = "/opt/homebrew/bin/pdftotext"
+PDFTOTEXT = shutil.which("pdftotext") or ("/opt/homebrew/bin/pdftotext" if Path("/opt/homebrew/bin/pdftotext").exists() else None)
 
 CASE = {
     "delivered_at": "2026-11-06T10:00:00Z", "order_created_at": "2026-11-04T10:00:00Z",
@@ -29,6 +30,8 @@ CASE = {
 
 
 def text_of(content):
+    if PDFTOTEXT is None:
+        raise unittest.SkipTest("pdftotext (poppler) is not installed")
     with tempfile.TemporaryDirectory() as tmp:
         path = Path(tmp) / "e.pdf"
         path.write_bytes(content)

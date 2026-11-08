@@ -18,7 +18,7 @@ The file set is the public candidate: every path in `public_export_manifest.json
 |---|---|---|
 | Tracked files | 342 | 332 manifest paths + `public_export_manifest.json` + `public_export_manifest.sha256` |
 | Python source lines | 21,153 | all `*.py` outside `tests/` (backend, src, tools, integrations) |
-| Python test lines | 17,623 | all `tests/**/*.py` |
+| Python test lines | 17,626 | all `tests/**/*.py` |
 | Front-end lines | 13,534 | `frontend/src/**/*.{jsx,js,css}`, 69 files; see below |
 | JSX files / pages | 21 / 5 | `frontend/**/*.jsx`; `frontend/*.html` (index, dashboard, evidence, proof, scenarios; `public/offline.html` is the service-worker fallback, not a page) |
 | API routes | 37 | see "Route count" |
