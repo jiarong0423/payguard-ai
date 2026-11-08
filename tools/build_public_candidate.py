@@ -174,6 +174,7 @@ EXACT_FILES = (
     "tests/frontend_guide_live_api.mjs",
     "tests/frontend_hosted_contract.mjs",
     "tests/frontend_try_example.mjs",
+    "tests/frontend_recorded_replay.mjs",
     "tests/frontend_wording_20261108.mjs",
     "tests/frontend_topbar_sandbox_contract.mjs",
     "tests/frontend_operator_labels.mjs",
@@ -235,7 +236,7 @@ TREE_FILES = {
     ),
     "frontend/src": (
         "AnalyticsDashboard.css", "AnalyticsDashboard.jsx", "App.jsx", "CountryRules.css", "CountryRules.jsx", "GuideLive.css", "GuideLive.jsx",
-        "GuideReplay.css", "GuideReplay.jsx", "hostedCopy.js", "PolicyPanel.jsx", "ProductReference.css", "ProductReference.jsx", "ReferencePanel.jsx", "api.js", "evidence.jsx", "index.css",
+        "GuideReplay.css", "GuideReplay.jsx", "RecordedSendReplay.css", "RecordedSendReplay.jsx", "hostedCopy.js", "PolicyPanel.jsx", "ProductReference.css", "ProductReference.jsx", "ReferencePanel.jsx", "api.js", "evidence.jsx", "index.css",
         "lockReasons.js", "main.jsx", "operatorLabels.js", "productConfirmation.js", "pseudonymizedExport.js", "pwa.css", "pwa.js", "referenceContract.js",
         "resumeNotice.js", "reviewZip.js", "sendConfirm.js", "tabKeys.js", "TimeEvidenceView.jsx",
     ),

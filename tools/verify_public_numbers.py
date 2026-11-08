@@ -31,15 +31,15 @@ MANIFEST_SHA = "public_export_manifest.sha256"
 
 # Values claimed on the public pages (README.md, docs/submission/devpost_story.md).
 CLAIMS = {
-    "tracked_files": 350,
-    "python_source_lines": 21222,
+    "tracked_files": 353,
+    "python_source_lines": 21223,
     "python_test_lines": 17626,
-    "frontend_lines": 13553,
-    "jsx_files": 21,
+    "frontend_lines": 13628,
+    "jsx_files": 22,
     "frontend_pages": 5,
     "api_routes": 37,
-    "node_test_files": 46,
-    "node_test_lines": 6775,
+    "node_test_files": 47,
+    "node_test_lines": 6817,
     "python_tests": 1070,
     "python_tests_skipped": 9,
     "redteam_requests": 1727,

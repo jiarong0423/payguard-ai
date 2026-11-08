@@ -1,0 +1,20 @@
+.recorded-replay { margin-top: 14px; padding: 14px 16px; border: 1px solid var(--pg-color-rule, #e3e7ee); border-radius: 12px; background: var(--pg-color-panel, #fff); display: grid; gap: 10px; }
+.recorded-replay h4 { margin: 0; font-size: 16px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.recorded-replay-chip { font-size: 12px; font-weight: 650; padding: 2px 9px; border-radius: 999px; border: 1px solid #b45309; color: #92400e; background: #fffbeb; }
+.recorded-replay-note { margin: 0; color: var(--pg-color-muted, #475569); font-size: 14px; }
+.recorded-replay-dialog { display: grid; gap: 10px; padding: 12px; border-radius: 10px; background: var(--pg-color-recede, #f4f5f8); }
+.recorded-replay-tick { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; min-height: 44px; }
+.recorded-replay-tick input { width: 22px; height: 22px; flex: none; }
+.recorded-replay-button, .recorded-replay-send { min-height: 44px; border-radius: 10px; border: 0; padding: 10px 16px; font-weight: 650; font-size: 15px; cursor: pointer; background: var(--pg-color-accent, #4338ca); color: #fff; }
+.recorded-replay-send { background: #166534; }
+.recorded-replay-button:disabled { opacity: .55; cursor: not-allowed; }
+.recorded-replay-link { background: none; border: 0; color: var(--pg-color-accent, #4338ca); text-decoration: underline; cursor: pointer; min-height: 44px; font-size: 14px; justify-self: start; }
+.recorded-replay button:focus-visible, .recorded-replay input:focus-visible { outline: 3px solid var(--pg-color-accent, #4338ca); outline-offset: 2px; }
+.recorded-replay-result { display: grid; gap: 8px; padding: 12px; border-radius: 10px; background: #f0fdf4; border: 1px solid #86efac; font-size: 14px; }
+.recorded-replay-result p { margin: 0; }
+.recorded-replay-stamp { font-size: 15px; }
+.recorded-replay-steps { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.recorded-replay-steps li { display: grid; gap: 2px; }
+.recorded-replay-at { font-weight: 650; font-size: 13px; color: #166534; }
+.recorded-replay-source { color: var(--pg-color-muted, #475569); font-size: 13px; }
+@media (prefers-reduced-motion: reduce) { .recorded-replay * { transition: none !important; } }
