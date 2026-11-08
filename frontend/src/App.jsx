@@ -477,6 +477,12 @@ export default function App() {
     if (scroll) window.requestAnimationFrame(() => {
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       document.getElementById(stage)?.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+      // The stage is still opening when the first scroll starts, so the page can land too low; once it has settled,
+      // bring the stage heading back to the top if it is not there.
+      window.setTimeout(() => {
+        const el = document.getElementById(stage);
+        if (el && Math.abs(el.getBoundingClientRect().top) > 24) el.scrollIntoView({ behavior: 'auto', block: 'start' });
+      }, 450);
     });
   }, []);
   useEffect(() => {
@@ -1723,6 +1729,7 @@ function PhoneChartLegend() {
   return <ul className="phone-chart-legend" data-testid="velocity-phone-legend" aria-label="Chart legend">
     <li><span className="phone-legend-mark is-usual" aria-hidden="true" />Usual rate</li>
     <li><span className="phone-legend-mark is-spike" aria-hidden="true" />Spike window · orders</li>
+    <li><span className="phone-legend-mark is-flag" aria-hidden="true" />Above the review line</li>
     <li><span className="phone-legend-mark is-review" aria-hidden="true" />Review threshold</li>
   </ul>;
 }

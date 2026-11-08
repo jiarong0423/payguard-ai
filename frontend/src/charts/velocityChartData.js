@@ -128,7 +128,7 @@ export function velocityChartOptions({ rows, reviewLine, currency }, container, 
           data: [{ label: 'Synthetic baseline rate', value: `${money(datum.baseline)} ${currency}/h` }] }) },
       },
       {
-        type: 'bar', xKey: 'label', yKey: 'spike', yName: 'Spike window · orders', fill: SPIKE_FILL,
+        type: 'bar', xKey: 'label', yKey: 'spike', yName: 'Spike window (amber = above the line)', fill: SPIKE_FILL,
         cornerRadius: 3,
         itemStyler: ({ datum }) => (reviewLine !== null && datum && datum.spike > reviewLine ? { fill: FLAG_FILL } : {}),
         label: { enabled: true, placement: 'outside-end', fontSize: 16, fontWeight: 700, color: SPIKE_FILL,

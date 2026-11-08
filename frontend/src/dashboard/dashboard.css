@@ -76,7 +76,7 @@ body { margin: 0; background: var(--pg-canvas); color: var(--pg-ink); font-famil
 .pg-chip-watch { color: var(--pg-watch); background: var(--pg-tint-watch); }
 .pg-chip-ok { color: var(--pg-ok); background: var(--pg-tint-ok); }
 
-.pg-deadline { display: grid; align-content: start; gap: 12px; container-type: inline-size; }
+.pg-deadline { display: grid; align-content: start; gap: 12px; container-type: inline-size; padding-inline: 12px; box-sizing: border-box; }
 /* A narrow tile keeps one line per case: the day stays, the time of day goes (the Cases table has it). */
 @container (max-width: 420px) {
   .pg-deadline-list li .pg-time { display: none; }

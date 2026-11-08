@@ -1071,6 +1071,7 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 .phone-chart-legend li { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
 .phone-legend-mark { display: inline-block; width: 18px; height: 0; border-top: 2px dashed #94a3b8; }
 .phone-legend-mark.is-spike { width: 10px; height: 12px; border: 0; border-radius: 2px; background: #0f766e; }
+.phone-legend-mark.is-flag { width: 10px; height: 12px; border: 0; border-radius: 2px; background: #b45309; }
 .phone-legend-mark.is-review { border-top-color: #875f30; }
 
 /* (r25 send guard) Case and PayPal dispute side by side, the hold line, and the two-step confirm before a real send.
