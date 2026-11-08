@@ -616,7 +616,14 @@ function assertContract(path, payload, session, body) {
         && new Set(payload.items.map((row) => row.dispute_id)).size === payload.items.length;
     } else if (valid && path === '/paypal/disputes/provide-evidence') {
       const submitted = payload.external_send === 'SUBMITTED';
-      valid = pk(payload, [...envelopeKeys, 'readback', 'dispute_id', 'case_ref', 'method', 'path', 'content_type', 'input', 'files', 'external_send', 'submit_flag_enabled', 'human_review_required', ...optional('payload_sha256', 'send_guard', 'confirm_token')]) && sendGuardValid && confirmTokenValid
+      // (2026-11-09) A send carries the plain SHA-256 of each file it posted, in the same order as `files`; a preview never does.
+      const sha256 = (v) => typeof v === 'string' && /^[a-f0-9]{64}$/.test(v);
+      const sentFilesValid = (!has('sent_files') || payload.sent_files === null) ? !submitted
+        : submitted && Array.isArray(payload.sent_files) && Array.isArray(payload.files) && payload.sent_files.length === payload.files.length
+          && payload.sent_files.every((row, index) => pk(row, ['filename', 'content_type', 'byte_length', 'sha256']) && payload.files[index]
+            && row.filename === payload.files[index].filename && row.content_type === payload.files[index].content_type
+            && row.byte_length === payload.files[index].byte_length && sha256(row.sha256));
+      valid = pk(payload, [...envelopeKeys, 'readback', 'dispute_id', 'case_ref', 'method', 'path', 'content_type', 'input', 'files', 'external_send', 'submit_flag_enabled', 'human_review_required', ...optional('payload_sha256', 'send_guard', 'confirm_token', 'sent_files')]) && sendGuardValid && confirmTokenValid && sentFilesValid
         && (!has('payload_sha256') || payload.payload_sha256 === null || digest(payload.payload_sha256))
         && ['PROVIDE_EVIDENCE_PREVIEW', 'PROVIDE_EVIDENCE_SUBMITTED'].includes(payload.readback) && disputeId(payload.dispute_id)
         && payload.dispute_id === body?.dispute_id && payload.case_ref === body?.case_ref && payload.method === 'POST'

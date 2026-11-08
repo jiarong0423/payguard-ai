@@ -63,6 +63,9 @@ assert.match(app, /const submitTracking = \(\) => action\('tracking-submit', asy
 assert.match(app, /await \(kind === 'tracking' \? submitTracking\(\) : submitEvidence\(\)\);\n    sendConfirmTokens\.current\.clear\(kind\);/u);
 assert.equal((app.match(/^(?!\s*\/\/).*submit: true/gmu) || []).length, 0, 'no other path builds a submit body (comments aside)');
 assert.equal((app.match(/sendConfirmTokens\.current\.clearAll\(\);/gu) || []).length, 3, 'new session, expired session and Reset demo drop both tokens');
-assert.equal((api.match(/optional\('payload_sha256', 'send_guard', 'confirm_token'\)\]\) && sendGuardValid && confirmTokenValid/gu) || []).length, 2);
+// The add-tracking response keeps the original optional list; the provide-evidence response also allows `sent_files`
+// (the plain SHA-256 of each file a send posted) and checks its shape.
+assert.equal((api.match(/optional\('payload_sha256', 'send_guard', 'confirm_token'\)\]\) && sendGuardValid && confirmTokenValid(?! && sentFilesValid)/gu) || []).length, 1);
+assert.equal((api.match(/optional\('payload_sha256', 'send_guard', 'confirm_token', 'sent_files'\)\]\) && sendGuardValid && confirmTokenValid && sentFilesValid/gu) || []).length, 1);
 
 console.log(JSON.stringify({ status: 'PASS', checks: ['draft two-step', 'reset confirm', 'send dialog amount and date', 'evidence debug id', 'server send confirmation'] }));

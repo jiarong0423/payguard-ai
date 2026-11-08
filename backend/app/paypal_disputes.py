@@ -1010,8 +1010,13 @@ class DisputeReadbackService:
                 raise
             with self._store.lock:
                 self._store._activity(session, "provide_evidence", "Dispute evidence submitted to PayPal Sandbox")
+            # The exact bytes that went out, fingerprinted in plain SHA-256 now, because the PDF carries dates counted from
+            # the moment of preparing and cannot be rebuilt byte for byte later.
+            sent_files = [{"filename": row["filename"], "content_type": row["content_type"],
+                           "byte_length": len(row["content"]), "sha256": hashlib.sha256(row["content"]).hexdigest()}
+                          for row in unmasked["files"]]
             result.update(external_send="SUBMITTED", provider_submission="PERFORMED",
-                          readback="PROVIDE_EVIDENCE_SUBMITTED",
+                          readback="PROVIDE_EVIDENCE_SUBMITTED", sent_files=sent_files,
                           paypal_debug_id=(sent or {}).get("paypal_debug_id") if type(sent) is dict else None)
         try:
             return ProvideEvidenceResponse.model_validate(result).model_dump()

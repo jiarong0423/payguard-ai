@@ -705,6 +705,16 @@ class MultipartFilePart(Contract):
     byte_length: StrictInt = Field(ge=0, lt=10_000_000)
 
 
+class SentFileFingerprint(Contract):
+    """Plain SHA-256 of one file's exact bytes, recorded at the moment of a send so a later read-back can be compared.
+
+    The keyed ``payload_sha256`` cannot be checked outside the session; this one can. Never present on a preview."""
+    filename: StrictStr = Field(max_length=255)
+    content_type: Literal["image/jpeg", "image/gif", "image/png", "application/pdf"]
+    byte_length: StrictInt = Field(ge=0, lt=10_000_000)
+    sha256: StrictStr = Field(pattern=r"^[a-f0-9]{64}$")
+
+
 class SendGuard(Contract):
     """(r25 send guard) What a send carries and to whom, side by side; every account id is masked (first 2, last 4)."""
     case_ref: StrictStr = Field(pattern=r"^case-ref-[0-9]{3}$")
@@ -739,11 +749,26 @@ class ProvideEvidenceResponse(DisputeEnvelope):
     send_guard: SendGuard
     # (r30 J2 P2-1) Issued by a preview whose payload can be sent; null on a send and while nothing can be sent.
     confirm_token: StrictStr | None = Field(default=None, pattern=CONFIRM_TOKEN_PATTERN)
+    # (2026-11-09) Plain SHA-256 of each file's bytes, set only on a send; null on a preview.
+    sent_files: list[SentFileFingerprint] | None = Field(default=None, max_length=20)
 
     @model_validator(mode="after")
     def total_size(self):
         if sum(row.byte_length for row in self.files) > 50_000_000:
             raise ValueError("dispute_submit_invalid")
+        return self
+
+    @model_validator(mode="after")
+    def sent_files_binding(self):
+        if self.external_send != "SUBMITTED":
+            if self.sent_files is not None:
+                raise ValueError("dispute_submit_invalid")
+            return self
+        if self.sent_files is None or len(self.sent_files) != len(self.files):
+            raise ValueError("dispute_submit_invalid")
+        for sent, part in zip(self.sent_files, self.files):
+            if (sent.filename, sent.content_type, sent.byte_length) != (part.filename, part.content_type, part.byte_length):
+                raise ValueError("dispute_submit_invalid")
         return self
 
     @model_validator(mode="after")

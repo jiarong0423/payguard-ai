@@ -154,6 +154,27 @@ class SanitizerTests(unittest.TestCase):
                        send_guard={"case_ref": "case-ref-001", "case_reason": None, "dispute_masked": "PP-D-\u202601",
                                    "account_status": "UNKNOWN"})
         ProvideEvidenceResponse.model_validate(preview)
+        # Red team 2026-11-09: the plain file hash exists only on a send and must describe the files the response lists.
+        part = {"name": "file1", "filename": "a.pdf", "content_type": "application/pdf", "byte_length": 10}
+        good = {"filename": "a.pdf", "content_type": "application/pdf", "byte_length": 10, "sha256": "a" * 64}
+        submitted_base = dict(preview, files=[part], external_send="SUBMITTED", provider_submission="PERFORMED",
+                              readback="PROVIDE_EVIDENCE_SUBMITTED", submit_flag_enabled=True, sent_files=[good])
+        ProvideEvidenceResponse.model_validate(submitted_base)
+        for label, change in (
+                ("preview carries a hash", dict(preview, sent_files=[good])),
+                ("send without a hash", dict(submitted_base, sent_files=None)),
+                ("send with an empty list", dict(submitted_base, sent_files=[])),
+                ("wrong file name", dict(submitted_base, sent_files=[dict(good, filename="b.pdf")])),
+                ("wrong size", dict(submitted_base, sent_files=[dict(good, byte_length=11)])),
+                ("wrong media type", dict(submitted_base, sent_files=[dict(good, content_type="image/png")])),
+                ("short hash", dict(submitted_base, sent_files=[dict(good, sha256="a" * 63)])),
+                ("upper-case hash", dict(submitted_base, sent_files=[dict(good, sha256="A" * 64)])),
+                ("non-hex hash", dict(submitted_base, sent_files=[dict(good, sha256="g" * 64)])),
+                ("extra key", dict(submitted_base, sent_files=[dict(good, content="x")])),
+                ("two hashes for one file", dict(submitted_base, sent_files=[good, good])),
+                ("hash as a string", dict(submitted_base, sent_files="a" * 64))):
+            with self.subTest(label=label), self.assertRaises(ValidationError):
+                ProvideEvidenceResponse.model_validate(change)
         # PayPal docs r24: PROOF_OF_FULFILLMENT needs 1-10 tracking items; OTHER needs carrier_name_other; files are
         # JPG/GIF/PNG/PDF under 10 MB; a fixture answer never carries a PayPal-Debug-Id.
         tracking = lambda rows: {"evidences": [{"evidence_type": "PROOF_OF_FULFILLMENT",
@@ -495,6 +516,20 @@ class SandboxRouteTests(unittest.TestCase):
         self.assertIn(b"%PDF-1.4", content)
         self.assertIn(b"Delivery evidence summary", content)
         self.assertNotIn(("*" * 19 + "001").encode(), content)
+        # 2026-11-09: the send records the plain SHA-256 of the exact bytes posted (cross-check: pull the PDF out of the
+        # multipart body ourselves and hash it independently of the code under test).
+        start = content.index(b"%PDF-1.4")
+        end = content.index(b"\r\n--", start)  # the multipart boundary line that closes the file part
+        posted_pdf = content[start:end]
+        self.assertTrue(posted_pdf.rstrip(b"\n").endswith(b"%%EOF"))
+        self.assertEqual(len(body["sent_files"]), 1)
+        sent = body["sent_files"][0]
+        self.assertEqual((sent["filename"], sent["content_type"]), ("synthetic-delivery.pdf", "application/pdf"))
+        self.assertEqual(sent["byte_length"], len(posted_pdf))
+        self.assertEqual(sent["sha256"], __import__("hashlib").sha256(posted_pdf).hexdigest())
+        self.assertEqual(body["files"][0]["byte_length"], sent["byte_length"])
+        # A preview never carries it.
+        self.assertIsNone(provide(dict(request, submit=False)).json().get("sent_files"))
         # PayPal docs r24: PayPal-Request-Id is at most 38 characters and the Disputes spec does not declare it, so it
         # is a correlation id only ("pg-" + 32 hex); the one-approval-one-send lock is the guard against a resend.
         self.assertRegex(posted[0].headers["paypal-request-id"], r"^pg-[0-9a-f]{32}$")
