@@ -32,7 +32,7 @@ MANIFEST_SHA = "public_export_manifest.sha256"
 # Values claimed on the public pages (README.md, docs/submission/devpost_story.md).
 CLAIMS = {
     "tracked_files": 332,
-    "python_source_lines": 20814,
+    "python_source_lines": 20822,
     "python_test_lines": 17453,
     "frontend_lines": 13458,
     "jsx_files": 21,
@@ -205,11 +205,19 @@ def main():
     # 6. Python tests (loaded, not run)
     try:
         loaded, skipped, failed = load_python_tests(paths)
-        record("python_tests", loaded - failed if failed else loaded,
-               f"unittest discover loader on tests/ (load only, nothing executed); modules that failed to import: {failed}")
-        record("python_tests_skipped", skipped,
-               "tests/methods carrying a @unittest.skip* marker at load time; a skipTest() call inside a test body "
-               "is only visible when it runs, so this is a lower bound")
+        if failed:
+            # A count taken while some test modules cannot be imported would be wrong, so do not report one.
+            note = (f"{failed} test module(s) could not be imported with this Python (the project packages are missing); "
+                    "run it with the project environment: .venv/bin/python3 -B tools/verify_public_numbers.py, "
+                    "or run ./tools/run.sh test and read the final 'Ran N tests' line")
+            record("python_tests", None, note)
+            record("python_tests_skipped", None, "as above: final line 'OK (skipped=N)'")
+        else:
+            record("python_tests", loaded,
+                   "unittest discover loader on tests/ (load only, nothing executed); every test module imported")
+            record("python_tests_skipped", skipped,
+                   "tests/methods carrying a @unittest.skip* marker at load time; a skipTest() call inside a test body "
+                   "is only visible when it runs, so this is a lower bound")
     except Exception as exc:  # missing third-party packages: say so, do not guess
         record("python_tests", None, f"could not load tests ({type(exc).__name__}: {str(exc)[:80]}); use the "
                "project .venv python, or run ./tools/run.sh test and read the final 'Ran N tests' line")

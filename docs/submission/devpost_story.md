@@ -44,9 +44,9 @@ An **AG Studio** evidence dashboard (`/dashboard.html`) shows the synthetic case
 
 ## Built and measured
 
-Counted on the public repository on 2026-11-08 with `python3 tools/verify_public_numbers.py` (standard library, no network):
+Counted on the public repository on 2026-11-08 with `.venv/bin/python3 -B tools/verify_public_numbers.py` (no network):
 
-- 332 tracked files. Python: 20,814 lines of backend, source and tools plus 17,453 lines of tests. Front end: 13,458 lines (21 JSX components, 5 pages). 37 API routes.
+- 332 tracked files. Python: 20,822 lines of backend, source and tools plus 17,453 lines of tests. Front end: 13,458 lines (21 JSX components, 5 pages). 37 API routes.
 - 1,058 Python tests ran OK (9 skipped), plus 44 Node contract and browser tests (6,700 lines) and a red-team request matrix of 1,727 requests (0 broken, 0 gaps); the test count and the matrix line are printed at the end of `./tools/run.sh test`.
 - 31 Markdown files, about 61,400 words; 16 evidence files; 22 diagrams and images.
 - Data: 140 PayPal clauses and 681 export and import rules for ten countries; a 268-case evidence-guide benchmark; 601 scored guide replies.
