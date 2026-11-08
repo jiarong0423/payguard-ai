@@ -70,6 +70,8 @@ REGION_TEXT_FILES = frozenset({
     "data/country_rules/paypal_country_rules_v1.json",
     "src/payguard/country_rules.py",
     "tests/test_country_rules.py",
+    # (2026-11-08) The source spot-check quotes short fragments of the official pages in their own language (Chinese, Japanese).
+    "docs/evidence/RULES_SPOTCHECK_20261108.md",
 })
 MAPPED_SOURCE_PATHS = {"tools/run.sh": "tools/public_run.sh"}
 

@@ -12,9 +12,21 @@ Video: https://youtu.be/_GORnHWShU4 (public, 2:50)
 
 ---
 
-**A small seller gets a PayPal dispute. PayGuard AI turns the order records into a reviewed evidence package, and after one human approval sends it to the PayPal Sandbox dispute.** PayPal Sandbox accepted that request twice (2026-11-04 and 2026-11-05, UTC+8) and the dispute moved to waiting for the buyer.
+Not to be confused with other projects named PayGuard AI: this is the seller-side dispute evidence project ([repository](https://github.com/jiarong0423/payguard-ai)).
+
+**A buyer says the parcel never arrived. PayGuard AI turns the seller's order records into a reviewed evidence package, and after one person approves, sends it to the PayPal Sandbox dispute.** PayPal Sandbox accepted that request twice (2026-11-04 and 2026-11-05, UTC+8) and the dispute moved to waiting for the buyer.
+
+**Rules first. AI only picks from closed options. One person's approval sends.**
+
+Real PayPal Sandbox runs, with masked receipts: [2026-10-31](https://github.com/jiarong0423/payguard-ai/blob/main/docs/evidence/RECEIPT_20261031_live.md) (OAuth, an unsent invoice draft, dispute list and detail reads), [2026-11-04](https://github.com/jiarong0423/payguard-ai/blob/main/docs/evidence/RECEIPT_20261104_live.md) (evidence send, PayPal-Debug-Id `f908765a01293`, fresh read after it) and [2026-11-05](https://github.com/jiarong0423/payguard-ai/blob/main/docs/evidence/RECEIPT_20261105_live.md) (second send, PayPal-Debug-Id `f2088142a6218`, readback `ca5554cf42ef6`, recorded during the video).
 
 **Try it:** [hosted demo](https://payguard-demo-j2b3.onrender.com) (synthetic data, no PayPal calls) · [Proof page](https://payguard-demo-j2b3.onrender.com/proof.html) · [2:50 video](https://youtu.be/_GORnHWShU4) · [public repository](https://github.com/jiarong0423/payguard-ai) (MIT)
+
+Try it in two minutes (hosted demo, synthetic data, no PayPal calls):
+1. Policy pre-check: ship from **United States** to **Singapore**, tick **E-cigarettes**, select **Check country rules**. The result reads "This sale is likely to be stopped".
+2. Step 02: read the AG Charts spike and the records behind it.
+3. Step 03: open the evidence deadline board and select **Download review ZIP**.
+4. Open **Proof** in the top bar: each claim, how it was shown, the date and the source file.
 
 ## Why I built PayGuard AI
 
@@ -24,11 +36,29 @@ A seller may notice a policy warning, a sudden sales spike, or a dispute only af
 
 ## What it does
 
-1. **Before an invoice draft: policy pre-check.** Deterministic checks compare the product description with pinned references to PayPal's published US Acceptable Use Policy; the seller can edit, cancel, or acknowledge the warning. An optional **ten-country rules check** answers from two layers, each row linked to its source: 140 clauses paraphrased from PayPal's legal hub pages for ten country profiles, and 681 official export and import rules (313 export, 368 import) from government pages and postal operators. Once a check has found a PayPal or government ban in the session, the server refuses the Sandbox invoice draft (HTTP 409), not only the button. A sample of 36 rules from two of the ten countries was compared with their sources on 2026-11-02; the other rules are not yet checked line by line. The check is advisory, not legal advice, and PayPal's Acceptable Use Policy still applies. After review, the PayPal Sandbox path creates one **unsent** invoice draft.
+1. **Before an invoice draft: policy pre-check.** Deterministic checks compare the product description with pinned references to PayPal's published US Acceptable Use Policy; the seller can edit, cancel, or acknowledge the warning. An optional **ten-country rules check** answers from two layers, each row linked to its source: 140 clauses paraphrased from PayPal's legal hub pages for ten country profiles, and 681 official export and import rules (313 export, 368 import) from government pages and postal operators. Once a check has found a PayPal or government ban in the session, the server refuses the Sandbox invoice draft (HTTP 409), not only the button. A recorded spot-check on 2026-11-08 sampled 48 of the 681 rules and compared 44 with their official pages (34 consistent, 10 wording differs but meaning consistent, 0 inconsistent; 4 could not be opened); an earlier sample of 36 rules from two countries was compared on 2026-11-02 without a record file; the other rules are not checked line by line. The check is advisory, not legal advice, and PayPal's Acceptable Use Policy still applies. After review, the PayPal Sandbox path creates one **unsent** invoice draft.
 2. **When sales jump.** A backend comparison flags a synthetic burst (50 orders, 500.00 USD, 5 times the declared local baseline). **AG Charts** draws the last hour against the review line, and **AG Grid** renders the order stream with sorting, filters, quick-filter search, custom cell renderers, value formatters, stable row ids and the Quartz theme; selecting an order shows its amount, currency and capture time. The card lists the records that back the signal and the ones still missing. It is a local preparation signal, not a PayPal risk score or a prediction of a hold.
 3. **After a dispute: evidence preparation and a gated send.** Step 03 reads the seller's disputes (`GET /v1/customer/disputes`, `GET /v1/customer/disputes/{id}`), builds a pseudonymized, integrity-checked **Internal Review ZIP** (7 entries: 6 listed files and the manifest; the 6 listed files are re-hashed against it), and previews the multipart `provide-evidence` request. A person reviews the package; only then can the request be sent, through a two-step dialog that shows the case and the PayPal dispute side by side. A **Bryntum Scheduler** board shows each case's response window up to its due date.
 
-An **AG Studio** evidence dashboard (`/dashboard.html`) shows the synthetic cases, their requested evidence and their time evidence. Its custom evidence auditor answers fixed questions with plain code; a question outside that set asks for confirmation first, then goes to Studio's built-in agents through a governed Gemini route with call caps (20 per session, an 8-turn stop). The built-in agents answered one live question on a local console on 2026-11-04 (six agent turns, all HTTP 200).
+An **AG Studio** evidence dashboard (`/dashboard.html`) shows the synthetic cases, their requested evidence and their time evidence. Its custom evidence auditor answers fixed questions with plain code; a question outside that set asks for confirmation first, then goes to Studio's built-in agents through a governed Gemini route with call caps (20 per session, an 8-turn stop). On 2026-11-04 the built-in agents ran live on my local console more than once. The first attempts failed (a 422 on an over-long tool description, then a 502; both fixed). One question then ran six agent turns, all HTTP 200. Before the data-agent change the reason-code question twice used all 20 calls without a summary; after it, the same question finished twice in 3 calls. Only the six-turn run is recorded.
+
+## Built and measured
+
+Counted on the public repository on 2026-11-08 with `python3 tools/verify_public_numbers.py` (standard library, no network):
+
+- 332 tracked files. Python: 20,814 lines of backend, source and tools plus 17,453 lines of tests. Front end: 13,458 lines (21 JSX components, 5 pages). 37 API routes.
+- 1,058 Python tests ran OK (9 skipped), plus 44 Node contract and browser tests (6,700 lines) and a red-team request matrix of 1,727 requests (0 broken, 0 gaps); the test count and the matrix line are printed at the end of `./tools/run.sh test`.
+- 31 Markdown files, about 61,400 words; 16 evidence files; 22 diagrams and images.
+- Data: 140 PayPal clauses and 681 export and import rules for ten countries; a 268-case evidence-guide benchmark; 601 scored guide replies.
+- Attack rounds r21 to r23 also ran on a real Android phone (86 sequences) and in a desktop browser (94 sequences), besides backend matrices of 143 and 119 cases.
+- The public history has 41 commits; the development history behind it had 261 commits over 12 working days (2026-10-08 to 2026-11-05). Only the public count can be reproduced (`git rev-list --count HEAD`); the development count is the author's own.
+
+## Checks added on 2026-11-08
+
+- [Answer-key evaluation](https://github.com/jiarong0423/payguard-ai/blob/main/docs/evidence/CHECKLIST_ANSWER_KEY_EVAL.md): 30 synthetic dispute cases. The key was written from PayPal's published reasons-and-evidence page before the program was run. The first run agreed on 22 of 30 (5 dangerous errors, all on author-logic cases). Three real gaps were then fixed (delivery before shipment, a future delivery date, a placeholder tracking number) and the same key, unchanged, now gives 25 of 30 and 2 dangerous errors (amount and currency are not inputs of that function). The key was drafted by the author and an AI, with no third-party review.
+- [Rules source spot-check](https://github.com/jiarong0423/payguard-ai/blob/main/docs/evidence/RULES_SPOTCHECK_20261108.md): 48 of the 681 rules, drawn with a fixed seed, 44 of them compared with their official pages on 2026-11-08 (42 against the page text, 2 against a table of contents only): 34 consistent, 10 wording differs but meaning consistent, 0 inconsistent; 4 could not be opened. One pass by one reviewer.
+- [Public real cases](https://github.com/jiarong0423/payguard-ai/blob/main/docs/evidence/REAL_CASES_PUBLIC_20261108.md): 15 further UK Financial Ombudsman decisions about PayPal sellers, summarised with sources. The most common gap was proof of delivery: a delivered tracking status, often with an address that matches the transaction (6 of 15; the cases are listed in the statistics section of that file). It is a small sample, skewed toward cases the seller had already lost.
+- [Red-team record r30 to r37 and r48](https://github.com/jiarong0423/payguard-ai/blob/main/docs/evidence/RED_TEAM_ROUNDS_ADDENDUM_20261108.md) and [how every number was counted](https://github.com/jiarong0423/payguard-ai/blob/main/docs/evidence/HOW_NUMBERS_WERE_COUNTED.md).
 
 ## Proven against the PayPal Sandbox
 
@@ -37,7 +67,7 @@ All Sandbox data below was created by the author with Sandbox test accounts; it 
 - **2026-10-06 17:44 UTC:** OAuth client-credentials, then one unsent USD 10.00 invoice draft (`INV2-...-W5UW`, status `DRAFT`). A second unsent draft followed on 2026-10-31, and a third (`INV2-...RG5U`, `DRAFT`, not sent) during the video recording on 2026-11-05.
 - **2026-10-31:** one author-filed test dispute (item not received) was listed 12.7 minutes after filing (a read at 2.4 minutes was empty) and read back in detail with HTTP 200 (`PP-R-...`, waiting for the seller's response).
 - **2026-11-04:** evidence sent to a second test dispute (item not received, USD 48.00) after the local review and the two-step dialog. PayPal Sandbox accepted the request (PayPal-Debug-Id `f908765a01293`) and a fresh read showed `WAITING_FOR_BUYER_RESPONSE`. The evidence file sent was a 43-byte synthetic placeholder PDF.
-- **2026-11-05 (UTC+8):** evidence sent to a newly filed test dispute of the same kind while the video was recorded (PayPal-Debug-Id `f2088142a6218`). The fresh read after the send (PayPal-Debug-Id `ca5554cf42ef6`) showed `WAITING_FOR_BUYER_RESPONSE` and the seller's proof of fulfillment as submitted. The review ZIP from that session (14028 bytes, 7 entries: 6 listed files and the manifest) passed all 8 local checks.
+- **2026-11-05 (UTC+8):** evidence sent to a newly filed test dispute of the same kind while the video was recorded (PayPal-Debug-Id `f2088142a6218`). The fresh read after the send (PayPal-Debug-Id `ca5554cf42ef6`) showed `WAITING_FOR_BUYER_RESPONSE` and the seller's proof of fulfillment as submitted. The review ZIP from that session (14028 bytes, 7 entries: 6 listed files and the manifest) passed all 8 local checks. The evidence file sent was again the 43-byte synthetic placeholder PDF.
 - **Refusals, nothing sent:** a dispute that already had seller evidence ("Locked: PayPal already has seller evidence for this dispute."), disputes with a different reason (item not as described; unauthorized chargeback), and a dispute with a different amount (158.00 TWD against a 48.00 USD case). An attempt after the local session expired was also refused.
 
 Sandbox acceptance means PayPal Sandbox recorded the request and moved the dispute to waiting for the buyer. It is not PayPal accepting the evidence or deciding the case for the seller.
@@ -46,7 +76,7 @@ Sandbox acceptance means PayPal Sandbox recorded the request and moved the dispu
 
 The working stack is the PayPal Sandbox REST APIs and OAuth behind one reviewed gateway, FastAPI on Python 3.13, deterministic policy and country rules, React with Tailwind built by Vite, AG Grid, AG Charts and AG Studio, Bryntum Scheduler Community, and Gemini (`gemini-3.8-flash`) in a separate Python 3.12 worker. Rules run before AI, and fixed code keeps every decision: the policy findings, the country-rule stop, the sales-spike signal, the dispute checklist and the pinned citations. Every output stays advisory: a person reviews it, and nothing acts outside the app on its own.
 
-Gemini only chooses among closed options. For the evidence brief it selects each sentence from a closed, pre-approved inventory for the stage, and the backend rejects anything outside the schema. In the evidence guide it maps a seller sentence to closed form items, and code never lets it mark evidence present; the guide ran live on 2026-11-03 (36 calls, 0 errors). No model has tool authority to change a rule, send an invoice, submit evidence or decide a dispute.
+Gemini only chooses among closed options. For the evidence brief it selects each sentence from a closed, pre-approved inventory for the stage, and the backend rejects anything outside the schema. In the evidence guide it maps a seller sentence to closed form items, and code never lets it mark evidence present; the guide ran live on 2026-11-02 (116 calls, 0 errors, an earlier prompt contract), on 2026-11-03 (36 calls, 0 errors) and on 2026-11-04 on my local console (five scenario sentences, 12 rounds each; four used the model and one was settled by the rule layer with no model call). No model has tool authority to change a rule, send an invoice, submit evidence or decide a dispute.
 
 Sending evidence passes nine checks: off by default, a person approves a reviewed draft bound by digest, one case is bound to one dispute, a two-step confirm with a single-use server confirmation, the same payload as approved, a fresh read from PayPal, a declared account match, a re-check under a lock, and an allow-listed call that keeps the PayPal-Debug-Id as the receipt.
 
@@ -54,7 +84,13 @@ Sending evidence passes nine checks: off by default, a person approves a reviewe
 
 The hard part was letting the app write to PayPal Sandbox without letting AI decide anything. Rules decide, AI only picks from closed options that code checks, and every send needs one person's approval. Every verdict stays with PayPal or the card issuer.
 
-## Scope and access
+## Limits and access
+
+- There was no user study; the guide's numbers are measured on a fixed corpus.
+- Of the 681 rules, 48 were sampled and 44 compared with their pages (34 consistent, 10 wording differs; 2 of the 44 against a table of contents only), and 4 could not be opened; an earlier sample of 36 had no record file; the rest have not been checked line by line.
+- In both Sandbox sends (2026-11-04 and 2026-11-05) the attached file was a 43-byte synthetic placeholder PDF; Sandbox acceptance is not a decision on the evidence.
+- Shipment tracking and webhook signature checks are built and tested but have not been run against the Sandbox. The current Gemini evidence-brief contract has run only against fake models.
+- AG Studio's built-in agents ran live on my local console on 2026-11-04 (several runs, one recorded); the hosted dashboard has no recording of it.
 
 This is a **US Sandbox demo with synthetic data** and author-created Sandbox test accounts. It gives the seller local preparation signals, not a PayPal risk score; PayPal decides policy and dispute matters, and a bank or card issuer decides an external dispute.
 

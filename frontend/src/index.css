@@ -1141,3 +1141,18 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
   /* (r34 #7) A phone error stays above the sticky bar and never grows over it; a refused preview is shown in place. */
   .feedback-region .message-error { max-height: 40vh; max-height: 40dvh; overflow-y: auto; }
 }
+
+/* Before the draft exists the right column says what will appear, so it does not read as an empty page. */
+.evidence-next { margin-top: 14px; padding: 14px 16px; border: 1px dashed var(--pg-color-rule); border-radius: var(--pg-radius-control); color: var(--pg-color-muted); font-size: var(--type-meta); line-height: 1.6; }
+.evidence-next strong { display: block; margin-bottom: 6px; }
+.evidence-next ul { margin: 0; padding-left: 18px; list-style: disc; }
+
+/* Above phone width the fixed top-right toast sat over the step cards: with the current layout the step bar ends near 205px
+   on an unscrolled page, below the toast's top of 164px (measured at 814 and 1280 px wide). Reuse the phone behaviour: the
+   message sits in the page flow under the step bar and covers nothing, and an error stays fixed at the bottom so it still
+   blocks the next action. */
+@media (min-width: 641px) {
+  .feedback-region { position: static; width: calc(100% - 52px); max-width: 1136px; margin: 0 auto; }
+  .feedback-region .message { box-shadow: none; }
+  .feedback-region .message-error { position: fixed; left: 18px; right: 18px; bottom: 12px; z-index: 45; }
+}

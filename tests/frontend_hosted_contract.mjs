@@ -97,7 +97,7 @@ assert.ok(app.includes('<details className="technical-details" data-testid="evid
 // Step 03 text no longer points a hosted visitor at Connect.
 assert.ok(app.includes(": hosted ? <span data-testid=\"hosted-note-disputes\">{HOSTED_NOTES.disputes}</span> : 'Sample cases. Connect the Sandbox in Step 01 to see real Sandbox cases.'}"), 'step 03 hosted text');
 // Sandbox status badge and footer.
-assert.ok(app.includes("{hosted ? 'Off in hosted demo' : sandbox?.status === 'not_configured' ? 'Awaiting connection'"), 'sandbox badge');
+assert.ok(app.includes("{hosted ? 'Local run only' : sandbox?.status === 'not_configured' ? 'Awaiting connection'"), 'sandbox badge');
 assert.ok(app.includes("{hosted ? <span data-testid=\"hosted-note-footer\">Hosted demo</span> : 'Local prototype'}"), 'footer');
 // Second line of defense: a 503 hosted_demo_disabled becomes a neutral notice, not the red error box.
 assert.ok(app.includes("if (failure.code === 'hosted_demo_disabled') { setNotice(HOSTED_DISABLED_NOTICE); return; }"), 'actions: neutral notice');

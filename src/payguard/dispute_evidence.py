@@ -246,7 +246,22 @@ _PROOF_FIELDS = {
 }
 
 
-def _validate_proof_fields(evidence_type, fields):
+# A tracking number that is a placeholder is not evidence (answer-key cases AK-08). Compared after trimming and upper-casing;
+# a value made of one repeated character ("0000000000", "XXXXXXXX") is a placeholder too.
+_PLACEHOLDER_TRACKING = frozenset({
+    "TBD", "TBA", "TBC", "NA", "N/A", "NONE", "NULL", "NIL", "PENDING", "UNKNOWN", "UNAVAILABLE", "NOTAVAILABLE",
+    "TEST", "TESTING", "SAMPLE", "EXAMPLE", "PLACEHOLDER", "TRACKING", "TRACKINGNUMBER", "XXX", "XXXX",
+})
+
+
+def _is_placeholder_tracking(value):
+    cleaned = value.strip().upper().replace(" ", "").replace("-", "").replace("_", "")
+    if cleaned in _PLACEHOLDER_TRACKING or cleaned.replace("/", "") in _PLACEHOLDER_TRACKING:
+        return True
+    return len(cleaned) >= 3 and len(set(cleaned)) == 1
+
+
+def _validate_proof_fields(evidence_type, fields, as_of=None):
     spec = _PROOF_FIELDS.get(evidence_type)
     if spec is None or type(fields) is not dict or not set(fields).issubset(spec["allowed"]):
         _error("proof_record_invalid")
@@ -274,8 +289,19 @@ def _validate_proof_fields(evidence_type, fields):
             result[name] = _upper(value, "proof_record_invalid")
         elif name in {"carrier_name", "tracking_number", "refund_id"}:
             result[name] = _identifier(value, "proof_record_invalid")
+            if name == "tracking_number" and _is_placeholder_tracking(value):
+                _error("proof_record_invalid")
         else:
             result[name] = _text(value, "proof_record_invalid")
+    # Impossible dates (answer-key cases AK-06 and AK-07): a delivery cannot precede the shipment, and neither can lie after
+    # the evaluation instant. The same closed error code is used, so no API or screen contract changes.
+    shipped, delivered = result.get("shipped_at"), result.get("delivered_at")
+    if shipped is not None and delivered is not None and _time(delivered, "proof_record_invalid") < _time(shipped, "proof_record_invalid"):
+        _error("proof_record_invalid")
+    if as_of is not None:
+        for stamp in (shipped, delivered):
+            if stamp is not None and _time(stamp, "proof_record_invalid") > as_of:
+                _error("proof_record_invalid")
     return result
 
 
@@ -313,7 +339,7 @@ def _validate_proofs(proof_records, requests, as_of):
             "evidence_id": evidence_id,
             "request_id": request_id,
             "evidence_type": evidence_type,
-            "proof_fields": _validate_proof_fields(evidence_type, record["proof_fields"]),
+            "proof_fields": _validate_proof_fields(evidence_type, record["proof_fields"], as_of),
             "observed_at": _iso(observed),
             "evidence_state": record["evidence_state"],
             "attachment_ids": normalized_attachment_ids,

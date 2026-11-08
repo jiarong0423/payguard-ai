@@ -100,6 +100,36 @@ class ResolverTests(unittest.TestCase):
         self.assertNotIn("%PDF", serialized)
         self.assertNotIn("content", result["restricted"]["attachments"][0])
 
+    def _proof_with(self, **fields):
+        record = proof()
+        record["proof_fields"] = dict(record["proof_fields"], **fields)
+        return record
+
+    def test_impossible_dates_and_placeholder_tracking_fail_closed(self):
+        # Answer-key cases AK-06, AK-07 and AK-08 (data/eval/checklist_answer_key_v1.json): these three used to pass.
+        self.assert_code("proof_record_invalid", lambda: self.resolve(
+            proofs=[self._proof_with(shipped_at="2026-10-06T10:00:00Z", delivered_at="2026-10-03T10:00:00Z")]))
+        self.assert_code("proof_record_invalid", lambda: self.resolve(
+            proofs=[self._proof_with(delivered_at="2026-10-20T10:00:00Z")]))
+        self.assert_code("proof_record_invalid", lambda: self.resolve(
+            proofs=[self._proof_with(shipped_at="2026-10-20T10:00:00Z", delivered_at="2026-10-21T10:00:00Z")]))
+        for placeholder in ("TBD", "tba", "N/A", "none", "Pending", "unknown", "0000000000", "XXXXXXXX", "test"):
+            self.assert_code("proof_record_invalid", lambda value=placeholder: self.resolve(
+                proofs=[self._proof_with(tracking_number=value)]))
+
+    def test_a_shipment_in_the_future_alone_fails_closed(self):
+        record = proof()
+        record["proof_fields"] = {key: value for key, value in record["proof_fields"].items() if key != "delivered_at"}
+        record["proof_fields"]["shipped_at"] = "2026-10-20T10:00:00Z"
+        self.assert_code("proof_record_invalid", lambda: self.resolve(proofs=[record]))
+
+    def test_real_looking_tracking_and_ordered_dates_still_pass(self):
+        for value in ("9400111899223344556677", "1Z999AA10123456784", "SYNTHETICTRACK001", "RB123456785GB"):
+            result = self.resolve(proofs=[self._proof_with(tracking_number=value)])
+            self.assertEqual(result["routing"]["overall_state"], "READY_FOR_LOCAL_REVIEW")
+        same_day = self.resolve(proofs=[self._proof_with(shipped_at="2026-10-07T10:00:00Z", delivered_at="2026-10-07T10:00:00Z")])
+        self.assertEqual(same_day["routing"]["overall_state"], "READY_FOR_LOCAL_REVIEW")
+
     def test_actual_requested_type_controls_and_static_reason_type_is_not_added(self):
         current = snapshot("MERCHANDISE_OR_SERVICE_NOT_RECEIVED")
         current["evidences"] = [{

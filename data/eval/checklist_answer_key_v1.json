@@ -1,0 +1,1587 @@
+{
+ "schema": "payguard.checklist_answer_key.v1",
+ "version": 1,
+ "status": "AUTHOR_AND_AI_DRAFT_NOT_THIRD_PARTY_REVIEWED",
+ "authored": "2026-11-08",
+ "authored_before_running_program": true,
+ "as_of": "2026-10-08T09:00:00Z",
+ "snapshot_observed_at": "2026-10-08T08:00:00Z",
+ "source_notes": {
+  "official_pages_fetched": [
+   "https://developer.paypal.com/disputes/reasons-evidence/ (2026-11-08, read once)",
+   "https://developer.paypal.com/docs/api/customer-disputes/v1/ (index only; no request-body detail)"
+  ],
+  "repo_register_used": "docs/decisions/2026Q4/us_official_source_register.md",
+  "network_requests_made": 3
+ },
+ "reason_evidence_table_from_official_page": {
+  "MERCHANDISE_OR_SERVICE_NOT_RECEIVED": [
+   "PROOF_OF_FULFILLMENT (carrier name + tracking number, or notes/documents)",
+   "PROOF_OF_REFUND (refund ID)"
+  ],
+  "MERCHANDISE_OR_SERVICE_NOT_AS_DESCRIBED": [
+   "OTHER (notes/documents)",
+   "PROOF_OF_REFUND"
+  ],
+  "UNAUTHORISED": [
+   "PROOF_OF_FULFILLMENT",
+   "PROOF_OF_REFUND",
+   "OTHER"
+  ],
+  "CREDIT_NOT_PROCESSED": [
+   "PROOF_OF_REFUND",
+   "OTHER"
+  ],
+  "DUPLICATE_TRANSACTION": [
+   "PROOF_OF_REFUND",
+   "OTHER"
+  ],
+  "INCORRECT_AMOUNT": [
+   "PROOF_OF_REFUND (difference)",
+   "OTHER"
+  ],
+  "PAYMENT_BY_OTHER_MEANS": [
+   "PROOF_OF_REFUND",
+   "OTHER"
+  ],
+  "CANCELED_RECURRING_BILLING": [
+   "PROOF_OF_REFUND",
+   "OTHER"
+  ],
+  "OTHER": [
+   "PROOF_OF_REFUND",
+   "OTHER"
+  ]
+ },
+ "verdict_definitions": {
+  "SUFFICIENT": "every mandatory seller request is answered by a valid, consistent item",
+  "INSUFFICIENT": "a mandatory request is unanswered or the supplied item is incomplete, inconsistent, of the wrong type or not uploadable",
+  "MANUAL_REVIEW": "a live request falls outside the official reason table, so no checklist verdict is possible",
+  "NOT_ACTIONABLE": "case closed, response due date passed, or provide-evidence unavailable"
+ },
+ "cases": [
+  {
+   "case_id": "AK-01",
+   "title": "INR complete carrier + tracking",
+   "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_FULFILLMENT",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_FULFILLMENT",
+     "fields": {
+      "carrier_name": "USPS",
+      "tracking_number": "9400111899223344556677",
+      "shipped_at": "2026-10-03T10:00:00Z",
+      "delivered_at": "2026-10-06T10:00:00Z",
+      "delivery_status": "DELIVERED"
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "basis": "OFFICIAL_RULE",
+   "official_sources": [
+    "https://developer.paypal.com/disputes/reasons-evidence/"
+   ],
+   "rationale": "Carrier name and tracking number are the documented form of proof of fulfillment.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-02",
+   "title": "INR carrier without tracking number",
+   "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_FULFILLMENT",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_FULFILLMENT",
+     "fields": {
+      "carrier_name": "USPS",
+      "shipped_at": "2026-10-03T10:00:00Z",
+      "delivered_at": "2026-10-06T10:00:00Z",
+      "delivery_status": "DELIVERED"
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "basis": "OFFICIAL_RULE",
+   "official_sources": [
+    "https://developer.paypal.com/disputes/reasons-evidence/"
+   ],
+   "rationale": "Page pairs carrier name AND tracking number; tracking is absent and no notes/documents were given.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-03",
+   "title": "INR tracking without carrier",
+   "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_FULFILLMENT",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_FULFILLMENT",
+     "fields": {
+      "tracking_number": "9400111899223344556677",
+      "shipped_at": "2026-10-03T10:00:00Z",
+      "delivered_at": "2026-10-06T10:00:00Z",
+      "delivery_status": "DELIVERED"
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "basis": "OFFICIAL_RULE",
+   "official_sources": [
+    "https://developer.paypal.com/disputes/reasons-evidence/"
+   ],
+   "rationale": "Carrier name is absent; the pair is incomplete.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-04",
+   "title": "INR no evidence supplied",
+   "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_FULFILLMENT",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [],
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "basis": "OFFICIAL_RULE",
+   "official_sources": [
+    "https://developer.paypal.com/disputes/reasons-evidence/"
+   ],
+   "rationale": "Mandatory seller request with nothing supplied.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-05",
+   "title": "INR proof via delivery-signature document, no tracking",
+   "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_FULFILLMENT",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_FULFILLMENT",
+     "fields": {
+      "notes": "Signed proof of delivery attached."
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": [
+      {
+       "attachment_id": "a1",
+       "filename": "receipt.pdf",
+       "media_type": "application/pdf",
+       "size_bytes": 2048,
+       "magic": "pdf"
+      }
+     ]
+    }
+   ],
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "basis": "OFFICIAL_RULE",
+   "official_sources": [
+    "https://developer.paypal.com/disputes/reasons-evidence/"
+   ],
+   "rationale": "Page: notes or documents such as a proof of delivery signature are an accepted alternative to carrier+tracking.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-06",
+   "title": "INR delivered_at earlier than shipped_at",
+   "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_FULFILLMENT",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_FULFILLMENT",
+     "fields": {
+      "carrier_name": "USPS",
+      "tracking_number": "9400111899223344556677",
+      "shipped_at": "2026-10-06T10:00:00Z",
+      "delivered_at": "2026-10-03T10:00:00Z",
+      "delivery_status": "DELIVERED"
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "basis": "AUTHOR_CONSISTENCY_CHECK",
+   "official_sources": [
+    "https://developer.paypal.com/disputes/reasons-evidence/"
+   ],
+   "rationale": "Delivery cannot precede shipment; page is silent on dates, so this is an author logical check.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-07",
+   "title": "INR delivered_at in the future",
+   "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_FULFILLMENT",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_FULFILLMENT",
+     "fields": {
+      "carrier_name": "USPS",
+      "tracking_number": "9400111899223344556677",
+      "shipped_at": "2026-10-03T10:00:00Z",
+      "delivered_at": "2026-10-20T10:00:00Z",
+      "delivery_status": "DELIVERED"
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "basis": "AUTHOR_CONSISTENCY_CHECK",
+   "official_sources": [
+    "https://developer.paypal.com/disputes/reasons-evidence/"
+   ],
+   "rationale": "A delivery after the evaluation instant cannot be a recorded fact.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-08",
+   "title": "INR placeholder tracking number TBD",
+   "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_FULFILLMENT",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_FULFILLMENT",
+     "fields": {
+      "carrier_name": "USPS",
+      "tracking_number": "TBD",
+      "shipped_at": "2026-10-03T10:00:00Z"
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "basis": "AUTHOR_CONSISTENCY_CHECK",
+   "official_sources": [
+    "https://developer.paypal.com/disputes/reasons-evidence/"
+   ],
+   "rationale": "A placeholder is not a tracking number.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-09",
+   "title": "INR refund proof attached to a fulfillment request",
+   "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_FULFILLMENT",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_REFUND",
+     "fields": {
+      "refund_id": "RF0001",
+      "amount": "10.00",
+      "currency": "USD",
+      "refunded_at": "2026-10-07T10:00:00Z"
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "basis": "OFFICIAL_RULE",
+   "official_sources": [
+    "https://developer.paypal.com/disputes/reasons-evidence/"
+   ],
+   "rationale": "Wrong evidence type for the requested PROOF_OF_FULFILLMENT; unrelated to what was asked.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-10",
+   "title": "INR optional refund request unanswered",
+   "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_FULFILLMENT",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    },
+    {
+     "request_id": "r2",
+     "evidence_type": "PROOF_OF_REFUND",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": false,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_FULFILLMENT",
+     "fields": {
+      "carrier_name": "USPS",
+      "tracking_number": "9400111899223344556677",
+      "shipped_at": "2026-10-03T10:00:00Z",
+      "delivered_at": "2026-10-06T10:00:00Z",
+      "delivery_status": "DELIVERED"
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "basis": "OFFICIAL_RULE",
+   "official_sources": [
+    "https://developer.paypal.com/disputes/reasons-evidence/"
+   ],
+   "rationale": "Only mandatory requests gate sufficiency; both types are listed for this reason.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-11",
+   "title": "INR mandatory refund request unanswered",
+   "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_FULFILLMENT",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    },
+    {
+     "request_id": "r2",
+     "evidence_type": "PROOF_OF_REFUND",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_FULFILLMENT",
+     "fields": {
+      "carrier_name": "USPS",
+      "tracking_number": "9400111899223344556677",
+      "shipped_at": "2026-10-03T10:00:00Z",
+      "delivered_at": "2026-10-06T10:00:00Z",
+      "delivery_status": "DELIVERED"
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r2"
+    ]
+   },
+   "basis": "OFFICIAL_RULE",
+   "official_sources": [
+    "https://developer.paypal.com/disputes/reasons-evidence/"
+   ],
+   "rationale": "Mandatory PROOF_OF_REFUND request has no refund ID.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-12",
+   "title": "INR same evidence submitted twice (same id)",
+   "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_FULFILLMENT",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_FULFILLMENT",
+     "fields": {
+      "carrier_name": "USPS",
+      "tracking_number": "9400111899223344556677",
+      "shipped_at": "2026-10-03T10:00:00Z",
+      "delivered_at": "2026-10-06T10:00:00Z",
+      "delivery_status": "DELIVERED"
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    },
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_FULFILLMENT",
+     "fields": {
+      "carrier_name": "USPS",
+      "tracking_number": "9400111899223344556677",
+      "shipped_at": "2026-10-03T10:00:00Z",
+      "delivered_at": "2026-10-06T10:00:00Z",
+      "delivery_status": "DELIVERED"
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "basis": "AUTHOR_CONSISTENCY_CHECK",
+   "official_sources": [
+    "https://developer.paypal.com/disputes/reasons-evidence/"
+   ],
+   "rationale": "An exact duplicate adds nothing but does not remove the valid original; a sound checker dedupes.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-13",
+   "title": "INR request type not in the reason table",
+   "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_DELIVERY_SIGNATURE",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_FULFILLMENT",
+     "fields": {
+      "carrier_name": "USPS",
+      "tracking_number": "9400111899223344556677",
+      "shipped_at": "2026-10-03T10:00:00Z",
+      "delivered_at": "2026-10-06T10:00:00Z",
+      "delivery_status": "DELIVERED"
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "MANUAL_REVIEW",
+    "missing_request_ids": []
+   },
+   "basis": "AUTHOR_CONSISTENCY_CHECK",
+   "official_sources": [
+    "https://developer.paypal.com/disputes/reasons-evidence/",
+    "docs/decisions/2026Q4/us_official_source_register.md"
+   ],
+   "rationale": "Type is absent from the nine-reason table; register says the live request controls and a generic checklist cannot decide.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-14",
+   "title": "INR notes proof with a .docx attachment",
+   "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_FULFILLMENT",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_FULFILLMENT",
+     "fields": {
+      "notes": "Signed proof of delivery."
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": [
+      {
+       "attachment_id": "a1",
+       "filename": "proof.docx",
+       "media_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+       "size_bytes": 2048,
+       "magic": "pdf"
+      }
+     ]
+    }
+   ],
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "basis": "OFFICIAL_RULE",
+   "official_sources": [
+    "docs/decisions/2026Q4/us_official_source_register.md (PP-DISPUTE-FILES)"
+   ],
+   "rationale": "Only JPG, JPEG, GIF, PNG, PDF are supported; the unsupported file blocks the set until replaced.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-15",
+   "title": "INR 12 MB PDF attachment",
+   "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_FULFILLMENT",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_FULFILLMENT",
+     "fields": {
+      "carrier_name": "USPS",
+      "tracking_number": "9400111899223344556677",
+      "shipped_at": "2026-10-03T10:00:00Z",
+      "delivered_at": "2026-10-06T10:00:00Z",
+      "delivery_status": "DELIVERED"
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": [
+      {
+       "attachment_id": "a1",
+       "filename": "receipt.pdf",
+       "media_type": "application/pdf",
+       "size_bytes": 12000000,
+       "magic": "pdf"
+      }
+     ]
+    }
+   ],
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "basis": "OFFICIAL_RULE",
+   "official_sources": [
+    "docs/decisions/2026Q4/us_official_source_register.md (PP-DISPUTE-FILES)"
+   ],
+   "rationale": "Each file must be under 10 MB.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-16",
+   "title": "INR evidence observed after evaluation time",
+   "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_FULFILLMENT",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_FULFILLMENT",
+     "fields": {
+      "carrier_name": "USPS",
+      "tracking_number": "9400111899223344556677",
+      "shipped_at": "2026-10-03T10:00:00Z",
+      "delivered_at": "2026-10-06T10:00:00Z",
+      "delivery_status": "DELIVERED"
+     },
+     "observed_at": "2026-10-09T09:00:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "basis": "AUTHOR_CONSISTENCY_CHECK",
+   "official_sources": [
+    "https://developer.paypal.com/disputes/reasons-evidence/"
+   ],
+   "rationale": "Evidence cannot be observed in the future.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-17",
+   "title": "INR complete evidence but due date passed",
+   "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-07T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_FULFILLMENT",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_FULFILLMENT",
+     "fields": {
+      "carrier_name": "USPS",
+      "tracking_number": "9400111899223344556677",
+      "shipped_at": "2026-10-03T10:00:00Z",
+      "delivered_at": "2026-10-06T10:00:00Z",
+      "delivery_status": "DELIVERED"
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "NOT_ACTIONABLE",
+    "missing_request_ids": []
+   },
+   "basis": "OFFICIAL_RULE",
+   "official_sources": [
+    "docs/decisions/2026Q4/us_official_source_register.md (PP-DISPUTES-API)"
+   ],
+   "rationale": "Seller response due date has passed; evidence can no longer be provided.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-18",
+   "title": "INR provide-evidence not an available action",
+   "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "ACCEPT_CLAIM"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_FULFILLMENT",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_FULFILLMENT",
+     "fields": {
+      "carrier_name": "USPS",
+      "tracking_number": "9400111899223344556677",
+      "shipped_at": "2026-10-03T10:00:00Z",
+      "delivered_at": "2026-10-06T10:00:00Z",
+      "delivery_status": "DELIVERED"
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "NOT_ACTIONABLE",
+    "missing_request_ids": []
+   },
+   "basis": "OFFICIAL_RULE",
+   "official_sources": [
+    "docs/decisions/2026Q4/us_official_source_register.md (PP-DISPUTES-API)"
+   ],
+   "rationale": "Allowed options lack provide-evidence; the case reports the action unavailable.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-19",
+   "title": "INR dispute already RESOLVED",
+   "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+   "status": "RESOLVED",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_FULFILLMENT",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_FULFILLMENT",
+     "fields": {
+      "carrier_name": "USPS",
+      "tracking_number": "9400111899223344556677",
+      "shipped_at": "2026-10-03T10:00:00Z",
+      "delivered_at": "2026-10-06T10:00:00Z",
+      "delivery_status": "DELIVERED"
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "NOT_ACTIONABLE",
+    "missing_request_ids": []
+   },
+   "basis": "OFFICIAL_RULE",
+   "official_sources": [
+    "docs/decisions/2026Q4/us_official_source_register.md (PP-DISPUTES-API)"
+   ],
+   "rationale": "A resolved dispute takes no seller evidence.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-20",
+   "title": "INR digital goods: email link + delivery time",
+   "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_FULFILLMENT",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_FULFILLMENT",
+     "fields": {
+      "delivery_channel": "EMAIL_LINK",
+      "delivered_at": "2026-10-06T10:00:00Z"
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "basis": "AUTHOR_CONSISTENCY_CHECK",
+   "official_sources": [
+    "https://developer.paypal.com/disputes/reasons-evidence/"
+   ],
+   "rationale": "Page accepts notes for fulfillment; a dated delivery channel record is a note-type fulfillment record for digital goods (author reading).",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-21",
+   "title": "UNAUTHORISED fulfillment complete, optional OTHER unanswered",
+   "reason": "UNAUTHORISED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_FULFILLMENT",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    },
+    {
+     "request_id": "r2",
+     "evidence_type": "OTHER",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": false,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_FULFILLMENT",
+     "fields": {
+      "carrier_name": "USPS",
+      "tracking_number": "9400111899223344556677",
+      "shipped_at": "2026-10-03T10:00:00Z",
+      "delivered_at": "2026-10-06T10:00:00Z",
+      "delivery_status": "DELIVERED"
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "basis": "OFFICIAL_RULE",
+   "official_sources": [
+    "https://developer.paypal.com/disputes/reasons-evidence/"
+   ],
+   "rationale": "Fulfillment is documented for this reason; optional request is not gating.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-22",
+   "title": "UNAUTHORISED notes supplied, mandatory fulfillment missing",
+   "reason": "UNAUTHORISED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_FULFILLMENT",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    },
+    {
+     "request_id": "r2",
+     "evidence_type": "OTHER",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": false,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e2",
+     "for_request": "r2",
+     "provided_type": "OTHER",
+     "fields": {
+      "notes": "Customer ordered via our site."
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "basis": "OFFICIAL_RULE",
+   "official_sources": [
+    "https://developer.paypal.com/disputes/reasons-evidence/"
+   ],
+   "rationale": "Notes answer the optional request only; mandatory fulfillment is missing.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-23",
+   "title": "SNAD product description supplied",
+   "reason": "MERCHANDISE_OR_SERVICE_NOT_AS_DESCRIBED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "OTHER",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "OTHER",
+     "fields": {
+      "product_description": "Listing text and photos for the item."
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "basis": "OFFICIAL_RULE",
+   "official_sources": [
+    "https://developer.paypal.com/disputes/reasons-evidence/"
+   ],
+   "rationale": "OTHER = notes/documents such as product description, return policy.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-24",
+   "title": "SNAD description but mandatory refund missing",
+   "reason": "MERCHANDISE_OR_SERVICE_NOT_AS_DESCRIBED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "OTHER",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    },
+    {
+     "request_id": "r2",
+     "evidence_type": "PROOF_OF_REFUND",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "OTHER",
+     "fields": {
+      "product_description": "Listing text."
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r2"
+    ]
+   },
+   "basis": "OFFICIAL_RULE",
+   "official_sources": [
+    "https://developer.paypal.com/disputes/reasons-evidence/"
+   ],
+   "rationale": "Mandatory PROOF_OF_REFUND has no refund ID.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-25",
+   "title": "CREDIT_NOT_PROCESSED refund ID supplied",
+   "reason": "CREDIT_NOT_PROCESSED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_REFUND",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_REFUND",
+     "fields": {
+      "refund_id": "RF0099",
+      "amount": "25.00",
+      "currency": "USD",
+      "refunded_at": "2026-10-07T10:00:00Z"
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "basis": "OFFICIAL_RULE",
+   "official_sources": [
+    "https://developer.paypal.com/disputes/reasons-evidence/"
+   ],
+   "rationale": "Refund ID is the documented evidence.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-26",
+   "title": "CREDIT_NOT_PROCESSED refund proof without refund ID",
+   "reason": "CREDIT_NOT_PROCESSED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_REFUND",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_REFUND",
+     "fields": {
+      "amount": "25.00",
+      "currency": "USD"
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "basis": "OFFICIAL_RULE",
+   "official_sources": [
+    "https://developer.paypal.com/disputes/reasons-evidence/"
+   ],
+   "rationale": "The page names the refund ID (refund_ids); an amount alone identifies no refund.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-27",
+   "title": "DUPLICATE_TRANSACTION notes + refund ID",
+   "reason": "DUPLICATE_TRANSACTION",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "OTHER",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    },
+    {
+     "request_id": "r2",
+     "evidence_type": "PROOF_OF_REFUND",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "OTHER",
+     "fields": {
+      "notes": "Charges 1 and 2 are the same order; the second was refunded."
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    },
+    {
+     "evidence_id": "e2",
+     "for_request": "r2",
+     "provided_type": "PROOF_OF_REFUND",
+     "fields": {
+      "refund_id": "RF0100",
+      "amount": "40.00",
+      "currency": "USD",
+      "refunded_at": "2026-10-07T10:00:00Z"
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "basis": "OFFICIAL_RULE",
+   "official_sources": [
+    "https://developer.paypal.com/disputes/reasons-evidence/"
+   ],
+   "rationale": "Both listed types supplied.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-28",
+   "title": "CREDIT_NOT_PROCESSED asks for fulfillment (not in table)",
+   "reason": "CREDIT_NOT_PROCESSED",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": null,
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_FULFILLMENT",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_FULFILLMENT",
+     "fields": {
+      "carrier_name": "USPS",
+      "tracking_number": "9400111899223344556677",
+      "shipped_at": "2026-10-03T10:00:00Z",
+      "delivered_at": "2026-10-06T10:00:00Z",
+      "delivery_status": "DELIVERED"
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "MANUAL_REVIEW",
+    "missing_request_ids": []
+   },
+   "basis": "AUTHOR_CONSISTENCY_CHECK",
+   "official_sources": [
+    "https://developer.paypal.com/disputes/reasons-evidence/",
+    "docs/decisions/2026Q4/us_official_source_register.md"
+   ],
+   "rationale": "PROOF_OF_FULFILLMENT is not listed for this reason; a live request outside the table needs a human.",
+   "decisive_input_outside_program_schema": false
+  },
+  {
+   "case_id": "AK-29",
+   "title": "INCORRECT_AMOUNT refund covers only part of the difference",
+   "reason": "INCORRECT_AMOUNT",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": {
+    "charged": "100.00",
+    "expected": "80.00",
+    "currency": "USD"
+   },
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_REFUND",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_REFUND",
+     "fields": {
+      "refund_id": "RF0101",
+      "amount": "5.00",
+      "currency": "USD",
+      "refunded_at": "2026-10-07T10:00:00Z"
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "basis": "AUTHOR_CONSISTENCY_CHECK",
+   "official_sources": [
+    "https://developer.paypal.com/disputes/reasons-evidence/"
+   ],
+   "rationale": "Charged 100.00, expected 80.00, difference 20.00; a 5.00 refund does not cover it. Page: refund ID for the difference in amount.",
+   "decisive_input_outside_program_schema": true
+  },
+  {
+   "case_id": "AK-30",
+   "title": "INCORRECT_AMOUNT refund in a different currency",
+   "reason": "INCORRECT_AMOUNT",
+   "status": "WAITING_FOR_SELLER_RESPONSE",
+   "stage": "INQUIRY",
+   "seller_response_due_date": "2026-10-10T08:00:00Z",
+   "available_actions": [
+    "PROVIDE_EVIDENCE"
+   ],
+   "disputed_amount": {
+    "charged": "100.00",
+    "expected": "80.00",
+    "currency": "USD"
+   },
+   "requests": [
+    {
+     "request_id": "r1",
+     "evidence_type": "PROOF_OF_REFUND",
+     "source": "REQUESTED_FROM_SELLER",
+     "mandatory": true,
+     "action": "PROVIDE_EVIDENCE"
+    }
+   ],
+   "provided_evidence": [
+    {
+     "evidence_id": "e1",
+     "for_request": "r1",
+     "provided_type": "PROOF_OF_REFUND",
+     "fields": {
+      "refund_id": "RF0102",
+      "amount": "20.00",
+      "currency": "EUR",
+      "refunded_at": "2026-10-07T10:00:00Z"
+     },
+     "observed_at": "2026-10-08T08:30:00Z",
+     "evidence_state": "SUPPLIED_UNVERIFIED",
+     "attachments": []
+    }
+   ],
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "basis": "AUTHOR_CONSISTENCY_CHECK",
+   "official_sources": [
+    "https://developer.paypal.com/disputes/reasons-evidence/"
+   ],
+   "rationale": "Dispute is in USD; a EUR refund amount does not match.",
+   "decisive_input_outside_program_schema": true
+  }
+ ]
+}
