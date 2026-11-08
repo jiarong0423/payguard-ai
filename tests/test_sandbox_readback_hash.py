@@ -54,6 +54,53 @@ class ReadbackTests(unittest.TestCase):
         self.assertIn("DRY RUN", out)
         self.assertNotIn(DISPUTE, out)  # the id is masked even in a dry run
 
+    def test_document_is_requested_as_pdf_because_json_answers_404(self):
+        # 2026-11-09: PayPal's content service answered 404 to "Accept: application/json" and 200 to "application/pdf".
+        content = b"%PDF-1.4 bytes the content service only serves to a PDF request"
+        seen = []
+
+        def transport(url, headers, data=None):
+            if url.endswith("/v1/oauth2/token"):
+                return 200, {}, json.dumps({"access_token": "token-value"}).encode()
+            if url.endswith("/v1/customer/disputes/" + DISPUTE):
+                self.assertEqual(headers["Accept"], "application/json")  # the dispute itself is still read as JSON
+                body = {"evidences": [{"source": "SUBMITTED_BY_SELLER", "documents": [{"name": "evidence-summary.pdf", "url": DOC_URL}]}]}
+                return 200, {}, json.dumps(body).encode()
+            seen.append(headers["Accept"])
+            return (200, {}, content) if headers["Accept"] == "application/pdf" else (404, {}, b"")
+
+        code, out, _ = self.run_main(["--dispute-id", DISPUTE, "--sent-file", self.sent_file(content), "--apply"], transport=transport)
+        self.assertEqual(code, 0, out)
+        self.assertEqual(seen, ["application/pdf"])  # the first request already succeeds; no JSON request is made
+        self.assertIn("| yes |", out)
+
+    def test_falls_back_to_any_type_then_reports_a_failure(self):
+        content = b"%PDF-1.4 only served to */*"
+        seen = []
+
+        def transport(url, headers, data=None):
+            if url.endswith("/v1/oauth2/token"):
+                return 200, {}, json.dumps({"access_token": "token-value"}).encode()
+            if url.endswith("/v1/customer/disputes/" + DISPUTE):
+                body = {"evidences": [{"source": "SUBMITTED_BY_SELLER", "documents": [{"name": "evidence-summary.pdf", "url": DOC_URL}]}]}
+                return 200, {}, json.dumps(body).encode()
+            seen.append(headers["Accept"])
+            return (200, {}, content) if headers["Accept"] == "*/*" else (404, {}, b"")
+
+        code, out, _ = self.run_main(["--dispute-id", DISPUTE, "--sent-file", self.sent_file(content), "--apply"], transport=transport)
+        self.assertEqual((code, seen), (0, ["application/pdf", "*/*"]))
+        # Nothing served at all: reported as a failed download and a non-zero exit, never as a match.
+        calls = []
+        code, out, _ = self.run_main(["--dispute-id", DISPUTE, "--sent-file", self.sent_file(content), "--apply"],
+                                     transport=lambda url, headers, data=None: (
+                                         (200, {}, json.dumps({"access_token": "t"}).encode()) if url.endswith("/v1/oauth2/token") else
+                                         (200, {}, json.dumps({"evidences": [{"source": "SUBMITTED_BY_SELLER", "documents": [{"name": "evidence-summary.pdf", "url": DOC_URL}]}]}).encode())
+                                         if url.endswith("/v1/customer/disputes/" + DISPUTE) else (calls.append(url) or (404, {}, b""))))
+        self.assertEqual(code, 1)
+        self.assertEqual(len(calls), 2)
+        self.assertIn("download_http_40", out)  # the receipt shows the first 16 characters of the failure code
+        self.assertIn("| NO |", out)
+
     def test_identical_bytes_match(self):
         calls = []
         content = b"%PDF-1.4 real evidence bytes"

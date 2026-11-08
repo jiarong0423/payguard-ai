@@ -12,7 +12,11 @@ Video: https://youtu.be/_GORnHWShU4 (public, 2:50)
 
 ---
 
-TradeGlot is an advisory tool translating cross-border policies for merchants before shipping and formatting seller records into human-approved PayPal dispute evidence.
+Selling across borders means rules you only learn after an order is stopped. TradeGlot checks what you sell against PayPal's published policy and a curated set of rules for ten countries, each with its official source, before you ship. If a buyer later files a dispute, it organizes your own records into dispute evidence for a person to review. Code decides, the AI only picks from fixed options, a person approves every send, and PayPal makes every real decision.
+
+**Try it in 60 seconds** (no sign-in, synthetic data): open the [start page](https://payguard-demo-j2b3.onrender.com/start.html), press *Try the example*, then open step 03 and press *Prepare evidence draft*.
+
+**What is real:** four PayPal Sandbox evidence sends (two with receipts; two on 11/9 with a read-back note, one of them checked byte for byte against the SHA-256 recorded at send time), one live Gemini evidence brief and one recorded AG Studio agent run. The hosted page makes no PayPal calls.
 
 *Translating international shipping rules and merchant records for PayPal dispute evidence.* Formerly called PayGuard AI (the name used in the video and the receipts). [Download and click through on your computer](https://drive.google.com/file/d/1iVl4L3Ng1du_yRHI24gvkvFWyu5mR7Cp/view?usp=drive_link) (8 MB zip, SHA-256 `3cad8b4fbbedd21a...`; the full value is on the start page). [Repository](https://github.com/jiarong0423/payguard-ai).
 
@@ -58,9 +62,9 @@ Every action that writes to PayPal Sandbox, spends the Studio allowance or wipes
 
 Counted on the public repository on 2026-11-08 with `.venv/bin/python3 -B tools/verify_public_numbers.py` (no network):
 
-- 368 tracked files. Python: 21,704 lines of backend, source and tools plus 17,846 lines of tests. Front end: 13,691 lines (23 JSX components, 5 pages). 37 API routes.
-- 1,087 Python tests (9 skipped) passed in the author's last local run of this file set (recorded in `docs/evidence/TEST_RUN_20261108.md`; the earlier CI run covered 1,058), plus 49 Node contract and browser tests (6,912 lines) and a red-team request matrix of 1,727 requests (0 broken, 0 gaps); the test count and the matrix line are printed at the end of `./tools/run.sh test`.
-- 42 Markdown files, about 73,824 words; 24 evidence files; 22 diagrams and images.
+- 368 tracked files. Python: 21,710 lines of backend, source and tools plus 17,893 lines of tests. Front end: 13,691 lines (23 JSX components, 5 pages). 37 API routes.
+- 1,089 Python tests (9 skipped) passed in the author's last local run of this file set (recorded in `docs/evidence/TEST_RUN_20261108.md`; the earlier CI run covered 1,058), plus 49 Node contract and browser tests (6,912 lines) and a red-team request matrix of 1,727 requests (0 broken, 0 gaps); the test count and the matrix line are printed at the end of `./tools/run.sh test`.
+- 42 Markdown files, about 74,377 words; 24 evidence files; 22 diagrams and images.
 - Data: 140 PayPal clauses and 681 export and import rules for ten countries; a 268-case evidence-guide benchmark; 601 scored guide replies.
 - Attack rounds r21 to r23 also ran on a real Android phone (86 sequences) and in a desktop browser (94 sequences), besides backend matrices of 143 and 119 cases.
 - The public history had 46 commits on 2026-11-09 (the count grows with each push); the development history behind it had 261 commits over 12 working days (2026-10-08 to 2026-11-05). Only the public count can be reproduced (`git rev-list --count HEAD`); the development count is the author's own.

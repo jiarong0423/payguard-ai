@@ -121,7 +121,13 @@ def read_back(dispute_id: str, token: str, transport=http_get) -> tuple[list[dic
     debug_id = response_headers.get("Paypal-Debug-Id") or response_headers.get("PayPal-Debug-Id") or ""
     rows = []
     for document in seller_documents(json.loads(body.decode("utf-8"))):
-        doc_status, _, content = transport(document["url"], headers)
+        # PayPal's content service answers 404 to "Accept: application/json" (seen on 2026-11-09 for two disputes) and serves
+        # the file to "Accept: application/pdf". Ask for the PDF first, then for anything, before reporting a failure.
+        doc_status, content = 0, b""
+        for accept in ("application/pdf", "*/*"):
+            doc_status, _, content = transport(document["url"], {**headers, "Accept": accept})
+            if doc_status == 200:
+                break
         if doc_status != 200:
             rows.append({"name": document["name"], "error": f"download_http_{doc_status}"})
             continue
