@@ -68,6 +68,7 @@ EXACT_FILES = (
     "docs/MCP_SERVER.md",
     "docs/evidence/REVIEW_ZIP_CONTENTS.md",
     "docs/evidence/BRIEF_LIVE_RUN_20261109.md",
+    "docs/evidence/APIMATIC_RUN_20261109.md",
     "docs/evidence/IMPACT_SOURCES_20261109.md",
     "docs/evidence/SECOND_RATER_20261109.md",
     "docs/decisions/2026Q4/architecture.md",

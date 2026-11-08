@@ -35,6 +35,32 @@ ERROR_SCHEMA = {"type": "object", "description": "The error body every refusal u
 ERROR_RESPONSES = {"401": "A valid demo session is required (session_required).", "429": "Too many requests; the body says when to retry."}
 
 
+_DATA_KEYS = ("example", "examples", "default", "enum", "const")
+
+
+def simplify_schemas(node, in_properties=False):
+    """Drop the auto-generated schema titles (APIMatic rejects duplicates) and write integer exclusive bounds as inclusive ones."""
+    if isinstance(node, list):
+        for item in node:
+            simplify_schemas(item)
+        return
+    if not isinstance(node, dict):
+        return
+    if not in_properties:
+        if isinstance(node.get("title"), str):
+            del node["title"]
+        if node.get("type") == "integer":
+            for key, inclusive, step in (("exclusiveMaximum", "maximum", -1), ("exclusiveMinimum", "minimum", 1)):
+                value = node.get(key)
+                if isinstance(value, (int, float)) and not isinstance(value, bool) and float(value).is_integer():
+                    del node[key]
+                    node[inclusive] = int(value) + step
+    for key, value in node.items():
+        if key in _DATA_KEYS:
+            continue
+        simplify_schemas(value, in_properties=(key == "properties" and not in_properties))
+
+
 def humanize(name):
     words = str(name).replace("-", "_").split("_")
     text = " ".join(word for word in words if word)
@@ -80,6 +106,8 @@ def describe(spec):
         for key, prop in (schema.get("properties") or {}).items():
             if isinstance(prop, dict) and "$ref" not in prop:
                 prop.setdefault("description", humanize(key))
+    simplify_schemas(spec["paths"])
+    simplify_schemas(spec["components"])
 
 
 def build():
