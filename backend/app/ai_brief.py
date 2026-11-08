@@ -1,4 +1,4 @@
-"""Provider-neutral Gemini advisory gateway over fixed synthetic PayGuard facts and closed session facts.
+"""Provider-neutral Gemini advisory gateway over fixed synthetic TradeGlot facts and closed session facts.
 
 The Python 3.13 API imports no provider SDK and resolves no credential. A live
 request crosses one bounded subprocess boundary into the dedicated Python 3.12

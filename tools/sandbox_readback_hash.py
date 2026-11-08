@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Owner-run check: are the files PayPal holds for a Sandbox dispute byte-identical to the files PayGuard sent?
+"""Owner-run check: are the files PayPal holds for a Sandbox dispute byte-identical to the files TradeGlot sent?
 
 Method (the same idea another entrant published): hash the exact bytes that were sent, then read the dispute back from
 PayPal, download each document PayPal lists under the seller's submitted evidence, hash those bytes and compare.
@@ -136,7 +136,7 @@ def compare(sent: list[dict], held: list[dict]) -> list[dict]:
 
 def receipt_text(dispute_id: str, debug_id: str, sent: list[dict], held: list[dict], matched: list[dict]) -> str:
     lines = [
-        "# PayGuard Sandbox read-back hash check (masked)",
+        "# TradeGlot Sandbox read-back hash check (masked)",
         "",
         "Sandbox test data created by the author. The check reads the dispute back from PayPal and compares the bytes of the files "
         "PayPal holds with the bytes that were sent. It does not mean PayPal accepted the evidence.",

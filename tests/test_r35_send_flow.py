@@ -83,7 +83,7 @@ class NotReadyPreviewTests(R35Harness):
             refused = self.evidence(submit=True, token=token)
         self.assertEqual((refused.status_code, refused.json()["error"]["code"]), (409, "seller_evidence_already_submitted"))
         self.assertEqual(refused.json()["error"]["message"],
-                         "PayPal already has seller evidence for this dispute, so PayGuard will not send more. "
+                         "PayPal already has seller evidence for this dispute, so TradeGlot will not send more. "
                          "Nothing was sent.")
         self.assertEqual(self.posts("/provide-evidence"), [])
 

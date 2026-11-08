@@ -293,7 +293,7 @@ assert.ok(architectureSource.includes('a four-column backend-supplied transactio
 assert.equal(architectureSource.includes('custom review-state cells'), false);
 assert.ok(consoleContractSource.includes('order, amount, currency and capture-time columns supplied by the backend'));
 assert.equal(consoleContractSource.includes('custom backend-state cell'), false);
-assert.ok(indexSource.includes('<title>PayGuard AI · Merchant Evidence Buffer</title>'));
+assert.ok(indexSource.includes('<title>TradeGlot · Merchant Evidence Buffer</title>'));
 assert.equal(indexSource.includes('Merchant Command Center'), false);
 for (const required of ['MERCHANT EVIDENCE BUFFER', 'Three-stage evidence buffer', 'DEMO ORDERS']) {
   assert.ok(appSource.includes(required), required);
@@ -444,7 +444,7 @@ for (const [name, source] of [['App', appSource], ['API', apiSource], ['Referenc
   }
   assert.ok(referenceSource.includes("const panelLabel = 'Official sources';") && referenceSource.includes('<span>{panelLabel}</span>'));
   assert.ok(policySource.includes("const panelLabel = 'Rule check';") && policySource.includes('<span>{panelLabel}</span>'));
-  assert.ok(guideLiveSource.includes('Type as a seller. PayGuard shows which details are still missing.'));
+  assert.ok(guideLiveSource.includes('Type as a seller. TradeGlot shows which details are still missing.'));
 }
 
 console.log(JSON.stringify({ status: 'PASS', ai_mutations: mutations.length, sandbox_mutations: 4, reference_mutations: 6, source_checks: 49 }));

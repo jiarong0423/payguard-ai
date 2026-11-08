@@ -1,1 +1,1 @@
-"""Local HTTP adapters for PayGuard's existing domain authority."""
+"""Local HTTP adapters for TradeGlot's existing domain authority."""

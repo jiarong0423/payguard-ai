@@ -1,4 +1,4 @@
-# PayGuard CI (optimise r24): the Python suite, the console build and the node contract tests.
+# TradeGlot CI (optimise r24): the Python suite, the console build and the node contract tests.
 # No secrets are used or needed: every provider is a synthetic fake, Gemini and PayPal are never called.
 name: ci
 

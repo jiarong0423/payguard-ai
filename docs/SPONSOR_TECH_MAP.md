@@ -16,4 +16,4 @@ One page that answers "what is actually used, where, and is it live on the hoste
 | APIMatic | none | n/a | Not used |
 | PayPal MCP / Agent Toolkit | none in the public package | n/a | Not used |
 
-The hosted demo makes no PayPal calls and holds no PayPal, Gemini or Channel3 key. That is why every real call above is backed by a receipt or a recording, not by a button on the public page. The numbers on the other pages can be rechecked with `tools/verify_public_numbers.py`.
+The hosted demo makes no PayPal calls and holds no PayPal or Channel3 key. Its evidence guide can call Gemini with a free-tier key under strict per-session and daily caps (see the hosted demo section of the README); the evidence brief and the Studio agents never run there. That is why every real call above is backed by a receipt or a recording, not by a button on the public page. The numbers on the other pages can be rechecked with `tools/verify_public_numbers.py`.

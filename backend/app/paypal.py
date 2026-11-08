@@ -477,7 +477,7 @@ class PaypalAdapter:
                     # The seller's private memo, never the buyer-facing note (buyer review 2026-11-03: a note reads as a
                     # clearance to the buyer). Country codes only: no recipient, address or account data on the draft.
                     goods = ", ".join(route.get("goods_tags") or []) or "none ticked"
-                    detail["memo"] = (f"PayGuard country check: ships from {route['seller_country']} to "
+                    detail["memo"] = (f"TradeGlot country check: ships from {route['seller_country']} to "
                                       f"{route['buyer_country']}; goods checked: {goods}. Not a customs or legal clearance.")
                 body = {"detail": detail,
                         "items": [{"name": payload["description"], "quantity": "1",

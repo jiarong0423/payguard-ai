@@ -31,7 +31,7 @@ assert.ok(panel.includes('This sale is likely to be stopped.'), 'verdict is a li
 // r20 UX-5: the act and article are on screen, not only in the link tooltip.
 assert.ok(panel.includes('{statute && <small className="country-statute" data-testid={`country-statute-${row.code}`}>{statute}</small>}'), 'statute shown inline');
 assert.ok(!panel.includes("Don't send this order"), 'old imperative verdict removed');
-assert.ok(panel.includes('PayGuard compares PayPal rules with official export and import rules.'), 'intro names PayGuard and official rules');
+assert.ok(panel.includes('TradeGlot compares PayPal rules with official export and import rules.'), 'intro names TradeGlot and official rules');
 assert.ok(!/customs rules|We check/.test(panel), 'no customs-check claim and no "we"');
 assert.ok(panel.includes('`Notes (${groups.info.length})`'), 'Note rows and the Notes tab use one word');
 // Panel controls keep their test ids.

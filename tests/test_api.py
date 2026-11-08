@@ -612,7 +612,7 @@ class ProviderTests(unittest.TestCase):
         draft = self.post("/paypal/invoices/draft", self.reviewed())
         self.assertEqual(draft.status_code, 200, draft.text)
         self.assertEqual(self.last_invoice_body["detail"]["memo"],
-                         "PayGuard country check: ships from US to GB; goods checked: none ticked. Not a customs or legal clearance.")
+                         "TradeGlot country check: ships from US to GB; goods checked: none ticked. Not a customs or legal clearance.")
         self.assertNotIn("note", self.last_invoice_body["detail"], "nothing from the check is shown to the buyer")
         self.assertNotIn("primary_recipients", self.last_invoice_body)
 

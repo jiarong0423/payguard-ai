@@ -19,8 +19,8 @@ PINNED_DIRECT = {
 EXPECTED_LOCK_SHA256 = "36554331392d6102519a4ead5778704c4ff89e79da6bb9d6648b656f130724bb"
 EXPECTED_INVENTORY_COUNT = 25
 PROJECT_MARKERS = {
-    'backend/app/ai_brief.py': 'a80f79ed831d0e3928e01f033bac303b6346a7be2375cf9647107569010cfdb4',
-    'backend/app/main.py': 'dae7560f0dd0f1e635b1e6047b6d5a93e0c09f57d38e55d4bfe2f50c752d4098',
+    'backend/app/ai_brief.py': '70fde0fb3bf5f551dab9bb6edfef9854780db62c0e05f173232c8f232e4b4fd7',
+    'backend/app/main.py': '4ab7e2f4606e44a9e7efc33382f99f107cb1e32b4ada2519e3de4999d3ec0312',
     'backend/app/store.py': '26542fe3073284a429656187c45de756c28b9783293daf853926b82b23f37957',
     'integrations/gemini/run.sh': '6f276cb1cbe6905a5d04e8c107afb83487fd0898c2ab405da28fc8ee18979203',
     'integrations/gemini/worker.py': '6159d3bf1e18100a7fce720bbbca47aabfeb6bc6f2b843404eeb981dd34f4ca1',

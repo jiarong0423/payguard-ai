@@ -1,0 +1,496 @@
+{
+ "v1": [
+  {
+   "case_id": "AK-01",
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "complete tracking"
+  },
+  {
+   "case_id": "AK-02",
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "ambiguous": false,
+   "reason": "carrier missing"
+  },
+  {
+   "case_id": "AK-03",
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "ambiguous": false,
+   "reason": "carrier missing"
+  },
+  {
+   "case_id": "AK-04",
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "ambiguous": false,
+   "reason": "no evidence"
+  },
+  {
+   "case_id": "AK-05",
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "notes+pdf accepted for not received"
+  },
+  {
+   "case_id": "AK-06",
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "ambiguous": false,
+   "reason": "delivered before shipped"
+  },
+  {
+   "case_id": "AK-07",
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "ambiguous": false,
+   "reason": "delivery date after as_of"
+  },
+  {
+   "case_id": "AK-08",
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "ambiguous": false,
+   "reason": "placeholder tracking, no delivery"
+  },
+  {
+   "case_id": "AK-09",
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "ambiguous": false,
+   "reason": "refund supplied for fulfillment request, wrong type"
+  },
+  {
+   "case_id": "AK-10",
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "optional r2 may be missing"
+  },
+  {
+   "case_id": "AK-11",
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r2"
+    ]
+   },
+   "ambiguous": false,
+   "reason": "mandatory refund missing"
+  },
+  {
+   "case_id": "AK-12",
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": []
+   },
+   "ambiguous": true,
+   "reason": "duplicate evidence_id; assumed fail-closed reject, no ids listed"
+  },
+  {
+   "case_id": "AK-13",
+   "expected": {
+    "verdict": "MANUAL_REVIEW",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "request type not in official table"
+  },
+  {
+   "case_id": "AK-14",
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "docx name/type with pdf magic; not uploadable/inconsistent, assumed reject"
+  },
+  {
+   "case_id": "AK-15",
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "12MB attachment over size limit, assumed reject"
+  },
+  {
+   "case_id": "AK-16",
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "evidence observed after as_of, assumed reject"
+  },
+  {
+   "case_id": "AK-17",
+   "expected": {
+    "verdict": "NOT_ACTIONABLE",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "response due date passed"
+  },
+  {
+   "case_id": "AK-18",
+   "expected": {
+    "verdict": "NOT_ACTIONABLE",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "PROVIDE_EVIDENCE not available"
+  },
+  {
+   "case_id": "AK-19",
+   "expected": {
+    "verdict": "NOT_ACTIONABLE",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "status RESOLVED"
+  },
+  {
+   "case_id": "AK-20",
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "ambiguous": false,
+   "reason": "no carrier/tracking and no notes/document"
+  },
+  {
+   "case_id": "AK-21",
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "optional OTHER not needed"
+  },
+  {
+   "case_id": "AK-22",
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "ambiguous": false,
+   "reason": "mandatory fulfillment missing; only optional answered"
+  },
+  {
+   "case_id": "AK-23",
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "OTHER notes-type description suffices"
+  },
+  {
+   "case_id": "AK-24",
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r2"
+    ]
+   },
+   "ambiguous": false,
+   "reason": "mandatory refund missing"
+  },
+  {
+   "case_id": "AK-25",
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "refund id present"
+  },
+  {
+   "case_id": "AK-26",
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "ambiguous": false,
+   "reason": "refund_id missing"
+  },
+  {
+   "case_id": "AK-27",
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "both mandatory answered"
+  },
+  {
+   "case_id": "AK-28",
+   "expected": {
+    "verdict": "MANUAL_REVIEW",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "fulfillment request not in table for credit not processed"
+  },
+  {
+   "case_id": "AK-29",
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "ambiguous": false,
+   "reason": "refund 5 does not cover 20 difference"
+  },
+  {
+   "case_id": "AK-30",
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "ambiguous": false,
+   "reason": "refund currency EUR vs USD"
+  }
+ ],
+ "v2": [
+  {
+   "case_id": "HK-01",
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "ok"
+  },
+  {
+   "case_id": "HK-02",
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "only OTHER mandatory, notes given"
+  },
+  {
+   "case_id": "HK-03",
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "notes+png ok"
+  },
+  {
+   "case_id": "HK-04",
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "ambiguous": false,
+   "reason": "no evidence"
+  },
+  {
+   "case_id": "HK-05",
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "refund id present"
+  },
+  {
+   "case_id": "HK-06",
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "ambiguous": false,
+   "reason": "refund supplied for OTHER request, wrong type"
+  },
+  {
+   "case_id": "HK-07",
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "refund equals 20 difference"
+  },
+  {
+   "case_id": "HK-08",
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "optional ones not required"
+  },
+  {
+   "case_id": "HK-09",
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "ambiguous": false,
+   "reason": "unauthorised fulfillment accepts carrier+tracking only; notes/jpg not accepted"
+  },
+  {
+   "case_id": "HK-10",
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "ok"
+  },
+  {
+   "case_id": "HK-11",
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "optional refund not needed"
+  },
+  {
+   "case_id": "HK-12",
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "bmp not an allowed file type, assumed reject"
+  },
+  {
+   "case_id": "HK-13",
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "ok"
+  },
+  {
+   "case_id": "HK-14",
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r2"
+    ]
+   },
+   "ambiguous": false,
+   "reason": "mandatory OTHER missing"
+  },
+  {
+   "case_id": "HK-15",
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "due 1s after as_of"
+  },
+  {
+   "case_id": "HK-16",
+   "expected": {
+    "verdict": "NOT_ACTIONABLE",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "due 1s before as_of"
+  },
+  {
+   "case_id": "HK-17",
+   "expected": {
+    "verdict": "SUFFICIENT",
+    "missing_request_ids": []
+   },
+   "ambiguous": true,
+   "reason": "provide-evidence still available; chargeback stage not defined as non-actionable"
+  },
+  {
+   "case_id": "HK-18",
+   "expected": {
+    "verdict": "MANUAL_REVIEW",
+    "missing_request_ids": []
+   },
+   "ambiguous": false,
+   "reason": "fulfillment request not in table for canceled recurring billing"
+  },
+  {
+   "case_id": "HK-19",
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "ambiguous": false,
+   "reason": "placeholder tracking TEST"
+  },
+  {
+   "case_id": "HK-20",
+   "expected": {
+    "verdict": "INSUFFICIENT",
+    "missing_request_ids": [
+     "r1"
+    ]
+   },
+   "ambiguous": false,
+   "reason": "zero-amount refund"
+  }
+ ]
+}

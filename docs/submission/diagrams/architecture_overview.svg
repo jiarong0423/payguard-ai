@@ -13,11 +13,11 @@
   </defs>
   <rect width="1920" height="1080" fill="#fbf7ef"/>
 
-  <text x="80" y="92" font-size="50" font-weight="700" fill="#1f1e1b">PayGuard AI: how it works</text>
+  <text x="80" y="92" font-size="50" font-weight="700" fill="#1f1e1b">TradeGlot: how it works</text>
   <text x="80" y="138" font-size="27" fill="#5b5953">Rules first. The model only matches sentences to fields. Code checks every result. The seller decides.</text>
 
   <text x="80" y="204" font-size="23" font-weight="700" fill="#8a877f" letter-spacing="2">SELLER (BROWSER)</text>
-  <text x="560" y="204" font-size="23" font-weight="700" fill="#8a877f" letter-spacing="2">PAYGUARD SERVER</text>
+  <text x="560" y="204" font-size="23" font-weight="700" fill="#8a877f" letter-spacing="2">TRADEGLOT SERVER</text>
   <text x="1480" y="204" font-size="23" font-weight="700" fill="#8a877f" letter-spacing="2">SERVICES</text>
 
   <!-- Seller column: 6 boxes -->

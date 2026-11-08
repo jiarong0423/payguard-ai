@@ -86,7 +86,7 @@ _MESSAGES = {
 # characters other than tab, newline and carriage return, no bidi override or isolate, no zero-width characters and
 # no lone surrogates.
 INPUT_REFUSED_CODE = "input_characters_refused"
-INPUT_REFUSED_MESSAGE = ("The request contains characters or a number format PayGuard does not accept (control, "
+INPUT_REFUSED_MESSAGE = ("The request contains characters or a number format TradeGlot does not accept (control, "
                          "invisible or direction-changing characters, or numbers written in exponent form). Remove them and "
                          "try again.")
 _PLAIN_NUMBER = re.compile(r"-?(?:0|[1-9][0-9]{0,14})(?:\.[0-9]{1,6})?")
@@ -162,7 +162,7 @@ def parse_locked_json(text: str):
 DISPUTE_PAIRING_MESSAGES = {
     "dispute_case_mismatch": "This dispute does not match the selected case (reason or amount differ). Select the case it belongs to.",
     "dispute_case_bound": "This dispute is already paired with another case in this session. Evidence is never mixed between cases.",
-    "country_rules_blocked": "PayGuard won't create the draft: a country rule stops this sale. Change the goods, account or countries and check again.",
+    "country_rules_blocked": "TradeGlot won't create the draft: a country rule stops this sale. Change the goods, account or countries and check again.",
     "country_check_changed": "The country check changed after this draft was reviewed; review the draft again.",
     # The seller needs the cause, not a generic "changed" (r22: a TWD check then a USD invoice looked unexplained).
     "country_amount_changed": "The country check used a different amount or currency than this invoice. Check country rules again with the invoice amount in USD, or leave the amount empty.",
@@ -175,12 +175,12 @@ DISPUTE_PAIRING_MESSAGES = {
     "dispute_evidence_not_offered": "PayPal does not offer evidence submission on this dispute right now. Nothing was sent.",
     "dispute_amount_mismatch": "The dispute amount in PayPal differs from the selected case's amount. Nothing was sent.",
     # (r35 #2, E1 P1-1) Read at preview from the session's last detail read: no confirmation, no pair.
-    "seller_evidence_already_submitted": "PayPal already has seller evidence for this dispute, so PayGuard will not send more. Nothing was sent.",
+    "seller_evidence_already_submitted": "PayPal already has seller evidence for this dispute, so TradeGlot will not send more. Nothing was sent.",
     # (r25 R3 P1-1) Only proof of fulfillment with tracking is shaped; refund ids are never invented.
-    "evidence_type_not_supported": "PayPal asks for an evidence type PayGuard cannot send yet (only proof of fulfillment with tracking is supported). Respond to this dispute in PayPal directly. Nothing was sent.",
+    "evidence_type_not_supported": "PayPal asks for an evidence type TradeGlot cannot send yet (only proof of fulfillment with tracking is supported). Respond to this dispute in PayPal directly. Nothing was sent.",
     # (r25 send guard) The fresh read's disputed_transactions[].seller.merchant_id must be the connected account.
     "dispute_not_this_account": "This dispute belongs to a different PayPal account than the connected Sandbox account. Nothing was sent.",
-    "account_identity_unknown": "PayGuard cannot confirm which PayPal Sandbox account is connected (set PAYGUARD_PAYPAL_SANDBOX_MERCHANT_ID), so it will not send. Nothing was sent.",
+    "account_identity_unknown": "TradeGlot cannot confirm which PayPal Sandbox account is connected (set PAYGUARD_PAYPAL_SANDBOX_MERCHANT_ID), so it will not send. Nothing was sent.",
     "dispute_evidence_incomplete": "PayPal asks for evidence this draft does not cover. Add the missing evidence and review the case again. Nothing was sent.",
     "evidence_not_ready": "This case has no evidence PayPal would accept yet (proof of fulfillment needs a tracking number). Nothing was sent.",
     "evidence_file_rejected": "An attachment is not accepted by PayPal: use JPG, GIF, PNG or PDF files under 10 MB each and 50 MB in total.",
@@ -450,7 +450,7 @@ def create_app(*, store=None, paypal=None, reference_loader=None, ai_brief=None,
     hosted_host = require_public_host() if demo_public else None
     if demo_public:
         paypal, ai_brief = HostedDemoPaypalStub(), HostedDemoBriefStub()
-    application = FastAPI(title="PayGuard Local Console", version="0.2.0", docs_url=None, redoc_url=None, openapi_url=None)
+    application = FastAPI(title="TradeGlot Local Console", version="0.2.0", docs_url=None, redoc_url=None, openapi_url=None)
     application.state.demo_mode = "public" if demo_public else "off"
     application.state.store = store or SessionStore(ai_attempt_budget=PROCESS_AI_ATTEMPT_BUDGET)
     application.state.paypal = paypal or PaypalAdapter()

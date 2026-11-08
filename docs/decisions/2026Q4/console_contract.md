@@ -1,4 +1,4 @@
-# PayGuard Unified Console Contract
+# TradeGlot Unified Console Contract
 
 Status: current local contract (US Sandbox seller; the optional ten-country rules check is advisory). The console is an advisory and evidence-readiness interface, not a PayPal decision system.
 
@@ -103,7 +103,7 @@ The current action is **record local draft review**. The review control is enabl
 
 The sponsor analytics workspace is lazy-loaded after an explicit operator action. It uses AG Grid Community and first-party React components with:
 
-- the same light PayGuard presentation tokens as the main console;
+- the same light TradeGlot presentation tokens as the main console;
 - custom lifecycle, authority-map and evidence-pulse widgets;
 - one sortable, filterable and resizable AG Grid transaction stream with order, amount, currency and capture-time columns supplied by the backend;
 - a deterministic local dashboard guide limited to the visible in-memory snapshot;

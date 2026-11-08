@@ -69,7 +69,7 @@ for (const code of ['dispute_case_bound', 'evidence_type_not_supported', 'disput
   await assert.rejects(apiRequest('/paypal/disputes/provide-evidence', { method: 'POST', body: { dispute_id: 'PP-D-SANDBOX01', case_ref: 'case-ref-001', submit: false }, session }),
     (failure) => failure.code === code && failure.message === SEND_GUARD_MESSAGES[code]);
 }
-const serverText = 'PayPal asks for an evidence type PayGuard cannot send yet (only proof of fulfillment with tracking is supported). Respond to this dispute in PayPal directly. Nothing was sent.';
+const serverText = 'PayPal asks for an evidence type TradeGlot cannot send yet (only proof of fulfillment with tracking is supported). Respond to this dispute in PayPal directly. Nothing was sent.';
 globalThis.fetch = async () => ({ ok: false, status: 409, headers: { get: () => null }, json: async () => ({ error: { code: 'evidence_type_not_supported', message: serverText } }) });
 await assert.rejects(apiRequest('/paypal/disputes/provide-evidence', { method: 'POST', body: { dispute_id: 'PP-D-SANDBOX01', case_ref: 'case-ref-001', submit: false }, session }),
   (failure) => failure.message === serverText, 'the server sentence wins');

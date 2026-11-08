@@ -1,4 +1,4 @@
-"""Guided gap filling for the three PayGuard situations.
+"""Guided gap filling for the three TradeGlot situations.
 
 A seller types loosely. A chooser (rule baseline or a model) may only report, per slot, that
 something looks PARTIAL or UNCLEAR plus a weekday, a relative week and an exact/approximate
@@ -39,7 +39,7 @@ ACTORS = ("SELLER", "BUYER", "THIRD_PARTY")
 CONTRACTS = (1, 2)  # 2 adds the basis and actor tags
 
 OFFICIAL = "OFFICIAL"      # official material mentions it; may be relevant; not a PayPal requirement
-SUGGESTION = "SUGGESTION"  # PayGuard organising suggestion
+SUGGESTION = "SUGGESTION"  # TradeGlot organising suggestion
 
 # slot id -> (label, source, chunk, anchors, applies_to)
 # applies_to: None for all, or "physical" / "digital" for dispute goods groups.
@@ -201,7 +201,7 @@ TEMPLATES = {
     "UNCLEAR": "I'm not sure which item that refers to. Could you say a bit more? You can also skip it.",
     "CONFLICT": "Earlier you said {weekday_a} and now {weekday_b}. Please choose one in the form.",
     "REVIEW": "Before you download, check this summary once: {lines}. Confirm it, or choose the items to change.",
-    "DONE": "Every item now has an entry. Please check each one yourself before downloading. This summary is for reference only. PayGuard sends nothing, and PayPal or the card issuer decides.",
+    "DONE": "Every item now has an entry. Please check each one yourself before downloading. This summary is for reference only. TradeGlot sends nothing, and PayPal or the card issuer decides.",
     "PROFESSIONAL": "That is a legal or tax matter outside what I can help with. A qualified professional can advise.",
     "REFUSE": "I can't help with that. I can help organise the information in this step.",
     "OFF_TOPIC": "That's outside what I can help with. I can help with policy pre-check, sales spike notes and dispute information.",
@@ -215,7 +215,7 @@ TEMPLATES = {
     # Refused input that is not personal data (long numbers such as tracking numbers, links, unusual characters).
     "NOT_SENDABLE": "I can't take long numbers, links or unusual characters here. Describe it without the number, for example: tracking shows delivered on Monday.",
     "DEADLINE": "I can't tell whether a deadline has passed. Please check the date shown on the PayPal dispute page.",
-    "UPLOAD": "PayGuard doesn't upload or send any files. You can upload on PayPal's dispute page, following the formats and sizes shown there.",
+    "UPLOAD": "TradeGlot doesn't upload or send any files. You can upload on PayPal's dispute page, following the formats and sizes shown there.",
     "BUYER_ANGER": "I understand it's frustrating. I don't judge the buyer. I only organise your side's information.",
     "BUDGET": "Let's finish in the form. The remaining items are listed below.",
     # one round asks for up to three items at once (stage A fixed inputs, or stage B in the seller's words)
@@ -445,7 +445,7 @@ def validate_increments(raw, scenario, contract=1):
 def chooser_request(clauses, scenario, state, contract=1):
     """Everything a chooser may see: clauses, slot ids and their statuses. No earlier text, no values.
 
-    Rule-only slots (set by a PayGuard check, never by a chooser) are not offered: a reply naming one is refused whole.
+    Rule-only slots (set by a TradeGlot check, never by a chooser) are not offered: a reply naming one is refused whole.
     """
     rule_only = SCENARIOS[scenario]["rule_only"]
     request = {

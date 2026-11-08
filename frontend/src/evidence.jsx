@@ -8,7 +8,7 @@ function EvidencePage() {
   return (
     <main className="evidence-page">
       <header className="evidence-header">
-        <p className="evidence-eyebrow">PayGuard AI · evidence</p>
+        <p className="evidence-eyebrow">TradeGlot · evidence</p>
         <h1>Drift control and model cost</h1>
         <p>How the guided gap filling keeps AI drift out of the dispute form and sends fewer sentences to the model. Every number below is read from the recorded benchmark file in the repository.</p>
       </header>

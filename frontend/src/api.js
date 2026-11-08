@@ -17,10 +17,10 @@ export { REFERENCE_TYPES } from './referenceContract.js';
 // (r25 send guard) Plain sentences for the dispute send refusals, used when a reply carries the code without a message.
 export const SEND_GUARD_MESSAGES = Object.freeze({
   dispute_case_bound: 'This dispute is already paired with another case, or this case with another dispute. Nothing was sent.',
-  evidence_type_not_supported: 'PayPal asks for an evidence type PayGuard cannot send yet. Respond to this dispute in PayPal directly. Nothing was sent.',
+  evidence_type_not_supported: 'PayPal asks for an evidence type TradeGlot cannot send yet. Respond to this dispute in PayPal directly. Nothing was sent.',
   dispute_not_this_account: 'This dispute belongs to a different PayPal account than the connected Sandbox account. Nothing was sent.',
-  account_identity_unknown: 'PayGuard cannot confirm which PayPal Sandbox account is connected, so it will not send. Nothing was sent.',
-  input_characters_refused: 'The request contains characters or a number format PayGuard does not accept. Remove them and try again.',
+  account_identity_unknown: 'TradeGlot cannot confirm which PayPal Sandbox account is connected, so it will not send. Nothing was sent.',
+  input_characters_refused: 'The request contains characters or a number format TradeGlot does not accept. Remove them and try again.',
 });
 
 // (evloop) PayPal's own reason for a failed send, in words a seller can act on. The backend keeps only PayPal's error
@@ -789,7 +789,7 @@ export async function apiRequest(path, { method = 'GET', body, session, signal }
     try {
       payload = await response.json();
     } catch {
-      if (retryAfter) throw new ApiError(response.status === 429 ? 'Too many requests; slow down.' : 'PayGuard is busy right now.', response.status, response.status === 429 ? 'rate_limited' : 'server_busy', retryAfter);
+      if (retryAfter) throw new ApiError(response.status === 429 ? 'Too many requests; slow down.' : 'TradeGlot is busy right now.', response.status, response.status === 429 ? 'rate_limited' : 'server_busy', retryAfter);
       throw new ApiError('The API returned invalid content; check the backend service.', response.status, 'invalid_response');
     }
     if (!response.ok) {

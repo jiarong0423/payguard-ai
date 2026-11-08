@@ -1,6 +1,6 @@
 """Time evidence and digital delivery proof: ordering and preserving, never judging.
 
-PayGuard keeps payment time, order-record time, message records (keyed digest and a
+TradeGlot keeps payment time, order-record time, message records (keyed digest and a
 closed topic, never text), delivery time and claim time, and computes the gaps. It
 makes no statement about intent or outcome.
 """

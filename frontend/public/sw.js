@@ -1,5 +1,5 @@
 /*
- * PayGuard console service worker. Hand-written, no dependencies.
+ * TradeGlot console service worker. Hand-written, no dependencies.
  *
  * What it does:
  *   - On install, precaches the built shell: the offline page, the web manifest, the icons and
@@ -82,7 +82,7 @@ async function shellUrls() {
 
 async function offlineResponse() {
   const cached = await caches.match(OFFLINE_URL);
-  return cached || new Response('The PayGuard console needs the local API. Start it with ./tools/run.sh console.', {
+  return cached || new Response('The TradeGlot console needs the local API. Start it with ./tools/run.sh console.', {
     status: 503,
     headers: { 'Content-Type': 'text/plain; charset=utf-8' },
   });

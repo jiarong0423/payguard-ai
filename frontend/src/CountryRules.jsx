@@ -5,7 +5,7 @@ import { useWaitClock, waitFailureMessage, WaitLine } from './GuideLive.jsx';
 import './CountryRules.css';
 
 // Per-country rules for the seller (ships from) and the buyer (ships to). Both sides pick their own country;
-// PayGuard shows what PayPal's published rules and the official government and postal rules say for that pair, and
+// TradeGlot shows what PayPal's published rules and the official government and postal rules say for that pair, and
 // blocks the sale before the invoice draft when a cited rule stops it. Where the pack has them, the seller country's export rules and the buyer country's import
 // rules are matched separately (leaving one is not entering the other). Advisory only.
 const TAG_LABELS = {
@@ -365,7 +365,7 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
   return <section className="country-rules" data-testid="country-rules" aria-labelledby="country-rules-title">
     <div className="country-rules-head">
       <h3 id="country-rules-title">Where are you shipping from and to?</h3>
-      <p>PayGuard compares PayPal rules with official export and import rules.</p>
+      <p>TradeGlot compares PayPal rules with official export and import rules.</p>
       <button type="button" className="button button-secondary country-try-example" data-testid="country-try-example" aria-disabled={busy || waiting || undefined}
         title="Fills United States to Singapore with E-cigarettes ticked and runs the same check" onClick={tryExample}>Try the example</button>
       <small className="country-try-note" data-testid="country-try-note">United States to Singapore, e-cigarettes. Synthetic data, no PayPal calls; fills the form and runs the check.</small>

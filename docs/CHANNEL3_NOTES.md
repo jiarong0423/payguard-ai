@@ -28,12 +28,12 @@ The SDK files each fact came from:
 
 - `channel3_sdk/environment.py`: base URL `https://api.trychannel3.com`.
 - `channel3_sdk/core/client_wrapper.py`: `headers["x-api-key"] = api_key`.
-- `channel3_sdk/client.py`: the SDK reads `CHANNEL3_API_KEY` by default (PayGuard uses the same name).
+- `channel3_sdk/client.py`: the SDK reads `CHANNEL3_API_KEY` by default (TradeGlot uses the same name).
 - `channel3_sdk/categories/raw_client.py`: `GET v1/categories/search` with query params `query`, `limit`; documented error statuses 401, 402, 422 and 500.
 - `channel3_sdk/types/search_categories_response.py`, `category_summary.py`, `category_ref.py`: response shape.
 - `channel3_sdk/products/raw_client.py`, `types/search_response.py`, `types/product.py`: product search, for reference.
 
-## Endpoint PayGuard uses
+## Endpoint TradeGlot uses
 
 ```
 GET https://api.trychannel3.com/v1/categories/search?query=<sanitised name>&limit=3
@@ -59,9 +59,9 @@ Response (`SearchCategoriesResponse`), with categories ordered by relevance:
 - `slug: str`, `title: str`, `has_children: bool`, `path: list[{slug, title}] | null` (root first; the last entry is the category itself).
 - **There is no score or confidence field.**
 
-PayGuard chose this endpoint over product search (`POST /v1/search`, body `{"query", "limit" (default 20, max 30), "filters", "config", "page_token"}`, response `{"products": [Product], "next_page_token"}` where `Product.category` is a `CategorySummary`). Category search sends the same single query string, but it returns only category labels: no merchants, prices, images or buy URLs to drop.
+TradeGlot chose this endpoint over product search (`POST /v1/search`, body `{"query", "limit" (default 20, max 30), "filters", "config", "page_token"}`, response `{"products": [Product], "next_page_token"}` where `Product.category` is a `CategorySummary`). Category search sends the same single query string, but it returns only category labels: no merchants, prices, images or buy URLs to drop.
 
-## PayGuard contract
+## TradeGlot contract
 
 The adapter is `backend/app/channel3.py`, and the route is `POST /api/v1/aup/category-signal`.
 
@@ -71,7 +71,7 @@ The adapter is `backend/app/channel3.py`, and the route is `POST /api/v1/aup/cat
 - **Key**: sent only in `x-api-key`. It is never logged, returned, put in an exception message or shown in `repr`.
 - **Limits**: 4 s timeout, no redirects, no retry, response body capped at 64 KiB. A per-process budget allows 20 calls, and failed calls count against it.
 - **Inbound**: the reply is reduced to the closed contract `{category: str|null, confidence: "HIGH"|"LOW"|null, source: "channel3"}`. Unknown provider fields are dropped. A malformed reply, an unexpected title character or any drift becomes `UNAVAILABLE / contract_rejected`.
-- **Confidence** is PayGuard's own label, because Channel3 returns no score. It is `HIGH` when the top category is the only result or shares its root category with the runner-up, otherwise `LOW`.
+- **Confidence** is TradeGlot's own label, because Channel3 returns no score. It is `HIGH` when the top category is the only result or shares its root category with the runner-up, otherwise `LOW`.
 - **Decision isolation**: the route needs a live AUP evaluation of the same description (`evaluation_id` plus a description digest check). It reads that evaluation but never modifies it. Every response carries `affects_decision: false`. The AUP response, its findings and the acknowledgement flow are unchanged.
 - **UI**: under the AUP result, "Category signal (Channel3): <category> · <high|low> confidence", or "Category lookup off" when disabled.
 

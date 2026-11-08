@@ -600,7 +600,7 @@ function buildFiles(draft, productConfirmation = null) {
   const value = validateDraft(draft);
   const productReference = productReferenceRecord(productConfirmation);
   const readme = [
-    'PayGuard AI — Internal Review ZIP',
+    'TradeGlot — Internal Review ZIP',
     '',
     'Classification: INTERNAL_REVIEW_ONLY',
     'Authority: Advisory only. Human review is required.',
@@ -621,7 +621,7 @@ function buildFiles(draft, productConfirmation = null) {
       '',
       'Time evidence: timeline.json lists events in time order with gaps between them.',
       'Every event except the claim time is SELLER_PROVIDED_UNVERIFIED. Messages are a channel, a direction, a time, a topic and a keyed digest, never text.',
-      'PayGuard orders and preserves. It states no intent, predicts no outcome and gives no legal advice.',
+      'TradeGlot orders and preserves. It states no intent, predicts no outcome and gives no legal advice.',
     ] : []),
   ].join('\n') + '\n';
   const requirements = {

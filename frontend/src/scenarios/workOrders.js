@@ -1,5 +1,5 @@
 // Scenario work orders (/scenarios.html): the page version of tools/sandbox_scenarios.py, built from the r8 video
-// script scenes. Each work order is a fixed list of steps run against PayGuard's own local API with the console's
+// script scenes. Each work order is a fixed list of steps run against TradeGlot's own local API with the console's
 // session and CSRF headers (api.js). Every step writes one receipt row with closed fields only (http status, error
 // code, blocked flag, counts, closed ids); no free text from a reply, no token and no key is ever recorded.
 //

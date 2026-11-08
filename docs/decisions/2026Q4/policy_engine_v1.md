@@ -1,4 +1,4 @@
-# PayGuard Policy Engine v1 — US Advisory Contract
+# TradeGlot Policy Engine v1 — US Advisory Contract
 
 Status: design locked for the US warning funnel (US Sandbox seller; the optional ten-country rules check is advisory) and `REFERENCE_ONLY` metadata runtime. A full declarative policy interpreter, effective-policy certification and enforced workflow tier remain pending.
 
@@ -71,7 +71,7 @@ The loader:
 | `REFERENCE_ONLY` | Return validated source metadata and limitations | Human reference only; no verdict or workflow block |
 | `SHADOW` | Future fixed-operator evaluation with audit output | No operator warning and no workflow effect |
 | `ACTIVE_ADVISORY` | Future fixed-operator evaluation with visible warning | Human may review and continue under the warning-funnel contract |
-| `ACTIVE_ENFORCED` | Future explicitly approved internal-workflow rule | May restrict a PayGuard-local action only; never freeze or control PayPal |
+| `ACTIVE_ENFORCED` | Future explicitly approved internal-workflow rule | May restrict a TradeGlot-local action only; never freeze or control PayPal |
 | `UNSUPPORTED` | No accepted active package/context | `MANUAL_REVIEW` or safe refusal; no fallback |
 
 The current accepted runtime is `REFERENCE_ONLY` plus the separate deterministic warning-funnel slice. It is not `ACTIVE_ENFORCED` and does not execute a full rule package.

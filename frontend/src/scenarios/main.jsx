@@ -139,7 +139,7 @@ function ScenariosPage() {
   return <div className="app-shell scenarios-shell">
     <a className="skip-link" href="#main">Skip to work orders</a>
     <header className="topbar">
-      <a className="brand" href="/" aria-label="PayGuard AI console"><span className="brand-mark"><Icon name="shield" size={23} /></span><span>PayGuard<span className="brand-ai"> AI</span><small>MERCHANT EVIDENCE BUFFER</small></span></a>
+      <a className="brand" href="/" aria-label="TradeGlot console"><span className="brand-mark"><Icon name="shield" size={23} /></span><span>TradeGlot<span className="brand-ai"> AI</span><small>MERCHANT EVIDENCE BUFFER</small></span></a>
       <nav aria-label="Additional workspace"><a href="/">Console</a><a href="/dashboard.html" data-testid="topbar-dashboard">Dashboard</a><a href="/scenarios.html" aria-current="page" data-testid="topbar-scenarios">Scenarios</a></nav>
       <div className="environment"><span className="badge badge-blue">{mode?.hosted ? 'HOSTED DEMO' : 'LOCAL DEMO'}</span></div>
     </header>
@@ -184,7 +184,7 @@ function ScenariosPage() {
                       : <strong>{step.label}</strong>}
                     <dl>
                       <div><dt>Expected</dt><dd>{step.expect}</dd></div>
-                      <div><dt>Actual</dt><dd>{manual ? (localOnly ? `Needs ${step.needs === 'paypal' ? 'the PayPal Sandbox' : 'Gemini'}; run PayGuard locally.` : isTicked ? 'Ticked by the owner' : 'Owner checks this on camera') : (state?.actual || '—')}</dd></div>
+                      <div><dt>Actual</dt><dd>{manual ? (localOnly ? `Needs ${step.needs === 'paypal' ? 'the PayPal Sandbox' : 'Gemini'}; run TradeGlot locally.` : isTicked ? 'Ticked by the owner' : 'Owner checks this on camera') : (state?.actual || '—')}</dd></div>
                     </dl>
                     {state?.note && !manual && <small className="scenario-note">{state.note}</small>}
                   </div>
@@ -204,7 +204,7 @@ function ScenariosPage() {
           </article>;
         })}
       </div>
-      <footer><span><Icon name="shield" size={15} /> PayGuard AI <span className="footer-divider">/</span> Scenario work orders</span><span className="footer-independent" data-testid="footer-independent">PayGuard is an independent hackathon demo. Not affiliated with or endorsed by PayPal.</span><span>Synthetic data · nothing is sent to PayPal from this page</span></footer>
+      <footer><span><Icon name="shield" size={15} /> TradeGlot <span className="footer-divider">/</span> Scenario work orders</span><span className="footer-independent" data-testid="footer-independent">TradeGlot is an independent hackathon demo. Not affiliated with or endorsed by PayPal.</span><span>Synthetic data · nothing is sent to PayPal from this page</span></footer>
     </main>
   </div>;
 }

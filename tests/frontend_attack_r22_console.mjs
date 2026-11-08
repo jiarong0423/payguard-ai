@@ -63,7 +63,7 @@ assert.ok(css.includes('.phone-action-bar, .phone-action-bar * { -webkit-user-se
 
 // P2: error banner close button is 44px and the offline text is plain.
 assert.ok(css.includes('.message-error .icon-button { min-width: 44px; min-height: 44px; }'), '44px close button');
-assert.ok(guide.includes("export const OFFLINE_TEXT = 'PayGuard could not be reached. Check your internet connection, then try again.';"), 'plain offline sentence');
+assert.ok(guide.includes("export const OFFLINE_TEXT = 'TradeGlot could not be reached. Check your internet connection, then try again.';"), 'plain offline sentence');
 assert.ok(guide.includes("failure?.code === 'backend_unavailable' ? OFFLINE_TEXT"), 'offline code mapped');
 // attack r23: waitFailureMessage wraps plainFailureMessage and only drops a fixed Retry-After sentence.
 assert.ok(guide.includes('? withoutFixedWait(plainFailureMessage(failure, fallback)) : plainFailureMessage(failure, fallback));'), 'wait wrapper keeps the plain text');

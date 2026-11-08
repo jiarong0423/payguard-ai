@@ -20,7 +20,7 @@ class ConsoleStaticTests(unittest.TestCase):
         (root / "index.html").write_text("<!doctype html><title>console</title>", encoding="utf-8")
         (root / "assets").mkdir()
         (root / "assets" / "app.js").write_text("console.log(1)", encoding="utf-8")
-        (root / "manifest.webmanifest").write_text('{"name": "PayGuard", "start_url": "/"}', encoding="utf-8")
+        (root / "manifest.webmanifest").write_text('{"name": "TradeGlot", "start_url": "/"}', encoding="utf-8")
         (root / "sw.js").write_text("self.addEventListener('fetch', () => {});", encoding="utf-8")
         (root / "offline.html").write_text("<!doctype html><title>offline</title>", encoding="utf-8")
         self.env = mock.patch.dict(os.environ, {"PAYGUARD_STATIC_DIR": self.tmp.name})

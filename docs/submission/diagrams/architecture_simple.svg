@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" font-family="Helvetica, Arial, sans-serif" role="img" aria-labelledby="a93-t a93-d">
-<title id="a93-t">PayGuard AI: how it works</title>
-<desc id="a93-d">Simplified architecture: seller console, PayGuard server funnel (input gate, rules, optional Gemini, code checks), PayPal Sandbox and Gemini services. The model never approves or sends.</desc>
+<title id="a93-t">TradeGlot: how it works</title>
+<desc id="a93-d">Simplified architecture: seller console, TradeGlot server funnel (input gate, rules, optional Gemini, code checks), PayPal Sandbox and Gemini services. The model never approves or sends.</desc>
 <!-- r9.3 (2026-11-04): simplified video cut of r9.2; r9.2 remains the README version. -->
 <defs>
 <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3b3a36"/></marker>
@@ -8,10 +8,10 @@
 <marker id="arrI" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4f46e5"/></marker>
 </defs>
 <rect width="1920" height="1080" fill="#fbf7ef"/>
-<text x="80" y="104" font-size="60" font-weight="700" fill="#1f1e1b">PayGuard AI: how it works</text>
+<text x="80" y="104" font-size="60" font-weight="700" fill="#1f1e1b">TradeGlot: how it works</text>
 <text x="80" y="162" font-size="34" fill="#5b5953">Rules first. Code checks every result. The seller decides.</text>
 <text x="80" y="252" font-size="26" font-weight="700" fill="#8a877f" letter-spacing="3">SELLER</text>
-<text x="640" y="252" font-size="26" font-weight="700" fill="#8a877f" letter-spacing="3">PAYGUARD SERVER</text>
+<text x="640" y="252" font-size="26" font-weight="700" fill="#8a877f" letter-spacing="3">TRADEGLOT SERVER</text>
 <text x="1440" y="252" font-size="26" font-weight="700" fill="#8a877f" letter-spacing="3">SERVICES</text>
 <rect x="80" y="284" width="480" height="168" rx="18" fill="#ffffff" stroke="#4f46e5" stroke-width="3"/>
 <text x="112" y="352" font-size="38" font-weight="700" fill="#1f1e1b">Seller console</text>

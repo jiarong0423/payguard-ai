@@ -1,4 +1,4 @@
-# PayGuard Threat Model
+# TradeGlot Threat Model
 
 Status: current local prototype threat model (US Sandbox seller; the optional ten-country rules check is advisory).
 
@@ -71,7 +71,7 @@ The second warning offers edit, cancel, or acknowledge and continue. Acknowledge
 
 ## Sales spike boundary
 
-The public US User Agreement supports the narrow statement that rapidly increasing typical sales volume is one of several listed risk examples and that some criteria may be confidential. PayGuard does not know a provider threshold or hidden model.
+The public US User Agreement supports the narrow statement that rapidly increasing typical sales volume is one of several listed risk examples and that some criteria may be confidential. TradeGlot does not know a provider threshold or hidden model.
 
 The local signal cannot be labelled AML, fraud, money laundering or a predicted hold, limitation, reserve or release. Tracking may be relevant but cannot guarantee a provider action.
 
@@ -79,7 +79,7 @@ The local signal cannot be labelled AML, fraud, money laundering or a predicted 
 
 The resolver runs on the closed synthetic sample cases in the session. With a Sandbox connection the merchant's Sandbox disputes are read in the same response shape, projected, listed and paired with a session case for the gated `provide-evidence` preview and send; the resolver does not run on them. Either response contains reason, status, lifecycle stage, seller-response due date, normalized available actions and evidence requests with source and action. Only exact `REQUESTED_FROM_SELLER` plus `PROVIDE_EVIDENCE` rows can create preparation tasks. It accepts only separately bound synthetic proof records and attachment bytes, and validates their signature, type and size; the bytes stay in expiring session memory, never reach the browser or the Internal Review ZIP, and are read again only for the gated multipart `provide-evidence` send. For the synthetic cases, raw provider case, order and request identifiers remain restricted server-side and the browser receives non-identifying references. A connected Sandbox read returns the Sandbox `dispute_id` and `seller_transaction_id` to the console, which needs them to show and pair that test case. The restricted digest is recomputed before reuse, AI eligibility and local approval so nested tampering fails closed. A real adapter must additionally retain current PayPal response options and HATEOAS links without treating them as action authority. Every fixture field remains explicitly synthetic, and a Sandbox row carries the label `Sandbox`.
 
-PayGuard may prepare and pseudonymize a local draft. It provides evidence to PayPal only through the gated `provide-evidence` request (local reviewer approval, `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`, a connected Sandbox and an explicit `submit: true`); it cannot send a message, make an offer, accept a claim, acknowledge a return, appeal, refund or adjudicate. Internal claims remain under PayPal authority; external disputes remain under the bank/card issuer's authority.
+TradeGlot may prepare and pseudonymize a local draft. It provides evidence to PayPal only through the gated `provide-evidence` request (local reviewer approval, `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`, a connected Sandbox and an explicit `submit: true`); it cannot send a message, make an offer, accept a claim, acknowledge a return, appeal, refund or adjudicate. Internal claims remain under PayPal authority; external disputes remain under the bank/card issuer's authority.
 
 Counterfeit goods may be a Purchase Protection SNAD condition. SNAD is outside US Seller Protection. Photos are possible evidence, not a universal requirement.
 

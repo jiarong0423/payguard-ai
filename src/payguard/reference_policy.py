@@ -31,7 +31,7 @@ _PINS = MappingProxyType({
 })
 _MAX_BYTES = 65536
 _OUTCOMES = frozenset({"INVALID_INPUT", "CONTEXT_CONFLICT", "PACKAGE_INTEGRITY_FAILURE", "PACKAGE_UNAVAILABLE", "UNSUPPORTED", "EVALUATE"})
-_WARNING_LIMITATION = "PayGuard presents references and review signals before the ordinary PayPal flow; it does not decide compliance, block provider submission, submit an AUP review or replace PayPal's policy judgment."
+_WARNING_LIMITATION = "TradeGlot presents references and review signals before the ordinary PayPal flow; it does not decide compliance, block provider submission, submit an AUP review or replace PayPal's policy judgment."
 _AUTHORITY_LIMITATION = "Context authority/provenance labels are unverified caller assertions; this runtime cannot authenticate provider accounts or merchant legal entities."
 _FIELDS = frozenset({"policy_domain", "provider_account_region", "merchant_legal_region", "buyer_destination_region", "issuer_region_signal", "ip_country_signal", "event_time", "evaluated_at", "policy_as_of"})
 _AUTHORITIES = frozenset({"PROVIDER_VERIFIED", "MERCHANT_VERIFIED", "USER_CLAIMED", "DERIVED_SIGNAL", "UNKNOWN"})

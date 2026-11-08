@@ -123,7 +123,7 @@ assert.ok(main.includes("import facts from '../data/proof_facts_v1.json';") && m
 assert.ok(main.includes('Real vs simulated') || main.includes('proof-legend-title'), 'legend');
 assert.ok(main.includes('<code data-testid="proof-source">{row.source}</code>'), 'each row names its file');
 assert.ok(html.includes('<link rel="stylesheet" href="/src/theme/base.css" />') && html.includes('<script type="module" src="/src/proof/main.jsx"></script>'), 'console theme and own entry');
-assert.ok(html.includes('<title>PayGuard AI · Proof</title>'));
+assert.ok(html.includes('<title>TradeGlot · Proof</title>'));
 const tokens = new Set([...read('frontend/src/theme/tokens.css').matchAll(/--(pg-[a-z0-9-]+):/gu)].map((match) => match[1]));
 const used = [...css.matchAll(/var\(--(pg-[a-z0-9-]+)\)/gu)].map((match) => match[1]);
 assert.ok(used.length > 20, 'uses the console tokens');

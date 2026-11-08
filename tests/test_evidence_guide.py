@@ -224,7 +224,7 @@ class Guide(unittest.TestCase):
             eg.apply_form(s, slot_id, True)
         template, text = eg.next_message(s)
         self.assertEqual(template, "DONE")
-        self.assertIn("PayGuard sends nothing", text)
+        self.assertIn("TradeGlot sends nothing", text)
 
     def test_model_failure_degrades_to_keyword(self):
         s = state()

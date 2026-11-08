@@ -1,10 +1,10 @@
-# PayGuard Eight-Layer Architecture (US Sandbox seller; the optional ten-country rules check is advisory)
+# TradeGlot Eight-Layer Architecture (US Sandbox seller; the optional ten-country rules check is advisory)
 
 Status: accepted local design, updated 2026-11-05. Real PayPal Sandbox runs: OAuth and unsent invoice drafts on 2026-10-06, 2026-10-31 and one during the video recording on 2026-11-05 (UTC+8); dispute list and detail reads on 2026-10-31, and again around each send; two gated `provide-evidence` sends on 2026-11-04 (PayPal-Debug-Id `f908765a01293`) and 2026-11-05 in UTC+8 (PayPal-Debug-Id `f2088142a6218`), each to its own author-created test dispute, with refusals for an already-answered dispute, a different reason and a different amount (masked receipts in `docs/evidence/`). PayPal Sandbox accepting a request is not PayPal accepting the evidence. Each recorded Sandbox and Gemini run is evidence for its own captured execution; they do not prove current-byte live behavior or bind a later source candidate. Release state is determined by the package manifest and exact anonymous public readback. When the manifest is `PUBLIC_SOURCE_PUBLISHED` with `publication_authorized=true` and the same bytes pass exact anonymous readback, public source publication is complete. In that published-source state, the Devpost project is submitted; the 2:50 video is already public. A package marked `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` has not crossed the public-source gate.
 
 ## Product boundary
 
-PayGuard is an advisory merchant console for a United States PayPal Sandbox demonstration. It implements three linked stages:
+TradeGlot is an advisory merchant console for a United States PayPal Sandbox demonstration. It implements three linked stages:
 
 1. pre-transaction US Acceptable Use Policy (AUP) preflight warning funnel and the optional ten-country rules check;
 2. payment and fulfillment sales spike evidence readiness;
@@ -17,7 +17,7 @@ The architecture follows four authority rules:
 - humans control local edit, cancel, acknowledge and review choices;
 - PayPal retains final authority for PayPal policy, account and internal-dispute decisions, while a bank or card issuer retains authority for an external dispute.
 
-PayGuard does not freeze funds, approve compliance, predict hidden provider thresholds, send invoices, pay, capture, refund, appeal or adjudicate. It submits dispute evidence only through the gated `provide-evidence` request (local reviewer approval, `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`, a connected Sandbox, an explicit `submit: true` and the server's single-use send confirmation).
+TradeGlot does not freeze funds, approve compliance, predict hidden provider thresholds, send invoices, pay, capture, refund, appeal or adjudicate. It submits dispute evidence only through the gated `provide-evidence` request (local reviewer approval, `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`, a connected Sandbox, an explicit `submit: true` and the server's single-use send confirmation).
 
 ## Current status map
 
@@ -147,7 +147,7 @@ The layer table and graphs above predate these parts of the current runtime. Eac
 - **AG Studio dashboard and built-in agents** (L8, `/dashboard.html`): the agents are off unless `PAYGUARD_STUDIO_AGENTS=gemini`; each turn goes through `POST /api/v1/studio/agent-turn` to the same worker under a separate governor. A question outside the auditor's fixed set goes to Studio's data agent only after a plain "yes" (8-turn cap, judgement-wording check before display).
 - **Channel3** (L4, advisory only): a category signal and a product reference card, off by default, replayed from recordings on the hosted demo; case routing (`/api/v1/cases/route`) matches goods text against the recorded catalogue and may make one live product search when a key is set. On the hosted demo the browser loads the recorded card images from `cdn.trychannel3.com`.
 - **Bryntum evidence deadline board** (L8, step 03): planning only, kept in the browser tab.
-- **PayPal shipment tracking** (`POST /v1/shipping/trackers-batch`; PayPal marks this endpoint deprecated (legacy), and Orders v2 tracking, `POST /v2/checkout/orders/{id}/track`, is the current path, not called by PayGuard) and the **webhook signature check**: both gated, neither run live.
+- **PayPal shipment tracking** (`POST /v1/shipping/trackers-batch`; PayPal marks this endpoint deprecated (legacy), and Orders v2 tracking, `POST /v2/checkout/orders/{id}/track`, is the current path, not called by TradeGlot) and the **webhook signature check**: both gated, neither run live.
 - **Hosted demo** (L5): `PAYGUARD_DEMO_MODE=public` replaces every PayPal, brief, Studio and local-model adapter with a stub (the guide may use Gemini only when the operator opts in, at most 5 calls a minute and 20 a day), answers 503 on provider routes, accepts the one configured public host behind the proxy and adds the `TrafficGate` limits.
 - **Pages** (L8): besides the console, the evidence page, `/scenarios.html` (fixed work orders) and `/proof.html` (static proof page).
 

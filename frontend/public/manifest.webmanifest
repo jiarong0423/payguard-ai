@@ -1,8 +1,8 @@
 {
   "id": "/",
-  "name": "PayGuard AI · Merchant Evidence Buffer",
-  "short_name": "PayGuard",
-  "description": "PayGuard AI console: Acceptable Use Policy (AUP) and ten-country checks, sales spike review and human-reviewed dispute evidence with a gated PayPal Sandbox send. The hosted demo makes no PayPal calls; the Sandbox path needs the local API.",
+  "name": "TradeGlot · Merchant Evidence Buffer",
+  "short_name": "TradeGlot",
+  "description": "TradeGlot console: Acceptable Use Policy (AUP) and ten-country checks, sales spike review and human-reviewed dispute evidence with a gated PayPal Sandbox send. The hosted demo makes no PayPal calls; the Sandbox path needs the local API.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

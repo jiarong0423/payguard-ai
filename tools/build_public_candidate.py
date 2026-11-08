@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build one default-deny PayGuard public source candidate outside the source root."""
+"""Build one default-deny TradeGlot public source candidate outside the source root."""
 
 from __future__ import annotations
 
@@ -65,6 +65,10 @@ EXACT_FILES = (
     "docs/BRYNTUM_LICENSE_CHECK.md",
     "docs/CHANNEL3_NOTES.md",
     "docs/SPONSOR_TECH_MAP.md",
+    "docs/evidence/REVIEW_ZIP_CONTENTS.md",
+    "docs/evidence/BRIEF_LIVE_RUN_20261109.md",
+    "docs/evidence/IMPACT_SOURCES_20261109.md",
+    "docs/evidence/SECOND_RATER_20261109.md",
     "docs/decisions/2026Q4/architecture.md",
     "docs/decisions/2026Q4/case_intake_contract.md",
     "docs/decisions/2026Q4/console_contract.md",
@@ -89,6 +93,7 @@ EXACT_FILES = (
     # (2026-11-08) Evidence and method files added so every public number can be reproduced or traced.
     "data/eval/checklist_answer_key_v1.json",
     "data/eval/checklist_answer_key_v2_heldout.json",
+    "data/eval/second_rater_labels_v1_v2.json",
     "data/eval/PREREGISTRATION_v2.md",
     "docs/evidence/CHECKLIST_ANSWER_KEY_EVAL.md",
     "docs/evidence/HOW_NUMBERS_WERE_COUNTED.md",
@@ -98,6 +103,7 @@ EXACT_FILES = (
     "docs/evidence/PAYPAL_CLAUSES_SPOTCHECK_20261108.md",
     "docs/evidence/TEST_RUN_20261108.md",
     "tools/eval_checklist_answer_key.py",
+    "tools/compare_second_rater.py",
     "tools/sandbox_readback_hash.py",
     "tools/verify_public_numbers.py",
     "docs/submission/quickstart.md",
@@ -225,7 +231,7 @@ TREE_FILES = {
     # The whole frontend/public tree (PWA manifest, service worker, offline page, icons); a test keeps it complete.
     "frontend/public": (
         "icons/apple-touch-icon.png", "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png",
-        "icons/icon-maskable.svg", "icons/icon.svg", "manifest.webmanifest", "offline.html", "sw.js",
+        "icons/icon-maskable.svg", "icons/icon.svg", "manifest.webmanifest", "offline.html", "start.css", "start.html", "sw.js",
     ),
     "frontend/src": (
         "AnalyticsDashboard.css", "AnalyticsDashboard.jsx", "App.jsx", "CountryRules.css", "CountryRules.jsx", "GuideLive.css", "GuideLive.jsx",

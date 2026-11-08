@@ -4,7 +4,7 @@ Commit: see `git log -- docs/evidence/AI_DRIFT_CONTROL.md`; line numbers refer t
 
 ## Summary
 
-1. PayGuard has three model paths: the evidence guide's clause chooser, AG Studio's built-in dashboard agents (local live mode only), and the Gemini evidence brief. All three are off by default. On the hosted demo the brief and the Studio agents are never built, and only the guide can call Gemini, when the operator opts in (a free-tier key held as a Render secret, at most 5 calls a minute and 20 a day).
+1. TradeGlot has three model paths: the evidence guide's clause chooser, AG Studio's built-in dashboard agents (local live mode only), and the Gemini evidence brief. All three are off by default. On the hosted demo the brief and the Studio agents are never built, and only the guide can call Gemini, when the operator opts in (a free-tier key held as a Render secret, at most 5 calls a minute and 20 a day).
 2. In the guide and the brief, the model can only pick from closed values. Fixed English templates and a closed sentence inventory decide what the user reads. The guide never shows model text.
 3. Rules run before any model: an input gate, keyword policy routes, a rule layer and a speaker check. Only an English clause in the seller's own voice that the rules did not settle reaches the model.
 4. A model reply cannot mark an item present, approve a draft, send evidence or decide a case. When a reply is late, invalid, over budget or empty, the keyword answer stays, labelled with the reason.
@@ -214,3 +214,5 @@ Run on the owner's local console against the build of the day; the counts below 
 3. Studio adapter and auditor: `node tests/frontend_studio_agent.mjs` (browser stage needs Playwright).
 4. Re-score recorded replies: `python3 tools/score_replies.py <replies> --corpus <corpus>` (add `--funnel` for funnel runs).
 5. Live runs are optional and cost the operator's own credit: `PAYGUARD_GUIDE_MODEL=gemini` with one configured transport, and `PAYGUARD_STUDIO_AGENTS=gemini` for the dashboard agents.
+
+**Name change, 2026-11-09.** The product was renamed TradeGlot (formerly PayGuard AI). The guide prompts and the two slot labels they list keep the old name on purpose, so their pinned digests, and every measurement made with those prompts, stay valid.

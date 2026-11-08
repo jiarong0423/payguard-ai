@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="pg-zip-title pg-zip-desc">
 <title id="pg-zip-title">The review pack, opened and verified</title>
-<desc id="pg-zip-desc">Every file in a downloaded PayGuard review ZIP checked against its manifest, with key contents.</desc>
+<desc id="pg-zip-desc">Every file in a downloaded TradeGlot review ZIP checked against its manifest, with key contents.</desc>
 <style>@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&amp;family=Geist:wght@400;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap');.t{font-family:'Instrument Serif',Georgia,serif;fill:#1f1e1b}.s{font-family:Geist,Helvetica,Arial,sans-serif}.m{font-family:'Geist Mono',Menlo,monospace}</style>
 <rect width="1920" height="1080" fill="#f7f3ec"/>
-<text x="64" y="64" class="m" font-size="16" letter-spacing="2" fill="#6b6862">PAYGUARD AI · STEP 03 · DOWNLOADED REVIEW PACK</text>
+<text x="64" y="64" class="m" font-size="16" letter-spacing="2" fill="#6b6862">TRADEGLOT · STEP 03 · DOWNLOADED REVIEW PACK</text>
 <text x="64" y="120" class="t" font-size="56">The review pack, opened and verified</text>
 <text x="64" y="160" class="s" font-size="22" fill="#55534e">7 entries (6 files + manifest.json), 14,028 bytes. Each of the 6 files below was hashed again and compared with manifest.json.</text>
 <rect x="64" y="196" width="1120" height="392" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>

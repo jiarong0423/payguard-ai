@@ -42,7 +42,7 @@ const RECORDING = (() => {
   try { return validateRecording(doc); } catch { return null; }
 })();
 const RECORD_MODE = new URLSearchParams(window.location.search).get('record') === '1';
-// Default menu: Studio's own widgets plus the two PayGuard widgets. A custom menu would also narrow the
+// Default menu: Studio's own widgets plus the two TradeGlot widgets. A custom menu would also narrow the
 // widget types the add_widget tool accepts, which the auditor needs for its answer grid.
 const widgets = createWidgets({ additionalTypes: CUSTOM_WIDGETS });
 
@@ -344,7 +344,7 @@ function Dashboard({ setup }) {
   return (
     <div className="pg-dashboard">
       <header className="pg-topbar">
-        <p className="pg-brand">PayGuard AI <span>· AG Studio</span> <a className="pg-back" href="/" data-testid="dashboard-back-to-console">Back to console</a></p>
+        <p className="pg-brand">TradeGlot <span>· AG Studio</span> <a className="pg-back" href="/" data-testid="dashboard-back-to-console">Back to console</a></p>
         <nav className="pg-tabs" aria-label="Dashboard pages">
           {report.pages.map((page) => (
             <button key={page.id} type="button" aria-pressed={pageId === page.id} className={pageId === page.id ? 'is-active' : ''}

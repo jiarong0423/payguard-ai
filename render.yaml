@@ -1,4 +1,4 @@
-# Optional Render Blueprint for the PayGuard AI public demo. One free web service.
+# Optional Render Blueprint for the TradeGlot public demo. One free web service.
 # The service runs PAYGUARD_DEMO_MODE=public: synthetic fixtures and committed replays; PayPal Sandbox,
 # the Gemini evidence brief, the AG Studio agents and local-model calls are disabled and answer 503.
 # The one opt-in exception is the evidence guide: with the four optional entries at the end set, its clause

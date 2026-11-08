@@ -25,7 +25,7 @@ DEMO_MODE_ENV = "PAYGUARD_DEMO_MODE"
 PUBLIC_HOST_ENV = "PAYGUARD_PUBLIC_HOST"
 HOSTED_DEMO_CODE = "hosted_demo_disabled"
 HOSTED_DEMO_MESSAGE = ("This capability is disabled in the hosted demo, which makes no provider calls. "
-                       "Run PayGuard locally to use it.")
+                       "Run TradeGlot locally to use it.")
 # Routes that would contact PayPal, Gemini or a local model. They answer 503 in public demo mode.
 DISABLED_ROUTES = frozenset({
     ("POST", "/api/v1/paypal/connect"),

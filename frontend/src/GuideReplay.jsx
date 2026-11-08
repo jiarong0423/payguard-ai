@@ -48,7 +48,7 @@ export function StatusChip({ value }) {
 export function SourceChip({ data }) {
   const official = data.source === 'OFFICIAL';
   return <span className={`gap-chip ${official ? 'gap-chip-official' : 'gap-chip-suggestion'}`}
-    title={official ? `Official material mentions this and it may be relevant (${data.chunk}). It is not a PayPal requirement.` : 'PayGuard organising suggestion, not a PayPal requirement.'}>
+    title={official ? `Official material mentions this and it may be relevant (${data.chunk}). It is not a PayPal requirement.` : 'TradeGlot organising suggestion, not a PayPal requirement.'}>
     {official ? 'Official mention' : 'Suggestion'}
   </span>;
 }
@@ -158,7 +158,7 @@ export default function GuideReplay() {
           </details>
         </div>
         <div className="guide-replay-turn">
-          <span className="guide-replay-tag">PayGuard says (fixed wording)</span>
+          <span className="guide-replay-tag">TradeGlot says (fixed wording)</span>
           <p className="guide-replay-say" data-testid="replay-say" aria-live="polite">{step.assistant_text}</p>
         </div>
         <GapGrid items={step.items} testIdPrefix="replay" csvFileName={`payguard-replay-${scenario.id}-step-${stepIndex + 1}.csv`}

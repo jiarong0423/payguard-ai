@@ -80,7 +80,7 @@ function ProofPage() {
   const channel3 = channel3Summary(receipts);
   return <div className="proof-shell">
     <a className="proof-skip" href="#proof-main">Skip to the proof</a>
-    <header className="proof-band"><div className="proof-band-inner"><strong>PayGuard AI</strong><span>Proof</span></div></header>
+    <header className="proof-band"><div className="proof-band-inner"><strong>TradeGlot</strong><span>Proof</span></div></header>
     <main id="proof-main" className="proof-main" tabIndex={-1}>
       <div className="proof-intro">
         <h1>What has been shown, and how</h1>

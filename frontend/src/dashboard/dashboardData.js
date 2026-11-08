@@ -136,7 +136,7 @@ const dateTime = (id, name) => ({ id, name, format: 'dateTimeFormat', formatOpti
 // in one widget cross-filters the requirement and time-event widgets.
 export function studioData({ disputes, benchmark, receipts }) {
   return {
-    description: 'PayGuard AI synthetic dispute evidence readiness. Read only: nothing here decides a dispute or submits to PayPal.',
+    description: 'TradeGlot synthetic dispute evidence readiness. Read only: nothing here decides a dispute or submits to PayPal.',
     sources: [
       {
         id: 'cases', name: 'Dispute cases', description: `Synthetic dispute cases as of ${disputes.as_of}.`, data: caseRows(disputes),

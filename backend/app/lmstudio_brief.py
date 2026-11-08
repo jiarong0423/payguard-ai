@@ -1,4 +1,4 @@
-"""Default-off LM Studio adapter for fixed synthetic PayGuard evidence briefs.
+"""Default-off LM Studio adapter for fixed synthetic TradeGlot evidence briefs.
 
 This module has one network destination: the loopback LM Studio OpenAI-compatible
 chat-completions endpoint. It accepts no caller prompt, model, URL, credential,
@@ -136,7 +136,7 @@ LocalTransport = Callable[[dict[str, object]], Awaitable[bytes]]
 
 
 def validate_lmstudio_response(raw: bytes, *, stage: str, context: dict[str, object]) -> dict[str, object]:
-    """Reduce an OpenAI-compatible envelope to the closed PayGuard response."""
+    """Reduce an OpenAI-compatible envelope to the closed TradeGlot response."""
     envelope = strict_json(raw)
     if type(envelope) is not dict or envelope.get("model") != MODEL:
         fail()

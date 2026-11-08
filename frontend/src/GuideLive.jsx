@@ -247,9 +247,9 @@ function RouteResult({ route }) {
 // gets that situation's own prompt, so one situation never clears, fills or steers another.
 // A 401 goes to the console's own "Demo session expired + Reconnect" banner (attack r21 desktop #10).
 const SESSION_EXPIRED_TEXT = 'The demo session expired. Select Reconnect at the top of the page to start a new one.';
-// Plain words when a request never reached PayGuard (attack r22: the offline text said "confirm that the API is
+// Plain words when a request never reached TradeGlot (attack r22: the offline text said "confirm that the API is
 // running"). Shared with the console banner and the country panel.
-export const OFFLINE_TEXT = 'PayGuard could not be reached. Check your internet connection, then try again.';
+export const OFFLINE_TEXT = 'TradeGlot could not be reached. Check your internet connection, then try again.';
 export const plainFailureMessage = (failure, fallback = 'The request failed. Try again.') => (failure?.code === 'backend_unavailable' ? OFFLINE_TEXT : failure?.message || fallback);
 // (attack r23) A 429 or 503 with Retry-After: the server's fixed wait sentence makes room for the live countdown.
 export const waitFailureMessage = (failure, fallback) => (failure?.retryAt ? withoutFixedWait(plainFailureMessage(failure, fallback)) : plainFailureMessage(failure, fallback));
@@ -506,7 +506,7 @@ export default function GuideLive({ session, Disclosure, Badge, request, scenari
   return <Disclosure id={sectionId} title={`Step ${stepNumber} guide: ${title}`} subtitle="Tell it what happened" icon="layers"
     open={open} onToggle={setOpen} testId={`optional-toggle-guide-live-${scenario}`}>
     {open ? <section className="guide-live" data-testid={`guide-live-${scenario}`} data-scenario={scenario} aria-label={`Guided gap filling, live: ${title}`}>
-      <p className="guide-live-intro">Type as a seller. PayGuard shows which details are still missing.</p>
+      <p className="guide-live-intro">Type as a seller. TradeGlot shows which details are still missing.</p>
       <div className="guide-live-controls">
         {scenario === 'dispute' && <form className="guide-route" data-testid="guide-route" onSubmit={(event) => { event.preventDefault(); findRoute(); }}>
           <label>What did you sell?
@@ -529,7 +529,7 @@ export default function GuideLive({ session, Disclosure, Badge, request, scenari
         <div className="guide-live-chat">
           <ol className="guide-live-log" ref={logRef} role="log" aria-live="polite" data-testid="guide-live-log">
             {log.map((row) => <li key={row.id} className={`guide-live-msg guide-live-msg-${row.who}`}>
-              <span className="guide-live-tag">{row.who === 'seller' ? 'You' : row.who === 'form' ? 'Form' : 'PayGuard'}</span>
+              <span className="guide-live-tag">{row.who === 'seller' ? 'You' : row.who === 'form' ? 'Form' : 'TradeGlot'}</span>
               {/* (r34 #12) First line of the reply: on a phone the line under a long reply fell below the log box. */}
               {row.funnel && <small className="guide-live-funnel" data-testid="guide-live-funnel">{row.funnel}</small>}
               {row.badge && <span className="guide-live-who" data-testid="guide-live-who">{row.badge}</span>}

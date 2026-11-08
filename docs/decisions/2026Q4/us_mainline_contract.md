@@ -1,4 +1,4 @@
-# PayGuard Mainline Contract (US Sandbox seller; the optional ten-country rules check is advisory)
+# TradeGlot Mainline Contract (US Sandbox seller; the optional ten-country rules check is advisory)
 
 Status: current accepted canonical local design for a US Sandbox seller; the optional ten-country rules check is advisory. The English conversion and three-stage contract are current. Real PayPal Sandbox runs: OAuth and unsent invoice drafts (2026-10-06, 2026-10-31 and one during the video recording on 2026-11-05, UTC+8), dispute list and detail reads (2026-10-31) and two gated `provide-evidence` sends, each to its own author-created test dispute (2026-11-04 and 2026-11-05 in UTC+8; see "Sandbox contract"). One recorded fixed-synthetic `gemini-3.8-flash` result is from 2026-10-06. Each is a record of its own captured execution. They do not prove current-byte live behavior or bind a later source candidate. A judge-facing execution claim requires showing the bounded path live. This contract supersedes prior product narratives for the active runtime; historical evidence retains its original claims and bytes. The Devpost project is submitted; later source revisions retain a separate release gate.
 
@@ -6,7 +6,7 @@ Current objective state: the local product baseline is `O (Done)`. Release state
 
 ## Locked product statement
 
-PayGuard is an advisory console for a PayPal Sandbox merchant journey of a US Sandbox seller; the optional ten-country rules check is advisory. It applies deterministic validation before AI and presents three stages:
+TradeGlot is an advisory console for a PayPal Sandbox merchant journey of a US Sandbox seller; the optional ten-country rules check is advisory. It applies deterministic validation before AI and presents three stages:
 
 1. US AUP warning before an invoice draft;
 2. sales spike and fulfillment evidence readiness;

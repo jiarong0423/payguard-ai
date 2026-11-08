@@ -1,4 +1,4 @@
-// PayGuard theme for AG Studio: the console's indigo accent and depth layers (docs/design/VISUAL_SPEC_r7.md D2,
+// TradeGlot theme for AG Studio: the console's indigo accent and depth layers (docs/design/VISUAL_SPEC_r7.md D2,
 // section 6: L0 canvas #eef1f6, white L1 cards), neutrals from the grey scale AG's own site uses, and a muted
 // four-hue chart palette (one indigo highlight, teal, grey, sky), applied to the shell, grids and charts.
 import { studioTheme } from 'ag-studio';

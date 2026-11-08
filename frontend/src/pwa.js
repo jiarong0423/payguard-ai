@@ -32,7 +32,7 @@ function installButton(doc, onClick) {
   label.className = 'pwa-install-label';
   label.textContent = 'Install app';
   button.append(icon, label);
-  button.setAttribute('aria-label', 'Install the PayGuard console as an app');
+  button.setAttribute('aria-label', 'Install the TradeGlot console as an app');
   button.addEventListener('click', onClick);
   return button;
 }

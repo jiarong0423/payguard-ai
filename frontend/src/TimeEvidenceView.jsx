@@ -136,7 +136,7 @@ export default function TimeEvidenceView({ evidence }) {
       {evidence.flags?.length > 0 && (
         <p className="time-flags">{evidence.flags.map((flag) => <span key={flag} className="badge badge-muted">{operatorLabel(flag)}</span>)}</p>
       )}
-      <p className="time-note">PayGuard orders and preserves times. It states no intent, predicts no outcome and gives no legal advice. Messages are kept as a topic and a keyed digest, never as text. A negative gap means the second event is earlier than the first.</p>
+      <p className="time-note">TradeGlot orders and preserves times. It states no intent, predicts no outcome and gives no legal advice. Messages are kept as a topic and a keyed digest, never as text. A negative gap means the second event is earlier than the first.</p>
     </section>
   );
 }

@@ -10,14 +10,14 @@ The script uses only the Python standard library, reads files only, makes no net
 
 ## Counting scope
 
-The file set is the public candidate: every path in `public_export_manifest.json` (332 files) plus the manifest and `public_export_manifest.sha256`, which makes the 342 tracked files. A fresh copy also contains `.venv`, `node_modules`, `frontend/dist` and build logs; none of these is counted. The script also checks every file against the sha256 in the manifest and reports any that differ. A "line" is a physical line (a newline-terminated line, the same as `wc -l`), so blank lines and comments are included. A "word" is a whitespace-separated token (`str.split()`).
+The file set is the public candidate: every path in `public_export_manifest.json` (348 files) plus the manifest and `public_export_manifest.sha256`, which makes the 350 tracked files. A fresh copy also contains `.venv`, `node_modules`, `frontend/dist` and build logs; none of these is counted. The script also checks every file against the sha256 in the manifest and reports any that differ. A "line" is a physical line (a newline-terminated line, the same as `wc -l`), so blank lines and comments are included. A "word" is a whitespace-separated token (`str.split()`).
 
 ## The numbers
 
 | Claim | Value | Command or rule |
 |---|---|---|
-| Tracked files | 342 | 332 manifest paths + `public_export_manifest.json` + `public_export_manifest.sha256` |
-| Python source lines | 21,153 | all `*.py` outside `tests/` (backend, src, tools, integrations) |
+| Tracked files | 350 | 348 manifest paths + `public_export_manifest.json` + `public_export_manifest.sha256` |
+| Python source lines | 21,222 | all `*.py` outside `tests/` (backend, src, tools, integrations) |
 | Python test lines | 17,626 | all `tests/**/*.py` |
 | Front-end lines | 13,534 | `frontend/src/**/*.{jsx,js,css}`, 69 files; see below |
 | JSX files / pages | 21 / 5 | `frontend/**/*.jsx`; `frontend/*.html` (index, dashboard, evidence, proof, scenarios; `public/offline.html` is the service-worker fallback, not a page) |
@@ -25,9 +25,9 @@ The file set is the public candidate: every path in `public_export_manifest.json
 | Node test files / lines | 46 / 6,775 | `tests/frontend_*.mjs` (the two other `.mjs` files are a token-writer and a recorder, not tests) |
 | Python tests | 1,070 (9 skipped) | `unittest` discovery over `tests/`, loaded and counted, not run |
 | Red-team requests | 1,727 | run-time only, see below |
-| Words in documents | 70,078 (page says about 70,078; the script allows 1% either way) | see below |
-| Evidence files | 18 | files directly in `docs/evidence/` (14 `.md`, 2 `.json`) |
-| Diagrams and images | 22 | every `*.png` and `*.svg` in the file set: 18 under `docs/`, 6 application icons under `frontend/public/icons`; `.mmd` sources are not counted |
+| Words in documents | 71,709 (page says about 71,709; the script allows 1% either way) | see below |
+| Evidence files | 22 | files directly in `docs/evidence/` (20 `.md`, 2 `.json`) |
+| Diagrams and images | 22 | every `*.png` and `*.svg` in the file set: 16 under `docs/`, 6 application icons under `frontend/public/icons`; `.mmd` sources are not counted |
 | PayPal clauses | 140 | `len(snippets)` in `data/country_rules/paypal_country_rules_v1.json` |
 | Export / import rules | 313 / 368 = 681 | sum of `len(rules)` over `export_rules[country]` and `import_rules[country]`, ten countries |
 | Evidence-guide benchmark | 268 cases | sum of `cases` over the seven corpora in `docs/evidence/guide_benchmark_v1.json`; the same 268 in each of the three flows |
@@ -56,9 +56,9 @@ The script counts with the `ast` module (decorated functions whose decorator is 
 
 13,534 is the physical line count of the 69 files `frontend/src/**/*.jsx`, `*.js` and `*.css`. It excludes the JSON data files (adding them gives 15,407), `.mjs` files, the HTML pages and `frontend/public/` (adding HTML and public gives 13,733). JS and JSX without CSS is 10,729. The earlier public page said 13,463, the count of the published tree before 2026-11-08; the 15 more lines are the CSS added that day (`frontend/src/index.css` grew from 1,143 to 1,158 lines: the hint box before a draft and the toast placement rule). An independent reviewer's count of 13,534 uses the same scope.
 
-### Document words: 70,078
+### Document words: 71,709
 
-70,078 is the whitespace-token count of all 35 Markdown files in the file set (README, the security and notices files, and everything under `docs/`), with code fences and tables included. Limited to `docs/**` it is 55,670; `docs/**` plus README is 67,297. Earlier pages quoted "about 48,700" (the tree before 2026-11-08, documents only); the count grew because evidence files and a README walkthrough were added that day. The page says "about 70,078"; the script accepts one percent either way because the documents are still being edited. `tools/verify_public_numbers.py` prints the current figure and the variants.
+71,709 is the whitespace-token count of all 39 Markdown files in the file set (README, the security and notices files, and everything under `docs/`), with code fences and tables included. Limited to `docs/**` it is 57,228; `docs/**` plus README is 68,928. Earlier pages quoted "about 48,700" (the tree before 2026-11-08, documents only); the count grew because evidence files and a README walkthrough were added that day. The page says "about 71,709"; the script accepts one percent either way because the documents are still being edited. `tools/verify_public_numbers.py` prints the current figure and the variants.
 
 ### Receipts with a Debug-Id
 

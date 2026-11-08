@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Start page for reviewers: the shortest path through the TradeGlot demo, what is real and what is recorded, and where the proof is.">
+<link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+<link rel="stylesheet" href="start.css">
+<title>TradeGlot · Start here</title>
+</head>
+<body>
+<main>
+<h1>Start here: judge TradeGlot in about five minutes</h1>
+<p class="lead">TradeGlot checks a sale before you ship, then helps a seller prepare dispute evidence. Rules decide, a person approves, and nothing is sent to PayPal from this page.</p>
+<p><a class="btn" href="https://payguard-demo-j2b3.onrender.com/">Open the demo and press &ldquo;Try the example&rdquo;</a></p>
+
+<h2>The five-minute path</h2>
+<ol>
+<li><a class="row" href="https://payguard-demo-j2b3.onrender.com/"><span class="n">1</span><span><span class="t">Check a sale <span class="tag">hosted</span></span><span class="d">Press <b>Try the example</b>. A banned product to Singapore is stopped, with the rule and its official source.</span></span></a></li>
+<li><a class="row" href="https://payguard-demo-j2b3.onrender.com/#disputes"><span class="n">2</span><span><span class="t">Dispute evidence <span class="tag">hosted</span></span><span class="d">Open step 03, pick a case, press <b>Prepare evidence draft</b>. Expect &ldquo;Ready for human review&rdquo; and a downloadable review ZIP. In the guide, what the seller sold is routed to a goods group by code (typo-tolerant fuzzy match, no model); the seller can change it, and it never decides a dispute.</span></span></a></li>
+<li><a class="row" href="https://payguard-demo-j2b3.onrender.com/dashboard.html"><span class="n">3</span><span><span class="t">AG Studio evidence dashboard <span class="tag">hosted</span> <span class="tag rec">recorded agent run</span></span><span class="d">Ask &ldquo;Which reason code appears most often across the three cases?&rdquo; The answer replays a real Gemini run, labelled as recorded.</span></span></a></li>
+<li><a class="row" href="https://payguard-demo-j2b3.onrender.com/proof.html"><span class="n">4</span><span><span class="t">Proof and receipts <span class="tag rec">recorded</span></span><span class="d">What was shown, how, when, and from which file, including the recorded real send to the PayPal Sandbox.</span></span></a></li>
+<li><a class="row" href="https://payguard-demo-j2b3.onrender.com/scenarios.html"><span class="n">5</span><span><span class="t">Scenario work orders <span class="tag">hosted</span></span><span class="d">Fixed scenarios you can rerun to see the same result.</span></span></a></li>
+</ol>
+
+<h2>What is real, what is recorded</h2>
+<p>This hosted page makes no PayPal calls and holds no PayPal or Channel3 key. Its evidence guide can call Gemini on a free-tier key under strict caps; the evidence brief and the AG Studio agents never run here. Real calls were made on the author&rsquo;s local console and are shown as receipts and recordings: two PayPal Sandbox evidence sends with PayPal-Debug-Ids, one recorded AG Studio agent run, and five recorded Channel3 searches. The data is synthetic and PayPal decides every real dispute.</p>
+
+<h2>Check the claims yourself</h2>
+<div class="grid">
+<a class="btn small" href="https://github.com/jiarong0423/payguard-ai/blob/main/README.md">README: how to judge in 5 minutes</a>
+<a class="btn small" href="https://github.com/jiarong0423/payguard-ai/blob/main/docs/SPONSOR_TECH_MAP.md">Sponsor technology map</a>
+<a class="btn small" href="https://github.com/jiarong0423/payguard-ai/blob/main/docs/evidence/REVIEW_ZIP_CONTENTS.md">What is inside the review ZIP</a>
+<a class="btn small" href="https://github.com/jiarong0423/payguard-ai/blob/main/docs/evidence/HOW_NUMBERS_WERE_COUNTED.md">How every number was counted</a>
+<a class="btn small" href="https://github.com/jiarong0423/payguard-ai">Source repository</a>
+<a class="btn small" href="https://youtu.be/_GORnHWShU4">Demo video</a>
+</div>
+<p class="small">The first request after a quiet period can take up to a minute while the free Render instance wakes.</p>
+</main>
+</body>
+</html>

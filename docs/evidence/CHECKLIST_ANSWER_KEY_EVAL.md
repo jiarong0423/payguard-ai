@@ -4,6 +4,8 @@
 
 **Cost: 0 model calls, 0 network requests, deterministic.** Two consecutive runs of `--set all --json` are byte-identical (sha256 of the output `91b1615f...88d4c5`).
 
+**Second rater (added 2026-11-09):** a separate AI rater that had not seen these keys labelled all 50 cases; see [SECOND_RATER_20261109.md](SECOND_RATER_20261109.md). It is not an expert review.
+
 ## What was frozen, and when
 
 - v2 key: `data/eval/checklist_answer_key_v2_heldout.json`, sha256 `06992da608733341abc33b148b423c1dcc2df75282a09e860ec3af3a3c790cb8`, computed 2026-11-08T15:12:21Z, recorded in `data/eval/PREREGISTRATION_v2.md` before the program was run on any v2 case. This orders events inside this repo's files only; it is not a notarised timestamp.

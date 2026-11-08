@@ -1,6 +1,6 @@
 # Third-Party Dependency Notices
 
-This inventory covers the exact dependency identities locked for the PayGuard public source candidate. It is an inventory and review record, not a replacement for upstream license texts. The release owner must bind the final dependency review to the candidate package digest and detached manifest SHA-256 before publication.
+This inventory covers the exact dependency identities locked for the TradeGlot public source candidate. It is an inventory and review record, not a replacement for upstream license texts. The release owner must bind the final dependency review to the candidate package digest and detached manifest SHA-256 before publication.
 
 ## Lock identities
 

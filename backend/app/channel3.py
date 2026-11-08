@@ -120,7 +120,7 @@ def _reject_constant(_value):
 def parse_categories_response(body: bytes) -> dict:
     """Reduce a ``GET /v1/categories/search`` reply to the closed signal contract.
 
-    Channel3 returns categories ordered by relevance but no score, so confidence is PayGuard's own
+    Channel3 returns categories ordered by relevance but no score, so confidence is TradeGlot's own
     label: HIGH when the top result is the only one or shares its root category with the runner-up,
     LOW otherwise. Unknown provider fields are dropped, never passed through.
     """

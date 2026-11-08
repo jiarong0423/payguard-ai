@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate one immutable PayGuard public source candidate without network access."""
+"""Validate one immutable TradeGlot public source candidate without network access."""
 
 from __future__ import annotations
 

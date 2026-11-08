@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="pg-paypal-guards-title pg-paypal-guards-desc">
 <title id="pg-paypal-guards-title">Sending evidence to PayPal: nine checks, one person</title>
-<desc id="pg-paypal-guards-desc">Nine ordered checks before PayGuard sends dispute evidence to PayPal Sandbox, and the invoice draft chain.</desc>
+<desc id="pg-paypal-guards-desc">Nine ordered checks before TradeGlot sends dispute evidence to PayPal Sandbox, and the invoice draft chain.</desc>
 <style>@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&amp;family=Geist:wght@400;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap');
 .t{font-family:'Instrument Serif',Georgia,serif;fill:#1f1e1b}
 .s{font-family:Geist,Helvetica,Arial,sans-serif}
@@ -9,7 +9,7 @@
 <defs><marker id="pg-paypal-guards-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#55534e"/></marker><marker id="pg-paypal-guards-am" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#4f46e5"/></marker><pattern id="pg-paypal-guards-dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#e6e0d4"/></pattern></defs>
 <rect width="1920" height="1080" fill="#f7f3ec"/>
 <rect width="1920" height="1080" fill="url(#pg-paypal-guards-dots)"/>
-<text x="64" y="60" class="m" font-size="18" letter-spacing="2" fill="#6b6862">PAYGUARD AI · ARCHITECTURE</text>
+<text x="64" y="60" class="m" font-size="18" letter-spacing="2" fill="#6b6862">TRADEGLOT · ARCHITECTURE</text>
 <text x="64" y="116" class="t" font-size="56">Sending evidence to PayPal: nine checks, one person</text>
 <text x="64" y="156" class="s" font-size="24" fill="#55534e">One approval allows exactly one send, and every check runs again at the moment of sending.</text>
 <path d="M488 281 L516 281" fill="none" stroke="#55534e" stroke-width="2" marker-end="url(#pg-paypal-guards-ar)"/>
@@ -110,5 +110,5 @@
 <text x="1219" y="976" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#3f6b47">CODE</text>
 <text x="1286" y="977" class="s" font-size="20" fill="#55534e">the race guard</text>
 <text x="64" y="1016" class="s" font-size="19" fill="#6b6862">Step 4's tick and 3 s hold are in the browser; its single-use confirmation and every other step are checked on the server.</text>
-<text x="64" y="1044" class="s" font-size="19" fill="#6b6862">PayPal or the card issuer decides the dispute; PayGuard only prepares and sends evidence.</text>
+<text x="64" y="1044" class="s" font-size="19" fill="#6b6862">PayPal or the card issuer decides the dispute; TradeGlot only prepares and sends evidence.</text>
 </svg>

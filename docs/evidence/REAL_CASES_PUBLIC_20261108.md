@@ -1,4 +1,4 @@
-# Public Real-World PayPal Seller Dispute Cases (impact evidence for PayGuard)
+# Public Real-World PayPal Seller Dispute Cases (impact evidence for TradeGlot)
 
 Fetched: 2026-11-08. Scope: public web pages only; no login; no account touched.
 
@@ -163,21 +163,21 @@ Counts overlap and are judgments from 15 documents; they are illustrations, not 
 - FOS PDFs fetched and read: DRN-3778703, 5038521, 3308660, 3293363, 5897525, 5262863 (excluded, buyer), 5879609, 5666659, 5720028, 5091323, 3721889, 5746232, 5724140, 3323279, 3322417, 5066876, 4558316, 3265188, 5842790, 3505698, 5620623, 6203486, 3795589 (the last 8 for triage only).
 - Could not open: 6 PayPal Community thread URLs, 1 mirror host (7 total). Trustpilot not attempted.
 
-## Mapping to PayGuard checks
+## Mapping to TradeGlot checks
 
 Author inference throughout. Each row compares the evidence gap named in the case summary above with a check that exists in this repo today. Line numbers refer to the working tree on 2026-11-08. Abbreviations: DE = src/payguard/dispute_evidence.py; PD = backend/app/paypal_disputes.py; CIC = docs/decisions/2026Q4/case_intake_contract.md; RZ = frontend/src/reviewZip.js; AK = data/eval/checklist_answer_key_v1.json (case start line). Classes: Has a check = a check exists for the gap; Partly = a check exists for part of the gap, or records the item without verifying it; None = no check, reason given.
 
-| Case | Evidence gap (from the summary above) | PayGuard check or feature | Class | Note |
+| Case | Evidence gap (from the summary above) | TradeGlot check or feature | Class | Note |
 | --- | --- | --- | --- | --- |
-| RC-01 | Proof showed post-office collection, not delivery to the address | DE:233-236 fulfillment fields include delivery_status and destination_match_status, but only carrier+tracking (or channel+delivered_at) are required; DE:471 flags a missing mandatory request; AK-01 (AK:64) | Partly | Fields exist; PayGuard does not require them or check the status text. Author inference. |
+| RC-01 | Proof showed post-office collection, not delivery to the address | DE:233-236 fulfillment fields include delivery_status and destination_match_status, but only carrier+tracking (or channel+delivered_at) are required; DE:471 flags a missing mandatory request; AK-01 (AK:64) | Partly | Fields exist; TradeGlot does not require them or check the status text. Author inference. |
 | RC-02 | Late dispatch, slow buyer messages; claim volume led to limitation | DE:233 shipped_at; DE:598-650 time evidence (message timestamps, payment-to-delivery gaps, no free text); RZ:622 timeline in review ZIP | Partly | Orders the timestamps for one case. No per-order dispatch tracking across orders, no limitation or seller-protection logic. Author inference. |
 | RC-03 | Tracking gap explanation, carrier letter, buyer receipt message | DE:241-244 OTHER proof (notes); AK-05 (AK:244) accepts a non-tracking proof; DE:71-74 message topics with digests; DE:350 accepts JPG/PNG/PDF by signature | Partly | Can hold a notes proof and a PDF; does not know that a buyer confirmation message should be included. Author inference. |
 | RC-04 | Delivery completed after the chargeback was raised; chargeback type excluded from protection | DE:648 DELIVERY_AFTER_CLAIM flag; DE:64-66 CHARGEBACK stage; CIC:183 states proof of delivery cannot establish eligibility | Partly | Flags the timing order; no warning that this chargeback type is unprotected (not found in repo). Author inference. |
 | RC-05 | Courier photos showed a different door than the buyer's | DE:234 destination_match_status field; DE:39-42 evidence states (SUPPLIED_UNVERIFIED etc.); CIC:49 presence is not authenticity | Partly | Stores a seller-entered match value; reads no photo and verifies nothing. Author inference. |
-| RC-06 | No dispatch evidence for the claiming buyer; wrong item sent | None found. DE:233 shipped_at records a shipment only after the fact | None | An order-to-shipment reconciliation before dispatch is an operations step; PayGuard prepares dispute evidence and has no fulfillment-side check. Author inference. |
+| RC-06 | No dispatch evidence for the claiming buyer; wrong item sent | None found. DE:233 shipped_at records a shipment only after the fact | None | An order-to-shipment reconciliation before dispatch is an operations step; TradeGlot prepares dispute evidence and has no fulfillment-side check. Author inference. |
 | RC-07 | No proof of postage; friends-and-family payment, no seller protection | DE:236 and DE:471 require and flag missing fulfillment proof when the provider requests it; AK-01, AK-04 (AK:64, 210) | Partly | Covers the missing-proof half. No payment-type check, and the demo does not persist per-order records (CIC:170, restricted layer is session-memory only). Author inference. |
 | RC-08 | None (risk-based account block and 180-day hold; no buyer claim) | Not applicable | None | Holds and account limitations are a risk review by the payment provider, not an evidence problem; the case summary already says no dispute-evidence tool would likely change it. |
-| RC-09 | Goods-or-services record before payment; payment type decided protection | Not found. CIC:183 notes proof does not establish eligibility | None | Payment-type choice happens before any dispute exists; PayGuard has no check on it. Author inference. |
+| RC-09 | Goods-or-services record before payment; payment type decided protection | Not found. CIC:183 notes proof does not establish eligibility | None | Payment-type choice happens before any dispute exists; TradeGlot has no check on it. Author inference. |
 | RC-10 | Partial non-delivery; 14 claims in under four months led to limitation | Not found. CIC:84 Route 2 is a sales-volume check, not a claim-rate check | None | Partial-item delivery and claim-rate monitoring are not implemented; the limitation was a provider risk decision. Author inference. |
 | RC-11 | Resale screenshots judged irrelevant; stale return address | DE:51 and DE:243 not-as-described path with product_description and return_policy_text; DE:241-244 notes | Partly | Can hold a description and a relevance note. No return-address currency check (not found in repo). Author inference. |
 | RC-12 | Positive case: tracking, delivered status and date, matching address | DE:233-236 fields cover carrier, tracking, delivery_status, delivered_at, destination_match_status; DE:471 flags a missing mandatory proof; AK-01 (AK:64) | Partly | The four elements can all be recorded and a missing requested proof is flagged; completeness of all four is not enforced (only carrier+tracking required). Author inference. |
@@ -191,8 +191,8 @@ Author inference throughout. Each row compares the evidence gap named in the cas
 - Partly: 10 (RC-01, 02, 03, 04, 05, 07, 11, 12, 13, 14)
 - None: 5 (RC-06, 08, 09, 10, 15)
 
-Of the five None cases, RC-08 is a risk-review case, RC-06 and RC-09 are decided before any dispute exists, RC-10 is a claim-rate and limitation case, and RC-15 needs a courier step PayGuard does not take.
+Of the five None cases, RC-08 is a risk-review case, RC-06 and RC-09 are decided before any dispute exists, RC-10 is a claim-rate and limitation case, and RC-15 needs a courier step TradeGlot does not take.
 
 ### Honest statement
 
-This mapping is the author's inference. It is not evidence that PayGuard would have changed the outcome of any case, and no outcome is predicted. "Has a check" means a field or rule exists in the repo, not that it is sufficient for the case. The sample is 15 cases, taken only from FOS decisions, and it leans toward sellers who lost (seller prevailed 2, mixed 2, the other 11 not). The classification was done by one author and has not been reviewed by a third party. This section adds no market-size, dispute-rate or monetary estimate and none should be read into it.
+This mapping is the author's inference. It is not evidence that TradeGlot would have changed the outcome of any case, and no outcome is predicted. "Has a check" means a field or rule exists in the repo, not that it is sufficient for the case. The sample is 15 cases, taken only from FOS decisions, and it leans toward sellers who lost (seller prevailed 2, mixed 2, the other 11 not). The classification was done by one author and has not been reviewed by a third party. This section adds no market-size, dispute-rate or monetary estimate and none should be read into it.

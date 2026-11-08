@@ -65,7 +65,7 @@ Also flagged as "page date newer" on top of the main verdict: rows 4 and 15. Row
 
 Page date = what the page showed on 2026-11-08. Pinned = `effective_date` stored for that URL in all rows (single value per URL in the file).
 
-| Page (URL path under paypal.com) | PayGuard pin | Page shows | Status |
+| Page (URL path under paypal.com) | TradeGlot pin | Page shows | Status |
 |---|---|---|---|
 | /us/legalhub/paypal/acceptableuse-full | 2022-10-29 | Last updated on November 4, 2026 | STALE (newer page) |
 | /us/legalhub/paypal/useragreement-full | 2026-09-14 | Last updated on November 4, 2026 | STALE (newer page) |

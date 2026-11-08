@@ -155,7 +155,7 @@ function responseFor(prompt, snapshot) {
   const normalized = prompt.toLowerCase();
   const attention = snapshot.stages.filter((stage) => ['Advisory review', 'Needs evidence'].includes(stage.status));
   if (normalized.includes('authority') || normalized.includes('decide')) {
-    return 'Authority boundary: PayGuard prepares local advisory evidence. The merchant controls local review actions. PayPal retains PayPal policy and internal dispute authority, while a bank or card issuer retains external dispute authority.';
+    return 'Authority boundary: TradeGlot prepares local advisory evidence. The merchant controls local review actions. PayPal retains PayPal policy and internal dispute authority, while a bank or card issuer retains external dispute authority.';
   }
   if (normalized.includes('attention') || normalized.includes('review')) {
     const labels = attention.length ? attention.map((stage) => stage.label).join(', ') : 'no stage currently shows a review signal';

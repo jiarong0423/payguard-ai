@@ -1,8 +1,8 @@
-# PayGuard Judge Quickstart
+# TradeGlot Judge Quickstart
 
 This walkthrough uses synthetic data, a US official-reference profile for the Acceptable Use Policy (AUP) check and a ten-country rules pack for the country check. It does not require a new outbound provider call. Any recorded provider or model evidence supports only its exact sanitized request and response.
 
-![PayGuard workflow: policy and ten-country rules check, sales spike review, dispute evidence and a gated Sandbox send after one human approval](payguard_judge_overview.svg)
+![TradeGlot workflow: policy and ten-country rules check, sales spike review, dispute evidence and a gated Sandbox send after one human approval](payguard_judge_overview.svg)
 
 The overview shows the policy and ten-country rules check before a draft and the Sandbox send that runs only after one human approval.
 
@@ -70,7 +70,7 @@ In the console this stage is titled **Policy pre-check** (step 01).
 8. Check the human confirmation again, select **Confirm Draft Context**, and then select **Create Sandbox draft**. A dialog opens with the item, the amount, the route and "A draft is created in PayPal Sandbox. It is not sent to the buyer." Tick **I checked the item and the amount**, select the orange **Continue**, wait for the 3-second hold and select the green **Create draft**. **Back** or Escape cancels.
 9. Confirm **Sandbox invoice draft created**, **Draft · not sent**, and **Not submitted**. The draft line shows only a masked id, `INV2-…` and its last 4 characters; the full invoice identifier does not appear.
 
-Expected boundary: PayGuard surfaces a public-policy category and a warning. It does not declare the product compliant, prohibited, legal, approved or safe. It does not send an invoice.
+Expected boundary: TradeGlot surfaces a public-policy category and a warning. It does not declare the product compliant, prohibited, legal, approved or safe. It does not send an invoice.
 
 ### Stage 2 — Fulfillment and sales spike evidence readiness
 
@@ -97,7 +97,7 @@ Expected boundary: the signal means the synthetic activity exceeded a local demo
 
 **Reset demo** asks **Reset the demo?** first. It clears this session's checks, sales, dispute cases, evidence drafts and the local review; your text and the Sandbox connection stay, and a draft already in PayPal Sandbox is not deleted.
 
-Expected boundary: the draft remains local and synthetic. PayGuard submits evidence only to the Sandbox, and only with the submit flag, a connection and a recorded approval; it does not message a buyer, make an offer, accept a claim, refund, appeal or adjudicate. PayPal decides escalated internal claims. A bank or card issuer decides an external dispute, with PayPal acting as intermediary.
+Expected boundary: the draft remains local and synthetic. TradeGlot submits evidence only to the Sandbox, and only with the submit flag, a connection and a recorded approval; it does not message a buyer, make an offer, accept a claim, refund, appeal or adjudicate. PayPal decides escalated internal claims. A bank or card issuer decides an external dispute, with PayPal acting as intermediary.
 
 ## Sponsor analytics walkthrough
 

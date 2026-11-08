@@ -1,7 +1,7 @@
 """Channel3 product reference card: the seller's own product, enriched and confirmed by the seller.
 
 A seller describes what they sell; Channel3 product search (``POST /v1/search``) returns up to three
-catalogue products. PayGuard reduces each to a closed reference card (title, brand, category, key
+catalogue products. TradeGlot reduces each to a closed reference card (title, brand, category, key
 features, materials, one https image) and the seller picks the one that is their product, or says
 none is. Only a card the seller confirmed can be exported; it records what the item is, which is the
 evidence a seller needs when a buyer later claims the item was not as described.

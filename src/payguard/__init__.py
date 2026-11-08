@@ -1,3 +1,3 @@
-"""PayGuard offline synthetic prototype."""
+"""TradeGlot offline synthetic prototype."""
 
 __version__ = "0.1.0"

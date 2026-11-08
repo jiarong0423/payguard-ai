@@ -1,4 +1,4 @@
-"""Deterministic advisory engines for a local synthetic PayGuard prototype.
+"""Deterministic advisory engines for a local synthetic TradeGlot prototype.
 
 These functions perform no I/O and do not certify policy compliance, predict
 account restrictions, or decide disputes. Their outputs are safe draft inputs

@@ -31,8 +31,8 @@ MANIFEST_SHA = "public_export_manifest.sha256"
 
 # Values claimed on the public pages (README.md, docs/submission/devpost_story.md).
 CLAIMS = {
-    "tracked_files": 342,
-    "python_source_lines": 21153,
+    "tracked_files": 350,
+    "python_source_lines": 21222,
     "python_test_lines": 17626,
     "frontend_lines": 13534,
     "jsx_files": 21,
@@ -43,8 +43,8 @@ CLAIMS = {
     "python_tests": 1070,
     "python_tests_skipped": 9,
     "redteam_requests": 1727,
-    "doc_words": 70078,
-    "evidence_files": 18,
+    "doc_words": 71709,
+    "evidence_files": 22,
     "images": 22,
     "paypal_clauses": 140,
     "rules_total": 681,
@@ -241,7 +241,7 @@ def main():
 
     # 9. Evidence files and images
     record("evidence_files", len([p for p in paths if re.fullmatch(r"docs/evidence/[^/]+", p)]),
-           "files directly in docs/evidence/ (9 .md + 2 .json)")
+           "files directly in docs/evidence/ in the file set (Markdown, JSON and receipts)")
     images = [p for p in paths if ext(p) in (".png", ".svg")]
     docs_images = [p for p in images if p.startswith("docs/")]
     record("images", len(images),
