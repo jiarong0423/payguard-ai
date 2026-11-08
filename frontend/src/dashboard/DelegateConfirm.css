@@ -1,0 +1,9 @@
+.pg-confirm-backdrop { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 16px; background: rgba(15, 23, 42, .45); }
+.pg-confirm { width: min(440px, 100%); background: var(--pg-panel, #fff); color: var(--pg-ink, #0f172a); border-radius: 14px; padding: 20px; box-shadow: 0 20px 50px rgba(15, 23, 42, .35); display: grid; gap: 12px; }
+.pg-confirm h2 { margin: 0; font-size: 18px; }
+.pg-confirm-question { margin: 0; padding: 10px 12px; border-radius: 10px; background: var(--pg-recede, #f1f5f9); font-weight: 600; overflow-wrap: anywhere; }
+.pg-confirm-note { margin: 0; font-size: 14px; color: var(--pg-muted, #475569); }
+.pg-confirm-actions { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; }
+.pg-confirm-actions button { min-height: 44px; padding: 10px 18px; border-radius: 10px; font-size: 15px; font-weight: 650; cursor: pointer; border: 1px solid var(--pg-rule, #cbd5e1); background: transparent; color: inherit; }
+.pg-confirm-actions .pg-confirm-send { background: var(--pg-accent, #4338ca); color: #fff; border-color: transparent; }
+.pg-confirm-actions button:focus-visible { outline: 3px solid var(--pg-accent, #4338ca); outline-offset: 2px; }

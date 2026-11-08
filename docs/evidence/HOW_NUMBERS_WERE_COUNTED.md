@@ -10,20 +10,20 @@ The script uses only the Python standard library, reads files only, makes no net
 
 ## Counting scope
 
-The file set is the public candidate: every path in `public_export_manifest.json` (355 files) plus the manifest and `public_export_manifest.sha256`, which makes the 357 tracked files. A fresh copy also contains `.venv`, `node_modules`, `frontend/dist` and build logs; none of these is counted. The script also checks every file against the sha256 in the manifest and reports any that differ. A "line" is a physical line (a newline-terminated line, the same as `wc -l`), so blank lines and comments are included. A "word" is a whitespace-separated token (`str.split()`).
+The file set is the public candidate: every path in `public_export_manifest.json` (363 files) plus the manifest and `public_export_manifest.sha256`, which makes the 365 tracked files. A fresh copy also contains `.venv`, `node_modules`, `frontend/dist` and build logs; none of these is counted. The script also checks every file against the sha256 in the manifest and reports any that differ. A "line" is a physical line (a newline-terminated line, the same as `wc -l`), so blank lines and comments are included. A "word" is a whitespace-separated token (`str.split()`).
 
 ## The numbers
 
 | Claim | Value | Command or rule |
 |---|---|---|
-| Tracked files | 357 | 355 manifest paths + `public_export_manifest.json` + `public_export_manifest.sha256` |
-| Python source lines | 21,511 | all `*.py` outside `tests/` (backend, src, tools, integrations) |
-| Python test lines | 17,778 | all `tests/**/*.py` |
-| Front-end lines | 13,628 | `frontend/src/**/*.{jsx,js,css}`, 71 files; see below |
-| JSX files / pages | 22 / 5 | `frontend/**/*.jsx`; `frontend/*.html` (index, dashboard, evidence, proof, scenarios; `public/offline.html` is the service-worker fallback, not a page) |
+| Tracked files | 365 | 363 manifest paths + `public_export_manifest.json` + `public_export_manifest.sha256` |
+| Python source lines | 21,643 | all `*.py` outside `tests/` (backend, src, tools, integrations) |
+| Python test lines | 17,811 | all `tests/**/*.py` |
+| Front-end lines | 13,684 | `frontend/src/**/*.{jsx,js,css}`, 73 files; see below |
+| JSX files / pages | 23 / 5 | `frontend/**/*.jsx`; `frontend/*.html` (index, dashboard, evidence, proof, scenarios; `public/offline.html` is the service-worker fallback, not a page) |
 | API routes | 37 | see "Route count" |
-| Node test files / lines | 47 / 6,817 | `tests/frontend_*.mjs` (the two other `.mjs` files are a token-writer and a recorder, not tests) |
-| Python tests | 1,084 (9 skipped) | `unittest` discovery over `tests/`, loaded and counted, not run |
+| Node test files / lines | 48 / 6,853 | `tests/frontend_*.mjs` (the two other `.mjs` files are a token-writer and a recorder, not tests) |
+| Python tests | 1,087 (9 skipped) | `unittest` discovery over `tests/`, loaded and counted, not run |
 | Red-team requests | 1,727 | run-time only, see below |
 | Words in documents | 72,709 (page says about 72,709; the script allows 1% either way) | see below |
 | Evidence files | 22 | files directly in `docs/evidence/` (20 `.md`, 2 `.json`) |
@@ -36,7 +36,7 @@ The file set is the public candidate: every path in `public_export_manifest.json
 
 ### Python tests
 
-`unittest.defaultTestLoader.discover("tests")` yields 1,084 test cases with no import failure. Nothing is executed. Skips are counted from `@unittest.skip*` markers visible at load time (9). A skip raised by `self.skipTest()` inside a test body would only appear when the test runs; the full run (`./tools/run.sh test`, final lines `Ran N tests` and `OK (skipped=N)`) is the authority for the skip count; the full suite was run on 2026-11-08 on this tree and printed `Ran 1058 tests` and `OK (skipped=9)`. Earlier documents quoting 1005, 1039, 1048 and 1055 are older counts from earlier states of the tree.
+`unittest.defaultTestLoader.discover("tests")` yields 1,087 test cases with no import failure. Nothing is executed. Skips are counted from `@unittest.skip*` markers visible at load time (9). A skip raised by `self.skipTest()` inside a test body would only appear when the test runs; the full run (`./tools/run.sh test`, final lines `Ran N tests` and `OK (skipped=N)`) is the authority for the skip count; the full suite was run on 2026-11-08 on this tree and printed `Ran 1058 tests` and `OK (skipped=9)`. Earlier documents quoting 1005, 1039, 1048 and 1055 are older counts from earlier states of the tree.
 
 ### Red-team request matrix (1,727)
 
@@ -52,9 +52,9 @@ The backend is FastAPI. Routes are registered inside the factory function `creat
 
 The script counts with the `ast` module (decorated functions whose decorator is `<name>.<get|post|put|delete|patch>(...)`), so it neither runs the app nor depends on the variable name. It also confirms there are no `add_api_route` or `include_router` calls. Each route has exactly one HTTP method, so routes and method-path pairs are both 37. This was cross-checked once by calling `create_app()` and counting `APIRoute` objects: 37.
 
-### Front-end lines: 13,628
+### Front-end lines: 13,684
 
-13,628 is the physical line count of the 71 files `frontend/src/**/*.jsx`, `*.js` and `*.css`. It excludes the JSON data files (adding them gives 15,407), `.mjs` files, the HTML pages and `frontend/public/` (adding HTML and public gives 13,733). JS and JSX without CSS is 10,729. The earlier public page said 13,463, the count of the published tree before 2026-11-08; the 15 more lines are the CSS added that day (`frontend/src/index.css` grew from 1,143 to 1,158 lines: the hint box before a draft and the toast placement rule). An independent reviewer's count of 13,553 uses the same scope.
+13,684 is the physical line count of the 73 files `frontend/src/**/*.jsx`, `*.js` and `*.css`. It excludes the JSON data files (adding them gives 15,407), `.mjs` files, the HTML pages and `frontend/public/` (adding HTML and public gives 13,733). JS and JSX without CSS is 10,729. The earlier public page said 13,463, the count of the published tree before 2026-11-08; the 15 more lines are the CSS added that day (`frontend/src/index.css` grew from 1,143 to 1,158 lines: the hint box before a draft and the toast placement rule). An independent reviewer's count of 13,553 uses the same scope.
 
 ### Document words: 72,709
 

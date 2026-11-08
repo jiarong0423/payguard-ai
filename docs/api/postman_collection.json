@@ -1,0 +1,1190 @@
+{
+ "info": {
+  "description": "Generated from docs/api/openapi.json by tools/export_api_docs.py. Local console only; bodies are empty skeletons.",
+  "name": "TradeGlot local console API",
+  "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+ },
+ "item": [
+  {
+   "name": "POST /api/v1/advisory/evaluate",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Advisory Evaluate. Local console route POST /api/v1/advisory/evaluate on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "advisory",
+      "evaluate"
+     ],
+     "raw": "{{baseUrl}}/api/v1/advisory/evaluate"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/ai/evidence-brief",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Evidence Brief. Local console route POST /api/v1/ai/evidence-brief on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "ai",
+      "evidence-brief"
+     ],
+     "raw": "{{baseUrl}}/api/v1/ai/evidence-brief"
+    }
+   }
+  },
+  {
+   "name": "GET /api/v1/ai/usage",
+   "request": {
+    "description": "(optimise r24) This session's AI calls: stage, model, tokens, latency, estimated cost. No prompt or reply\ntext is ever stored; the hosted demo makes no model call and answers an empty list.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "ai",
+      "usage"
+     ],
+     "raw": "{{baseUrl}}/api/v1/ai/usage"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/aup/acknowledge",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Acknowledge Aup. Local console route POST /api/v1/aup/acknowledge on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "aup",
+      "acknowledge"
+     ],
+     "raw": "{{baseUrl}}/api/v1/aup/acknowledge"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/aup/category-signal",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Aup Category Signal. Local console route POST /api/v1/aup/category-signal on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "aup",
+      "category-signal"
+     ],
+     "raw": "{{baseUrl}}/api/v1/aup/category-signal"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/aup/product-reference",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Aup Product Reference. Local console route POST /api/v1/aup/product-reference on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "aup",
+      "product-reference"
+     ],
+     "raw": "{{baseUrl}}/api/v1/aup/product-reference"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/aup/product-reference/confirm",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Aup Product Confirm. Local console route POST /api/v1/aup/product-reference/confirm on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "aup",
+      "product-reference",
+      "confirm"
+     ],
+     "raw": "{{baseUrl}}/api/v1/aup/product-reference/confirm"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/aup/review",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Aup. Local console route POST /api/v1/aup/review on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "aup",
+      "review"
+     ],
+     "raw": "{{baseUrl}}/api/v1/aup/review"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/cases/route",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Case Route. Local console route POST /api/v1/cases/route on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "cases",
+      "route"
+     ],
+     "raw": "{{baseUrl}}/api/v1/cases/route"
+    }
+   }
+  },
+  {
+   "name": "GET /api/v1/connections",
+   "request": {
+    "description": "Connections. Local console route GET /api/v1/connections on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "connections"
+     ],
+     "raw": "{{baseUrl}}/api/v1/connections"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/country-rules/check",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Country Rules Check. Local console route POST /api/v1/country-rules/check on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "country-rules",
+      "check"
+     ],
+     "raw": "{{baseUrl}}/api/v1/country-rules/check"
+    }
+   }
+  },
+  {
+   "name": "GET /api/v1/country-rules/countries",
+   "request": {
+    "description": "Country Rules Countries. Local console route GET /api/v1/country-rules/countries on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "country-rules",
+      "countries"
+     ],
+     "raw": "{{baseUrl}}/api/v1/country-rules/countries"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/country-rules/search",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Country Rules Search. Local console route POST /api/v1/country-rules/search on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "country-rules",
+      "search"
+     ],
+     "raw": "{{baseUrl}}/api/v1/country-rules/search"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/demo/inject",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Inject. Local console route POST /api/v1/demo/inject on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "demo",
+      "inject"
+     ],
+     "raw": "{{baseUrl}}/api/v1/demo/inject"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/demo/sessions",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "New Session. Local console route POST /api/v1/demo/sessions on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "demo",
+      "sessions"
+     ],
+     "raw": "{{baseUrl}}/api/v1/demo/sessions"
+    }
+   }
+  },
+  {
+   "name": "GET /api/v1/demo/state",
+   "request": {
+    "description": "State. Local console route GET /api/v1/demo/state on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "demo",
+      "state"
+     ],
+     "raw": "{{baseUrl}}/api/v1/demo/state"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/disputes/{case_ref}/approve",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Approve. Local console route POST /api/v1/disputes/{case_ref}/approve on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "disputes",
+      "{case_ref}",
+      "approve"
+     ],
+     "raw": "{{baseUrl}}/api/v1/disputes/{case_ref}/approve"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/disputes/{case_ref}/draft",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Draft. Local console route POST /api/v1/disputes/{case_ref}/draft on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "disputes",
+      "{case_ref}",
+      "draft"
+     ],
+     "raw": "{{baseUrl}}/api/v1/disputes/{case_ref}/draft"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/guide/form",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Guide Form. Local console route POST /api/v1/guide/form on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "guide",
+      "form"
+     ],
+     "raw": "{{baseUrl}}/api/v1/guide/form"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/guide/review",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Guide Review. Local console route POST /api/v1/guide/review on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "guide",
+      "review"
+     ],
+     "raw": "{{baseUrl}}/api/v1/guide/review"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/guide/start",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Guide Start. Local console route POST /api/v1/guide/start on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "guide",
+      "start"
+     ],
+     "raw": "{{baseUrl}}/api/v1/guide/start"
+    }
+   }
+  },
+  {
+   "name": "GET /api/v1/guide/state",
+   "request": {
+    "description": "Guide State. Local console route GET /api/v1/guide/state on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "guide",
+      "state"
+     ],
+     "raw": "{{baseUrl}}/api/v1/guide/state"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/guide/turn",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Guide Turn. Local console route POST /api/v1/guide/turn on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "guide",
+      "turn"
+     ],
+     "raw": "{{baseUrl}}/api/v1/guide/turn"
+    }
+   }
+  },
+  {
+   "name": "GET /api/v1/health",
+   "request": {
+    "description": "Health. Local console route GET /api/v1/health on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "health"
+     ],
+     "raw": "{{baseUrl}}/api/v1/health"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/paypal/connect",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Connect. Local console route POST /api/v1/paypal/connect on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "paypal",
+      "connect"
+     ],
+     "raw": "{{baseUrl}}/api/v1/paypal/connect"
+    }
+   }
+  },
+  {
+   "name": "GET /api/v1/paypal/disputes",
+   "request": {
+    "description": "List Disputes. Local console route GET /api/v1/paypal/disputes on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "paypal",
+      "disputes"
+     ],
+     "raw": "{{baseUrl}}/api/v1/paypal/disputes"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/paypal/disputes/add-tracking",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Add Tracking. Local console route POST /api/v1/paypal/disputes/add-tracking on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "paypal",
+      "disputes",
+      "add-tracking"
+     ],
+     "raw": "{{baseUrl}}/api/v1/paypal/disputes/add-tracking"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/paypal/disputes/provide-evidence",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Provide Evidence. Local console route POST /api/v1/paypal/disputes/provide-evidence on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "paypal",
+      "disputes",
+      "provide-evidence"
+     ],
+     "raw": "{{baseUrl}}/api/v1/paypal/disputes/provide-evidence"
+    }
+   }
+  },
+  {
+   "name": "GET /api/v1/paypal/disputes/{dispute_id}",
+   "request": {
+    "description": "Get Dispute. Local console route GET /api/v1/paypal/disputes/{dispute_id} on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "paypal",
+      "disputes",
+      "{dispute_id}"
+     ],
+     "raw": "{{baseUrl}}/api/v1/paypal/disputes/{dispute_id}"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/paypal/invoices/draft",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Invoice Draft. Local console route POST /api/v1/paypal/invoices/draft on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "paypal",
+      "invoices",
+      "draft"
+     ],
+     "raw": "{{baseUrl}}/api/v1/paypal/invoices/draft"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/paypal/invoices/review",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Invoice Review. Local console route POST /api/v1/paypal/invoices/review on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "paypal",
+      "invoices",
+      "review"
+     ],
+     "raw": "{{baseUrl}}/api/v1/paypal/invoices/review"
+    }
+   }
+  },
+  {
+   "name": "GET /api/v1/paypal/status",
+   "request": {
+    "description": "Paypal Status. Local console route GET /api/v1/paypal/status on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "paypal",
+      "status"
+     ],
+     "raw": "{{baseUrl}}/api/v1/paypal/status"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/paypal/webhooks/verify",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Verify Webhook. Local console route POST /api/v1/paypal/webhooks/verify on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "paypal",
+      "webhooks",
+      "verify"
+     ],
+     "raw": "{{baseUrl}}/api/v1/paypal/webhooks/verify"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/policy/assess",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Policy Assess. Local console route POST /api/v1/policy/assess on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "policy",
+      "assess"
+     ],
+     "raw": "{{baseUrl}}/api/v1/policy/assess"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/references/search",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "References. Local console route POST /api/v1/references/search on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "references",
+      "search"
+     ],
+     "raw": "{{baseUrl}}/api/v1/references/search"
+    }
+   }
+  },
+  {
+   "name": "GET /api/v1/studio/agent-status",
+   "request": {
+    "description": "Studio Agent Status. Local console route GET /api/v1/studio/agent-status on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "studio",
+      "agent-status"
+     ],
+     "raw": "{{baseUrl}}/api/v1/studio/agent-status"
+    }
+   }
+  },
+  {
+   "name": "POST /api/v1/studio/agent-turn",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Studio Agent Turn. Local console route POST /api/v1/studio/agent-turn on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "studio",
+      "agent-turn"
+     ],
+     "raw": "{{baseUrl}}/api/v1/studio/agent-turn"
+    }
+   }
+  }
+ ],
+ "variable": [
+  {
+   "key": "baseUrl",
+   "value": "http://127.0.0.1:8000"
+  }
+ ]
+}

@@ -14,6 +14,7 @@ import { PUBLIC_DEMO } from '../shared/asOfSource.js';
 import { resolveAsOf } from '../shared/asOf.js';
 import { initialReport, PAGE_TITLES, pageTracks } from './layout.js';
 import { compactTheme, payguardTheme } from './theme.js';
+import DelegateConfirm, { answerYes } from './DelegateConfirm.jsx';
 import { CUSTOM_WIDGETS } from './widgets.jsx';
 import { AUDITOR_ID, BOUNDARY, BUILT_IN_AGENT_IDS, createEvidenceAuditor, plainSummary, promptStarters } from './auditor.js';
 import { createGeminiAdapter, createSessionClient, fetchAgentStatus } from './studioAgentClient.js';
@@ -71,12 +72,12 @@ function clearPageSelections(api, pageId) {
   });
 }
 
-function makeHarness({ mode, client, onAnswer, onDelegated, recorder }) {
+function makeHarness({ mode, client, onAnswer, onDelegated, onConfirmNeeded, recorder }) {
   return ({ api }) => createAiHarness(api, ({ tools, builtIn }) => {
     const live = mode === 'live';
     const adapter = live ? createGeminiAdapter(client) : null;
     const auditor = createEvidenceAuditor({
-      studio: tools.studio, getState: () => api.getState(), data: tables, onAnswer, onDelegated, recorder,
+      studio: tools.studio, getState: () => api.getState(), data: tables, onAnswer, onDelegated, onConfirmNeeded, recorder,
       delegate: live ? tools.delegateTo(['data']) : null, recording: live ? null : RECORDING,
       clearSelections: (pageId) => clearPageSelections(api, pageId),
     });
@@ -335,7 +336,8 @@ function Dashboard({ setup }) {
   const [delegated, setDelegated] = useState(null);
   // (r31 J1 J4) The exact Studio tool steps of the auditor's last answer; the reply itself says them in plain words.
   const [technical, setTechnical] = useState(null);
-  const ai = useMemo(() => makeHarness({ ...setup, recorder, onAnswer, onDelegated: setDelegated }), [setup, recorder]); // eslint-disable-line react-hooks/exhaustive-deps
+  const [confirmQuestion, setConfirmQuestion] = useState(null);
+  const ai = useMemo(() => makeHarness({ ...setup, recorder, onAnswer, onDelegated: setDelegated, onConfirmNeeded: setConfirmQuestion }), [setup, recorder]); // eslint-disable-line react-hooks/exhaustive-deps
   const currentPage = report.pages.find((page) => page.id === pageId) || report.pages[0];
   // One scroll: in view mode Studio is exactly as tall as the current page; in edit mode it fills the screen under
   // the sticky top bar so the AI panel has room.
@@ -343,6 +345,7 @@ function Dashboard({ setup }) {
   const asOf = `${disputes.as_of.slice(0, 16).replace('T', ' ')} UTC`;
   return (
     <div className="pg-dashboard">
+      <DelegateConfirm question={confirmQuestion} onCancel={() => setConfirmQuestion(null)} onSend={() => { setConfirmQuestion(null); answerYes(); }} />
       <header className="pg-topbar">
         <p className="pg-brand">TradeGlot <span>· AG Studio</span> <a className="pg-back" href="/" data-testid="dashboard-back-to-console">Back to console</a></p>
         <nav className="pg-tabs" aria-label="Dashboard pages">

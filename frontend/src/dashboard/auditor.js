@@ -65,7 +65,9 @@ export const QUESTIONS = Object.freeze([
   },
   {
     id: 'longest_gap', label: 'Where is the longest gap between recorded events?',
-    match: /longest|biggest|largest|gap/iu,
+    // (2026-11-09) "largest disputed amount" used to land here on the word "largest" alone; now the question must be about a gap,
+    // a delay or the time between events.
+    match: /\bgaps?\b|(longest|biggest|largest)\s+(gap|delay|wait|time|interval)|(longest|biggest|largest)\b[^.?]*\b(between|events?)\b/iu,
     table: 'time_events', page: 'readiness', title: 'Longest gap between recorded events',
     columns: ['case_ref', 'order', 'event', 'at', 'gap_hours'],
     value: (data) => maxBy(data.time_events, 'gap_hours'), field: 'gap_hours', operator: 'greaterThanOrEqual',
@@ -268,7 +270,7 @@ function* say(messageId, text) {
 //   recording  optional validated recording (agentRecording.js), replayed when the agents are not live
 //   recorder   optional recorder, in record mode only            onAnswer  called with the page that changed
 //   clearSelections  optional (pageId) => void, clears that page's cross filter and page filter values (r32 J3)
-export function createEvidenceAuditor({ studio, getState, data, delegate = null, recording = null, recorder = null, onAnswer = () => {}, onDelegated = () => {}, clearSelections = null }) {
+export function createEvidenceAuditor({ studio, getState, data, delegate = null, recording = null, recorder = null, onAnswer = () => {}, onDelegated = () => {}, onConfirmNeeded = () => {}, clearSelections = null }) {
   let sequence = 0;
   // (red team r26 #2 P2) Pending questions are kept per Studio thread, and a confirmation word is never stored.
   const pendingByThread = new Map();
@@ -306,7 +308,7 @@ export function createEvidenceAuditor({ studio, getState, data, delegate = null,
         }
         if (plan.intent === 'unknown') {
           if (mode === 'live' && !confirmed) {
-            if (!isDelegateConfirmation(question)) pendingByThread.set(threadId, question);
+            if (!isDelegateConfirmation(question)) { pendingByThread.set(threadId, question); onConfirmNeeded(question); }
             yield* say(messageId, `${DELEGATE_CONFIRM_TEXT} ${BOUNDARY}`);
             yield { type: 'RUN_FINISHED', threadId, runId, result: { intent: 'confirm_delegation' } };
             return;

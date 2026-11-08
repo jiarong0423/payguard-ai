@@ -103,3 +103,10 @@ AG Studio, AG Grid Enterprise and AG Charts Enterprise are commercial software f
 - The built-in agents have run live once (2026-11-04, one question, local console). The hosted replay still needs the owner's recording.
 - On a phone the AI panel takes the screen while it is open; the dashboard goes back to the canvas after an auditor answer.
 - The dashboard bundle is about 870 kB gzip. It loads only on `/dashboard.html`; the console and evidence page load no AG Studio code.
+
+## Confirmation popup and a live check on 2026-11-09
+
+A question outside the auditor's own set now brings up a small popup ("Ask the AI helper?", with the question, the cost and the 20-calls-a-day cap, Cancel focused first) before it goes to the model; pressing "Ask the AI" does what typing "yes" did (`frontend/src/dashboard/DelegateConfirm.jsx`, test `tests/frontend_delegate_confirm.mjs`, screenshot `docs/submission/screens/delegate_confirm_popup.jpg`). The popup only exists in local live mode.
+
+The same day, on a freshly started local console, four questions went to the data agent through the popup. One finished: "Which reason code appears most often across the three cases?" (the answer, "Item not received" for all three, matches the rows; this is the question that is recorded). Three did not finish within the call limit and showed the standard "no answer to show" text: a per-case count of time events, "which carrier status appears most often" (every case has a different value, so there is no clear winner), and "the largest disputed amount" (the data has no amount column). Failed runs are not recorded. The data agent is reliable on questions the rows answer directly and can fail on others, so the hosted replay holds one recorded question, not four.
+

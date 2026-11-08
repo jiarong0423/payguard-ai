@@ -122,6 +122,7 @@ Screens from the 2:50 demo (taken before the rename, so the app header in them r
 
 - ![Wrong sends are locked: already answered, different reason, different amount; nothing was sent](docs/submission/screens/refusals_locked.png)
 - ![AG Studio readiness dashboard and the AG components TradeGlot uses](docs/submission/screens/ag_studio_trace.png)
+- ![The confirmation popup before a question goes to the AI model (local live mode): plain words, the cost and the daily cap, Cancel focused first](docs/submission/screens/delegate_confirm_popup.jpg)
 - ![The downloaded evidence pages: pseudonymized records, the pack's own note, PayPal's before/after readback](docs/submission/screens/evidence_pages.png)
 
 More diagrams: [architecture](docs/submission/diagrams/architecture_overview.png) ([simplified](docs/submission/diagrams/architecture_simple.png)), [evidence guide funnel](docs/submission/diagrams/evidence_guide_funnel.png), [the nine checks before evidence is sent to PayPal](docs/submission/diagrams/paypal_write_guards.png) and [a downloaded review ZIP, re-hashed and verified](docs/submission/diagrams/review_zip_verified.png).
