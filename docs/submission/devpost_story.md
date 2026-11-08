@@ -14,7 +14,7 @@ Video: https://youtu.be/_GORnHWShU4 (public, 2:50)
 
 TradeGlot is an advisory tool translating cross-border policies for merchants before shipping and formatting seller records into human-approved PayPal dispute evidence.
 
-*Translating international shipping rules and merchant records for PayPal dispute evidence.* Formerly called PayGuard AI (the name used in the video and the receipts). [Repository](https://github.com/jiarong0423/payguard-ai).
+*Translating international shipping rules and merchant records for PayPal dispute evidence.* Formerly called PayGuard AI (the name used in the video and the receipts). [Download and click through on your computer](https://drive.google.com/file/d/1iVl4L3Ng1du_yRHI24gvkvFWyu5mR7Cp/view?usp=drive_link) (8 MB zip, SHA-256 `3cad8b4fbbedd21a...`; the full value is on the start page). [Repository](https://github.com/jiarong0423/payguard-ai).
 
 **A buyer says the parcel never arrived. TradeGlot turns the seller's order records into a reviewed evidence package, and after one person approves, sends it to the PayPal Sandbox dispute.** PayPal Sandbox accepted that request twice (2026-11-04 and 2026-11-05, UTC+8) and the dispute moved to waiting for the buyer.
 

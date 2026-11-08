@@ -4,7 +4,7 @@ TradeGlot is an advisory tool translating cross-border policies for merchants be
 
 *Translating international shipping rules and merchant records for PayPal dispute evidence.* Formerly called PayGuard AI: the 2:50 video and the receipts in `docs/evidence/` use that name. The Devpost address still reads `payguard-ai-zbsp9l`.
 
-[Start here (judges)](https://payguard-demo-j2b3.onrender.com/start.html) · [Hosted demo](https://payguard-demo-j2b3.onrender.com) · [Proof page](https://payguard-demo-j2b3.onrender.com/proof.html) · [2:50 video](https://youtu.be/_GORnHWShU4) · [Devpost](https://devpost.com/software/payguard-ai-zbsp9l)
+[Start here (judges)](https://payguard-demo-j2b3.onrender.com/start.html) · [Download and click through on your computer (8 MB zip)](https://drive.google.com/file/d/1iVl4L3Ng1du_yRHI24gvkvFWyu5mR7Cp/view?usp=drive_link) · [Hosted demo](https://payguard-demo-j2b3.onrender.com) · [Proof page](https://payguard-demo-j2b3.onrender.com/proof.html) · [2:50 video](https://youtu.be/_GORnHWShU4) · [Devpost](https://devpost.com/software/payguard-ai-zbsp9l)
 
 ![A real send to a PayPal Sandbox test dispute after one human approval, with the PayPal-Debug-Id and the fresh read that followed; the "Not submitted" field is the local review copy, while the chip and the Debug-Id show the Sandbox send](docs/submission/screens/real_send_trace.png)
 
