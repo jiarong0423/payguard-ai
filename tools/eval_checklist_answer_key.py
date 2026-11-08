@@ -4,12 +4,15 @@
 In-process only: no network, no server, no PayPal or model call, no file writes unless --out is given.
 Deterministic: fixed evaluation instant taken from the answer key, cases processed in key order.
 
-Usage: .venv/bin/python3 -B tools/eval_checklist_answer_key.py [--key PATH] [--out PATH] [--json] [--fail-on-danger]
+Usage: .venv/bin/python3 -B tools/eval_checklist_answer_key.py [--set v1|v2|all] [--key PATH] [--out PATH] [--json] [--md] [--fail-on-danger]
+Without --set and --key the behaviour and output are those of the original v1 runner. --set v2 / all adds
+subset statistics (Wilson 95% intervals); --md prints the per-case Markdown tables used in the evidence report.
 Exit codes: 0 ok, 2 answer key invalid or program import failed, 3 danger errors present with --fail-on-danger.
 """
 import argparse
 import json
 import logging
+import math
 import sys
 from collections import Counter
 from pathlib import Path
@@ -25,7 +28,9 @@ except Exception as exc:  # fail loudly, never report a pass
     sys.exit(2)
 
 TYPE_TO_LOCAL = {"PROOF_OF_FULFILLMENT": "FULFILLMENT", "PROOF_OF_REFUND": "REFUND", "OTHER": "OTHER"}
-MAGIC = {"pdf": b"%PDF-1.4\n"}
+MAGIC = {"pdf": b"%PDF-1.4\n", "png": b"\x89PNG\r\n\x1a\n", "jpeg": b"\xff\xd8\xff\xe0",
+         "gif": b"GIF89a", "bmp": b"BM"}
+KEY_FILES = {"v1": "data/eval/checklist_answer_key_v1.json", "v2": "data/eval/checklist_answer_key_v2_heldout.json"}
 OVERALL_TO_VERDICT = {
     "READY_FOR_LOCAL_REVIEW": "SUFFICIENT",
     "NEEDS_INPUT": "INSUFFICIENT",
@@ -144,31 +149,130 @@ def summarize(rows):
     }
 
 
+def wilson(k, n, z=1.959964):
+    """Wilson score interval for a binomial proportion; returns (low, high) rounded to 4 places."""
+    if n == 0:
+        return None
+    p = k / n
+    d = 1 + z * z / n
+    centre = (p + z * z / (2 * n)) / d
+    half = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / d
+    return [round(max(0.0, centre - half), 4), round(min(1.0, centre + half), 4)]
+
+
+def subset_stats(rows):
+    n = len(rows)
+    k = sum(r["class"] == "AGREE" for r in rows)
+    return {"n": n, "agree": k, "rate": round(k / n, 4) if n else None, "wilson95": wilson(k, n),
+            "dangerous": sum(r["class"] == "DANGEROUS" for r in rows),
+            "dangerous_case_ids": [r["case_id"] for r in rows if r["class"] == "DANGEROUS"],
+            "baseline_always_insufficient_agree": sum(r["expected"] == "INSUFFICIENT" for r in rows),
+            "dangerous_excluding_input_gap": sum(r["class"] == "DANGEROUS" and not r["input_gap"] for r in rows)}
+
+
+def subsets(rows):
+    """Subsets are reported per key set; v1 and v2 are never pooled into one ratio."""
+    out = {}
+    for name in ("v1", "v2"):
+        sub = [r for r in rows if r["set"] == name]
+        if not sub:
+            continue
+        out[name] = subset_stats(sub)
+        for basis, label in (("OFFICIAL_RULE", "official_rule"), ("AUTHOR_CONSISTENCY_CHECK", "author_logic")):
+            part = [r for r in sub if r["basis"] == basis]
+            if part:
+                out[name + "_" + label] = subset_stats(part)
+    return out
+
+
+def fault(r):
+    """Mechanical attribution label for a non-agreeing row; the written judgement lives in the report."""
+    if r["class"] == "AGREE":
+        return ""
+    return "scope" if r["input_gap"] else "program-or-key"
+
+
+def markdown(rows, subs):
+    lines = ["| Subset | n | Agree | Rate | Wilson 95% CI | Always-INSUFFICIENT baseline | Dangerous (case ids) |",
+             "| --- | --- | --- | --- | --- | --- | --- |"]
+    for k, s in subs.items():
+        lines.append("| %s | %d | %d / %d | %.1f%% | %.1f%% - %.1f%% | %d / %d (%.1f%%) | %d %s |" % (
+            k, s["n"], s["agree"], s["n"], 100 * s["rate"], 100 * s["wilson95"][0], 100 * s["wilson95"][1],
+            s["baseline_always_insufficient_agree"], s["n"], 100 * s["baseline_always_insufficient_agree"] / s["n"],
+            s["dangerous"], ", ".join(s["dangerous_case_ids"])))
+    for name in ("v1", "v2"):
+        sub = [r for r in rows if r["set"] == name]
+        if not sub:
+            continue
+        lines += ["", "Per-case, %s:" % name, "", "| Case | Reason | Basis | Key | Program | Class |", "| --- | --- | --- | --- | --- | --- |"]
+        for r in sub:
+            prog = r["program"] + (" (%s)" % (r["program_code"] or r["program_overall"]) if (r["program_code"] or r["program_overall"]) else "")
+            lines.append("| %s %s | %s | %s | %s | %s | %s%s |" % (r["case_id"], r["title"], r["reason"], r["basis"], r["expected"],
+                         prog, r["class"], " [input-gap]" if r["input_gap"] else ""))
+    return "\n".join(lines)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
-    ap.add_argument("--key", default=str(ROOT / "data/eval/checklist_answer_key_v1.json"))
+    ap.add_argument("--set", choices=["v1", "v2", "all"])
+    ap.add_argument("--key", default=None)
     ap.add_argument("--out")
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--md", action="store_true")
     ap.add_argument("--fail-on-danger", action="store_true")
     args = ap.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
-    try:
-        key = load_key(args.key)
-    except Exception as exc:
-        print("ERROR answer key invalid: %s" % type(exc).__name__, file=sys.stderr)
+    if args.key and args.set:
+        print("ERROR --key and --set are mutually exclusive", file=sys.stderr)
         return 2
-    rows = evaluate(key)
+    legacy = args.set is None
+    if args.key:
+        paths = [("custom", args.key)]
+    elif legacy:
+        paths = [("v1", str(ROOT / KEY_FILES["v1"]))]
+    elif args.set == "all":
+        paths = [(n, str(ROOT / KEY_FILES[n])) for n in ("v1", "v2")]
+    else:
+        paths = [(args.set, str(ROOT / KEY_FILES[args.set]))]
+    rows, versions, statuses = [], [], []
+    for name, path in paths:
+        try:
+            key = load_key(path)
+        except Exception as exc:
+            print("ERROR answer key invalid: %s" % type(exc).__name__, file=sys.stderr)
+            return 2
+        part = evaluate(key)
+        for r in part:
+            r["set"] = name
+        rows += part
+        versions.append(key["version"])
+        statuses.append(key["status"])
+    ids = [r["case_id"] for r in rows]
+    if len(ids) != len(set(ids)):
+        print("ERROR duplicate case_id across sets", file=sys.stderr)
+        return 2
     summary = summarize(rows)
-    result = {"key_version": key["version"], "key_status": key["status"], "summary": summary, "rows": rows}
+    if legacy or args.key:
+        for r in rows:
+            del r["set"]
+        result = {"key_version": versions[0], "key_status": statuses[0], "summary": summary, "rows": rows}
+        subs = None
+    else:
+        subs = subsets(rows)
+        result = {"key_versions": versions, "key_status": statuses[0], "summary": summary, "subsets": subs, "rows": rows}
     if args.out:
         Path(args.out).write_text(json.dumps(result, indent=1, sort_keys=True), encoding="utf-8")
     if args.json:
         print(json.dumps(result, indent=1, sort_keys=True))
+    elif args.md:
+        print(markdown(rows, subs if subs else subsets([dict(r, set="v1") for r in rows])))
     else:
         for r in rows:
             print("%-6s %-9s exp=%-14s got=%-14s %s %s" % (r["case_id"], r["class"], r["expected"], r["program"],
                   r["program_code"] or r["program_overall"] or "", "[input-gap]" if r["input_gap"] else ""))
         print(json.dumps(summary, sort_keys=True))
+        if subs:
+            print(json.dumps(subs, sort_keys=True))
     return 3 if (args.fail_on_danger and summary["dangerous"]) else 0
 
 

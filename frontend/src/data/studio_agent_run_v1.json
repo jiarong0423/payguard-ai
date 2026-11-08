@@ -1,0 +1,449 @@
+{
+  "schema_version": "payguard.studio_agent_run.v1",
+  "recorded_at": "2026-11-08T15:57:57Z",
+  "model": "gemini",
+  "source": "gemini_live_local",
+  "affects_decision": false,
+  "runs": [
+    {
+      "question": "Which reason code appears most often across the three cases?",
+      "page_id": "readiness",
+      "steps": [
+        {
+          "agent": "data",
+          "tool": "view_schema",
+          "args": {},
+          "ok": true,
+          "ms": 0
+        },
+        {
+          "agent": "data",
+          "tool": "execute_query",
+          "args": {
+            "query": {
+              "kind": "apiQuery",
+              "projection": [
+                {
+                  "field": {
+                    "id": "cases.case_ref"
+                  }
+                },
+                {
+                  "field": {
+                    "id": "cases.order_ref"
+                  }
+                },
+                {
+                  "field": {
+                    "id": "cases.reason"
+                  }
+                }
+              ],
+              "variant": "projection"
+            }
+          },
+          "ok": true,
+          "ms": 21
+        },
+        {
+          "agent": "data",
+          "tool": "complete_task",
+          "args": {
+            "artifacts": [],
+            "summary": "In @table[cases], the reason code that appears most often across the three cases is \"Item not received\", with a count of 3 out of 3 cases.\n\nRow details:\n- @field[cases.case_ref] `case-ref-001`: @field[cases.reason] = `Item not received`\n- @field[cases.case_ref] `case-ref-002`: @field[cases.reason] = `Item not received`\n- @field[cases.case_ref] `case-ref-003`: @field[cases.reason] = `Item not received`"
+          },
+          "ok": true,
+          "ms": 0
+        }
+      ],
+      "reply": "In @table[cases], the reason code that appears most often across the three cases is \"Item not received\", with a count of 3 out of 3 cases.\n\nRow details:\n- @field[cases.case_ref] `case-ref-001`: @field[cases.reason] = `Item not received`\n- @field[cases.case_ref] `case-ref-002`: @field[cases.reason] = `Item not received`\n- @field[cases.case_ref] `case-ref-003`: @field[cases.reason] = `Item not received`",
+      "turns": 3,
+      "duration_ms": 17879
+    }
+  ],
+  "final_layout": {
+    "page_id": "readiness",
+    "widgets": {
+      "auditor-answer": {
+        "type": "grid",
+        "dataMapping": {
+          "cols": [
+            {
+              "id": "cases.case_ref"
+            },
+            {
+              "id": "cases.due_date"
+            },
+            {
+              "id": "cases.delivery_proof"
+            },
+            {
+              "id": "cases.review_flag"
+            }
+          ]
+        },
+        "format": {
+          "title": {
+            "enabled": true,
+            "text": "Cases"
+          },
+          "subtitle": {
+            "enabled": true,
+            "text": "Ask the auditor to filter"
+          },
+          "crossFilter": "filter"
+        }
+      },
+      "deadline": {
+        "type": "payguard-deadline",
+        "dataMapping": {
+          "fields": [
+            {
+              "id": "cases.case_ref"
+            },
+            {
+              "id": "cases.due_date"
+            },
+            {
+              "id": "cases.days_to_due"
+            },
+            {
+              "id": "cases.readiness"
+            }
+          ]
+        },
+        "format": {
+          "title": {
+            "enabled": true,
+            "text": "Response deadlines"
+          },
+          "subtitle": {
+            "enabled": true,
+            "text": "Demo · read only"
+          }
+        }
+      },
+      "kpi-cases": {
+        "type": "value",
+        "dataMapping": {
+          "value": [
+            {
+              "id": "cases.case_ref",
+              "aggregation": "countd"
+            }
+          ]
+        },
+        "format": {
+          "title": {
+            "enabled": true,
+            "text": "Cases"
+          },
+          "subtitle": {
+            "enabled": true,
+            "text": "Demo"
+          },
+          "style": {
+            "verticalAlign": "top",
+            "textAlign": "left",
+            "typography": {
+              "fontSize": 28,
+              "fontWeight": "bold"
+            },
+            "color": "#0f172a"
+          }
+        }
+      },
+      "kpi-no-attachment": {
+        "type": "value",
+        "dataMapping": {
+          "value": [
+            {
+              "id": "cases.case_ref",
+              "aggregation": "countd"
+            }
+          ]
+        },
+        "format": {
+          "title": {
+            "enabled": true,
+            "text": "No attachment"
+          },
+          "subtitle": {
+            "enabled": true,
+            "text": "Delivery proof"
+          },
+          "style": {
+            "verticalAlign": "top",
+            "textAlign": "left",
+            "typography": {
+              "fontSize": 40,
+              "fontWeight": "bold"
+            },
+            "color": "#875f30"
+          }
+        }
+      },
+      "kpi-flags": {
+        "type": "value",
+        "dataMapping": {
+          "value": [
+            {
+              "id": "cases.time_flag_count",
+              "aggregation": "sum"
+            }
+          ]
+        },
+        "format": {
+          "title": {
+            "enabled": true,
+            "text": "Time flags"
+          },
+          "subtitle": {
+            "enabled": true,
+            "text": "Neutral notes"
+          },
+          "style": {
+            "verticalAlign": "top",
+            "textAlign": "left",
+            "typography": {
+              "fontSize": 28,
+              "fontWeight": "bold"
+            },
+            "color": "#0f172a"
+          }
+        }
+      },
+      "kpi-proofs": {
+        "type": "value",
+        "dataMapping": {
+          "value": [
+            {
+              "id": "requirements.proof_count",
+              "aggregation": "sum"
+            }
+          ]
+        },
+        "format": {
+          "title": {
+            "enabled": true,
+            "text": "Proofs on file"
+          },
+          "subtitle": {
+            "enabled": true,
+            "text": "Records"
+          },
+          "style": {
+            "verticalAlign": "top",
+            "textAlign": "left",
+            "typography": {
+              "fontSize": 28,
+              "fontWeight": "bold"
+            },
+            "color": "#0f172a"
+          }
+        }
+      },
+      "case-filter": {
+        "type": "button-filter",
+        "dataMapping": {
+          "value": [
+            {
+              "id": "cases.case_ref"
+            }
+          ]
+        },
+        "format": {
+          "title": {
+            "enabled": true,
+            "text": "Filter by case"
+          },
+          "style": {
+            "dimensions": {
+              "height": 44,
+              "minWidth": 112
+            },
+            "defaultItem": {
+              "typography": {
+                "fontSize": 14
+              },
+              "color": "#0f172a",
+              "backgroundColor": "#ffffff",
+              "borderEnabled": true,
+              "borderWidth": 1,
+              "borderColor": "#e3e7ee",
+              "borderRadius": 8
+            },
+            "activeItem": {
+              "color": "#3730a3",
+              "backgroundColor": "#e0e7ff",
+              "borderColor": "#4f46e5"
+            }
+          }
+        }
+      },
+      "checklist": {
+        "type": "payguard-checklist",
+        "dataMapping": {
+          "fields": [
+            {
+              "id": "requirements.case_ref"
+            },
+            {
+              "id": "requirements.evidence_type"
+            },
+            {
+              "id": "requirements.state"
+            },
+            {
+              "id": "requirements.proof_count"
+            },
+            {
+              "id": "requirements.attachment_count"
+            },
+            {
+              "id": "cases.review_flag"
+            },
+            {
+              "id": "cases.delivery_proof"
+            }
+          ]
+        },
+        "format": {
+          "title": {
+            "enabled": true,
+            "text": "Evidence checklist"
+          },
+          "subtitle": {
+            "enabled": true,
+            "text": "One case per card · select to cross-filter (separate from Filter by case)"
+          }
+        }
+      },
+      "gap-chart": {
+        "type": "bar-chart-grouped",
+        "dataMapping": {
+          "categoryKey": [
+            {
+              "id": "time_events.event"
+            }
+          ],
+          "valueKey": [
+            {
+              "id": "time_events.gap_hours",
+              "aggregation": "sum"
+            }
+          ]
+        },
+        "format": {
+          "title": {
+            "enabled": true,
+            "text": "Hours since the previous event"
+          },
+          "subtitle": {
+            "enabled": true,
+            "text": "Ordered time evidence · seller-provided unless stated"
+          },
+          "crossFilter": "filter"
+        }
+      },
+      "events-grid": {
+        "type": "grid",
+        "dataMapping": {
+          "cols": [
+            {
+              "id": "time_events.case_ref"
+            },
+            {
+              "id": "time_events.order"
+            },
+            {
+              "id": "time_events.event"
+            },
+            {
+              "id": "time_events.at"
+            },
+            {
+              "id": "time_events.source"
+            },
+            {
+              "id": "time_events.gap_hours"
+            }
+          ]
+        },
+        "format": {
+          "title": {
+            "enabled": true,
+            "text": "Time evidence"
+          },
+          "subtitle": {
+            "enabled": true,
+            "text": "Only cases with recorded time events · ordered, not judged"
+          },
+          "crossFilter": "filter"
+        }
+      }
+    },
+    "widget_layout": {
+      "deadline": {
+        "xTrack": 0,
+        "yTrack": 0,
+        "xSpan": 10,
+        "ySpan": 18
+      },
+      "kpi-cases": {
+        "xTrack": 10,
+        "yTrack": 0,
+        "xSpan": 7,
+        "ySpan": 9
+      },
+      "kpi-no-attachment": {
+        "xTrack": 17,
+        "yTrack": 0,
+        "xSpan": 7,
+        "ySpan": 9
+      },
+      "kpi-flags": {
+        "xTrack": 10,
+        "yTrack": 9,
+        "xSpan": 7,
+        "ySpan": 9
+      },
+      "kpi-proofs": {
+        "xTrack": 17,
+        "yTrack": 9,
+        "xSpan": 7,
+        "ySpan": 9
+      },
+      "auditor-answer": {
+        "xTrack": 0,
+        "yTrack": 18,
+        "xSpan": 24,
+        "ySpan": 14
+      },
+      "case-filter": {
+        "xTrack": 0,
+        "yTrack": 32,
+        "xSpan": 24,
+        "ySpan": 9
+      },
+      "checklist": {
+        "xTrack": 0,
+        "yTrack": 41,
+        "xSpan": 10,
+        "ySpan": 22
+      },
+      "gap-chart": {
+        "xTrack": 10,
+        "yTrack": 41,
+        "xSpan": 14,
+        "ySpan": 22
+      },
+      "events-grid": {
+        "xTrack": 0,
+        "yTrack": 63,
+        "xSpan": 24,
+        "ySpan": 20
+      }
+    }
+  }
+}

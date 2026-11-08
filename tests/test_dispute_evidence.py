@@ -123,6 +123,19 @@ class ResolverTests(unittest.TestCase):
         record["proof_fields"]["shipped_at"] = "2026-10-20T10:00:00Z"
         self.assert_code("proof_record_invalid", lambda: self.resolve(proofs=[record]))
 
+    def test_a_zero_value_refund_is_not_a_proof(self):
+        current = snapshot("MERCHANDISE_OR_SERVICE_NOT_RECEIVED")
+        current["evidences"] = [{"request_id": "request-refund-001", "evidence_type": "PROOF_OF_REFUND",
+                                 "source": "REQUESTED_FROM_SELLER", "mandatory": True, "action": "PROVIDE_EVIDENCE"}]
+        def refund(amount):
+            return {"evidence_id": "proof-refund-001", "request_id": "request-refund-001", "evidence_type": "REFUND",
+                    "proof_fields": {"refund_id": "RF0006", "amount": amount, "currency": "USD", "refunded_at": "2026-10-07T10:00:00Z"},
+                    "observed_at": "2026-10-08T08:30:00Z", "evidence_state": "SUPPLIED_UNVERIFIED", "attachment_ids": []}
+        self.assert_code("proof_record_invalid", lambda: self.resolve(current, proofs=[refund("0.00")], attachments=[]))
+        self.assert_code("proof_record_invalid", lambda: self.resolve(current, proofs=[refund("0")], attachments=[]))
+        ok = self.resolve(current, proofs=[refund("5.00")], attachments=[])
+        self.assertEqual(ok["routing"]["overall_state"], "READY_FOR_LOCAL_REVIEW")
+
     def test_real_looking_tracking_and_ordered_dates_still_pass(self):
         for value in ("9400111899223344556677", "1Z999AA10123456784", "SYNTHETICTRACK001", "RB123456785GB"):
             result = self.resolve(proofs=[self._proof_with(tracking_number=value)])

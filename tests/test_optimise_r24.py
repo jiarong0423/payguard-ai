@@ -76,6 +76,26 @@ class EvidencePayloadHashTests(LiveHarness):
         self.assertEqual(sent.status_code, 200, sent.text)
         self.assertEqual(len(self.posts("/provide-evidence")), 1)
 
+    def test_one_changed_byte_of_the_evidence_pdf_is_refused_and_preview_equals_send(self):
+        self.ready()
+        session = self.session_object()
+        preview = self.post("/paypal/disputes/provide-evidence", self.REQUEST).json()
+        row = session.disputes["demo-case-001"]["attachment_candidates"][0]
+        self.assertIn(b"Delivery evidence summary", row["content"])
+        original = row["content"]
+        row["content"] = original.replace(b"Disputed amount: USD 48.00", b"Disputed amount: USD 49.00")
+        self.assertEqual(len(row["content"]), len(original))
+        self.assertNotEqual(row["content"], original)
+        refused = self.post("/paypal/disputes/provide-evidence", dict(self.REQUEST, submit=True))
+        self.assertIn(refused.status_code, (409, 422), refused.text)
+        self.assertEqual(self.posts("/provide-evidence"), [])
+        row["content"] = original
+        sent = self.post("/paypal/disputes/provide-evidence", dict(self.REQUEST, submit=True))
+        self.assertEqual(sent.status_code, 200, sent.text)
+        self.assertEqual(sent.json()["payload_sha256"], preview["payload_sha256"])
+        body = self.posts("/provide-evidence")[0].content
+        self.assertIn(original, body)
+
     def test_the_hash_changes_with_any_part_and_is_keyed_per_session(self):
         self.ready()
         session = self.session_object()

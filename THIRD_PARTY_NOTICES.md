@@ -54,7 +54,7 @@ The seven `@bryntum/*-community` packages are the Bryntum Scheduler Community ti
 
 `ag-charts-enterprise@14.2.0`, `ag-grid-enterprise@36.2.0`, `ag-studio@3.0.0`, `ag-studio-react@3.0.0`.
 
-These four packages are proprietary software of AG Grid Ltd under its commercial licence (lock-declared license `Commercial`). The repository does not vendor them and holds no licence key; `npm ci` fetches them from the npm registry. Without a licence key AG Studio runs in trial mode: served locally on `127.0.0.1` no watermark was seen; on a public host AG's documentation says a trial licence key is needed to remove the watermark and console warnings, and the hosted demo currently has no key. Only the separate dashboard entry imports them; the seller console and the evidence page use the MIT Community packages above. See `docs/AG_STUDIO_NOTES.md`.
+These four packages are proprietary software of AG Grid Ltd under its commercial licence (lock-declared license `Commercial`). The repository does not vendor them and holds no licence key; `npm ci` fetches them from the npm registry. Without a licence key AG Studio runs in trial mode: served locally on `127.0.0.1` no watermark was seen; on a public host AG's documentation says a trial licence key is needed to remove the watermark and console warnings, and the hosted demo is built with a trial or development licence key supplied by the owner at build time (a client-side key, readable in the built JavaScript by AG's design); it is not a purchased production licence. Only the separate dashboard entry imports them; the seller console and the evidence page use the MIT Community packages above. See `docs/AG_STUDIO_NOTES.md`.
 
 ## Project and provider names
 

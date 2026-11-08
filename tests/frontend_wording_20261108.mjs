@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+const app = readFileSync('frontend/src/App.jsx', 'utf8');
+const rules = readFileSync('frontend/src/CountryRules.jsx', 'utf8');
+assert.ok(app.includes('<h1 id="page-title">Check a sale before you ship. Prepare your evidence if PayPal asks.</h1>'), 'new hero title');
+assert.ok(!/<h1[^>]*>[^<]*before PayPal asks/.test(app), 'old hero title gone');
+assert.ok(rules.includes('No cited rule stops this sale.'), 'verdict kept');
+assert.ok(rules.includes('This is not clearance. Only the listed country and PayPal rules were checked; payment type, address match and carrier limits are not covered.'), 'not-clearance line');
+assert.ok(rules.includes('This compares your declaration only. Changing a declaration does not change what PayPal or a carrier will do.'), 'before/after note');
+assert.ok(app.includes('The baseline here is a local demo setting, not a PayPal limit.'), 'baseline note');
+assert.ok(rules.includes('an earlier sample of 36') && rules.includes('a recorded spot-check on 2026-11-08 sampled 48 of the 681 rules and compared 44 (34 consistent, 10 wording differs; 4 could not be opened)'), 'audit text');
+assert.ok(app.includes("'You approve every step'") && !app.includes('Human in the loop'), 'case review title');
+console.log('frontend_wording_20261108: 8 assertions passed');

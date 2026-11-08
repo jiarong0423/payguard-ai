@@ -232,5 +232,51 @@
       "source": "docs/evidence/RED_TEAM_ROUNDS_20261104.md",
       "quotes": ["Nothing in these rounds called PayPal Live or a real payment; r27 used the owner's Gemini key (a paid model) on the local console, as did the later r31 and r32 judge rounds.", "browser and phone attacks ran against an isolated rules-only copy of the console with PayPal not configured"]
     }
-  ]
+  ],
+  "recorded_send": {
+    "title": "The real send, step by step (recorded)",
+    "intro": "The evidence send of 2026-11-05 (UTC+8) in PayPal Sandbox, as written in the committed receipt. Times in the steps are UTC: 2026-11-04 16:58 to 17:16 UTC is 2026-11-05 00:58 to 01:16 UTC+8. This page makes no PayPal call: it only shows what the receipt records.",
+    "receipt": "docs/evidence/RECEIPT_20261105_live.md",
+    "steps": [
+      {
+        "at": "2026-11-04 16:58 UTC",
+        "what": "A Sandbox buyer test account filed an item-not-received test dispute for USD 48.00, marked as a Sandbox test in its text.",
+        "quote": "filed one item-not-received test dispute from the buyer side at 2026-11-04 16:58 UTC"
+      },
+      {
+        "at": "A few minutes later",
+        "what": "The dispute moved from UNDER_REVIEW to WAITING_FOR_SELLER_RESPONSE; only then was the evidence request previewed.",
+        "quote": "only then was it previewed"
+      },
+      {
+        "at": "First attempt",
+        "what": "The 15-minute local demo session had expired when the send was confirmed. The server refused it and nothing was sent.",
+        "quote": "the server refused it and nothing was sent"
+      },
+      {
+        "at": "2026-11-04 17:16 UTC",
+        "what": "After Reconnect, a new local review and preview, and one person pressing the green Send, PayPal Sandbox recorded the seller's evidence.",
+        "quote": "PayPal recorded the seller's evidence at 2026-11-04 17:16 UTC"
+      },
+      {
+        "at": "Send result",
+        "what": "Submitted to Sandbox. PayPal-Debug-Id f2088142a6218.",
+        "quote": "PayPal-Debug-Id f2088142a6218"
+      },
+      {
+        "at": "Fresh read after the send",
+        "what": "Status WAITING_FOR_BUYER_RESPONSE (before: WAITING_FOR_SELLER_RESPONSE) and the seller's proof of fulfillment listed as submitted. Read-back PayPal-Debug-Id ca5554cf42ef6.",
+        "quote": "PayPal-Debug-Id of that read: ca5554cf42ef6"
+      },
+      {
+        "at": "Right after",
+        "what": "Refusals with nothing sent: PayPal already holds seller evidence for this dispute; a different reason; a different amount.",
+        "quote": "Locked: PayPal already has seller evidence for this dispute."
+      }
+    ],
+    "file_note": "The evidence file in these sends was a 43-byte synthetic placeholder PDF.",
+    "file_quote": "The evidence file was a synthetic placeholder PDF (43 bytes)",
+    "file_source": "docs/evidence/RECEIPT_20261104_live.md",
+    "limit": "This shows that PayPal Sandbox recorded the request and moved the dispute to waiting for the buyer. It does not show that PayPal accepted the evidence or would decide the case for the seller."
+  }
 }

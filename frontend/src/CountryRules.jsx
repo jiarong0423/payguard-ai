@@ -33,7 +33,7 @@ const plural = (count, word) => `${count} ${word}${count === 1 ? '' : 's'}`;
 // per-rule audit field, so this is hard-coded from the record: the r10 audit (2026-11-02) compared a sample of 36 TW and
 // CN rules with their sources; no country's rules were all checked line by line. Names come from the pack at run time.
 export const RULE_AUDIT_SAMPLE = Object.freeze({ TW: '2026-11-02', CN: '2026-11-02' });
-export const ruleAuditText = (names = {}) => `a sample of 36 ${names.TW || 'TW'} and ${names.CN || 'CN'} rules was compared with their sources on 2026-11-02; the other rules are not yet checked line by line`;
+export const ruleAuditText = (names = {}) => `an earlier sample of 36 ${names.TW || 'TW'} and ${names.CN || 'CN'} rules was compared with their sources on 2026-11-02, and a recorded spot-check on 2026-11-08 sampled 48 of the 681 rules and compared 44 (34 consistent, 10 wording differs; 4 could not be opened); the other rules are not checked line by line`;
 // (optimise r24) Clock time for the before/after card ("Stopped at 10:02 → Clear at 10:04"), local 24-hour time.
 const clockTime = (ms) => new Date(ms).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
 const verdictWord = (result) => (result.blocked ? 'Stopped' : result.findings.some(isPostalBan) ? 'Draft allowed (other carrier)' : 'Clear');
@@ -108,6 +108,7 @@ function BeforeAfter({ record, names }) {
   if (before.account !== after.account) changes.push(`account ${before.account} to ${after.account}`);
   return <div className="country-before-after" data-testid="country-before-after">
     <strong data-testid="country-before-after-line">Stopped at {clockTime(before.at)} → {after.word} at {clockTime(after.at)}</strong>
+    <span className="country-before-after-note" data-testid="country-before-after-note">This compares your declaration only. Changing a declaration does not change what PayPal or a carrier will do.</span>
     <span>{changes.length ? `Changed: ${changes.join('; ')}.` : 'Same details checked again.'} The draft is no longer stopped by a country rule.</span>
   </div>;
 }
@@ -158,6 +159,7 @@ function Verdict({ result, names, tags, onEdit, onContinue }) {
       <span className="country-verdict-next"><button type="button" className="button button-secondary" data-testid="country-continue-draft" onClick={onContinue}>Continue with another carrier</button></span></>;
   }
   return <><strong className="country-verdict-big">No cited rule stops this sale.</strong>
+    <span className="country-verdict-notclear" data-testid="country-not-clearance">This is not clearance. Only the listed country and PayPal rules were checked; payment type, address match and carrier limits are not covered.</span>
     <span className="country-verdict-line">{result.cross_border ? 'Cross-border' : 'Domestic'}, {seller} → {buyer}{warn.length ? ` · ${warn.length} to check first` : ''}. Not a legal clearance; PayPal's Acceptable Use Policy still applies.</span>{noGoods}
     <span className="country-verdict-next"><button type="button" className="button button-secondary" data-testid="country-continue-draft" onClick={onContinue}>Continue to draft</button></span></>;
 }
@@ -171,6 +173,10 @@ export const countryAmountProblem = (value) => {
   return AMOUNT.test(text) && Number(text) > 0 ? '' : 'Enter an amount above 0 like 120 or 120.50 (at most two decimals), or leave it empty.';
 };
 const SESSION_EXPIRED_TEXT = 'The demo session expired. Select Reconnect at the top of the page to start a new one.';
+
+// "Try the example" (judge self-test): ships from the United States to Singapore with E-cigarettes ticked, then runs the
+// same local rules check as the Check country rules button. No other request kind, no PayPal call, no model call.
+export const EXAMPLE_ROUTE = Object.freeze({ seller_country: 'US', buyer_country: 'SG', goods_tags: Object.freeze(['e_cigarettes']) });
 
 export default function CountryRules({ session, onResult, onContinue, onSessionExpired, onBusy }) {
   const [catalog, setCatalog] = useState(null);
@@ -194,6 +200,8 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
   // write its old result back (attack r21 desktop #1: a late Stop locked the draft after Reset).
   const liveRef = useRef(true);
   const runTokenRef = useRef(0);
+  // True when the result being shown came from "Try the example": the page then scrolls the result to the top of the screen.
+  const exampleRef = useRef(false);
   const [amountNote, setAmountNote] = useState('');
   // (optimise r24) The last Stop (route, goods, time) and, once a later check no longer stops the sale, that result:
   // { before, after } drives the before/after card. A new Stop replaces it.
@@ -245,7 +253,9 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
     if (!result) return;
     window.requestAnimationFrame(() => {
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      resultRef.current?.scrollIntoView({ block: 'nearest', behavior: reducedMotion ? 'auto' : 'smooth' });
+      const fromExample = exampleRef.current;
+      exampleRef.current = false;
+      resultRef.current?.scrollIntoView({ block: fromExample ? 'start' : 'nearest', behavior: reducedMotion ? 'auto' : 'smooth' });
     });
   }, [result]);
 
@@ -256,10 +266,24 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
   const set = (key, value) => { setForm((current) => ({ ...current, [key]: value })); setResult(null); onResult?.(null, { stale: stopPendingRef.current });
     if (key === 'amount' && !countryAmountProblem(value)) setAmountNote(''); };
   const toggleTag = (tag) => set('goods_tags', form.goods_tags.includes(tag) ? form.goods_tags.filter((item) => item !== tag) : [...form.goods_tags, tag]);
-  const run = async () => {
+  const run = () => runCheck(form);
+  const tryExample = () => {
+    if (busy || Date.now() < waitUntil) return;
+    const codes = catalog.countries.map((row) => row.code);
+    if (!codes.includes(EXAMPLE_ROUTE.seller_country) || !codes.includes(EXAMPLE_ROUTE.buyer_country)) {
+      setError('The example needs the United States and Singapore, which this build does not list. Pick the countries yourself.');
+      return;
+    }
+    const next = { ...form, ...EXAMPLE_ROUTE, goods_tags: [...EXAMPLE_ROUTE.goods_tags] };
+    setForm(next);
+    setAmountNote('');
+    exampleRef.current = true;
+    runCheck(next);
+  };
+  async function runCheck(values) {
     // aria-disabled while running: the button keeps keyboard focus (review r1 P0.7). Also while a Retry-After runs.
     if (busy || Date.now() < waitUntil) return;
-    const amountProblem = countryAmountProblem(form.amount);
+    const amountProblem = countryAmountProblem(values.amount);
     if (amountProblem) {
       setAmountNote(amountProblem);
       const details = formRef.current?.querySelector('details.country-optional');
@@ -283,15 +307,15 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
     setError('');
     setWaitUntil(0);
     try {
-      const body = { ...form, amount: form.amount.trim() || null, currency: form.amount.trim() ? form.currency : null };
+      const body = { ...values, amount: values.amount.trim() || null, currency: values.amount.trim() ? values.currency : null };
       const payload = await apiRequest('/country-rules/check', { method: 'POST', body, session });
       if (!current()) return;
       stopPendingRef.current = Boolean(payload.blocked);
       // (optimise r24) Record the Stop, or pair a later non-stop result with the last Stop.
-      const entry = { at: Date.now(), seller: payload.seller_country, buyer: payload.buyer_country, tags: [...form.goods_tags].sort(),
-        account: form.account_type, word: verdictWord(payload) };
+      const entry = { at: Date.now(), seller: payload.seller_country, buyer: payload.buyer_country, tags: [...values.goods_tags].sort(),
+        account: values.account_type, word: verdictWord(payload) };
       setUnlock((current) => (payload.blocked ? { before: entry, after: null } : current ? { before: current.before, after: entry } : null));
-      setResult({ ...payload, checked_tags: [...form.goods_tags] });
+      setResult({ ...payload, checked_tags: [...values.goods_tags] });
       setTagsOpen(false);
       setView('key');
       onResult?.(payload);
@@ -303,7 +327,7 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
     } finally {
       if (liveRef.current && token === runTokenRef.current) setBusy(false);
     }
-  };
+  }
 
   const select = (key, label, options, className = '') => <label className={`country-field ${className}`}>{label}
     <select data-testid={`country-${key}`} value={form[key]} disabled={busy} onChange={(event) => set(key, event.target.value)}>
@@ -342,6 +366,9 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
     <div className="country-rules-head">
       <h3 id="country-rules-title">Where are you shipping from and to?</h3>
       <p>PayGuard compares PayPal rules with official export and import rules.</p>
+      <button type="button" className="button button-secondary country-try-example" data-testid="country-try-example" aria-disabled={busy || waiting || undefined}
+        title="Fills United States to Singapore with E-cigarettes ticked and runs the same check" onClick={tryExample}>Try the example</button>
+      <small className="country-try-note" data-testid="country-try-note">United States to Singapore, e-cigarettes. Synthetic data, no PayPal calls; fills the form and runs the check.</small>
     </div>
     <div className="country-form" ref={formRef}>
       <div className="country-places">

@@ -12,7 +12,7 @@ const css = read('index.css');
 assert.ok(panel.includes('const liveRef = useRef(true);') && panel.includes('const runTokenRef = useRef(0);'), 'panel tracks mount and run token');
 assert.ok(panel.includes('useEffect(() => { liveRef.current = true; return () => { liveRef.current = false; runTokenRef.current += 1; }; }, []);'), 'unmount retires the token');
 {
-  const run = panel.slice(panel.indexOf('const run = async () => {'), panel.indexOf('const select = '));
+  const run = panel.slice(panel.indexOf('async function runCheck(values) {'), panel.indexOf('const select = '));
   assert.ok(run.indexOf('if (!current()) return;') > -1 && run.indexOf('if (!current()) return;') < run.indexOf('onResult?.(payload)'), 'late result dropped before onResult');
 }
 

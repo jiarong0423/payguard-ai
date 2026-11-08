@@ -57,3 +57,16 @@ body { margin: 0; background: var(--pg-color-canvas); color: var(--pg-color-ink)
   .proof-meta > div { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .proof-chip { white-space: normal; }
 }
+
+/* Recorded real send (2026-11-08): a text timeline taken from the committed receipt. */
+.proof-recorded { padding: var(--pg-layout-card-pad); border-radius: var(--pg-radius-card); background: var(--pg-color-panel); box-shadow: var(--pg-elev-l1); }
+.proof-recorded h2 { margin: 0 0 var(--pg-space-2); font-size: 18px; line-height: 1.35; font-weight: 650; }
+.proof-recorded-intro { margin: 0 0 var(--pg-space-3); color: var(--pg-color-muted); font-size: 14px; }
+.proof-recorded-steps { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--pg-space-2); }
+.proof-recorded-steps li { display: grid; grid-template-columns: minmax(110px, 190px) 1fr; gap: var(--pg-space-3); align-items: start; padding: var(--pg-space-2) 0; border-top: 1px solid var(--pg-color-rule); font-size: 14px; }
+.proof-recorded-steps li:first-child { border-top: 0; }
+.proof-recorded-at { color: var(--pg-color-accent-strong); font-weight: 650; }
+.proof-recorded-what { overflow-wrap: anywhere; }
+.proof-recorded-file, .proof-recorded-limit, .proof-recorded-source { margin: var(--pg-space-3) 0 0; font-size: 14px; color: var(--pg-color-muted); }
+.proof-recorded-file { color: var(--pg-color-ink); font-weight: 600; }
+@media (max-width: 640px) { .proof-recorded-steps li { grid-template-columns: 1fr; gap: var(--pg-space-1); } }

@@ -318,8 +318,10 @@ class FixtureRouteTests(unittest.TestCase):
         self.assertEqual(evidence[0]["evidence_type"], "PROOF_OF_FULFILLMENT")
         self.assertEqual(evidence[0]["evidence_info"]["tracking_info"][0]["tracking_number"], "*" * 19 + "001")
         self.assertEqual(evidence[0]["evidence_info"]["tracking_info"][0]["carrier_name_other"], "SYNTHETIC_CARRIER")
-        self.assertEqual(body["files"], [{"name": "file1", "filename": "synthetic-delivery.pdf",
-                                          "content_type": "application/pdf", "byte_length": 43}])
+        self.assertEqual([{key: row[key] for key in ("name", "filename", "content_type")} for row in body["files"]],
+                         [{"name": "file1", "filename": "synthetic-delivery.pdf", "content_type": "application/pdf"}])
+        # S1: the attachment is the generated evidence summary, not the 43-byte placeholder.
+        self.assertGreater(body["files"][0]["byte_length"], 500)
         self.assertNotIn("SYNTHETIC_TRACKING_001", preview.text)
         self.assertNotIn("%PDF", preview.text)
         for change in ({"submit": "yes"}, {"dispute_id": "PP-D-0000 1"}, {"case_ref": "demo-case-001"}, {"extra": 1}):
@@ -490,7 +492,8 @@ class SandboxRouteTests(unittest.TestCase):
         self.assertIn(b'"evidence_type":"PROOF_OF_FULFILLMENT"', content)
         self.assertIn(b'"tracking_number":"SYNTHETIC_TRACKING_001"', content)
         self.assertIn(b'name="file1"; filename="synthetic-delivery.pdf"', content)
-        self.assertIn(b"%PDF-1.7", content)
+        self.assertIn(b"%PDF-1.4", content)
+        self.assertIn(b"Delivery evidence summary", content)
         self.assertNotIn(("*" * 19 + "001").encode(), content)
         # PayPal docs r24: PayPal-Request-Id is at most 38 characters and the Disputes spec does not declare it, so it
         # is a correlation id only ("pg-" + 32 hex); the one-approval-one-send lock is the guard against a resend.
@@ -578,6 +581,25 @@ class RequestBuilderTests(unittest.TestCase):
         self.attachment_bytes = {row["attachment_id"]: row["content"]
                                  for row in self.session.disputes["demo-case-001"]["attachment_candidates"]}
 
+    def test_documents_field_is_off_by_default_and_names_the_files_when_enabled(self):
+        import os
+        from unittest import mock
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("PAYGUARD_EVIDENCE_DOCUMENTS_FIELD", None)
+            plain = build_provide_evidence_request("PP-D-00000001", "case-ref-001", self.restricted, masked=True)
+        self.assertNotIn("documents", plain["input"]["evidences"][0])
+        with mock.patch.dict(os.environ, {"PAYGUARD_EVIDENCE_DOCUMENTS_FIELD": "enabled"}):
+            named = build_provide_evidence_request("PP-D-00000001", "case-ref-001", self.restricted, masked=True)
+            names = [row["name"] for row in named["input"]["evidences"][0]["documents"]]
+            self.assertEqual(names, [row["filename"] for row in named["files"]])
+        with mock.patch.dict(os.environ, {"PAYGUARD_EVIDENCE_DOCUMENTS_FIELD": "yes"}):
+            other = build_provide_evidence_request("PP-D-00000001", "case-ref-001", self.restricted, masked=True)
+        self.assertNotIn("documents", other["input"]["evidences"][0])
+        from app.paypal_disputes import _DOCUMENT_NAME
+        for bad in ("a.b.pdf", "bad/name.pdf", "noextension", ".pdf", "x" * 3 + ".p1df"):
+            self.assertIsNone(_DOCUMENT_NAME.fullmatch(bad), bad)
+        self.assertIsNotNone(_DOCUMENT_NAME.fullmatch("evidence-summary.pdf"))
+
     def test_masked_and_unmasked_requests_share_structure(self):
         masked = build_provide_evidence_request("PP-D-00000001", "case-ref-001", self.restricted, masked=True)
         raw = build_provide_evidence_request("PP-D-00000001", "case-ref-001", self.restricted, masked=False,
@@ -591,7 +613,8 @@ class RequestBuilderTests(unittest.TestCase):
         self.assertEqual(masked["input"]["evidences"][0]["evidence_type"], raw["input"]["evidences"][0]["evidence_type"])
         self.assertEqual(raw["input"]["evidences"][0]["evidence_info"]["tracking_info"][0]["tracking_number"], "SYNTHETIC_TRACKING_001")
         self.assertNotIn("content", masked["files"][0])
-        self.assertEqual(raw["files"][0]["content"], b"%PDF-1.7\nSynthetic delivery evidence\n%%EOF\n")
+        self.assertEqual(raw["files"][0]["content"], self.attachment_bytes["demo-attachment-001"])
+        self.assertTrue(raw["files"][0]["content"].startswith(b"%PDF-1.4"))
         parts = multipart_parts(raw)
         self.assertEqual(set(parts), {"input", "file1"})
         self.assertEqual(parts["input"][2], "application/json")

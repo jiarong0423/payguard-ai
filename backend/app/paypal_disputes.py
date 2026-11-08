@@ -17,6 +17,7 @@ from decimal import Decimal, InvalidOperation
 import hashlib
 import hmac
 import json
+import os
 import re
 import secrets
 from urllib.parse import urlsplit
@@ -342,6 +343,16 @@ def _mask(value: str) -> str:
     return "*" * max(len(value) - 3, 0) + value[-3:]
 
 
+# PayPal's Disputes API lists the files of an evidence under evidence.documents[].name; its published schema marks the field
+# read-only and does not say whether an upload must name its files there. Off by default: the first real read-back decides.
+# Turn it on with PAYGUARD_EVIDENCE_DOCUMENTS_FIELD=enabled. A file name that does not match PayPal's own pattern is not named.
+_DOCUMENT_NAME = re.compile(r"[A-Za-z0-9\-_,\s]+[.][A-Za-z]+\Z")
+
+
+def _documents_field_enabled() -> bool:
+    return os.environ.get("PAYGUARD_EVIDENCE_DOCUMENTS_FIELD") == "enabled"
+
+
 def build_provide_evidence_request(dispute_id: str, case_ref: str, restricted: dict, *, masked: bool,
                                    attachment_bytes: dict | None = None) -> dict:
     """Assemble the multipart ``provide-evidence`` request from the session draft.
@@ -422,6 +433,10 @@ def build_provide_evidence_request(dispute_id: str, case_ref: str, restricted: d
                 raise BoundaryError(422, "dispute_context_not_ready")
             part["content"] = content
         files.append(part)
+    if _documents_field_enabled() and len(evidences) == 1 and files:
+        names = [row["filename"] for row in files]
+        if len(names) <= 10 and all(type(name) is str and len(name) <= 2000 and _DOCUMENT_NAME.fullmatch(name) for name in names):
+            evidences[0]["documents"] = [{"name": name} for name in names]
     return {
         "method": "POST",
         "path": f"/v1/customer/disputes/{dispute_id}/provide-evidence",

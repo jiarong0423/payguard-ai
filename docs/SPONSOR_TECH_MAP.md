@@ -1,0 +1,19 @@
+# Sponsor technology map
+
+One page that answers "what is actually used, where, and is it live on the hosted demo?". Statuses: **Hosted** = a judge can use it on the public demo (synthetic data); **Recorded** = the hosted demo replays a saved real run, no live call; **Local only** = works only on a local console with the owner's key; **Not used** = stated so nobody has to look. Versions are the ones in `frontend/package.json` and `render.yaml`.
+
+| Technology | What is used | Where | Status |
+| --- | --- | --- | --- |
+| AG Grid Community 36.2.0 | Sortable and filterable transaction and case grids, quick filter, cell renderers, value formatters, tooltips, CSV export, lazy-loaded | `frontend/src/grid/agGrid.jsx` | Hosted |
+| AG Grid Enterprise features | Master-detail, row grouping, set filter, status bar, Excel export, integrated charts | not in the code | Not used |
+| AG Charts Community 14.2.0 | Bar and line series with cross-lines, legend and tooltip on a shared theme | `frontend/src/charts/VelocityChart.jsx`, `frontend/src/charts/BenchmarkCharts.jsx` | Hosted |
+| AG Studio 3.0.0 | Evidence dashboard with a custom theme, a 24-column two-page layout, two custom widgets, a custom evidence-auditor agent with seven closed questions, an adapter that sends model turns through the backend | `frontend/src/dashboard/` (`widgets.jsx`, `layout.js`, `auditor.js`), `backend/app/studio_agent.py`, [AG_STUDIO_NOTES.md](AG_STUDIO_NOTES.md) | Dashboard and widgets hosted; built-in agents Local only live; one real run (2026-11-08, one question, three Studio tool calls) is Recorded and replayed on the hosted page |
+| Bryntum Scheduler Community 8.0.0 | Evidence deadline board, one row per case; the "Collect evidence" bar can be dragged and resized under validators; tooltip; keyboard navigation; custom "now" and due lines | `frontend/src/board/`, [BRYNTUM_LICENSE_CHECK.md](BRYNTUM_LICENSE_CHECK.md) | Hosted. Community tier only: no trial, Business or Enterprise package |
+| Channel3 | Product search for the seller-confirmed product reference card (goes into the review ZIP) and a category signal that never affects a decision | `backend/app/channel3.py`, `backend/app/channel3_products.py`, `tools/record_channel3.py`, `docs/evidence/channel3_receipts_v1.json` | Recorded (five real searches replayed); live search Local only |
+| Render | One free Docker web service from a Blueprint, health check at `/api/v1/health`, manual deploys only | `render.yaml` | Hosted. Render Workflows were built and tested locally and never deployed; not part of this package |
+| PayPal Sandbox API | OAuth, unsent invoice draft, dispute list and detail, `provide-evidence` preview and gated submit (two Sandbox sends, 2026-11-04 and 2026-11-05), tracking add (built, never run live, off by default) | `backend/app/paypal.py`, `backend/app/paypal_disputes.py`, [docs/evidence/](evidence/) receipts | Reads and previews Hosted as sample data; real calls Local only, as receipts. Webhook signature verification exists in code and tests with mocked replies only; it has never run live |
+| Gemini | Closed-option guide chooser, evidence brief, Studio agent turn, each behind code validation and per-session caps | `integrations/gemini/worker.py`, `backend/app/ai_brief.py`, `backend/app/guide_model.py` | Local only; hosted demo replays recorded results |
+| APIMatic | none | n/a | Not used |
+| PayPal MCP / Agent Toolkit | none in the public package | n/a | Not used |
+
+The hosted demo makes no PayPal calls and holds no PayPal, Gemini or Channel3 key. That is why every real call above is backed by a receipt or a recording, not by a button on the public page. The numbers on the other pages can be rechecked with `tools/verify_public_numbers.py`.

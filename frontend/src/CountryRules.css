@@ -78,3 +78,11 @@
 /* (optimise r24) Line-by-line check status: a muted note under the sources (r30 J4 #6a) and per row; "checked" in the ok colour, "not yet" muted. */
 .country-line-check { color: var(--pg-color-muted); }
 .country-line-check.is-checked { color: var(--pg-color-ok); font-weight: 600; }
+
+/* Judge self-test: "Try the example" fills United States to Singapore with E-cigarettes and runs the check. 44px on every screen. */
+.country-try-example { margin-top: 8px; min-height: 44px; }
+.country-try-note { display: block; margin-top: 4px; color: var(--pg-color-muted); font-size: var(--type-meta); line-height: 1.4; }
+@media (max-width: 640px) { .country-try-example { width: 100%; justify-content: center; } }
+
+.country-verdict-notclear { display: block; font-size: 1rem; font-weight: 600; line-height: 1.4; }
+.country-before-after-note { display: block; font-size: 1rem; font-weight: 600; line-height: 1.4; }

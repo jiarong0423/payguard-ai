@@ -373,7 +373,7 @@ function Dashboard({ setup }) {
           <ul className="pg-status" data-testid="dashboard-status">
             <li><strong>Evidence auditor:</strong> on. Seven questions answered with code and built with Studio tools. Open it with “Ask the auditor”.</li>
             <li data-testid="dashboard-built-in" data-mode={setup.mode}><strong>Built-in agents:</strong> {AGENT_STATUS[setup.mode]}</li>
-            <li data-testid="dashboard-licence"><strong>Licence:</strong> {LICENSE_KEY ? 'AG Studio key supplied at build time.' : 'no key in this build: AG Studio runs as a trial, logs a licence notice and may show its watermark.'}</li>
+            <li data-testid="dashboard-licence"><strong>Licence:</strong> {LICENSE_KEY ? 'AG Studio key supplied at build time (the hosted demo uses a trial or development key, not a purchased production licence).' : 'no key in this build: AG Studio runs as a trial, logs a licence notice and may show its watermark.'}</li>
             {mode === 'edit' && <li><strong>Edit mode:</strong> the auditor and layout changes stay in this tab and are not saved.</li>}
           </ul>
           {technical && <details className="pg-technical" data-testid="dashboard-technical-steps">

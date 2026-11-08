@@ -142,4 +142,17 @@ assert.equal(Object.values(counts).reduce((sum, value) => sum + value, 0), facts
 assert.deepEqual(groupProof({}), []);
 assert.deepEqual(channel3Summary({}), { count: 0, allOk: false, cards: [], minLatency: null, maxLatency: null, dates: [] });
 
+// 7. (2026-11-08) Recorded real send: a text timeline of the 2026-11-05 send. Each quote must be in the receipt; the page calls nothing.
+{
+  const send = facts.recorded_send;
+  assert.ok(send && Array.isArray(send.steps) && send.steps.length >= 6, 'recorded send has its steps');
+  const receipt = read(send.receipt);
+  for (const step of send.steps) assert.ok(receipt.includes(step.quote), `recorded send step "${step.at}": quote not found in ${send.receipt}`);
+  assert.ok(read(send.file_source).includes(send.file_quote), 'placeholder file note is quoted from its receipt');
+  assert.ok(send.file_note.includes('43-byte'), 'the page says the file was a 43-byte placeholder');
+  assert.ok(!/byte-identical|bytes match/iu.test(JSON.stringify(send)), 'no byte-identical claim before a read-back has run');
+  assert.ok(pageMain().includes('data-testid="recorded-send"') && pageMain().includes('Recorded, not live'), 'page renders the recorded send, labelled');
+  assert.ok(!/fetch\(|XMLHttpRequest/u.test(pageMain()), 'proof page still makes no request');
+}
+
 console.log(`frontend_proof_contract: ok (${facts.rows.length} rows; ${METHOD_ORDER.map((method) => `${method} ${counts[method]}`).join(', ')}; every quote found in its source)`);

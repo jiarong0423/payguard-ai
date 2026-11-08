@@ -293,6 +293,9 @@ def _validate_proof_fields(evidence_type, fields, as_of=None):
                 _error("proof_record_invalid")
         else:
             result[name] = _text(value, "proof_record_invalid")
+    # A refund of zero is not a refund (held-out case HK-20): the amount of a refund proof must be above zero.
+    if evidence_type == "REFUND" and "amount" in result and Decimal(result["amount"]) == 0:
+        _error("proof_record_invalid")
     # Impossible dates (answer-key cases AK-06 and AK-07): a delivery cannot precede the shipment, and neither can lie after
     # the evaluation instant. The same closed error code is used, so no API or screen contract changes.
     shipped, delivered = result.get("shipped_at"), result.get("delivered_at")

@@ -1156,3 +1156,13 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
   .feedback-region .message { box-shadow: none; }
   .feedback-region .message-error { position: fixed; left: 18px; right: 18px; bottom: 12px; z-index: 45; }
 }
+
+/* Phone: the top-bar links are hidden, so the proof page gets a visible link under the title. */
+.hero-proof-link { display: none; }
+@media (max-width: 640px) { .hero-proof-link { display: inline-flex; align-items: center; min-height: 44px; margin-top: 4px; color: var(--pg-color-accent-strong); font-size: var(--type-meta); font-weight: 650; } }
+
+/* A first-screen entry for the example (the country card sits far down the page, most of all on a phone). It clicks the card's own button. */
+.hero-example-link { display: inline-flex; align-items: center; min-height: 44px; margin: 8px 12px 0 0; padding: 0 16px; border: 1px solid var(--pg-color-accent-strong); border-radius: var(--pg-radius-control); background: transparent; color: var(--pg-color-accent-strong); font: inherit; font-size: var(--type-meta); font-weight: 650; cursor: pointer; }
+.hero-example-link:hover { background: var(--pg-color-accent-soft, rgba(79, 70, 229, 0.08)); }
+@media (max-width: 640px) { .hero-example-link { width: 100%; justify-content: center; margin-right: 0; } }
+.metric-baseline-note { display: block; margin-top: 4px; }

@@ -13,6 +13,7 @@ import secrets
 import threading
 from types import MappingProxyType
 
+from payguard.evidence_pdf import EvidencePdfError, evidence_pdf_for_case
 from payguard.engines import assess_velocity, check_aup, prepare_dispute
 from payguard.case_cards import match_cases
 from payguard.dispute_evidence import (
@@ -57,6 +58,9 @@ AI_BRIEF_STAGES = frozenset({"source_compliance", "velocity_guard", "dispute_med
 
 def utc_now() -> datetime:
     return datetime.now(timezone.utc)
+
+
+_PLACEHOLDER_PDF_PREFIX = b"%PDF-1.7\nSynthetic delivery evidence"
 
 
 def iso(value: datetime) -> str:
@@ -808,6 +812,15 @@ class SessionStore:
                     raise BoundaryError(422, "dispute_context_not_ready")
                 draft = prepare_dispute(_legacy_dispute_case(case))
                 draft["source"] = "synthetic"
+                try:
+                    # Real content for the synthetic delivery PDF, built from this case's own fields; the bytes then
+                    # flow into the restricted sha256, the draft digest and the approval's payload hash as before.
+                    case["attachment_candidates"] = [
+                        dict(row, content=evidence_pdf_for_case(case_ref, case))
+                        if type(row.get("content")) is bytes and row["content"].startswith(_PLACEHOLDER_PDF_PREFIX) else row
+                        for row in case["attachment_candidates"]]
+                except EvidencePdfError:
+                    raise BoundaryError(422, "dispute_context_not_ready") from None
                 try:
                     layers = resolve_dispute_requirements(
                         case["provider_snapshot"], case["proof_records"],

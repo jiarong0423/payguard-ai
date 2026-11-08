@@ -33,6 +33,23 @@ function MethodChip({ method }) {
   </span>;
 }
 
+// The 2026-11-05 send as the committed receipt records it. Text only, from proof_facts_v1.json; each step's quote is checked
+// against the receipt by tests/frontend_proof_contract.mjs. The page still calls nothing.
+function RecordedSend() {
+  const send = facts.recorded_send;
+  if (!send) return null;
+  return <section className="proof-recorded" aria-labelledby="proof-recorded-title" data-testid="recorded-send">
+    <h2 id="proof-recorded-title">{send.title}</h2>
+    <p className="proof-recorded-intro">{send.intro} <span className="proof-chip proof-chip-info" data-testid="recorded-send-label"><Icon name="recorded" size={14} />Recorded, not live</span></p>
+    <ol className="proof-recorded-steps">{send.steps.map((step) => <li key={step.at} data-testid="recorded-send-step">
+      <span className="proof-recorded-at">{step.at}</span><span className="proof-recorded-what">{step.what}</span>
+    </li>)}</ol>
+    <p className="proof-recorded-file" data-testid="recorded-send-file">{send.file_note}</p>
+    <p className="proof-recorded-limit">{send.limit}</p>
+    <p className="proof-recorded-source">Source: <code>{send.receipt}</code> and <code>{send.file_source}</code>, masked as committed.</p>
+  </section>;
+}
+
 function Legend() {
   const counts = methodCounts(facts);
   const refused = refusedCount(facts);
@@ -70,6 +87,7 @@ function ProofPage() {
         <p>Each row says what was proven, whether it came from a real PayPal Sandbox call, a recorded run, an automated test or synthetic data, when, and the committed file it comes from. This page is static: it calls nothing and reads only files in the repository.</p>
         <p className="proof-note">Identifiers are masked as in the receipts. Sandbox rows are test data the author created with two Sandbox test accounts, not a real merchant case.</p>
       </div>
+      <RecordedSend />
       <Legend />
       {sections.map((section) => <section key={section.id} className="proof-section" aria-labelledby={`proof-${section.id}`} data-testid="proof-section" data-scenario={section.id}>
         <h2 id={`proof-${section.id}`}>{section.number && <span className="proof-number">{section.number}</span>}{section.label}</h2>
