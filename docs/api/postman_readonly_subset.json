@@ -1,0 +1,403 @@
+{
+ "info": {
+  "description": "Generated from docs/api/openapi.json by tools/export_api_docs.py. Local console only; bodies are empty skeletons.",
+  "name": "TradeGlot local console API",
+  "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+ },
+ "item": [
+  {
+   "name": "POST /api/v1/demo/sessions",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "New Session. Local console route POST /api/v1/demo/sessions on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "demo",
+      "sessions"
+     ],
+     "raw": "{{baseUrl}}/api/v1/demo/sessions"
+    }
+   },
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "type": "text/javascript",
+      "exec": [
+       "pm.test('session created (201, synthetic)', function(){ pm.response.to.have.status(201); var j=pm.response.json(); pm.expect(j.source).to.eql('synthetic'); pm.collectionVariables.set('sessionId', j.session_id); });"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "GET /api/v1/ai/usage",
+   "request": {
+    "description": "(optimise r24) This session's AI calls: stage, model, tokens, latency, estimated cost. No prompt or reply\ntext is ever stored; the hosted demo makes no model call and answers an empty list.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "ai",
+      "usage"
+     ],
+     "raw": "{{baseUrl}}/api/v1/ai/usage"
+    }
+   },
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "type": "text/javascript",
+      "exec": [
+       "pm.test('status is 200', function(){ pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function(){ pm.response.json(); });"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "GET /api/v1/connections",
+   "request": {
+    "description": "Connections. Local console route GET /api/v1/connections on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "connections"
+     ],
+     "raw": "{{baseUrl}}/api/v1/connections"
+    }
+   },
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "type": "text/javascript",
+      "exec": [
+       "pm.test('status is 200', function(){ pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function(){ pm.response.json(); });"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "GET /api/v1/country-rules/countries",
+   "request": {
+    "description": "Country Rules Countries. Local console route GET /api/v1/country-rules/countries on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "country-rules",
+      "countries"
+     ],
+     "raw": "{{baseUrl}}/api/v1/country-rules/countries"
+    }
+   },
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "type": "text/javascript",
+      "exec": [
+       "pm.test('status is 200', function(){ pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function(){ pm.response.json(); });"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "GET /api/v1/demo/state",
+   "request": {
+    "description": "State. Local console route GET /api/v1/demo/state on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "demo",
+      "state"
+     ],
+     "raw": "{{baseUrl}}/api/v1/demo/state"
+    }
+   },
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "type": "text/javascript",
+      "exec": [
+       "pm.test('status is 200', function(){ pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function(){ pm.response.json(); });"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "GET /api/v1/guide/state",
+   "request": {
+    "description": "Guide State. Local console route GET /api/v1/guide/state on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "guide",
+      "state"
+     ],
+     "raw": "{{baseUrl}}/api/v1/guide/state"
+    }
+   },
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "type": "text/javascript",
+      "exec": [
+       "pm.test('status is 200', function(){ pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function(){ pm.response.json(); });"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "GET /api/v1/health",
+   "request": {
+    "description": "Health. Local console route GET /api/v1/health on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "health"
+     ],
+     "raw": "{{baseUrl}}/api/v1/health"
+    }
+   },
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "type": "text/javascript",
+      "exec": [
+       "pm.test('status is 200', function(){ pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function(){ pm.response.json(); });"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "GET /api/v1/paypal/disputes",
+   "request": {
+    "description": "List Disputes. Local console route GET /api/v1/paypal/disputes on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "paypal",
+      "disputes"
+     ],
+     "raw": "{{baseUrl}}/api/v1/paypal/disputes"
+    }
+   },
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "type": "text/javascript",
+      "exec": [
+       "pm.test('status is 200', function(){ pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function(){ pm.response.json(); });"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "GET /api/v1/paypal/status",
+   "request": {
+    "description": "Paypal Status. Local console route GET /api/v1/paypal/status on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "paypal",
+      "status"
+     ],
+     "raw": "{{baseUrl}}/api/v1/paypal/status"
+    }
+   },
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "type": "text/javascript",
+      "exec": [
+       "pm.test('status is 200', function(){ pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function(){ pm.response.json(); });"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "GET /api/v1/studio/agent-status",
+   "request": {
+    "description": "Studio Agent Status. Local console route GET /api/v1/studio/agent-status on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "studio",
+      "agent-status"
+     ],
+     "raw": "{{baseUrl}}/api/v1/studio/agent-status"
+    }
+   },
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "type": "text/javascript",
+      "exec": [
+       "pm.test('status is 200', function(){ pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function(){ pm.response.json(); });"
+      ]
+     }
+    }
+   ]
+  }
+ ],
+ "variable": [
+  {
+   "key": "baseUrl",
+   "value": "http://127.0.0.1:8000"
+  }
+ ],
+ "event": [
+  {
+   "listen": "prerequest",
+   "script": {
+    "type": "text/javascript",
+    "exec": [
+     "pm.request.headers.upsert({key:'Origin',value:'http://127.0.0.1:8000'});",
+     "var s=pm.collectionVariables.get('sessionId'); if(s){pm.request.headers.upsert({key:'X-Demo-Session',value:s});}"
+    ]
+   }
+  }
+ ]
+}

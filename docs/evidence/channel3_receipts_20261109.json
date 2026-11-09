@@ -1,0 +1,54 @@
+{
+ "receipts": [
+  {
+   "called_at": "2026-11-09T01:06:12Z",
+   "cards": 3,
+   "http_status": 200,
+   "latency_seconds": 1.138,
+   "query": "Bamboo cutting board",
+   "reason": null,
+   "reply_sha256": "13f5eb689f509af6d909d8bd4e20df8149b1defa7f68b68bcf1946551be84def",
+   "result_status": "FOUND"
+  },
+  {
+   "called_at": "2026-11-09T01:06:14Z",
+   "cards": 3,
+   "http_status": 200,
+   "latency_seconds": 1.394,
+   "query": "Cotton bath towel set",
+   "reason": null,
+   "reply_sha256": "da0c3ab958bdb86e826f19b97a23b01d14adda907898fd282d711a3e058f7272",
+   "result_status": "FOUND"
+  },
+  {
+   "called_at": "2026-11-09T01:06:15Z",
+   "cards": 3,
+   "http_status": 200,
+   "latency_seconds": 1.872,
+   "query": "Bluetooth speaker portable",
+   "reason": null,
+   "reply_sha256": "f4c5472b1fe2d29d8d4fb0a2a366490d5ca7f7c211ad9b867c5f0ebbdd0b6064",
+   "result_status": "FOUND"
+  },
+  {
+   "called_at": "2026-11-09T01:06:17Z",
+   "cards": 3,
+   "http_status": 200,
+   "latency_seconds": 1.209,
+   "query": "Ceramic plant pot with drainage hole",
+   "reason": null,
+   "reply_sha256": "2574741e8051ca0b8f862f348c1567fea1ffd56156fbf3f553dddfdcbf611771",
+   "result_status": "FOUND"
+  },
+  {
+   "called_at": "2026-11-09T01:06:19Z",
+   "cards": 3,
+   "http_status": 200,
+   "latency_seconds": 2.126,
+   "query": "Running shoes for women size 8",
+   "reason": null,
+   "reply_sha256": "41eff0dbdb3d2db073153baee9af91d05e18cbec1fac767068af19cba9d8672d",
+   "result_status": "FOUND"
+  }
+ ]
+}

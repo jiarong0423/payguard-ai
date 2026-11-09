@@ -1,0 +1,4 @@
+# Render Workflows SDK for workflows/evidence_integrity/main.py only. The web service does not need it.
+# Version from github.com/render-oss/sdk python/pyproject.toml on main (1.6.0, read 2026-11-01);
+# confirm it on PyPI before the first deploy (the PyPI page could not be read; see docs/RENDER_WORKFLOWS_NOTES.md).
+render==1.6.0

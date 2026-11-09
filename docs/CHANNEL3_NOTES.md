@@ -4,6 +4,8 @@ Status (2026-11-01): the category signal is tested with a fake transport only. T
 first real calls on 2026-11-01: 5 searches, all HTTP 200, the live reply matched the SDK-derived parser
 (`docs/evidence/channel3_receipts_v1.json`; recordings in `backend/app/data/channel3_recorded_v1.json`).
 
+Second run (2026-11-09): 5 more real searches with a new key (bamboo cutting board, cotton bath towel set, portable Bluetooth speaker, ceramic plant pot, women's running shoes), all HTTP 200 with 3 cards each, 1.1 to 2.1 seconds. Receipts (time, status, latency, card count, SHA-256 of the raw reply; no key, no raw reply): `docs/evidence/channel3_receipts_20261109.json`. These calls were not added to the hosted demo's recorded replies, so the hosted demo still replays only the 2026-11-01 recordings. Ten real searches in total.
+
 Update (2026-11-04): Channel3's documentation is now at https://channel3.ai/docs and was read there. Its pricing
 page (https://channel3.ai/docs/pricing) lists 1000 free credits every month, `/search` at 1 credit per call and
 `/categories` free. The contract
