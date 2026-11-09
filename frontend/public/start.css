@@ -20,3 +20,4 @@ li a.row:focus-visible,.btn:focus-visible{outline:3px solid var(--accent);outlin
 .grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
 .small{font-size:.9rem}
 a{color:var(--accent)}
+code { overflow-wrap: anywhere; word-break: break-word; }
