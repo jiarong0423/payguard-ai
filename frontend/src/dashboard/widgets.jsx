@@ -142,7 +142,7 @@ export function EvidenceChecklist(params) {
       {byCase.length > 1 && (
         <nav className="pg-pager-nav" aria-label="Evidence checklist cases">
           <button type="button" onClick={() => go(-1)} disabled={index === 0} aria-label="Previous case">‹</button>
-          <span aria-live="polite">Case {index + 1} of {byCase.length}</span>
+          <span role="status" aria-live="polite">Case {index + 1} of {byCase.length}</span>
           <span className="pg-pager-dots" aria-hidden="true">{byCase.map(([caseRef], dot) => <i key={caseRef} className={dot === index ? 'is-on' : ''} />)}</span>
           <button type="button" onClick={() => go(1)} disabled={index === byCase.length - 1} aria-label="Next case">›</button>
         </nav>

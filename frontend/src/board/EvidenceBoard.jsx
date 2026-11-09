@@ -71,7 +71,9 @@ const isPhone = () => Boolean(phoneMedia()?.matches);
 
 // Spread before the fixed props; switching between the two remounts the scheduler (board-canvas key).
 const DESKTOP_SCHEDULER = { columns: COLUMNS, forceFit: true };
-const PHONE_SCHEDULER = { columns: PHONE_COLUMNS, forceFit: false, tickSize: 72 };
+// (defect D2) A one-hour bar is only a few pixels wide on a phone, so the label there is the case code, not the long name.
+const phoneEventRenderer = ({ eventRecord }) => (eventRecord.get('kind') === 'PLAN' ? escapeHtml(String(eventRecord.resource?.caseRef ?? eventRecord.name ?? '')) : escapeHtml(String(eventRecord.name ?? '')));
+const PHONE_SCHEDULER = { columns: PHONE_COLUMNS, forceFit: false, tickSize: 72, eventRenderer: phoneEventRenderer };
 
 // Tooltips name the case, its due date and, for the plan bar, the planned window (optimise r24).
 function tooltipHtml(eventRecord, dueAtOf) {
@@ -300,6 +302,22 @@ export default function EvidenceBoard({ disputes, drafts }) {
       if (typeof detachStore === 'function') detachStore();
     };
   }, [board, phone, schedulerKey, onPlanKey]);
+
+  // (defect D2) On a phone the axis starts at the oldest event, so the Collect evidence bars sat off-screen: bring the
+  // earliest plan bar into view once the scheduler is laid out. Display only; nothing in the data or the plan changes.
+  useEffect(() => {
+    const scheduler = schedulerRef.current?.instance;
+    if (!scheduler || !board || !phone) return undefined;
+    const first = events.filter((event) => event.kind === 'PLAN' && event.startDate).map((event) => event.startDate).sort((x, y) => x - y)[0];
+    if (!first) return undefined;
+    let frame = 0;
+    const timer = setTimeout(() => {
+      frame = requestAnimationFrame(() => {
+        try { if (!scheduler.isDestroyed) scheduler.scrollToDate(first, { block: 'start', edgeOffset: 8, animate: false }); } catch { /* scroll position is cosmetic */ }
+      });
+    }, 0);
+    return () => { clearTimeout(timer); cancelAnimationFrame(frame); };
+  }, [board, events, phone, schedulerKey]);
 
   // Quick classify and highlight: Bryntum's own event styling (a record's cls); case data and the plan are not touched.
   useEffect(() => {

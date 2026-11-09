@@ -30,6 +30,8 @@ body { margin: 0; background: var(--pg-canvas); color: var(--pg-ink); font-famil
 /* Selected tab = glass + thickness (not solid), so the one solid button on screen is the primary action. */
 .pg-tabs button.is-active { color: var(--pg-accent-dark); background: var(--pg-selected-glass); box-shadow: var(--pg-selected-highlight), var(--pg-selected-edge), var(--pg-selected-lift); transform: translateY(-1px); }
 .pg-mode { background: var(--pg-accent); color: #ffffff; box-shadow: 0 1px 2px rgba(15, 23, 42, .12); }
+.pg-mode-status { font-size: 13px; color: var(--pg-muted); white-space: nowrap; }
+.pg-mode-status:empty { display: none; }
 .pg-mode:hover { background: var(--pg-accent-dark); }
 .pg-mode[aria-pressed="true"] { background: var(--pg-panel); color: var(--pg-accent-dark); box-shadow: inset 0 0 0 1px #c7d2fe; }
 .pg-tabs button:focus-visible, .pg-mode:focus-visible, .pg-back:focus-visible, .pg-drawer summary:focus-visible { outline: 2px solid var(--pg-accent); outline-offset: 2px; }
@@ -62,7 +64,11 @@ body { margin: 0; background: var(--pg-canvas); color: var(--pg-ink); font-famil
 .pg-technical:not([open]) > summary::after { transform: rotate(45deg); }
 .pg-technical ol { display: grid; gap: 4px; margin: 4px 0 0; padding-left: 20px; overflow-wrap: anywhere; }
 
-.pg-studio { min-height: 480px; }
+.pg-studio { min-height: 480px; position: relative; }
+/* (defect D7) Placeholder over the canvas while a newly selected page draws its widgets. */
+.pg-page-loading { position: absolute; inset: 0; z-index: 5; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 120px; gap: 12px; align-content: start; padding: 12px; background: var(--pg-canvas); pointer-events: none; }
+.pg-page-loading span { grid-column: 1 / -1; font-size: 15px; color: var(--pg-muted); }
+.pg-page-loading i { border-radius: 8px; background: var(--pg-line); opacity: 0.6; }
 /* A widget's Tab stop is an empty 0x0 element, so the focus ring goes round the widget (attack r22). */
 .pg-studio .ag-studio-layout-widget:has(> .ag-studio-layout-widget-focus-container:focus-visible) { outline: 2px solid var(--pg-accent); outline-offset: 2px; }
 .pg-footer { padding: 16px 24px 24px; font-size: 14px; color: var(--pg-subtle); }

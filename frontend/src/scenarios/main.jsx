@@ -95,6 +95,7 @@ function ScenariosPage() {
     if (!busy) saveRun(runStorage(), { steps, rows, ticked });
   }, [busy, steps, rows, ticked]);
   const [copied, setCopied] = useState(null);
+  const [copyFailed, setCopyFailed] = useState(null);
   const modeRef = useRef(null);
 
   const readMode = useCallback(async () => {
@@ -132,7 +133,7 @@ function ScenariosPage() {
     setTicked(Object.fromEntries(WORK_ORDERS.map((order) => [order.id, {}])));
   };
   const copy = async (id) => {
-    try { await navigator.clipboard.writeText(receiptLines(rows[id])); setCopied(id); } catch { setCopied(null); }
+    try { await navigator.clipboard.writeText(receiptLines(rows[id])); setCopied(id); setCopyFailed(false); } catch { setCopied(null); setCopyFailed(id); }
   };
   const shownMode = modeText(mode);
 
@@ -199,6 +200,7 @@ function ScenariosPage() {
                 <summary>Receipt (JSON) · {rows[order.id].length} row{rows[order.id].length === 1 ? '' : 's'}</summary>
                 <pre>{rows[order.id].length ? receiptLines(rows[order.id]) : 'No rows yet. Run the auto steps.'}</pre>
                 <Button tone="ghost" icon="copy" disabled={!rows[order.id].length} onClick={() => copy(order.id)}>{copied === order.id ? 'Copied' : 'Copy receipt'}</Button>
+                <span className="scenario-copy-status" role="status" aria-live="polite" data-testid={`scenario-copy-status-${order.id}`}>{copied === order.id ? 'Copied to the clipboard' : copyFailed === order.id ? 'Copy was blocked by the browser; select the text above instead' : ''}</span>
               </details>
             </footer>
           </article>;

@@ -208,11 +208,31 @@ function Dashboard({ setup }) {
   // A reload (pull-to-refresh) keeps the history entry of an open auditor panel. The page then opens the panel again,
   // so that entry and the screen agree and the next Back closes the panel instead of doing nothing (attack r22).
   const [mode, setMode] = useState(() => (window.history.state?.pgAuditor ? 'edit' : 'view'));
+  // (defect D7) After a tab click the cards were blank for 1-2 s and the scroll stayed mid-page: show a Loading
+  // placeholder until every widget has drawn something (at most 3 s) and scroll to the top of the tab content.
+  const [pageLoading, setPageLoading] = useState(false);
+  const pageClickRef = useRef(false);
   const showPage = (id) => {
     const api = apiRef.current;
     if (!api || api.getState().selectedPageId === id) return;
+    pageClickRef.current = true;
+    setPageLoading(true);
     api.setState({ ...api.getState(), selectedPageId: id });
+    scrollStudioIntoView(studioRef.current);
   };
+  useEffect(() => {
+    if (!pageClickRef.current) return undefined;
+    pageClickRef.current = false;
+    const started = Date.now();
+    const drawn = () => {
+      const widgets = studioRef.current?.querySelectorAll('.ag-studio-layout-widget') || [];
+      return widgets.length > 0 && Array.from(widgets).every((widget) => widget.querySelector('canvas, svg, table, [role="grid"]') || (widget.innerText || '').trim().length > 0);
+    };
+    const timer = setInterval(() => {
+      if (drawn() || Date.now() - started > 3000) { clearInterval(timer); setPageLoading(false); }
+    }, 150);
+    return () => clearInterval(timer);
+  }, [pageId]);
   // Record mode (local live only): tools/record_studio_agent_run.mjs drives the page and reads the recording.
   const recorder = useMemo(() => (RECORD_MODE && setup.mode === 'live' ? createRecorder({ getState: () => apiRef.current?.getState() }) : null), [setup.mode]);
   useEffect(() => {
@@ -357,6 +377,7 @@ function Dashboard({ setup }) {
         </nav>
         <button type="button" className="pg-mode" data-testid="dashboard-mode" aria-pressed={mode === 'edit'} ref={modeButtonRef}
           onClick={toggleAuditor}>{mode === 'view' ? 'Ask the auditor' : 'Back to view'}</button>
+        <span className="pg-mode-status" role="status" aria-live="polite" data-testid="dashboard-mode-status">{mode === 'edit' ? 'Auditor panel open' : ''}</span>
       </header>
       <section className="pg-intro">
         {/* The heading follows the page tab (click-all 2026-11-03 #12). */}
@@ -389,6 +410,7 @@ function Dashboard({ setup }) {
       </details>
       {setup.mode === 'replay' && <RecordedRuns recording={RECORDING} />}
       <main className="pg-studio" data-testid="dashboard-studio" ref={studioRef} style={{ height: studioHeight }}>
+        {pageLoading && <div className="pg-page-loading" role="status" data-testid="dashboard-page-loading"><span>Loading the page…</span><i /><i /><i /></div>}
         {/* (red team r27 B) No key: a key that flips with the layout remounted Studio and dropped the thread and the canvas. */}
         <AgStudioProvider licenseKey={LICENSE_KEY} modules={[AgStudioAiModule]}>
           <AgStudio

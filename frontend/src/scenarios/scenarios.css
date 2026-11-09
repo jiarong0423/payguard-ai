@@ -40,6 +40,8 @@
 .scenario-card-foot { display: grid; gap: var(--pg-space-3); padding-top: var(--pg-space-3); border-top: 1px solid var(--pg-color-rule); }
 .scenario-card-foot > .button { justify-self: start; }
 .scenario-receipt > summary { display: flex; align-items: center; gap: var(--pg-space-2); min-height: 44px; color: var(--pg-color-muted); font-size: var(--type-meta); font-weight: 650; cursor: pointer; }
+.scenario-copy-status { margin-left: var(--pg-space-2); font-size: 14px; color: var(--pg-color-muted); }
+.scenario-copy-status:empty { display: none; }
 .scenario-receipt > summary:hover { color: var(--pg-color-accent-strong); text-decoration: underline; text-underline-offset: 3px; }
 .scenario-receipt pre { max-height: 280px; margin: 0 0 var(--pg-space-2); padding: var(--pg-space-3); overflow: auto; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-control); background: var(--pg-color-recede); color: var(--pg-color-ink); font-family: var(--pg-font-mono); font-size: var(--type-meta); line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
 

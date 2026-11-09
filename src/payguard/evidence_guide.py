@@ -310,12 +310,27 @@ _WEEKDAY_WORDS = {"monday": "MON", "tuesday": "TUE", "wednesday": "WED", "thursd
 _SMART_PUNCTUATION = str.maketrans({"\u2018": "'", "\u2019": "'", "\u201c": '"', "\u201d": '"'})
 
 
+_HTML_TAG = re.compile(r"</?[A-Za-z][^<>]{0,200}>")
+# Emoji glue only: variation selectors, the zero width joiner and the keycap mark. Other invisible characters
+# (zero width space, direction overrides) are not listed, so they are still refused as another script.
+_EMOJI_GLUE = frozenset("\ufe0e\ufe0f\u200d\u20e3")
+
+
+def _drop_symbols_and_tags(text):
+    """Remove HTML tags and non-ASCII symbols/emoji before the English check. Letters of any script stay."""
+    text = _HTML_TAG.sub(" ", text)
+    return "".join(
+        char for char in text
+        if char.isascii() or (char not in _EMOJI_GLUE and not unicodedata.category(char).startswith("S"))
+    )
+
+
 def sanitize_input(text):
     """English only. Returns (cleaned, None) or (None, reason) with reason in english_only / not_sendable."""
     if type(text) is not str or not text or len(text) > MAX_INPUT_CHARS * 4:
         return None, "not_sendable"
     # Phone keyboards type curly quotes and apostrophes ("don\u2019t"); they are English punctuation, not another language.
-    text = text.translate(_SMART_PUNCTUATION)
+    text = _drop_symbols_and_tags(text.translate(_SMART_PUNCTUATION))
     if any(ord(char) > 127 for char in text):
         return None, "english_only"
     cleaned = " ".join(unicodedata.normalize("NFKC", text).split())

@@ -306,7 +306,7 @@ textarea:focus, input[type="text"]:focus, input[type="number"]:focus, select:foc
 .velocity-grid-tools { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 16px 12px; }
 .velocity-grid-tools label { color: var(--pg-color-ink); font-size: var(--type-control); font-weight: 650; }
 .velocity-grid-tools input { width: min(420px, 100%); }
-.transaction-grid { height: 264px; margin: 0 16px; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-card); background: var(--pg-color-panel); --ag-font-size: var(--type-data); }
+.transaction-grid { height: clamp(264px, 42vh, 480px); margin: 0 16px; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-card); background: var(--pg-color-panel); --ag-font-size: var(--type-data); }
 .grid-order { display: inline-flex; align-items: center; gap: 8px; color: var(--pg-color-ink); font-family: var(--pg-font-mono); font-size: var(--type-meta); }
 .grid-amount { color: var(--pg-color-ink); font-size: var(--type-meta); font-weight: 650; font-variant-numeric: tabular-nums; }
 .ag-row-selected-transaction { box-shadow: inset 3px 0 0 var(--pg-color-model); }

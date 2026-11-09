@@ -26,6 +26,18 @@ class Sanitize(unittest.TestCase):
             self.assertIsNone(cleaned)
             self.assertEqual(reason, "english_only", repr(text))
 
+    def test_emoji_and_html_tags_are_ignored_by_the_language_check(self):
+        for text in ("I shipped it last Wednesday \U0001F600", "\U0001F44D\ufe0f shipped with UPS \u2764\ufe0f",
+                     "<b>I shipped it</b> with UPS", "I used <i>UPS</i> \U0001F4E6 on Monday"):
+            cleaned, reason = eg.sanitize_input(text)
+            self.assertIsNotNone(cleaned, repr(text))
+            self.assertIsNone(reason)
+            self.assertTrue(cleaned.isascii() and "<" not in cleaned, repr(cleaned))
+
+    def test_real_chinese_is_still_refused_with_emoji_or_tags(self):
+        for text in ("\u6211\u4e0a\u9031\u4e09\u5bc4\u51fa\u4e86\u5305\u88f9", "\u6211\u4e0a\u9031\u4e09\u5bc4\u51fa\u4e86\u5305\u88f9 \U0001F600", "<b>\u6211\u4e0a\u9031\u4e09\u5bc4\u51fa\u4e86\u5305\u88f9</b>", "I sent it \u6211\u5bc4\u4e86"):
+            self.assertEqual(eg.sanitize_input(text), (None, "english_only"), repr(text))
+
     def test_pii_and_encodings_are_not_sendable(self):
         for text in ("mail me at a@b.co", "see https://x.invalid", "www.evil.test", "4111 1111 1111 1111",
                      "x" * 401, "", "   ", "abcdefghijklmnop", "a" * 1700, 5, None):
