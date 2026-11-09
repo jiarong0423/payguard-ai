@@ -507,7 +507,7 @@
       "id": "cross-apimatic-run",
       "scenario": "cross",
       "proven": "TradeGlot's API description passed APIMatic validation with 0 errors on 2026-11-09 after the first run failed with 345; the generated documentation portal was later published as static pages and the SDKs were generated locally.",
-      "how": "APIMatic CLI 1.5.0 on the generated OpenAPI file (37 operations). The first run failed on duplicate schema titles and one exclusive bound; the export tool was fixed, and the second run succeeded. Portal, llms.txt and SDKs for seven languages were produced; the portal was then published on GitHub Pages and opened in a browser. The portal is documentation only (the API runs locally), its examples are empty, no Copilot answer has been checked, and the SDKs were not run against the API.",
+      "how": "APIMatic CLI 1.5.0 on the generated OpenAPI file (37 operations). The first run failed on duplicate schema titles and one exclusive bound; the export tool was fixed, and the second run succeeded. Portal, llms.txt and SDKs for seven languages were produced; the portal was then published on GitHub Pages and opened in a browser. The portal is documentation only (the API runs locally), its request and response examples were added later the same day (19 media types still have none), no Copilot answer has been checked, and the SDKs were not run against the API.",
       "method": "RECORDED",
       "date": "2026-11-09",
       "source": "docs/evidence/APIMATIC_RUN_20261109.md",
