@@ -35,7 +35,7 @@ TradeGlot is an advisory tool translating cross-border policies for merchants be
 
 [Start here (judges)](https://payguard-demo-j2b3.onrender.com/start.html) · [Download and click through on your computer (11 MB zip)](https://github.com/jiarong0423/payguard-ai/releases/download/demo-package-20261109/tradeglot-demo.zip) · [Hosted demo](https://payguard-demo-j2b3.onrender.com) · [Proof page](https://payguard-demo-j2b3.onrender.com/proof.html) · [2:50 video](https://youtu.be/_GORnHWShU4) · [Devpost](https://devpost.com/software/payguard-ai-zbsp9l)
 
-![A real send to a PayPal Sandbox test dispute after one human approval, with the PayPal-Debug-Id and the fresh read that followed; the "Not submitted" field is the local review copy, while the chip and the Debug-Id show the Sandbox send](docs/submission/screens/real_send_trace.png)
+![A real send to a PayPal Sandbox test dispute after one human approval, with the PayPal-Debug-Id and the fresh read that followed; the "Not submitted" field is the local review copy, while the chip and the Debug-Id show the Sandbox send. Screenshot taken before the rename, so the header still says PayGuard AI](docs/submission/screens/real_send_trace.png)
 
 TradeGlot turns a seller's records into a reviewed dispute evidence package and, after one human approval, sends it to PayPal Sandbox. A policy check and an optional ten-country rules check come before any draft. A seller often notices a policy warning, a sudden sales spike or a dispute only after the records have become difficult to assemble; TradeGlot helps the seller check a sale before shipping and prepare the evidence if PayPal asks, while every decision stays with the seller and PayPal or the card issuer.
 
@@ -188,9 +188,9 @@ To re-run them: `./tools/run.sh test` runs the request matrix (`tests/test_redte
 Screens from the 2:50 demo (taken before the rename, so the app header in them reads PayGuard AI):
 
 - ![Wrong sends are locked: already answered, different reason, different amount; nothing was sent](docs/submission/screens/refusals_locked.png)
-- ![AG Studio readiness dashboard and the AG components TradeGlot uses](docs/submission/screens/ag_studio_trace.png)
+- ![AG Studio readiness dashboard and the AG components TradeGlot uses (screenshot taken before the rename; the header still says PayGuard AI)](docs/submission/screens/ag_studio_trace.png)
 - ![The confirmation popup before a question goes to the AI model (local live mode): plain words, the cost and the daily cap, Cancel focused first](docs/submission/screens/delegate_confirm_popup.jpg)
-- ![The downloaded evidence pages: pseudonymized records, the pack's own note, PayPal's before/after readback](docs/submission/screens/evidence_pages.png)
+- ![The downloaded evidence pages: pseudonymized records, the pack's own note, PayPal's before/after readback (screenshot taken before the rename; the header still says PayGuard AI)](docs/submission/screens/evidence_pages.png)
 
 More diagrams: [architecture](docs/submission/diagrams/architecture_overview.png) ([simplified](docs/submission/diagrams/architecture_simple.png)), [where each sponsor tool sits, with its controls](docs/submission/diagrams/sponsor_placement_map.png), [evidence guide funnel](docs/submission/diagrams/evidence_guide_funnel.png), [the nine checks before evidence is sent to PayPal](docs/submission/diagrams/paypal_write_guards.png) and [a downloaded review ZIP, re-hashed and verified](docs/submission/diagrams/review_zip_verified.png).
 

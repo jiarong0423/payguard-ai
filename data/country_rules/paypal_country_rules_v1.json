@@ -378,7 +378,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "*->CN",
-     "statute_en": "Customs Law of the PRC"
+     "statute_en": "Customs Law of the PRC",
+     "evidence_kind": "absence_only"
     },
     {
      "id": "CN-IM-BH-01",
@@ -531,7 +532,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "*->CN",
-     "statute_en": "Customs Law of the PRC"
+     "statute_en": "Customs Law of the PRC",
+     "evidence_kind": "absence_only"
     },
     {
      "id": "CN-IM-JW-01",
@@ -2995,7 +2997,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "*->JP",
-     "statute_en": "Customs Tariff Act (JP)"
+     "statute_en": "Customs Tariff Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-GEN-02",
@@ -3012,7 +3015,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "*->JP",
-     "statute_en": "Customs Act (JP)"
+     "statute_en": "Customs Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-GEN-03",
@@ -3029,7 +3033,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "*->JP",
-     "statute_en": "Customs Act (JP)"
+     "statute_en": "Customs Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-GEN-04",
@@ -3046,7 +3051,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->JP",
-     "statute_en": "Customs Act (JP)"
+     "statute_en": "Customs Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-LA-01",
@@ -3063,7 +3069,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->JP",
-     "statute_en": "Act on Domestic Animal Infectious Diseases Control (JP)"
+     "statute_en": "Act on Domestic Animal Infectious Diseases Control (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-LA-02",
@@ -3080,7 +3087,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->JP",
-     "statute_en": "Act on Domestic Animal Infectious Diseases Control (JP)"
+     "statute_en": "Act on Domestic Animal Infectious Diseases Control (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-LA-03",
@@ -3097,7 +3105,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->JP",
-     "statute_en": "Rabies Prevention Act (JP)"
+     "statute_en": "Rabies Prevention Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-LA-04",
@@ -3114,7 +3123,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->JP",
-     "statute_en": "Foreign Exchange and Foreign Trade Act (JP)"
+     "statute_en": "Foreign Exchange and Foreign Trade Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-PS-01",
@@ -3131,7 +3141,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "*->JP",
-     "statute_en": "Plant Protection Act (JP)"
+     "statute_en": "Plant Protection Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-PS-02",
@@ -3148,7 +3159,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->JP",
-     "statute_en": "Plant Protection Act (JP)"
+     "statute_en": "Plant Protection Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-FD-01",
@@ -3165,7 +3177,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "*->JP",
-     "statute_en": "Food Sanitation Act (JP)"
+     "statute_en": "Food Sanitation Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-FD-02",
@@ -3182,7 +3195,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->JP",
-     "statute_en": "Act on Domestic Animal Infectious Diseases Control (JP)"
+     "statute_en": "Act on Domestic Animal Infectious Diseases Control (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-FD-03",
@@ -3199,7 +3213,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->JP",
-     "statute_en": "Act on Stabilization of Supply, Demand and Prices of Staple Food (JP)"
+     "statute_en": "Act on Stabilization of Supply, Demand and Prices of Staple Food (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-CO-01",
@@ -3216,7 +3231,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "*->JP",
-     "statute_en": "Pharmaceuticals and Medical Devices Act (JP)"
+     "statute_en": "Pharmaceuticals and Medical Devices Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-BH-01",
@@ -3233,7 +3249,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->JP",
-     "statute_en": "Electrical Appliances and Materials Safety Act (JP)"
+     "statute_en": "Electrical Appliances and Materials Safety Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-BH-02",
@@ -3250,7 +3267,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->JP",
-     "statute_en": "Customs Act (JP)"
+     "statute_en": "Customs Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-BH-03",
@@ -3267,7 +3285,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->JP",
-     "statute_en": "Customs Act (JP)"
+     "statute_en": "Customs Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-RW-01",
@@ -3284,7 +3303,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "*->JP",
-     "statute_en": "Radio Act (JP)"
+     "statute_en": "Radio Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-AL-01",
@@ -3301,7 +3321,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "*->JP",
-     "statute_en": "Food Sanitation Act (JP)"
+     "statute_en": "Food Sanitation Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-TO-01",
@@ -3318,7 +3339,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "*->JP",
-     "statute_en": "Tobacco Business Act (JP)"
+     "statute_en": "Tobacco Business Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-PR-01",
@@ -3335,7 +3357,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "*->JP",
-     "statute_en": "Pharmaceuticals and Medical Devices Act (JP)"
+     "statute_en": "Pharmaceuticals and Medical Devices Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-PR-02",
@@ -3352,7 +3375,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->JP",
-     "statute_en": "Customs Act (JP)"
+     "statute_en": "Customs Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-PR-03",
@@ -3369,7 +3393,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->JP",
-     "statute_en": "Customs Act (JP)"
+     "statute_en": "Customs Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-MD-01",
@@ -3386,7 +3411,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "*->JP",
-     "statute_en": "Pharmaceuticals and Medical Devices Act (JP)"
+     "statute_en": "Pharmaceuticals and Medical Devices Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-JW-01",
@@ -3403,7 +3429,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "*->JP",
-     "statute_en": "Foreign Exchange Order (JP)"
+     "statute_en": "Foreign Exchange Order (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-CU-01",
@@ -3420,7 +3447,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->JP",
-     "statute_en": "Customs Act (JP)"
+     "statute_en": "Customs Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-CU-02",
@@ -3437,7 +3465,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "*->JP",
-     "statute_en": "Foreign Exchange Order (JP)"
+     "statute_en": "Foreign Exchange Order (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-CR-01",
@@ -3454,7 +3483,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->JP",
-     "statute_en": "Act on Controls on the Illicit Export and Import of Cultural Property (JP)"
+     "statute_en": "Act on Controls on the Illicit Export and Import of Cultural Property (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-WE-01",
@@ -3471,7 +3501,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->JP",
-     "statute_en": "Customs Act (JP)"
+     "statute_en": "Customs Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-WE-02",
@@ -3488,7 +3519,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->JP",
-     "statute_en": "Firearms and Swords Control Act (JP)"
+     "statute_en": "Firearms and Swords Control Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-CF-01",
@@ -3505,7 +3537,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "*->JP",
-     "statute_en": "Customs Act (JP)"
+     "statute_en": "Customs Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-IM-CF-02",
@@ -3522,7 +3555,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->JP",
-     "statute_en": "Customs Act (JP)"
+     "statute_en": "Customs Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GD-JP-IM-EC-01",
@@ -3538,7 +3572,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-03",
      "scope": "all",
-     "route": "*->JP"
+     "route": "*->JP",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GD-JP-IM-EC-02",
@@ -3554,7 +3589,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-03",
      "scope": "all",
-     "route": "*->JP"
+     "route": "*->JP",
+     "page_date_status": "not_shown"
     }
    ]
   },
@@ -3703,7 +3739,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->SG",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "SG-IM-PS-01",
@@ -3720,7 +3757,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->SG",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "SG-IM-PS-02",
@@ -3752,7 +3790,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->SG"
+     "route": "*->SG",
+     "page_date_status": "not_shown"
     },
     {
      "id": "SG-IM-FD-02",
@@ -3769,7 +3808,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->SG",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "SG-IM-FD-03",
@@ -3818,7 +3858,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->SG",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "SG-IM-BH-02",
@@ -3835,7 +3876,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->SG",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "SG-IM-RW-01",
@@ -3915,7 +3957,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->SG"
+     "route": "*->SG",
+     "page_date_status": "not_shown"
     },
     {
      "id": "SG-IM-PR-01",
@@ -4028,7 +4071,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->SG",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "SG-IM-WE-01",
@@ -4045,7 +4089,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->SG",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "SG-IM-CF-01",
@@ -4145,7 +4190,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-GEN-02",
@@ -4161,7 +4207,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-GEN-03",
@@ -4177,7 +4224,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-GEN-04",
@@ -4193,7 +4241,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-GEN-05",
@@ -4210,7 +4259,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->HK",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-LA-01",
@@ -4226,7 +4276,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-LA-02",
@@ -4258,7 +4309,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-PS-01",
@@ -4274,7 +4326,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-PS-02",
@@ -4290,7 +4343,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "CN->HK"
+     "route": "CN->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-PS-03",
@@ -4306,7 +4360,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-FD-01",
@@ -4322,7 +4377,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-FD-02",
@@ -4338,7 +4394,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-FD-03",
@@ -4354,7 +4411,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-FD-04",
@@ -4370,7 +4428,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-CO-01",
@@ -4386,7 +4445,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-BT-01",
@@ -4402,7 +4462,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-BT-02",
@@ -4418,7 +4479,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-RW-01",
@@ -4434,7 +4496,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-AL-01",
@@ -4450,7 +4513,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-AL-02",
@@ -4466,7 +4530,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-TB-01",
@@ -4482,7 +4547,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-TB-02",
@@ -4498,7 +4564,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-EC-01",
@@ -4514,7 +4581,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-RX-01",
@@ -4530,7 +4598,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-RX-02",
@@ -4546,7 +4615,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-RX-03",
@@ -4562,7 +4632,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-JW-01",
@@ -4578,7 +4649,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-CU-01",
@@ -4594,7 +4666,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-WP-01",
@@ -4610,7 +4683,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-WP-02",
@@ -4626,7 +4700,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->HK"
+     "route": "*->HK",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-IM-CF-01",
@@ -4694,7 +4769,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->AU"
+     "route": "*->AU",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-IM-GEN-04",
@@ -4710,7 +4786,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->AU"
+     "route": "*->AU",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-IM-LA-01",
@@ -4726,7 +4803,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->AU"
+     "route": "*->AU",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-IM-LA-02",
@@ -4742,7 +4820,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->AU"
+     "route": "*->AU",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-IM-LA-03",
@@ -4758,7 +4837,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->AU"
+     "route": "*->AU",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-IM-PS-01",
@@ -4774,7 +4854,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->AU"
+     "route": "*->AU",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-IM-PS-02",
@@ -4790,7 +4871,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->AU"
+     "route": "*->AU",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-IM-FD-01",
@@ -4806,7 +4888,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->AU"
+     "route": "*->AU",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-IM-FD-02",
@@ -4822,7 +4905,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->AU"
+     "route": "*->AU",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-IM-CO-01",
@@ -4854,7 +4938,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->AU"
+     "route": "*->AU",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-IM-BT-01",
@@ -4886,7 +4971,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->AU"
+     "route": "*->AU",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-IM-RW-02",
@@ -4902,7 +4988,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->AU"
+     "route": "*->AU",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-IM-AL-01",
@@ -4982,7 +5069,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->AU"
+     "route": "*->AU",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-IM-RX-03",
@@ -5014,7 +5102,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->AU"
+     "route": "*->AU",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-IM-MD-02",
@@ -5062,7 +5151,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->AU"
+     "route": "*->AU",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-IM-CR-01",
@@ -5078,7 +5168,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->AU"
+     "route": "*->AU",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-IM-WP-01",
@@ -5178,7 +5269,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->GB"
+     "route": "*->GB",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GB-IM-GEN-02",
@@ -5194,7 +5286,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->GB"
+     "route": "*->GB",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GB-IM-GEN-03",
@@ -5210,7 +5303,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->GB"
+     "route": "*->GB",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GB-IM-LA-01",
@@ -5356,7 +5450,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "*->GB",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GB-IM-RW-01",
@@ -5372,7 +5467,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->GB"
+     "route": "*->GB",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GB-IM-AL-01",
@@ -5388,7 +5484,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->GB"
+     "route": "*->GB",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GB-IM-AL-02",
@@ -5420,7 +5517,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->GB"
+     "route": "*->GB",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GB-IM-EC-01",
@@ -5436,7 +5534,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->GB"
+     "route": "*->GB",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GB-IM-EC-02",
@@ -5452,7 +5551,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->GB"
+     "route": "*->GB",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GB-IM-RX-01",
@@ -5468,7 +5568,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->GB"
+     "route": "*->GB",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GB-IM-RX-02",
@@ -5484,7 +5585,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->GB"
+     "route": "*->GB",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GB-IM-MD-01",
@@ -5516,7 +5618,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->GB"
+     "route": "*->GB",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GB-IM-JW-02",
@@ -5532,7 +5635,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->GB"
+     "route": "*->GB",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GB-IM-CU-01",
@@ -5612,7 +5716,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->GB"
+     "route": "*->GB",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GB-IM-WE-02",
@@ -5680,7 +5785,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-GEN-03",
@@ -5696,7 +5802,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-GEN-04",
@@ -5712,7 +5819,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-GEN-05",
@@ -5728,7 +5836,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-LA-01",
@@ -5744,7 +5853,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-LA-02",
@@ -5760,7 +5870,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-LA-03",
@@ -5776,7 +5887,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-PS-01",
@@ -5792,7 +5904,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-PS-02",
@@ -5808,7 +5921,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-FD-01",
@@ -5824,7 +5938,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-CO-01",
@@ -5840,7 +5955,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-BH-01",
@@ -5856,7 +5972,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-RW-01",
@@ -5872,7 +5989,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-AL-01",
@@ -5888,7 +6006,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-TO-01",
@@ -5904,7 +6023,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-EC-01",
@@ -5920,7 +6040,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-EC-02",
@@ -5936,7 +6057,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-RX-01",
@@ -5953,7 +6075,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "*->DE",
-     "channel": "licensed_import"
+     "channel": "licensed_import",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-RX-02",
@@ -5969,7 +6092,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-RX-03",
@@ -5985,7 +6109,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-JW-01",
@@ -6001,7 +6126,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-CU-01",
@@ -6017,7 +6143,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-CR-01",
@@ -6033,7 +6160,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-CR-02",
@@ -6049,7 +6177,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-CR-03",
@@ -6065,7 +6194,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "IQ->DE"
+     "route": "IQ->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-WE-01",
@@ -6081,7 +6211,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-WE-02",
@@ -6097,7 +6228,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-IM-CF-01",
@@ -6129,7 +6261,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GD-DE-IM-FD-01",
@@ -6145,7 +6278,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-03",
      "scope": "subset",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GD-DE-IM-FD-02",
@@ -6161,7 +6295,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-03",
      "scope": "subset",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GD-DE-IM-FD-03",
@@ -6177,7 +6312,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-03",
      "scope": "subset",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GD-DE-IM-FD-04",
@@ -6193,7 +6329,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-03",
      "scope": "subset",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GD-DE-IM-JW-01",
@@ -6209,7 +6346,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-03",
      "scope": "subset",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GD-DE-IM-JW-02",
@@ -6225,7 +6363,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-03",
      "scope": "subset",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GD-DE-IM-RW-01",
@@ -6241,7 +6380,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-03",
      "scope": "all",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GD-DE-IM-RW-02",
@@ -6257,7 +6397,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-03",
      "scope": "all",
-     "route": "*->DE"
+     "route": "*->DE",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GA-DE-IM-MD-01",
@@ -8123,7 +8264,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "CN->*",
-     "statute_en": "Customs Law of the PRC"
+     "statute_en": "Customs Law of the PRC",
+     "evidence_kind": "absence_only"
     },
     {
      "id": "CN-EX-BH-01",
@@ -8174,7 +8316,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "CN->*",
-     "statute_en": "Customs Law of the PRC"
+     "statute_en": "Customs Law of the PRC",
+     "evidence_kind": "absence_only"
     },
     {
      "id": "CN-EX-TB-01",
@@ -8259,7 +8402,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "CN->*",
-     "statute_en": "Customs Law of the PRC"
+     "statute_en": "Customs Law of the PRC",
+     "evidence_kind": "absence_only"
     },
     {
      "id": "CN-EX-MD-01",
@@ -8276,7 +8420,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "CN->*",
-     "statute_en": "Customs Law of the PRC"
+     "statute_en": "Customs Law of the PRC",
+     "evidence_kind": "absence_only"
     },
     {
      "id": "CN-EX-JW-01",
@@ -8692,7 +8837,8 @@
      "scope": "all",
      "statute_url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=G0350072",
      "route": "TW->*",
-     "statute_en": "Regulations Governing Customs Clearance of Postal Parcels (TW)"
+     "statute_en": "Regulations Governing Customs Clearance of Postal Parcels (TW)",
+     "evidence_kind": "absence_only"
     },
     {
      "id": "TW-EX-CO-01",
@@ -8710,7 +8856,8 @@
      "scope": "all",
      "statute_url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=G0350072",
      "route": "TW->*",
-     "statute_en": "Regulations Governing Customs Clearance of Postal Parcels (TW)"
+     "statute_en": "Regulations Governing Customs Clearance of Postal Parcels (TW)",
+     "evidence_kind": "absence_only"
     },
     {
      "id": "TW-EX-BH-01",
@@ -8746,7 +8893,8 @@
      "scope": "all",
      "statute_url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=G0350072",
      "route": "TW->*",
-     "statute_en": "Regulations Governing Customs Clearance of Postal Parcels (TW)"
+     "statute_en": "Regulations Governing Customs Clearance of Postal Parcels (TW)",
+     "evidence_kind": "absence_only"
     },
     {
      "id": "TW-EX-AL-01",
@@ -8764,7 +8912,8 @@
      "scope": "all",
      "statute_url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=G0350072",
      "route": "TW->*",
-     "statute_en": "Regulations Governing Customs Clearance of Postal Parcels (TW)"
+     "statute_en": "Regulations Governing Customs Clearance of Postal Parcels (TW)",
+     "evidence_kind": "absence_only"
     },
     {
      "id": "TW-EX-TB-01",
@@ -8782,7 +8931,8 @@
      "scope": "all",
      "statute_url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=G0350072",
      "route": "TW->*",
-     "statute_en": "Regulations Governing Customs Clearance of Postal Parcels (TW)"
+     "statute_en": "Regulations Governing Customs Clearance of Postal Parcels (TW)",
+     "evidence_kind": "absence_only"
     },
     {
      "id": "TW-EX-EC-01",
@@ -8855,7 +9005,8 @@
      "scope": "all",
      "statute_url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=G0350072",
      "route": "TW->*",
-     "statute_en": "Regulations Governing Customs Clearance of Postal Parcels (TW)"
+     "statute_en": "Regulations Governing Customs Clearance of Postal Parcels (TW)",
+     "evidence_kind": "absence_only"
     },
     {
      "id": "TW-EX-MD-01",
@@ -8873,7 +9024,8 @@
      "scope": "all",
      "statute_url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=G0350072",
      "route": "TW->*",
-     "statute_en": "Regulations Governing Customs Clearance of Postal Parcels (TW)"
+     "statute_en": "Regulations Governing Customs Clearance of Postal Parcels (TW)",
+     "evidence_kind": "absence_only"
     },
     {
      "id": "TW-EX-JW-01",
@@ -9825,7 +9977,8 @@
      "retrieved_at": "2026-11-03",
      "scope": "subset",
      "channel": "post",
-     "route": "US->*"
+     "route": "US->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GA-US-EX-JW-02",
@@ -9842,7 +9995,8 @@
      "retrieved_at": "2026-11-03",
      "scope": "subset",
      "channel": "post",
-     "route": "US->*"
+     "route": "US->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GA-US-EX-TB-01",
@@ -9859,7 +10013,8 @@
      "retrieved_at": "2026-11-03",
      "scope": "subset",
      "channel": "post",
-     "route": "US->*"
+     "route": "US->*",
+     "page_date_status": "not_shown"
     }
    ]
   },
@@ -10426,7 +10581,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "JP->*",
-     "statute_en": "Customs Act (JP)"
+     "statute_en": "Customs Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-GEN-02",
@@ -10443,7 +10599,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "JP->*",
-     "statute_en": "Customs Act (JP)"
+     "statute_en": "Customs Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-GEN-03",
@@ -10461,7 +10618,8 @@
      "scope": "all",
      "route": "JP->*",
      "channel": "post",
-     "statute_en": "Japan Post: items that cannot be sent by international mail"
+     "statute_en": "Japan Post: items that cannot be sent by international mail",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-LA-01",
@@ -10479,7 +10637,8 @@
      "scope": "subset",
      "route": "JP->*",
      "channel": "post",
-     "statute_en": "Japan Post: items that cannot be sent by international mail"
+     "statute_en": "Japan Post: items that cannot be sent by international mail",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-LA-02",
@@ -10496,7 +10655,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "JP->*",
-     "statute_en": "Rabies Prevention Act (JP)"
+     "statute_en": "Rabies Prevention Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-LA-03",
@@ -10513,7 +10673,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "JP->*",
-     "statute_en": "Act on Domestic Animal Infectious Diseases Control (JP)"
+     "statute_en": "Act on Domestic Animal Infectious Diseases Control (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-LA-04",
@@ -10530,7 +10691,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "JP->*",
-     "statute_en": "Export Trade Control Order (JP)"
+     "statute_en": "Export Trade Control Order (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-PS-01",
@@ -10547,7 +10709,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "JP->*",
-     "statute_en": "Plant Protection Act (JP)"
+     "statute_en": "Plant Protection Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-FD-01",
@@ -10564,7 +10727,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "JP->*",
-     "statute_en": "Act on Domestic Animal Infectious Diseases Control (JP)"
+     "statute_en": "Act on Domestic Animal Infectious Diseases Control (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-FD-02",
@@ -10582,7 +10746,8 @@
      "scope": "all",
      "route": "JP->*",
      "channel": "post",
-     "statute_en": "Japan Post: items that cannot be sent by international mail"
+     "statute_en": "Japan Post: items that cannot be sent by international mail",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-CO-01",
@@ -10600,7 +10765,8 @@
      "scope": "subset",
      "route": "JP->*",
      "channel": "post",
-     "statute_en": "Japan Post: items that cannot be sent by international mail"
+     "statute_en": "Japan Post: items that cannot be sent by international mail",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-BH-01",
@@ -10618,7 +10784,8 @@
      "scope": "subset",
      "route": "JP->*",
      "channel": "post",
-     "statute_en": "Japan Post: items that cannot be sent by international mail"
+     "statute_en": "Japan Post: items that cannot be sent by international mail",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-BH-02",
@@ -10636,7 +10803,8 @@
      "scope": "subset",
      "route": "JP->*",
      "channel": "post",
-     "statute_en": "Japan Post: items that cannot be sent by international mail"
+     "statute_en": "Japan Post: items that cannot be sent by international mail",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-BH-03",
@@ -10654,7 +10822,8 @@
      "scope": "subset",
      "route": "JP->*",
      "channel": "post",
-     "statute_en": "Japan Post: items that cannot be sent by international mail"
+     "statute_en": "Japan Post: items that cannot be sent by international mail",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-AL-01",
@@ -10672,7 +10841,8 @@
      "scope": "subset",
      "route": "JP->*",
      "channel": "post",
-     "statute_en": "Japan Post: items that cannot be sent by international mail"
+     "statute_en": "Japan Post: items that cannot be sent by international mail",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-AL-02",
@@ -10690,7 +10860,8 @@
      "scope": "all",
      "route": "JP->*",
      "channel": "post",
-     "statute_en": "Japan Post: items that cannot be sent by international mail"
+     "statute_en": "Japan Post: items that cannot be sent by international mail",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-TO-01",
@@ -10708,7 +10879,8 @@
      "scope": "all",
      "route": "JP->*",
      "channel": "post",
-     "statute_en": "Japan Post: items that cannot be sent by international mail"
+     "statute_en": "Japan Post: items that cannot be sent by international mail",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-EC-01",
@@ -10726,7 +10898,8 @@
      "scope": "subset",
      "route": "JP->*",
      "channel": "post",
-     "statute_en": "Japan Post: items that cannot be sent by international mail"
+     "statute_en": "Japan Post: items that cannot be sent by international mail",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-PR-01",
@@ -10743,7 +10916,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "JP->*",
-     "statute_en": "Customs Act (JP)"
+     "statute_en": "Customs Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-JW-01",
@@ -10761,7 +10935,8 @@
      "scope": "all",
      "route": "JP->*",
      "channel": "post",
-     "statute_en": "Japan Post: items that cannot be sent by international mail"
+     "statute_en": "Japan Post: items that cannot be sent by international mail",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-CU-01",
@@ -10779,7 +10954,8 @@
      "scope": "all",
      "route": "JP->*",
      "channel": "post",
-     "statute_en": "Japan Post: items that cannot be sent by international mail"
+     "statute_en": "Japan Post: items that cannot be sent by international mail",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-CU-02",
@@ -10796,7 +10972,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "JP->*",
-     "statute_en": "Foreign Exchange Order (JP)"
+     "statute_en": "Foreign Exchange Order (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-CR-01",
@@ -10813,7 +10990,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "JP->*",
-     "statute_en": "Act on Protection of Cultural Properties (JP)"
+     "statute_en": "Act on Protection of Cultural Properties (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-WE-01",
@@ -10830,7 +11008,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "JP->*",
-     "statute_en": "Foreign Exchange and Foreign Trade Act (JP)"
+     "statute_en": "Foreign Exchange and Foreign Trade Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-WE-02",
@@ -10848,7 +11027,8 @@
      "scope": "subset",
      "route": "JP->*",
      "channel": "post",
-     "statute_en": "Japan Post: items that cannot be sent by international mail"
+     "statute_en": "Japan Post: items that cannot be sent by international mail",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-WE-03",
@@ -10866,7 +11046,8 @@
      "scope": "subset",
      "route": "JP->*",
      "channel": "post",
-     "statute_en": "Japan Post: items that cannot be sent by international mail"
+     "statute_en": "Japan Post: items that cannot be sent by international mail",
+     "page_date_status": "not_shown"
     },
     {
      "id": "JP-EX-CF-01",
@@ -10883,7 +11064,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "JP->*",
-     "statute_en": "Customs Act (JP)"
+     "statute_en": "Customs Act (JP)",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GD-JP-EX-RW-01",
@@ -10899,7 +11081,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-03",
      "scope": "subset",
-     "route": "JP->*"
+     "route": "JP->*",
+     "page_date_status": "not_shown"
     }
    ]
   },
@@ -11015,7 +11198,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "SG->*"
+     "route": "SG->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "SG-EX-CO-01",
@@ -11032,7 +11216,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "SG->*",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "SG-EX-BH-01",
@@ -11049,7 +11234,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "SG->*",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "SG-EX-BH-02",
@@ -11066,7 +11252,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "SG->*",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "SG-EX-AL-01",
@@ -11083,7 +11270,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "SG->*",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "SG-EX-AL-02",
@@ -11181,7 +11369,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "SG->*",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "SG-EX-CF-01",
@@ -11213,7 +11402,8 @@
      "page_date": "2026-02-19",
      "retrieved_at": "2026-11-03",
      "scope": "all",
-     "route": "SG->*"
+     "route": "SG->*",
+     "evidence_kind": "absence_only"
     },
     {
      "id": "GD-SG-EX-RX-01",
@@ -11297,7 +11487,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "HK->*"
+     "route": "HK->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-GEN-02",
@@ -11313,7 +11504,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "HK->*"
+     "route": "HK->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-GEN-03",
@@ -11330,7 +11522,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "HK->*",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-GEN-04",
@@ -11347,7 +11540,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "HK->*",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-GEN-05",
@@ -11364,7 +11558,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "HK->*",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-GEN-06",
@@ -11380,7 +11575,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "HK->*"
+     "route": "HK->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-LA-01",
@@ -11397,7 +11593,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "HK->*",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-LA-02",
@@ -11429,7 +11626,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "HK->*"
+     "route": "HK->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-PS-01",
@@ -11461,7 +11659,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "HK->*"
+     "route": "HK->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-FD-01",
@@ -11477,7 +11676,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "HK->*"
+     "route": "HK->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-FD-02",
@@ -11493,7 +11693,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "HK->*"
+     "route": "HK->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-FD-03",
@@ -11509,7 +11710,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "HK->*"
+     "route": "HK->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-CO-01",
@@ -11525,7 +11727,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "HK->*"
+     "route": "HK->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-BT-01",
@@ -11542,7 +11745,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "HK->*",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-BT-02",
@@ -11559,7 +11763,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "HK->*",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-BT-03",
@@ -11575,7 +11780,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "HK->*"
+     "route": "HK->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-RW-01",
@@ -11591,7 +11797,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "HK->*"
+     "route": "HK->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-AL-01",
@@ -11607,7 +11814,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "HK->*"
+     "route": "HK->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-AL-02",
@@ -11623,7 +11831,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "HK->*"
+     "route": "HK->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-TB-01",
@@ -11639,7 +11848,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "HK->*"
+     "route": "HK->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-TB-02",
@@ -11655,7 +11865,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "HK->*"
+     "route": "HK->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-EC-01",
@@ -11672,7 +11883,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "HK->*",
-     "applies_domestic": true
+     "applies_domestic": true,
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-RX-01",
@@ -11688,7 +11900,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "HK->*"
+     "route": "HK->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-RX-02",
@@ -11704,7 +11917,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "HK->*"
+     "route": "HK->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-RX-03",
@@ -11721,7 +11935,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "HK->*",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-RX-04",
@@ -11737,7 +11952,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "HK->*"
+     "route": "HK->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-JW-01",
@@ -11753,7 +11969,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "HK->*"
+     "route": "HK->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-JW-02",
@@ -11769,7 +11986,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "HK->*"
+     "route": "HK->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-CU-01",
@@ -11785,7 +12003,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "HK->*"
+     "route": "HK->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-CR-01",
@@ -11801,7 +12020,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "HK->*"
+     "route": "HK->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-WP-01",
@@ -11817,7 +12037,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "HK->*"
+     "route": "HK->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-WP-02",
@@ -11833,7 +12054,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "HK->*"
+     "route": "HK->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "HK-EX-CF-01",
@@ -11869,7 +12091,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "AU->*"
+     "route": "AU->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-GEN-02",
@@ -11886,7 +12109,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "AU->*",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-GEN-03",
@@ -11902,7 +12126,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "AU->*"
+     "route": "AU->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-GEN-04",
@@ -11919,7 +12144,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "AU->*",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-LA-01",
@@ -11935,7 +12161,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "AU->*"
+     "route": "AU->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-LA-02",
@@ -11951,7 +12178,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "AU->*"
+     "route": "AU->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-LA-03",
@@ -11967,7 +12195,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "AU->*"
+     "route": "AU->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-LA-04",
@@ -11983,7 +12212,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "AU->*"
+     "route": "AU->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-PS-01",
@@ -11999,7 +12229,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "AU->*"
+     "route": "AU->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-PS-02",
@@ -12015,7 +12246,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "AU->*"
+     "route": "AU->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-FD-01",
@@ -12031,7 +12263,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "AU->*"
+     "route": "AU->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-FD-02",
@@ -12047,7 +12280,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "AU->*"
+     "route": "AU->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-FD-03",
@@ -12063,7 +12297,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "AU->*"
+     "route": "AU->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-CO-01",
@@ -12079,7 +12314,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "AU->CN"
+     "route": "AU->CN",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-BT-01",
@@ -12096,7 +12332,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "AU->*",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-BT-02",
@@ -12113,7 +12350,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "AU->*",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-RW-01",
@@ -12129,7 +12367,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "AU->*"
+     "route": "AU->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-AL-01",
@@ -12145,7 +12384,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "AU->*"
+     "route": "AU->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-RX-01",
@@ -12161,7 +12401,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "AU->*"
+     "route": "AU->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-RX-02",
@@ -12177,7 +12418,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "AU->*"
+     "route": "AU->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-MD-01",
@@ -12193,7 +12435,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "AU->*"
+     "route": "AU->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-JW-01",
@@ -12209,7 +12452,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "AU->*"
+     "route": "AU->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-CU-01",
@@ -12225,7 +12469,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "AU->*"
+     "route": "AU->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-CR-01",
@@ -12241,7 +12486,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "AU->*"
+     "route": "AU->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-WP-01",
@@ -12257,7 +12503,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "AU->*"
+     "route": "AU->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-WP-02",
@@ -12274,7 +12521,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "AU->*",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-CF-01",
@@ -12290,7 +12538,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "AU->*"
+     "route": "AU->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "AU-EX-CF-02",
@@ -12306,7 +12555,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "AU->*"
+     "route": "AU->*",
+     "page_date_status": "not_shown"
     }
    ]
   },
@@ -12374,7 +12624,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "GB->*"
+     "route": "GB->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GB-EX-BH-01",
@@ -12391,7 +12642,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "GB->*",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GB-EX-LA-01",
@@ -12471,7 +12723,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "GB->*"
+     "route": "GB->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GB-EX-RX-02",
@@ -12583,7 +12836,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "GB->*"
+     "route": "GB->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GB-EX-CU-01",
@@ -12615,7 +12869,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "GB->*"
+     "route": "GB->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GB-EX-CR-02",
@@ -12663,7 +12918,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "GB->*"
+     "route": "GB->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GA-GB-EX-AL-01",
@@ -12887,7 +13143,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "DE->*"
+     "route": "DE->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-EX-GEN-02",
@@ -12903,7 +13160,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "DE->*"
+     "route": "DE->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-EX-GEN-03",
@@ -12919,7 +13177,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "DE->*"
+     "route": "DE->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-EX-GEN-04",
@@ -12936,7 +13195,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "DE->*",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-EX-BH-01",
@@ -12953,7 +13213,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "DE->*",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-EX-CO-01",
@@ -12970,7 +13231,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "DE->*",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-EX-LA-01",
@@ -12986,7 +13248,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "DE->*"
+     "route": "DE->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-EX-RW-01",
@@ -13002,7 +13265,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "DE->*"
+     "route": "DE->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-EX-RX-01",
@@ -13018,7 +13282,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "DE->*"
+     "route": "DE->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-EX-JW-01",
@@ -13034,7 +13299,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "DE->*"
+     "route": "DE->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-EX-JW-02",
@@ -13051,7 +13317,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "subset",
      "route": "DE->*",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-EX-CU-01",
@@ -13068,7 +13335,8 @@
      "retrieved_at": "2026-11-02",
      "scope": "all",
      "route": "DE->*",
-     "channel": "post"
+     "channel": "post",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-EX-CU-02",
@@ -13084,7 +13352,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "DE->*"
+     "route": "DE->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-EX-CR-01",
@@ -13100,7 +13369,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "DE->*"
+     "route": "DE->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-EX-CR-02",
@@ -13116,7 +13386,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "DE->*"
+     "route": "DE->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-EX-WE-01",
@@ -13132,7 +13403,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "DE->*"
+     "route": "DE->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-EX-WE-02",
@@ -13148,7 +13420,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "subset",
-     "route": "DE->*"
+     "route": "DE->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "DE-EX-CF-01",
@@ -13164,7 +13437,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-02",
      "scope": "all",
-     "route": "DE->*"
+     "route": "DE->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GD-DE-EX-AL-01",
@@ -13180,7 +13454,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-03",
      "scope": "all",
-     "route": "DE->*"
+     "route": "DE->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GD-DE-EX-TO-01",
@@ -13196,7 +13471,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-03",
      "scope": "all",
-     "route": "DE->*"
+     "route": "DE->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GD-DE-EX-EC-01",
@@ -13212,7 +13488,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-03",
      "scope": "all",
-     "route": "DE->*"
+     "route": "DE->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GD-DE-EX-LA-01",
@@ -13228,7 +13505,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-03",
      "scope": "all",
-     "route": "DE->*"
+     "route": "DE->*",
+     "page_date_status": "not_shown"
     },
     {
      "id": "GD-DE-EX-PS-01",
@@ -13244,7 +13522,8 @@
      "page_date": null,
      "retrieved_at": "2026-11-03",
      "scope": "all",
-     "route": "DE->*"
+     "route": "DE->*",
+     "page_date_status": "not_shown"
     }
    ]
   }

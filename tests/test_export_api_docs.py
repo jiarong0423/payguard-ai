@@ -95,6 +95,37 @@ class ApiDocsTests(unittest.TestCase):
         for scheme in schemes.values():
             self.assertIn(scheme["name"], pre)
 
+    def test_every_example_is_valid_for_its_schema_and_privacy_safe(self):
+        try:
+            import jsonschema
+        except ImportError:
+            self.skipTest("jsonschema is not installed")
+        spec = load("openapi.json")
+
+        def resolve(node):
+            if isinstance(node, dict):
+                if "$ref" in node:
+                    return resolve(spec["components"]["schemas"][node["$ref"].rsplit("/", 1)[-1]])
+                return {k: resolve(v) for k, v in node.items()}
+            return [resolve(v) for v in node] if isinstance(node, list) else node
+        checked = 0
+        for path, methods in spec["paths"].items():
+            for method, operation in methods.items():
+                self.assertTrue(operation.get("requestBody", {"description": "x"}).get("description"), (method, path))
+                for parameter in operation.get("parameters", []):
+                    self.assertIn("example", parameter, (method, path, parameter["name"]))
+                    jsonschema.validate(parameter["example"], resolve(parameter["schema"]))
+                media = list(operation.get("requestBody", {}).get("content", {}).values())
+                media += [m for r in operation["responses"].values() for m in r.get("content", {}).values()]
+                for item in media:
+                    if "example" in item and item.get("schema"):
+                        jsonschema.Draft202012Validator(resolve(item["schema"])).validate(item["example"])
+                        text = json.dumps(item["example"])
+                        self.assertNotRegex(text, r"[0-9a-fA-F]{32,}")
+                        self.assertNotIn("@", text)
+                        checked += 1
+        self.assertGreater(checked, 150)
+
     def test_the_collection_carries_no_credentials(self):
         collection = (ROOT / "docs" / "api" / "postman_collection.json").read_text(encoding="utf-8").lower()
         for word in ("authorization", "bearer", "client_secret", "api_key"):

@@ -9,6 +9,7 @@ Writes docs/api/openapi.json, docs/api/postman_collection.json and docs/api/post
 """
 import copy
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -148,6 +149,135 @@ def add_security(spec, app):
                 codes = {}
             for code, message in codes.items():
                 operation["responses"].setdefault(code, {"description": message, "content": {JSON: {"schema": {"$ref": "#/components/schemas/ErrorBody"}}}})
+
+
+# ---- Generated examples: filled only where no hand-written example exists, built from each schema's own constraints. ----
+_STRING_CANDIDATES = ("example", "case-ref-001", "PP-R-BNP-XXXX7173", "EXAMPLE", "example-0001", "2026-10-07T09:30:00Z", "2026-10-07", "42.50", "1", "USD", "US",
+                      "A", "AB1234", "Example-1", "example one", "ABC123")
+_UNBUILDABLE = []  # (schema path) entries where no valid example could be built; read by the test and the report
+
+
+def _resolve(schemas, node):
+    while isinstance(node, dict) and "$ref" in node:
+        node = schemas[node["$ref"].rsplit("/", 1)[-1]]
+    return node
+
+
+def _string_example(node):
+    if "enum" in node:
+        return node["enum"][0]
+    if "const" in node:
+        return node["const"]
+    formats = {"date-time": "2026-10-07T09:30:00Z", "date": "2026-10-07", "uri": "https://example.com/", "uuid": "00000000-0000-4000-8000-000000000001"}
+    if "format" in node:
+        if node["format"] not in formats:
+            raise ValueError("unsupported format")
+        return formats[node["format"]]
+    low, high = node.get("minLength", 0), node.get("maxLength")
+    pattern = re.compile(node["pattern"]) if "pattern" in node else None
+    for candidate in _STRING_CANDIDATES:
+        text = candidate
+        if len(text) < low:
+            text = (text + "x" * low)[:max(low, 1)]
+        if high is not None and len(text) > high:
+            text = text[:high]
+        if len(text) < low or (pattern is not None and pattern.search(text) is None):
+            continue
+        if re.search(r"[0-9a-fA-F]{32,}", text):
+            continue
+        return text
+    raise ValueError("no string example")
+
+
+def build_example(schemas, node, depth=0):
+    """A minimal valid value for a JSON schema: required fields only, first enum value, no emails, no long hex. Raises ValueError if none can be built."""
+    if depth > 6:
+        raise ValueError("too deep")
+    node = _resolve(schemas, node)
+    if not isinstance(node, dict) or not node:
+        raise ValueError("no schema")
+    if "const" in node:
+        return node["const"]
+    if "enum" in node:
+        return node["enum"][0]
+    for key in ("allOf", "oneOf", "anyOf"):
+        if key in node:
+            options = [_resolve(schemas, option) for option in node[key]]
+            for option in options:
+                if option.get("type") != "null":
+                    try:
+                        return build_example(schemas, option, depth + 1)
+                    except ValueError:
+                        if not any(o.get("type") == "null" for o in options):
+                            raise
+            if any(o.get("type") == "null" for o in options):
+                return None
+    kind = node.get("type")
+    if isinstance(kind, list):
+        kind = next((k for k in kind if k != "null"), None)
+    if kind == "string":
+        return _string_example(node)
+    if kind == "boolean":
+        return False
+    if kind in ("integer", "number"):
+        value = node.get("minimum", 1 if kind == "integer" else 0.5)
+        if "maximum" in node and value > node["maximum"]:
+            value = node["maximum"]
+        return int(value) if kind == "integer" else value
+    if kind == "array":
+        count = max(node.get("minItems", 0), 1) if "items" in node else node.get("minItems", 0)
+        count = min(count, node.get("maxItems", count))
+        return [build_example(schemas, node["items"], depth + 1) for _ in range(count)]
+    if kind == "object" or "properties" in node:
+        return {name: build_example(schemas, node["properties"][name], depth + 1) for name in node.get("required", [])}
+    raise ValueError("unsupported schema")
+
+
+def _structured_errors(spec):
+    from app.main import _MESSAGES
+    return {"401": {"error": {"code": "session_required", "message": _MESSAGES[401]}},
+            "403": {"error": {"code": "csrf_rejected", "message": _MESSAGES[403]}},
+            "429": {"error": {"code": "rate_limited", "message": _MESSAGES[429]}}}
+
+
+def fill_details(spec):
+    """Request-body descriptions, parameter examples and media-type examples for everything the hand-written EXAMPLES left open."""
+    schemas = spec["components"]["schemas"]
+    errors = _structured_errors(spec)
+    del _UNBUILDABLE[:]
+    for path, methods in sorted(spec["paths"].items()):
+        for method, operation in sorted(methods.items()):
+            label = "%s %s" % (method.upper(), path)
+            body = operation.get("requestBody")
+            if body is not None:
+                body.setdefault("description", "JSON body for: %s." % operation["summary"].rstrip("."))
+                body.setdefault("required", True)
+                for media in body["content"].values():
+                    if "example" not in media and "examples" not in media:
+                        try:
+                            media["example"] = build_example(schemas, media.get("schema", {}))
+                        except ValueError:
+                            _UNBUILDABLE.append(label + " request")
+            for parameter in operation.get("parameters", []):
+                if "example" not in parameter:
+                    if parameter.get("name") == "case_ref":
+                        parameter["example"] = "case-ref-001"
+                    else:
+                        try:
+                            parameter["example"] = build_example(schemas, parameter.get("schema", {}))
+                        except ValueError:
+                            _UNBUILDABLE.append(label + " parameter " + str(parameter.get("name")))
+            for code, response in sorted(operation.get("responses", {}).items()):
+                for media in response.get("content", {}).values():
+                    if "example" in media or "examples" in media:
+                        continue
+                    if code in errors:
+                        media["example"] = copy.deepcopy(errors[code])
+                        continue
+                    try:
+                        media["example"] = build_example(schemas, media.get("schema", {}))
+                    except ValueError:
+                        _UNBUILDABLE.append("%s response %s" % (label, code))
 
 
 SESSION_PATH = "/api/v1/demo/sessions"
@@ -412,6 +542,7 @@ def build():
     describe(spec)
     add_examples(spec)
     add_security(spec, app)
+    fill_details(spec)
     items = [full_item(path, method, operation) for path in sorted(spec["paths"]) for method, operation in sorted(spec["paths"][path].items())]
     items.sort(key=lambda item: item["name"] != "POST " + SESSION_PATH)  # stable: the session request first, the rest in path order
     usage = ("A collection-level pre-request script adds the Origin header and the X-Demo-Session / X-CSRF-Token headers; the first "

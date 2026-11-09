@@ -118,6 +118,7 @@ EXACT_FILES = (
     "data/eval/second_rater_labels_v1_v2.json",
     "data/eval/PREREGISTRATION_v2.md",
     "docs/evidence/CHECKLIST_ANSWER_KEY_EVAL.md",
+    "docs/evidence/COUNTRY_RULES_AUDIT_20261109.md",
     "docs/evidence/HOW_NUMBERS_WERE_COUNTED.md",
     "docs/evidence/REAL_CASES_PUBLIC_20261108.md",
     "docs/evidence/RED_TEAM_ROUNDS_ADDENDUM_20261108.md",

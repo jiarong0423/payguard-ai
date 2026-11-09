@@ -7210,11 +7210,19 @@
     "requestBody": {
      "content": {
       "application/json": {
+       "example": {
+        "as_of": "examplexxxxxxxxxxxxx",
+        "candidate_json": "example",
+        "jurisdiction": "US",
+        "observation_max_age_days": 0,
+        "theme": "source_compliance"
+       },
        "schema": {
         "$ref": "#/components/schemas/AdvisoryRequest"
        }
       }
      },
+     "description": "JSON body for: Advisory Evaluate.",
      "required": true
     },
     "responses": {
@@ -7231,6 +7239,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7241,6 +7255,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7267,6 +7287,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7294,11 +7320,15 @@
     "requestBody": {
      "content": {
       "application/json": {
+       "example": {
+        "stage": "source_compliance"
+       },
        "schema": {
         "$ref": "#/components/schemas/AiBriefHttpRequest"
        }
       }
      },
+     "description": "JSON body for: Evidence Brief.",
      "required": true
     },
     "responses": {
@@ -7315,6 +7345,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7325,6 +7361,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7351,6 +7393,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7395,6 +7443,19 @@
      "200": {
       "content": {
        "application/json": {
+        "example": {
+         "cost_note": "example",
+         "entries": [
+          {
+           "at": "example",
+           "latency_ms": 0,
+           "outcome": "ok",
+           "stage": "source_compliance"
+          }
+         ],
+         "price_table_source": "example",
+         "source": "session_memory"
+        },
         "schema": {
          "$ref": "#/components/schemas/AiUsageResponse"
         }
@@ -7405,6 +7466,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7415,6 +7482,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7446,6 +7519,7 @@
        }
       }
      },
+     "description": "JSON body for: Acknowledge Aup.",
      "required": true
     },
     "responses": {
@@ -7462,6 +7536,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7472,6 +7552,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7498,6 +7584,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7525,17 +7617,32 @@
     "requestBody": {
      "content": {
       "application/json": {
+       "example": {
+        "description": "example",
+        "evaluation_id": "examplexxxxxxxxxxxxxxxxxxxxxxxxx"
+       },
        "schema": {
         "$ref": "#/components/schemas/AupCategorySignalRequest"
        }
       }
      },
+     "description": "JSON body for: Aup Category Signal.",
      "required": true
     },
     "responses": {
      "200": {
       "content": {
        "application/json": {
+        "example": {
+         "affects_decision": false,
+         "reason": "nothing_to_send",
+         "signal": {
+          "category": "example",
+          "confidence": "HIGH",
+          "source": "channel3"
+         },
+         "status": "OFF"
+        },
         "schema": {
          "$ref": "#/components/schemas/AupCategorySignalResponse"
         }
@@ -7546,6 +7653,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7556,6 +7669,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7582,6 +7701,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7609,17 +7734,44 @@
     "requestBody": {
      "content": {
       "application/json": {
+       "example": {
+        "description": "example",
+        "evaluation_id": "examplexxxxxxxxxxxxxxxxxxxxxxxxx"
+       },
        "schema": {
         "$ref": "#/components/schemas/ProductReferenceRequest"
        }
       }
      },
+     "description": "JSON body for: Aup Product Reference.",
      "required": true
     },
     "responses": {
      "200": {
       "content": {
        "application/json": {
+        "example": {
+         "affects_decision": false,
+         "cards": [
+          {
+           "brand": "example",
+           "category": "example",
+           "image_url": null,
+           "key_features": [
+            "example"
+           ],
+           "materials": [
+            "example"
+           ],
+           "product_id": "example",
+           "title": "example"
+          }
+         ],
+         "reason": "nothing_to_send",
+         "recorded_at": "2026-10-07T09:30:00Z",
+         "source": "channel3_live",
+         "status": "OFF"
+        },
         "schema": {
          "$ref": "#/components/schemas/ProductReferenceResponse"
         }
@@ -7630,6 +7782,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7640,6 +7798,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7666,6 +7830,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7693,11 +7863,17 @@
     "requestBody": {
      "content": {
       "application/json": {
+       "example": {
+        "description": "example",
+        "evaluation_id": "examplexxxxxxxxxxxxxxxxxxxxxxxxx",
+        "product_id": "example"
+       },
        "schema": {
         "$ref": "#/components/schemas/ProductConfirmRequest"
        }
       }
      },
+     "description": "JSON body for: Aup Product Confirm.",
      "required": true
     },
     "responses": {
@@ -7714,6 +7890,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7724,6 +7906,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7750,6 +7938,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7785,6 +7979,7 @@
        }
       }
      },
+     "description": "JSON body for: Aup.",
      "required": true
     },
     "responses": {
@@ -7801,6 +7996,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7811,6 +8012,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7837,6 +8044,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7872,12 +8085,37 @@
        }
       }
      },
+     "description": "JSON body for: Case Route.",
      "required": true
     },
     "responses": {
      "200": {
       "content": {
        "application/json": {
+        "example": {
+         "affects_decision": false,
+         "decided_by": "code",
+         "filtered_out": 0,
+         "items": [
+          "example"
+         ],
+         "matched_word": "example",
+         "matches": [
+          {
+           "category": "example",
+           "exact_words": [
+            "example"
+           ],
+           "match_type": "exact",
+           "product_id": "example",
+           "score": 0.0,
+           "title": "example"
+          }
+         ],
+         "query": "example",
+         "reason": "catalogue_match",
+         "route": "physical"
+        },
         "schema": {
          "$ref": "#/components/schemas/CaseRouteResponse"
         }
@@ -7888,6 +8126,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7898,6 +8142,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7924,6 +8174,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7966,6 +8222,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -7976,6 +8238,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8016,6 +8284,7 @@
        }
       }
      },
+     "description": "JSON body for: Country Rules Check.",
      "required": true
     },
     "responses": {
@@ -8030,6 +8299,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8040,6 +8315,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8066,6 +8347,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8102,6 +8389,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8112,6 +8405,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8138,11 +8437,15 @@
     "requestBody": {
      "content": {
       "application/json": {
+       "example": {
+        "query": "example"
+       },
        "schema": {
         "$ref": "#/components/schemas/CountryRulesSearchRequest"
        }
       }
      },
+     "description": "JSON body for: Country Rules Search.",
      "required": true
     },
     "responses": {
@@ -8157,6 +8460,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8167,6 +8476,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8193,6 +8508,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8228,12 +8549,79 @@
        }
       }
      },
+     "description": "JSON body for: Inject.",
      "required": true
     },
     "responses": {
      "200": {
       "content": {
        "application/json": {
+        "example": {
+         "activity": [
+          {
+           "at": "example",
+           "id": "example",
+           "kind": "example",
+           "label": "example",
+           "source": "synthetic"
+          }
+         ],
+         "disputes": [
+          {
+           "case_ref": "example",
+           "dispute_amount": {
+            "currency_code": "USD",
+            "value": "42.50"
+           },
+           "opened_at": "example",
+           "order_ref": "example",
+           "reason": "example",
+           "seller_response_due_date": "example",
+           "status": "needs_review"
+          }
+         ],
+         "expires_at": "example",
+         "policy_version": "example",
+         "scenario": {
+          "burst": false,
+          "dispute": false
+         },
+         "session_id": "example",
+         "source": "synthetic",
+         "transactions": [
+          {
+           "amount": "example",
+           "currency": "example",
+           "occurred_at": "example",
+           "order_id": "example"
+          }
+         ],
+         "velocity": {
+          "advisory_only": true,
+          "alert": false,
+          "baseline_amount_per_hour": "example",
+          "baseline_provenance": "SYNTHETIC_BASELINE",
+          "baseline_window_end": "example",
+          "baseline_window_start": "example",
+          "currency": "example",
+          "current_amount_per_hour": "example",
+          "excluded_future_count": 1,
+          "excluded_past_count": 1,
+          "limitations": [
+           "example"
+          ],
+          "policy_version": "example",
+          "ratio": "example",
+          "status": "normal",
+          "threshold": "example",
+          "total_amount": "example",
+          "transaction_count": 1,
+          "window_boundary": "left_open_right_closed",
+          "window_end": "example",
+          "window_hours": 1,
+          "window_start": "example"
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/StateResponse"
         }
@@ -8244,6 +8632,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8254,6 +8648,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8280,6 +8680,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8307,11 +8713,13 @@
     "requestBody": {
      "content": {
       "application/json": {
+       "example": {},
        "schema": {
         "$ref": "#/components/schemas/EmptyRequest"
        }
       }
      },
+     "description": "JSON body for: New Session.",
      "required": true
     },
     "responses": {
@@ -8334,6 +8742,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8360,6 +8774,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8383,6 +8803,72 @@
      "200": {
       "content": {
        "application/json": {
+        "example": {
+         "activity": [
+          {
+           "at": "example",
+           "id": "example",
+           "kind": "example",
+           "label": "example",
+           "source": "synthetic"
+          }
+         ],
+         "disputes": [
+          {
+           "case_ref": "example",
+           "dispute_amount": {
+            "currency_code": "USD",
+            "value": "42.50"
+           },
+           "opened_at": "example",
+           "order_ref": "example",
+           "reason": "example",
+           "seller_response_due_date": "example",
+           "status": "needs_review"
+          }
+         ],
+         "expires_at": "example",
+         "policy_version": "example",
+         "scenario": {
+          "burst": false,
+          "dispute": false
+         },
+         "session_id": "example",
+         "source": "synthetic",
+         "transactions": [
+          {
+           "amount": "example",
+           "currency": "example",
+           "occurred_at": "example",
+           "order_id": "example"
+          }
+         ],
+         "velocity": {
+          "advisory_only": true,
+          "alert": false,
+          "baseline_amount_per_hour": "example",
+          "baseline_provenance": "SYNTHETIC_BASELINE",
+          "baseline_window_end": "example",
+          "baseline_window_start": "example",
+          "currency": "example",
+          "current_amount_per_hour": "example",
+          "excluded_future_count": 1,
+          "excluded_past_count": 1,
+          "limitations": [
+           "example"
+          ],
+          "policy_version": "example",
+          "ratio": "example",
+          "status": "normal",
+          "threshold": "example",
+          "total_amount": "example",
+          "transaction_count": 1,
+          "window_boundary": "left_open_right_closed",
+          "window_end": "example",
+          "window_hours": 1,
+          "window_start": "example"
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/StateResponse"
         }
@@ -8393,6 +8879,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8403,6 +8895,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8429,6 +8927,7 @@
     "parameters": [
      {
       "description": "Case ref.",
+      "example": "case-ref-001",
       "in": "path",
       "name": "case_ref",
       "required": true,
@@ -8445,12 +8944,25 @@
        }
       }
      },
+     "description": "JSON body for: Approve.",
      "required": true
     },
     "responses": {
      "200": {
       "content": {
        "application/json": {
+        "example": {
+         "action": "review_draft",
+         "authenticated_actor": false,
+         "case_ref": "example",
+         "durable_approval": false,
+         "external_submission": "FROZEN",
+         "retention": "SESSION_MEMORY_ONLY",
+         "reviewed_at": "2026-10-07T09:30:00Z",
+         "reviewer": "DEMO_OPERATOR_UNAUTHENTICATED",
+         "source": "synthetic",
+         "status": "local_draft_reviewed"
+        },
         "schema": {
          "$ref": "#/components/schemas/DisputeApprovalResponse"
         }
@@ -8461,6 +8973,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8471,6 +8989,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8497,6 +9021,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8524,6 +9054,7 @@
     "parameters": [
      {
       "description": "Case ref.",
+      "example": "case-ref-001",
       "in": "path",
       "name": "case_ref",
       "required": true,
@@ -8535,11 +9066,13 @@
     "requestBody": {
      "content": {
       "application/json": {
+       "example": {},
        "schema": {
         "$ref": "#/components/schemas/EmptyRequest"
        }
       }
      },
+     "description": "JSON body for: Draft.",
      "required": true
     },
     "responses": {
@@ -8556,6 +9089,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8566,6 +9105,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8592,6 +9137,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8619,17 +9170,111 @@
     "requestBody": {
      "content": {
       "application/json": {
+       "example": {},
        "schema": {
         "$ref": "#/components/schemas/GuideFormRequest"
        }
       }
      },
+     "description": "JSON body for: Guide Form.",
      "required": true
     },
     "responses": {
      "200": {
       "content": {
        "application/json": {
+        "example": {
+         "advisory_only": true,
+         "analysis": {
+          "reason": "budget",
+          "status": "analysing",
+          "turn": 1
+         },
+         "asked": [
+          "example"
+         ],
+         "auto_confirmed": [
+          "example"
+         ],
+         "chooser_mode": "keyword",
+         "deferred": [
+          "example"
+         ],
+         "flow_name": "example",
+         "form_result": {
+          "item": "example",
+          "valid": false
+         },
+         "form_results": [
+          {
+           "deferred": false,
+           "item": "example",
+           "valid": false
+          }
+         ],
+         "gap": {
+          "conflicting": [
+           "example"
+          ],
+          "missing": [
+           "example"
+          ],
+          "partial": [
+           "example"
+          ],
+          "present": [
+           "example"
+          ]
+         },
+         "goods_type": "physical",
+         "items": [
+          {
+           "chunk": "example",
+           "form": null,
+           "id": "example",
+           "label": "example",
+           "source": "OFFICIAL",
+           "status": "STRUCTURALLY_PRESENT"
+          }
+         ],
+         "model_requested": false,
+         "model_text_shown": false,
+         "prefill": {},
+         "reply": {
+          "chooser": "none",
+          "dropped": [
+           {
+            "item": "example",
+            "reason": "other_party"
+           }
+          ],
+          "fallback_reason": "budget",
+          "state_changed": false,
+          "template": "OPEN",
+          "text": "example"
+         },
+         "review": [
+          {
+           "item": "example",
+           "source": "words",
+           "value": "example"
+          }
+         ],
+         "rounds_used": 1,
+         "scenario": "preflight",
+         "schema_version": 1,
+         "stage": "funnel",
+         "started": false,
+         "subtraction": {
+          "left": 1,
+          "needed": 1,
+          "taken": 1,
+          "text": "example"
+         },
+         "turns_limit": 1,
+         "turns_used": 1,
+         "values_stored": false
+        },
         "schema": {
          "$ref": "#/components/schemas/GuideStateResponse"
         }
@@ -8640,6 +9285,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8650,6 +9301,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8676,6 +9333,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8703,17 +9366,111 @@
     "requestBody": {
      "content": {
       "application/json": {
+       "example": {},
        "schema": {
         "$ref": "#/components/schemas/GuideReviewRequest"
        }
       }
      },
+     "description": "JSON body for: Guide Review.",
      "required": true
     },
     "responses": {
      "200": {
       "content": {
        "application/json": {
+        "example": {
+         "advisory_only": true,
+         "analysis": {
+          "reason": "budget",
+          "status": "analysing",
+          "turn": 1
+         },
+         "asked": [
+          "example"
+         ],
+         "auto_confirmed": [
+          "example"
+         ],
+         "chooser_mode": "keyword",
+         "deferred": [
+          "example"
+         ],
+         "flow_name": "example",
+         "form_result": {
+          "item": "example",
+          "valid": false
+         },
+         "form_results": [
+          {
+           "deferred": false,
+           "item": "example",
+           "valid": false
+          }
+         ],
+         "gap": {
+          "conflicting": [
+           "example"
+          ],
+          "missing": [
+           "example"
+          ],
+          "partial": [
+           "example"
+          ],
+          "present": [
+           "example"
+          ]
+         },
+         "goods_type": "physical",
+         "items": [
+          {
+           "chunk": "example",
+           "form": null,
+           "id": "example",
+           "label": "example",
+           "source": "OFFICIAL",
+           "status": "STRUCTURALLY_PRESENT"
+          }
+         ],
+         "model_requested": false,
+         "model_text_shown": false,
+         "prefill": {},
+         "reply": {
+          "chooser": "none",
+          "dropped": [
+           {
+            "item": "example",
+            "reason": "other_party"
+           }
+          ],
+          "fallback_reason": "budget",
+          "state_changed": false,
+          "template": "OPEN",
+          "text": "example"
+         },
+         "review": [
+          {
+           "item": "example",
+           "source": "words",
+           "value": "example"
+          }
+         ],
+         "rounds_used": 1,
+         "scenario": "preflight",
+         "schema_version": 1,
+         "stage": "funnel",
+         "started": false,
+         "subtraction": {
+          "left": 1,
+          "needed": 1,
+          "taken": 1,
+          "text": "example"
+         },
+         "turns_limit": 1,
+         "turns_used": 1,
+         "values_stored": false
+        },
         "schema": {
          "$ref": "#/components/schemas/GuideStateResponse"
         }
@@ -8724,6 +9481,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8734,6 +9497,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8760,6 +9529,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8787,17 +9562,113 @@
     "requestBody": {
      "content": {
       "application/json": {
+       "example": {
+        "scenario": "preflight"
+       },
        "schema": {
         "$ref": "#/components/schemas/GuideStartRequest"
        }
       }
      },
+     "description": "JSON body for: Guide Start.",
      "required": true
     },
     "responses": {
      "200": {
       "content": {
        "application/json": {
+        "example": {
+         "advisory_only": true,
+         "analysis": {
+          "reason": "budget",
+          "status": "analysing",
+          "turn": 1
+         },
+         "asked": [
+          "example"
+         ],
+         "auto_confirmed": [
+          "example"
+         ],
+         "chooser_mode": "keyword",
+         "deferred": [
+          "example"
+         ],
+         "flow_name": "example",
+         "form_result": {
+          "item": "example",
+          "valid": false
+         },
+         "form_results": [
+          {
+           "deferred": false,
+           "item": "example",
+           "valid": false
+          }
+         ],
+         "gap": {
+          "conflicting": [
+           "example"
+          ],
+          "missing": [
+           "example"
+          ],
+          "partial": [
+           "example"
+          ],
+          "present": [
+           "example"
+          ]
+         },
+         "goods_type": "physical",
+         "items": [
+          {
+           "chunk": "example",
+           "form": null,
+           "id": "example",
+           "label": "example",
+           "source": "OFFICIAL",
+           "status": "STRUCTURALLY_PRESENT"
+          }
+         ],
+         "model_requested": false,
+         "model_text_shown": false,
+         "prefill": {},
+         "reply": {
+          "chooser": "none",
+          "dropped": [
+           {
+            "item": "example",
+            "reason": "other_party"
+           }
+          ],
+          "fallback_reason": "budget",
+          "state_changed": false,
+          "template": "OPEN",
+          "text": "example"
+         },
+         "review": [
+          {
+           "item": "example",
+           "source": "words",
+           "value": "example"
+          }
+         ],
+         "rounds_used": 1,
+         "scenario": "preflight",
+         "schema_version": 1,
+         "stage": "funnel",
+         "started": false,
+         "subtraction": {
+          "left": 1,
+          "needed": 1,
+          "taken": 1,
+          "text": "example"
+         },
+         "turns_limit": 1,
+         "turns_used": 1,
+         "values_stored": false
+        },
         "schema": {
          "$ref": "#/components/schemas/GuideStateResponse"
         }
@@ -8808,6 +9679,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8818,6 +9695,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8844,6 +9727,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8871,6 +9760,7 @@
     "parameters": [
      {
       "description": "Scenario.",
+      "example": "preflight",
       "in": "query",
       "name": "scenario",
       "required": false,
@@ -8895,6 +9785,98 @@
      "200": {
       "content": {
        "application/json": {
+        "example": {
+         "advisory_only": true,
+         "analysis": {
+          "reason": "budget",
+          "status": "analysing",
+          "turn": 1
+         },
+         "asked": [
+          "example"
+         ],
+         "auto_confirmed": [
+          "example"
+         ],
+         "chooser_mode": "keyword",
+         "deferred": [
+          "example"
+         ],
+         "flow_name": "example",
+         "form_result": {
+          "item": "example",
+          "valid": false
+         },
+         "form_results": [
+          {
+           "deferred": false,
+           "item": "example",
+           "valid": false
+          }
+         ],
+         "gap": {
+          "conflicting": [
+           "example"
+          ],
+          "missing": [
+           "example"
+          ],
+          "partial": [
+           "example"
+          ],
+          "present": [
+           "example"
+          ]
+         },
+         "goods_type": "physical",
+         "items": [
+          {
+           "chunk": "example",
+           "form": null,
+           "id": "example",
+           "label": "example",
+           "source": "OFFICIAL",
+           "status": "STRUCTURALLY_PRESENT"
+          }
+         ],
+         "model_requested": false,
+         "model_text_shown": false,
+         "prefill": {},
+         "reply": {
+          "chooser": "none",
+          "dropped": [
+           {
+            "item": "example",
+            "reason": "other_party"
+           }
+          ],
+          "fallback_reason": "budget",
+          "state_changed": false,
+          "template": "OPEN",
+          "text": "example"
+         },
+         "review": [
+          {
+           "item": "example",
+           "source": "words",
+           "value": "example"
+          }
+         ],
+         "rounds_used": 1,
+         "scenario": "preflight",
+         "schema_version": 1,
+         "stage": "funnel",
+         "started": false,
+         "subtraction": {
+          "left": 1,
+          "needed": 1,
+          "taken": 1,
+          "text": "example"
+         },
+         "turns_limit": 1,
+         "turns_used": 1,
+         "values_stored": false
+        },
         "schema": {
          "$ref": "#/components/schemas/GuideStateResponse"
         }
@@ -8905,6 +9887,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8931,6 +9919,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8957,17 +9951,113 @@
     "requestBody": {
      "content": {
       "application/json": {
+       "example": {
+        "text": "example"
+       },
        "schema": {
         "$ref": "#/components/schemas/GuideTurnRequest"
        }
       }
      },
+     "description": "JSON body for: Guide Turn.",
      "required": true
     },
     "responses": {
      "200": {
       "content": {
        "application/json": {
+        "example": {
+         "advisory_only": true,
+         "analysis": {
+          "reason": "budget",
+          "status": "analysing",
+          "turn": 1
+         },
+         "asked": [
+          "example"
+         ],
+         "auto_confirmed": [
+          "example"
+         ],
+         "chooser_mode": "keyword",
+         "deferred": [
+          "example"
+         ],
+         "flow_name": "example",
+         "form_result": {
+          "item": "example",
+          "valid": false
+         },
+         "form_results": [
+          {
+           "deferred": false,
+           "item": "example",
+           "valid": false
+          }
+         ],
+         "gap": {
+          "conflicting": [
+           "example"
+          ],
+          "missing": [
+           "example"
+          ],
+          "partial": [
+           "example"
+          ],
+          "present": [
+           "example"
+          ]
+         },
+         "goods_type": "physical",
+         "items": [
+          {
+           "chunk": "example",
+           "form": null,
+           "id": "example",
+           "label": "example",
+           "source": "OFFICIAL",
+           "status": "STRUCTURALLY_PRESENT"
+          }
+         ],
+         "model_requested": false,
+         "model_text_shown": false,
+         "prefill": {},
+         "reply": {
+          "chooser": "none",
+          "dropped": [
+           {
+            "item": "example",
+            "reason": "other_party"
+           }
+          ],
+          "fallback_reason": "budget",
+          "state_changed": false,
+          "template": "OPEN",
+          "text": "example"
+         },
+         "review": [
+          {
+           "item": "example",
+           "source": "words",
+           "value": "example"
+          }
+         ],
+         "rounds_used": 1,
+         "scenario": "preflight",
+         "schema_version": 1,
+         "stage": "funnel",
+         "started": false,
+         "subtraction": {
+          "left": 1,
+          "needed": 1,
+          "taken": 1,
+          "text": "example"
+         },
+         "turns_limit": 1,
+         "turns_used": 1,
+         "values_stored": false
+        },
         "schema": {
          "$ref": "#/components/schemas/GuideStateResponse"
         }
@@ -8978,6 +10068,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -8988,6 +10084,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9014,6 +10116,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9058,6 +10166,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9068,6 +10182,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9090,17 +10210,39 @@
     "requestBody": {
      "content": {
       "application/json": {
+       "example": {},
        "schema": {
         "$ref": "#/components/schemas/EmptyRequest"
        }
       }
      },
+     "description": "JSON body for: Connect.",
      "required": true
     },
     "responses": {
      "200": {
       "content": {
        "application/json": {
+        "example": {
+         "configured": false,
+         "environment": "sandbox",
+         "evidence_receipt": {
+          "action": "OAUTH_CONNECT",
+          "environment": "sandbox",
+          "evidence_class": "AUTHENTIC_SANDBOX_RESPONSE",
+          "external_send": "FROZEN",
+          "invoice_id": null,
+          "observed_at": "examplexxxxxxxxxxxxx",
+          "paypal_debug_id": "example",
+          "proof_kind": "POST_RESPONSE_ONLY",
+          "schema_version": 1,
+          "separate_get_readback": false,
+          "status": "CONNECTED"
+         },
+         "last_verified_at": "example",
+         "source": "paypal_sandbox",
+         "status": "not_configured"
+        },
         "schema": {
          "$ref": "#/components/schemas/PaypalStatusResponse"
         }
@@ -9111,6 +10253,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9121,6 +10269,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9147,6 +10301,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9227,6 +10387,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9237,6 +10403,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9263,11 +10435,16 @@
     "requestBody": {
      "content": {
       "application/json": {
+       "example": {
+        "case_ref": "case-ref-001",
+        "dispute_id": "PP-R-BNP-XXXX7173"
+       },
        "schema": {
         "$ref": "#/components/schemas/AddTrackingRequest"
        }
       }
      },
+     "description": "JSON body for: Add Tracking.",
      "required": true
     },
     "responses": {
@@ -9284,6 +10461,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9294,6 +10477,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9320,6 +10509,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9373,6 +10568,7 @@
        }
       }
      },
+     "description": "JSON body for: Provide Evidence.",
      "required": true
     },
     "responses": {
@@ -9389,6 +10585,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9399,6 +10601,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9425,6 +10633,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9532,6 +10746,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9558,6 +10778,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9589,6 +10815,7 @@
        }
       }
      },
+     "description": "JSON body for: Invoice Draft.",
      "required": true
     },
     "responses": {
@@ -9605,6 +10832,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9615,6 +10848,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9641,6 +10880,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9684,17 +10929,37 @@
     "requestBody": {
      "content": {
       "application/json": {
+       "example": {
+        "amount": "42.50",
+        "confirm_sandbox_draft": false,
+        "currency": "USD",
+        "description": "example"
+       },
        "schema": {
         "$ref": "#/components/schemas/InvoiceReviewRequest"
        }
       }
      },
+     "description": "JSON body for: Invoice Review.",
      "required": true
     },
     "responses": {
      "200": {
       "content": {
        "application/json": {
+        "example": {
+         "action": "create_sandbox_invoice_draft",
+         "advisory_only": true,
+         "authenticated_actor": false,
+         "expires_at": "example",
+         "limitations": [
+          "example"
+         ],
+         "payload_digest": "example",
+         "policy_status": "manual_review",
+         "review_token": "example",
+         "source": "synthetic"
+        },
         "schema": {
          "$ref": "#/components/schemas/InvoiceReviewResponse"
         }
@@ -9705,6 +10970,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9715,6 +10986,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9741,6 +11018,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9787,6 +11070,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9797,6 +11086,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9824,6 +11119,19 @@
      "200": {
       "content": {
        "application/json": {
+        "example": {
+         "event": {
+          "event_type": "example",
+          "id": "example",
+          "resource_id": "example",
+          "resource_status": "example",
+          "resource_type": "example"
+         },
+         "imported_into_demo": false,
+         "paypal_debug_id": "example",
+         "source": "paypal_sandbox",
+         "verification_status": "SUCCESS"
+        },
         "schema": {
          "$ref": "#/components/schemas/WebhookVerifyResponse"
         }
@@ -9834,6 +11142,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9844,6 +11158,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9854,6 +11174,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9908,6 +11234,7 @@
        }
       }
      },
+     "description": "JSON body for: Policy Assess.",
      "required": true
     },
     "responses": {
@@ -9924,6 +11251,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9934,6 +11267,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9960,6 +11299,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -9987,11 +11332,17 @@
     "requestBody": {
      "content": {
       "application/json": {
+       "example": {
+        "jurisdiction": "US",
+        "query": "example",
+        "theme": "source_compliance"
+       },
        "schema": {
         "$ref": "#/components/schemas/ReferenceRequest"
        }
       }
      },
+     "description": "JSON body for: References.",
      "required": true
     },
     "responses": {
@@ -10008,6 +11359,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -10018,6 +11375,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -10044,6 +11407,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -10080,6 +11449,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -10090,6 +11465,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -10116,12 +11497,14 @@
     "requestBody": {
      "content": {
       "application/json": {
+       "example": {},
        "schema": {
         "additionalProperties": true,
         "type": "object"
        }
       }
      },
+     "description": "JSON body for: Studio Agent Turn.",
      "required": true
     },
     "responses": {
@@ -10136,6 +11519,12 @@
      "401": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "session_required",
+          "message": "A valid demo session is required."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -10146,6 +11535,12 @@
      "403": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "csrf_rejected",
+          "message": "The request failed a local security boundary."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }
@@ -10172,6 +11567,12 @@
      "429": {
       "content": {
        "application/json": {
+        "example": {
+         "error": {
+          "code": "rate_limited",
+          "message": "The local request or sample limit was reached."
+         }
+        },
         "schema": {
          "$ref": "#/components/schemas/ErrorBody"
         }

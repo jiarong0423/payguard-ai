@@ -21,7 +21,7 @@ from pathlib import Path
 import re
 
 PACK_PATH = Path(__file__).resolve().parents[2] / "data" / "country_rules" / "paypal_country_rules_v1.json"
-PACK_SHA256 = "48175ca8221202ff5452c8c4b9b96c6bdae15e056f51b0f1d0eb2bd54b8b4a8c"
+PACK_SHA256 = "d9a42d5850770cb7ae4f7a9b22f52eda1326ad13cb5ea99fd6b87912939bf846"
 SCHEMA = "payguard.country_rules.v1"
 ACCOUNT_TYPES = ("personal", "business")
 ACCOUNT_OPENED = ("unknown", "before_cutoff", "after_cutoff")
