@@ -26,7 +26,7 @@ The file set is the public candidate: every path in `public_export_manifest.json
 | Python tests | 1,134 (9 carry a skip marker at load time; how many are skipped when run depends on the environment: 2 in the run recorded in `TEST_RUN_20261109_SKIPPED.md`) | `unittest` discovery over `tests/`, loaded and counted, not run |
 | Red-team requests | 1,727 | run-time only, see below |
 | Words in documents | 90,211 (page says about 90,211; the script allows 1% either way) | see below |
-| Evidence files | 41 | files directly in `docs/evidence/` (35 `.md`, 6 `.json`) |
+| Evidence files | 42 | files directly in `docs/evidence/` (35 `.md`, 6 `.json`, 1 `.csv`) |
 | Diagrams and images | 38 | every `*.png` and `*.svg` in the file set: 32 under `docs/`, 6 application icons under `frontend/public/icons`; `.mmd` sources are not counted |
 | PayPal clauses | 140 | `len(snippets)` in `data/country_rules/paypal_country_rules_v1.json` |
 | Export / import rules | 313 / 368 = 681 | sum of `len(rules)` over `export_rules[country]` and `import_rules[country]`, ten countries |

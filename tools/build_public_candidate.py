@@ -99,6 +99,7 @@ EXACT_FILES = (
     "docs/evidence/channel3_receipts_v1.json",
     "docs/evidence/channel3_receipts_20261109.json",
     "docs/evidence/channel3_category_receipts_20261109.json",
+    "docs/evidence/channel3_category_aup_hints_20261109.csv",
     "workflows/__init__.py",
     "workflows/evidence_integrity/__init__.py",
     "workflows/evidence_integrity/main.py",
