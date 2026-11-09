@@ -1,5 +1,5 @@
-/* Wide-screen layout rules for step01 (viewport 1500px and wider only). Owned by one agent; add rules inside the media query below. */
-@media (min-width: 1500px) {
+/* Wide-screen layout rules for step01 (viewport 1280px and wider only). Owned by one agent; add rules inside the media query below. */
+@media (min-width: 1280px) {
   /* Two columns: policy check top-left, the PayPal Sandbox draft fold under it, the country check spanning both rows on the right. */
   #compliance .stage-content { column-gap: 12px; row-gap: 12px; padding-top: 0; grid-template-rows: auto 1fr; }
   #compliance .stage-content > .stage-block { grid-column: 2; grid-row: 1 / span 2; }

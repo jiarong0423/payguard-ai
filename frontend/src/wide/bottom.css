@@ -1,5 +1,5 @@
-/* Wide-screen layout rules for bottom (viewport 1500px and wider only). Owned by one agent; add rules inside the media query below. */
-@media (min-width: 1500px) {
+/* Wide-screen layout rules for bottom (viewport 1280px and wider only). Owned by one agent; add rules inside the media query below. */
+@media (min-width: 1280px) {
   /* Merchant Evidence Buffer + Session activity side by side. Floats, so <main> stays a normal block and the step cards are untouched. */
   .main-content > #analytics { float: left; width: calc(50% - 8px); margin-top: 12px; box-sizing: border-box; }
   .main-content > #activity { float: right; width: calc(50% - 8px); margin-top: 12px; box-sizing: border-box; }

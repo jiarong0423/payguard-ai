@@ -1,5 +1,5 @@
-/* Wide-screen layout rules for header (viewport 1500px and wider only). Owned by one agent; add rules inside the media query below. */
-@media (min-width: 1500px) {
+/* Wide-screen layout rules for header (viewport 1280px and wider only). Owned by one agent; add rules inside the media query below. */
+@media (min-width: 1280px) {
   /* Slim top bar. */
   .topbar { min-height: 44px; height: 44px; }
   .brand { min-height: 36px; gap: 10px; }

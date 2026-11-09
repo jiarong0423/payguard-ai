@@ -1,0 +1,45 @@
+/* Wide-screen (1280px and up) spacing relaxation, loaded after the other wide files. Three independent reviewers rated the
+   compact pass 7 of 10 for density and all asked for the wider columns to stay while the gaps and small text come back
+   to a calmer size (body text at least 13px, 12 to 16px between blocks). Values only; no structure or text changes. */
+@media (min-width: 1280px) {
+  /* Top of the page */
+  .main-content { padding-top: 12px; }
+  .page-top { margin-bottom: 14px; }
+  .page-top .hero-compact h1 { margin: 8px 0 0; }
+  .journey { margin-bottom: 16px; }
+  .journey-step { min-height: 48px; padding: 8px 14px; }
+  .journey-step strong { font-size: 16px; }
+  .feedback-region .message { margin-bottom: 12px; padding: 10px 14px; }
+
+  /* Step 01 */
+  #compliance .stage-content { row-gap: 16px; column-gap: 16px; }
+
+  /* Step 03: case queue, review column, deadline board */
+  #disputes .case-list { padding: 10px; }
+  #disputes .case-card { padding: 10px 12px; margin-bottom: 8px; }
+  #disputes .case-card.case-selected { margin-bottom: 8px; }
+  #disputes .case-card strong { font-size: 15px; }
+  #disputes .case-card .badge { font-size: 12px; padding: 2px 8px; }
+  #disputes .case-card > span, #disputes .case-card small { font-size: 13px; line-height: 1.45; }
+  #disputes .case-card > span { margin: 4px 0 0; }
+  #disputes .case-more > summary { font-size: 13px; min-height: 36px; }
+  #disputes .evidence-workspace { padding: 14px 18px 16px; gap: 0 16px; }
+  #disputes .dispute-route, #disputes .restricted-summary { padding: 12px 14px; margin-bottom: 12px; }
+  #disputes .requirement-list { gap: 10px; margin-bottom: 12px; }
+  #disputes .requirement-list > div { padding: 10px 14px; }
+  #disputes .time-evidence { margin-top: 12px; padding: 12px 14px; }
+  #disputes .step-one-evidence { padding: 10px 14px; margin-bottom: 12px; }
+  #disputes .privacy-strip { margin: 0 0 12px; padding: 12px 14px; }
+  #disputes .human-review { padding: 12px 14px; }
+  #disputes .case-summary { padding: 12px 14px; }
+  #disputes .case-summary p { font-size: 13px; }
+  #disputes .step-section { margin: 12px 14px 0; }
+  #disputes .evidence-board { gap: 12px; }
+  #disputes .board-list { gap: 14px; }
+  #disputes .board-row { padding: 10px 14px; }
+  #disputes .board-row-head { font-size: 16px; }
+  #disputes .board-plan-bar { margin-bottom: 8px; }
+  #disputes .board-plan-help { margin-bottom: 8px; font-size: 13px; }
+  #disputes .board-chips { margin-bottom: 8px; gap: 8px; }
+  #disputes .board-timeline figcaption { margin-bottom: 8px; }
+}

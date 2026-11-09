@@ -1,5 +1,5 @@
-/* Wide-screen layout rules for step03 (viewport 1500px and wider only). Owned by one agent; add rules inside the media query below. */
-@media (min-width: 1500px) {
+/* Wide-screen layout rules for step03 (viewport 1280px and wider only). Owned by one agent; add rules inside the media query below. */
+@media (min-width: 1280px) {
   /* Master-detail: the queue is as tall as its rows, not stretched to the review column; the divider moves to the review pane. */
   #disputes .dispute-layout { align-items: start; grid-template-columns: minmax(230px, 260px) minmax(0, 1fr); }
   #disputes .case-list { padding: 8px 8px 10px; border-right: 0; border-bottom: 1px solid var(--pg-color-rule); background: var(--pg-color-recede); border-radius: 0 0 var(--pg-radius-card) 0; }

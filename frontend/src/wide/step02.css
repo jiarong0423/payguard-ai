@@ -1,5 +1,5 @@
-/* Wide-screen layout rules for step02 (viewport 1500px and wider only). Owned by one agent; add rules inside the media query below. */
-@media (min-width: 1500px) {
+/* Wide-screen layout rules for step02 (viewport 1280px and wider only). Owned by one agent; add rules inside the media query below. */
+@media (min-width: 1280px) {
   /* Metric cards: only as tall as their content (no stretch to the tallest card), smaller number, tight spacing. */
   #velocity .velocity-metrics { align-items: start; gap: 12px; padding: 10px 16px; }
   #velocity .velocity-metrics .metric { padding: 8px 14px 10px; }

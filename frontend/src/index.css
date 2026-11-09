@@ -1251,7 +1251,7 @@ footer { padding: 8px 0 0; }
 
 /* Wide screens (recording and judging on a large monitor): use the width instead of leaving 200 px gutters, and let a
    result card be as tall as its content instead of stretching to the height of the input card beside it. */
-@media (min-width: 1500px) {
+@media (min-width: 1280px) {
   .main-content { width: min(100%, 1560px); }
   .aup-result { align-self: start; }
   /* Title row and the "Start here" links share one line instead of two stacked rows. */
@@ -1279,3 +1279,18 @@ footer { padding: 8px 0 0; }
   .case-card > span { margin: 4px 0 2px; }
   .stage-next { margin: 8px 16px 12px; padding: 8px 16px; }
 }
+
+/* Step 03 inner tabs: "Case review" and "Deadline board" share the step; only one is shown at a time. The board's own
+   open state drives the tab, so every existing way of opening it keeps working. */
+.inner-tabs { display: flex; gap: 4px; padding: 8px 16px 0; border-bottom: 1px solid var(--pg-color-rule); background: var(--pg-color-panel); }
+.inner-tab { padding: 8px 18px; border: 1px solid transparent; border-bottom: 0; border-radius: 8px 8px 0 0; background: transparent; color: var(--pg-color-muted); font: inherit; font-weight: 650; cursor: pointer; }
+.inner-tab:hover { color: var(--pg-color-ink); background: var(--pg-color-recede); }
+.inner-tab.is-active { margin-bottom: -1px; background: var(--pg-color-panel); border-color: var(--pg-color-rule); color: var(--pg-color-accent-strong); }
+#disputes .inner-tabs[data-board-open="true"] ~ .dispute-layout,
+#disputes .inner-tabs[data-board-open="true"] ~ [data-testid="replay-fold"],
+#disputes .inner-tabs[data-board-open="true"] ~ .provider-disputes,
+#disputes .inner-tabs[data-board-open="false"] ~ #evidence-board { display: none; }
+
+/* Bryntum bars: let the "Collect evidence" label fit its bar (the bar width encodes time, so the text shrinks, not the bar). */
+.b-sch-event .b-sch-event-content, .b-sch-event .b-sch-event-text { padding-inline: 3px; font-size: 13px; letter-spacing: -0.3px; }
+
