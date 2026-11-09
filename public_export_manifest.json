@@ -1,11 +1,11 @@
 {
-  "created_at_utc": "2026-11-09T17:40:38Z",
+  "created_at_utc": "2026-11-09T19:06:36Z",
   "dependency_locks": {
     "frontend_npm": "0f98893564efb5556cc0a92710feedcb9da085108f9668fee93f29940b87f09d",
     "gemini_python": "36554331392d6102519a4ead5778704c4ff89e79da6bb9d6648b656f130724bb",
     "root_python": "bd163e5de790527ec4b5486ec884463c40fd8331a00e122d27f65de0938a270a"
   },
-  "file_count": 443,
+  "file_count": 445,
   "files": [
     {
       "bytes": 662,
@@ -197,11 +197,11 @@
       "source_sha256": "505e0c26a7083119af08316f325035d4588acf02c83b01435cac36753d86af14"
     },
     {
-      "bytes": 64535,
+      "bytes": 65260,
       "path": "backend/app/store.py",
-      "sha256": "26542fe3073284a429656187c45de756c28b9783293daf853926b82b23f37957",
+      "sha256": "5284479938776b1a4897cc50655009c6c49645cc991b0932fe49e68b7b76cbcd",
       "source_path": "backend/app/store.py",
-      "source_sha256": "26542fe3073284a429656187c45de756c28b9783293daf853926b82b23f37957"
+      "source_sha256": "5284479938776b1a4897cc50655009c6c49645cc991b0932fe49e68b7b76cbcd"
     },
     {
       "bytes": 31798,
@@ -514,9 +514,9 @@
     {
       "bytes": 9053,
       "path": "docs/evidence/HOW_NUMBERS_WERE_COUNTED.md",
-      "sha256": "945a083f4854e944b1ecec6740ee526c9e5fe69074324b9394be95bdf9bea1ab",
+      "sha256": "3447393abfb95ac58fbf844512c164314e440da4bd90e5a82bae308264e6d032",
       "source_path": "docs/evidence/HOW_NUMBERS_WERE_COUNTED.md",
-      "source_sha256": "945a083f4854e944b1ecec6740ee526c9e5fe69074324b9394be95bdf9bea1ab"
+      "source_sha256": "3447393abfb95ac58fbf844512c164314e440da4bd90e5a82bae308264e6d032"
     },
     {
       "bytes": 1692,
@@ -1177,11 +1177,11 @@
       "source_sha256": "2c7676f638a61b7924f98852bccc02ac0c798ae0d68b33a5eb965226f22f8182"
     },
     {
-      "bytes": 204039,
+      "bytes": 209942,
       "path": "frontend/src/App.jsx",
-      "sha256": "2069e48b77c92f48284e3669ae22a132e9df21ef3d48ca06faab88692bec6a8c",
+      "sha256": "a53a0f9f461ad1bbd4638bd18c8153175c2aa42f1032d278c549c37dfcf905a6",
       "source_path": "frontend/src/App.jsx",
-      "source_sha256": "2069e48b77c92f48284e3669ae22a132e9df21ef3d48ca06faab88692bec6a8c"
+      "source_sha256": "a53a0f9f461ad1bbd4638bd18c8153175c2aa42f1032d278c549c37dfcf905a6"
     },
     {
       "bytes": 8879,
@@ -1858,16 +1858,16 @@
     {
       "bytes": 7894,
       "path": "integrations/gemini/check_runtime.py",
-      "sha256": "eafc08f4326b7c6a37d8967c0f0784fd058801545add60876123d9b0f1b57ab1",
+      "sha256": "6094afc025e565798b9520840834f7b9e7fda0bb9b6604f8cc9a271b33f51bf9",
       "source_path": "integrations/gemini/check_runtime.py",
-      "source_sha256": "eafc08f4326b7c6a37d8967c0f0784fd058801545add60876123d9b0f1b57ab1"
+      "source_sha256": "6094afc025e565798b9520840834f7b9e7fda0bb9b6604f8cc9a271b33f51bf9"
     },
     {
       "bytes": 1074,
       "path": "integrations/gemini/pyproject.toml",
-      "sha256": "1c98e7d83da084716b61e3ef787f1a2acda0aff64255ad199248cbbd5f7705ac",
+      "sha256": "f7d0502800552a7c463b514c8d68a9c38e3af5ad11bc49b8b2b3677d9c6a1358",
       "source_path": "integrations/gemini/pyproject.toml",
-      "source_sha256": "1c98e7d83da084716b61e3ef787f1a2acda0aff64255ad199248cbbd5f7705ac"
+      "source_sha256": "f7d0502800552a7c463b514c8d68a9c38e3af5ad11bc49b8b2b3677d9c6a1358"
     },
     {
       "bytes": 51446,
@@ -2211,6 +2211,13 @@
       "sha256": "35748d589d8c165e6b3fd89d23d29f79fa6c58a6aa53aa3c62c7e2e3aa5622ad",
       "source_path": "tests/frontend_attack_r23_secondary.mjs",
       "source_sha256": "35748d589d8c165e6b3fd89d23d29f79fa6c58a6aa53aa3c62c7e2e3aa5622ad"
+    },
+    {
+      "bytes": 3359,
+      "path": "tests/frontend_auto_renew_20261110.mjs",
+      "sha256": "0235425ebde237467bb7168b5554a949e3a2a24c42cc5f94b72df0f08cd48c69",
+      "source_path": "tests/frontend_auto_renew_20261110.mjs",
+      "source_sha256": "0235425ebde237467bb7168b5554a949e3a2a24c42cc5f94b72df0f08cd48c69"
     },
     {
       "bytes": 2736,
@@ -2920,6 +2927,13 @@
       "source_sha256": "2224a50c7c88ac17513a4efcc1ab943071d55e533e499978adb92bd64e73aae7"
     },
     {
+      "bytes": 2417,
+      "path": "tests/test_session_idle_expiry.py",
+      "sha256": "f92c93915d4ac02fe5f0d7274e27e2f8d688cbfcc6805f9ab35098adc19e6f34",
+      "source_path": "tests/test_session_idle_expiry.py",
+      "source_sha256": "f92c93915d4ac02fe5f0d7274e27e2f8d688cbfcc6805f9ab35098adc19e6f34"
+    },
+    {
       "bytes": 17460,
       "path": "tests/test_studio_agent.py",
       "sha256": "d251e2ff0ab4c3842c9893107921530623471a6007397862c42d030afee18f90",
@@ -2948,11 +2962,11 @@
       "source_sha256": "0d9bc04fee0ad12622326c03a74a116ce14ef80c47c4608c219a7c4c241a2e62"
     },
     {
-      "bytes": 39912,
+      "bytes": 39989,
       "path": "tools/build_public_candidate.py",
-      "sha256": "b84ea83c0eb9cc173859f8ad8969cd763876130f3672d84ce5ff36920ff50b39",
+      "sha256": "807b38ab46702856b6c7cff4bbf94c73f7d7370838ef7f41fb7c19ef188db14a",
       "source_path": "tools/build_public_candidate.py",
-      "source_sha256": "b84ea83c0eb9cc173859f8ad8969cd763876130f3672d84ce5ff36920ff50b39"
+      "source_sha256": "807b38ab46702856b6c7cff4bbf94c73f7d7370838ef7f41fb7c19ef188db14a"
     },
     {
       "bytes": 7653,
@@ -3069,9 +3083,9 @@
     {
       "bytes": 14792,
       "path": "tools/verify_public_numbers.py",
-      "sha256": "82f3d63cb6362f07983208e24e09a2dfbb9f0d362dc93d829902bf764172399c",
+      "sha256": "b09da69522c066620f6b34e9fe82716ecca06015b24fd77a1335625ad95b06ee",
       "source_path": "tools/verify_public_numbers.py",
-      "source_sha256": "82f3d63cb6362f07983208e24e09a2dfbb9f0d362dc93d829902bf764172399c"
+      "source_sha256": "b09da69522c066620f6b34e9fe82716ecca06015b24fd77a1335625ad95b06ee"
     },
     {
       "bytes": 87,
@@ -3114,8 +3128,8 @@
     "scope": "RECORDED_OWNER_RIGHTS_AND_ENTRANT_ELIGIBILITY"
   },
   "package_digest_algorithm": "sha256(sorted utf-8 '<file_sha256>  <relative_path>\\n' records; manifest and detached hash excluded)",
-  "package_digest_sha256": "318ffb1065a7c245f0e4b0c586e7efc9d32b615aa91fdc78414fe17b6ff4358b",
-  "public_artifact_id": "payguard-public-source-318ffb1065a7c245",
+  "package_digest_sha256": "189657432a522ed77dc82e91fa89b2286802734d936f46f7f61f69a648c5339e",
+  "public_artifact_id": "payguard-public-source-189657432a522ed7",
   "publication_authorized": false,
   "raw_bounded_prompt_disclosure": {
     "intent": "INTENTIONAL_PUBLIC_EXECUTABLE_PRODUCT_SOURCE",

@@ -414,6 +414,8 @@ HOSTED_MAX_SESSIONS = 1000
 HOSTED_IDLE_EVICT_SECONDS = 600
 # A full store may drop a session that has made no request for this long, to admit a new visitor.
 IDLE_EVICT_SECONDS = 60
+# (owner 2026-11-10) A session ends ttl_seconds after its last request, and at the latest this long after creation.
+SESSION_MAX_AGE_SECONDS = 7200
 
 
 class SessionStore:
@@ -538,6 +540,11 @@ class SessionStore:
                            not safe_equal(csrf_token, session.csrf_token)):
                 raise BoundaryError(403, "csrf_rejected")
             self._rate(session.requests, now, self.rate_limit)
+            # (owner 2026-11-10) Idle expiry, not a fixed one: a judge still clicking or reading the guide after 15
+            # minutes lost every result. Each accepted request moves the end to ttl_seconds from now, never past
+            # SESSION_MAX_AGE_SECONDS after creation, so an abandoned tab still ends and a busy one ends eventually.
+            session.expires_at = max(session.expires_at, min(session.created_at + timedelta(seconds=SESSION_MAX_AGE_SECONDS),
+                                                              now + timedelta(seconds=self.ttl_seconds)))
             return session
 
     def state(self, session: Session) -> dict:

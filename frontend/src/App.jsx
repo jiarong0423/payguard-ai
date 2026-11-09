@@ -307,6 +307,22 @@ const readStoredInputs = () => {
 };
 // (attack r23) Shown as soon as the session's expires_at passes, not at the next click.
 const SESSION_EXPIRED_TEXT = 'Session expired. Select Reconnect to start again; old results are cleared.';
+// (owner 2026-11-10) After an expiry the console starts a new session by itself (expireSession), then says so.
+const SESSION_RENEWED_TEXT = 'The demo session ended after 15 minutes without activity, so a new one started. Earlier results were cleared; run the step again.';
+const AUTO_RENEW_LIMIT = 3;
+const AUTO_RENEW_DELAY_MS = 1500;
+// (owner 2026-11-10) The 2-minute policy check runs again by itself this long before it ends, up to 5 times in a row
+// (one check per 2-minute window, inside the server's 5 open checks per 2 minutes).
+const AUP_AUTO_RENEW_LEAD_MS = 3000;
+const AUP_AUTO_RENEW_LIMIT = 5;
+const AUP_RENEWED_TEXT = 'The 2-minute policy check ran again by itself for the same description.';
+// (owner 2026-11-10) An unreviewed dispute draft is prepared again by itself shortly before its 5 minutes end. A
+// recorded review is never renewed: it lapses with its draft and needs the seller again.
+// The server returns an unexpired draft unchanged, so the renewal runs just after the window (store.py: 300 s).
+const DRAFT_WINDOW_MS = 300000;
+const DRAFT_AUTO_RENEW_AFTER_MS = DRAFT_WINDOW_MS + 1000;
+const DRAFT_AUTO_RENEW_LIMIT = 5;
+const DRAFT_RENEWED_TEXT = 'The evidence draft was prepared again by itself, so its 5-minute window started over. Nothing was sent.';
 // (r31 J4 P1-1) The text comes from resumedNotice() (resumeNotice.js): only what the server still holds, and none
 // at all for an empty session. It can be dismissed, so on a phone it never has to sit over the form for 10 s.
 const RESUMED_INFO_MS = 10000;
@@ -427,6 +443,15 @@ export default function App() {
   // Bumped when the browser comes back online, so a failed automatic stage load runs again (attack r21).
   const [onlineCount, setOnlineCount] = useState(0);
   const bootstrapRef = useRef(null);
+  const autoRenewCountRef = useRef(0);
+  // (owner 2026-11-10) The policy check's automatic renewal: the latest scan and guard, and renewals in a row.
+  const aupAutoRef = useRef(null);
+  const aupAutoRenewsRef = useRef(0);
+  // The same for the 5-minute dispute draft before its review is recorded.
+  const draftAutoRef = useRef(null);
+  const draftAutoRenewsRef = useRef(0);
+  const aupQuietRef = useRef(false);
+  const draftQuietRef = useRef(false);
   const bootingRef = useRef(false);
   const providerDisputesKeyRef = useRef('');
   const toggleSecondary = useCallback((theme, panel, nextOpen) => {
@@ -661,7 +686,7 @@ export default function App() {
   }, [invalidateAi]);
   // Which action raised the current error banner, so an edit that fixes the cause can clear it (attack r21 phone #7).
   const errorSourceRef = useRef('');
-  const editDescription = (value) => { invalidateAup(); dispatchProductConfirmation({ type: 'clear', reason: 'description_edited' }); setDescription(value);
+  const editDescription = (value) => { invalidateAup(); dispatchProductConfirmation({ type: 'clear', reason: 'description_edited' }); setDescription(value); aupAutoRenewsRef.current = 0;
     // A policy-check error goes once the description is valid again (attack r21).
     if (errorSourceRef.current === 'aup' && value.trim() && value.length <= DESCRIPTION_LIMIT) { errorSourceRef.current = ''; setError((current) => (current && current.status !== 401 ? null : current)); }
   };
@@ -669,11 +694,27 @@ export default function App() {
     if (!aup) return;
     // (r31 J1 J4 A3) A neutral "needs action" message (not the green success toast); the locked draft buttons say why,
     // and an open draft dialog stays with its own expiry line instead of closing on its own.
-    const timer = setTimeout(() => {
+    const expire = () => {
       invalidateAup(); setAupExpired(true); if (draftConfirmRef.current) setDraftExpired(true);
       setNotice(''); setInfo({ kind: 'expired', text: 'The description check expired. Run it again before continuing.' });
-    }, Math.max(0, Date.parse(aup.expires_at) - Date.now()));
-    return () => clearTimeout(timer);
+    };
+    // (owner 2026-11-10) Shortly before the 2-minute end the same check runs again by itself (same text, same rules),
+    // so a seller reading the result does not have to press Run Policy Check. Not while a product confirmation, the
+    // draft dialog or a confirmed draft context depends on this exact result, and at most AUP_AUTO_RENEW_LIMIT times in
+    // a row without a press of the seller's own; otherwise it expires as before.
+    let fallback = 0;
+    const lead = Math.max(0, Date.parse(aup.expires_at) - Date.now() - AUP_AUTO_RENEW_LEAD_MS);
+    const timer = setTimeout(() => {
+      const auto = aupAutoRef.current;
+      if (auto?.canRenew()) {
+        aupAutoRenewsRef.current += 1;
+        aupQuietRef.current = true;
+        auto.scan().then((ok) => { aupQuietRef.current = false; if (ok) setInfo({ kind: 'resumed', text: AUP_RENEWED_TEXT }); });
+        return;
+      }
+      fallback = setTimeout(expire, Math.max(0, Date.parse(aup.expires_at) - Date.now()));
+    }, lead);
+    return () => { clearTimeout(timer); clearTimeout(fallback); };
   }, [aup, invalidateAup]);
   // The draft block opens itself once a result makes it usable and closes again on a country Stop.
   const sandboxReady = Boolean(aup || countryCheck) && !countryHeld;
@@ -820,9 +861,15 @@ export default function App() {
     setVelocityQuickFilter(''); setSelectedVelocityTransaction(null);
     sendConfirmTokens.current.clearAll();
     setError(failure);
+    // (owner 2026-11-10) An expired session starts a new one by itself instead of waiting for Reconnect; the banner
+    // shows for a moment, then a lasting notice says what was cleared. At most AUTO_RENEW_LIMIT times per page load.
+    if (failure?.status === 401 && autoRenewCountRef.current < AUTO_RENEW_LIMIT) {
+      autoRenewCountRef.current += 1;
+      window.setTimeout(() => bootstrapRef.current?.({ renewed: true }), AUTO_RENEW_DELAY_MS);
+    }
   }, [invalidateReferences, invalidateAup]);
 
-  const bootstrap = useCallback(async (signal, { auto = false } = {}) => {
+  const bootstrap = useCallback(async (signal, { auto = false, renewed = false } = {}) => {
     bootingRef.current = true;
     window.clearTimeout(bootRetryRef.current); bootRetryRef.current = 0; setBootRetryAt(0);
     setInfo(null);
@@ -897,6 +944,7 @@ export default function App() {
       }
       setState(nextState);
       setSandbox(status);
+      if (renewed && !resumedState) setInfo({ kind: 'resumed', text: SESSION_RENEWED_TEXT });
     } catch (failure) {
       if (!signal?.aborted && mounted.current) {
         setError(failure);
@@ -972,8 +1020,16 @@ export default function App() {
       if (left < -60000) { end(); return; }
       probing = true;
       try {
-        await apiRequest('/demo/state', { session });
-        if (!stopped) timer = window.setTimeout(check, 5000);
+        const fresh = await apiRequest('/demo/state', { session });
+        if (stopped) return;
+        // (owner 2026-11-10) The server moves expires_at on each request (idle expiry): take the new end and wait again.
+        if (Date.parse(fresh?.expires_at || '') > expires) {
+          const moved = { ...session, expires_at: fresh.expires_at };
+          if (sessionRef.current?.session_id === session.session_id) { sessionRef.current = moved; storeSession(moved); }
+          setState((current) => (current && current.session_id === session.session_id ? { ...current, expires_at: fresh.expires_at } : current));
+          return;
+        }
+        timer = window.setTimeout(check, 5000);
       } catch (failure) {
         if (stopped) return;
         if (failure.status === 401) end();
@@ -1285,6 +1341,7 @@ export default function App() {
   const aupCheckedAtRef = useRef(0);
   const runPolicyCheck = () => {
     if (busyRef.current) return;
+    aupAutoRenewsRef.current = 0;
     if (descriptionProblem(description)) {
       afterRender(() => document.getElementById('description-note')?.scrollIntoView({ block: 'center' }));
       return;
@@ -1314,6 +1371,9 @@ export default function App() {
   const scan = () => action('aup', async (session) => {
     invalidateAup();
     dispatchProductConfirmation({ type: 'clear', reason: 'policy_check' });
+    // (owner 2026-11-10) Set only by the automatic renewal, for this one run.
+    const quiet = aupQuietRef.current;
+    aupQuietRef.current = false;
     const revision = aupRevisionRef.current;
     const controller = new AbortController();
     aupControllerRef.current = controller;
@@ -1324,7 +1384,8 @@ export default function App() {
       writeStored(RAN_STORE_KEY, { ran: true });
       setAup(result); setAupPhase('completed'); aupCheckedTextRef.current = description; aupCheckedAtRef.current = Date.now();
       // Bring the result above the phone action bar (scroll-margin-bottom in index.css; attack r21 phone #6).
-      window.requestAnimationFrame(() => document.querySelector('[data-testid="aup-result"]')?.scrollIntoView({
+      // An automatic renewal (quiet) leaves the page where the seller is reading.
+      if (!quiet) window.requestAnimationFrame(() => document.querySelector('[data-testid="aup-result"]')?.scrollIntoView({
         block: 'nearest', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }));
       lookupCategory(session, result.evaluation_id, description, revision);
     } catch (failure) {
@@ -1332,11 +1393,43 @@ export default function App() {
       throw failure;
     } finally { if (aupControllerRef.current === controller) aupControllerRef.current = null; }
   });
+  // (owner 2026-11-10) An unreviewed dispute draft is prepared again just after its 5-minute window (see draftAutoRef).
+  useEffect(() => {
+    if (!draft || receipt) return undefined;
+    const caseRef = draft.case_ref;
+    const timer = setTimeout(() => {
+      const auto = draftAutoRef.current;
+      if (!auto?.canRenew(caseRef)) return;
+      draftAutoRenewsRef.current += 1;
+      draftQuietRef.current = true;
+      auto.getDraft().finally(() => { draftQuietRef.current = false; });
+    }, DRAFT_AUTO_RENEW_AFTER_MS);
+    return () => clearTimeout(timer);
+  }, [draft, receipt]);
+  draftAutoRef.current = {
+    // A call-time lookup: getDraft is declared further down in this render.
+    getDraft: () => getDraft(),
+    canRenew: (caseRef) => Boolean(draft) && draft.case_ref === caseRef && caseItem?.case_ref === caseRef && !busyRef.current &&
+      !receipt && !reviewedOnServer && Boolean(sessionRef.current) && !coolingNow('draft') &&
+      document.visibilityState === 'visible' && draftAutoRenewsRef.current < DRAFT_AUTO_RENEW_LIMIT,
+  };
+  aupAutoRef.current = {
+    scan,
+    canRenew: () => Boolean(aup) && !busyRef.current && !aupConsumed && !productConfirm && !draftConfirmRef.current &&
+      Boolean(sessionRef.current) && aupCheckedTextRef.current === description && !coolingNow('aup') &&
+      document.visibilityState === 'visible' && aupAutoRenewsRef.current < AUP_AUTO_RENEW_LIMIT,
+  };
   const getDraft = () => action('draft', async (session) => {
     invalidateAi();
+    const quiet = draftQuietRef.current;
+    draftQuietRef.current = false;
+    if (!quiet) draftAutoRenewsRef.current = 0;
     const result = await apiRequest(`/disputes/${encodeURIComponent(caseItem.case_ref)}/draft`, { method: 'POST', body: {}, session });
-    setSelectedCase(caseItem.case_ref); setDraft(result); setReceipt(null); setReviewChecked(false);
+    setSelectedCase(caseItem.case_ref); setDraft(result); setReceipt(null);
+    // An automatic renewal keeps the seller's tick and place on the page; only the 5-minute window starts over.
+    if (!quiet) setReviewChecked(false);
     setState(await apiRequest('/demo/state', { session }));
+    if (quiet) { setInfo({ kind: 'resumed', text: DRAFT_RENEWED_TEXT }); return; }
     setNotice('Draft ready. Review it below.');
     window.setTimeout(() => document.querySelector('[data-testid="dispute-route"]')?.scrollIntoView({ block: 'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }), 80);
   });
