@@ -49,10 +49,10 @@ const LOCKED_FEATURES = {
 const HOUR_RESOLUTION = { unit: 'hour', increment: 1 };
 
 const COLUMNS = [
-  { text: 'Case', field: 'name', width: 200, htmlEncode: true },
-  { text: 'Due', field: 'dueText', width: 170, htmlEncode: true },
+  { text: 'Case', field: 'name', width: 190, htmlEncode: true },
+  { text: 'Due', field: 'dueText', width: 150, htmlEncode: true },
   { text: 'Evidence', field: 'readinessLabel', width: 120, htmlEncode: true },
-  { text: 'Amount', field: 'amountText', width: 120, htmlEncode: true },
+  { text: 'Amount', field: 'amountText', width: 110, htmlEncode: true },
 ];
 
 // Phones (phone r3 P2 #9): the list above already carries due, evidence and amount, so the timeline keeps one narrow
@@ -70,7 +70,10 @@ function subscribePhone(onChange) {
 const isPhone = () => Boolean(phoneMedia()?.matches);
 
 // Spread before the fixed props; switching between the two remounts the scheduler (board-canvas key).
-const DESKTOP_SCHEDULER = { columns: COLUMNS, forceFit: true };
+// A bar whose width encodes a short time span cannot show a long name: the label is a block that ends in an ellipsis (the
+// full name stays in the tooltip). The bar width itself is never changed.
+const desktopEventRenderer = ({ eventRecord }) => `<span class="ev-label">${escapeHtml(String(eventRecord.name ?? ''))}</span>`;
+const DESKTOP_SCHEDULER = { columns: COLUMNS, forceFit: true, eventRenderer: desktopEventRenderer };
 // (defect D2) A one-hour bar is only a few pixels wide on a phone, so the label there is the case code, not the long name.
 const phoneEventRenderer = ({ eventRecord }) => (eventRecord.get('kind') === 'PLAN' ? escapeHtml(String(eventRecord.resource?.caseRef ?? eventRecord.name ?? '')) : escapeHtml(String(eventRecord.name ?? '')));
 const PHONE_SCHEDULER = { columns: PHONE_COLUMNS, forceFit: false, tickSize: 72, eventRenderer: phoneEventRenderer };

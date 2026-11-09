@@ -1,10 +1,20 @@
-/* Right-hand side column for steps 02 and 03 (viewport 1280px and wider): the guide, the sources fold and the Next bar sit
-   beside the main content instead of under it, so each step needs less height. Below 1280px the two wrappers are plain blocks. */
+/* Secondary content (guide, sources fold, Next bar) for steps 02 and 03, viewport 1280px and wider. Below 1280px the two
+   wrapper elements are plain blocks and nothing here applies.
+   Step 02: the guide, sources and Next bar sit beside the KPI cards and the alert strip only; the chart and the table below
+   use the full width, so the right side never has a tall empty column.
+   Step 03: the guide and sources sit in two columns under the content. */
 @media (min-width: 1280px) {
-  #velocity .stage-body, #disputes .stage-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 340px); gap: 0 16px; align-items: start; }
-  #velocity .stage-main, #disputes .stage-main { min-width: 0; }
-  #velocity .stage-side, #disputes .stage-side { min-width: 0; display: flex; flex-direction: column; gap: 10px; padding: 12px 16px 12px 0; }
-  #velocity .stage-side > *, #disputes .stage-side > * { margin: 0; }
-  #velocity .stage-side .stage-next, #disputes .stage-side .stage-next { flex-direction: column; align-items: stretch; gap: 8px; padding: 10px 12px; }
-  #velocity .stage-side .stage-next .button, #disputes .stage-side .stage-next .button { width: 100%; justify-content: center; }
+  #velocity .stage-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 340px); gap: 0 16px; align-items: start; }
+  #velocity .stage-main { display: contents; }
+  #velocity .stage-main > * { grid-column: 1 / -1; }
+  #velocity .stage-main > .metrics-grid { grid-column: 1; grid-row: 1; }
+  #velocity .stage-main > .velocity-summary { grid-column: 1; grid-row: 2; }
+  #velocity .stage-side { grid-column: 2; grid-row: 1 / span 2; min-width: 0; display: flex; flex-direction: column; gap: 8px; padding: 12px 16px 12px 0; }
+  #velocity .stage-side > * { margin: 0; }
+  #velocity .stage-side .stage-next { flex-direction: column; align-items: stretch; gap: 6px; padding: 8px 12px; }
+  #velocity .stage-side .stage-next .button { width: 100%; justify-content: center; }
+
+  #disputes .stage-body { display: block; }
+  #disputes .stage-side { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; align-items: start; padding: 4px 16px 12px; }
+  #disputes .stage-side > * { margin: 0; }
 }

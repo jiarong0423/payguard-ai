@@ -11,6 +11,7 @@ import './wide/step03.css';
 import './wide/bottom.css';
 import './wide/relax.css';
 import './wide/side.css';
+import './wide/compact.css';
 
 createRoot(document.getElementById('root')).render(<App />);
 startPwa({ production: import.meta.env.PROD });

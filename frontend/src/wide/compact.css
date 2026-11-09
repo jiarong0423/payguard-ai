@@ -1,0 +1,27 @@
+/* The three parts the owner circled, for every step (viewport 1280px and wider): the top area (title row), the green message
+   strip, and the two bottom panels. Loaded last. Values only; all text stays. */
+@media (min-width: 1280px) {
+  /* Top area: the title and the two buttons share one line; the small tag line is folded away (the title says the same). */
+  .page-top .hero-compact > div:first-child { display: flex; flex-wrap: nowrap; align-items: center; gap: 0 20px; }
+  .page-top .hero-compact .eyebrow { display: none; }
+  .page-top .hero-compact h1 { order: 1; margin: 0; white-space: nowrap; }
+  .page-top .hero-compact .hero-actions { order: 2; margin: 0; }
+  .page-top { align-items: center; margin-bottom: 8px; }
+  /* "Start here" repeats the three-step bar right below it, so on wide screens it is folded away. */
+  .page-top .start-here { display: none; }
+  /* The green "Sample sales loaded" strip is one slim line. */
+  .feedback-region .message { padding: 4px 12px; margin-bottom: 6px; font-size: 13px; min-height: 0; }
+  /* Merchant Evidence Buffer and Session activity: one line each, title and note side by side. */
+  #analytics .optional-trigger, #activity .optional-trigger { min-height: 40px; padding: 6px 14px; }
+  #analytics .optional-trigger span:has(> strong), #activity .optional-trigger span:has(> strong) { display: flex; align-items: baseline; gap: 12px; }
+  #analytics .optional-trigger strong, #activity .optional-trigger strong { display: inline; font-size: 15px; }
+  #analytics .optional-trigger small, #activity .optional-trigger small { display: inline; margin: 0; }
+
+  /* Step 01: the guide bar fills the empty space under the Sandbox draft fold on the left; once it is opened it needs the
+     full width (chat, item table and quick questions side by side) and drops below. */
+  #compliance .stage-content > .stage-block { grid-row: 1 / span 3; }
+  #compliance .stage-content { grid-template-rows: auto auto 1fr auto auto; }
+  #compliance .stage-content > #sandbox-draft { grid-row: 2; }
+  #compliance .stage-content > #guide-live-preflight { grid-column: 1; grid-row: 3; align-self: start; }
+  #compliance .stage-content > #guide-live-preflight.is-open { grid-column: 1 / -1; grid-row: 4; }
+}

@@ -1293,4 +1293,4 @@ footer { padding: 8px 0 0; }
 
 /* Bryntum bars: let the "Collect evidence" label fit its bar (the bar width encodes time, so the text shrinks, not the bar). */
 .b-sch-event .b-sch-event-content, .b-sch-event .b-sch-event-text { padding-inline: 3px; font-size: 13px; letter-spacing: -0.3px; }
-
+.b-sch-event .ev-label { display: block; min-width: 0; flex: 1 1 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
