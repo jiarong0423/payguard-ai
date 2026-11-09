@@ -86,3 +86,10 @@
 
 .country-verdict-notclear { display: block; font-size: 1rem; font-weight: 600; line-height: 1.4; }
 .country-before-after-note { display: block; font-size: 1rem; font-weight: 600; line-height: 1.4; }
+
+/* Phones: every tick box is a full-width 44px row, so the whole row is the tap target (also with a mouse). */
+@media (max-width: 640px) {
+  .country-tag { width: 100%; min-height: 44px; box-sizing: border-box; }
+  .country-tag input { width: 20px; height: 20px; }
+  .country-optional > summary { min-height: 44px; }
+}

@@ -23,7 +23,7 @@ const SHOWN_TAGS = ['live_animals', 'plants_seeds', 'food', 'cosmetics', 'batter
 // "Stopped", not "Held": PayPal uses "hold" for payment holds (PayPal-side red team r1).
 const SEVERITY_TEXT = { BLOCK: 'Stopped', WARN: 'Check first', INFO: 'Note' };
 // Review 2026-11-03: a long list buries the rule that matters; show the first few, keep the rest one click away.
-const SUMMARY_ROWS = 4;
+const SUMMARY_ROWS = 2;
 // Each link says whose rule it is (review r10: government import rules were labelled as PayPal's).
 const CARRIER_HOSTS = /^https:\/\/([a-z0-9-]+\.)*(usps\.com|canadapost-postescanada\.ca|royalmail\.com|deutschepost\.de|dhl\.de|japanpost\.jp|singpost\.com|hongkongpost\.hk|auspost\.com\.au|post\.gov\.tw)\//;
 const sourceLabel = (url) => (/^https:\/\/(www|developer)\.paypal\.com\//.test(url) ? 'PayPal source'

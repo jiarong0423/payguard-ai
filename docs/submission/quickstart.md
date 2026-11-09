@@ -12,6 +12,16 @@ The [published 2:50 demonstration](https://youtu.be/_GORnHWShU4) is the final ed
 
 Status: the Devpost project is submitted and the 2:50 video is public. The complete repository run instructions here are the selected functional-demo path. An optional hosted demo also runs (README, "Hosted demo"); its only PayPal calls are read-only Sandbox reads, only its evidence guide can use Gemini when the operator opts in (at most 5 calls a minute and 20 a day), and a hosted deployment that writes to PayPal is unperformed. A new local export stays `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` until its exact bytes pass security review, independent acceptance and repository readback; only an accepted same-byte public source release records `PUBLIC_SOURCE_PUBLISHED`. Neither state establishes a public or production-hosted service.
 
+## Fastest path: three clicks on the hosted demo
+
+No install, synthetic data plus read-only Sandbox reads. The first visit can take about a minute while the free server wakes. Button labels may be reworded before judging.
+
+1. Open the [start page](https://payguard-demo-j2b3.onrender.com/start.html) and press **Run the step 1 example** in step 01. Expect "This sale is likely to be stopped.", each row linked to its source.
+2. Open step 03, select a case, press **Prepare evidence draft**, then **Download review ZIP**.
+3. Open **Proof** in the top bar ([proof.html](https://payguard-demo-j2b3.onrender.com/proof.html)): each claim, how it was shown, the date and the source file.
+
+Which sponsor tool is used where, and how far: the "Sponsor tools at a glance" table in the [README](../../README.md) and [SPONSOR_TECH_MAP.md](../SPONSOR_TECH_MAP.md).
+
 ## Start the console
 
 From the repository root:

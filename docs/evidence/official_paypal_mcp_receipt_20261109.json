@@ -1,0 +1,49 @@
+{
+ "run_at": "2026-11-09T03:24:03Z",
+ "server": "PayPal official MCP server @paypal/mcp (npm)",
+ "enabled_tools_flag": "--tools=disputes.list,disputes.get (read-only)",
+ "environment": "SANDBOX",
+ "steps": [
+  {
+   "tool": "list_disputes",
+   "is_error": false,
+   "dispute_ids_in_reply": 8,
+   "masked_sample": [
+    "PP-R-BHF-XXXX6360",
+    "PP-R-BNP-XXXX7173",
+    "PP-R-BUZ-XXXX7172"
+   ],
+   "reply_sha256": "169b2e45f70b8a113971858c89360bb777885f8eb377fd8c6755c762c771fd77",
+   "reply_chars": 5430
+  },
+  {
+   "tool": "get_dispute",
+   "argument_name": "dispute_id",
+   "is_error": false,
+   "reply_sha256": "eb172a38f9acce39b45d7afa602dd2931c243dbeb9085daad6489abc9ea56333",
+   "reply_chars": 3127
+  }
+ ],
+ "server_info": {
+  "name": "PayPal",
+  "version": "1.11.0"
+ },
+ "tools": [
+  {
+   "name": "list_disputes",
+   "required": []
+  },
+  {
+   "name": "get_dispute",
+   "required": [
+    "dispute_id"
+   ]
+  }
+ ],
+ "tool_names_used": [
+  "list_disputes",
+  "get_dispute"
+ ],
+ "result": "OK",
+ "note": "Reply bodies are not kept: they hold Sandbox transaction and payer ids. Each reply is represented by its length and SHA-256. Dispute ids are masked."
+}

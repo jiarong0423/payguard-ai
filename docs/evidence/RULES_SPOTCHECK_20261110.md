@@ -1,5 +1,7 @@
 # TradeGlot country-rules and PayPal-clause spot-check, extension, 2026-11-10
 
+**Date note.** The machine clock showed 2026-11-09 during the whole run. Wherever this file says 2026-11-10, that is the label chosen for the draw (it is also the random seed), not a separate calendar date, and no page was read after 2026-11-09 by that clock.
+
 **What this is.** A second, larger sample drawn after judges flagged thin coverage. It extends `RULES_SPOTCHECK_20261108.md` (48 rules) and `PAYPAL_CLAUSES_SPOTCHECK_20261108.md` (24 clauses) with **64 more country rules** and **24 more PayPal clauses**, disjoint from the first draw. Dataset: `paypal_country_rules_v1.json` (rules retrieved 2026-11-02), read-only; nothing in it was modified. Fetch dates: 2026-11-09 and 2026-11-10 (the machine clock showed 2026-11-09 during the run). No PayPal API call, no login, no credential read.
 
 **Who compared.** Every verdict below is **the author's (Claude) reading** of the located source passage. **Gemini was not run**: the project's Gemini worker needs the owner's Vertex project or API key and bills the owner, and this session was not set up to use it. A ready-to-paste prompt for the owner was written instead (internal file, see section 6). When the owner returns Gemini's verdicts, they can be added as a second reader next to these rows. A human has not re-read these rows.

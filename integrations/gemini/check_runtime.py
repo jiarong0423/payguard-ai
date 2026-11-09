@@ -20,7 +20,7 @@ EXPECTED_LOCK_SHA256 = "36554331392d6102519a4ead5778704c4ff89e79da6bb9d6648b656f
 EXPECTED_INVENTORY_COUNT = 25
 PROJECT_MARKERS = {
     'backend/app/ai_brief.py': '70fde0fb3bf5f551dab9bb6edfef9854780db62c0e05f173232c8f232e4b4fd7',
-    'backend/app/main.py': '075d2be5f27b6040eb98fb119d91668652292419d08c5843ff911f6aa9c8ec7a',
+    'backend/app/main.py': 'eb984c4c4dc36fdca3c3c3394a777c3383fa2fc17f67dd8bc06b84f777230e10',
     'backend/app/store.py': '26542fe3073284a429656187c45de756c28b9783293daf853926b82b23f37957',
     'integrations/gemini/run.sh': '6f276cb1cbe6905a5d04e8c107afb83487fd0898c2ab405da28fc8ee18979203',
     'integrations/gemini/worker.py': '6159d3bf1e18100a7fce720bbbca47aabfeb6bc6f2b843404eeb981dd34f4ca1',

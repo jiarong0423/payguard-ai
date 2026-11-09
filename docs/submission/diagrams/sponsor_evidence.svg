@@ -1,95 +1,95 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" font-family="Helvetica, Arial, sans-serif">
-<!-- Sponsor evidence map, 2026-11-09. Every line is backed by the file named on its card. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" font-family="Helvetica, Arial, sans-serif" role="img" aria-labelledby="se-t se-d">
+<title id="se-t">TradeGlot: what ran, per sponsor</title>
+<desc id="se-d">Ten cards, one per sponsor tool, each naming the file that holds its evidence, including PayPal's official MCP server (one read-only run).</desc>
+<!-- Sponsor evidence map, 2026-11-09 r10. Every line is backed by the file named on its card. -->
 <rect width="1920" height="1080" fill="#faf5ec"/>
-<text x="80" y="104" font-size="56" font-weight="700" fill="#1f1d1a">TradeGlot: what ran, per sponsor</text>
-<text x="80" y="150" font-size="26" fill="#5c574f">Each card names the file that holds the evidence. Sandbox and synthetic data only; PayPal decides every outcome.</text>
-<rect x="80" y="196" width="420" height="370" rx="16" fill="#ffffff" stroke="#3b6b4a" stroke-width="3"/>
-<rect x="80" y="196" width="420" height="14" rx="7" fill="#3b6b4a"/>
-<text x="106" y="258" font-size="32" font-weight="700" fill="#1f1d1a">PayPal Sandbox</text>
-<text x="106" y="308" font-size="22" fill="#2c2a26">5 evidence sends, each after one</text>
-<text x="106" y="338" font-size="22" fill="#2c2a26">human approval</text>
-<text x="106" y="378" font-size="22" fill="#2c2a26">2 byte-compared with PayPal's</text>
-<text x="106" y="408" font-size="22" fill="#2c2a26">stored file</text>
-<text x="106" y="448" font-size="22" fill="#2c2a26">Hosted demo: read-only reads</text>
-<text x="106" y="478" font-size="22" fill="#2c2a26">(writes refused)</text>
-<line x1="106" y1="504" x2="474" y2="504" stroke="#d9d2c4"/>
-<text x="106" y="534" font-size="17" fill="#3b6b4a" font-family="Menlo, Courier New, monospace">docs/evidence/READBACK_20261109.md</text>
-<rect x="540" y="196" width="420" height="370" rx="16" fill="#ffffff" stroke="#3b6b4a" stroke-width="3"/>
-<rect x="540" y="196" width="420" height="14" rx="7" fill="#3b6b4a"/>
-<text x="566" y="258" font-size="32" font-weight="700" fill="#1f1d1a">PayPal MCP</text>
-<text x="566" y="308" font-size="22" fill="#2c2a26">Read-only MCP server, five tools,</text>
-<text x="566" y="338" font-size="22" fill="#2c2a26">no send tool</text>
-<text x="566" y="378" font-size="22" fill="#2c2a26">Official MCP client check: 9 of 9</text>
-<text x="566" y="408" font-size="22" fill="#2c2a26">PASS</text>
-<text x="566" y="448" font-size="22" fill="#2c2a26">Not in the product path</text>
-<line x1="566" y1="504" x2="934" y2="504" stroke="#d9d2c4"/>
-<text x="566" y="534" font-size="17" fill="#3b6b4a" font-family="Menlo, Courier New, monospace">docs/MCP_SERVER.md</text>
-<rect x="1000" y="196" width="420" height="370" rx="16" fill="#ffffff" stroke="#b5481f" stroke-width="3"/>
-<rect x="1000" y="196" width="420" height="14" rx="7" fill="#b5481f"/>
-<text x="1026" y="258" font-size="32" font-weight="700" fill="#1f1d1a">Render</text>
-<text x="1026" y="308" font-size="22" fill="#2c2a26">Hosted demo (free web service)</text>
-<text x="1026" y="348" font-size="22" fill="#2c2a26">Workflows: one manual run, 4.2 s,</text>
-<text x="1026" y="378" font-size="22" fill="#2c2a26">receipt ok</text>
-<text x="1026" y="418" font-size="22" fill="#2c2a26">Not scheduled; no nightly claim</text>
-<line x1="1026" y1="504" x2="1394" y2="504" stroke="#d9d2c4"/>
-<text x="1026" y="523" font-size="17" fill="#b5481f" font-family="Menlo, Courier New, monospace"></text>
-<text x="1026" y="536" font-size="17" fill="#b5481f" font-family="Menlo, Courier New, monospace">docs/evidence/</text>
-<text x="1026" y="558" font-size="17" fill="#b5481f" font-family="Menlo, Courier New, monospace">RENDER_WORKFLOW_RUN_20261109.md</text>
-<rect x="1460" y="196" width="420" height="370" rx="16" fill="#ffffff" stroke="#4338ca" stroke-width="3"/>
-<rect x="1460" y="196" width="420" height="14" rx="7" fill="#4338ca"/>
-<text x="1486" y="258" font-size="32" font-weight="700" fill="#1f1d1a">AG Grid, Charts, Studio</text>
-<text x="1486" y="308" font-size="22" fill="#2c2a26">Tables and charts in the 3-step</text>
-<text x="1486" y="338" font-size="22" fill="#2c2a26">console</text>
-<text x="1486" y="378" font-size="22" fill="#2c2a26">Evidence dashboard with built-in</text>
-<text x="1486" y="408" font-size="22" fill="#2c2a26">agents</text>
-<text x="1486" y="448" font-size="22" fill="#2c2a26">Agents run locally; hosted replays</text>
-<text x="1486" y="478" font-size="22" fill="#2c2a26">one run</text>
-<line x1="1486" y1="504" x2="1854" y2="504" stroke="#d9d2c4"/>
-<text x="1486" y="534" font-size="17" fill="#4338ca" font-family="Menlo, Courier New, monospace">docs/AG_STUDIO_NOTES.md</text>
-<rect x="80" y="600" width="420" height="370" rx="16" fill="#ffffff" stroke="#4338ca" stroke-width="3"/>
-<rect x="80" y="600" width="420" height="14" rx="7" fill="#4338ca"/>
-<text x="106" y="662" font-size="32" font-weight="700" fill="#1f1d1a">Bryntum Scheduler</text>
-<text x="106" y="712" font-size="22" fill="#2c2a26">Evidence deadline board, one row</text>
-<text x="106" y="742" font-size="22" fill="#2c2a26">per case</text>
-<text x="106" y="782" font-size="22" fill="#2c2a26">Case data read only; Community</text>
-<text x="106" y="812" font-size="22" fill="#2c2a26">tier</text>
-<text x="106" y="852" font-size="22" fill="#2c2a26">Board built into step 03</text>
-<line x1="106" y1="908" x2="474" y2="908" stroke="#d9d2c4"/>
-<text x="106" y="938" font-size="17" fill="#4338ca" font-family="Menlo, Courier New, monospace">README: Evidence deadline board</text>
-<rect x="540" y="600" width="420" height="370" rx="16" fill="#ffffff" stroke="#6b6b6b" stroke-width="3"/>
-<rect x="540" y="600" width="420" height="14" rx="7" fill="#6b6b6b"/>
-<text x="566" y="662" font-size="32" font-weight="700" fill="#1f1d1a">Channel3</text>
-<text x="566" y="712" font-size="22" fill="#2c2a26">10 real product searches, all HTTP</text>
-<text x="566" y="742" font-size="22" fill="#2c2a26">200</text>
-<text x="566" y="782" font-size="22" fill="#2c2a26">Receipts: time, latency, cards,</text>
-<text x="566" y="812" font-size="22" fill="#2c2a26">reply hash</text>
-<text x="566" y="852" font-size="22" fill="#2c2a26">Product card never changes the</text>
-<text x="566" y="882" font-size="22" fill="#2c2a26">policy decision</text>
-<line x1="566" y1="908" x2="934" y2="908" stroke="#d9d2c4"/>
-<text x="566" y="927" font-size="17" fill="#6b6b6b" font-family="Menlo, Courier New, monospace"></text>
-<text x="566" y="940" font-size="17" fill="#6b6b6b" font-family="Menlo, Courier New, monospace">docs/evidence/</text>
-<text x="566" y="962" font-size="17" fill="#6b6b6b" font-family="Menlo, Courier New, monospace">channel3_receipts_20261109.json</text>
-<rect x="1000" y="600" width="420" height="370" rx="16" fill="#ffffff" stroke="#4338ca" stroke-width="3"/>
-<rect x="1000" y="600" width="420" height="14" rx="7" fill="#4338ca"/>
-<text x="1026" y="662" font-size="32" font-weight="700" fill="#1f1d1a">APIMatic</text>
-<text x="1026" y="712" font-size="22" fill="#2c2a26">OpenAPI check: 345 errors fixed, 0</text>
-<text x="1026" y="742" font-size="22" fill="#2c2a26">left</text>
-<text x="1026" y="782" font-size="22" fill="#2c2a26">Portal, llms.txt and 7 SDKs</text>
-<text x="1026" y="812" font-size="22" fill="#2c2a26">generated locally</text>
-<text x="1026" y="852" font-size="22" fill="#2c2a26">Nothing published</text>
-<line x1="1026" y1="908" x2="1394" y2="908" stroke="#d9d2c4"/>
-<text x="1026" y="927" font-size="17" fill="#4338ca" font-family="Menlo, Courier New, monospace"></text>
-<text x="1026" y="940" font-size="17" fill="#4338ca" font-family="Menlo, Courier New, monospace">docs/evidence/</text>
-<text x="1026" y="962" font-size="17" fill="#4338ca" font-family="Menlo, Courier New, monospace">APIMATIC_RUN_20261109.md</text>
-<rect x="1460" y="600" width="420" height="370" rx="16" fill="#ffffff" stroke="#b5481f" stroke-width="3"/>
-<rect x="1460" y="600" width="420" height="14" rx="7" fill="#b5481f"/>
-<text x="1486" y="662" font-size="32" font-weight="700" fill="#1f1d1a">Postman</text>
-<text x="1486" y="712" font-size="22" fill="#2c2a26">Collection of 37 requests imported</text>
-<text x="1486" y="752" font-size="22" fill="#2c2a26">Newman run: 10 requests, 19</text>
-<text x="1486" y="782" font-size="22" fill="#2c2a26">assertions, 0 failed</text>
-<text x="1486" y="822" font-size="22" fill="#2c2a26">27 requests not run (bodies or</text>
-<text x="1486" y="852" font-size="22" fill="#2c2a26">writes)</text>
-<line x1="1486" y1="908" x2="1854" y2="908" stroke="#d9d2c4"/>
-<text x="1486" y="929" font-size="17" fill="#b5481f" font-family="Menlo, Courier New, monospace">docs/evidence/</text>
-<text x="1486" y="951" font-size="17" fill="#b5481f" font-family="Menlo, Courier New, monospace">POSTMAN_RUN_20261109.md</text>
+<text x="60" y="64" font-size="48" fill="#1f1d1a" font-weight="700">TradeGlot: what ran, per sponsor</text>
+<text x="60" y="102" font-size="22" fill="#5c574f">Each card names the file that holds the evidence (in docs/evidence/ unless a path is shown). Sandbox and synthetic data only.</text>
+<rect x="60" y="128" width="580" height="222" rx="16" fill="#ffffff" stroke="#3b6b4a" stroke-width="3"/>
+<rect x="60" y="128" width="580" height="12" rx="6" fill="#3b6b4a"/>
+<text x="84" y="178" font-size="30" fill="#1f1d1a" font-weight="700">PayPal Sandbox</text>
+<text x="84" y="216" font-size="22" fill="#2c2a26">5 evidence sends, one human approval each</text>
+<text x="84" y="245" font-size="22" fill="#2c2a26">2 byte-compared with PayPal's stored file</text>
+<text x="84" y="274" font-size="22" fill="#2c2a26">Hosted demo: read-only, writes refused</text>
+<line x1="84" y1="286" x2="616" y2="286" stroke="#d9d2c4"/>
+<text x="84" y="312" font-size="22" fill="#3b6b4a" font-family="Menlo, Courier New, monospace">READBACK_20261109.md</text>
+<rect x="670" y="128" width="580" height="222" rx="16" fill="#ffffff" stroke="#3b6b4a" stroke-width="3"/>
+<rect x="670" y="128" width="580" height="12" rx="6" fill="#3b6b4a"/>
+<text x="694" y="178" font-size="30" fill="#1f1d1a" font-weight="700">PayPal's official MCP server</text>
+<text x="694" y="216" font-size="22" fill="#2c2a26">PayPal's own server, run once, read-only</text>
+<text x="694" y="245" font-size="22" fill="#2c2a26">2 dispute tools; 8 test disputes listed</text>
+<text x="694" y="274" font-size="22" fill="#2c2a26">Not in the product path; no write tool</text>
+<line x1="694" y1="286" x2="1226" y2="286" stroke="#d9d2c4"/>
+<text x="694" y="312" font-size="22" fill="#3b6b4a" font-family="Menlo, Courier New, monospace">OFFICIAL_PAYPAL_MCP_RUN_20261109.md</text>
+<rect x="1280" y="128" width="580" height="222" rx="16" fill="#ffffff" stroke="#3b6b4a" stroke-width="3"/>
+<rect x="1280" y="128" width="580" height="12" rx="6" fill="#3b6b4a"/>
+<text x="1304" y="178" font-size="30" fill="#1f1d1a" font-weight="700">Our own MCP server</text>
+<text x="1304" y="216" font-size="22" fill="#2c2a26">Read-only server, five tools, no send tool</text>
+<text x="1304" y="245" font-size="22" fill="#2c2a26">Official MCP client check: 9 of 9 PASS</text>
+<text x="1304" y="274" font-size="22" fill="#2c2a26">Not PayPal's server; not in product path</text>
+<line x1="1304" y1="286" x2="1836" y2="286" stroke="#d9d2c4"/>
+<text x="1304" y="312" font-size="22" fill="#3b6b4a" font-family="Menlo, Courier New, monospace">docs/MCP_SERVER.md</text>
+<rect x="60" y="360" width="580" height="222" rx="16" fill="#ffffff" stroke="#b5481f" stroke-width="3"/>
+<rect x="60" y="360" width="580" height="12" rx="6" fill="#b5481f"/>
+<text x="84" y="410" font-size="30" fill="#1f1d1a" font-weight="700">Render</text>
+<text x="84" y="448" font-size="22" fill="#2c2a26">Hosted demo (free web service)</text>
+<text x="84" y="477" font-size="22" fill="#2c2a26">Workflows: one manual run, 4.2 s, receipt ok</text>
+<text x="84" y="506" font-size="22" fill="#2c2a26">Not scheduled; no nightly claim</text>
+<line x1="84" y1="518" x2="616" y2="518" stroke="#d9d2c4"/>
+<text x="84" y="544" font-size="22" fill="#b5481f" font-family="Menlo, Courier New, monospace">RENDER_WORKFLOW_RUN_20261109.md</text>
+<rect x="670" y="360" width="580" height="222" rx="16" fill="#ffffff" stroke="#4338ca" stroke-width="3"/>
+<rect x="670" y="360" width="580" height="12" rx="6" fill="#4338ca"/>
+<text x="694" y="410" font-size="30" fill="#1f1d1a" font-weight="700">AG Grid, Charts, Studio</text>
+<text x="694" y="448" font-size="22" fill="#2c2a26">Tables and charts in the 3-step console</text>
+<text x="694" y="477" font-size="22" fill="#2c2a26">Evidence dashboard with built-in agents</text>
+<text x="694" y="506" font-size="22" fill="#2c2a26">Agents run locally; hosted replays one run</text>
+<line x1="694" y1="518" x2="1226" y2="518" stroke="#d9d2c4"/>
+<text x="694" y="544" font-size="22" fill="#4338ca" font-family="Menlo, Courier New, monospace">AG_GRID_USAGE.md</text>
+<text x="694" y="569" font-size="22" fill="#4338ca" font-family="Menlo, Courier New, monospace">docs/AG_STUDIO_NOTES.md</text>
+<rect x="1280" y="360" width="580" height="222" rx="16" fill="#ffffff" stroke="#4338ca" stroke-width="3"/>
+<rect x="1280" y="360" width="580" height="12" rx="6" fill="#4338ca"/>
+<text x="1304" y="410" font-size="30" fill="#1f1d1a" font-weight="700">Bryntum Scheduler</text>
+<text x="1304" y="448" font-size="22" fill="#2c2a26">Evidence deadline board, one row per case</text>
+<text x="1304" y="477" font-size="22" fill="#2c2a26">Case data read only; Community tier</text>
+<text x="1304" y="506" font-size="22" fill="#2c2a26">Board built into step 03</text>
+<line x1="1304" y1="518" x2="1836" y2="518" stroke="#d9d2c4"/>
+<text x="1304" y="544" font-size="22" fill="#4338ca" font-family="Menlo, Courier New, monospace">docs/BRYNTUM_LICENSE_CHECK.md</text>
+<rect x="60" y="592" width="580" height="222" rx="16" fill="#ffffff" stroke="#6b6b6b" stroke-width="3"/>
+<rect x="60" y="592" width="580" height="12" rx="6" fill="#6b6b6b"/>
+<text x="84" y="642" font-size="30" fill="#1f1d1a" font-weight="700">Channel3</text>
+<text x="84" y="680" font-size="22" fill="#2c2a26">10 real product searches, all HTTP 200</text>
+<text x="84" y="709" font-size="22" fill="#2c2a26">Receipts: time, latency, cards, reply hash</text>
+<text x="84" y="738" font-size="22" fill="#2c2a26">Product card never changes the decision</text>
+<line x1="84" y1="750" x2="616" y2="750" stroke="#d9d2c4"/>
+<text x="84" y="776" font-size="22" fill="#6b6b6b" font-family="Menlo, Courier New, monospace">channel3_receipts_20261109.json</text>
+<rect x="670" y="592" width="580" height="222" rx="16" fill="#ffffff" stroke="#4338ca" stroke-width="3"/>
+<rect x="670" y="592" width="580" height="12" rx="6" fill="#4338ca"/>
+<text x="694" y="642" font-size="30" fill="#1f1d1a" font-weight="700">APIMatic</text>
+<text x="694" y="680" font-size="22" fill="#2c2a26">OpenAPI check: 345 errors fixed, 0 left</text>
+<text x="694" y="709" font-size="22" fill="#2c2a26">Portal, llms.txt and 7 SDKs made locally</text>
+<text x="694" y="738" font-size="22" fill="#2c2a26">Nothing published</text>
+<line x1="694" y1="750" x2="1226" y2="750" stroke="#d9d2c4"/>
+<text x="694" y="776" font-size="22" fill="#4338ca" font-family="Menlo, Courier New, monospace">APIMATIC_RUN_20261109.md</text>
+<rect x="1280" y="592" width="580" height="222" rx="16" fill="#ffffff" stroke="#b5481f" stroke-width="3"/>
+<rect x="1280" y="592" width="580" height="12" rx="6" fill="#b5481f"/>
+<text x="1304" y="642" font-size="30" fill="#1f1d1a" font-weight="700">Postman</text>
+<text x="1304" y="680" font-size="22" fill="#2c2a26">Collection of 37 requests imported</text>
+<text x="1304" y="709" font-size="22" fill="#2c2a26">Newman: 10 requests, 19 assertions, 0 failed</text>
+<text x="1304" y="738" font-size="22" fill="#2c2a26">27 requests not run (bodies or writes)</text>
+<line x1="1304" y1="750" x2="1836" y2="750" stroke="#d9d2c4"/>
+<text x="1304" y="776" font-size="22" fill="#b5481f" font-family="Menlo, Courier New, monospace">POSTMAN_RUN_20261109.md</text>
+<rect x="60" y="824" width="580" height="222" rx="16" fill="#ffffff" stroke="#4338ca" stroke-width="3"/>
+<rect x="60" y="824" width="580" height="12" rx="6" fill="#4338ca"/>
+<text x="84" y="874" font-size="30" fill="#1f1d1a" font-weight="700">Gemini</text>
+<text x="84" y="912" font-size="22" fill="#2c2a26">Guide field matching: 36 live calls, 0 errors</text>
+<text x="84" y="941" font-size="22" fill="#2c2a26">Precision 1.00 on 12 calls per situation</text>
+<text x="84" y="970" font-size="22" fill="#2c2a26">Evidence brief: one live run, local only</text>
+<line x1="84" y1="982" x2="616" y2="982" stroke="#d9d2c4"/>
+<text x="84" y="1008" font-size="22" fill="#4338ca" font-family="Menlo, Courier New, monospace">GEMINI_GUIDE_RUNS_20261103.md</text>
+<text x="84" y="1033" font-size="22" fill="#4338ca" font-family="Menlo, Courier New, monospace">BRIEF_LIVE_RUN_20261109.md</text>
+<rect x="670" y="824" width="1190" height="222" rx="16" fill="#fff3ea" stroke="#b5481f" stroke-width="3" stroke-dasharray="10,8"/>
+<text x="694" y="874" font-size="30" fill="#b5481f" font-weight="700">What this page does not claim</text>
+<text x="694" y="922" font-size="22" fill="#2c2a26">No benchmark and no production use.</text>
+<text x="694" y="956" font-size="22" fill="#2c2a26">Postman, Render and the official MCP: one run each.</text>
+<text x="694" y="990" font-size="22" fill="#2c2a26">Nothing was published. PayPal decides every outcome.</text>
 </svg>

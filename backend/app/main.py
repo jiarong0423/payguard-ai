@@ -372,6 +372,11 @@ class LocalBoundaryMiddleware:
                 # X-Frame-Options covers browsers without CSP level 2.
                 response_headers.extend([(b"content-security-policy", b"frame-ancestors 'self'"),
                                          (b"x-frame-options", b"SAMEORIGIN")])
+                if self._proxied_public_request(header):
+                    # Hosted public mode only (the proxied https request for the one configured host). No
+                    # includeSubDomains and no preload: the onrender.com parent domain is not ours. Local mode
+                    # (http on loopback) never receives this header.
+                    response_headers.append((b"strict-transport-security", b"max-age=31536000"))
                 if origin in allowed_origins:
                     response_headers.extend([(b"access-control-allow-origin", origin.encode()), (b"vary", b"Origin")])
                 message["headers"] = response_headers

@@ -87,7 +87,7 @@ const dashboard = read('frontend/src/dashboard/main.jsx');
   for (const id of ['aup-review', 'country-check', 'country-continue-draft', 'demo-burst', 'dispute-draft', 'dispute-approve', 'invoice-create', 'sandbox-connect']) {
     assert.ok(rule.includes(`[data-testid="${id}"])::after`) || rule.includes(`[data-testid="${id}"], `), `hint for ${id}`);
   }
-  for (const part of ['content: "Use the button at the bottom ↓";', 'position: absolute; inset: 0;', 'visibility: visible; pointer-events: none;', 'color: var(--pg-color-muted);']) {
+  for (const part of ['content: "Your next step is in the bar below";', 'position: absolute; inset: 0;', 'visibility: visible; pointer-events: none;', 'color: var(--pg-color-muted);']) {
     assert.ok(rule.includes(part), part);
   }
   assert.equal(/::after\s*\{[^}]*(height|margin|padding-block|display:\s*block)/u.test(rule.replace('padding: 0 2px;', '')), false, 'no size change of the kept space');

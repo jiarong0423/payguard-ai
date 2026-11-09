@@ -20,7 +20,7 @@ const labels = {
   RESOLVED: 'Resolved',
   CLOSED: 'Closed',
   UNKNOWN: 'Needs review',
-  INQUIRY: 'Inquiry',
+  INQUIRY: 'Buyer asked a question',
   CHARGEBACK: 'Chargeback',
   PRE_ARBITRATION: 'Pre-arbitration',
   ARBITRATION: 'Arbitration',
