@@ -4,11 +4,14 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Country Rules Countries. Local console route GET /api/v1/country-rules/countries on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def get_country_rules_countries(self)
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/getting-started/how-to-get-started/authorization.md)
 
 
 # Response Type

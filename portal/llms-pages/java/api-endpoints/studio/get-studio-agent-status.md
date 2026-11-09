@@ -4,11 +4,14 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0Z
 
 Studio Agent Status. Local console route GET /api/v1/studio/agent-status on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```java
 CompletableFuture<Object> getStudioAgentStatusAsync()
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/getting-started/how-to-get-started/authorization.md)
 
 
 # Response Type

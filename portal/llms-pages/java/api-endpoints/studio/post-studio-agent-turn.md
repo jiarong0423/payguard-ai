@@ -4,19 +4,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0Z
 
 Studio Agent Turn. Local console route POST /api/v1/studio/agent-turn on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```java
 CompletableFuture<Object> postStudioAgentTurnAsync(
     final Object body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/getting-started/how-to-get-started/authorization.md) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/getting-started/how-to-get-started/authorization.md)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | `Object` | Body, Required | - |
+| `body` | `Object` | Body, Required | JSON body for: Studio Agent Turn. |
 
 
 # Response Type
@@ -29,7 +32,7 @@ CompletableFuture<Object> postStudioAgentTurnAsync(
 # Example Usage
 
 ```java
-Object body = ApiHelper.deserialize("{\"key1\":\"val1\",\"key2\":\"val2\"}");
+Object body = ApiHelper.deserialize("{}");
 
 studioController.postStudioAgentTurnAsync(body).thenAccept(result -> {
     // TODO success callback handler
@@ -40,9 +43,6 @@ studioController.postStudioAgentTurnAsync(body).thenAccept(result -> {
     if (cause instanceof ErrorBodyException) {
         ErrorBodyException errorBodyException = (ErrorBodyException) cause;
         errorBodyException.printStackTrace();
-    } else if (cause instanceof HTTPValidationErrorException) {
-        HTTPValidationErrorException hTTPValidationErrorException = (HTTPValidationErrorException) cause;
-        hTTPValidationErrorException.printStackTrace();
     } else {
         // fallback for unexpected errors
         exception.printStackTrace();
@@ -58,8 +58,10 @@ studioController.postStudioAgentTurnAsync(body).thenAccept(result -> {
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/error-body.md) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/http-validation-error.md) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/error-body.md) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/error-body.md) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/error-body.md) |
+| 503 | Hosted demo only: this route makes no provider call (hosted_demo_disabled). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/error-body.md) |
 
 
 

@@ -4,11 +4,14 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0Z
 
 State. Local console route GET /api/v1/demo/state on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```ruby
 def get_demo_state
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/getting-started/how-to-get-started/authorization.md)
 
 
 # Response Type

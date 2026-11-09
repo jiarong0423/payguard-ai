@@ -33,6 +33,7 @@ ProvideEvidenceResponse.
 | `providerSubmission` | [`ProviderSubmissionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/provider-submission.md) | Required | Provider submission. |
 | `readback` | [`Readback1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/readback-1.md) | Required | Readback. |
 | `sendGuard` | [`SendGuard`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/send-guard.md) | Required | (r25 send guard) What a send carries and to whom, side by side; every account id is masked (first 2, last 4). |
+| `sentFiles` | [`ProvideEvidenceResponseSentFiles \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/provide-evidence-response-sent-files.md) | Optional | This is a container for any-of cases. |
 | `source` | [`SourceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/source.md) | Required | Source. |
 | `submitFlagEnabled` | `boolean` | Required | Submit flag enabled. |
 
@@ -110,6 +111,26 @@ const provideEvidenceResponse: ProvideEvidenceResponse = {
   confirmToken: 'String9',
   payloadSha256: 'String9',
   paypalDebugId: 'String9',
+  sentFiles: [
+    {
+    byteLength: 196,
+    contentType: ContentTypeEnum.EnumImagepng,
+    filename: 'filename6',
+    sha256: 'sha2566',
+  },
+    {
+    byteLength: 196,
+    contentType: ContentTypeEnum.EnumImagepng,
+    filename: 'filename6',
+    sha256: 'sha2566',
+  },
+    {
+    byteLength: 196,
+    contentType: ContentTypeEnum.EnumImagepng,
+    filename: 'filename6',
+    sha256: 'sha2566',
+  }
+  ],
 };
 ```
 

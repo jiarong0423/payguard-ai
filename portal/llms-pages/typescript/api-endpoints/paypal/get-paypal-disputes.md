@@ -4,13 +4,16 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect
 
 List Disputes. Local console route GET /api/v1/paypal/disputes on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```ts
 async getPaypalDisputes(
   requestOptions?: RequestOptions
 ): Promise<ApiResponse<DisputeListResponse>>
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/getting-started/how-to-get-started/authorization.md)
 
 
 # Parameters

@@ -15,7 +15,7 @@ def post_demo_sessions(body)
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | `Object` | Body, Required | - |
+| `body` | `Object` | Body, Required | JSON body for: New Session. |
 
 
 # Response Type
@@ -28,10 +28,22 @@ def post_demo_sessions(body)
 # Example Usage
 
 ```ruby
-body = { 'key1' => 'val1', 'key2' => 'val2' }
+body = {  }
 
 result = demo_controller.post_demo_sessions(body)
 puts result
+```
+
+
+# Example Response *(as JSON)*
+
+```json
+{
+  "csrf_token": "csrf-example-0001",
+  "expires_at": "2026-10-07T10:30:00Z",
+  "session_id": "sess-example-0001",
+  "source": "synthetic"
+}
 ```
 
 
@@ -40,7 +52,7 @@ puts result
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/exceptions/error-body.md) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/exceptions/http-validation-error.md) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/exceptions/error-body.md) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/exceptions/error-body.md) |
 
 

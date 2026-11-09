@@ -33,6 +33,7 @@ ProvideEvidenceResponse.
 | `provider_submission` | [`ProviderSubmissionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/provider-submission.md) | Required | Provider submission. |
 | `readback` | [`Readback1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/readback-1.md) | Required | Readback. |
 | `send_guard` | [`SendGuard`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/send-guard.md) | Required | (r25 send guard) What a send carries and to whom, side by side; every account id is masked (first 2, last 4). |
+| `sent_files` | Array[[SentFileFingerprint](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/sent-file-fingerprint.md)] \| nil | Optional | This is a container for any-of cases. |
 | `source` | [`SourceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/source.md) | Required | Source. |
 | `submit_flag_enabled` | `TrueClass \| FalseClass` | Required | Submit flag enabled. |
 
@@ -96,7 +97,15 @@ provide_evidence_response = ProvideEvidenceResponse.new(
   false,
   'String1',
   'String1',
-  'String1'
+  'String1',
+  [
+    SentFileFingerprint.new(
+      196,
+      ContentTypeEnum::ENUM_IMAGEPNG,
+      'filename6',
+      'sha2566'
+    )
+  ]
 )
 ```
 

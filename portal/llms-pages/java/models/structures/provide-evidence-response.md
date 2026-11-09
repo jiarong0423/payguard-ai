@@ -33,6 +33,7 @@ ProvideEvidenceResponse.
 | `ProviderSubmission` | [`ProviderSubmissionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/provider-submission.md) | Required | Provider submission. | ProviderSubmissionEnum getProviderSubmission() | setProviderSubmission(ProviderSubmissionEnum providerSubmission) |
 | `Readback` | [`Readback1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/readback-1.md) | Required | Readback. | Readback1Enum getReadback() | setReadback(Readback1Enum readback) |
 | `SendGuard` | [`SendGuard`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/send-guard.md) | Required | (r25 send guard) What a send carries and to whom, side by side; every account id is masked (first 2, last 4). | SendGuard getSendGuard() | setSendGuard(SendGuard sendGuard) |
+| `SentFiles` | [`ProvideEvidenceResponseSentFiles`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/provide-evidence-response-sent-files.md) | Optional | This is a container for any-of cases. | ProvideEvidenceResponseSentFiles getSentFiles() | setSentFiles(ProvideEvidenceResponseSentFiles sentFiles) |
 | `Source` | [`SourceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/source.md) | Required | Source. | SourceEnum getSource() | setSource(SourceEnum source) |
 | `SubmitFlagEnabled` | `boolean` | Required | Submit flag enabled. | boolean getSubmitFlagEnabled() | setSubmitFlagEnabled(boolean submitFlagEnabled) |
 
@@ -56,11 +57,13 @@ import m18000.m0.m0.m127.models.ProviderMoney;
 import m18000.m0.m0.m127.models.ProviderSubmissionEnum;
 import m18000.m0.m0.m127.models.Readback1Enum;
 import m18000.m0.m0.m127.models.SendGuard;
+import m18000.m0.m0.m127.models.SentFileFingerprint;
 import m18000.m0.m0.m127.models.SourceEnum;
 import m18000.m0.m0.m127.models.TrackingInfo;
 import m18000.m0.m0.m127.models.containers.ProvideEvidenceResponseConfirmToken;
 import m18000.m0.m0.m127.models.containers.ProvideEvidenceResponsePayloadSha256;
 import m18000.m0.m0.m127.models.containers.ProvideEvidenceResponsePaypalDebugId;
+import m18000.m0.m0.m127.models.containers.ProvideEvidenceResponseSentFiles;
 import m18000.m0.m0.m127.models.containers.SendGuardBoundDisputeMasked;
 import m18000.m0.m0.m127.models.containers.SendGuardCaseReason;
 import m18000.m0.m0.m127.models.containers.SendGuardDisputeAmount;
@@ -150,6 +153,31 @@ ProvideEvidenceResponse provideEvidenceResponse = new ProvideEvidenceResponse.Bu
     ))
 .paypalDebugId(ProvideEvidenceResponsePaypalDebugId.fromString(
         "String9"
+    ))
+.sentFiles(ProvideEvidenceResponseSentFiles.fromListOfSentFileFingerprint(
+        Arrays.asList(
+            new SentFileFingerprint.Builder(
+                196,
+                ContentTypeEnum.ENUM_IMAGEPNG,
+                "filename6",
+                "sha2566"
+            )
+            .build(),
+            new SentFileFingerprint.Builder(
+                196,
+                ContentTypeEnum.ENUM_IMAGEPNG,
+                "filename6",
+                "sha2566"
+            )
+            .build(),
+            new SentFileFingerprint.Builder(
+                196,
+                ContentTypeEnum.ENUM_IMAGEPNG,
+                "filename6",
+                "sha2566"
+            )
+            .build()
+        )
     ))
 .build();
 ```

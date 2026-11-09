@@ -4,11 +4,14 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Connections. Local console route GET /api/v1/connections on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def get_connections(self)
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/getting-started/how-to-get-started/authorization.md)
 
 
 # Response Type
@@ -23,6 +26,16 @@ def get_connections(self)
 ```python
 result = other_controller.get_connections()
 print(result)
+```
+
+
+# Example Response *(as JSON)*
+
+```json
+{
+  "mode": "hosted_demo",
+  "sandbox_reads": true
+}
 ```
 
 

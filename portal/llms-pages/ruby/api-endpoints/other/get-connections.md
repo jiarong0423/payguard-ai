@@ -4,11 +4,14 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0Z
 
 Connections. Local console route GET /api/v1/connections on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```ruby
 def get_connections
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/getting-started/how-to-get-started/authorization.md)
 
 
 # Response Type
@@ -23,6 +26,16 @@ def get_connections
 ```ruby
 result = other_controller.get_connections
 puts result
+```
+
+
+# Example Response *(as JSON)*
+
+```json
+{
+  "mode": "hosted_demo",
+  "sandbox_reads": true
+}
 ```
 
 

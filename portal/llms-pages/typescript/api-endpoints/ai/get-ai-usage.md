@@ -5,13 +5,16 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect
 (optimise r24) This session's AI calls: stage, model, tokens, latency, estimated cost. No prompt or reply
 text is ever stored; the hosted demo makes no model call and answers an empty list.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```ts
 async getAiUsage(
   requestOptions?: RequestOptions
 ): Promise<ApiResponse<AiUsageResponse>>
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/getting-started/how-to-get-started/authorization.md)
 
 
 # Parameters
@@ -55,6 +58,25 @@ try {
       console.log(error.result);
     }
   }
+}
+```
+
+
+# Example Response *(as JSON)*
+
+```json
+{
+  "cost_note": "example",
+  "entries": [
+    {
+      "at": "example",
+      "latency_ms": 0,
+      "outcome": "ok",
+      "stage": "source_compliance"
+    }
+  ],
+  "price_table_source": "example",
+  "source": "session_memory"
 }
 ```
 

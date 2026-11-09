@@ -4,8 +4,6 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0ZSU
 
 Get Dispute. Local console route GET /api/v1/paypal/disputes/{dispute_id} on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```go
 GetPaypalDisputesDisputeId(
     ctx context.Context,
@@ -13,6 +11,11 @@ GetPaypalDisputesDisputeId(
     models.ApiResponse[models.DisputeDetailResponse],
     error)
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/getting-started/how-to-get-started/authorization.md)
 
 
 # Parameters
@@ -34,15 +37,13 @@ This method returns an [`ApiResponse`](https://jiarong0423.github.io/payguard-ai
 ```go
 ctx := context.Background()
 
-disputeId := "dispute_id2"
+disputeId := "PP-R-BNP-XXXX7173"
 
 apiResponse, err := paypalController.GetPaypalDisputesDisputeId(ctx, disputeId)
 if err != nil {
     switch typedErr := err.(type) {
         case *errors.ErrorBody:
             log.Fatalln("ErrorBodyException: ", typedErr)
-        case *errors.HTTPValidationError:
-            log.Fatalln("HTTPValidationErrorException: ", typedErr)
         default:
             log.Fatalln(err)
     }
@@ -59,7 +60,7 @@ if err != nil {
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/exceptions/error-body.md) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/exceptions/http-validation-error.md) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/exceptions/error-body.md) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/exceptions/error-body.md) |
 
 

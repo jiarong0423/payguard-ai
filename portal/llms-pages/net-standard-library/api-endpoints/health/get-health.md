@@ -36,6 +36,18 @@ catch (ApiException e)
 ```
 
 
+# Example Response *(as JSON)*
+
+```json
+{
+  "mode": "demo",
+  "source": "synthetic",
+  "status": "ok",
+  "version": "0.0.0-example"
+}
+```
+
+
 # Errors
 
 | HTTP Status Code | Error Description | Exception Class |

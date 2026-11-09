@@ -33,6 +33,7 @@ ProvideEvidenceResponse.
 | `ProviderSubmission` | [`models.ProviderSubmissionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/provider-submission.md) | Required | Provider submission. |
 | `Readback` | [`models.Readback1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/readback-1.md) | Required | Readback. |
 | `SendGuard` | [`models.SendGuard`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/send-guard.md) | Required | (r25 send guard) What a send carries and to whom, side by side; every account id is masked (first 2, last 4). |
+| `SentFiles` | [`*models.ProvideEvidenceResponseSentFiles`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/provide-evidence-response-sent-files.md) | Optional | This is a container for any-of cases. |
 | `Source` | [`models.SourceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/source.md) | Required | Source. |
 | `SubmitFlagEnabled` | `bool` | Required | Submit flag enabled. |
 
@@ -102,6 +103,26 @@ func main() {
             DisputeReason:        models.ToPointer(models.SendGuardDisputeReasonContainer.FromString("String9")),
             DisputeSellerMasked:  models.ToPointer(models.SendGuardDisputeSellerMaskedContainer.FromString("String1")),
         },
+        SentFiles:           models.ToPointer(models.ProvideEvidenceResponseSentFilesContainer.FromArrayOfSentFileFingerprint([]models.SentFileFingerprint{
+            models.SentFileFingerprint{
+                ByteLength:  196,
+                ContentType: models.ContentTypeEnum_ENUMIMAGEPNG,
+                Filename:    "filename6",
+                Sha256:      "sha2566",
+            },
+            models.SentFileFingerprint{
+                ByteLength:  196,
+                ContentType: models.ContentTypeEnum_ENUMIMAGEPNG,
+                Filename:    "filename6",
+                Sha256:      "sha2566",
+            },
+            models.SentFileFingerprint{
+                ByteLength:  196,
+                ContentType: models.ContentTypeEnum_ENUMIMAGEPNG,
+                Filename:    "filename6",
+                Sha256:      "sha2566",
+            },
+        })),
         Source:              models.SourceEnum_PAYPALSANDBOX,
         SubmitFlagEnabled:   false,
     }

@@ -4,8 +4,6 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0ZSU
 
 Guide State. Local console route GET /api/v1/guide/state on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```go
 GetGuideState(
     ctx context.Context,
@@ -13,6 +11,11 @@ GetGuideState(
     models.ApiResponse[models.GuideStateResponse],
     error)
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/getting-started/how-to-get-started/authorization.md)
 
 
 # Parameters
@@ -34,13 +37,13 @@ This method returns an [`ApiResponse`](https://jiarong0423.github.io/payguard-ai
 ```go
 ctx := context.Background()
 
-apiResponse, err := guideController.GetGuideState(ctx, nil)
+scenario := models.GetGuideStateScenarioContainer.FromScenario1(models.Scenario1Enum_PREFLIGHT)
+
+apiResponse, err := guideController.GetGuideState(ctx, &scenario)
 if err != nil {
     switch typedErr := err.(type) {
         case *errors.ErrorBody:
             log.Fatalln("ErrorBodyException: ", typedErr)
-        case *errors.HTTPValidationError:
-            log.Fatalln("HTTPValidationErrorException: ", typedErr)
         default:
             log.Fatalln(err)
     }
@@ -57,7 +60,7 @@ if err != nil {
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/exceptions/error-body.md) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/exceptions/http-validation-error.md) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/exceptions/error-body.md) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/exceptions/error-body.md) |
 
 

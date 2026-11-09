@@ -18,7 +18,7 @@ async postDemoSessions(
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | `unknown` | Body, Required | - |
+| `body` | `unknown` | Body, Required | JSON body for: New Session. |
 | `requestOptions` | `RequestOptions \| undefined` | Optional | Pass additional request options. |
 
 
@@ -32,7 +32,7 @@ This method returns an [`ApiResponse`](https://jiarong0423.github.io/payguard-ai
 # Example Usage
 
 ```ts
-const body = { 'key1': 'val1', 'key2': 'val2' };
+const body = {  };
 
 try {
   const response = await demoController.postDemoSessions(body);
@@ -56,10 +56,20 @@ try {
     console.log(error.body);
     if (error instanceof ErrorBodyError) {
       console.log(error.result);
-    } else if (error instanceof HTTPValidationError) {
-      console.log(error.result);
     }
   }
+}
+```
+
+
+# Example Response *(as JSON)*
+
+```json
+{
+  "csrf_token": "csrf-example-0001",
+  "expires_at": "2026-10-07T10:30:00Z",
+  "session_id": "sess-example-0001",
+  "source": "synthetic"
 }
 ```
 
@@ -69,7 +79,7 @@ try {
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyError`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/exceptions/error-body.md) |
-| 422 | Validation Error | [`HTTPValidationError`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/exceptions/http-validation-error.md) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyError`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/exceptions/error-body.md) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyError`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/exceptions/error-body.md) |
 
 

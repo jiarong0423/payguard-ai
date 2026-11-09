@@ -33,6 +33,8 @@ Values provided through arguments take precedence over those defined in environm
 ```python
 ENVIRONMENT=production
 
+DEMO_CSRF_X_CSRF_TOKEN=ExampleXCSRFToken
+DEMO_SESSION_X_DEMO_SESSION=ExampleXDemoSession
 
 TIMEOUT=60
 MAX_RETRIES=3

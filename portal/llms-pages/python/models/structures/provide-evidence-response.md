@@ -33,6 +33,7 @@ ProvideEvidenceResponse.
 | `provider_submission` | [`ProviderSubmissionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/provider-submission.md) | Required | Provider submission. |
 | `readback` | [`Readback1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/readback-1.md) | Required | Readback. |
 | `send_guard` | [`SendGuard`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/send-guard.md) | Required | (r25 send guard) What a send carries and to whom, side by side; every account id is masked (first 2, last 4). |
+| `sent_files` | List[[SentFileFingerprint](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/sent-file-fingerprint.md)] \| None | Optional | This is a container for any-of cases. |
 | `source` | [`SourceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/source.md) | Required | Source. |
 | `submit_flag_enabled` | `bool` | Required | Submit flag enabled. |
 
@@ -55,6 +56,7 @@ from tradeglotlocalconsole.models.provider_money import ProviderMoney
 from tradeglotlocalconsole.models.provider_submission_enum import ProviderSubmissionEnum
 from tradeglotlocalconsole.models.readback_1_enum import Readback1Enum
 from tradeglotlocalconsole.models.send_guard import SendGuard
+from tradeglotlocalconsole.models.sent_file_fingerprint import SentFileFingerprint
 from tradeglotlocalconsole.models.source_enum import SourceEnum
 from tradeglotlocalconsole.models.tracking_info import TrackingInfo
 
@@ -110,7 +112,15 @@ provide_evidence_response = ProvideEvidenceResponse(
     submit_flag_enabled=False,
     confirm_token='String1',
     payload_sha_256='String1',
-    paypal_debug_id='String1'
+    paypal_debug_id='String1',
+    sent_files=[
+        SentFileFingerprint(
+            byte_length=196,
+            content_type=ContentTypeEnum.ENUM_IMAGEPNG,
+            filename='filename6',
+            sha_256='sha2566'
+        )
+    ]
 )
 ```
 

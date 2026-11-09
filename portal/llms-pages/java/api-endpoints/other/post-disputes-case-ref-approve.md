@@ -4,8 +4,6 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0Z
 
 Approve. Local console route POST /api/v1/disputes/{case_ref}/approve on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```java
 CompletableFuture<DisputeApprovalResponse> postDisputesCaseRefApproveAsync(
     final String caseRef,
@@ -13,12 +11,17 @@ CompletableFuture<DisputeApprovalResponse> postDisputesCaseRefApproveAsync(
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/getting-started/how-to-get-started/authorization.md) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/getting-started/how-to-get-started/authorization.md)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `caseRef` | `String` | Template, Required | Case ref. |
-| `body` | [`ApproveRequest`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/approve-request.md) | Body, Required | - |
+| `body` | [`ApproveRequest`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/approve-request.md) | Body, Required | JSON body for: Approve. |
 
 
 # Response Type
@@ -31,7 +34,7 @@ CompletableFuture<DisputeApprovalResponse> postDisputesCaseRefApproveAsync(
 # Example Usage
 
 ```java
-String caseRef = "case_ref4";
+String caseRef = "case-ref-001";
 ApproveRequest body = new ApproveRequest.Builder(
     "draft_digest6"
 )
@@ -46,9 +49,6 @@ otherController.postDisputesCaseRefApproveAsync(caseRef, body).thenAccept(result
     if (cause instanceof ErrorBodyException) {
         ErrorBodyException errorBodyException = (ErrorBodyException) cause;
         errorBodyException.printStackTrace();
-    } else if (cause instanceof HTTPValidationErrorException) {
-        HTTPValidationErrorException hTTPValidationErrorException = (HTTPValidationErrorException) cause;
-        hTTPValidationErrorException.printStackTrace();
     } else {
         // fallback for unexpected errors
         exception.printStackTrace();
@@ -64,7 +64,8 @@ otherController.postDisputesCaseRefApproveAsync(caseRef, body).thenAccept(result
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/error-body.md) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/http-validation-error.md) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/error-body.md) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/error-body.md) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/error-body.md) |
 
 

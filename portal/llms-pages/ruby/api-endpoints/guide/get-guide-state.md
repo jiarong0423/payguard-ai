@@ -4,11 +4,14 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0Z
 
 Guide State. Local console route GET /api/v1/guide/state on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```ruby
 def get_guide_state(scenario: nil)
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/getting-started/how-to-get-started/authorization.md)
 
 
 # Parameters
@@ -28,7 +31,9 @@ def get_guide_state(scenario: nil)
 # Example Usage
 
 ```ruby
-result = guide_controller.get_guide_state
+scenario = Scenario1Enum::PREFLIGHT
+
+result = guide_controller.get_guide_state(scenario: scenario)
 puts result
 ```
 
@@ -38,7 +43,7 @@ puts result
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/exceptions/error-body.md) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/exceptions/http-validation-error.md) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/exceptions/error-body.md) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/exceptions/error-body.md) |
 
 

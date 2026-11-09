@@ -4,12 +4,15 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/
 
 Guide State. Local console route GET /api/v1/guide/state on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```csharp
 GetGuideStateAsync(
     GetGuideStateScenario scenario = null)
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/getting-started/how-to-get-started/authorization.md)
 
 
 # Parameters
@@ -29,9 +32,11 @@ GetGuideStateAsync(
 # Example Usage
 
 ```csharp
+GetGuideStateScenario scenario = GetGuideStateScenario.FromScenario1(Scenario1Enum.Preflight);
+
 try
 {
-    GuideStateResponse result = await guideController.GetGuideStateAsync();
+    GuideStateResponse result = await guideController.GetGuideStateAsync(scenario);
 }
 catch (ApiException e)
 {
@@ -39,10 +44,6 @@ catch (ApiException e)
     if (e is ErrorBodyException)
     {
        // TODO: Handle ErrorBodyException exception here
-    }
-    if (e is HTTPValidationErrorException)
-    {
-       // TODO: Handle HTTPValidationErrorException exception here
     }
 }
 ```
@@ -53,7 +54,7 @@ catch (ApiException e)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/exceptions/error-body.md) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/exceptions/http-validation-error.md) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/exceptions/error-body.md) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/exceptions/error-body.md) |
 
 

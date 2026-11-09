@@ -125,6 +125,7 @@
   - [Guide State Response](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/guide-state-response.md): GuideStateResponse.
   - [Guide Subtraction](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/guide-subtraction.md): GuideSubtraction.
   - [Guide Turn Request](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/guide-turn-request.md): GuideTurnRequest.
+  - [HTTP Validation Error](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/http-validation-error.md): HTTPValidationError.
   - [Health Response](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/health-response.md): HealthResponse.
   - [Identity Redaction](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/identity-redaction.md): IdentityRedaction.
   - [Identity Tokens](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/identity-tokens.md): IdentityTokens.
@@ -162,6 +163,7 @@
   - [Scenario Citation](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/scenario-citation.md): ScenarioCitation.
   - [Scenario Match](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/scenario-match.md): ScenarioMatch.
   - [Send Guard](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/send-guard.md): (r25 send guard) What a send carries and to whom, side by side; every account id is masked (first 2, last 4).
+  - [Sent File Fingerprint](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/sent-file-fingerprint.md): Plain SHA-256 of one file's exact bytes, recorded at the moment of a send so a later read-back can be compared.
   - [Session Response](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/session-response.md): SessionResponse.
   - [State Response](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/state-response.md): StateResponse.
   - [Synthetic Money](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/synthetic-money.md): Same shape as the PayPal Disputes `dispute_amount` (ProviderMoney below); values are synthetic.
@@ -298,7 +300,6 @@
   - [Type](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/type.md)
 - Exceptions
   - [Error Body](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/exceptions/error-body.md): The error body every refusal uses.
-  - [HTTP Validation Error](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/exceptions/http-validation-error.md): HTTPValidationError.
 - OneOf/AnyOf Definitions
   - [Get Guide State Scenario](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/oneof-anyof-definitions/get-guide-state-scenario.md)
   - [Add Tracking Request Confirm Token](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/oneof-anyof-definitions/add-tracking-request-confirm-token.md)
@@ -320,6 +321,7 @@
   - [Case Route Response Query](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/oneof-anyof-definitions/case-route-response-query.md)
   - [Category Signal Category](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/oneof-anyof-definitions/category-signal-category.md)
   - [Category Signal Confidence](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/oneof-anyof-definitions/category-signal-confidence.md)
+  - [Connections Response Sandbox Reads](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/oneof-anyof-definitions/connections-response-sandbox-reads.md)
   - [Country Rules Check Request Amount](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/oneof-anyof-definitions/country-rules-check-request-amount.md)
   - [Country Rules Check Request Currency](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/oneof-anyof-definitions/country-rules-check-request-currency.md)
   - [Dispute Detail Response Dispute Channel](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/oneof-anyof-definitions/dispute-detail-response-dispute-channel.md)
@@ -389,6 +391,7 @@
   - [Provide Evidence Response Confirm Token](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/oneof-anyof-definitions/provide-evidence-response-confirm-token.md)
   - [Provide Evidence Response Payload Sha 256](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/oneof-anyof-definitions/provide-evidence-response-payload-sha-256.md)
   - [Provide Evidence Response Paypal Debug Id](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/oneof-anyof-definitions/provide-evidence-response-paypal-debug-id.md)
+  - [Provide Evidence Response Sent Files](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/oneof-anyof-definitions/provide-evidence-response-sent-files.md)
   - [Reference Citation Case Outcome](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/oneof-anyof-definitions/reference-citation-case-outcome.md)
   - [Reference Citation Decision Acceptance Deadline](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/oneof-anyof-definitions/reference-citation-decision-acceptance-deadline.md)
   - [Reference Citation Decision Date](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/oneof-anyof-definitions/reference-citation-decision-date.md)

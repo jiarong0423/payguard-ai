@@ -43,6 +43,12 @@ var client = TradeGlotLocalConsoleClient.Builder
 {
   "TradeGlotLocalConsole": {
     "Environment": "production",
+    "DemoCsrfCredentials": {
+      "XCSRFToken": "xCSRFToken",
+    },
+    "DemoSessionCredentials": {
+      "XDemoSession": "xDemoSession",
+    },
     "HttpClientConfig": {
       "Timeout": "00:01:00",
       "NumberOfRetries": 3,

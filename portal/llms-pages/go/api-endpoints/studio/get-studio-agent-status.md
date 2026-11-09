@@ -4,14 +4,17 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0ZSU
 
 Studio Agent Status. Local console route GET /api/v1/studio/agent-status on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```go
 GetStudioAgentStatus(
     ctx context.Context) (
     models.ApiResponse[interface{}],
     error)
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/getting-started/how-to-get-started/authorization.md)
 
 
 # Response Type

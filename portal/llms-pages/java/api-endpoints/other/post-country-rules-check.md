@@ -4,19 +4,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0Z
 
 Country Rules Check. Local console route POST /api/v1/country-rules/check on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```java
 CompletableFuture<Object> postCountryRulesCheckAsync(
     final CountryRulesCheckRequest body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/getting-started/how-to-get-started/authorization.md) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/getting-started/how-to-get-started/authorization.md)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`CountryRulesCheckRequest`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/country-rules-check-request.md) | Body, Required | - |
+| `body` | [`CountryRulesCheckRequest`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/country-rules-check-request.md) | Body, Required | JSON body for: Country Rules Check. |
 
 
 # Response Type
@@ -30,12 +33,20 @@ CompletableFuture<Object> postCountryRulesCheckAsync(
 
 ```java
 CountryRulesCheckRequest body = new CountryRulesCheckRequest.Builder(
-    BuyerCountryEnum.AU,
-    SellerCountryEnum.AU
+    BuyerCountryEnum.US,
+    SellerCountryEnum.TW
 )
-.accountOpened(AccountOpenedEnum.UNKNOWN)
 .accountType(AccountTypeEnum.BUSINESS)
+.amount(CountryRulesCheckRequestAmount.fromString(
+        "120.00"
+    ))
 .checkout(CheckoutEnum.PAYPAL_ACCOUNT)
+.currency(CountryRulesCheckRequestCurrency.fromString(
+        "USD"
+    ))
+.goodsTags(Arrays.asList(
+
+    ))
 .build();
 
 otherController.postCountryRulesCheckAsync(body).thenAccept(result -> {
@@ -47,9 +58,6 @@ otherController.postCountryRulesCheckAsync(body).thenAccept(result -> {
     if (cause instanceof ErrorBodyException) {
         ErrorBodyException errorBodyException = (ErrorBodyException) cause;
         errorBodyException.printStackTrace();
-    } else if (cause instanceof HTTPValidationErrorException) {
-        HTTPValidationErrorException hTTPValidationErrorException = (HTTPValidationErrorException) cause;
-        hTTPValidationErrorException.printStackTrace();
     } else {
         // fallback for unexpected errors
         exception.printStackTrace();
@@ -65,7 +73,8 @@ otherController.postCountryRulesCheckAsync(body).thenAccept(result -> {
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/error-body.md) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/http-validation-error.md) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/error-body.md) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/error-body.md) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/error-body.md) |
 
 

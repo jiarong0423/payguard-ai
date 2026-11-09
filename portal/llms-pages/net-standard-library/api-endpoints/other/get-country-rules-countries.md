@@ -4,11 +4,14 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/
 
 Country Rules Countries. Local console route GET /api/v1/country-rules/countries on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```csharp
 GetCountryRulesCountriesAsync()
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/getting-started/how-to-get-started/authorization.md)
 
 
 # Response Type

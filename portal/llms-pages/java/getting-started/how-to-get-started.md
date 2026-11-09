@@ -5,7 +5,7 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0a
 
 # Introduction
 
-API of the local TradeGlot console (127.0.0.1:8000). It uses synthetic data, expects the demo session headers the console sets, and the hosted demo answers 503 on every route that would reach PayPal.
+API of the local TradeGlot console (127.0.0.1:8000). It uses synthetic data, expects the demo session headers the console sets, and the hosted demo answers 503 on every route that would reach PayPal. Authentication: create a session with POST /api/v1/demo/sessions, then send X-Demo-Session on every other call and X-CSRF-Token on every POST. POST calls also need an Origin header equal to the console's own origin (browsers add it; scripts must set it), otherwise the API answers 403 origin_required.
 
 
 # Building
@@ -98,11 +98,15 @@ The following parameters are configurable for the API Client:
 | Parameter | Type | Description |
 |  --- | --- | --- |
 | httpClientConfig | [`Consumer<HttpClientConfiguration.Builder>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/sdk-infrastructure/configuration/httpclientconfiguration-builder.md) | Set up Http Client Configuration instance. |
+| demoCsrfCredentials | [`DemoCsrfCredentials`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/getting-started/how-to-get-started/authorization.md) | The Credentials Setter for Custom Header Signature |
+| demoSessionCredentials | [`DemoSessionCredentials`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/getting-started/how-to-get-started/authorization.md) | The Credentials Setter for Custom Header Signature |
 
 The API client can be initialized as follows:
 
 ```java
 import m18000.m0.m0.m127.TradeGlotLocalConsoleClient;
+import m18000.m0.m0.m127.authentication.DemoCsrfModel;
+import m18000.m0.m0.m127.authentication.DemoSessionModel;
 import m18000.m0.m0.m127.exceptions.ApiException;
 
 public class Program {
@@ -110,8 +114,100 @@ public class Program {
         TradeGlotLocalConsoleClient client = new TradeGlotLocalConsoleClient.Builder()
             .httpClientConfig(configBuilder -> configBuilder
                     .timeout(0))
+            .demoCsrfCredentials(new DemoCsrfModel.Builder(
+                    "X-CSRF-Token"
+                )
+                .build())
+            .demoSessionCredentials(new DemoSessionModel.Builder(
+                    "X-Demo-Session"
+                )
+                .build())
             .build();
 
+    }
+}
+```
+
+
+# Authorization
+
+This API uses the following authentication schemes.
+
+* [`DemoCsrf (Custom Header Signature)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/getting-started/how-to-get-started/authorization.md)
+* [`DemoSession (Custom Header Signature)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/getting-started/how-to-get-started/authorization.md)
+
+## DemoCsrf (Custom Header Signature)
+
+
+
+Documentation for accessing and setting credentials for DemoCsrf.
+
+### Auth Credentials
+
+| Name | Type | Description | Setter | Getter |
+|  --- | --- | --- | --- | --- |
+| X-CSRF-Token | `String` | CSRF token for the same session. Get it from the csrf_token field of the response to POST /api/v1/demo/sessions. Every POST also needs it; without it the API answers 403 csrf_rejected. | `xCSRFToken` | `getXCSRFToken()` |
+
+
+
+**Note:** Auth credentials can be set using `demoCsrfCredentials` in the client builder and accessed through `getDemoCsrfCredentials` method in the client instance.
+
+### Usage Example
+
+#### Client Initialization
+
+You must provide credentials in the client as shown in the following code snippet.
+
+```java
+import m18000.m0.m0.m127.TradeGlotLocalConsoleClient;
+import m18000.m0.m0.m127.authentication.DemoCsrfModel;
+
+public class Program {
+    public static void main(String[] args) {
+        TradeGlotLocalConsoleClient client = new TradeGlotLocalConsoleClient.Builder()
+            .demoCsrfCredentials(new DemoCsrfModel.Builder(
+                    "X-CSRF-Token"
+                )
+                .build())
+            .build();
+    }
+}
+```
+
+## DemoSession (Custom Header Signature)
+
+
+
+Documentation for accessing and setting credentials for DemoSession.
+
+### Auth Credentials
+
+| Name | Type | Description | Setter | Getter |
+|  --- | --- | --- | --- | --- |
+| X-Demo-Session | `String` | Demo session id. Get it from the session_id field of the response to POST /api/v1/demo/sessions (that request needs no header). Without it the API answers 401 session_required. | `xDemoSession` | `getXDemoSession()` |
+
+
+
+**Note:** Auth credentials can be set using `demoSessionCredentials` in the client builder and accessed through `getDemoSessionCredentials` method in the client instance.
+
+### Usage Example
+
+#### Client Initialization
+
+You must provide credentials in the client as shown in the following code snippet.
+
+```java
+import m18000.m0.m0.m127.TradeGlotLocalConsoleClient;
+import m18000.m0.m0.m127.authentication.DemoSessionModel;
+
+public class Program {
+    public static void main(String[] args) {
+        TradeGlotLocalConsoleClient client = new TradeGlotLocalConsoleClient.Builder()
+            .demoSessionCredentials(new DemoSessionModel.Builder(
+                    "X-Demo-Session"
+                )
+                .build())
+            .build();
     }
 }
 ```

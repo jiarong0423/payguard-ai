@@ -15,7 +15,7 @@ function postDemoSessions(array $body): SessionResponse
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | `array` | Body, Required | - |
+| `body` | `array` | Body, Required | JSON body for: New Session. |
 
 
 # Response Type
@@ -28,7 +28,7 @@ function postDemoSessions(array $body): SessionResponse
 # Example Usage
 
 ```php
-$body = ApiHelper::deserialize('{"key1":"val1","key2":"val2"}');
+$body = ApiHelper::deserialize('{}');
 
 $demoController = $client->getDemoController();
 
@@ -38,10 +38,20 @@ try {
     var_dump($result);
 } catch (ErrorBodyException $exp) {
     echo 'Caught ErrorBodyException:', $exp;
-} catch (HTTPValidationErrorException $exp) {
-    echo 'Caught HTTPValidationErrorException:', $exp;
 } catch (ApiException $exp) {
     echo 'Caught:', $exp;
+}
+```
+
+
+# Example Response *(as JSON)*
+
+```json
+{
+  "csrf_token": "csrf-example-0001",
+  "expires_at": "2026-10-07T10:30:00Z",
+  "session_id": "sess-example-0001",
+  "source": "synthetic"
 }
 ```
 
@@ -51,7 +61,7 @@ try {
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/exceptions/error-body.md) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/exceptions/http-validation-error.md) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/exceptions/error-body.md) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/exceptions/error-body.md) |
 
 

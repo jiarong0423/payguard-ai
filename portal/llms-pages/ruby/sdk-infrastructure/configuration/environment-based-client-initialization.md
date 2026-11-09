@@ -47,6 +47,8 @@ Values provided through arguments take precedence over those defined in environm
 ```ruby
 ENVIRONMENT='production'
 
+DEMO_CSRF_X_CSRF_TOKEN='xCSRFToken'
+DEMO_SESSION_X_DEMO_SESSION='xDemoSession'
 
 TIMEOUT=60
 MAX_RETRIES=3

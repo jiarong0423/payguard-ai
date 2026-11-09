@@ -4,14 +4,17 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect
 
 Guide State. Local console route GET /api/v1/guide/state on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```ts
 async getGuideState(
   scenario?: GetGuideStateScenario,
   requestOptions?: RequestOptions
 ): Promise<ApiResponse<GuideStateResponse>>
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/getting-started/how-to-get-started/authorization.md)
 
 
 # Parameters
@@ -32,8 +35,10 @@ This method returns an [`ApiResponse`](https://jiarong0423.github.io/payguard-ai
 # Example Usage
 
 ```ts
+const scenario: GetGuideStateScenario = Scenario1Enum.Preflight;
+
 try {
-  const response = await guideController.getGuideState();
+  const response = await guideController.getGuideState(scenario);
 
   // Extracting fully parsed response body.
   console.log(response.result);
@@ -54,8 +59,6 @@ try {
     console.log(error.body);
     if (error instanceof ErrorBodyError) {
       console.log(error.result);
-    } else if (error instanceof HTTPValidationError) {
-      console.log(error.result);
     }
   }
 }
@@ -67,7 +70,7 @@ try {
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyError`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/exceptions/error-body.md) |
-| 422 | Validation Error | [`HTTPValidationError`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/exceptions/http-validation-error.md) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyError`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/exceptions/error-body.md) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyError`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/exceptions/error-body.md) |
 
 

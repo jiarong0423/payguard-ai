@@ -15,6 +15,7 @@ Deployment mode only. Never a key, a key's presence, a value or a variable name.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `mode` | [`string(ModeEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/mode.md) | Required | Mode. | getMode(): string | setMode(string mode): void |
+| `sandboxReads` | bool\|null | Optional | This is a container for any-of cases. | getSandboxReads(): ?bool | setSandboxReads(?bool sandboxReads): void |
 
 
 # Example
@@ -25,7 +26,11 @@ use TradeGlotLocalConsoleLib\Models\ModeEnum;
 
 $connectionsResponse = ConnectionsResponseBuilder::init(
     ModeEnum::LOCAL
-)->build();
+)
+    ->sandboxReads(
+        true
+    )
+    ->build();
 ```
 
 

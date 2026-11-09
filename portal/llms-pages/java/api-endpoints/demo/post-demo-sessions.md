@@ -16,7 +16,7 @@ CompletableFuture<SessionResponse> postDemoSessionsAsync(
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | `Object` | Body, Required | - |
+| `body` | `Object` | Body, Required | JSON body for: New Session. |
 
 
 # Response Type
@@ -29,7 +29,7 @@ CompletableFuture<SessionResponse> postDemoSessionsAsync(
 # Example Usage
 
 ```java
-Object body = ApiHelper.deserialize("{\"key1\":\"val1\",\"key2\":\"val2\"}");
+Object body = ApiHelper.deserialize("{}");
 
 demoController.postDemoSessionsAsync(body).thenAccept(result -> {
     // TODO success callback handler
@@ -40,9 +40,6 @@ demoController.postDemoSessionsAsync(body).thenAccept(result -> {
     if (cause instanceof ErrorBodyException) {
         ErrorBodyException errorBodyException = (ErrorBodyException) cause;
         errorBodyException.printStackTrace();
-    } else if (cause instanceof HTTPValidationErrorException) {
-        HTTPValidationErrorException hTTPValidationErrorException = (HTTPValidationErrorException) cause;
-        hTTPValidationErrorException.printStackTrace();
     } else {
         // fallback for unexpected errors
         exception.printStackTrace();
@@ -53,12 +50,24 @@ demoController.postDemoSessionsAsync(body).thenAccept(result -> {
 ```
 
 
+# Example Response *(as JSON)*
+
+```json
+{
+  "csrf_token": "csrf-example-0001",
+  "expires_at": "2026-10-07T10:30:00Z",
+  "session_id": "sess-example-0001",
+  "source": "synthetic"
+}
+```
+
+
 # Errors
 
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/error-body.md) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/http-validation-error.md) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/error-body.md) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/error-body.md) |
 
 

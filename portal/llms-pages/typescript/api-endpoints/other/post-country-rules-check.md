@@ -4,8 +4,6 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect
 
 Country Rules Check. Local console route POST /api/v1/country-rules/check on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```ts
 async postCountryRulesCheck(
   body: CountryRulesCheckRequest,
@@ -14,11 +12,16 @@ async postCountryRulesCheck(
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/getting-started/how-to-get-started/authorization.md) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/getting-started/how-to-get-started/authorization.md)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`CountryRulesCheckRequest`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/country-rules-check-request.md) | Body, Required | - |
+| `body` | [`CountryRulesCheckRequest`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/country-rules-check-request.md) | Body, Required | JSON body for: Country Rules Check. |
 | `requestOptions` | `RequestOptions \| undefined` | Optional | Pass additional request options. |
 
 
@@ -33,11 +36,13 @@ This method returns an [`ApiResponse`](https://jiarong0423.github.io/payguard-ai
 
 ```ts
 const body: CountryRulesCheckRequest = {
-  buyerCountry: BuyerCountryEnum.AU,
-  sellerCountry: SellerCountryEnum.AU,
-  accountOpened: AccountOpenedEnum.Unknown,
+  buyerCountry: BuyerCountryEnum.US,
+  sellerCountry: SellerCountryEnum.TW,
   accountType: AccountTypeEnum.Business,
+  amount: '120.00',
   checkout: CheckoutEnum.PaypalAccount,
+  currency: 'USD',
+  goodsTags: [],
 };
 
 try {
@@ -62,8 +67,6 @@ try {
     console.log(error.body);
     if (error instanceof ErrorBodyError) {
       console.log(error.result);
-    } else if (error instanceof HTTPValidationError) {
-      console.log(error.result);
     }
   }
 }
@@ -75,7 +78,8 @@ try {
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyError`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/exceptions/error-body.md) |
-| 422 | Validation Error | [`HTTPValidationError`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/exceptions/http-validation-error.md) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyError`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/exceptions/error-body.md) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyError`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/exceptions/error-body.md) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyError`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/exceptions/error-body.md) |
 
 

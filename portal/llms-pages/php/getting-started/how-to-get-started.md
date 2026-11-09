@@ -5,7 +5,7 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0aC
 
 # Introduction
 
-API of the local TradeGlot console (127.0.0.1:8000). It uses synthetic data, expects the demo session headers the console sets, and the hosted demo answers 503 on every route that would reach PayPal.
+API of the local TradeGlot console (127.0.0.1:8000). It uses synthetic data, expects the demo session headers the console sets, and the hosted demo answers 503 on every route that would reach PayPal. Authentication: create a session with POST /api/v1/demo/sessions, then send X-Demo-Session on every other call and X-CSRF-Token on every POST. POST calls also need an Origin header equal to the console's own origin (browsers add it; scripts must set it), otherwise the API answers 403 origin_required.
 
 
 # Building
@@ -119,13 +119,106 @@ The following parameters are configurable for the API Client:
 | httpStatusCodesToRetry | `array` | Http status codes to retry against.<br>*Default*: `408, 413, 429, 500, 502, 503, 504, 521, 522, 524, 408, 413, 429, 500, 502, 503, 504, 521, 522, 524` |
 | httpMethodsToRetry | `array` | Http methods to retry against.<br>*Default*: `'GET', 'PUT', 'GET', 'PUT'` |
 | proxyConfiguration | [`ProxyConfigurationBuilder`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/sdk-infrastructure/configuration/proxyconfigurationbuilder.md) | Represents the proxy configurations for API calls |
+| demoCsrfCredentials | [`DemoCsrfCredentials`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/getting-started/how-to-get-started/authorization.md) | The Credentials Setter for Custom Header Signature |
+| demoSessionCredentials | [`DemoSessionCredentials`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/getting-started/how-to-get-started/authorization.md) | The Credentials Setter for Custom Header Signature |
 
 The API client can be initialized as follows:
 
 ```php
+use TradeGlotLocalConsoleLib\Authentication\DemoCsrfCredentialsBuilder;
+use TradeGlotLocalConsoleLib\Authentication\DemoSessionCredentialsBuilder;
 use TradeGlotLocalConsoleLib\TradeGlotLocalConsoleClientBuilder;
 
-$client = TradeGlotLocalConsoleClientBuilder::init()->build();
+$client = TradeGlotLocalConsoleClientBuilder::init()
+    ->demoCsrfCredentials(
+        DemoCsrfCredentialsBuilder::init(
+            'X-CSRF-Token'
+        )
+    )
+    ->demoSessionCredentials(
+        DemoSessionCredentialsBuilder::init(
+            'X-Demo-Session'
+        )
+    )
+    ->build();
+```
+
+
+# Authorization
+
+This API uses the following authentication schemes.
+
+* [`DemoCsrf (Custom Header Signature)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/getting-started/how-to-get-started/authorization.md)
+* [`DemoSession (Custom Header Signature)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/getting-started/how-to-get-started/authorization.md)
+
+## DemoCsrf (Custom Header Signature)
+
+
+
+Documentation for accessing and setting credentials for DemoCsrf.
+
+### Auth Credentials
+
+| Name | Type | Description | Setter | Getter |
+|  --- | --- | --- | --- | --- |
+| X-CSRF-Token | `string` | CSRF token for the same session. Get it from the csrf_token field of the response to POST /api/v1/demo/sessions. Every POST also needs it; without it the API answers 403 csrf_rejected. | `xCSRFToken` | `getXCSRFToken()` |
+
+
+
+**Note:** Auth credentials can be set using `DemoCsrfCredentialsBuilder::init()` in `demoCsrfCredentials` method in the client builder and accessed through `getDemoCsrfCredentials` method in the client instance.
+
+### Usage Example
+
+#### Client Initialization
+
+You must provide credentials in the client as shown in the following code snippet.
+
+```php
+use TradeGlotLocalConsoleLib\Authentication\DemoCsrfCredentialsBuilder;
+use TradeGlotLocalConsoleLib\TradeGlotLocalConsoleClientBuilder;
+
+$client = TradeGlotLocalConsoleClientBuilder::init()
+    ->demoCsrfCredentials(
+        DemoCsrfCredentialsBuilder::init(
+            'X-CSRF-Token'
+        )
+    )
+    ->build();
+```
+
+## DemoSession (Custom Header Signature)
+
+
+
+Documentation for accessing and setting credentials for DemoSession.
+
+### Auth Credentials
+
+| Name | Type | Description | Setter | Getter |
+|  --- | --- | --- | --- | --- |
+| X-Demo-Session | `string` | Demo session id. Get it from the session_id field of the response to POST /api/v1/demo/sessions (that request needs no header). Without it the API answers 401 session_required. | `xDemoSession` | `getXDemoSession()` |
+
+
+
+**Note:** Auth credentials can be set using `DemoSessionCredentialsBuilder::init()` in `demoSessionCredentials` method in the client builder and accessed through `getDemoSessionCredentials` method in the client instance.
+
+### Usage Example
+
+#### Client Initialization
+
+You must provide credentials in the client as shown in the following code snippet.
+
+```php
+use TradeGlotLocalConsoleLib\Authentication\DemoSessionCredentialsBuilder;
+use TradeGlotLocalConsoleLib\TradeGlotLocalConsoleClientBuilder;
+
+$client = TradeGlotLocalConsoleClientBuilder::init()
+    ->demoSessionCredentials(
+        DemoSessionCredentialsBuilder::init(
+            'X-Demo-Session'
+        )
+    )
+    ->build();
 ```
 
 

@@ -43,6 +43,12 @@ const client = Client.fromJsonConfig(JSON.stringify(configModule.default));
 {
   "timeout": 30000,
   "environment": "production",
+  "demoCsrfCredentials": {
+    "xCSRFToken": "x-csrf-token"
+  },
+  "demoSessionCredentials": {
+    "xDemoSession": "x-demo-session"
+  },
   "httpClientOptions": {
     "timeout": 30000,
     "retryConfig": {

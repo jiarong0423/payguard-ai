@@ -4,11 +4,14 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0ZS
 
 Paypal Status. Local console route GET /api/v1/paypal/status on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```php
 function getPaypalStatus(): PaypalStatusResponse
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/getting-started/how-to-get-started/authorization.md)
 
 
 # Response Type

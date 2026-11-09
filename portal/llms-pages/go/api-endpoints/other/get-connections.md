@@ -4,14 +4,17 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0ZSU
 
 Connections. Local console route GET /api/v1/connections on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```go
 GetConnections(
     ctx context.Context) (
     models.ApiResponse[models.ConnectionsResponse],
     error)
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/getting-started/how-to-get-started/authorization.md)
 
 
 # Response Type
@@ -38,6 +41,16 @@ if err != nil {
     // Printing the result and response
     fmt.Println(apiResponse.Data)
     fmt.Println(apiResponse.Response.StatusCode)
+}
+```
+
+
+# Example Response *(as JSON)*
+
+```json
+{
+  "mode": "hosted_demo",
+  "sandbox_reads": true
 }
 ```
 

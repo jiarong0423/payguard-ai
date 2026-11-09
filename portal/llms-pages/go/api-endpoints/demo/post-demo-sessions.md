@@ -19,7 +19,7 @@ PostDemoSessions(
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | `interface{}` | Body, Required | - |
+| `body` | `interface{}` | Body, Required | JSON body for: New Session. |
 
 
 # Response Type
@@ -34,15 +34,13 @@ This method returns an [`ApiResponse`](https://jiarong0423.github.io/payguard-ai
 ```go
 ctx := context.Background()
 
-body := interface{}("[key1, val1][key2, val2]")
+body := interface{}("")
 
 apiResponse, err := demoController.PostDemoSessions(ctx, body)
 if err != nil {
     switch typedErr := err.(type) {
         case *errors.ErrorBody:
             log.Fatalln("ErrorBodyException: ", typedErr)
-        case *errors.HTTPValidationError:
-            log.Fatalln("HTTPValidationErrorException: ", typedErr)
         default:
             log.Fatalln(err)
     }
@@ -54,12 +52,24 @@ if err != nil {
 ```
 
 
+# Example Response *(as JSON)*
+
+```json
+{
+  "csrf_token": "csrf-example-0001",
+  "expires_at": "2026-10-07T10:30:00Z",
+  "session_id": "sess-example-0001",
+  "source": "synthetic"
+}
+```
+
+
 # Errors
 
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/exceptions/error-body.md) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/exceptions/http-validation-error.md) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/exceptions/error-body.md) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/exceptions/error-body.md) |
 
 

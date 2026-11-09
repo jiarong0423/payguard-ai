@@ -5,7 +5,7 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0a
 
 # Introduction
 
-API of the local TradeGlot console (127.0.0.1:8000). It uses synthetic data, expects the demo session headers the console sets, and the hosted demo answers 503 on every route that would reach PayPal.
+API of the local TradeGlot console (127.0.0.1:8000). It uses synthetic data, expects the demo session headers the console sets, and the hosted demo answers 503 on every route that would reach PayPal. Authentication: create a session with POST /api/v1/demo/sessions, then send X-Demo-Session on every other call and X-CSRF-Token on every POST. POST calls also need an Origin header equal to the console's own origin (browsers add it; scripts must set it), otherwise the API answers 403 origin_required.
 
 
 # Building
@@ -90,6 +90,8 @@ The following parameters are configurable for the API Client:
 | retry_methods | `Array` | A list of HTTP methods to retry. <br> **Default: %i[get put get put]** |
 | http_callback | `HttpCallBack` | The Http CallBack allows defining callables for pre and post API calls. |
 | proxy_settings | [`ProxySettings`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/sdk-infrastructure/configuration/proxysettings.md) | Optional proxy configuration to route HTTP requests through a proxy server. |
+| demo_csrf_credentials | [`DemoCsrfCredentials`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/getting-started/how-to-get-started/authorization.md) | The credential object for Custom Header Signature |
+| demo_session_credentials | [`DemoSessionCredentials`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/getting-started/how-to-get-started/authorization.md) | The credential object for Custom Header Signature |
 
 The API client can be initialized as follows:
 
@@ -99,7 +101,14 @@ The API client can be initialized as follows:
 require 'trade_glot_local_console'
 include TradeGlotLocalConsole
 
-client = Client.new
+client = Client.new(
+  demo_csrf_credentials: DemoCsrfCredentials.new(
+    x_csrf_token: 'X-CSRF-Token'
+  ),
+  demo_session_credentials: DemoSessionCredentials.new(
+    x_demo_session: 'X-Demo-Session'
+  )
+)
 ```
 
 ## Environment-Based Client Initialization
@@ -113,6 +122,80 @@ client = Client.from_env
 ```
 
 See the [`Environment-Based Client Initialization`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/sdk-infrastructure/configuration/environment-based-client-initialization.md) section for details.
+
+
+# Authorization
+
+This API uses the following authentication schemes.
+
+* [`DemoCsrf (Custom Header Signature)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/getting-started/how-to-get-started/authorization.md)
+* [`DemoSession (Custom Header Signature)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/getting-started/how-to-get-started/authorization.md)
+
+## DemoCsrf (Custom Header Signature)
+
+
+
+Documentation for accessing and setting credentials for DemoCsrf.
+
+### Auth Credentials
+
+| Name | Type | Description | Getter |
+|  --- | --- | --- | --- |
+| X-CSRF-Token | `String` | CSRF token for the same session. Get it from the csrf_token field of the response to POST /api/v1/demo/sessions. Every POST also needs it; without it the API answers 403 csrf_rejected. | `x_csrf_token` |
+
+
+
+**Note:** Auth credentials can be set using `DemoCsrfCredentials` object, passed in as named parameter `demo_csrf_credentials` in the client initialization.
+
+### Usage Example
+
+#### Client Initialization
+
+You must provide credentials in the client as shown in the following code snippet.
+
+```ruby
+require 'trade_glot_local_console'
+include TradeGlotLocalConsole
+
+client = Client.new(
+  demo_csrf_credentials: DemoCsrfCredentials.new(
+    x_csrf_token: 'X-CSRF-Token'
+  )
+)
+```
+
+## DemoSession (Custom Header Signature)
+
+
+
+Documentation for accessing and setting credentials for DemoSession.
+
+### Auth Credentials
+
+| Name | Type | Description | Getter |
+|  --- | --- | --- | --- |
+| X-Demo-Session | `String` | Demo session id. Get it from the session_id field of the response to POST /api/v1/demo/sessions (that request needs no header). Without it the API answers 401 session_required. | `x_demo_session` |
+
+
+
+**Note:** Auth credentials can be set using `DemoSessionCredentials` object, passed in as named parameter `demo_session_credentials` in the client initialization.
+
+### Usage Example
+
+#### Client Initialization
+
+You must provide credentials in the client as shown in the following code snippet.
+
+```ruby
+require 'trade_glot_local_console'
+include TradeGlotLocalConsole
+
+client = Client.new(
+  demo_session_credentials: DemoSessionCredentials.new(
+    x_demo_session: 'X-Demo-Session'
+  )
+)
+```
 
 
 # Test the SDK

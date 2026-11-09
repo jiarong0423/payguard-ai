@@ -4,11 +4,14 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0ZS
 
 Guide State. Local console route GET /api/v1/guide/state on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```php
 function getGuideState(?string $scenario = null): GuideStateResponse
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/getting-started/how-to-get-started/authorization.md)
 
 
 # Parameters
@@ -28,16 +31,16 @@ function getGuideState(?string $scenario = null): GuideStateResponse
 # Example Usage
 
 ```php
+$scenario = Scenario1Enum::PREFLIGHT;
+
 $guideController = $client->getGuideController();
 
 try {
-    $result = $guideController->getGuideState();
+    $result = $guideController->getGuideState($scenario);
     echo 'GuideStateResponse:';
     var_dump($result);
 } catch (ErrorBodyException $exp) {
     echo 'Caught ErrorBodyException:', $exp;
-} catch (HTTPValidationErrorException $exp) {
-    echo 'Caught HTTPValidationErrorException:', $exp;
 } catch (ApiException $exp) {
     echo 'Caught:', $exp;
 }
@@ -49,7 +52,7 @@ try {
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/exceptions/error-body.md) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/exceptions/http-validation-error.md) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/exceptions/error-body.md) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/exceptions/error-body.md) |
 
 

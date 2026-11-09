@@ -4,19 +4,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Guide Form. Local console route POST /api/v1/guide/form on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_guide_form(self,
                    body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/getting-started/how-to-get-started/authorization.md) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/getting-started/how-to-get-started/authorization.md)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`GuideFormRequest`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/guide-form-request.md) | Body, Required | - |
+| `body` | [`GuideFormRequest`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/guide-form-request.md) | Body, Required | JSON body for: Guide Form. |
 
 
 # Response Type
@@ -29,9 +32,7 @@ def post_guide_form(self,
 # Example Usage
 
 ```python
-body = GuideFormRequest(
-    confirm_review=False
-)
+body = GuideFormRequest()
 
 result = guide_controller.post_guide_form(body)
 print(result)
@@ -43,7 +44,8 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/exceptions/error-body.md) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/exceptions/http-validation-error.md) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/exceptions/error-body.md) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/exceptions/error-body.md) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/exceptions/error-body.md) |
 
 

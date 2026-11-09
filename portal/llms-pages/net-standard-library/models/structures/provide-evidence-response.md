@@ -33,6 +33,7 @@ ProvideEvidenceResponse.
 | `ProviderSubmission` | [`ProviderSubmissionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/provider-submission.md) | Required | Provider submission. |
 | `Readback` | [`Readback1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/readback-1.md) | Required | Readback. |
 | `SendGuard` | [`SendGuard`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/send-guard.md) | Required | (r25 send guard) What a send carries and to whom, side by side; every account id is masked (first 2, last 4). |
+| `SentFiles` | [`ProvideEvidenceResponseSentFiles`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/provide-evidence-response-sent-files.md) | Optional | This is a container for any-of cases. |
 | `Source` | [`SourceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/source.md) | Required | Source. |
 | `SubmitFlagEnabled` | `bool` | Required | Submit flag enabled. |
 
@@ -114,6 +115,32 @@ ProvideEvidenceResponse provideEvidenceResponse = new ProvideEvidenceResponse
     ConfirmToken = ProvideEvidenceResponseConfirmToken.FromString("String9"),
     PayloadSha256 = ProvideEvidenceResponsePayloadSha256.FromString("String9"),
     PaypalDebugId = ProvideEvidenceResponsePaypalDebugId.FromString("String9"),
+    SentFiles = ProvideEvidenceResponseSentFiles.FromListOfSentFileFingerprint(
+        new List<SentFileFingerprint>
+        {
+            new SentFileFingerprint
+            {
+                ByteLength = 196,
+                ContentType = ContentTypeEnum.EnumImagepng,
+                Filename = "filename6",
+                Sha256 = "sha2566",
+            },
+            new SentFileFingerprint
+            {
+                ByteLength = 196,
+                ContentType = ContentTypeEnum.EnumImagepng,
+                Filename = "filename6",
+                Sha256 = "sha2566",
+            },
+            new SentFileFingerprint
+            {
+                ByteLength = 196,
+                ContentType = ContentTypeEnum.EnumImagepng,
+                Filename = "filename6",
+                Sha256 = "sha2566",
+            },
+        }
+    ),
 };
 ```
 

@@ -33,6 +33,7 @@ ProvideEvidenceResponse.
 | `providerSubmission` | [`string(ProviderSubmissionEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/provider-submission.md) | Required | Provider submission. | getProviderSubmission(): string | setProviderSubmission(string providerSubmission): void |
 | `readback` | [`string(Readback1Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/readback-1.md) | Required | Readback. | getReadback(): string | setReadback(string readback): void |
 | `sendGuard` | [`SendGuard`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/send-guard.md) | Required | (r25 send guard) What a send carries and to whom, side by side; every account id is masked (first 2, last 4). | getSendGuard(): SendGuard | setSendGuard(SendGuard sendGuard): void |
+| `sentFiles` | [SentFileFingerprint](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/sent-file-fingerprint.md)[]\|null | Optional | This is a container for any-of cases. | getSentFiles(): ?array | setSentFiles(?array sentFiles): void |
 | `source` | [`string(SourceEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/source.md) | Required | Source. | getSource(): string | setSource(string source): void |
 | `submitFlagEnabled` | `bool` | Required | Submit flag enabled. | getSubmitFlagEnabled(): bool | setSubmitFlagEnabled(bool submitFlagEnabled): void |
 
@@ -57,6 +58,7 @@ use TradeGlotLocalConsoleLib\Models\Builders\SendGuardBuilder;
 use TradeGlotLocalConsoleLib\Models\AccountStatusEnum;
 use TradeGlotLocalConsoleLib\Models\Builders\ProviderMoneyBuilder;
 use TradeGlotLocalConsoleLib\Models\SourceEnum;
+use TradeGlotLocalConsoleLib\Models\Builders\SentFileFingerprintBuilder;
 
 $provideEvidenceResponse = ProvideEvidenceResponseBuilder::init(
     'case_ref2',
@@ -132,7 +134,28 @@ $provideEvidenceResponse = ProvideEvidenceResponseBuilder::init(
     ->paypalDebugId(
         'String9'
     )
-    ->build();
+    ->sentFiles(
+        [
+            SentFileFingerprintBuilder::init(
+                196,
+                ContentTypeEnum::ENUM_IMAGEPNG,
+                'filename6',
+                'sha2566'
+            )->build(),
+            SentFileFingerprintBuilder::init(
+                196,
+                ContentTypeEnum::ENUM_IMAGEPNG,
+                'filename6',
+                'sha2566'
+            )->build(),
+            SentFileFingerprintBuilder::init(
+                196,
+                ContentTypeEnum::ENUM_IMAGEPNG,
+                'filename6',
+                'sha2566'
+            )->build()
+        ]
+    )->build();
 ```
 
 

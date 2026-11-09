@@ -4,19 +4,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/
 
 Advisory Evaluate. Local console route POST /api/v1/advisory/evaluate on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```csharp
 PostAdvisoryEvaluateAsync(
     Models.AdvisoryRequest body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/getting-started/how-to-get-started/authorization.md) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/getting-started/how-to-get-started/authorization.md)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`AdvisoryRequest`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/advisory-request.md) | Body, Required | - |
+| `body` | [`AdvisoryRequest`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/advisory-request.md) | Body, Required | JSON body for: Advisory Evaluate. |
 
 
 # Response Type
@@ -31,11 +34,11 @@ PostAdvisoryEvaluateAsync(
 ```csharp
 AdvisoryRequest body = new AdvisoryRequest
 {
-    AsOf = "as_of2",
-    CandidateJson = "candidate_json2",
+    AsOf = "examplexxxxxxxxxxxxx",
+    CandidateJson = "example",
     Jurisdiction = "US",
-    ObservationMaxAgeDays = 102,
-    Theme = ThemeEnum.DisputeMediation,
+    ObservationMaxAgeDays = 0,
+    Theme = ThemeEnum.SourceCompliance,
 };
 
 try
@@ -49,10 +52,6 @@ catch (ApiException e)
     {
        // TODO: Handle ErrorBodyException exception here
     }
-    if (e is HTTPValidationErrorException)
-    {
-       // TODO: Handle HTTPValidationErrorException exception here
-    }
 }
 ```
 
@@ -62,7 +61,8 @@ catch (ApiException e)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/exceptions/error-body.md) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/exceptions/http-validation-error.md) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/exceptions/error-body.md) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/exceptions/error-body.md) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/exceptions/error-body.md) |
 
 

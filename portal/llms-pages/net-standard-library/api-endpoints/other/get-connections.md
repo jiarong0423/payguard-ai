@@ -4,11 +4,14 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/
 
 Connections. Local console route GET /api/v1/connections on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```csharp
 GetConnectionsAsync()
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/getting-started/how-to-get-started/authorization.md)
 
 
 # Response Type
@@ -32,6 +35,16 @@ catch (ApiException e)
     {
        // TODO: Handle ErrorBodyException exception here
     }
+}
+```
+
+
+# Example Response *(as JSON)*
+
+```json
+{
+  "mode": "hosted_demo",
+  "sandbox_reads": true
 }
 ```
 

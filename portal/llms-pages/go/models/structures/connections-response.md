@@ -15,6 +15,7 @@ Deployment mode only. Never a key, a key's presence, a value or a variable name.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `Mode` | [`models.ModeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/mode.md) | Required | Mode. |
+| `SandboxReads` | [`*models.ConnectionsResponseSandboxReads`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/connections-response-sandbox-reads.md) | Optional | This is a container for any-of cases. |
 
 
 # Example
@@ -28,7 +29,8 @@ import (
 
 func main() {
     connectionsResponse := models.ConnectionsResponse{
-        Mode: models.ModeEnum_LOCAL,
+        Mode:         models.ModeEnum_LOCAL,
+        SandboxReads: models.ToPointer(models.ConnectionsResponseSandboxReadsContainer.FromBoolean(true)),
     }
 
 }

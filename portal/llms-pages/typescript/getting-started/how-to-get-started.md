@@ -5,7 +5,7 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect
 
 # Introduction
 
-API of the local TradeGlot console (127.0.0.1:8000). It uses synthetic data, expects the demo session headers the console sets, and the hosted demo answers 503 on every route that would reach PayPal.
+API of the local TradeGlot console (127.0.0.1:8000). It uses synthetic data, expects the demo session headers the console sets, and the hosted demo answers 503 on every route that would reach PayPal. Authentication: create a session with POST /api/v1/demo/sessions, then send X-Demo-Session on every other call and X-CSRF-Token on every POST. POST calls also need an Origin header equal to the console's own origin (browsers add it; scripts must set it), otherwise the API answers 403 origin_required.
 
 
 # Building
@@ -84,6 +84,8 @@ The following parameters are configurable for the API Client:
 | timeout | `number` | Timeout for API calls.<br>*Default*: `0` |
 | httpClientOptions | [`Partial<HttpClientOptions>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/sdk-infrastructure/configuration/httpclientoptions.md) | Stable configurable http client options. |
 | unstableHttpClientOptions | `any` | Unstable configurable http client options. |
+| demoCsrfCredentials | [`DemoCsrfCredentials`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/getting-started/how-to-get-started/authorization.md) | The credential object for demoCsrf |
+| demoSessionCredentials | [`DemoSessionCredentials`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/getting-started/how-to-get-started/authorization.md) | The credential object for demoSession |
 
 The API client can be initialized as follows:
 
@@ -93,6 +95,12 @@ The API client can be initialized as follows:
 import { Client } from 'tradeglot-local-consolelib';
 
 const client = new Client({
+  demoCsrfCredentials: {
+    'X-CSRF-Token': 'X-CSRF-Token'
+  },
+  demoSessionCredentials: {
+    'X-Demo-Session': 'X-Demo-Session'
+  },
   timeout: 0,
 });
 ```
@@ -137,6 +145,78 @@ const client = Client.fromEnvironment(process.env);
 ```
 
 See the [Environment-Based Client Initialization](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/sdk-infrastructure/configuration/environment-based-client-initialization.md) section for details.
+
+
+# Authorization
+
+This API uses the following authentication schemes.
+
+* [`DemoCsrf (Custom Header Signature)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/getting-started/how-to-get-started/authorization.md)
+* [`DemoSession (Custom Header Signature)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/getting-started/how-to-get-started/authorization.md)
+
+## DemoCsrf (Custom Header Signature)
+
+
+
+Documentation for accessing and setting credentials for DemoCsrf.
+
+### Auth Credentials
+
+| Name | Type | Description | Setter |
+|  --- | --- | --- | --- |
+| X-CSRF-Token | `string` | CSRF token for the same session. Get it from the csrf_token field of the response to POST /api/v1/demo/sessions. Every POST also needs it; without it the API answers 403 csrf_rejected. | `xCSRFToken` |
+
+
+
+**Note:** Auth credentials can be set using `demoCsrfCredentials` object in the client.
+
+### Usage Example
+
+#### Client Initialization
+
+You must provide credentials in the client as shown in the following code snippet.
+
+```ts
+import { Client } from 'tradeglot-local-consolelib';
+
+const client = new Client({
+  demoCsrfCredentials: {
+    'X-CSRF-Token': 'X-CSRF-Token'
+  },
+});
+```
+
+## DemoSession (Custom Header Signature)
+
+
+
+Documentation for accessing and setting credentials for DemoSession.
+
+### Auth Credentials
+
+| Name | Type | Description | Setter |
+|  --- | --- | --- | --- |
+| X-Demo-Session | `string` | Demo session id. Get it from the session_id field of the response to POST /api/v1/demo/sessions (that request needs no header). Without it the API answers 401 session_required. | `xDemoSession` |
+
+
+
+**Note:** Auth credentials can be set using `demoSessionCredentials` object in the client.
+
+### Usage Example
+
+#### Client Initialization
+
+You must provide credentials in the client as shown in the following code snippet.
+
+```ts
+import { Client } from 'tradeglot-local-consolelib';
+
+const client = new Client({
+  demoSessionCredentials: {
+    'X-Demo-Session': 'X-Demo-Session'
+  },
+});
+```
 
 
 # Test the SDK

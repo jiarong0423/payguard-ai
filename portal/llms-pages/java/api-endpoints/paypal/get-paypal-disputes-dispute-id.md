@@ -4,12 +4,15 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0Z
 
 Get Dispute. Local console route GET /api/v1/paypal/disputes/{dispute_id} on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```java
 CompletableFuture<DisputeDetailResponse> getPaypalDisputesDisputeIdAsync(
     final String disputeId)
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/getting-started/how-to-get-started/authorization.md)
 
 
 # Parameters
@@ -29,7 +32,7 @@ CompletableFuture<DisputeDetailResponse> getPaypalDisputesDisputeIdAsync(
 # Example Usage
 
 ```java
-String disputeId = "dispute_id2";
+String disputeId = "PP-R-BNP-XXXX7173";
 
 paypalController.getPaypalDisputesDisputeIdAsync(disputeId).thenAccept(result -> {
     // TODO success callback handler
@@ -40,9 +43,6 @@ paypalController.getPaypalDisputesDisputeIdAsync(disputeId).thenAccept(result ->
     if (cause instanceof ErrorBodyException) {
         ErrorBodyException errorBodyException = (ErrorBodyException) cause;
         errorBodyException.printStackTrace();
-    } else if (cause instanceof HTTPValidationErrorException) {
-        HTTPValidationErrorException hTTPValidationErrorException = (HTTPValidationErrorException) cause;
-        hTTPValidationErrorException.printStackTrace();
     } else {
         // fallback for unexpected errors
         exception.printStackTrace();
@@ -58,7 +58,7 @@ paypalController.getPaypalDisputesDisputeIdAsync(disputeId).thenAccept(result ->
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/error-body.md) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/http-validation-error.md) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/error-body.md) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/error-body.md) |
 
 

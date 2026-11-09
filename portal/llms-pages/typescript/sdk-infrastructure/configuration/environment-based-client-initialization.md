@@ -48,6 +48,10 @@ const client = Client.fromEnvironment({
 TIMEOUT=30000
 ENVIRONMENT=production
 
+# Authentication Credentials
+DEMO_CSRF_X_CSRF_TOKEN=x-csrf-token
+DEMO_SESSION_X_DEMO_SESSION=x-demo-session
+
 # Retry Configuration
 MAX_NUMBER_OF_RETRIES=3
 RETRY_ON_TIMEOUT=true

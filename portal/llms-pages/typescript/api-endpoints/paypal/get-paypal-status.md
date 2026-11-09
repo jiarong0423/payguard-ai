@@ -4,13 +4,16 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect
 
 Paypal Status. Local console route GET /api/v1/paypal/status on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```ts
 async getPaypalStatus(
   requestOptions?: RequestOptions
 ): Promise<ApiResponse<PaypalStatusResponse>>
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/getting-started/how-to-get-started/authorization.md)
 
 
 # Parameters

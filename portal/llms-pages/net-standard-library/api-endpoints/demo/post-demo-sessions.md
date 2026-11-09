@@ -16,7 +16,7 @@ PostDemoSessionsAsync(
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | `object` | Body, Required | - |
+| `body` | `object` | Body, Required | JSON body for: New Session. |
 
 
 # Response Type
@@ -29,7 +29,7 @@ PostDemoSessionsAsync(
 # Example Usage
 
 ```csharp
-object body = ApiHelper.JsonDeserialize<object>("{\"key1\":\"val1\",\"key2\":\"val2\"}");
+object body = ApiHelper.JsonDeserialize<object>("{}");
 try
 {
     SessionResponse result = await demoController.PostDemoSessionsAsync(body);
@@ -41,10 +41,18 @@ catch (ApiException e)
     {
        // TODO: Handle ErrorBodyException exception here
     }
-    if (e is HTTPValidationErrorException)
-    {
-       // TODO: Handle HTTPValidationErrorException exception here
-    }
+}
+```
+
+
+# Example Response *(as JSON)*
+
+```json
+{
+  "csrf_token": "csrf-example-0001",
+  "expires_at": "2026-10-07T10:30:00Z",
+  "session_id": "sess-example-0001",
+  "source": "synthetic"
 }
 ```
 
@@ -54,7 +62,7 @@ catch (ApiException e)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/exceptions/error-body.md) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/exceptions/http-validation-error.md) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/exceptions/error-body.md) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/exceptions/error-body.md) |
 
 

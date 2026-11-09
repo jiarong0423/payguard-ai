@@ -11,7 +11,7 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 # Introduction
 
-API of the local TradeGlot console (127.0.0.1:8000). It uses synthetic data, expects the demo session headers the console sets, and the hosted demo answers 503 on every route that would reach PayPal.
+API of the local TradeGlot console (127.0.0.1:8000). It uses synthetic data, expects the demo session headers the console sets, and the hosted demo answers 503 on every route that would reach PayPal. Authentication: create a session with POST /api/v1/demo/sessions, then send X-Demo-Session on every other call and X-CSRF-Token on every POST. POST calls also need an Origin header equal to the console's own origin (browsers add it; scripts must set it), otherwise the API answers 403 origin_required.
 
 
 # Building
@@ -95,6 +95,8 @@ The following parameters are configurable for the API Client:
 | retry_statuses | `Array of int` | The http statuses on which retry is to be done. <br> **Default: [408, 413, 429, 500, 502, 503, 504, 521, 522, 524, 408, 413, 429, 500, 502, 503, 504, 521, 522, 524]** |
 | retry_methods | `Array of string` | The http methods on which retry is to be done. <br> **Default: ["GET", "PUT", "GET", "PUT"]** |
 | proxy_settings | [`ProxySettings`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYWRkaXRpb25hbF9kb2N1bWVudGF0aW9uJTJGQ29uZmlndXJhdGlvbiUyRlByb3h5U2V0dGluZ3M) | Optional proxy configuration to route HTTP requests through a proxy server. |
+| demo_csrf_credentials | [`DemoCsrfCredentials`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) | The credential object for Custom Header Signature |
+| demo_session_credentials | [`DemoSessionCredentials`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg) | The credential object for Custom Header Signature |
 
 The API client can be initialized as follows:
 
@@ -102,9 +104,17 @@ The API client can be initialized as follows:
 
 ```python
 from tradeglotlocalconsole.configuration import Environment
+from tradeglotlocalconsole.http.auth.demo_csrf import DemoCsrfCredentials
+from tradeglotlocalconsole.http.auth.demo_session import DemoSessionCredentials
 from tradeglotlocalconsole.tradeglotlocalconsole_client import TradeglotlocalconsoleClient
 
 client = TradeglotlocalconsoleClient(
+    demo_csrf_credentials=DemoCsrfCredentials(
+        x_csrf_token='X-CSRF-Token'
+    ),
+    demo_session_credentials=DemoSessionCredentials(
+        x_demo_session='X-Demo-Session'
+    ),
     environment=Environment.PRODUCTION
 )
 ```
@@ -119,6 +129,80 @@ client = TradeglotlocalconsoleClient.from_environment(dotenv_path='/path/to/.env
 ```
 
 See the [Environment-Based Client Initialization](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYWRkaXRpb25hbF9kb2N1bWVudGF0aW9uJTJGQ29uZmlndXJhdGlvbiUyRkVudmlyb25tZW50LUJhc2VkJTI1MjBDbGllbnQlMjUyMEluaXRpYWxpemF0aW9u) section for details.
+
+
+# Authorization
+
+This API uses the following authentication schemes.
+
+* [`DemoCsrf (Custom Header Signature)`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg)
+* [`DemoSession (Custom Header Signature)`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+## DemoCsrf (Custom Header Signature)
+
+
+
+Documentation for accessing and setting credentials for DemoCsrf.
+
+### Auth Credentials
+
+| Name | Type | Description | Getter |
+|  --- | --- | --- | --- |
+| X-CSRF-Token | `str` | CSRF token for the same session. Get it from the csrf_token field of the response to POST /api/v1/demo/sessions. Every POST also needs it; without it the API answers 403 csrf_rejected. | `x_csrf_token` |
+
+
+
+**Note:** Auth credentials can be set using `DemoCsrfCredentials` object, passed in as named parameter `demo_csrf_credentials` in the client initialization.
+
+### Usage Example
+
+#### Client Initialization
+
+You must provide credentials in the client as shown in the following code snippet.
+
+```python
+from tradeglotlocalconsole.http.auth.demo_csrf import DemoCsrfCredentials
+from tradeglotlocalconsole.tradeglotlocalconsole_client import TradeglotlocalconsoleClient
+
+client = TradeglotlocalconsoleClient(
+    demo_csrf_credentials=DemoCsrfCredentials(
+        x_csrf_token='X-CSRF-Token'
+    )
+)
+```
+
+## DemoSession (Custom Header Signature)
+
+
+
+Documentation for accessing and setting credentials for DemoSession.
+
+### Auth Credentials
+
+| Name | Type | Description | Getter |
+|  --- | --- | --- | --- |
+| X-Demo-Session | `str` | Demo session id. Get it from the session_id field of the response to POST /api/v1/demo/sessions (that request needs no header). Without it the API answers 401 session_required. | `x_demo_session` |
+
+
+
+**Note:** Auth credentials can be set using `DemoSessionCredentials` object, passed in as named parameter `demo_session_credentials` in the client initialization.
+
+### Usage Example
+
+#### Client Initialization
+
+You must provide credentials in the client as shown in the following code snippet.
+
+```python
+from tradeglotlocalconsole.http.auth.demo_session import DemoSessionCredentials
+from tradeglotlocalconsole.tradeglotlocalconsole_client import TradeglotlocalconsoleClient
+
+client = TradeglotlocalconsoleClient(
+    demo_session_credentials=DemoSessionCredentials(
+        x_demo_session='X-Demo-Session'
+    )
+)
+```
 
 
 # Test the SDK
@@ -215,19 +299,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Evidence Brief. Local console route POST /api/v1/ai/evidence-brief on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_ai_evidence_brief(self,
                           body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`AiBriefHttpRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkFpQnJpZWZIdHRwUmVxdWVzdA) | Body, Required | - |
+| `body` | [`AiBriefHttpRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkFpQnJpZWZIdHRwUmVxdWVzdA) | Body, Required | JSON body for: Evidence Brief. |
 
 
 # Response Type
@@ -241,7 +328,7 @@ def post_ai_evidence_brief(self,
 
 ```python
 body = AiBriefHttpRequest(
-    stage=StageEnum.VELOCITY_GUARD
+    stage=StageEnum.SOURCE_COMPLIANCE
 )
 
 result = ai_controller.post_ai_evidence_brief(body)
@@ -254,8 +341,10 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 503 | Hosted demo only: this route makes no provider call (hosted_demo_disabled). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
 
@@ -266,11 +355,14 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 (optimise r24) This session's AI calls: stage, model, tokens, latency, estimated cost. No prompt or reply
 text is ever stored; the hosted demo makes no model call and answers an empty list.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def get_ai_usage(self)
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
 
 
 # Response Type
@@ -285,6 +377,25 @@ def get_ai_usage(self)
 ```python
 result = ai_controller.get_ai_usage()
 print(result)
+```
+
+
+# Example Response *(as JSON)*
+
+```json
+{
+  "cost_note": "example",
+  "entries": [
+    {
+      "at": "example",
+      "latency_ms": 0,
+      "outcome": "ok",
+      "stage": "source_compliance"
+    }
+  ],
+  "price_table_source": "example",
+  "source": "session_memory"
+}
 ```
 
 
@@ -322,19 +433,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Acknowledge Aup. Local console route POST /api/v1/aup/acknowledge on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_aup_acknowledge(self,
                         body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`AupAcknowledgeRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkF1cEFja25vd2xlZGdlUmVxdWVzdA) | Body, Required | - |
+| `body` | [`AupAcknowledgeRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkF1cEFja25vd2xlZGdlUmVxdWVzdA) | Body, Required | JSON body for: Acknowledge Aup. |
 
 
 # Response Type
@@ -363,7 +477,8 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
@@ -374,19 +489,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Aup Category Signal. Local console route POST /api/v1/aup/category-signal on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_aup_category_signal(self,
                             body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`AupCategorySignalRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkF1cENhdGVnb3J5U2lnbmFsUmVxdWVzdA) | Body, Required | - |
+| `body` | [`AupCategorySignalRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkF1cENhdGVnb3J5U2lnbmFsUmVxdWVzdA) | Body, Required | JSON body for: Aup Category Signal. |
 
 
 # Response Type
@@ -400,8 +518,8 @@ def post_aup_category_signal(self,
 
 ```python
 body = AupCategorySignalRequest(
-    description='description4',
-    evaluation_id='evaluation_id0'
+    description='example',
+    evaluation_id='examplexxxxxxxxxxxxxxxxxxxxxxxxx'
 )
 
 result = aup_controller.post_aup_category_signal(body)
@@ -414,7 +532,8 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
@@ -425,19 +544,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Aup Product Reference. Local console route POST /api/v1/aup/product-reference on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_aup_product_reference(self,
                               body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`ProductReferenceRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlByb2R1Y3RSZWZlcmVuY2VSZXF1ZXN0) | Body, Required | - |
+| `body` | [`ProductReferenceRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlByb2R1Y3RSZWZlcmVuY2VSZXF1ZXN0) | Body, Required | JSON body for: Aup Product Reference. |
 
 
 # Response Type
@@ -451,8 +573,8 @@ def post_aup_product_reference(self,
 
 ```python
 body = ProductReferenceRequest(
-    description='description4',
-    evaluation_id='evaluation_id0'
+    description='example',
+    evaluation_id='examplexxxxxxxxxxxxxxxxxxxxxxxxx'
 )
 
 result = aup_controller.post_aup_product_reference(body)
@@ -465,7 +587,8 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
@@ -476,19 +599,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Aup Product Confirm. Local console route POST /api/v1/aup/product-reference/confirm on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_aup_product_reference_confirm(self,
                                       body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`ProductConfirmRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maXJtUmVxdWVzdA) | Body, Required | - |
+| `body` | [`ProductConfirmRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maXJtUmVxdWVzdA) | Body, Required | JSON body for: Aup Product Confirm. |
 
 
 # Response Type
@@ -502,9 +628,9 @@ def post_aup_product_reference_confirm(self,
 
 ```python
 body = ProductConfirmRequest(
-    description='description4',
-    evaluation_id='evaluation_id0',
-    product_id='String3'
+    description='example',
+    evaluation_id='examplexxxxxxxxxxxxxxxxxxxxxxxxx',
+    product_id='example'
 )
 
 result = aup_controller.post_aup_product_reference_confirm(body)
@@ -517,7 +643,8 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
@@ -528,19 +655,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Aup. Local console route POST /api/v1/aup/review on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_aup_review(self,
                    body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`AupRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkF1cFJlcXVlc3Q) | Body, Required | - |
+| `body` | [`AupRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkF1cFJlcXVlc3Q) | Body, Required | JSON body for: Aup. |
 
 
 # Response Type
@@ -554,7 +684,7 @@ def post_aup_review(self,
 
 ```python
 body = AupRequest(
-    description='description4'
+    description='Handmade ceramic coffee mug, shipped in a padded box'
 )
 
 result = aup_controller.post_aup_review(body)
@@ -567,7 +697,8 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
@@ -597,19 +728,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Inject. Local console route POST /api/v1/demo/inject on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_demo_inject(self,
                     body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`InjectRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkluamVjdFJlcXVlc3Q) | Body, Required | - |
+| `body` | [`InjectRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkluamVjdFJlcXVlc3Q) | Body, Required | JSON body for: Inject. |
 
 
 # Response Type
@@ -623,7 +757,7 @@ def post_demo_inject(self,
 
 ```python
 body = InjectRequest(
-    scenario=Scenario5Enum.DISPUTE
+    scenario=Scenario5Enum.BURST
 )
 
 result = demo_controller.post_demo_inject(body)
@@ -636,7 +770,8 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
@@ -659,7 +794,7 @@ def post_demo_sessions(self,
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | `Any` | Body, Required | - |
+| `body` | `Any` | Body, Required | JSON body for: New Session. |
 
 
 # Response Type
@@ -672,10 +807,22 @@ def post_demo_sessions(self,
 # Example Usage
 
 ```python
-body = jsonpickle.decode('{"key1":"val1","key2":"val2"}')
+body = jsonpickle.decode('{}')
 
 result = demo_controller.post_demo_sessions(body)
 print(result)
+```
+
+
+# Example Response *(as JSON)*
+
+```json
+{
+  "csrf_token": "csrf-example-0001",
+  "expires_at": "2026-10-07T10:30:00Z",
+  "session_id": "sess-example-0001",
+  "source": "synthetic"
+}
 ```
 
 
@@ -684,7 +831,7 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
@@ -695,11 +842,14 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 State. Local console route GET /api/v1/demo/state on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def get_demo_state(self)
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
 
 
 # Response Type
@@ -751,19 +901,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Guide Form. Local console route POST /api/v1/guide/form on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_guide_form(self,
                    body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`GuideFormRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkd1aWRlRm9ybVJlcXVlc3Q) | Body, Required | - |
+| `body` | [`GuideFormRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkd1aWRlRm9ybVJlcXVlc3Q) | Body, Required | JSON body for: Guide Form. |
 
 
 # Response Type
@@ -776,9 +929,7 @@ def post_guide_form(self,
 # Example Usage
 
 ```python
-body = GuideFormRequest(
-    confirm_review=False
-)
+body = GuideFormRequest()
 
 result = guide_controller.post_guide_form(body)
 print(result)
@@ -790,7 +941,8 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
@@ -801,19 +953,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Guide Review. Local console route POST /api/v1/guide/review on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_guide_review(self,
                      body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`GuideReviewRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkd1aWRlUmV2aWV3UmVxdWVzdA) | Body, Required | - |
+| `body` | [`GuideReviewRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkd1aWRlUmV2aWV3UmVxdWVzdA) | Body, Required | JSON body for: Guide Review. |
 
 
 # Response Type
@@ -826,9 +981,7 @@ def post_guide_review(self,
 # Example Usage
 
 ```python
-body = GuideReviewRequest(
-    confirm=False
-)
+body = GuideReviewRequest()
 
 result = guide_controller.post_guide_review(body)
 print(result)
@@ -840,7 +993,8 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
@@ -851,19 +1005,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Guide Start. Local console route POST /api/v1/guide/start on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_guide_start(self,
                     body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`GuideStartRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkd1aWRlU3RhcnRSZXF1ZXN0) | Body, Required | - |
+| `body` | [`GuideStartRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkd1aWRlU3RhcnRSZXF1ZXN0) | Body, Required | JSON body for: Guide Start. |
 
 
 # Response Type
@@ -877,7 +1034,7 @@ def post_guide_start(self,
 
 ```python
 body = GuideStartRequest(
-    scenario=Scenario2Enum.VELOCITY
+    scenario=Scenario2Enum.PREFLIGHT
 )
 
 result = guide_controller.post_guide_start(body)
@@ -890,7 +1047,8 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
@@ -901,12 +1059,15 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Guide State. Local console route GET /api/v1/guide/state on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def get_guide_state(self,
                    scenario=None)
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
 
 
 # Parameters
@@ -926,7 +1087,11 @@ def get_guide_state(self,
 # Example Usage
 
 ```python
-result = guide_controller.get_guide_state()
+scenario = Scenario1Enum.PREFLIGHT
+
+result = guide_controller.get_guide_state(
+    scenario=scenario
+)
 print(result)
 ```
 
@@ -936,7 +1101,7 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
@@ -947,19 +1112,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Guide Turn. Local console route POST /api/v1/guide/turn on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_guide_turn(self,
                    body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`GuideTurnRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkd1aWRlVHVyblJlcXVlc3Q) | Body, Required | - |
+| `body` | [`GuideTurnRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkd1aWRlVHVyblJlcXVlc3Q) | Body, Required | JSON body for: Guide Turn. |
 
 
 # Response Type
@@ -973,7 +1141,7 @@ def post_guide_turn(self,
 
 ```python
 body = GuideTurnRequest(
-    text='text4'
+    text='example'
 )
 
 result = guide_controller.post_guide_turn(body)
@@ -986,7 +1154,8 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
@@ -1038,6 +1207,18 @@ print(result)
 ```
 
 
+# Example Response *(as JSON)*
+
+```json
+{
+  "mode": "demo",
+  "source": "synthetic",
+  "status": "ok",
+  "version": "0.0.0-example"
+}
+```
+
+
 # Errors
 
 | HTTP Status Code | Error Description | Exception Class |
@@ -1072,19 +1253,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Advisory Evaluate. Local console route POST /api/v1/advisory/evaluate on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_advisory_evaluate(self,
                           body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`AdvisoryRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkFkdmlzb3J5UmVxdWVzdA) | Body, Required | - |
+| `body` | [`AdvisoryRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkFkdmlzb3J5UmVxdWVzdA) | Body, Required | JSON body for: Advisory Evaluate. |
 
 
 # Response Type
@@ -1098,10 +1282,10 @@ def post_advisory_evaluate(self,
 
 ```python
 body = AdvisoryRequest(
-    as_of='as_of2',
-    candidate_json='candidate_json2',
-    observation_max_age_days=102,
-    theme=ThemeEnum.DISPUTE_MEDIATION
+    as_of='examplexxxxxxxxxxxxx',
+    candidate_json='example',
+    observation_max_age_days=0,
+    theme=ThemeEnum.SOURCE_COMPLIANCE
 )
 
 result = other_controller.post_advisory_evaluate(body)
@@ -1114,7 +1298,8 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
@@ -1125,19 +1310,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Case Route. Local console route POST /api/v1/cases/route on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_cases_route(self,
                     body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`CaseRouteRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkNhc2VSb3V0ZVJlcXVlc3Q) | Body, Required | - |
+| `body` | [`CaseRouteRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkNhc2VSb3V0ZVJlcXVlc3Q) | Body, Required | JSON body for: Case Route. |
 
 
 # Response Type
@@ -1151,7 +1339,7 @@ def post_cases_route(self,
 
 ```python
 body = CaseRouteRequest(
-    text='text4'
+    text='handmade ceramic coffee mug'
 )
 
 result = other_controller.post_cases_route(body)
@@ -1164,7 +1352,8 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
@@ -1175,11 +1364,14 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Connections. Local console route GET /api/v1/connections on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def get_connections(self)
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
 
 
 # Response Type
@@ -1194,6 +1386,16 @@ def get_connections(self)
 ```python
 result = other_controller.get_connections()
 print(result)
+```
+
+
+# Example Response *(as JSON)*
+
+```json
+{
+  "mode": "hosted_demo",
+  "sandbox_reads": true
+}
 ```
 
 
@@ -1212,19 +1414,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Country Rules Check. Local console route POST /api/v1/country-rules/check on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_country_rules_check(self,
                             body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`CountryRulesCheckRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkNvdW50cnlSdWxlc0NoZWNrUmVxdWVzdA) | Body, Required | - |
+| `body` | [`CountryRulesCheckRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkNvdW50cnlSdWxlc0NoZWNrUmVxdWVzdA) | Body, Required | JSON body for: Country Rules Check. |
 
 
 # Response Type
@@ -1238,11 +1443,13 @@ def post_country_rules_check(self,
 
 ```python
 body = CountryRulesCheckRequest(
-    buyer_country=BuyerCountryEnum.AU,
-    seller_country=SellerCountryEnum.AU,
-    account_opened=AccountOpenedEnum.UNKNOWN,
+    buyer_country=BuyerCountryEnum.US,
+    seller_country=SellerCountryEnum.TW,
     account_type=AccountTypeEnum.BUSINESS,
-    checkout=CheckoutEnum.PAYPAL_ACCOUNT
+    amount='120.00',
+    checkout=CheckoutEnum.PAYPAL_ACCOUNT,
+    currency='USD',
+    goods_tags=[]
 )
 
 result = other_controller.post_country_rules_check(body)
@@ -1255,7 +1462,8 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
@@ -1266,11 +1474,14 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Country Rules Countries. Local console route GET /api/v1/country-rules/countries on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def get_country_rules_countries(self)
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
 
 
 # Response Type
@@ -1303,19 +1514,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Country Rules Search. Local console route POST /api/v1/country-rules/search on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_country_rules_search(self,
                              body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`CountryRulesSearchRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkNvdW50cnlSdWxlc1NlYXJjaFJlcXVlc3Q) | Body, Required | - |
+| `body` | [`CountryRulesSearchRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkNvdW50cnlSdWxlc1NlYXJjaFJlcXVlc3Q) | Body, Required | JSON body for: Country Rules Search. |
 
 
 # Response Type
@@ -1329,8 +1543,7 @@ def post_country_rules_search(self,
 
 ```python
 body = CountryRulesSearchRequest(
-    query='query6',
-    limit=5
+    query='example'
 )
 
 result = other_controller.post_country_rules_search(body)
@@ -1343,7 +1556,8 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
@@ -1354,8 +1568,6 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Approve. Local console route POST /api/v1/disputes/{case_ref}/approve on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_disputes_case_ref_approve(self,
                                   case_ref,
@@ -1363,12 +1575,17 @@ def post_disputes_case_ref_approve(self,
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `case_ref` | `str` | Template, Required | Case ref. |
-| `body` | [`ApproveRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkFwcHJvdmVSZXF1ZXN0) | Body, Required | - |
+| `body` | [`ApproveRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkFwcHJvdmVSZXF1ZXN0) | Body, Required | JSON body for: Approve. |
 
 
 # Response Type
@@ -1381,7 +1598,7 @@ def post_disputes_case_ref_approve(self,
 # Example Usage
 
 ```python
-case_ref = 'case_ref4'
+case_ref = 'case-ref-001'
 
 body = ApproveRequest(
     draft_digest='draft_digest6'
@@ -1400,7 +1617,8 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
@@ -1411,8 +1629,6 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Draft. Local console route POST /api/v1/disputes/{case_ref}/draft on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_disputes_case_ref_draft(self,
                                 case_ref,
@@ -1420,12 +1636,17 @@ def post_disputes_case_ref_draft(self,
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `case_ref` | `str` | Template, Required | Case ref. |
-| `body` | `Any` | Body, Required | - |
+| `body` | `Any` | Body, Required | JSON body for: Draft. |
 
 
 # Response Type
@@ -1438,9 +1659,9 @@ def post_disputes_case_ref_draft(self,
 # Example Usage
 
 ```python
-case_ref = 'case_ref4'
+case_ref = 'case-ref-001'
 
-body = jsonpickle.decode('{"key1":"val1","key2":"val2"}')
+body = jsonpickle.decode('{}')
 
 result = other_controller.post_disputes_case_ref_draft(
     case_ref,
@@ -1455,7 +1676,8 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
@@ -1466,19 +1688,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Policy Assess. Local console route POST /api/v1/policy/assess on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_policy_assess(self,
                       body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`PolicyRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlBvbGljeVJlcXVlc3Q) | Body, Required | - |
+| `body` | [`PolicyRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlBvbGljeVJlcXVlc3Q) | Body, Required | JSON body for: Policy Assess. |
 
 
 # Response Type
@@ -1492,9 +1717,9 @@ def post_policy_assess(self,
 
 ```python
 body = PolicyRequest(
-    as_of='as_of2',
-    observation_max_age_days=102,
-    theme=ThemeEnum.DISPUTE_MEDIATION
+    as_of='2026-10-07T00:00:00Z',
+    observation_max_age_days=30,
+    theme=ThemeEnum.SOURCE_COMPLIANCE
 )
 
 result = other_controller.post_policy_assess(body)
@@ -1507,7 +1732,8 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
@@ -1537,19 +1763,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Connect. Local console route POST /api/v1/paypal/connect on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_paypal_connect(self,
                        body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | `Any` | Body, Required | - |
+| `body` | `Any` | Body, Required | JSON body for: Connect. |
 
 
 # Response Type
@@ -1562,7 +1791,7 @@ def post_paypal_connect(self,
 # Example Usage
 
 ```python
-body = jsonpickle.decode('{"key1":"val1","key2":"val2"}')
+body = jsonpickle.decode('{}')
 
 result = paypal_controller.post_paypal_connect(body)
 print(result)
@@ -1574,8 +1803,10 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 503 | Hosted demo only: this route makes no provider call (hosted_demo_disabled). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
 
@@ -1585,11 +1816,14 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 List Disputes. Local console route GET /api/v1/paypal/disputes on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def get_paypal_disputes(self)
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
 
 
 # Response Type
@@ -1622,19 +1856,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Add Tracking. Local console route POST /api/v1/paypal/disputes/add-tracking on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_paypal_disputes_add_tracking(self,
                                      body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`AddTrackingRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkFkZFRyYWNraW5nUmVxdWVzdA) | Body, Required | - |
+| `body` | [`AddTrackingRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkFkZFRyYWNraW5nUmVxdWVzdA) | Body, Required | JSON body for: Add Tracking. |
 
 
 # Response Type
@@ -1648,9 +1885,8 @@ def post_paypal_disputes_add_tracking(self,
 
 ```python
 body = AddTrackingRequest(
-    case_ref='case_ref0',
-    dispute_id='dispute_id8',
-    submit=False
+    case_ref='case-ref-001',
+    dispute_id='PP-R-BNP-XXXX7173'
 )
 
 result = paypal_controller.post_paypal_disputes_add_tracking(body)
@@ -1663,8 +1899,10 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 503 | Hosted demo only: this route makes no provider call (hosted_demo_disabled). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
 
@@ -1674,19 +1912,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Provide Evidence. Local console route POST /api/v1/paypal/disputes/provide-evidence on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_paypal_disputes_provide_evidence(self,
                                          body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`ProvideEvidenceRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlByb3ZpZGVFdmlkZW5jZVJlcXVlc3Q) | Body, Required | - |
+| `body` | [`ProvideEvidenceRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlByb3ZpZGVFdmlkZW5jZVJlcXVlc3Q) | Body, Required | JSON body for: Provide Evidence. |
 
 
 # Response Type
@@ -1700,8 +1941,8 @@ def post_paypal_disputes_provide_evidence(self,
 
 ```python
 body = ProvideEvidenceRequest(
-    case_ref='case_ref0',
-    dispute_id='dispute_id8',
+    case_ref='case-ref-001',
+    dispute_id='PP-R-BNP-XXXX7173',
     submit=False
 )
 
@@ -1715,8 +1956,10 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 503 | Hosted demo only: this route makes no provider call (hosted_demo_disabled). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
 
@@ -1726,12 +1969,15 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Get Dispute. Local console route GET /api/v1/paypal/disputes/{dispute_id} on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def get_paypal_disputes_dispute_id(self,
                                   dispute_id)
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
 
 
 # Parameters
@@ -1751,7 +1997,7 @@ def get_paypal_disputes_dispute_id(self,
 # Example Usage
 
 ```python
-dispute_id = 'dispute_id2'
+dispute_id = 'PP-R-BNP-XXXX7173'
 
 result = paypal_controller.get_paypal_disputes_dispute_id(dispute_id)
 print(result)
@@ -1763,7 +2009,7 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
@@ -1774,19 +2020,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Invoice Draft. Local console route POST /api/v1/paypal/invoices/draft on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_paypal_invoices_draft(self,
                               body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`InvoiceDraftRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkludm9pY2VEcmFmdFJlcXVlc3Q) | Body, Required | - |
+| `body` | [`InvoiceDraftRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkludm9pY2VEcmFmdFJlcXVlc3Q) | Body, Required | JSON body for: Invoice Draft. |
 
 
 # Response Type
@@ -1817,8 +2066,10 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 503 | Hosted demo only: this route makes no provider call (hosted_demo_disabled). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
 
@@ -1828,19 +2079,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Invoice Review. Local console route POST /api/v1/paypal/invoices/review on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_paypal_invoices_review(self,
                                body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`InvoiceReviewRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkludm9pY2VSZXZpZXdSZXF1ZXN0) | Body, Required | - |
+| `body` | [`InvoiceReviewRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkludm9pY2VSZXZpZXdSZXF1ZXN0) | Body, Required | JSON body for: Invoice Review. |
 
 
 # Response Type
@@ -1854,10 +2108,10 @@ def post_paypal_invoices_review(self,
 
 ```python
 body = InvoiceReviewRequest(
-    amount='amount8',
+    amount='42.50',
     confirm_sandbox_draft=False,
     currency=CurrencyEnum.USD,
-    description='description4'
+    description='example'
 )
 
 result = paypal_controller.post_paypal_invoices_review(body)
@@ -1870,7 +2124,8 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
@@ -1881,11 +2136,14 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Paypal Status. Local console route GET /api/v1/paypal/status on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def get_paypal_status(self)
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
 
 
 # Response Type
@@ -1918,11 +2176,14 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Verify Webhook. Local console route POST /api/v1/paypal/webhooks/verify on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_paypal_webhooks_verify(self)
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
 
 
 # Response Type
@@ -1945,7 +2206,9 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 503 | Hosted demo only: this route makes no provider call (hosted_demo_disabled). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
 
@@ -1974,19 +2237,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 References. Local console route POST /api/v1/references/search on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_references_search(self,
                           body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`ReferenceRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlJlZmVyZW5jZVJlcXVlc3Q) | Body, Required | - |
+| `body` | [`ReferenceRequest`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlJlZmVyZW5jZVJlcXVlc3Q) | Body, Required | JSON body for: References. |
 
 
 # Response Type
@@ -2000,11 +2266,8 @@ def post_references_search(self,
 
 ```python
 body = ReferenceRequest(
-    query='query6',
-    theme=ThemeEnum.DISPUTE_MEDIATION,
-    case_stage=CaseStage2Enum.ANY,
-    limit=3,
-    require_known_source_date=False
+    query='example',
+    theme=ThemeEnum.SOURCE_COMPLIANCE
 )
 
 result = references_controller.post_references_search(body)
@@ -2017,7 +2280,8 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
@@ -2047,11 +2311,14 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Studio Agent Status. Local console route GET /api/v1/studio/agent-status on synthetic data; advisory only.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def get_studio_agent_status(self)
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
 
 
 # Response Type
@@ -2084,19 +2351,22 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 Studio Agent Turn. Local console route POST /api/v1/studio/agent-turn on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```python
 def post_studio_agent_turn(self,
                           body)
 ```
 
 
+# Authentication
+
+This endpoint requires [DemoCsrf](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vQ3NyZg) **AND** [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fYXV0aF9EZW1vU2Vzc2lvbg)
+
+
 # Parameters
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | `Any` | Body, Required | - |
+| `body` | `Any` | Body, Required | JSON body for: Studio Agent Turn. |
 
 
 # Response Type
@@ -2109,7 +2379,7 @@ def post_studio_agent_turn(self,
 # Example Usage
 
 ```python
-body = jsonpickle.decode('{"key1":"val1","key2":"val2"}')
+body = jsonpickle.decode('{}')
 
 result = studio_controller.post_studio_agent_turn(body)
 print(result)
@@ -2121,8 +2391,10 @@ print(result)
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
 | 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I) |
+| 403 | Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 422 | The request does not match the accepted contract (schema_invalid). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 | 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
+| 503 | Hosted demo only: this route makes no provider call (hosted_demo_disabled). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ) |
 
 
 
@@ -2189,6 +2461,7 @@ print(result)
 * [Guide State Response](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZQ)
 * [Guide Subtraction](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkd1aWRlU3VidHJhY3Rpb24)
 * [Guide Turn Request](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkd1aWRlVHVyblJlcXVlc3Q)
+* [HTTP Validation Error](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I)
 * [Health Response](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhlYWx0aFJlc3BvbnNl)
 * [Identity Redaction](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRklkZW50aXR5UmVkYWN0aW9u)
 * [Identity Tokens](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRklkZW50aXR5VG9rZW5z)
@@ -2226,6 +2499,7 @@ print(result)
 * [Scenario Citation](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlNjZW5hcmlvQ2l0YXRpb24)
 * [Scenario Match](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlNjZW5hcmlvTWF0Y2g)
 * [Send Guard](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlNlbmRHdWFyZA)
+* [Sent File Fingerprint](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlNlbnRGaWxlRmluZ2VycHJpbnQ)
 * [Session Response](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlNlc3Npb25SZXNwb25zZQ)
 * [State Response](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlN0YXRlUmVzcG9uc2U)
 * [Synthetic Money](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlN5bnRoZXRpY01vbmV5)
@@ -3312,6 +3586,7 @@ Deployment mode only. Never a key, a key's presence, a value or a variable name.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `mode` | [`ModeEnum`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRk1vZGU) | Required | Mode. |
+| `sandbox_reads` | bool \| None | Optional | This is a container for any-of cases. |
 
 
 # Example
@@ -3321,7 +3596,8 @@ from tradeglotlocalconsole.models.connections_response import ConnectionsRespons
 from tradeglotlocalconsole.models.mode_enum import ModeEnum
 
 connections_response = ConnectionsResponse(
-    mode=ModeEnum.LOCAL
+    mode=ModeEnum.LOCAL,
+    sandbox_reads=True
 )
 ```
 
@@ -5301,6 +5577,63 @@ guide_turn_request = GuideTurnRequest(
 
 
 
+#### HTTP Validation Error
+
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I
+
+HTTPValidationError.
+
+
+# Class Name
+
+`HTTPValidationError`
+
+
+# Fields
+
+| Name | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `detail` | [`List[ValidationError]`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlZhbGlkYXRpb25FcnJvcg) | Optional | Detail. |
+
+
+# Example
+
+```python
+import jsonpickle
+
+from tradeglotlocalconsole.models.http_validation_error import HTTPValidationError
+from tradeglotlocalconsole.models.validation_error import ValidationError
+
+http_validation_error = HTTPValidationError(
+    detail=[
+        ValidationError(
+            loc=[
+                'String7',
+                'String8',
+                'String9'
+            ],
+            msg='msg2',
+            mtype='type4',
+            ctx=jsonpickle.decode('{"key1":"val1","key2":"val2"}'),
+            input=jsonpickle.decode('{"key1":"val1","key2":"val2"}')
+        ),
+        ValidationError(
+            loc=[
+                'String7',
+                'String8',
+                'String9'
+            ],
+            msg='msg2',
+            mtype='type4',
+            ctx=jsonpickle.decode('{"key1":"val1","key2":"val2"}'),
+            input=jsonpickle.decode('{"key1":"val1","key2":"val2"}')
+        )
+    ]
+)
+```
+
+
+
 #### Health Response
 
 Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhlYWx0aFJlc3BvbnNl
@@ -6497,6 +6830,7 @@ ProvideEvidenceResponse.
 | `provider_submission` | [`ProviderSubmissionEnum`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlByb3ZpZGVyU3VibWlzc2lvbg) | Required | Provider submission. |
 | `readback` | [`Readback1Enum`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlJlYWRiYWNrMQ) | Required | Readback. |
 | `send_guard` | [`SendGuard`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlNlbmRHdWFyZA) | Required | (r25 send guard) What a send carries and to whom, side by side; every account id is masked (first 2, last 4). |
+| `sent_files` | List[[SentFileFingerprint](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlNlbnRGaWxlRmluZ2VycHJpbnQ)] \| None | Optional | This is a container for any-of cases. |
 | `source` | [`SourceEnum`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlNvdXJjZQ) | Required | Source. |
 | `submit_flag_enabled` | `bool` | Required | Submit flag enabled. |
 
@@ -6519,6 +6853,7 @@ from tradeglotlocalconsole.models.provider_money import ProviderMoney
 from tradeglotlocalconsole.models.provider_submission_enum import ProviderSubmissionEnum
 from tradeglotlocalconsole.models.readback_1_enum import Readback1Enum
 from tradeglotlocalconsole.models.send_guard import SendGuard
+from tradeglotlocalconsole.models.sent_file_fingerprint import SentFileFingerprint
 from tradeglotlocalconsole.models.source_enum import SourceEnum
 from tradeglotlocalconsole.models.tracking_info import TrackingInfo
 
@@ -6574,7 +6909,15 @@ provide_evidence_response = ProvideEvidenceResponse(
     submit_flag_enabled=False,
     confirm_token='String1',
     payload_sha_256='String1',
-    paypal_debug_id='String1'
+    paypal_debug_id='String1',
+    sent_files=[
+        SentFileFingerprint(
+            byte_length=196,
+            content_type=ContentTypeEnum.ENUM_IMAGEPNG,
+            filename='filename6',
+            sha_256='sha2566'
+        )
+    ]
 )
 ```
 
@@ -7207,6 +7550,46 @@ send_guard = SendGuard(
     ),
     dispute_reason='String9',
     dispute_seller_masked='String1'
+)
+```
+
+
+
+#### Sent File Fingerprint
+
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlNlbnRGaWxlRmluZ2VycHJpbnQ
+
+Plain SHA-256 of one file's exact bytes, recorded at the moment of a send so a later read-back can be compared.
+
+The keyed `payload_sha256` cannot be checked outside the session; this one can. Never present on a preview.
+
+
+# Class Name
+
+`SentFileFingerprint`
+
+
+# Fields
+
+| Name | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `byte_length` | `int` | Required | Byte length.<br><br>**Constraints**: `>= 0`, `<= 9999999` |
+| `content_type` | [`ContentTypeEnum`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkNvbnRlbnRUeXBl) | Required | Content type. |
+| `filename` | `str` | Required | Filename.<br><br>**Constraints**: *Maximum Length*: `255` |
+| `sha_256` | `str` | Required | Sha256.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` |
+
+
+# Example
+
+```python
+from tradeglotlocalconsole.models.content_type_enum import ContentTypeEnum
+from tradeglotlocalconsole.models.sent_file_fingerprint import SentFileFingerprint
+
+sent_file_fingerprint = SentFileFingerprint(
+    byte_length=210,
+    content_type=ContentTypeEnum.ENUM_IMAGEJPEG,
+    filename='filename4',
+    sha_256='sha2564'
 )
 ```
 
@@ -11876,7 +12259,6 @@ mtype = TypeEnum.EMAIL
 ### Exceptions
 
 * [Error Body](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkVycm9yQm9keQ)
-* [HTTP Validation Error](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I)
 
 
 
@@ -11912,38 +12294,6 @@ except APIException as e:
 
 
 
-#### HTTP Validation Error
-
-Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I
-
-HTTPValidationError.
-
-
-# Class Name
-
-`HTTPValidationErrorException`
-
-
-# Fields
-
-| Name | Type | Tags | Description |
-|  --- | --- | --- | --- |
-| `detail` | [`List[ValidationError]`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlZhbGlkYXRpb25FcnJvcg) | Optional | Detail. |
-
-
-# Example
-
-```python
-try:
-    # make the API call
-except HTTPValidationErrorException as e:
-    print(e)
-except APIException as e:
-    print(e)
-```
-
-
-
 ### OneOf/AnyOf Definitions
 
 * [Get Guide State Scenario](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkdldEd1aWRlU3RhdGVTY2VuYXJpbw)
@@ -11966,6 +12316,7 @@ except APIException as e:
 * [Case Route Response Query](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkNhc2VSb3V0ZVJlc3BvbnNlUXVlcnk)
 * [Category Signal Category](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkNhdGVnb3J5U2lnbmFsQ2F0ZWdvcnk)
 * [Category Signal Confidence](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkNhdGVnb3J5U2lnbmFsQ29uZmlkZW5jZQ)
+* [Connections Response Sandbox Reads](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkNvbm5lY3Rpb25zUmVzcG9uc2VTYW5kYm94UmVhZHM)
 * [Country Rules Check Request Amount](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkNvdW50cnlSdWxlc0NoZWNrUmVxdWVzdEFtb3VudA)
 * [Country Rules Check Request Currency](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkNvdW50cnlSdWxlc0NoZWNrUmVxdWVzdEN1cnJlbmN5)
 * [Dispute Detail Response Dispute Channel](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkRpc3B1dGVEZXRhaWxSZXNwb25zZURpc3B1dGVDaGFubmVs)
@@ -12035,6 +12386,7 @@ except APIException as e:
 * [Provide Evidence Response Confirm Token](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlByb3ZpZGVFdmlkZW5jZVJlc3BvbnNlQ29uZmlybVRva2Vu)
 * [Provide Evidence Response Payload Sha 256](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlByb3ZpZGVFdmlkZW5jZVJlc3BvbnNlUGF5bG9hZFNoYTI1Ng)
 * [Provide Evidence Response Paypal Debug Id](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlByb3ZpZGVFdmlkZW5jZVJlc3BvbnNlUGF5cGFsRGVidWdJZA)
+* [Provide Evidence Response Sent Files](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlByb3ZpZGVFdmlkZW5jZVJlc3BvbnNlU2VudEZpbGVz)
 * [Reference Citation Case Outcome](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlJlZmVyZW5jZUNpdGF0aW9uQ2FzZU91dGNvbWU)
 * [Reference Citation Decision Acceptance Deadline](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlJlZmVyZW5jZUNpdGF0aW9uRGVjaXNpb25BY2NlcHRhbmNlRGVhZGxpbmU)
 * [Reference Citation Decision Date](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlJlZmVyZW5jZUNpdGF0aW9uRGVjaXNpb25EYXRl)
@@ -12663,6 +13015,35 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI
 
 ```python
 value = ConfidenceEnum.HIGH
+```
+
+
+
+#### Connections Response Sandbox Reads
+
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkNvbm5lY3Rpb25zUmVzcG9uc2VTYW5kYm94UmVhZHM
+
+
+# Data Type
+
+`bool`
+
+
+# Cases
+
+| Type |
+|  --- |
+| `bool` |
+
+
+# bool
+
+## Initialization Code
+
+### Example
+
+```python
+value = False
 ```
 
 
@@ -14757,6 +15138,42 @@ value = 'String0'
 
 
 
+#### Provide Evidence Response Sent Files
+
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlByb3ZpZGVFdmlkZW5jZVJlc3BvbnNlU2VudEZpbGVz
+
+
+# Data Type
+
+`List[SentFileFingerprint]`
+
+
+# Cases
+
+| Type |
+|  --- |
+| [`List[SentFileFingerprint]`](https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlNlbnRGaWxlRmluZ2VycHJpbnQ) |
+
+
+# List[SentFileFingerprint]
+
+## Initialization Code
+
+### Example
+
+```python
+value = [
+    SentFileFingerprint(
+        byte_length=196,
+        content_type=ContentTypeEnum.ENUM_IMAGEPNG,
+        filename='filename6',
+        sha_256='sha2566'
+    )
+]
+```
+
+
+
 #### Reference Citation Case Outcome
 
 Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlJlZmVyZW5jZUNpdGF0aW9uQ2FzZU91dGNvbWU
@@ -16225,6 +16642,8 @@ Values provided through arguments take precedence over those defined in environm
 ```python
 ENVIRONMENT=production
 
+DEMO_CSRF_X_CSRF_TOKEN=ExampleXCSRFToken
+DEMO_SESSION_X_DEMO_SESSION=ExampleXDemoSession
 
 TIMEOUT=60
 MAX_RETRIES=3

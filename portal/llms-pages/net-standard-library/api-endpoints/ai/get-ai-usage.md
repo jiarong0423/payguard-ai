@@ -5,11 +5,14 @@ Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/
 (optimise r24) This session's AI calls: stage, model, tokens, latency, estimated cost. No prompt or reply
 text is ever stored; the hosted demo makes no model call and answers an empty list.
 
-:information_source: **Note** This endpoint does not require authentication.
-
 ```csharp
 GetAiUsageAsync()
 ```
+
+
+# Authentication
+
+This endpoint requires [DemoSession](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/getting-started/how-to-get-started/authorization.md)
 
 
 # Response Type
@@ -33,6 +36,25 @@ catch (ApiException e)
     {
        // TODO: Handle ErrorBodyException exception here
     }
+}
+```
+
+
+# Example Response *(as JSON)*
+
+```json
+{
+  "cost_note": "example",
+  "entries": [
+    {
+      "at": "example",
+      "latency_ms": 0,
+      "outcome": "ok",
+      "stage": "source_compliance"
+    }
+  ],
+  "price_table_source": "example",
+  "source": "session_memory"
 }
 ```
 
