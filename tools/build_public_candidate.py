@@ -102,6 +102,7 @@ EXACT_FILES = (
     "workflows/evidence_integrity/requirements.txt",
     "workflows/evidence_integrity/tasks.py",
     "docs/RENDER_WORKFLOWS_NOTES.md",
+    "docs/evidence/RENDER_WORKFLOW_RUN_20261109.md",
     # (2026-11-08) Evidence and method files added so every public number can be reproduced or traced.
     "data/eval/checklist_answer_key_v1.json",
     "data/eval/checklist_answer_key_v2_heldout.json",
