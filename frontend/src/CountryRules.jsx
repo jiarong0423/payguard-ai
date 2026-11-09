@@ -52,6 +52,9 @@ function splitRule(text) {
     // English only on screen: words written in Chinese or Japanese (the statute name and article numbers) are dropped
     // here; the pack keeps them and the source link still opens the original page.
     statute = cite[1].split(/\s+/).filter((word) => !/[\u3000-\u30ff\u3400-\u9fff\uff00-\uffef]/u.test(word)).join(' ').trim();
+    // After the Chinese or Japanese words are gone, a statute can be left as one bracketed English name: show it without the outer pair.
+    const wrapped = statute.match(/^\((.*)\)$/u);
+    if (wrapped && !/[()]/u.test(wrapped[1].replace(/\([^()]*\)/gu, ''))) statute = wrapped[1].trim();
     rest = rest.slice(0, cite.index);
   }
   // Only a "{Country} export|import|domestic sale|parcels ({tier}):" lead is a scope; a sentence such as "PayPal names GDPR
