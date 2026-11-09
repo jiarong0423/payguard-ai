@@ -16,7 +16,7 @@ Selling across borders means rules you only learn after an order is stopped. Tra
 
 **Try it in 60 seconds** (no sign-in, synthetic data): open the [start page](https://payguard-demo-j2b3.onrender.com/start.html), press *Try the example*, then open step 03 and press *Prepare evidence draft*.
 
-**What is real:** five PayPal Sandbox evidence sends (two with receipts; three on 11/9 with a read-back note, two of them checked byte for byte against the SHA-256 recorded at send time), one live Gemini evidence brief under the current contract and one recorded AG Studio agent run. The hosted page's only PayPal calls are read-only Sandbox reads (it can list and open the author's own Sandbox test disputes, every write route is refused; a later code change shows the list ids as masked codes).
+**What is real:** five PayPal Sandbox evidence sends (two with receipts; three on 11/9 with a read-back note, two of them checked byte for byte against the SHA-256 recorded at send time), one live Gemini evidence brief under the current contract and one recorded AG Studio agent run. The hosted page's only PayPal calls are read-only Sandbox reads (it can list and open the author's own Sandbox test disputes, dispute ids in the list are masked codes; every write route is refused).
 
 *Translating international shipping rules and merchant records for PayPal dispute evidence.* Formerly called PayGuard AI (the name used in the video and the receipts). [Download and click through on your computer](https://drive.google.com/file/d/1iVl4L3Ng1du_yRHI24gvkvFWyu5mR7Cp/view?usp=drive_link) (8 MB zip, SHA-256 `3cad8b4fbbedd21a...`; the full value is on the start page). [Repository](https://github.com/jiarong0423/payguard-ai).
 
@@ -63,7 +63,7 @@ Every action that writes to PayPal Sandbox, spends the Studio allowance or wipes
 Counted on the public repository on 2026-11-08 with `.venv/bin/python3 -B tools/verify_public_numbers.py` (no network):
 
 - 394 tracked files. Python: 22,258 lines of backend, source and tools plus 18,272 lines of tests. Front end: 13,722 lines (23 JSX components, 5 pages). 37 API routes.
-- 1,110 Python tests (9 skipped) passed in the author's last local run of this file set (recorded in `docs/evidence/TEST_RUN_20261108.md`; the earlier CI run covered 1,058), plus 50 Node contract and browser tests (7,001 lines) and a red-team request matrix of 1,727 requests (0 broken, 0 gaps); the test count and the matrix line are printed at the end of `./tools/run.sh test`.
+- 1,110 Python tests (9 skipped) passed in the author's last local run of this file set (recorded in `docs/evidence/TEST_RUN_20261108.md`; the earlier CI run covered 1,058), plus 50 Node contract and browser tests (7,002 lines) and a red-team request matrix of 1,727 requests (0 broken, 0 gaps); the test count and the matrix line are printed at the end of `./tools/run.sh test`.
 - 48 Markdown files, about 83,649 words; 29 evidence files; 24 diagrams and images.
 - Data: 140 PayPal clauses and 681 export and import rules for ten countries; a 268-case evidence-guide benchmark; 601 scored guide replies.
 - Attack rounds r21 to r23 also ran on a real Android phone (86 sequences) and in a desktop browser (94 sequences), besides backend matrices of 143 and 119 cases.

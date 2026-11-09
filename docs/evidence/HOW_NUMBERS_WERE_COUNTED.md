@@ -22,7 +22,7 @@ The file set is the public candidate: every path in `public_export_manifest.json
 | Front-end lines | 13,722 | `frontend/src/**/*.{jsx,js,css}`, 73 files; see below |
 | JSX files / pages | 23 / 5 | `frontend/**/*.jsx`; `frontend/*.html` (index, dashboard, evidence, proof, scenarios; `public/offline.html` is the service-worker fallback, not a page) |
 | API routes | 37 | see "Route count" |
-| Node test files / lines | 50 / 7,001 | `tests/frontend_*.mjs` (the two other `.mjs` files are a token-writer and a recorder, not tests) |
+| Node test files / lines | 50 / 7,002 | `tests/frontend_*.mjs` (the two other `.mjs` files are a token-writer and a recorder, not tests) |
 | Python tests | 1,110 (9 skipped) | `unittest` discovery over `tests/`, loaded and counted, not run |
 | Red-team requests | 1,727 | run-time only, see below |
 | Words in documents | 83,649 (page says about 83,649; the script allows 1% either way) | see below |

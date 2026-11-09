@@ -114,7 +114,8 @@ assert.ok(channelRow.how.includes(`latency ${Math.floor(channel3.minLatency * 10
   assert.ok(/two of them|For two of them/u.test(readback.proven) && /not compared/u.test(readback.proven), 'read-back row says two matched and one was not compared');
   assert.ok(!/byte-identical|byte for byte/iu.test(JSON.stringify(newRows)), 'claims the same SHA-256, nothing stronger');
   const hosted = facts.rows.find((item) => item.id === 'dispute-hosted-readonly-live');
-  assert.ok(/not yet deployed or re-checked live/u.test(hosted.how), 'hosted row states the known gap');
+  assert.ok(/returned the Sandbox dispute ids in full/u.test(hosted.how) && /0 full dispute ids/u.test(hosted.how) && /d10c0ed/u.test(hosted.how), 'hosted row states the first-deployment gap and the re-check after masking');
+  assert.ok(!/not yet deployed/u.test(JSON.stringify(hosted)), 'the retired not-yet-deployed wording is gone');
   assert.ok(/schedule/u.test(facts.rows.find((item) => item.id === 'cross-render-workflow-run').how) && /no nightly claim/u.test(facts.rows.find((item) => item.id === 'cross-render-workflow-run').how), 'workflow row makes no nightly claim');
 }
 

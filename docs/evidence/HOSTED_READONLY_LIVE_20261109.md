@@ -14,3 +14,15 @@ The hosted site really calls PayPal's Sandbox for reads (OAuth token and the dis
 
 ## Known gap found during this check, and the change made
 The check above was made on commit `b017f5d`, whose list API returned the Sandbox dispute ids in full (test ids from the author's Sandbox account; no real payment, read-only, nothing can be sent), although the wording said they were masked. After this check the hosted wrapper was changed to return masked codes (for example `PP-R-XXX-XXXX1234`) and to keep the real id only in server memory; opening a case by its real id is refused. The change has unit tests and was not yet deployed or re-checked live when this file was written. An opened case still carries its Sandbox transaction id.
+
+## Re-check after the masking change was deployed (commit `d10c0ed`, 2026-11-09)
+Same checks, same browser method, after the hosted demo was redeployed from commit `d10c0ed`.
+
+| Check | Result |
+| --- | --- |
+| `GET /api/v1/paypal/disputes` | 200, `AUTHENTIC_SANDBOX_RESPONSE`, 8 disputes, **0 full dispute ids**; each id is a masked code such as `PP-R-XXX-XXXX1234` |
+| opening one case by its masked code | 200, the reply holds no full dispute id |
+| opening a case by an unknown or a full id | 404 |
+| the six write and provider routes | all 503 |
+
+An opened case still carries its Sandbox transaction id (test data; read-only; nothing can be sent).
