@@ -74,3 +74,8 @@ body { margin: 0; background: var(--pg-color-canvas); color: var(--pg-color-ink)
 /* Earlier runs: a closed fold per scenario (2026-11-09). */
 .proof-history { margin-top: var(--pg-space-3); }
 .proof-history > summary { cursor: pointer; font-weight: 600; font-size: 15px; color: var(--pg-color-muted); padding: var(--pg-space-2) 0; }
+
+/* Latest evidence strip (2026-11-09). */
+.proof-latest { border: 1px solid var(--pg-color-rule); border-left: 4px solid var(--pg-color-ok); border-radius: var(--pg-radius-control); background: var(--pg-color-panel); padding: var(--pg-space-3) var(--pg-space-4); margin-bottom: var(--pg-space-4); }
+.proof-latest h2 { margin: 0 0 var(--pg-space-2); font-size: 18px; }
+.proof-latest ul { margin: 0; padding-left: 18px; display: grid; gap: var(--pg-space-2); font-size: 16px; overflow-wrap: anywhere; }

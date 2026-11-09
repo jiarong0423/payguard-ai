@@ -19,13 +19,13 @@ The file set is the public candidate: every path in `public_export_manifest.json
 | Tracked files | 394 | 392 manifest paths + `public_export_manifest.json` + `public_export_manifest.sha256` |
 | Python source lines | 22,258 | all `*.py` outside `tests/` (backend, src, tools, integrations) |
 | Python test lines | 18,272 | all `tests/**/*.py` |
-| Front-end lines | 13,762 | `frontend/src/**/*.{jsx,js,css}`, 73 files; see below |
+| Front-end lines | 13,789 | `frontend/src/**/*.{jsx,js,css}`, 73 files; see below |
 | JSX files / pages | 23 / 5 | `frontend/**/*.jsx`; `frontend/*.html` (index, dashboard, evidence, proof, scenarios; `public/offline.html` is the service-worker fallback, not a page) |
 | API routes | 37 | see "Route count" |
-| Node test files / lines | 50 / 7,023 | `tests/frontend_*.mjs` (the two other `.mjs` files are a token-writer and a recorder, not tests) |
+| Node test files / lines | 50 / 7,033 | `tests/frontend_*.mjs` (the two other `.mjs` files are a token-writer and a recorder, not tests) |
 | Python tests | 1,110 (9 skipped) | `unittest` discovery over `tests/`, loaded and counted, not run |
 | Red-team requests | 1,727 | run-time only, see below |
-| Words in documents | 83,936 (page says about 83,936; the script allows 1% either way) | see below |
+| Words in documents | 83,932 (page says about 83,932; the script allows 1% either way) | see below |
 | Evidence files | 29 | files directly in `docs/evidence/` (26 `.md`, 3 `.json`) |
 | Diagrams and images | 24 | every `*.png` and `*.svg` in the file set: 18 under `docs/`, 6 application icons under `frontend/public/icons`; `.mmd` sources are not counted |
 | PayPal clauses | 140 | `len(snippets)` in `data/country_rules/paypal_country_rules_v1.json` |
@@ -52,13 +52,13 @@ The backend is FastAPI. Routes are registered inside the factory function `creat
 
 The script counts with the `ast` module (decorated functions whose decorator is `<name>.<get|post|put|delete|patch>(...)`), so it neither runs the app nor depends on the variable name. It also confirms there are no `add_api_route` or `include_router` calls. Each route has exactly one HTTP method, so routes and method-path pairs are both 37. This was cross-checked once by calling `create_app()` and counting `APIRoute` objects: 37.
 
-### Front-end lines: 13,762
+### Front-end lines: 13,789
 
-13,762 is the physical line count of the 73 files `frontend/src/**/*.jsx`, `*.js` and `*.css`. It excludes the JSON data files (adding them gives 16,276), `.mjs` files, the HTML pages and `frontend/public/` (adding HTML and public gives 14,110). JS and JSX without CSS is 10,968. The earlier public page said 13,463, the count of the published tree before 2026-11-08; the 15 more lines are the CSS added that day (`frontend/src/index.css` grew from 1,143 to 1,158 lines: the hint box before a draft and the toast placement rule). An independent reviewer's count of 13,553 uses the same scope.
+13,789 is the physical line count of the 73 files `frontend/src/**/*.jsx`, `*.js` and `*.css`. It excludes the JSON data files (adding them gives 16,303), `.mjs` files, the HTML pages and `frontend/public/` (adding HTML and public gives 14,137). JS and JSX without CSS is 10,990. The earlier public page said 13,463, the count of the published tree before 2026-11-08; the 15 more lines are the CSS added that day (`frontend/src/index.css` grew from 1,143 to 1,158 lines: the hint box before a draft and the toast placement rule). An independent reviewer's count of 13,553 uses the same scope.
 
-### Document words: 83,936
+### Document words: 83,932
 
-83,936 is the whitespace-token count of all 48 Markdown files in the file set (README, the security and notices files, and everything under `docs/`), with code fences and tables included. Limited to `docs/**` it is 68,295; `docs/**` plus README is 81,109. Earlier pages quoted "about 48,700" (the tree before 2026-11-08, documents only); the count grew because evidence files and a README walkthrough were added that day. The page says "about 83,936"; the script accepts one percent either way because the documents are still being edited. `tools/verify_public_numbers.py` prints the current figure and the variants.
+83,932 is the whitespace-token count of all 48 Markdown files in the file set (README, the security and notices files, and everything under `docs/`), with code fences and tables included. Limited to `docs/**` it is 68,295; `docs/**` plus README is 81,105. Earlier pages quoted "about 48,700" (the tree before 2026-11-08, documents only); the count grew because evidence files and a README walkthrough were added that day. The page says "about 83,932"; the script accepts one percent either way because the documents are still being edited. `tools/verify_public_numbers.py` prints the current figure and the variants.
 
 ### Receipts with a Debug-Id
 

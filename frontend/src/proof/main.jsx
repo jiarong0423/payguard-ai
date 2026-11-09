@@ -5,7 +5,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import facts from '../data/proof_facts_v1.json';
 import receipts from '../data/channel3_receipts_v1.json';
-import { METHOD_ORDER, REFUSED_LABEL, channel3Summary, dateLabel, groupProof, methodCounts, refusedCount, splitHistory } from './proofData.js';
+import { HISTORY_CUTOFF, LATEST_ALSO, LATEST_ROWS, METHOD_ORDER, REFUSED_LABEL, channel3Summary, dateLabel, groupProof, methodCounts, refusedCount, splitHistory } from './proofData.js';
 import './proof.css';
 
 const ICONS = {
@@ -38,7 +38,7 @@ function MethodChip({ method }) {
 function RecordedSend() {
   const send = facts.recorded_send;
   if (!send) return null;
-  return <section className="proof-recorded" aria-labelledby="proof-recorded-title" data-testid="recorded-send">
+  return <details className="proof-history" data-testid="recorded-send-fold"><summary>The 2026-11-05 recorded send, step by step (history)</summary><section className="proof-recorded" aria-labelledby="proof-recorded-title" data-testid="recorded-send">
     <h2 id="proof-recorded-title">{send.title}</h2>
     <p className="proof-recorded-intro">{send.intro} <span className="proof-chip proof-chip-info" data-testid="recorded-send-label"><Icon name="recorded" size={14} />Recorded, not live</span></p>
     <ol className="proof-recorded-steps">{send.steps.map((step) => <li key={step.at} data-testid="recorded-send-step">
@@ -47,6 +47,19 @@ function RecordedSend() {
     <p className="proof-recorded-file" data-testid="recorded-send-file">{send.file_note}</p>
     <p className="proof-recorded-limit">{send.limit}</p>
     <p className="proof-recorded-source">Source: <code>{send.receipt}</code> and <code>{send.file_source}</code>, masked as committed.</p>
+  </section></details>;
+}
+
+// Three lines at the top: the newest evidence, each pointing at its row below.
+function Latest() {
+  const byId = new Map(facts.rows.map((row) => [row.id, row]));
+  const also = LATEST_ALSO.filter(([id]) => byId.has(id));
+  return <section className="proof-latest" aria-labelledby="proof-latest-title" data-testid="proof-latest">
+    <h2 id="proof-latest-title">Latest evidence ({HISTORY_CUTOFF})</h2>
+    <ul>
+      {LATEST_ROWS.filter((id) => byId.has(id)).map((id) => <li key={id}>{byId.get(id).proven} <a href={`#row-${id}`}>See the row</a></li>)}
+      <li>Also run on {HISTORY_CUTOFF}: {also.map(([id, label], index) => <span key={id}>{index > 0 && (index === also.length - 1 ? ' and ' : ', ')}<a href={`#row-${id}`}>{label}</a></span>)}.</li>
+    </ul>
   </section>;
 }
 
@@ -65,7 +78,7 @@ function Legend() {
 }
 
 function ProofRow({ row }) {
-  return <li className="proof-row" data-testid="proof-row" data-row-id={row.id} data-method={row.method}>
+  return <li className="proof-row" id={`row-${row.id}`} data-testid="proof-row" data-row-id={row.id} data-method={row.method}>
     <div className="proof-row-head"><MethodChip method={row.method} />{row.refused && <span className="proof-chip proof-chip-muted" data-testid="proof-refused">{REFUSED_LABEL}</span>}<time dateTime={row.date}>{dateLabel(row)}</time></div>
     <p className="proof-proven">{row.proven}</p>
     <dl className="proof-meta">
@@ -87,8 +100,9 @@ function ProofPage() {
         <p>Each row says what was proven, whether it came from a real PayPal Sandbox call, a recorded run, an automated test or synthetic data, when, and the committed file it comes from. This page is static: it calls nothing and reads only files in the repository.</p>
         <p className="proof-note">Identifiers are masked as in the receipts. Sandbox rows are test data the author created with two Sandbox test accounts, not a real merchant case.</p>
       </div>
-      <RecordedSend />
+      <Latest />
       <Legend />
+      <RecordedSend />
       {sections.map((section) => <section key={section.id} className="proof-section" aria-labelledby={`proof-${section.id}`} data-testid="proof-section" data-scenario={section.id}>
         <h2 id={`proof-${section.id}`}>{section.number && <span className="proof-number">{section.number}</span>}{section.label}</h2>
         {(() => {

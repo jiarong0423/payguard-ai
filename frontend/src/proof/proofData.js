@@ -41,8 +41,16 @@ export function splitHistory(rows) {
   const older = list.filter((row) => !open.has(row)).map((row, index) => ({ row, index }))
     .sort((left, right) => (left.row.date < right.row.date ? 1 : left.row.date > right.row.date ? -1 : left.index - right.index));
   for (const { row } of older) { if (open.size >= MIN_OPEN) break; open.add(row); }
-  return { current: list.filter((row) => open.has(row)), history: list.filter((row) => !open.has(row)) };
+  // Open rows read newest first (ties keep their original order); the fold keeps the original order.
+  const current = list.map((row, index) => ({ row, index })).filter(({ row }) => open.has(row))
+    .sort((left, right) => (left.row.date < right.row.date ? 1 : left.row.date > right.row.date ? -1 : left.index - right.index)).map(({ row }) => row);
+  return { current, history: list.filter((row) => !open.has(row)) };
 }
+
+// The "Latest evidence" strip at the top of the page: the two headline rows quoted by their own `proven` sentence, then the other
+// runs of the same day by name. Nothing here is a new fact: each line comes from a row below.
+export const LATEST_ROWS = Object.freeze(['dispute-readback-hash-match', 'dispute-hosted-readonly-live']);
+export const LATEST_ALSO = Object.freeze([['cross-render-workflow-run', 'Render Workflow run'], ['cross-postman-newman-run', 'Postman run'], ['policy-channel3-search-round2', 'Channel3 searches'], ['cross-apimatic-run', 'APIMatic validation']]);
 
 // (r48) Real Sandbox rows that are refusals: TradeGlot sent no evidence to that dispute. Counted apart so the real-call
 // count is not read as sends.

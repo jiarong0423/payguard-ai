@@ -6,7 +6,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { HISTORY_CUTOFF, METHOD_ORDER, MIN_OPEN, PROOF_SCHEMA, REFUSED_LABEL, channel3Summary, dateLabel, groupProof, methodCounts, refusedCount, splitHistory } from '../frontend/src/proof/proofData.js';
+import { HISTORY_CUTOFF, LATEST_ALSO, LATEST_ROWS, METHOD_ORDER, MIN_OPEN, PROOF_SCHEMA, REFUSED_LABEL, channel3Summary, dateLabel, groupProof, methodCounts, refusedCount, splitHistory } from '../frontend/src/proof/proofData.js';
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (path) => readFileSync(join(projectRoot, path), 'utf8');
@@ -178,7 +178,8 @@ assert.deepEqual(channel3Summary({}), { count: 0, allOk: false, cards: [], minLa
     const { current, history } = splitHistory(section.rows);
     assert.equal(current.length + history.length, section.rows.length, `${section.id}: every row appears once`);
     assert.deepEqual([...current, ...history].map((row) => row.id).sort(), section.rows.map((row) => row.id).sort(), `${section.id}: same rows`);
-    assert.deepEqual(current.map((row) => row.id), section.rows.filter((row) => current.includes(row)).map((row) => row.id), `${section.id}: open rows keep their order`);
+    assert.deepEqual(current.map((row) => row.date), [...current.map((row) => row.date)].sort().reverse(), `${section.id}: open rows read newest first`);
+    assert.deepEqual(history.map((row) => row.id), section.rows.filter((row) => history.includes(row)).map((row) => row.id), `${section.id}: the fold keeps the original order`);
     assert.ok(section.rows.filter((row) => row.date >= HISTORY_CUTOFF).every((row) => current.includes(row)), `${section.id}: every 2026-11-09 row is open`);
     assert.ok(current.length >= Math.min(MIN_OPEN, section.rows.length), `${section.id}: never opens empty`);
     assert.ok(history.every((row) => row.date < HISTORY_CUTOFF), `${section.id}: history holds older rows only`);
@@ -188,6 +189,15 @@ assert.deepEqual(channel3Summary({}), { count: 0, allOk: false, cards: [], minLa
   assert.ok(shownHistory > 0 && shownOpen > 0, 'both groups are used');
   assert.deepEqual(splitHistory(undefined), { current: [], history: [] });
   const page = pageMain();
+  // The 2026-11-05 recorded send is history: closed by default, and the top of the page is a three-line latest-evidence strip.
+  assert.ok(page.includes('<details className="proof-history" data-testid="recorded-send-fold"><summary>The 2026-11-05 recorded send, step by step (history)</summary>'), 'recorded send sits in a closed history fold');
+  assert.ok(page.indexOf('<Latest />') > 0 && page.indexOf('<Latest />') < page.indexOf('<Legend />') && page.indexOf('<Legend />') < page.indexOf('<RecordedSend />'), 'latest strip first, recorded send after the legend');
+  for (const id of [...LATEST_ROWS, ...LATEST_ALSO.map(([row]) => row)]) {
+    const row = facts.rows.find((item) => item.id === id);
+    assert.ok(row && row.date === HISTORY_CUTOFF, `${id} is a 2026-11-09 row`);
+    assert.ok(sections.some((section) => splitHistory(section.rows).current.includes(row)), `${id} is open, so the strip's link lands on a visible row`);
+  }
+  assert.ok(page.includes('{byId.get(id).proven}') && page.includes('href={`#row-${id}`}') && page.includes('id={`row-${row.id}`}'), 'the strip quotes each row and links to it');
   assert.ok(page.includes('data-testid="proof-history"') && page.includes('Earlier runs (history)') && page.includes('<details className="proof-history"'), 'a closed fold per scenario, labelled');
   assert.equal(/<details[^>]*proof-history[^>]*\sopen/u.test(page), false, 'history is closed by default');
 }
