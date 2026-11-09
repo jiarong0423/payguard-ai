@@ -106,6 +106,8 @@ EXACT_FILES = (
     "docs/evidence/RENDER_WORKFLOW_RUN_20261109.md",
     "docs/evidence/HOSTED_READONLY_LIVE_20261109.md",
     "docs/evidence/OFFICIAL_PAYPAL_MCP_RUN_20261109.md",
+    "docs/evidence/AG_STUDIO_LIVE_RUNS_20261109.md",
+    "docs/evidence/studio_agent_live_runs_20261109.json",
     "docs/evidence/AG_GRID_USAGE.md",
     "tools/official_paypal_mcp_readonly_run.py",
     "docs/evidence/official_paypal_mcp_receipt_20261109.json",

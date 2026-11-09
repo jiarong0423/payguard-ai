@@ -1,11 +1,11 @@
 {
-  "created_at_utc": "2026-11-09T03:51:36Z",
+  "created_at_utc": "2026-11-09T04:07:11Z",
   "dependency_locks": {
     "frontend_npm": "0f98893564efb5556cc0a92710feedcb9da085108f9668fee93f29940b87f09d",
     "gemini_python": "36554331392d6102519a4ead5778704c4ff89e79da6bb9d6648b656f130724bb",
     "root_python": "bd163e5de790527ec4b5486ec884463c40fd8331a00e122d27f65de0938a270a"
   },
-  "file_count": 410,
+  "file_count": 412,
   "files": [
     {
       "bytes": 662,
@@ -43,11 +43,11 @@
       "source_sha256": "62559450a061410394f0cac8c43083a999f045200e5ad5c18c9e15096ab128be"
     },
     {
-      "bytes": 97093,
+      "bytes": 97235,
       "path": "README.md",
-      "sha256": "448b1c947aa22ed490fca6e9f3e5941c785bc6718066cd7388eaa011ebb6763a",
+      "sha256": "21b497255cad80addcb97d1dd4354aecc389b6725445675ab8d99dc73363d87c",
       "source_path": "README.md",
-      "source_sha256": "448b1c947aa22ed490fca6e9f3e5941c785bc6718066cd7388eaa011ebb6763a"
+      "source_sha256": "21b497255cad80addcb97d1dd4354aecc389b6725445675ab8d99dc73363d87c"
     },
     {
       "bytes": 12588,
@@ -316,11 +316,11 @@
       "source_sha256": "19cbb24dd10587242d46c296a331f23276a4f2206de37b824d8352f14a474b61"
     },
     {
-      "bytes": 7109,
+      "bytes": 7281,
       "path": "docs/SPONSOR_TECH_MAP.md",
-      "sha256": "edd8a871fd930470d0ee8cbb299a4d206ce8cb08d32f9401ffaafe63aee6b297",
+      "sha256": "86bb610d83aa4a7503bbd14beeb3dd41b1ae57f513234962db94df2b6afa1f86",
       "source_path": "docs/SPONSOR_TECH_MAP.md",
-      "source_sha256": "edd8a871fd930470d0ee8cbb299a4d206ce8cb08d32f9401ffaafe63aee6b297"
+      "source_sha256": "86bb610d83aa4a7503bbd14beeb3dd41b1ae57f513234962db94df2b6afa1f86"
     },
     {
       "bytes": 205844,
@@ -400,6 +400,13 @@
       "source_sha256": "1e1256efe5a9b101dc143bc7083af1888a99600f4cd0330b528e64dbc7d0f9b9"
     },
     {
+      "bytes": 1905,
+      "path": "docs/evidence/AG_STUDIO_LIVE_RUNS_20261109.md",
+      "sha256": "9c64025b55922f9367c21ad26c1a1142736abf7260273c0f028931f306bf7477",
+      "source_path": "docs/evidence/AG_STUDIO_LIVE_RUNS_20261109.md",
+      "source_sha256": "9c64025b55922f9367c21ad26c1a1142736abf7260273c0f028931f306bf7477"
+    },
+    {
       "bytes": 36902,
       "path": "docs/evidence/AI_DRIFT_CONTROL.md",
       "sha256": "a90211d6a447829e3813fe4d153a9c006261e77fe7bda41af4f9bf765e9e853b",
@@ -472,9 +479,9 @@
     {
       "bytes": 8414,
       "path": "docs/evidence/HOW_NUMBERS_WERE_COUNTED.md",
-      "sha256": "27cd6e7dc34ad283cf5ec794ca334f77fa53555215a94bd948b00b1e35ac1636",
+      "sha256": "cb70a34575dce015455e356368d02aab84e70df95145f4b8c7bd93d3486631bf",
       "source_path": "docs/evidence/HOW_NUMBERS_WERE_COUNTED.md",
-      "source_sha256": "27cd6e7dc34ad283cf5ec794ca334f77fa53555215a94bd948b00b1e35ac1636"
+      "source_sha256": "cb70a34575dce015455e356368d02aab84e70df95145f4b8c7bd93d3486631bf"
     },
     {
       "bytes": 1692,
@@ -624,6 +631,13 @@
       "source_sha256": "8bb91a34e8bb38986b90616c9897d9d85a0344d01e01a409e0682deb267a6f3f"
     },
     {
+      "bytes": 21608,
+      "path": "docs/evidence/studio_agent_live_runs_20261109.json",
+      "sha256": "8853f300d2ea4e0c8696dc4fdb8c12c5117cd6f7f62cbb1a6a44e713c61041e2",
+      "source_path": "docs/evidence/studio_agent_live_runs_20261109.json",
+      "source_sha256": "8853f300d2ea4e0c8696dc4fdb8c12c5117cd6f7f62cbb1a6a44e713c61041e2"
+    },
+    {
       "bytes": 1008,
       "path": "docs/fallback/README.md",
       "sha256": "4d19ff9c5f50df52d271913722bb6018e97f483f3cec3730f3771fe21bcd0c79",
@@ -680,11 +694,11 @@
       "source_sha256": "0750cca5c12b56e25043b71bb5e5db5ba4a7142c7ffe443c9977997c749bf541"
     },
     {
-      "bytes": 18835,
+      "bytes": 19030,
       "path": "docs/submission/devpost_story.md",
-      "sha256": "35b3e3edb3ba5429a86ddee3b5f0c1fdf109c162d3850e93c1c2da9365ec59a4",
+      "sha256": "13a139d575810b4304234ba906d69d62b5bd1fff2895c0815f111916b0070017",
       "source_path": "docs/submission/devpost_story.md",
-      "source_sha256": "35b3e3edb3ba5429a86ddee3b5f0c1fdf109c162d3850e93c1c2da9365ec59a4"
+      "source_sha256": "13a139d575810b4304234ba906d69d62b5bd1fff2895c0815f111916b0070017"
     },
     {
       "bytes": 4267,
@@ -2717,11 +2731,11 @@
       "source_sha256": "0d9bc04fee0ad12622326c03a74a116ce14ef80c47c4608c219a7c4c241a2e62"
     },
     {
-      "bytes": 38817,
+      "bytes": 38928,
       "path": "tools/build_public_candidate.py",
-      "sha256": "dcf3b80652319c4e3a7235fac002de1a06d44a1fe3d8769f7dd04a8da5cdda66",
+      "sha256": "7f6dec9322eb883e0c7f0e51cbcb2c0979d820617f2d06a9b6cc5c581bd2366f",
       "source_path": "tools/build_public_candidate.py",
-      "source_sha256": "dcf3b80652319c4e3a7235fac002de1a06d44a1fe3d8769f7dd04a8da5cdda66"
+      "source_sha256": "7f6dec9322eb883e0c7f0e51cbcb2c0979d820617f2d06a9b6cc5c581bd2366f"
     },
     {
       "bytes": 7653,
@@ -2838,9 +2852,9 @@
     {
       "bytes": 14792,
       "path": "tools/verify_public_numbers.py",
-      "sha256": "63abb9366ffe1c6be9b3f027ccfdf8bab8bc9d31a7f1f8dd126eb583c80ec3b7",
+      "sha256": "fadfeb16738521be3ac41c5d066d6097a1458875757125894a8520e0894787ed",
       "source_path": "tools/verify_public_numbers.py",
-      "source_sha256": "63abb9366ffe1c6be9b3f027ccfdf8bab8bc9d31a7f1f8dd126eb583c80ec3b7"
+      "source_sha256": "fadfeb16738521be3ac41c5d066d6097a1458875757125894a8520e0894787ed"
     },
     {
       "bytes": 87,
@@ -2883,8 +2897,8 @@
     "scope": "RECORDED_OWNER_RIGHTS_AND_ENTRANT_ELIGIBILITY"
   },
   "package_digest_algorithm": "sha256(sorted utf-8 '<file_sha256>  <relative_path>\\n' records; manifest and detached hash excluded)",
-  "package_digest_sha256": "bb037e9ed1f5f8238049c1b073103645158a2fbc767f7a080b42b60a8250ca73",
-  "public_artifact_id": "payguard-public-source-bb037e9ed1f5f823",
+  "package_digest_sha256": "c1b780b5c996b5af34535d33660cbd2597e35b128c5726e27c102ab5eaeb96f4",
+  "public_artifact_id": "payguard-public-source-c1b780b5c996b5af",
   "publication_authorized": false,
   "raw_bounded_prompt_disclosure": {
     "intent": "INTENTIONAL_PUBLIC_EXECUTABLE_PRODUCT_SOURCE",

@@ -10,14 +10,14 @@ The script uses only the Python standard library, reads files only, makes no net
 
 ## Counting scope
 
-The file set is the public candidate: every path in `public_export_manifest.json` (410 files) plus the manifest and `public_export_manifest.sha256`, which makes the 412 tracked files. A fresh copy also contains `.venv`, `node_modules`, `frontend/dist` and build logs; none of these is counted. The script also checks every file against the sha256 in the manifest and reports any that differ. A "line" is a physical line (a newline-terminated line, the same as `wc -l`), so blank lines and comments are included. A "word" is a whitespace-separated token (`str.split()`).
+The file set is the public candidate: every path in `public_export_manifest.json` (412 files) plus the manifest and `public_export_manifest.sha256`, which makes the 414 tracked files. A fresh copy also contains `.venv`, `node_modules`, `frontend/dist` and build logs; none of these is counted. The script also checks every file against the sha256 in the manifest and reports any that differ. A "line" is a physical line (a newline-terminated line, the same as `wc -l`), so blank lines and comments are included. A "word" is a whitespace-separated token (`str.split()`).
 
 ## The numbers
 
 | Claim | Value | Command or rule |
 |---|---|---|
-| Tracked files | 412 | 410 manifest paths + `public_export_manifest.json` + `public_export_manifest.sha256` |
-| Python source lines | 22,353 | all `*.py` outside `tests/` (backend, src, tools, integrations) |
+| Tracked files | 414 | 412 manifest paths + `public_export_manifest.json` + `public_export_manifest.sha256` |
+| Python source lines | 22,355 | all `*.py` outside `tests/` (backend, src, tools, integrations) |
 | Python test lines | 18,328 | all `tests/**/*.py` |
 | Front-end lines | 13,903 | `frontend/src/**/*.{jsx,js,css}`, 73 files; see below |
 | JSX files / pages | 23 / 5 | `frontend/**/*.jsx`; `frontend/*.html` (index, dashboard, evidence, proof, scenarios; `public/offline.html` is the service-worker fallback, not a page) |
@@ -26,7 +26,7 @@ The file set is the public candidate: every path in `public_export_manifest.json
 | Python tests | 1,114 (9 skipped) | `unittest` discovery over `tests/`, loaded and counted, not run |
 | Red-team requests | 1,727 | run-time only, see below |
 | Words in documents | 85,799 (page says about 85,799; the script allows 1% either way) | see below |
-| Evidence files | 33 | files directly in `docs/evidence/` (29 `.md`, 4 `.json`) |
+| Evidence files | 35 | files directly in `docs/evidence/` (30 `.md`, 5 `.json`) |
 | Diagrams and images | 36 | every `*.png` and `*.svg` in the file set: 30 under `docs/`, 6 application icons under `frontend/public/icons`; `.mmd` sources are not counted |
 | PayPal clauses | 140 | `len(snippets)` in `data/country_rules/paypal_country_rules_v1.json` |
 | Export / import rules | 313 / 368 = 681 | sum of `len(rules)` over `export_rules[country]` and `import_rules[country]`, ten countries |
@@ -58,7 +58,7 @@ The script counts with the `ast` module (decorated functions whose decorator is 
 
 ### Document words: 85,799
 
-85,799 is the whitespace-token count of all 51 Markdown files in the file set (README, the security and notices files, and everything under `docs/`), with code fences and tables included. Limited to `docs/**` it is 69,287; `docs/**` plus README is 82,867. Earlier pages quoted "about 48,700" (the tree before 2026-11-08, documents only); the count grew because evidence files and a README walkthrough were added that day. The page says "about 85,799"; the script accepts one percent either way because the documents are still being edited. `tools/verify_public_numbers.py` prints the current figure and the variants.
+85,799 is the whitespace-token count of all 51 Markdown files in the file set (README, the security and notices files, and everything under `docs/`), with code fences and tables included. Limited to `docs/**` it is 69,645; `docs/**` plus README is 83,236. Earlier pages quoted "about 48,700" (the tree before 2026-11-08, documents only); the count grew because evidence files and a README walkthrough were added that day. The page says "about 85,799"; the script accepts one percent either way because the documents are still being edited. `tools/verify_public_numbers.py` prints the current figure and the variants.
 
 ### Receipts with a Debug-Id
 
