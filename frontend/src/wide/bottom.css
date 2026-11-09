@@ -1,0 +1,33 @@
+/* Wide-screen layout rules for bottom (viewport 1500px and wider only). Owned by one agent; add rules inside the media query below. */
+@media (min-width: 1500px) {
+  /* Merchant Evidence Buffer + Session activity side by side. Floats, so <main> stays a normal block and the step cards are untouched. */
+  .main-content > #analytics { float: left; width: calc(50% - 8px); margin-top: 12px; box-sizing: border-box; }
+  .main-content > #activity { float: right; width: calc(50% - 8px); margin-top: 12px; box-sizing: border-box; }
+  .main-content > #analytics .optional-trigger,
+  .main-content > #activity .optional-trigger { min-height: 44px; padding: 8px 16px; }
+  .main-content > #analytics .optional-trigger small,
+  .main-content > #activity .optional-trigger small { margin-top: 0; }
+  .main-content > footer { clear: both; }
+
+  /* Footer / disclaimer: one tight row, sponsor map compact. */
+  .main-content > footer { padding: 6px 0 0; gap: 4px 20px; line-height: 1.3; }
+  .main-content > footer .sponsor-map > summary { min-height: 32px; }
+  .main-content > footer .sponsor-map ul { margin: 0 0 4px; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2px 24px; }
+  .main-content > footer .sponsor-map li { gap: 0; line-height: 1.3; }
+  .main-content > footer .sponsor-map li a { min-height: 24px; }
+
+  /* Nested folds (shared classes only): one thin box instead of three. */
+  .step-more { margin: 8px 12px 0; border-color: transparent; background: transparent; border-radius: 6px; }
+  .step-more[open] { border-color: var(--pg-color-rule); }
+  .step-more > summary { min-height: 34px; padding: 4px 12px; }
+  .step-more-body { gap: 6px; padding: 0 8px 8px; }
+  .step-more-body > .step-section { border-width: 0 0 1px; border-radius: 0; background: transparent; }
+  .step-more-body > .step-section .optional-trigger { min-height: 40px; padding: 6px 8px; background: transparent; }
+  .step-more-body > .step-section .optional-content { padding: 4px 8px 8px; }
+  .step-more-body > .limits-drawer { border-width: 0 0 1px; border-radius: 0; background: transparent; }
+  .step-more-body > .limits-drawer .limits-trigger { min-height: 34px; padding: 4px 8px; }
+  .step-more-body > .limits-drawer .limits-drawer-body { padding: 6px 8px 8px; gap: 4px; border-top: 0; background: transparent; border-radius: 0; }
+  .step-more-body .reference-panel, .step-more-body .policy-panel, .step-more-body .ai-brief-panel { border-color: transparent; border-radius: 0; background: transparent; border-bottom: 1px solid var(--pg-color-rule); }
+  .step-more-body .reference-panel > summary, .step-more-body .policy-panel > summary { min-height: 36px; padding: 6px 8px; }
+  .step-more-body .ai-brief-panel { padding: 8px; }
+}

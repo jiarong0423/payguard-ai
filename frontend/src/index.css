@@ -1248,3 +1248,34 @@ footer { padding: 8px 0 0; }
 .sponsor-map ul { list-style: none; margin: 0 0 8px; padding: 0; display: grid; gap: 8px; }
 .sponsor-map li { display: grid; gap: 2px; font-size: var(--type-meta); line-height: 1.45; }
 .sponsor-map li a { display: inline-flex; align-items: center; min-height: 44px; color: var(--pg-color-accent-strong); font-weight: 650; width: fit-content; }
+
+/* Wide screens (recording and judging on a large monitor): use the width instead of leaving 200 px gutters, and let a
+   result card be as tall as its content instead of stretching to the height of the input card beside it. */
+@media (min-width: 1500px) {
+  .main-content { width: min(100%, 1560px); }
+  .aup-result { align-self: start; }
+  /* Title row and the "Start here" links share one line instead of two stacked rows. */
+  .page-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+  .page-top .hero { margin-bottom: 0; }
+  .page-top .start-here { margin-bottom: 0; flex-shrink: 0; padding-bottom: 4px; }
+  .page-top { margin-bottom: 12px; }
+  /* Step 01: the policy check on the left, the country check on the right; everything else stays full width. */
+  #compliance .stage-content { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+  #compliance .stage-content > * { grid-column: 1 / -1; }
+  #compliance .stage-content > .compliance-layout { grid-column: 1; grid-row: 1; grid-template-columns: minmax(0, 1fr); }
+  #compliance .stage-content > .stage-block { grid-column: 2; grid-row: 1; }
+  /* Tighter title, shorter text box and slimmer metric cards so more of each step fits in the first screen. */
+  .page-top h1 { font-size: 28px; }
+  .page-top .eyebrow { margin-bottom: 4px; }
+  .journey { margin-bottom: 12px; }
+  .invoice-editor textarea { min-height: 76px; }
+  .metrics-grid { padding: 12px 16px; }
+  .metric { padding: 12px 16px; }
+  /* Step 03: a slimmer case queue (each case is a short row, not a tall card) and a thinner "Next" bar. */
+  .dispute-layout { grid-template-columns: minmax(220px, 250px) minmax(0, 1fr); }
+  .case-list { padding: 8px; }
+  .case-card { padding: 8px 12px; margin-bottom: 6px; }
+  .case-card > div { gap: 2px 8px; }
+  .case-card > span { margin: 4px 0 2px; }
+  .stage-next { margin: 8px 16px 12px; padding: 8px 16px; }
+}

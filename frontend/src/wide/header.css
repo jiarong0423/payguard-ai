@@ -1,0 +1,35 @@
+/* Wide-screen layout rules for header (viewport 1500px and wider only). Owned by one agent; add rules inside the media query below. */
+@media (min-width: 1500px) {
+  /* Slim top bar. */
+  .topbar { min-height: 44px; height: 44px; }
+  .brand { min-height: 36px; gap: 10px; }
+  .brand-mark { width: 28px; height: 28px; }
+  .brand small { margin-top: 0; line-height: 1.1; }
+  .topbar nav a { min-height: 36px; }
+  .topbar .button, .topbar button { min-height: 32px; padding-top: 4px; padding-bottom: 4px; }
+
+  /* Less padding above the title row. */
+  .main-content { padding-top: 8px; }
+
+  /* Title row: eyebrow and the two hero buttons share one line, the h1 sits under them, "Start here" is on the right. */
+  .page-top { align-items: flex-end; gap: 8px 24px; margin-bottom: 8px; }
+  .page-top .hero-compact > div:first-child { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 0 16px; }
+  .page-top .hero-compact .eyebrow { grid-column: 1; grid-row: 1; margin: 0; }
+  .page-top .hero-compact .hero-actions { grid-column: 2; grid-row: 1; display: flex; flex-wrap: nowrap; align-items: center; gap: 8px; margin: 0; }
+  .page-top .hero-compact .hero-actions > * { min-height: 28px; padding-top: 2px; padding-bottom: 2px; font-size: var(--type-meta); white-space: nowrap; }
+  .page-top .hero-compact h1 { grid-column: 1 / -1; grid-row: 2; margin: 2px 0 0; line-height: 1.2; }
+  .page-top .start-here { padding-bottom: 2px; gap: 8px; }
+  .page-top .start-here-link { min-height: 28px; padding: 2px 10px; }
+
+  /* Compact segmented step bar. */
+  .journey { margin-bottom: 8px; border-radius: var(--pg-radius-control); }
+  .journey-step { min-height: 40px; padding: 6px 12px; gap: 10px; }
+  .journey-step > div { gap: 0; }
+  .journey-icon { width: 28px; height: 28px; }
+  .journey-step strong { font-size: 15px; line-height: 1.2; }
+  .journey-step .journey-status { line-height: 1.2; }
+  .journey-where { margin: 0 2px 8px; }
+
+  /* Messages under the step bar take less room. */
+  .feedback-region .message { margin-bottom: 8px; padding: 8px 12px; }
+}
