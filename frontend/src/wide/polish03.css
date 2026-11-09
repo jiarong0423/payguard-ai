@@ -1,0 +1,51 @@
+/* polish03: owned by one UI agent. Rules only inside the media query (viewport 1280px and wider). */
+@media (min-width: 1280px) {
+  /* Case queue: reason badge at 13px, the owner's minimum text size (was 12px). */
+  #disputes .case-card .badge { font-size: 13px; }
+  /* Case review: the "Response window open" badge moves to the top-right corner of the routing card, beside the two short title lines,
+     instead of taking a line of its own under the text (about 36px shorter). */
+  #disputes .evidence-workspace > .dispute-route { position: relative; }
+  #disputes .evidence-workspace > .dispute-route > .badge { position: absolute; top: 8px; right: 12px; }
+  /* Case review: download strip text spans the strip; both download buttons share one row under it where they fit (was text + one button, then the ZIP button alone). */
+  #disputes .privacy-strip > div { flex: 1 1 calc(100% - 40px); }
+  /* Case review, 1600px and wider: the lock note sits on the confirm row, just left of the Confirm button, instead of a row of its own
+     (below 1600px the three do not fit on one row, so the note keeps its own line). */
+  @media (min-width: 1600px) {
+    #disputes .human-review > .lock-reason { flex: 0 1 auto; order: 1; margin: 0 0 0 auto; }
+    #disputes .human-review > .button { order: 2; }
+    #disputes .human-review > .approval-payload { order: 3; }
+  }
+
+  /* Deadline board: heading bar and its content padding trimmed (the trigger was 68px tall). */
+  #disputes #evidence-board > .optional-heading .optional-trigger { min-height: 0; padding-top: 6px; padding-bottom: 6px; }
+  #disputes #evidence-board > .optional-content { padding-top: 10px; padding-bottom: 10px; }
+  /* Deadline board heading: "Deadlines on a timeline" sits on the title line instead of a second line. */
+  #disputes #evidence-board > .optional-heading .optional-trigger > span:first-child > span { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 12px; }
+  #disputes #evidence-board > .optional-heading .optional-trigger small { margin-top: 0; }
+  /* Deadline board cards, 1600px and wider: each fact is one line (label, then value) in two columns; the plan line spans the card
+     (cards were 169px tall). Narrower cards keep the stacked three-column facts, where one-line facts would wrap. */
+  @media (min-width: 1600px) {
+    #disputes .board-row dl { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 16px; }
+    #disputes .board-row dl > div { display: grid; grid-template-columns: 66px minmax(0, 1fr); gap: 8px; align-items: baseline; }
+    #disputes .board-row dl > div:last-child { grid-column: 1 / -1; }
+  }
+  /* Deadline board controls: Reset plans / Download and the calendar note move to the right of the UTC caption and help text, so
+     the urgency chips are the only row between the help text and the scheduler (were four stacked rows). */
+  #disputes .board-timeline { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 24px; align-items: start; }
+  #disputes .board-timeline > figcaption { grid-column: 1; grid-row: 1; }
+  #disputes .board-timeline > .board-plan-help { grid-column: 1; grid-row: 2; }
+  #disputes .board-timeline > .board-plan-bar { grid-column: 2; grid-row: 1 / span 2; max-width: 500px; justify-content: flex-end; }
+  #disputes .board-timeline > .board-chips { grid-column: 1 / -1; grid-row: 3; margin-bottom: 6px; }
+  #disputes .board-timeline > .board-scroll { grid-column: 1 / -1; grid-row: 4; }
+  #disputes .board-plan-ics-note { font-size: 13px; text-align: right; }
+  /* Chips and plan buttons at 36px for mouse use in the demo (were 44px). */
+  #disputes .board-chips button, #disputes .board-plan-download { min-height: 36px; }
+  /* Scheduler left table: text wraps inside the 103px rows instead of ending in "Item n..."; column widths unchanged. */
+  #disputes .board-canvas .b-grid-sub-grid-locked .b-grid-cell { display: flex; align-items: center; white-space: normal; line-height: 1.35; overflow-wrap: anywhere; }
+
+  /* Step 03 guide and "More" row under both views: trigger padding trimmed (was 68px tall). */
+  #disputes .stage-side > #guide-live-dispute > .optional-heading .optional-trigger { min-height: 0; padding-top: 6px; padding-bottom: 6px; }
+  /* Step 03 guide: "Tell it what happened" sits on the title line, so the guide bar is about as tall as the "More" bar beside it. */
+  #disputes .stage-side > #guide-live-dispute > .optional-heading .optional-trigger > span:first-child > span { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 12px; }
+  #disputes .stage-side > #guide-live-dispute > .optional-heading .optional-trigger small { margin-top: 0; }
+}

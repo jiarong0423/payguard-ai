@@ -10,7 +10,13 @@
   /* "Start here" repeats the three-step bar right below it, so on wide screens it is folded away. */
   .page-top .start-here { display: none; }
   /* The green "Sample sales loaded" strip is one slim line. */
-  .feedback-region .message { padding: 4px 12px; margin-bottom: 6px; font-size: 13px; min-height: 0; }
+  /* Messages (the green "Sample sales loaded" strip and the like) float at the bottom right and take no room in the page. */
+  .feedback-region { position: relative; height: 0; min-height: 0; margin: 0; padding: 0; }
+  .feedback-region .message { position: fixed; right: 20px; bottom: 20px; z-index: 70; max-width: min(300px, calc(100vw - 40px)); margin: 0; padding: 6px 12px; border-radius: 999px; font-size: 13px; line-height: 1.3; min-height: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; box-shadow: 0 6px 20px rgba(15, 23, 42, .16); }
+  .feedback-region .message + .message { bottom: 64px; }
+  /* A success or info note shows for a few seconds and fades away; an error stays until it is dismissed. */
+  .feedback-region .message-success, .feedback-region .message-info { animation: toast-away 4.5s ease forwards; }
+  @keyframes toast-away { 0%, 70% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateY(6px); pointer-events: none; visibility: hidden; } }
   /* Merchant Evidence Buffer and Session activity: one line each, title and note side by side. */
   #analytics .optional-trigger, #activity .optional-trigger { min-height: 40px; padding: 6px 14px; }
   #analytics .optional-trigger span:has(> strong), #activity .optional-trigger span:has(> strong) { display: flex; align-items: baseline; gap: 12px; }
@@ -24,4 +30,32 @@
   #compliance .stage-content > #sandbox-draft { grid-row: 2; }
   #compliance .stage-content > #guide-live-preflight { grid-column: 1; grid-row: 3; align-self: start; }
   #compliance .stage-content > #guide-live-preflight.is-open { grid-column: 1 / -1; grid-row: 4; }
+
+  /* Step 03 view switch: the two buttons sit in the step title bar (between the title and Reset demo) instead of a bar of
+     their own. The strip itself takes no height; it is only the carrier of the open/closed flag the CSS rules read. */
+  #disputes .stage-content { position: relative; }
+  #disputes .inner-tabs { position: absolute; top: -56px; left: 500px; z-index: 3; align-items: center; padding: 0; border: 0; background: transparent; gap: 8px; overflow: visible; }
+  #disputes .inner-tab { margin: 0; padding: 6px 16px; border: 1px solid var(--pg-color-rule); border-radius: 999px; background: var(--pg-color-panel); box-shadow: none; }
+  #disputes .inner-tab.is-active { border-color: var(--pg-color-accent); background: var(--pg-color-accent-tint); color: var(--pg-color-accent-strong); margin: 0; }
+
+  /* Step 02: the records card (signal, missing, related case) sits beside the chart instead of under it. */
+  #velocity .velocity-pane { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, 440px); gap: 8px 12px; align-items: start; }
+  #velocity .velocity-pane > .velocity-period { grid-column: 1 / -1; }
+  #velocity .velocity-pane > .velocity-chart { grid-column: 1; grid-row: 2; }
+  #velocity .velocity-pane > .spike-records { grid-column: 2; grid-row: 2; margin: 0; }
+
+  /* Switch buttons: a recessed track with a raised thumb for the selected item. */
+  .segmented, #disputes .inner-tabs { gap: 2px; padding: 3px; border: 1px solid var(--pg-color-rule); border-radius: 999px; background: var(--pg-color-recede); box-shadow: inset 0 1px 2px rgba(15, 23, 42, .07); }
+  .segmented button, #disputes .inner-tab { min-height: 30px; padding: 4px 16px; border: 0; border-radius: 999px; background: transparent; color: var(--pg-color-muted); font-weight: 650; letter-spacing: .1px; transition: background-color .15s ease, color .15s ease, box-shadow .15s ease; }
+  .segmented button:hover, #disputes .inner-tab:hover { background: rgba(255, 255, 255, .6); color: var(--pg-color-ink); }
+  .segmented button.is-active, #disputes .inner-tab.is-active { background: var(--pg-color-panel); color: var(--pg-color-accent-strong); box-shadow: 0 1px 3px rgba(15, 23, 42, .18), 0 0 0 1px rgba(79, 70, 229, .14); }
+  #disputes .inner-tabs { top: -52px; left: 500px; }
+  #disputes .inner-tab { margin: 0; }
+  #disputes .inner-tab.is-active { margin: 0; border: 0; }
+
+  /* Step 02: one row for both switches (Chart / Orders table, then Hourly / Monthly), and the records card in one column. */
+  #velocity .velocity-pane { position: relative; }
+  #velocity .velocity-pane > .velocity-period { position: absolute; top: -46px; left: 250px; margin: 0; }
+  #velocity .spike-records { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  #velocity .spike-records-row { grid-template-columns: 92px minmax(0, 1fr); gap: 2px 10px; }
 }

@@ -12,6 +12,9 @@ import './wide/bottom.css';
 import './wide/relax.css';
 import './wide/side.css';
 import './wide/compact.css';
+import './wide/polish01.css';
+import './wide/polish02.css';
+import './wide/polish03.css';
 
 createRoot(document.getElementById('root')).render(<App />);
 startPwa({ production: import.meta.env.PROD });

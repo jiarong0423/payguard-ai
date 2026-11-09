@@ -1,0 +1,26 @@
+/* polish02: owned by one UI agent. Rules only inside the media query (viewport 1280px and wider). */
+@media (min-width: 1280px) {
+  /* KPI row: the middle card holds the longest text, so it gets a wider column (its note fits on one line at 1920). */
+  #velocity .velocity-metrics { grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr) minmax(0, 1fr); }
+  /* KPI row: the three cards share one height so the middle card no longer sticks out below its neighbours. */
+  #velocity .velocity-metrics { align-items: stretch; }
+
+  /* Chart: canvas 280px -> 260px (#velocity beats the lazily loaded charts.css), so the chart box ends near the records card;
+     260 is the lowest value where the y-axis title "USD per hour" stays on one line. */
+  #velocity .velocity-chart-canvas { height: 260px; }
+
+  /* Records card: wider label column so "Records that back it" breaks into two lines instead of three. */
+  #velocity .spike-records-row { grid-template-columns: 120px minmax(0, 1fr); }
+
+  /* Orders table view: the pane drops the empty right column; caption left, filter right, AG Grid across the full width. */
+  #velocity .velocity-pane:has(> .transaction-grid) { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+  #velocity .velocity-pane:has(> .transaction-grid) > .transaction-grid { grid-column: 1 / -1; }
+  #velocity .velocity-pane:has(> .transaction-grid) > .velocity-selected-detail { grid-column: 1 / -1; }
+  /* Orders table view: the filter field is a fixed 320px with its label on one line (it wrapped to "Filter / orders"). */
+  #velocity .velocity-grid-tools { align-items: center; gap: 12px; }
+  #velocity .velocity-grid-tools label { white-space: nowrap; }
+  #velocity .velocity-grid-tools input { width: 320px; min-height: 40px; }
+
+  /* Footer: the shield icon sits in line with "TradeGlot / Local prototype" instead of on a line of its own. */
+  .main-content > footer > span:first-of-type { display: inline-flex; align-items: center; gap: 6px; }
+}
