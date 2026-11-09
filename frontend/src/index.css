@@ -1219,3 +1219,25 @@ footer { padding: 8px 0 0; }
 .case-card { padding: 10px 12px; margin-bottom: 8px; }
 .case-card > div { gap: 4px 8px; }
 .main-content #disputes .case-card.case-selected { margin-bottom: 8px; }
+
+/* Download-the-demo link: a quiet secondary link in the hero on desktop, in the footer on phones. */
+.hero-local-link { display: inline-flex; align-items: center; min-height: 44px; margin: 8px 0 0 12px; padding: 0 12px; color: var(--pg-color-accent-strong); font-size: var(--type-meta); font-weight: 650; text-decoration: underline; text-underline-offset: 3px; }
+.footer-download-demo { display: none; align-items: center; min-height: 44px; color: var(--pg-color-accent-strong); font-weight: 650; text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 640px) { .hero-local-link { display: none; } .footer-download-demo { display: inline-flex; } }
+
+/* Download button: a real outlined secondary button, same height and radius as "Run the step 1 example". */
+.hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 8px; }
+.hero-actions .hero-example-link, .hero-actions .hero-proof-link { margin: 0; }
+.hero-local-link, .footer-download-demo {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; margin: 0; padding: 0 16px;
+  border: 1px solid var(--pg-color-accent-strong); border-radius: var(--pg-radius-control); background: transparent;
+  color: var(--pg-color-accent-strong); font-size: var(--type-meta); font-weight: 650; text-decoration: none; box-sizing: border-box;
+}
+.hero-local-link:hover, .footer-download-demo:hover { background: var(--pg-color-accent-soft, rgba(79, 70, 229, 0.08)); }
+.download-icon { flex-shrink: 0; }
+@media (max-width: 640px) {
+  .hero-compact > div:first-child > .hero-actions { flex: 1 0 100%; margin-top: 0; }
+  .hero-local-link { display: none; }
+  .footer-download-demo { display: inline-flex; width: 100%; margin-top: 4px; }
+}
+@media (min-width: 641px) { .footer-download-demo { display: none; } }

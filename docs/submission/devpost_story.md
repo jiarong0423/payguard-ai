@@ -4,7 +4,7 @@ Tagline: Turns a seller's records into a reviewed dispute evidence package and, 
 
 Devpost: https://devpost.com/software/payguard-ai-zbsp9l · Repository: https://github.com/jiarong0423/payguard-ai (MIT) · Video: https://youtu.be/_GORnHWShU4 (public, 2:50)
 
-Naming note: the project was called PayGuard AI when the video and the receipts were made, so the video, the receipts, the Devpost address and the repository address still use the old name. [Download and click through on your computer](https://drive.google.com/file/d/1iVl4L3Ng1du_yRHI24gvkvFWyu5mR7Cp/view?usp=drive_link) (8 MB zip; its file fingerprint (SHA-256) starts `3cad8b4fbbedd21a...` and the full value is on the start page).
+Naming note: the project was called PayGuard AI when the video and the receipts were made, so the video, the receipts, the Devpost address and the repository address still use the old name. [Download and click through on your computer](https://github.com/jiarong0423/payguard-ai/releases/download/demo-package-20261109/tradeglot-demo.zip) (11 MB zip; its file fingerprint (SHA-256) starts `442969a14a1b7a7e...` and the full value is on the start page).
 
 ---
 

@@ -82,3 +82,8 @@ body { margin: 0; background: var(--pg-color-canvas); color: var(--pg-color-ink)
 
 /* Phone tap targets: inline links in the latest-evidence strip get a 44px touch area without moving the text. */
 .proof-latest li a { display: inline-block; padding: 10px 4px; margin: -10px -4px; }
+
+.proof-download-demo { display: inline-flex; align-items: center; min-height: 44px; color: var(--pg-color-accent-strong); font-weight: 650; font-size: 16px; }
+.proof-download-demo { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 16px; border: 1px solid var(--pg-color-accent-strong); border-radius: var(--pg-radius-control); background: transparent; color: var(--pg-color-accent-strong); font-size: 16px; font-weight: 650; text-decoration: none; box-sizing: border-box; justify-self: start; }
+.proof-download-demo:hover { background: var(--pg-color-recede); }
+@media (max-width: 640px) { .proof-download-demo { justify-self: stretch; } }

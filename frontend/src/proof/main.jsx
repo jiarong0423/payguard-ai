@@ -117,6 +117,7 @@ function ProofPage() {
       <footer className="proof-foot" data-testid="proof-foot">
         <p>Channel3 receipts on this page: {channel3.count} searches on {channel3.dates.join(', ')}, latency {channel3.minLatency} to {channel3.maxLatency} s, recomputed from <code>frontend/src/data/channel3_receipts_v1.json</code>.</p>
         <p>{facts.source_note}</p>
+        <a className="proof-download-demo" href="https://github.com/jiarong0423/payguard-ai/releases/download/demo-package-20261109/tradeglot-demo.zip" target="_blank" rel="noopener noreferrer" title="Same demo, one command, no keys." aria-label="Download the demo (11 MB). Same demo, one command, no keys." data-testid="proof-download-demo"><svg className="download-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 4v10.5" /><path d="m7.5 10.5 4.5 4.5 4.5-4.5" /><path d="M5 19.25h14" /></svg><span>Download the demo (11 MB)</span></a>
       </footer>
     </main>
   </div>;

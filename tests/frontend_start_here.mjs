@@ -71,3 +71,16 @@ const names = (text) => [...text.matchAll(/['"](\w+)['"]/g)].map((m) => m[1]).so
 assert.deepEqual(names(claimTypes[1]), names(backendTypes[1]), 'the policy check offers only claim types the backend accepts');
 
 console.log('frontend_start_here: ok');
+
+// Download-the-demo link (2026-11-09): direct GitHub asset, new tab, no opener; hero, footer and Proof page.
+{
+  const url = 'https://github.com/jiarong0423/payguard-ai/releases/download/demo-package-20261109/tradeglot-demo.zip';
+  const appSrc = readFileSync(new URL('../frontend/src/App.jsx', import.meta.url), 'utf8');
+  const proofSrc = readFileSync(new URL('../frontend/src/proof/main.jsx', import.meta.url), 'utf8');
+  for (const [name, src, id] of [['hero', appSrc, 'hero-download-demo'], ['footer', appSrc, 'footer-download-demo'], ['proof', proofSrc, 'proof-download-demo']]) {
+    const tag = src.match(new RegExp(`<a [^>]*data-testid="${id}"[^>]*>[\\s\\S]*?</a>`))?.[0] || '';
+    assert.ok(tag.includes(`href="${url}"`), `${name} download link has the exact asset URL`);
+    assert.ok(tag.includes('rel="noopener noreferrer"') && tag.includes('target="_blank"'), `${name} download link opens a new tab without opener`);
+    assert.ok(tag.includes('Download the demo (11 MB)') && tag.includes('Same demo, one command, no keys.'), `${name} download link has the label and hint`);
+  }
+}
