@@ -5,7 +5,7 @@
     "REAL_SANDBOX": {
       "label": "Real Sandbox call",
       "simulated": false,
-      "meaning": "A real call to PayPal's Sandbox through PayGuard, made by the author with two Sandbox test accounts. Sandbox test data, not a real merchant case. Rows marked refused before any send call are refusals: PayGuard sent no evidence to that dispute."
+      "meaning": "A real call to PayPal's Sandbox through TradeGlot, made by the author with two Sandbox test accounts. Sandbox test data, not a real merchant case. Rows marked refused before any send call are refusals: TradeGlot sent no evidence to that dispute."
     },
     "RECORDED": {
       "label": "Recorded real run",
@@ -49,8 +49,8 @@
     {
       "id": "policy-invoice-draft",
       "scenario": "policy",
-      "proven": "After the policy preflight, PayGuard created an invoice draft in PayPal Sandbox and did not send it. Unsent drafts were created on 2026-10-06, 2026-10-31 and once during the video recording on 2026-11-05 (UTC+8); this row is the 2026-10-31 one.",
-      "how": "POST /v2/invoicing/invoices through PayGuard: status DRAFT, external_send FROZEN, environment sandbox. Only the creation response was kept (no separate GET read-back). Invoice id INV2-U3KH-...-PQCK (masked).",
+      "proven": "After the policy preflight, TradeGlot created an invoice draft in PayPal Sandbox and did not send it. Unsent drafts were created on 2026-10-06, 2026-10-31 and once during the video recording on 2026-11-05 (UTC+8); this row is the 2026-10-31 one.",
+      "how": "POST /v2/invoicing/invoices through TradeGlot: status DRAFT, external_send FROZEN, environment sandbox. Only the creation response was kept (no separate GET read-back). Invoice id INV2-U3KH-...-PQCK (masked).",
       "method": "REAL_SANDBOX",
       "date": "2026-10-31",
       "source": "docs/evidence/RECEIPT_20261031_live.md",
@@ -66,8 +66,8 @@
     {
       "id": "policy-invoice-draft-recorded",
       "scenario": "policy",
-      "proven": "During the demo video recording on 2026-11-05 (UTC+8), PayGuard created a third unsent invoice draft in PayPal Sandbox.",
-      "how": "POST /v2/invoicing/invoices through PayGuard, shown at about 1:08 to 1:12 of the 2:50 video: status DRAFT, not sent, verified from the creation response only. Invoice id INV2-...RG5U (masked); the full id and the response body are not kept.",
+      "proven": "During the demo video recording on 2026-11-05 (UTC+8), TradeGlot created a third unsent invoice draft in PayPal Sandbox.",
+      "how": "POST /v2/invoicing/invoices through TradeGlot, shown at about 1:08 to 1:12 of the 2:50 video: status DRAFT, not sent, verified from the creation response only. Invoice id INV2-...RG5U (masked); the full id and the response body are not kept.",
       "method": "REAL_SANDBOX",
       "date": "2026-11-05",
       "source": "docs/evidence/RECEIPT_20261105_live.md",
@@ -172,8 +172,8 @@
     {
       "id": "dispute-list-read",
       "scenario": "dispute",
-      "proven": "PayGuard listed a real Sandbox test dispute with its status and response due date.",
-      "how": "GET /v1/customer/disputes through PayGuard. The author filed one Item Not Received test dispute between two Sandbox accounts; it was listed 12.7 minutes after creation (one sample, no delay figure claimed). Status WAITING_FOR_SELLER_RESPONSE, due 2026-11-20, dispute id PP-R-OJX-... (masked).",
+      "proven": "TradeGlot listed a real Sandbox test dispute with its status and response due date.",
+      "how": "GET /v1/customer/disputes through TradeGlot. The author filed one Item Not Received test dispute between two Sandbox accounts; it was listed 12.7 minutes after creation (one sample, no delay figure claimed). Status WAITING_FOR_SELLER_RESPONSE, due 2026-11-20, dispute id PP-R-OJX-... (masked).",
       "method": "REAL_SANDBOX",
       "date": "2026-10-31",
       "source": "docs/evidence/RECEIPT_20261031_live.md",
@@ -191,8 +191,8 @@
     {
       "id": "dispute-single-read",
       "scenario": "dispute",
-      "proven": "PayGuard read the single dispute back: the disputed transaction was held and PayPal asked the seller for proof of fulfilment.",
-      "how": "GET /v1/customer/disputes/{id} through PayGuard, HTTP 200. Evidence entries were the buyer's CREATE and a PROOF_OF_FULFILLMENT request to the seller.",
+      "proven": "TradeGlot read the single dispute back: the disputed transaction was held and PayPal asked the seller for proof of fulfilment.",
+      "how": "GET /v1/customer/disputes/{id} through TradeGlot, HTTP 200. Evidence entries were the buyer's CREATE and a PROOF_OF_FULFILLMENT request to the seller.",
       "method": "REAL_SANDBOX",
       "date": "2026-10-31",
       "source": "docs/evidence/RECEIPT_20261031_live.md",
@@ -206,8 +206,8 @@
     {
       "id": "dispute-evidence-sent",
       "scenario": "dispute",
-      "proven": "PayGuard sent evidence to a Sandbox dispute after the local review and the two-step send dialog; PayPal Sandbox accepted the request and the dispute moved to waiting for the buyer.",
-      "how": "POST /v1/customer/disputes/{id}/provide-evidence through PayGuard on an item-not-received test dispute (USD 48.00), returning PayPal-Debug-Id f908765a01293; a fresh read then showed the dispute waiting for the buyer and the seller's proof of fulfilment recorded. The evidence file sent was a 43-byte synthetic placeholder PDF. Dispute id masked.",
+      "proven": "TradeGlot sent evidence to a Sandbox dispute after the local review and the two-step send dialog; PayPal Sandbox accepted the request and the dispute moved to waiting for the buyer.",
+      "how": "POST /v1/customer/disputes/{id}/provide-evidence through TradeGlot on an item-not-received test dispute (USD 48.00), returning PayPal-Debug-Id f908765a01293; a fresh read then showed the dispute waiting for the buyer and the seller's proof of fulfilment recorded. The evidence file sent was a 43-byte synthetic placeholder PDF. Dispute id masked.",
       "method": "REAL_SANDBOX",
       "date": "2026-11-04",
       "source": "docs/evidence/RECEIPT_20261104_live.md",
@@ -225,7 +225,7 @@
       "id": "dispute-mismatch-refused",
       "refused": true,
       "scenario": "dispute",
-      "proven": "PayGuard refused to pair an item-not-as-described dispute with an item-not-received case, and sent nothing to it.",
+      "proven": "TradeGlot refused to pair an item-not-as-described dispute with an item-not-received case, and sent nothing to it.",
       "how": "Preview on the second test dispute with the item-not-received case selected; the send stayed locked.",
       "method": "REAL_SANDBOX",
       "date": "2026-11-04",
@@ -241,7 +241,7 @@
       "id": "dispute-unauthorized-refused",
       "refused": true,
       "scenario": "dispute",
-      "proven": "PayGuard read an unauthorized Sandbox test dispute in the chargeback stage, refused to pair it with the item-not-received case, and sent nothing to it.",
+      "proven": "TradeGlot read an unauthorized Sandbox test dispute in the chargeback stage, refused to pair it with the item-not-received case, and sent nothing to it.",
       "how": "GET of the third test dispute after the send, then a preview with the item-not-received case selected; the send stayed locked. Dispute id masked.",
       "method": "REAL_SANDBOX",
       "date": "2026-11-04",
@@ -257,7 +257,7 @@
     {
       "id": "dispute-evidence-sent-recorded",
       "scenario": "dispute",
-      "proven": "PayGuard sent evidence to a second, newly filed Sandbox dispute while the demo video was recorded; a send attempted after the local session expired was refused first and nothing went out.",
+      "proven": "TradeGlot sent evidence to a second, newly filed Sandbox dispute while the demo video was recorded; a send attempted after the local session expired was refused first and nothing went out.",
       "how": "Same POST /v1/customer/disputes/{id}/provide-evidence path on an item-not-received test dispute (USD 48.00), returning PayPal-Debug-Id f2088142a6218 at 2026-11-04 17:16 UTC (2026-11-05 in UTC+8); a fresh read then showed the dispute waiting for the buyer (PayPal-Debug-Id of that read: ca5554cf42ef6). The review ZIP of that session (14028 bytes, 7 entries: 6 listed files and the manifest) passed all 8 local checks. Dispute id masked.",
       "method": "REAL_SANDBOX",
       "date": "2026-11-05",
@@ -278,7 +278,7 @@
       "id": "dispute-resend-amount-refused",
       "refused": true,
       "scenario": "dispute",
-      "proven": "PayGuard would not send to a dispute PayPal already has seller evidence for, and refused a dispute whose amount differs from the case, sending nothing to either.",
+      "proven": "TradeGlot would not send to a dispute PayPal already has seller evidence for, and refused a dispute whose amount differs from the case, sending nothing to either.",
       "how": "Previews after the second send with the item-not-received case selected; the send stayed locked each time. Dispute ids masked.",
       "method": "REAL_SANDBOX",
       "date": "2026-11-05",

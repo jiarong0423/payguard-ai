@@ -98,7 +98,7 @@ const grab = (name) => { const match = section.match(new RegExp(`(?:const ${name
 // ---- #9: after the local review the summary says what is next; server values stay in Technical details. ----
 {
   assert.ok(app.includes("<strong data-testid=\"dispute-readiness\">{receipt || reviewedOnServer ? 'Reviewed · next: preview and send' : operatorLabel(draft.routing?.overall_state)}</strong>"));
-  assert.ok(app.includes('{!(receipt || reviewedOnServer) && <small data-testid="dispute-actions">Next options:'), 'Next options hidden after the review');
+  assert.ok(app.includes('{!(receipt || reviewedOnServer) && <small data-testid="dispute-actions">Draft ready: review it below. PayPal action for this case:'), 'Next options hidden after the review');
   assert.ok(app.includes('<p data-testid="dispute-route-server">Server routing: {operatorLabel(draft.routing.overall_state)} · next options:'), 'server values in Technical details');
 }
 

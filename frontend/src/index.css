@@ -800,7 +800,7 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
     .app-shell.phone-action-connect [data-testid="sandbox-connect"]) { position: relative; }
   .app-shell.has-phone-action:not(.is-typing) :is(.phone-action-aup [data-testid="aup-review"], .phone-action-country [data-testid="country-check"], .phone-action-country-next [data-testid="country-continue-draft"], .phone-action-burst [data-testid="demo-burst"], .phone-action-draft [data-testid="dispute-draft"], .phone-action-approve [data-testid="dispute-approve"], .phone-action-invoice [data-testid="invoice-create"], .phone-action-connect [data-testid="sandbox-connect"])::after {
     content: "Your next step is in the bar below"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: flex-start;
-    padding: 0 2px; visibility: visible; pointer-events: none; white-space: nowrap; color: var(--pg-color-muted); font-size: var(--type-meta); font-weight: 500;
+    padding: 0 2px; visibility: visible; pointer-events: none; white-space: normal; color: var(--pg-color-muted); font-size: var(--type-meta); font-weight: 500;
   }
   /* Tabs scroll sideways with snap points instead of wrapping. */
   .secondary-tabs { flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }

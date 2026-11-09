@@ -26,7 +26,7 @@ export default function RecordedRuns({ recording }) {
   const done = run && shown >= schedule.length;
   return <section className="pg-replay" aria-labelledby="pg-replay-title" data-testid="recorded-runs">
     <h2 id="pg-replay-title">Replay a recorded Studio run</h2>
-    <p className="pg-replay-note"><strong>{REPLAY_BADGE}.</strong> {recordingLabel(recording)}</p>
+    <p className="pg-replay-note"><strong>{recordingLabel(recording)}</strong></p>
     <div className="pg-replay-buttons" role="group" aria-label="Recorded questions">
       {recording.runs.map((entry, index) => <button key={entry.question} type="button" aria-pressed={active === index} data-testid={`replay-run-${index}`} onClick={() => play(index)}>Replay: {entry.question}</button>)}
     </div>

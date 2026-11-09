@@ -102,7 +102,7 @@ function ProofFilters({ filter, setFilter, shown, total }) {
       {PROOF_METHOD_CHIPS.map(([value, label]) => <button key={value} type="button" className="proof-filter-chip" aria-pressed={filter.method === value} data-testid={`proof-filter-${value}`} onClick={() => setFilter({ ...filter, method: value })}>{label} <span className="proof-chip-count">{countFor({ ...filter, method: value })}</span></button>)}
     </div>
     <div className="proof-chip-row" role="group" aria-label="Sponsor tool" data-testid="proof-sponsor-chips">
-      {PROOF_SPONSORS.map((name) => <button key={name} type="button" className="proof-filter-chip" aria-pressed={filter.sponsor === name} data-testid={`proof-sponsor-${name.replace(/\s+/gu, '-')}`} onClick={() => setFilter({ ...filter, sponsor: filter.sponsor === name ? '' : name })}>{name} <span className="proof-chip-count">{countFor({ ...filter, sponsor: name })}</span></button>)}
+      {PROOF_SPONSORS.filter((name) => filter.sponsor === name || facts.rows.some((row) => row.sponsors?.includes(name))).map((name) => <button key={name} type="button" className="proof-filter-chip" aria-pressed={filter.sponsor === name} data-testid={`proof-sponsor-${name.replace(/\s+/gu, '-')}`} onClick={() => setFilter({ ...filter, sponsor: filter.sponsor === name ? '' : name })}>{name} <span className="proof-chip-count">{countFor({ ...filter, sponsor: name })}</span></button>)}
     </div>
     <button type="button" className="proof-filter-chip proof-filter-reset" data-testid="proof-filter-reset" disabled={!active} onClick={() => setFilter({ method: 'ALL', sponsor: '' })}>Reset</button>
     <p className="proof-filter-count" role="status" aria-live="polite" data-testid="proof-filter-count">Showing {shown} of {total}{noRow ? `. No proof row names ${filter.sponsor}; it is shown in the product itself (see the Sponsor map in the console footer).` : ''}</p>
@@ -131,7 +131,7 @@ function ProofPage() {
       <div className="proof-intro">
         <h1>What has been shown, and how</h1>
         <p>Each row says what was proven, whether it came from a real PayPal Sandbox call, a recorded run, an automated test or synthetic data, when, and the committed file it comes from. This page is static: it calls nothing and reads only files in the repository.</p>
-        <p className="proof-note">Identifiers are masked as in the receipts. Sandbox rows are test data the author created with two Sandbox test accounts, not a real merchant case.</p>
+        <p className="proof-note">Identifiers are masked as in the receipts. Sandbox rows are test data the author created with two Sandbox test accounts, not a real merchant case. TradeGlot was called PayGuard AI until 2026-11-09, so the receipt files and recordings dated before then carry the old name.</p>
       </div>
       <Latest />
       <Legend />

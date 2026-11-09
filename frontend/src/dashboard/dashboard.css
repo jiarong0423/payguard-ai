@@ -166,7 +166,8 @@ body { margin: 0; background: var(--pg-canvas); color: var(--pg-ink); font-famil
 .pg-loading { padding: 40px 24px; font-size: 15px; color: var(--pg-muted); }
 
 /* Replay a recorded run: one-click buttons, a visible step list, the recorded answer. */
-.pg-replay { margin: 12px 0; }
+.pg-replay { margin: 12px 24px; padding: 16px; border-radius: var(--pg-radius-card); background: var(--pg-panel); box-shadow: var(--pg-l1); }
+@media (max-width: 640px) { .pg-replay { margin: 12px 16px; } }
 .pg-replay h2 { margin: 0 0 4px; font-size: 18px; }
 .pg-replay-note { margin: 0 0 8px; font-size: 16px; }
 .pg-replay-buttons { display: flex; flex-wrap: wrap; gap: 8px; }

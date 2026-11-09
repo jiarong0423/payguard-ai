@@ -34,7 +34,7 @@ CLAIMS = {
     "tracked_files": 431,
     "python_source_lines": 22863,
     "python_test_lines": 18645,
-    "frontend_lines": 14252,
+    "frontend_lines": 14253,
     "jsx_files": 24,
     "frontend_pages": 5,
     "api_routes": 40,

@@ -365,7 +365,7 @@ function Dashboard({ setup }) {
         <ul className="pg-chips" aria-label="Status">
           <li>Auditor: on</li>
           <li className={setup.mode === 'off' ? '' : 'is-accent'}>Built-in agents: {setup.mode}</li>
-          <li>Licence: {LICENSE_KEY ? 'key' : 'trial'}</li>
+          <li>License: {LICENSE_KEY ? 'key' : 'trial'}</li>
           {/* (r31 J1 J4) No "Changes stay in this tab" chip: the drawer below says it in edit mode ("Edit mode: ..."). */}
         </ul>
         {delegated && <p className="pg-delegated" role="status" aria-live="polite" data-testid="dashboard-delegated"><strong>Data agent:</strong> {plainSummary(delegated.summary)}</p>}
@@ -377,7 +377,7 @@ function Dashboard({ setup }) {
           <ul className="pg-status" data-testid="dashboard-status">
             <li><strong>Evidence auditor:</strong> on. Seven questions answered with code and built with Studio tools. Open it with “Ask the auditor”.</li>
             <li data-testid="dashboard-built-in" data-mode={setup.mode}><strong>Built-in agents:</strong> {AGENT_STATUS[setup.mode]}</li>
-            <li data-testid="dashboard-licence"><strong>Licence:</strong> {LICENSE_KEY ? 'AG Studio key supplied at build time (the hosted demo uses a trial or development key, not a purchased production licence).' : 'no key in this build: AG Studio runs as a trial, logs a licence notice and may show its watermark.'}</li>
+            <li data-testid="dashboard-licence"><strong>License:</strong> {LICENSE_KEY ? 'AG Studio key supplied at build time (the hosted demo uses a trial or development key, not a purchased production license).' : 'no key in this build: AG Studio runs as a trial, logs a license notice and may show its watermark.'}</li>
             {mode === 'edit' && <li><strong>Edit mode:</strong> the auditor and layout changes stay in this tab and are not saved.</li>}
           </ul>
           {technical && <details className="pg-technical" data-testid="dashboard-technical-steps">

@@ -77,7 +77,7 @@ export const WORK_ORDERS = Object.freeze([
     id: 'WO-S5', title: 'Dispute evidence readiness dashboard', scene: 'Dashboard',
     steps: [
       { n: 1, kind: 'auto', label: 'Open /dashboard.html', expect: '200' },
-      { n: 2, kind: 'auto', label: 'Read the licence line', expect: 'Licence: key or trial' },
+      { n: 2, kind: 'auto', label: 'Read the license line', expect: 'License: key or trial' },
       { n: 3, kind: 'manual', needs: 'gemini', label: 'Ask the auditor (model)', expect: 'Answer cites dashboard rows only' },
     ],
   },

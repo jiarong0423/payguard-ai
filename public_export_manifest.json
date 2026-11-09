@@ -1,5 +1,5 @@
 {
-  "created_at_utc": "2026-11-09T13:20:10Z",
+  "created_at_utc": "2026-11-09T13:44:35Z",
   "dependency_locks": {
     "frontend_npm": "0f98893564efb5556cc0a92710feedcb9da085108f9668fee93f29940b87f09d",
     "gemini_python": "36554331392d6102519a4ead5778704c4ff89e79da6bb9d6648b656f130724bb",
@@ -514,9 +514,9 @@
     {
       "bytes": 9053,
       "path": "docs/evidence/HOW_NUMBERS_WERE_COUNTED.md",
-      "sha256": "fd8ff371fbaa02a95adbb35229b7c76d6377435c19d4cbf63cb1a48f293eb6be",
+      "sha256": "9658ae2ed9e57281d39ae0106159f4b41005924016c6539a38bcceccced2cfc9",
       "source_path": "docs/evidence/HOW_NUMBERS_WERE_COUNTED.md",
-      "source_sha256": "fd8ff371fbaa02a95adbb35229b7c76d6377435c19d4cbf63cb1a48f293eb6be"
+      "source_sha256": "9658ae2ed9e57281d39ae0106159f4b41005924016c6539a38bcceccced2cfc9"
     },
     {
       "bytes": 1692,
@@ -1177,11 +1177,11 @@
       "source_sha256": "005382a5ac13f17e962d0b242423e4353a1812e3ed1e0b140a7de92b7ad59f82"
     },
     {
-      "bytes": 202802,
+      "bytes": 202918,
       "path": "frontend/src/App.jsx",
-      "sha256": "382ee32603b97f82b5f7d1b36791c029141209aff0d1597193fc7ffbf4b324f6",
+      "sha256": "efd79f8c4fded0313b745344e8301fd14fe1c954fc8cb7604e7cd61212440040",
       "source_path": "frontend/src/App.jsx",
-      "source_sha256": "382ee32603b97f82b5f7d1b36791c029141209aff0d1597193fc7ffbf4b324f6"
+      "source_sha256": "efd79f8c4fded0313b745344e8301fd14fe1c954fc8cb7604e7cd61212440040"
     },
     {
       "bytes": 8879,
@@ -1359,11 +1359,11 @@
       "source_sha256": "7807dda94305604cb4e649f9159f2bf413e650f3b2af84474d0f636893897917"
     },
     {
-      "bytes": 2851,
+      "bytes": 2835,
       "path": "frontend/src/dashboard/RecordedRuns.jsx",
-      "sha256": "a4e854c71d35923264a5b76e23309d6ee2aa03041912306328a1f51794f20865",
+      "sha256": "1f15c8b552151ced13a42ad12da7846df29068d3ba06c5bb8b42245c8bf4a555",
       "source_path": "frontend/src/dashboard/RecordedRuns.jsx",
-      "source_sha256": "a4e854c71d35923264a5b76e23309d6ee2aa03041912306328a1f51794f20865"
+      "source_sha256": "1f15c8b552151ced13a42ad12da7846df29068d3ba06c5bb8b42245c8bf4a555"
     },
     {
       "bytes": 10157,
@@ -1373,18 +1373,18 @@
       "source_sha256": "c3f69410e615f5c2f01351d77655245e7050bf7ba58f37d4908a1af497e23de8"
     },
     {
-      "bytes": 29328,
+      "bytes": 29333,
       "path": "frontend/src/dashboard/auditor.js",
-      "sha256": "959c9f11c5093d16a91c2d7e2eaccd18a3f2468dbffafcd1d976e1777d82ec58",
+      "sha256": "b8696c6ec89864c8c4c9ea858bc2039ef9efcda4ae757e207a2097cc4685e81f",
       "source_path": "frontend/src/dashboard/auditor.js",
-      "source_sha256": "959c9f11c5093d16a91c2d7e2eaccd18a3f2468dbffafcd1d976e1777d82ec58"
+      "source_sha256": "b8696c6ec89864c8c4c9ea858bc2039ef9efcda4ae757e207a2097cc4685e81f"
     },
     {
-      "bytes": 14961,
+      "bytes": 15136,
       "path": "frontend/src/dashboard/dashboard.css",
-      "sha256": "f37a00bcb0ed1f1246c588e3616a3f8a578c49d00d33a2c6d6cc942e3fd74bf6",
+      "sha256": "6478a7c3e02c0a15cfe2717cd46d77f446278838b31beb7e5eafd2bcdb7e4e23",
       "source_path": "frontend/src/dashboard/dashboard.css",
-      "source_sha256": "f37a00bcb0ed1f1246c588e3616a3f8a578c49d00d33a2c6d6cc942e3fd74bf6"
+      "source_sha256": "6478a7c3e02c0a15cfe2717cd46d77f446278838b31beb7e5eafd2bcdb7e4e23"
     },
     {
       "bytes": 9558,
@@ -1403,9 +1403,9 @@
     {
       "bytes": 27485,
       "path": "frontend/src/dashboard/main.jsx",
-      "sha256": "8677e9c3c50bb97dd032af29cb9949627bc5ca755b0a6aa3d2cc46168c6bc587",
+      "sha256": "dd0b5005fc872231e2fd45ce73c916b1146cd490e2eeb4008f0ac9e1a784bf79",
       "source_path": "frontend/src/dashboard/main.jsx",
-      "source_sha256": "8677e9c3c50bb97dd032af29cb9949627bc5ca755b0a6aa3d2cc46168c6bc587"
+      "source_sha256": "dd0b5005fc872231e2fd45ce73c916b1146cd490e2eeb4008f0ac9e1a784bf79"
     },
     {
       "bytes": 7418,
@@ -1464,11 +1464,11 @@
       "source_sha256": "324052c3ef118b5a0c5e419f9ed151e6e52e4a4a2dae130505324f828eed4370"
     },
     {
-      "bytes": 32577,
+      "bytes": 32593,
       "path": "frontend/src/data/proof_facts_v1.json",
-      "sha256": "5f106194ad96ddbaee931592a87213f30e76f3c0828fa9a0e78394c525c59d85",
+      "sha256": "e83ec58d5182a14f0f851f8a72ebc38160823e553fb33928f9840067868bc1a7",
       "source_path": "frontend/src/data/proof_facts_v1.json",
-      "source_sha256": "5f106194ad96ddbaee931592a87213f30e76f3c0828fa9a0e78394c525c59d85"
+      "source_sha256": "e83ec58d5182a14f0f851f8a72ebc38160823e553fb33928f9840067868bc1a7"
     },
     {
       "bytes": 3230,
@@ -1508,9 +1508,9 @@
     {
       "bytes": 104524,
       "path": "frontend/src/index.css",
-      "sha256": "e5634bc8e77b5df7276df00445bd7aac2e91e7c761b9142e9320a150ecaa0c95",
+      "sha256": "8ef6be9a6c39fbfde9324cd1e72e9c52f7c3da2d3ef02bc6cc1d14220a6f4ab6",
       "source_path": "frontend/src/index.css",
-      "source_sha256": "e5634bc8e77b5df7276df00445bd7aac2e91e7c761b9142e9320a150ecaa0c95"
+      "source_sha256": "8ef6be9a6c39fbfde9324cd1e72e9c52f7c3da2d3ef02bc6cc1d14220a6f4ab6"
     },
     {
       "bytes": 5445,
@@ -1576,11 +1576,11 @@
       "source_sha256": "05bce04793c289e04362e2f7d6cf3c933e8a54e115adb31d090c408edf759c5a"
     },
     {
-      "bytes": 12316,
+      "bytes": 12541,
       "path": "frontend/src/proof/main.jsx",
-      "sha256": "0c4246ff977b56b37d86e783949db0ebc254b27fd8797992274b24fe859dd317",
+      "sha256": "a7e625fc045e10ec91f7f6a86c053d5d536d684ce8ad41418025c08c2977b5a1",
       "source_path": "frontend/src/proof/main.jsx",
-      "source_sha256": "0c4246ff977b56b37d86e783949db0ebc254b27fd8797992274b24fe859dd317"
+      "source_sha256": "a7e625fc045e10ec91f7f6a86c053d5d536d684ce8ad41418025c08c2977b5a1"
     },
     {
       "bytes": 9974,
@@ -1655,9 +1655,9 @@
     {
       "bytes": 22493,
       "path": "frontend/src/scenarios/workOrders.js",
-      "sha256": "0bdf63c6041fd826d1ef7246fd5af1e316826d5c61867e3760339dbe9395e3a1",
+      "sha256": "dfee464a53ae2dae32efe62a82962eb9fb9d765c73b5a02983f53166b4eb10ac",
       "source_path": "frontend/src/scenarios/workOrders.js",
-      "source_sha256": "0bdf63c6041fd826d1ef7246fd5af1e316826d5c61867e3760339dbe9395e3a1"
+      "source_sha256": "dfee464a53ae2dae32efe62a82962eb9fb9d765c73b5a02983f53166b4eb10ac"
     },
     {
       "bytes": 2301,
@@ -2395,11 +2395,11 @@
       "source_sha256": "cda4316fc7d967cfc5d9d977dd191e7aa9fee367f44f3490b9694ea0b8914eab"
     },
     {
-      "bytes": 14651,
+      "bytes": 14696,
       "path": "tests/frontend_ui_r34.mjs",
-      "sha256": "336fed172036fec0483019a9e38b145970f93240158fde57147cdf08a47cbb71",
+      "sha256": "4d1047da52ae305b1c62ac92614efc7f5d9e05ce101f3140a99b1eb4eeaae181",
       "source_path": "tests/frontend_ui_r34.mjs",
-      "source_sha256": "336fed172036fec0483019a9e38b145970f93240158fde57147cdf08a47cbb71"
+      "source_sha256": "4d1047da52ae305b1c62ac92614efc7f5d9e05ce101f3140a99b1eb4eeaae181"
     },
     {
       "bytes": 1289,
@@ -2971,9 +2971,9 @@
     {
       "bytes": 14792,
       "path": "tools/verify_public_numbers.py",
-      "sha256": "c2997cbef277c6edc0447a4fa53ca485566a7d2c40223d9c3be78a8929962b91",
+      "sha256": "13cb5e67cd57789f3e0f5f00d3e3c3221f8834e66cb0a590c57173c551ff32cd",
       "source_path": "tools/verify_public_numbers.py",
-      "source_sha256": "c2997cbef277c6edc0447a4fa53ca485566a7d2c40223d9c3be78a8929962b91"
+      "source_sha256": "13cb5e67cd57789f3e0f5f00d3e3c3221f8834e66cb0a590c57173c551ff32cd"
     },
     {
       "bytes": 87,
@@ -3016,8 +3016,8 @@
     "scope": "RECORDED_OWNER_RIGHTS_AND_ENTRANT_ELIGIBILITY"
   },
   "package_digest_algorithm": "sha256(sorted utf-8 '<file_sha256>  <relative_path>\\n' records; manifest and detached hash excluded)",
-  "package_digest_sha256": "7733aa8a25d38680b7250c221488613192dc63d46bcc79146f63aaa4f5d0e410",
-  "public_artifact_id": "payguard-public-source-7733aa8a25d38680",
+  "package_digest_sha256": "289cb31f705b2b3cfd555969ebcd15045a0c5b194a2d6095d5f60c8d25997afe",
+  "public_artifact_id": "payguard-public-source-289cb31f705b2b3c",
   "publication_authorized": false,
   "raw_bounded_prompt_disclosure": {
     "intent": "INTENTIONAL_PUBLIC_EXECUTABLE_PRODUCT_SOURCE",
