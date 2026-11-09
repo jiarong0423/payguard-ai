@@ -38,7 +38,7 @@ assert.ok(app.includes('<details className="approval-payload" data-testid="appro
 assert.ok(app.includes("{current.payload_sha256 || '—'}"), 'sha256 or a dash');
 assert.ok(app.indexOf('<ApprovalPayloadCard ') > app.indexOf("'Confirm local draft review'}</Button>"), 'card sits beside the approval');
 assert.ok(app.includes('data-testid="step-one-evidence"') && app.includes('data-testid="zip-from-step-01"'), 'step 01 evidence labelled');
-assert.ok(app.includes("const trackingSubmitReady = Boolean(receipt) && trackingPreview?.submit_flag_enabled === true && trackingPreview?.source === 'paypal_sandbox' && trackingPreview?.external_send === 'FROZEN' && !trackingBlock;"), 'tracking send gates (plus the r25 send guard)');
+assert.ok(app.includes("const trackingSubmitReady = reviewRecorded && trackingPreview?.submit_flag_enabled === true && trackingPreview?.source === 'paypal_sandbox' && trackingPreview?.external_send === 'FROZEN' && !trackingBlock;"), 'tracking send gates (plus the r25 send guard)');
 assert.ok(app.includes('disabled={disabled || !trackingSubmitReady}'), 'tracking send disabled until the gates pass');
 assert.ok(app.includes("const itemNotReceived = providerDisputeDetail?.reason === 'MERCHANDISE_OR_SERVICE_NOT_RECEIVED';"), 'tracking only for item not received');
 assert.ok(app.indexOf('data-testid="tracking-submit"') < app.indexOf('</>}', app.indexOf('hosted-note-evidence')), 'tracking buttons sit inside the local branch');

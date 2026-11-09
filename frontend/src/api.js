@@ -599,7 +599,10 @@ function assertContract(path, payload, session, body) {
     // (r30 J2 P2-1) The single-use send confirmation a preview issues: null, or 32 URL-safe characters.
     const confirmTokenValid = !has('confirm_token') || payload.confirm_token === null
       || (typeof payload.confirm_token === 'string' && /^[A-Za-z0-9_-]{32}$/.test(payload.confirm_token));
-    const envelopeKeys = ['source', 'data_source_label', 'environment', 'evidence_class', 'observed_at', 'provider_submission', ...optional('paypal_debug_id')];
+    // (2026-11-10) `note` is part of the dispute envelope (schemas.DisputeEnvelope: null or up to 300 characters). The
+    // write routes serialise it as null, which the exact-key check refused ("API contract mismatch" on a live preview).
+    const noteValid = !has('note') || payload.note === null || (typeof payload.note === 'string' && payload.note.length <= 300);
+    const envelopeKeys = ['source', 'data_source_label', 'environment', 'evidence_class', 'observed_at', 'provider_submission', ...optional('paypal_debug_id', 'note')];
     const recordKeys = ['dispute_id', 'reason', 'status', 'dispute_life_cycle_stage', 'dispute_state', 'dispute_amount', 'create_time', 'update_time', 'seller_response_due_date'];
     const record = (row) => object(row) && disputeId(row.dispute_id) && text(row.reason) && text(row.status) && text(row.dispute_life_cycle_stage)
       && (row.dispute_state === null || text(row.dispute_state)) && money(row.dispute_amount) && text(row.create_time)
@@ -608,7 +611,7 @@ function assertContract(path, payload, session, body) {
     valid = valid && ['paypal_sandbox', 'synthetic_fixture'].includes(payload.source) && payload.environment === 'sandbox'
       && payload.data_source_label === (fixture ? 'Fixture' : 'Sandbox')
       && (fixture ? payload.evidence_class === 'SYNTHETIC_FIXTURE' : ['AUTHENTIC_SANDBOX_RESPONSE', 'SYNTHETIC_TEST_RESPONSE'].includes(payload.evidence_class))
-      && text(payload.observed_at) && ['NOT_PERFORMED', 'PERFORMED'].includes(payload.provider_submission) && debugIdValid;
+      && text(payload.observed_at) && ['NOT_PERFORMED', 'PERFORMED'].includes(payload.provider_submission) && debugIdValid && noteValid;
     if (valid && path === '/paypal/disputes') {
       valid = pk(payload, [...envelopeKeys, 'readback', 'items']) && payload.readback === 'GET_LIST' && payload.provider_submission === 'NOT_PERFORMED'
         && Array.isArray(payload.items) && payload.items.length <= 20 && payload.items.every((row) => pk(row, recordKeys) && record(row))

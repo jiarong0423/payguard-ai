@@ -79,7 +79,7 @@ assert.ok(app.includes("disabled={disabled || countryHeld || !invoiceReview || !
 assert.ok(app.includes("<LockReason testId=\"invoice-lock-reason\" reason={draftLockReason({ sessionExpired: error?.status === 401, hosted, countryHeld, aup, aupExpired, aupConsumed,\n          descriptionTooLong: description.length > DESCRIPTION_LIMIT, invoiceChecked, invoiceReview, invoice, connected: sandbox?.status === 'connected' })} /></div>"));
 
 // ---- A4: sends. sendLockReason is null exactly when the console's Ready flag is true. ----
-const readyFormula = "Boolean(receipt) && evidencePreview?.submit_flag_enabled === true && evidencePreview?.source === 'paypal_sandbox' && evidencePreview?.external_send === 'FROZEN' && !evidenceBlock";
+const readyFormula = "reviewRecorded && evidencePreview?.submit_flag_enabled === true && evidencePreview?.source === 'paypal_sandbox' && evidencePreview?.external_send === 'FROZEN' && !evidenceBlock";
 // (r34 #2) The evidence send also stays locked while PayPal already has seller evidence for the dispute.
 assert.ok(app.includes(`const evidenceSubmitReady = ${readyFormula} && !sellerEvidence;`), 'evidence Ready flag (r34: plus seller evidence)');
 assert.ok(app.includes(`const trackingSubmitReady = ${readyFormula.replaceAll('evidence', 'tracking')};`), 'tracking Ready flag unchanged');
@@ -99,8 +99,8 @@ assert.equal(sendLockReason({ draft: {}, receipt: null, preview: sandboxPreview 
 assert.equal(sendLockReason({ draft: null }), 'Locked: prepare the evidence draft first.');
 assert.equal(sendLockReason({ kind: 'tracking', draft: {}, receipt: {} }), 'Locked: preview the tracking for PayPal first.');
 assert.equal(sendLockReason({ draft: {}, receipt: {}, preview: sandboxPreview, sessionExpired: true }), SESSION_LOCK);
-assert.ok(app.includes("const evidenceLock = sendLockReason({ kind: 'evidence', sessionExpired, draft, receipt, preview: evidencePreview, block: evidenceBlock, disputeSelected: Boolean(providerDisputeDetail), sellerEvidence, refusal: evidenceRefusal });"));
-assert.ok(app.includes("const trackingLock = sendLockReason({ kind: 'tracking', sessionExpired, draft, receipt, preview: trackingPreview, block: trackingBlock, disputeSelected: Boolean(providerDisputeDetail), refusal: trackingRefusal });"));
+assert.ok(app.includes("const evidenceLock = sendLockReason({ kind: 'evidence', sessionExpired, draft, receipt: reviewRecorded ? (receipt || { restored: true }) : null, preview: evidencePreview, block: evidenceBlock, disputeSelected: Boolean(providerDisputeDetail), sellerEvidence, refusal: evidenceRefusal });"));
+assert.ok(app.includes("const trackingLock = sendLockReason({ kind: 'tracking', sessionExpired, draft, receipt: reviewRecorded ? (receipt || { restored: true }) : null, preview: trackingPreview, block: trackingBlock, disputeSelected: Boolean(providerDisputeDetail), refusal: trackingRefusal });"));
 assert.ok(app.includes('>Submit to PayPal Sandbox (test)</Button><LockReason testId="evidence-lock-reason" reason={evidenceLock} />'));
 assert.ok(app.includes('>Send tracking to PayPal Sandbox (test)</Button><LockReason testId="tracking-lock-reason" reason={trackingLock} />'));
 

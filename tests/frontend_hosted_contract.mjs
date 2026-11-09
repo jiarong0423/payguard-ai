@@ -84,7 +84,7 @@ const swaps = [
 // (read-only Sandbox) The disputes list adds one more Connect, shown only when sandboxReads is on.
 const extraPlaces = { 'Connect US Sandbox': 3, 'Create Sandbox draft': 1, 'Prepare evidence request (preview)': 1 };
 assert.ok(app.includes("receipt && !hosted && providerDisputeDetail && !evidencePreview\n            ? { key: 'evidence-preview', label: 'Prepare evidence request (preview)'"), 'phone bar preview is local only');
-assert.ok(app.includes("? (receipt && !hosted && evidenceSubmitReady\n") && app.includes(": receipt && !hosted && trackingSubmitReady\n"), 'phone bar sends are local only');
+assert.ok(app.includes("? (reviewRecorded && !hosted && evidenceSubmitReady\n") && app.includes(": reviewRecorded && !hosted && trackingSubmitReady\n"), 'phone bar sends are local only');
 assert.ok(app.includes('{!hosted && <TopbarSandbox '), 'top-bar Sandbox card is local only');
 assert.ok(app.includes(": invoiceReview ? (hosted ? null : sandbox?.status === 'connected'"), 'phone bar draft actions are local only');
 for (const [swap, label] of swaps) {

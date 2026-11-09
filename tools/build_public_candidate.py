@@ -342,7 +342,7 @@ TREE_FILES = {
         "test_public_export_builder.py", "test_redteam_input_matrix.py", "test_reference_api.py", "test_reference_policy.py", "test_replays.py",
         "test_retrieval.py", "test_sandbox_receipts.py", "test_studio_agent.py", "test_time_evidence.py", "test_traffic.py", "test_attack_r22.py", "test_attack_r23_aup.py",
         "test_optimise_r24.py", "test_r25_backend.py", "test_paypal_issue.py", "test_r26_guide.py",
-        "send_confirmation.py", "test_send_confirmation.py", "test_r35_send_flow.py", "test_session_idle_expiry.py",
+        "send_confirmation.py", "test_send_confirmation.py", "test_r35_send_flow.py", "test_session_idle_expiry.py", "test_dispute_write_envelope.py",
     ),
 }
 MAPPED_FILES = {"tools/run.sh": "tools/public_run.sh"}

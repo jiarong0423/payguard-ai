@@ -869,11 +869,11 @@ def create_app(*, store=None, paypal=None, reference_loader=None, ai_brief=None,
     async def get_dispute(dispute_id: str, session=Depends(read_session)):
         return await application.state.paypal_disputes.get_dispute(session, dispute_id)
 
-    @application.post("/api/v1/paypal/disputes/provide-evidence", response_model=ProvideEvidenceResponse)
+    @application.post("/api/v1/paypal/disputes/provide-evidence", response_model=ProvideEvidenceResponse, response_model_exclude_unset=True)
     async def provide_evidence(body: ProvideEvidenceRequest, session=Depends(write_session)):
         return await application.state.paypal_disputes.provide_evidence(session, body.model_dump())
 
-    @application.post("/api/v1/paypal/disputes/add-tracking", response_model=AddTrackingResponse)
+    @application.post("/api/v1/paypal/disputes/add-tracking", response_model=AddTrackingResponse, response_model_exclude_unset=True)
     async def add_tracking(body: AddTrackingRequest, session=Depends(write_session)):
         # Hosted demo: never a provider write (neither adapter has a tracking action).
         if application.state.demo_mode == "public":

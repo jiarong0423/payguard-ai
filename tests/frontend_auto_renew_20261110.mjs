@@ -38,3 +38,17 @@ assert.ok(app.includes('if (!quiet) setReviewChecked(false);'), 'an automatic dr
 assert.ok(app.includes("if (quiet) { setInfo({ kind: 'resumed', text: DRAFT_RENEWED_TEXT }); return; }"), 'draft renewal is announced');
 
 console.log('frontend_auto_renew_20261110: ok');
+
+// 2026-11-10 recording fixes: a live preview with "note": null passes the contract check, and a review the server
+// recorded before a reload unlocks the sends like this page's own receipt (the server still checks the approval).
+{
+  const api = readFileSync(new URL('../frontend/src/api.js', import.meta.url), 'utf8');
+  assert.ok(api.includes("...optional('paypal_debug_id', 'note')"), 'note is an optional envelope key');
+  assert.ok(api.includes("const noteValid = !has('note') || payload.note === null || (typeof payload.note === 'string' && payload.note.length <= 300);"), 'note shape');
+  assert.ok(api.includes('&& debugIdValid && noteValid;'), 'note checked');
+  assert.ok(app.includes("const reviewRecorded = Boolean(receipt) || (caseItem?.status === 'local_draft_reviewed' && draft?.case_ref === caseItem?.case_ref);"), 'restored review counts');
+  assert.ok(app.includes('const evidenceSubmitReady = reviewRecorded && evidencePreview'), 'evidence send uses it');
+  assert.ok(app.includes('const trackingSubmitReady = reviewRecorded && trackingPreview'), 'tracking send uses it');
+  assert.ok(!app.includes('const evidenceSubmitReady = Boolean(receipt)'), 'old receipt-only gate gone');
+}
+console.log('frontend_auto_renew_20261110 (recording fixes): ok');

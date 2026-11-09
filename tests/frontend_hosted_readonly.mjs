@@ -32,7 +32,7 @@ assert.ok(!/writeStored\([^)]*sandboxReads/.test(app), 'never stored');
 for (const note of ['hosted-note-invoice', 'hosted-note-evidence']) {
   assert.ok(new RegExp(`\\{hosted \\? <p className="hosted-note" data-testid="${note}"`).test(app), `${note} still keyed on hosted alone`);
 }
-for (const guarded of ['receipt && !hosted && evidenceSubmitReady', 'receipt && !hosted && trackingSubmitReady', 'invoiceReview ? (hosted ? null :']) {
+for (const guarded of ['reviewRecorded && !hosted && evidenceSubmitReady', 'reviewRecorded && !hosted && trackingSubmitReady', 'invoiceReview ? (hosted ? null :']) {
   assert.ok(app.includes(guarded), guarded);
 }
 assert.ok(!/sandboxReads[^;]{0,80}(evidence-submit|tracking-submit|invoice-create|provide-evidence|add-tracking)/.test(app), 'no write control reads the new flag');

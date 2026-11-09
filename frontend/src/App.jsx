@@ -1256,13 +1256,16 @@ export default function App() {
     await (kind === 'tracking' ? submitTracking() : submitEvidence());
     sendConfirmTokens.current.clear(kind);
   };
-  const trackingSubmitReady = Boolean(receipt) && trackingPreview?.submit_flag_enabled === true && trackingPreview?.source === 'paypal_sandbox' && trackingPreview?.external_send === 'FROZEN' && !trackingBlock;
+  // (2026-11-10) A review the server recorded before a reload counts like this page's own receipt for the sends; the
+  // server still checks the approval and the single-use confirmation, so this only stops a resumed page locking itself.
+  const reviewRecorded = Boolean(receipt) || (caseItem?.status === 'local_draft_reviewed' && draft?.case_ref === caseItem?.case_ref);
+  const trackingSubmitReady = reviewRecorded && trackingPreview?.submit_flag_enabled === true && trackingPreview?.source === 'paypal_sandbox' && trackingPreview?.external_send === 'FROZEN' && !trackingBlock;
   const itemNotReceived = providerDisputeDetail?.reason === 'MERCHANDISE_OR_SERVICE_NOT_RECEIVED';
-  const evidenceSubmitReady = Boolean(receipt) && evidencePreview?.submit_flag_enabled === true && evidencePreview?.source === 'paypal_sandbox' && evidencePreview?.external_send === 'FROZEN' && !evidenceBlock && !sellerEvidence;
+  const evidenceSubmitReady = reviewRecorded && evidencePreview?.submit_flag_enabled === true && evidencePreview?.source === 'paypal_sandbox' && evidencePreview?.external_send === 'FROZEN' && !evidenceBlock && !sellerEvidence;
   // (r31 A4) The visible line under each locked send, from the same inputs as the two Ready flags above.
   const sessionExpired = error?.status === 401;
-  const evidenceLock = sendLockReason({ kind: 'evidence', sessionExpired, draft, receipt, preview: evidencePreview, block: evidenceBlock, disputeSelected: Boolean(providerDisputeDetail), sellerEvidence, refusal: evidenceRefusal });
-  const trackingLock = sendLockReason({ kind: 'tracking', sessionExpired, draft, receipt, preview: trackingPreview, block: trackingBlock, disputeSelected: Boolean(providerDisputeDetail), refusal: trackingRefusal });
+  const evidenceLock = sendLockReason({ kind: 'evidence', sessionExpired, draft, receipt: reviewRecorded ? (receipt || { restored: true }) : null, preview: evidencePreview, block: evidenceBlock, disputeSelected: Boolean(providerDisputeDetail), sellerEvidence, refusal: evidenceRefusal });
+  const trackingLock = sendLockReason({ kind: 'tracking', sessionExpired, draft, receipt: reviewRecorded ? (receipt || { restored: true }) : null, preview: trackingPreview, block: trackingBlock, disputeSelected: Boolean(providerDisputeDetail), refusal: trackingRefusal });
   // (r32 J4 P1-2, J1) One obvious primary per step: a send that is ready is the solid blue button without a lock icon;
   // when the evidence send is ready it is the next step and a ready tracking send stays secondary beside it.
   const trackingSendTone = !trackingSubmitReady ? 'ghost' : evidenceSubmitReady ? 'secondary' : 'blue';
@@ -1607,9 +1610,9 @@ export default function App() {
       ? (velocity?.transaction_count ? null : { key: 'burst', label: 'Load sales burst', icon: 'bolt', onClick: () => inject('burst'), disabled, loading: busy === 'burst', waiting: waitLeft('burst') > 0 })
       : activeStage === 'disputes'
         // (r32 J4 P1-2) After the local review the bar shows the real next step: the preview, then the ready send.
-        ? (receipt && !hosted && evidenceSubmitReady
+        ? (reviewRecorded && !hosted && evidenceSubmitReady
           ? { key: 'evidence-submit', label: 'Submit to PayPal Sandbox (test)', icon: 'arrow', onClick: () => setSendConfirm('evidence'), disabled: disabled || !evidenceSubmitReady, loading: busy === 'evidence-submit' }
-          : receipt && !hosted && trackingSubmitReady
+          : reviewRecorded && !hosted && trackingSubmitReady
             ? { key: 'tracking-submit', label: 'Send tracking to PayPal Sandbox (test)', icon: 'arrow', onClick: () => setSendConfirm('tracking'), disabled: disabled || !trackingSubmitReady, loading: busy === 'tracking-submit' }
           : receipt && !hosted && providerDisputeDetail && !evidencePreview
             ? { key: 'evidence-preview', label: 'Prepare evidence request (preview)', icon: 'file', onClick: previewEvidence, disabled: disabled || !draft || !providerDisputeDetail || sellerEvidence, loading: busy === 'evidence-preview' }
