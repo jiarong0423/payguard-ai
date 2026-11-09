@@ -1,0 +1,449 @@
+# TradeGlot Local Console
+
+
+
+## Getting Started
+- [How to Get Started](http://localhost:3000/llms-pages/python/getting-started/how-to-get-started.md)
+## Custom Content
+- guides
+  - [mcp-server](http://localhost:3000/llms-pages/python/custom-content/guides/mcp-server.md)
+  - [what-this-is](http://localhost:3000/llms-pages/python/custom-content/guides/what-this-is.md)
+## API Endpoints
+- ai
+  - [Overview](http://localhost:3000/llms-pages/python/api-endpoints/ai/overview.md)
+  - [Post Ai Evidence Brief](http://localhost:3000/llms-pages/python/api-endpoints/ai/post-ai-evidence-brief.md): Evidence Brief.
+  - [Get Ai Usage](http://localhost:3000/llms-pages/python/api-endpoints/ai/get-ai-usage.md): (optimise r24) This session's AI calls: stage, model, tokens, latency, estimated cost.
+- aup
+  - [Overview](http://localhost:3000/llms-pages/python/api-endpoints/aup/overview.md)
+  - [Post Aup Acknowledge](http://localhost:3000/llms-pages/python/api-endpoints/aup/post-aup-acknowledge.md): Acknowledge Aup.
+  - [Post Aup Category Signal](http://localhost:3000/llms-pages/python/api-endpoints/aup/post-aup-category-signal.md): Aup Category Signal.
+  - [Post Aup Product Reference](http://localhost:3000/llms-pages/python/api-endpoints/aup/post-aup-product-reference.md): Aup Product Reference.
+  - [Post Aup Product Reference Confirm](http://localhost:3000/llms-pages/python/api-endpoints/aup/post-aup-product-reference-confirm.md): Aup Product Confirm.
+  - [Post Aup Review](http://localhost:3000/llms-pages/python/api-endpoints/aup/post-aup-review.md): Aup.
+- demo
+  - [Overview](http://localhost:3000/llms-pages/python/api-endpoints/demo/overview.md)
+  - [Post Demo Inject](http://localhost:3000/llms-pages/python/api-endpoints/demo/post-demo-inject.md): Inject.
+  - [Post Demo Sessions](http://localhost:3000/llms-pages/python/api-endpoints/demo/post-demo-sessions.md): New Session.
+  - [Get Demo State](http://localhost:3000/llms-pages/python/api-endpoints/demo/get-demo-state.md): State.
+- guide
+  - [Overview](http://localhost:3000/llms-pages/python/api-endpoints/guide/overview.md)
+  - [Post Guide Form](http://localhost:3000/llms-pages/python/api-endpoints/guide/post-guide-form.md): Guide Form.
+  - [Post Guide Review](http://localhost:3000/llms-pages/python/api-endpoints/guide/post-guide-review.md): Guide Review.
+  - [Post Guide Start](http://localhost:3000/llms-pages/python/api-endpoints/guide/post-guide-start.md): Guide Start.
+  - [Get Guide State](http://localhost:3000/llms-pages/python/api-endpoints/guide/get-guide-state.md): Guide State.
+  - [Post Guide Turn](http://localhost:3000/llms-pages/python/api-endpoints/guide/post-guide-turn.md): Guide Turn.
+- health
+  - [Overview](http://localhost:3000/llms-pages/python/api-endpoints/health/overview.md)
+  - [Get Health](http://localhost:3000/llms-pages/python/api-endpoints/health/get-health.md): Health.
+- other
+  - [Overview](http://localhost:3000/llms-pages/python/api-endpoints/other/overview.md)
+  - [Post Advisory Evaluate](http://localhost:3000/llms-pages/python/api-endpoints/other/post-advisory-evaluate.md): Advisory Evaluate.
+  - [Post Cases Route](http://localhost:3000/llms-pages/python/api-endpoints/other/post-cases-route.md): Case Route.
+  - [Get Connections](http://localhost:3000/llms-pages/python/api-endpoints/other/get-connections.md): Connections.
+  - [Post Country Rules Check](http://localhost:3000/llms-pages/python/api-endpoints/other/post-country-rules-check.md): Country Rules Check.
+  - [Get Country Rules Countries](http://localhost:3000/llms-pages/python/api-endpoints/other/get-country-rules-countries.md): Country Rules Countries.
+  - [Post Country Rules Search](http://localhost:3000/llms-pages/python/api-endpoints/other/post-country-rules-search.md): Country Rules Search.
+  - [Post Disputes Case Ref Approve](http://localhost:3000/llms-pages/python/api-endpoints/other/post-disputes-case-ref-approve.md): Approve.
+  - [Post Disputes Case Ref Draft](http://localhost:3000/llms-pages/python/api-endpoints/other/post-disputes-case-ref-draft.md): Draft.
+  - [Post Policy Assess](http://localhost:3000/llms-pages/python/api-endpoints/other/post-policy-assess.md): Policy Assess.
+- paypal
+  - [Overview](http://localhost:3000/llms-pages/python/api-endpoints/paypal/overview.md)
+  - [Post Paypal Connect](http://localhost:3000/llms-pages/python/api-endpoints/paypal/post-paypal-connect.md): Connect.
+  - [Get Paypal Disputes](http://localhost:3000/llms-pages/python/api-endpoints/paypal/get-paypal-disputes.md): List Disputes.
+  - [Post Paypal Disputes Add Tracking](http://localhost:3000/llms-pages/python/api-endpoints/paypal/post-paypal-disputes-add-tracking.md): Add Tracking.
+  - [Post Paypal Disputes Provide Evidence](http://localhost:3000/llms-pages/python/api-endpoints/paypal/post-paypal-disputes-provide-evidence.md): Provide Evidence.
+  - [Get Paypal Disputes Dispute Id](http://localhost:3000/llms-pages/python/api-endpoints/paypal/get-paypal-disputes-dispute-id.md): Get Dispute.
+  - [Post Paypal Invoices Draft](http://localhost:3000/llms-pages/python/api-endpoints/paypal/post-paypal-invoices-draft.md): Invoice Draft.
+  - [Post Paypal Invoices Review](http://localhost:3000/llms-pages/python/api-endpoints/paypal/post-paypal-invoices-review.md): Invoice Review.
+  - [Get Paypal Status](http://localhost:3000/llms-pages/python/api-endpoints/paypal/get-paypal-status.md): Paypal Status.
+  - [Post Paypal Webhooks Verify](http://localhost:3000/llms-pages/python/api-endpoints/paypal/post-paypal-webhooks-verify.md): Verify Webhook.
+- references
+  - [Overview](http://localhost:3000/llms-pages/python/api-endpoints/references/overview.md)
+  - [Post References Search](http://localhost:3000/llms-pages/python/api-endpoints/references/post-references-search.md): References.
+- studio
+  - [Overview](http://localhost:3000/llms-pages/python/api-endpoints/studio/overview.md)
+  - [Get Studio Agent Status](http://localhost:3000/llms-pages/python/api-endpoints/studio/get-studio-agent-status.md): Studio Agent Status.
+  - [Post Studio Agent Turn](http://localhost:3000/llms-pages/python/api-endpoints/studio/post-studio-agent-turn.md): Studio Agent Turn.
+## Models
+- Structures
+  - [Activity](http://localhost:3000/llms-pages/python/models/structures/activity.md): Activity.
+  - [Add Tracking Request](http://localhost:3000/llms-pages/python/models/structures/add-tracking-request.md): AddTrackingRequest.
+  - [Add Tracking Response](http://localhost:3000/llms-pages/python/models/structures/add-tracking-response.md): AddTrackingResponse.
+  - [Advisory Claim Gate](http://localhost:3000/llms-pages/python/models/structures/advisory-claim-gate.md): AdvisoryClaimGate.
+  - [Advisory Evaluation Response](http://localhost:3000/llms-pages/python/models/structures/advisory-evaluation-response.md): AdvisoryEvaluationResponse.
+  - [Advisory Request](http://localhost:3000/llms-pages/python/models/structures/advisory-request.md): AdvisoryRequest.
+  - [Ai Brief Http Request](http://localhost:3000/llms-pages/python/models/structures/ai-brief-http-request.md): What the console may send: the stage and, for disputes, which case.
+  - [Ai Brief Response](http://localhost:3000/llms-pages/python/models/structures/ai-brief-response.md): AiBriefResponse.
+  - [Ai Usage Entry](http://localhost:3000/llms-pages/python/models/structures/ai-usage-entry.md): AiUsageEntry.
+  - [Ai Usage Response](http://localhost:3000/llms-pages/python/models/structures/ai-usage-response.md): AiUsageResponse.
+  - [Approve Request](http://localhost:3000/llms-pages/python/models/structures/approve-request.md): ApproveRequest.
+  - [Aup Acknowledge Request](http://localhost:3000/llms-pages/python/models/structures/aup-acknowledge-request.md): AupAcknowledgeRequest.
+  - [Aup Acknowledge Response](http://localhost:3000/llms-pages/python/models/structures/aup-acknowledge-response.md): AupAcknowledgeResponse.
+  - [Aup Category Signal Request](http://localhost:3000/llms-pages/python/models/structures/aup-category-signal-request.md): AupCategorySignalRequest.
+  - [Aup Category Signal Response](http://localhost:3000/llms-pages/python/models/structures/aup-category-signal-response.md): Optional Channel3 signal shown next to the AUP result; it never changes the rule decision.
+  - [Aup Request](http://localhost:3000/llms-pages/python/models/structures/aup-request.md): AupRequest.
+  - [Aup Response](http://localhost:3000/llms-pages/python/models/structures/aup-response.md): AupResponse.
+  - [Case Route Match](http://localhost:3000/llms-pages/python/models/structures/case-route-match.md): CaseRouteMatch.
+  - [Case Route Request](http://localhost:3000/llms-pages/python/models/structures/case-route-request.md): CaseRouteRequest.
+  - [Case Route Response](http://localhost:3000/llms-pages/python/models/structures/case-route-response.md): Fuzzy case routing: which goods group (and so which dispute items) applies.
+  - [Category Signal](http://localhost:3000/llms-pages/python/models/structures/category-signal.md): CategorySignal.
+  - [Connections Response](http://localhost:3000/llms-pages/python/models/structures/connections-response.md): Deployment mode only.
+  - [Country Rules Check Request](http://localhost:3000/llms-pages/python/models/structures/country-rules-check-request.md): Seller and buyer countries plus closed choices; no free text reaches the check.
+  - [Country Rules Search Request](http://localhost:3000/llms-pages/python/models/structures/country-rules-search-request.md): CountryRulesSearchRequest.
+  - [Dispute Approval Response](http://localhost:3000/llms-pages/python/models/structures/dispute-approval-response.md): DisputeApprovalResponse.
+  - [Dispute Detail Response](http://localhost:3000/llms-pages/python/models/structures/dispute-detail-response.md): DisputeDetailResponse.
+  - [Dispute Draft Response](http://localhost:3000/llms-pages/python/models/structures/dispute-draft-response.md): DisputeDraftResponse.
+  - [Dispute Evidence Row](http://localhost:3000/llms-pages/python/models/structures/dispute-evidence-row.md): DisputeEvidenceRow.
+  - [Dispute List Response](http://localhost:3000/llms-pages/python/models/structures/dispute-list-response.md): DisputeListResponse.
+  - [Dispute Record](http://localhost:3000/llms-pages/python/models/structures/dispute-record.md): DisputeRecord.
+  - [Dispute Requirement](http://localhost:3000/llms-pages/python/models/structures/dispute-requirement.md): DisputeRequirement.
+  - [Dispute Routing](http://localhost:3000/llms-pages/python/models/structures/dispute-routing.md): DisputeRouting.
+  - [Dispute Scenario](http://localhost:3000/llms-pages/python/models/structures/dispute-scenario.md): DisputeScenario.
+  - [Dispute Summary](http://localhost:3000/llms-pages/python/models/structures/dispute-summary.md): DisputeSummary.
+  - [Disputed Transaction](http://localhost:3000/llms-pages/python/models/structures/disputed-transaction.md): DisputedTransaction.
+  - [Document Redaction](http://localhost:3000/llms-pages/python/models/structures/document-redaction.md): DocumentRedaction.
+  - [Evidence](http://localhost:3000/llms-pages/python/models/structures/evidence.md): Evidence.
+  - [Evidence Info](http://localhost:3000/llms-pages/python/models/structures/evidence-info.md): EvidenceInfo.
+  - [Evidence Input](http://localhost:3000/llms-pages/python/models/structures/evidence-input.md): EvidenceInput.
+  - [Evidence Input Item](http://localhost:3000/llms-pages/python/models/structures/evidence-input-item.md): EvidenceInputItem.
+  - [Finding](http://localhost:3000/llms-pages/python/models/structures/finding.md): Finding.
+  - [Generated Brief](http://localhost:3000/llms-pages/python/models/structures/generated-brief.md): GeneratedBrief.
+  - [Guide Analysis](http://localhost:3000/llms-pages/python/models/structures/guide-analysis.md): GuideAnalysis.
+  - [Guide Dropped](http://localhost:3000/llms-pages/python/models/structures/guide-dropped.md): GuideDropped.
+  - [Guide Field](http://localhost:3000/llms-pages/python/models/structures/guide-field.md): GuideField.
+  - [Guide Field Result](http://localhost:3000/llms-pages/python/models/structures/guide-field-result.md): GuideFieldResult.
+  - [Guide Form](http://localhost:3000/llms-pages/python/models/structures/guide-form.md): GuideForm.
+  - [Guide Form Request](http://localhost:3000/llms-pages/python/models/structures/guide-form-request.md): One field ({item, value}) or one round of up to three fields ({fields: [...]}), never both.
+  - [Guide Form Result](http://localhost:3000/llms-pages/python/models/structures/guide-form-result.md): GuideFormResult.
+  - [Guide Gap](http://localhost:3000/llms-pages/python/models/structures/guide-gap.md): GuideGap.
+  - [Guide Item](http://localhost:3000/llms-pages/python/models/structures/guide-item.md): GuideItem.
+  - [Guide Option](http://localhost:3000/llms-pages/python/models/structures/guide-option.md): GuideOption.
+  - [Guide Reply](http://localhost:3000/llms-pages/python/models/structures/guide-reply.md): GuideReply.
+  - [Guide Review Request](http://localhost:3000/llms-pages/python/models/structures/guide-review-request.md): GuideReviewRequest.
+  - [Guide Review Row](http://localhost:3000/llms-pages/python/models/structures/guide-review-row.md): GuideReviewRow.
+  - [Guide Start Request](http://localhost:3000/llms-pages/python/models/structures/guide-start-request.md): GuideStartRequest.
+  - [Guide State Response](http://localhost:3000/llms-pages/python/models/structures/guide-state-response.md): GuideStateResponse.
+  - [Guide Subtraction](http://localhost:3000/llms-pages/python/models/structures/guide-subtraction.md): GuideSubtraction.
+  - [Guide Turn Request](http://localhost:3000/llms-pages/python/models/structures/guide-turn-request.md): GuideTurnRequest.
+  - [Health Response](http://localhost:3000/llms-pages/python/models/structures/health-response.md): HealthResponse.
+  - [Identity Redaction](http://localhost:3000/llms-pages/python/models/structures/identity-redaction.md): IdentityRedaction.
+  - [Identity Tokens](http://localhost:3000/llms-pages/python/models/structures/identity-tokens.md): IdentityTokens.
+  - [Inject Request](http://localhost:3000/llms-pages/python/models/structures/inject-request.md): InjectRequest.
+  - [Invoice Draft Request](http://localhost:3000/llms-pages/python/models/structures/invoice-draft-request.md): InvoiceDraftRequest.
+  - [Invoice Draft Response](http://localhost:3000/llms-pages/python/models/structures/invoice-draft-response.md): InvoiceDraftResponse.
+  - [Invoice Review Request](http://localhost:3000/llms-pages/python/models/structures/invoice-review-request.md): InvoiceReviewRequest.
+  - [Invoice Review Response](http://localhost:3000/llms-pages/python/models/structures/invoice-review-response.md): InvoiceReviewResponse.
+  - [Message Time Event](http://localhost:3000/llms-pages/python/models/structures/message-time-event.md): MessageTimeEvent.
+  - [Multipart File Part](http://localhost:3000/llms-pages/python/models/structures/multipart-file-part.md): MultipartFilePart.
+  - [Paypal Status Response](http://localhost:3000/llms-pages/python/models/structures/paypal-status-response.md): PaypalStatusResponse.
+  - [Policy Assessment Response](http://localhost:3000/llms-pages/python/models/structures/policy-assessment-response.md): PolicyAssessmentResponse.
+  - [Policy Chunk](http://localhost:3000/llms-pages/python/models/structures/policy-chunk.md): PolicyChunk.
+  - [Policy Context](http://localhost:3000/llms-pages/python/models/structures/policy-context.md): PolicyContext.
+  - [Policy Coverage](http://localhost:3000/llms-pages/python/models/structures/policy-coverage.md): PolicyCoverage.
+  - [Policy Request](http://localhost:3000/llms-pages/python/models/structures/policy-request.md): PolicyRequest.
+  - [Policy Source](http://localhost:3000/llms-pages/python/models/structures/policy-source.md): PolicySource.
+  - [Policy Theme Counts](http://localhost:3000/llms-pages/python/models/structures/policy-theme-counts.md): PolicyThemeCounts.
+  - [Product Card](http://localhost:3000/llms-pages/python/models/structures/product-card.md): A Channel3 catalogue product reduced to what identifies the item; no prices, offers or buy links.
+  - [Product Confirm Request](http://localhost:3000/llms-pages/python/models/structures/product-confirm-request.md): ProductConfirmRequest.
+  - [Product Confirm Response](http://localhost:3000/llms-pages/python/models/structures/product-confirm-response.md): The seller's own choice: one of the cards they were shown, or none of them.
+  - [Product Reference Request](http://localhost:3000/llms-pages/python/models/structures/product-reference-request.md): ProductReferenceRequest.
+  - [Product Reference Response](http://localhost:3000/llms-pages/python/models/structures/product-reference-response.md): Up to three Channel3 products for the seller to pick from; advisory, never changes the AUP decision.
+  - [Provide Evidence Request](http://localhost:3000/llms-pages/python/models/structures/provide-evidence-request.md): ProvideEvidenceRequest.
+  - [Provide Evidence Response](http://localhost:3000/llms-pages/python/models/structures/provide-evidence-response.md): ProvideEvidenceResponse.
+  - [Provider Money](http://localhost:3000/llms-pages/python/models/structures/provider-money.md): ProviderMoney.
+  - [Reference Citation](http://localhost:3000/llms-pages/python/models/structures/reference-citation.md): ReferenceCitation.
+  - [Reference Digests](http://localhost:3000/llms-pages/python/models/structures/reference-digests.md): ReferenceDigests.
+  - [Reference Filters](http://localhost:3000/llms-pages/python/models/structures/reference-filters.md): ReferenceFilters.
+  - [Reference Request](http://localhost:3000/llms-pages/python/models/structures/reference-request.md): ReferenceRequest.
+  - [Reference Response](http://localhost:3000/llms-pages/python/models/structures/reference-response.md): ReferenceResponse.
+  - [Restricted Original Summary](http://localhost:3000/llms-pages/python/models/structures/restricted-original-summary.md): RestrictedOriginalSummary.
+  - [Sandbox Evidence Receipt](http://localhost:3000/llms-pages/python/models/structures/sandbox-evidence-receipt.md): SandboxEvidenceReceipt.
+  - [Scenario](http://localhost:3000/llms-pages/python/models/structures/scenario.md): Scenario.
+  - [Scenario Citation](http://localhost:3000/llms-pages/python/models/structures/scenario-citation.md): ScenarioCitation.
+  - [Scenario Match](http://localhost:3000/llms-pages/python/models/structures/scenario-match.md): ScenarioMatch.
+  - [Send Guard](http://localhost:3000/llms-pages/python/models/structures/send-guard.md): (r25 send guard) What a send carries and to whom, side by side; every account id is masked (first 2, last 4).
+  - [Session Response](http://localhost:3000/llms-pages/python/models/structures/session-response.md): SessionResponse.
+  - [State Response](http://localhost:3000/llms-pages/python/models/structures/state-response.md): StateResponse.
+  - [Synthetic Money](http://localhost:3000/llms-pages/python/models/structures/synthetic-money.md): Same shape as the PayPal Disputes `dispute_amount` (ProviderMoney below); values are synthetic.
+  - [Time Event](http://localhost:3000/llms-pages/python/models/structures/time-event.md): TimeEvent.
+  - [Time Evidence](http://localhost:3000/llms-pages/python/models/structures/time-evidence.md): TimeEvidence.
+  - [Time Gaps](http://localhost:3000/llms-pages/python/models/structures/time-gaps.md): TimeGaps.
+  - [Tracker Batch](http://localhost:3000/llms-pages/python/models/structures/tracker-batch.md): TrackerBatch.
+  - [Tracker Item](http://localhost:3000/llms-pages/python/models/structures/tracker-item.md): TrackerItem.
+  - [Tracking Info](http://localhost:3000/llms-pages/python/models/structures/tracking-info.md): TrackingInfo.
+  - [Transaction](http://localhost:3000/llms-pages/python/models/structures/transaction.md): Transaction.
+  - [Validation Error](http://localhost:3000/llms-pages/python/models/structures/validation-error.md): ValidationError.
+  - [Velocity Response](http://localhost:3000/llms-pages/python/models/structures/velocity-response.md): VelocityResponse.
+  - [Webhook Event Projection](http://localhost:3000/llms-pages/python/models/structures/webhook-event-projection.md): All that is kept after a SUCCESS: identifiers and status only, no amounts, payer data, links or summary.
+  - [Webhook Verify Response](http://localhost:3000/llms-pages/python/models/structures/webhook-verify-response.md): WebhookVerifyResponse.
+  - [Analysis](http://localhost:3000/llms-pages/python/models/structures/analysis.md): Analysis.
+  - [Card](http://localhost:3000/llms-pages/python/models/structures/card.md): Card.
+  - [Dispute Amount](http://localhost:3000/llms-pages/python/models/structures/dispute-amount.md): Dispute amount.
+  - [Error](http://localhost:3000/llms-pages/python/models/structures/error.md): What was refused and why.
+  - [Event](http://localhost:3000/llms-pages/python/models/structures/event.md)
+  - [Evidence Receipt](http://localhost:3000/llms-pages/python/models/structures/evidence-receipt.md): Evidence receipt.
+  - [Form](http://localhost:3000/llms-pages/python/models/structures/form.md): Form.
+  - [Form Result](http://localhost:3000/llms-pages/python/models/structures/form-result.md): Form result.
+  - [Gross Amount](http://localhost:3000/llms-pages/python/models/structures/gross-amount.md): Gross amount.
+  - [Reply](http://localhost:3000/llms-pages/python/models/structures/reply.md): Reply.
+  - [Signal](http://localhost:3000/llms-pages/python/models/structures/signal.md): Signal.
+  - [Subtraction](http://localhost:3000/llms-pages/python/models/structures/subtraction.md): Subtraction.
+  - [Time Evidence 1](http://localhost:3000/llms-pages/python/models/structures/time-evidence-1.md): Time evidence.
+- Enumerations
+  - [Account Opened](http://localhost:3000/llms-pages/python/models/enumerations/account-opened.md): Account opened.
+  - [Account Status](http://localhost:3000/llms-pages/python/models/enumerations/account-status.md): Account status.
+  - [Account Type](http://localhost:3000/llms-pages/python/models/enumerations/account-type.md): Account type.
+  - [Action](http://localhost:3000/llms-pages/python/models/enumerations/action.md): Action.
+  - [Baseline Provenance](http://localhost:3000/llms-pages/python/models/enumerations/baseline-provenance.md): Baseline provenance.
+  - [Buyer Country](http://localhost:3000/llms-pages/python/models/enumerations/buyer-country.md): Buyer country.
+  - [Carrier](http://localhost:3000/llms-pages/python/models/enumerations/carrier.md): Carrier.
+  - [Carrier Name](http://localhost:3000/llms-pages/python/models/enumerations/carrier-name.md): Carrier name.
+  - [Case Outcome](http://localhost:3000/llms-pages/python/models/enumerations/case-outcome.md)
+  - [Case Stage](http://localhost:3000/llms-pages/python/models/enumerations/case-stage.md): Case stage.
+  - [Case Stage 2](http://localhost:3000/llms-pages/python/models/enumerations/case-stage-2.md): Case stage.
+  - [Category](http://localhost:3000/llms-pages/python/models/enumerations/category.md): Category.
+  - [Channel](http://localhost:3000/llms-pages/python/models/enumerations/channel.md): Channel.
+  - [Checkout](http://localhost:3000/llms-pages/python/models/enumerations/checkout.md): Checkout.
+  - [Choice](http://localhost:3000/llms-pages/python/models/enumerations/choice.md): Choice.
+  - [Choice 2](http://localhost:3000/llms-pages/python/models/enumerations/choice-2.md): Choice.
+  - [Chooser](http://localhost:3000/llms-pages/python/models/enumerations/chooser.md): Chooser.
+  - [Chooser Mode](http://localhost:3000/llms-pages/python/models/enumerations/chooser-mode.md): Chooser mode.
+  - [Claim Type](http://localhost:3000/llms-pages/python/models/enumerations/claim-type.md): Claim type.
+  - [Confidence](http://localhost:3000/llms-pages/python/models/enumerations/confidence.md)
+  - [Content Type](http://localhost:3000/llms-pages/python/models/enumerations/content-type.md): Content type.
+  - [Currency](http://localhost:3000/llms-pages/python/models/enumerations/currency.md): Currency.
+  - [Data Source Label](http://localhost:3000/llms-pages/python/models/enumerations/data-source-label.md): Data source label.
+  - [Decision Date Status](http://localhost:3000/llms-pages/python/models/enumerations/decision-date-status.md): Decision date status.
+  - [Direction](http://localhost:3000/llms-pages/python/models/enumerations/direction.md): Direction.
+  - [Dispute Life Cycle Stage](http://localhost:3000/llms-pages/python/models/enumerations/dispute-life-cycle-stage.md): Dispute life cycle stage.
+  - [Due State](http://localhost:3000/llms-pages/python/models/enumerations/due-state.md): Due state.
+  - [Effective Date Status](http://localhost:3000/llms-pages/python/models/enumerations/effective-date-status.md): Effective date status.
+  - [Environment](http://localhost:3000/llms-pages/python/models/enumerations/environment.md): Environment.
+  - [Evidence Class](http://localhost:3000/llms-pages/python/models/enumerations/evidence-class.md): Evidence class.
+  - [Evidence Class 3](http://localhost:3000/llms-pages/python/models/enumerations/evidence-class-3.md): Evidence class.
+  - [Execution Evidence](http://localhost:3000/llms-pages/python/models/enumerations/execution-evidence.md): Execution evidence.
+  - [External Send](http://localhost:3000/llms-pages/python/models/enumerations/external-send.md): External send.
+  - [External Send 1](http://localhost:3000/llms-pages/python/models/enumerations/external-send-1.md): External send.
+  - [Fallback Reason](http://localhost:3000/llms-pages/python/models/enumerations/fallback-reason.md)
+  - [Field](http://localhost:3000/llms-pages/python/models/enumerations/field.md)
+  - [Fixture Id](http://localhost:3000/llms-pages/python/models/enumerations/fixture-id.md): Fixture id.
+  - [Flag](http://localhost:3000/llms-pages/python/models/enumerations/flag.md)
+  - [Goods Type](http://localhost:3000/llms-pages/python/models/enumerations/goods-type.md)
+  - [Intake Status](http://localhost:3000/llms-pages/python/models/enumerations/intake-status.md): Intake status.
+  - [Judgement](http://localhost:3000/llms-pages/python/models/enumerations/judgement.md): Judgement.
+  - [Kind](http://localhost:3000/llms-pages/python/models/enumerations/kind.md): Kind.
+  - [Kind 1](http://localhost:3000/llms-pages/python/models/enumerations/kind-1.md): Kind.
+  - [Kind 2](http://localhost:3000/llms-pages/python/models/enumerations/kind-2.md): Kind.
+  - [Match Status](http://localhost:3000/llms-pages/python/models/enumerations/match-status.md): Match status.
+  - [Match Type](http://localhost:3000/llms-pages/python/models/enumerations/match-type.md): Match type.
+  - [Material Type](http://localhost:3000/llms-pages/python/models/enumerations/material-type.md): Material type.
+  - [Material Type 1](http://localhost:3000/llms-pages/python/models/enumerations/material-type-1.md): Material type.
+  - [Material Type 4](http://localhost:3000/llms-pages/python/models/enumerations/material-type-4.md)
+  - [Missing Official Policy Theme](http://localhost:3000/llms-pages/python/models/enumerations/missing-official-policy-theme.md)
+  - [Mode](http://localhost:3000/llms-pages/python/models/enumerations/mode.md): Mode.
+  - [Model](http://localhost:3000/llms-pages/python/models/enumerations/model.md): Model.
+  - [Observation Status](http://localhost:3000/llms-pages/python/models/enumerations/observation-status.md): Observation status.
+  - [Outcome](http://localhost:3000/llms-pages/python/models/enumerations/outcome.md): Outcome.
+  - [Overall State](http://localhost:3000/llms-pages/python/models/enumerations/overall-state.md): Overall state.
+  - [Proof Kind](http://localhost:3000/llms-pages/python/models/enumerations/proof-kind.md): Proof kind.
+  - [Provider Submission](http://localhost:3000/llms-pages/python/models/enumerations/provider-submission.md): Provider submission.
+  - [Readback](http://localhost:3000/llms-pages/python/models/enumerations/readback.md): Readback.
+  - [Readback 1](http://localhost:3000/llms-pages/python/models/enumerations/readback-1.md): Readback.
+  - [Reason](http://localhost:3000/llms-pages/python/models/enumerations/reason.md)
+  - [Reason 1](http://localhost:3000/llms-pages/python/models/enumerations/reason-1.md): Reason.
+  - [Reason 2](http://localhost:3000/llms-pages/python/models/enumerations/reason-2.md): Reason.
+  - [Reason 5](http://localhost:3000/llms-pages/python/models/enumerations/reason-5.md)
+  - [Reason 6](http://localhost:3000/llms-pages/python/models/enumerations/reason-6.md): Reason.
+  - [Reason 7](http://localhost:3000/llms-pages/python/models/enumerations/reason-7.md)
+  - [Reason Code](http://localhost:3000/llms-pages/python/models/enumerations/reason-code.md)
+  - [Reason Code 1](http://localhost:3000/llms-pages/python/models/enumerations/reason-code-1.md)
+  - [Requirement State](http://localhost:3000/llms-pages/python/models/enumerations/requirement-state.md): Requirement state.
+  - [Route](http://localhost:3000/llms-pages/python/models/enumerations/route.md): Route.
+  - [Scenario 1](http://localhost:3000/llms-pages/python/models/enumerations/scenario-1.md)
+  - [Scenario 2](http://localhost:3000/llms-pages/python/models/enumerations/scenario-2.md): Scenario.
+  - [Scenario 5](http://localhost:3000/llms-pages/python/models/enumerations/scenario-5.md): Scenario.
+  - [Schema Version](http://localhost:3000/llms-pages/python/models/enumerations/schema-version.md): Schema version.
+  - [Schema Version 1](http://localhost:3000/llms-pages/python/models/enumerations/schema-version-1.md): Schema version.
+  - [Seller Country](http://localhost:3000/llms-pages/python/models/enumerations/seller-country.md): Seller country.
+  - [Send Refusal](http://localhost:3000/llms-pages/python/models/enumerations/send-refusal.md)
+  - [Source](http://localhost:3000/llms-pages/python/models/enumerations/source.md): Source.
+  - [Source 1](http://localhost:3000/llms-pages/python/models/enumerations/source-1.md): Source.
+  - [Source 2](http://localhost:3000/llms-pages/python/models/enumerations/source-2.md): Source.
+  - [Source 3](http://localhost:3000/llms-pages/python/models/enumerations/source-3.md): Source.
+  - [Source 5](http://localhost:3000/llms-pages/python/models/enumerations/source-5.md): Source.
+  - [Source 6](http://localhost:3000/llms-pages/python/models/enumerations/source-6.md): Source.
+  - [Source 8](http://localhost:3000/llms-pages/python/models/enumerations/source-8.md): Source.
+  - [Source 9](http://localhost:3000/llms-pages/python/models/enumerations/source-9.md): Source.
+  - [Source 10](http://localhost:3000/llms-pages/python/models/enumerations/source-10.md): Source.
+  - [Source 11](http://localhost:3000/llms-pages/python/models/enumerations/source-11.md)
+  - [Source Updated Date Status](http://localhost:3000/llms-pages/python/models/enumerations/source-updated-date-status.md): Source updated date status.
+  - [Stage](http://localhost:3000/llms-pages/python/models/enumerations/stage.md): Stage.
+  - [Stage 2](http://localhost:3000/llms-pages/python/models/enumerations/stage-2.md): Stage.
+  - [Stage 3](http://localhost:3000/llms-pages/python/models/enumerations/stage-3.md)
+  - [Status](http://localhost:3000/llms-pages/python/models/enumerations/status.md): Status.
+  - [Status 2](http://localhost:3000/llms-pages/python/models/enumerations/status-2.md): Status.
+  - [Status 3](http://localhost:3000/llms-pages/python/models/enumerations/status-3.md): Status.
+  - [Status 5](http://localhost:3000/llms-pages/python/models/enumerations/status-5.md): Status.
+  - [Status 7](http://localhost:3000/llms-pages/python/models/enumerations/status-7.md): Status.
+  - [Status 8](http://localhost:3000/llms-pages/python/models/enumerations/status-8.md): Status.
+  - [Status 9](http://localhost:3000/llms-pages/python/models/enumerations/status-9.md): Status.
+  - [Status 10](http://localhost:3000/llms-pages/python/models/enumerations/status-10.md): Status.
+  - [Status 11](http://localhost:3000/llms-pages/python/models/enumerations/status-11.md): Status.
+  - [Status 12](http://localhost:3000/llms-pages/python/models/enumerations/status-12.md): Status.
+  - [Status 13](http://localhost:3000/llms-pages/python/models/enumerations/status-13.md): Status.
+  - [Status 14](http://localhost:3000/llms-pages/python/models/enumerations/status-14.md): Status.
+  - [Template](http://localhost:3000/llms-pages/python/models/enumerations/template.md): Template.
+  - [Theme](http://localhost:3000/llms-pages/python/models/enumerations/theme.md): Theme.
+  - [Topic](http://localhost:3000/llms-pages/python/models/enumerations/topic.md): Topic.
+  - [Type](http://localhost:3000/llms-pages/python/models/enumerations/type.md)
+- Exceptions
+  - [Error Body](http://localhost:3000/llms-pages/python/models/exceptions/error-body.md): The error body every refusal uses.
+  - [HTTP Validation Error](http://localhost:3000/llms-pages/python/models/exceptions/http-validation-error.md): HTTPValidationError.
+- OneOf/AnyOf Definitions
+  - [Get Guide State Scenario](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/get-guide-state-scenario.md)
+  - [Add Tracking Request Confirm Token](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/add-tracking-request-confirm-token.md)
+  - [Add Tracking Response Confirm Token](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/add-tracking-response-confirm-token.md)
+  - [Add Tracking Response Payload Sha 256](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/add-tracking-response-payload-sha-256.md)
+  - [Add Tracking Response Paypal Debug Id](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/add-tracking-response-paypal-debug-id.md)
+  - [Ai Brief Http Request Case Ref](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/ai-brief-http-request-case-ref.md)
+  - [Ai Usage Entry Estimated Cost Usd](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/ai-usage-entry-estimated-cost-usd.md)
+  - [Ai Usage Entry Model](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/ai-usage-entry-model.md)
+  - [Ai Usage Entry Tokens In](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/ai-usage-entry-tokens-in.md)
+  - [Ai Usage Entry Tokens Out](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/ai-usage-entry-tokens-out.md)
+  - [Ai Usage Entry Tokens Total](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/ai-usage-entry-tokens-total.md)
+  - [Aup Acknowledge Response Acknowledgement Token](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/aup-acknowledge-response-acknowledgement-token.md)
+  - [Aup Acknowledge Response Expires At](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/aup-acknowledge-response-expires-at.md)
+  - [Aup Category Signal Response Reason](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/aup-category-signal-response-reason.md)
+  - [Aup Category Signal Response Signal](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/aup-category-signal-response-signal.md)
+  - [Case Route Match Category](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/case-route-match-category.md)
+  - [Case Route Response Matched Word](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/case-route-response-matched-word.md)
+  - [Case Route Response Query](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/case-route-response-query.md)
+  - [Category Signal Category](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/category-signal-category.md)
+  - [Category Signal Confidence](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/category-signal-confidence.md)
+  - [Country Rules Check Request Amount](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/country-rules-check-request-amount.md)
+  - [Country Rules Check Request Currency](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/country-rules-check-request-currency.md)
+  - [Dispute Detail Response Dispute Channel](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/dispute-detail-response-dispute-channel.md)
+  - [Dispute Detail Response Dispute State](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/dispute-detail-response-dispute-state.md)
+  - [Dispute Detail Response Paypal Debug Id](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/dispute-detail-response-paypal-debug-id.md)
+  - [Dispute Detail Response Seller Response Due Date](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/dispute-detail-response-seller-response-due-date.md)
+  - [Dispute Detail Response Update Time](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/dispute-detail-response-update-time.md)
+  - [Dispute Draft Response Time Evidence](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/dispute-draft-response-time-evidence.md)
+  - [Dispute Evidence Row Action](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/dispute-evidence-row-action.md)
+  - [Dispute Evidence Row Date](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/dispute-evidence-row-date.md)
+  - [Dispute List Response Paypal Debug Id](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/dispute-list-response-paypal-debug-id.md)
+  - [Dispute Record Dispute State](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/dispute-record-dispute-state.md)
+  - [Dispute Record Seller Response Due Date](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/dispute-record-seller-response-due-date.md)
+  - [Dispute Record Update Time](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/dispute-record-update-time.md)
+  - [Dispute Requirement Action](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/dispute-requirement-action.md)
+  - [Dispute Requirement Evidence Type](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/dispute-requirement-evidence-type.md)
+  - [Disputed Transaction Gross Amount](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/disputed-transaction-gross-amount.md)
+  - [Disputed Transaction Seller Protection Eligible](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/disputed-transaction-seller-protection-eligible.md)
+  - [Disputed Transaction Transaction Status](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/disputed-transaction-transaction-status.md)
+  - [Evidence Carrier Status](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/evidence-carrier-status.md)
+  - [Evidence Delivered At](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/evidence-delivered-at.md)
+  - [Evidence Opened At](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/evidence-opened-at.md)
+  - [Evidence Order Created At](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/evidence-order-created-at.md)
+  - [Evidence Reason](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/evidence-reason.md)
+  - [Guide Analysis Reason](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/guide-analysis-reason.md)
+  - [Guide Form Placeholder](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/guide-form-placeholder.md)
+  - [Guide Form Request Fields](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/guide-form-request-fields.md)
+  - [Guide Form Request Item](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/guide-form-request-item.md)
+  - [Guide Form Request Scenario](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/guide-form-request-scenario.md)
+  - [Guide Form Request Value](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/guide-form-request-value.md)
+  - [Guide Item Chunk](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/guide-item-chunk.md)
+  - [Guide Item Form](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/guide-item-form.md)
+  - [Guide Reply Fallback Reason](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/guide-reply-fallback-reason.md)
+  - [Guide Review Request Scenario](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/guide-review-request-scenario.md)
+  - [Guide Start Request Goods Type](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/guide-start-request-goods-type.md)
+  - [Guide State Response Analysis](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/guide-state-response-analysis.md)
+  - [Guide State Response Flow Name](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/guide-state-response-flow-name.md)
+  - [Guide State Response Form Result](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/guide-state-response-form-result.md)
+  - [Guide State Response Goods Type](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/guide-state-response-goods-type.md)
+  - [Guide State Response Reply](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/guide-state-response-reply.md)
+  - [Guide State Response Scenario](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/guide-state-response-scenario.md)
+  - [Guide State Response Stage](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/guide-state-response-stage.md)
+  - [Guide State Response Subtraction](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/guide-state-response-subtraction.md)
+  - [Guide Turn Request Fields](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/guide-turn-request-fields.md)
+  - [Guide Turn Request Scenario](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/guide-turn-request-scenario.md)
+  - [Invoice Review Request Acknowledgement Token](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/invoice-review-request-acknowledgement-token.md)
+  - [Invoice Review Request Description Digest](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/invoice-review-request-description-digest.md)
+  - [Invoice Review Request Evaluation Id](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/invoice-review-request-evaluation-id.md)
+  - [Paypal Status Response Evidence Receipt](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/paypal-status-response-evidence-receipt.md)
+  - [Paypal Status Response Last Verified At](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/paypal-status-response-last-verified-at.md)
+  - [Policy Chunk Case Outcome](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/policy-chunk-case-outcome.md)
+  - [Policy Source Decision Acceptance Deadline](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/policy-source-decision-acceptance-deadline.md)
+  - [Policy Source Decision Date](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/policy-source-decision-date.md)
+  - [Policy Source Effective Date](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/policy-source-effective-date.md)
+  - [Policy Source Source Updated Date](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/policy-source-source-updated-date.md)
+  - [Product Card Brand](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/product-card-brand.md)
+  - [Product Card Category](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/product-card-category.md)
+  - [Product Card Image Url](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/product-card-image-url.md)
+  - [Product Confirm Request Product Id](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/product-confirm-request-product-id.md)
+  - [Product Confirm Response Card](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/product-confirm-response-card.md)
+  - [Product Confirm Response Card Digest](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/product-confirm-response-card-digest.md)
+  - [Product Confirm Response Recorded At](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/product-confirm-response-recorded-at.md)
+  - [Product Reference Response Reason](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/product-reference-response-reason.md)
+  - [Product Reference Response Recorded At](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/product-reference-response-recorded-at.md)
+  - [Product Reference Response Source](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/product-reference-response-source.md)
+  - [Provide Evidence Request Confirm Token](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/provide-evidence-request-confirm-token.md)
+  - [Provide Evidence Response Confirm Token](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/provide-evidence-response-confirm-token.md)
+  - [Provide Evidence Response Payload Sha 256](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/provide-evidence-response-payload-sha-256.md)
+  - [Provide Evidence Response Paypal Debug Id](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/provide-evidence-response-paypal-debug-id.md)
+  - [Reference Citation Case Outcome](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/reference-citation-case-outcome.md)
+  - [Reference Citation Decision Acceptance Deadline](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/reference-citation-decision-acceptance-deadline.md)
+  - [Reference Citation Decision Date](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/reference-citation-decision-date.md)
+  - [Reference Citation Effective Date](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/reference-citation-effective-date.md)
+  - [Reference Citation Source Updated Date](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/reference-citation-source-updated-date.md)
+  - [Reference Filters as Of](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/reference-filters-as-of.md)
+  - [Reference Filters Max Source Age Days](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/reference-filters-max-source-age-days.md)
+  - [Reference Request as Of](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/reference-request-as-of.md)
+  - [Reference Request Material Types](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/reference-request-material-types.md)
+  - [Reference Request Max Source Age Days](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/reference-request-max-source-age-days.md)
+  - [Sandbox Evidence Receipt Invoice Id](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/sandbox-evidence-receipt-invoice-id.md)
+  - [Sandbox Evidence Receipt Paypal Debug Id](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/sandbox-evidence-receipt-paypal-debug-id.md)
+  - [Send Guard Bound Dispute Masked](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/send-guard-bound-dispute-masked.md)
+  - [Send Guard Case Reason](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/send-guard-case-reason.md)
+  - [Send Guard Dispute Amount](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/send-guard-dispute-amount.md)
+  - [Send Guard Dispute Reason](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/send-guard-dispute-reason.md)
+  - [Send Guard Dispute Seller Masked](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/send-guard-dispute-seller-masked.md)
+  - [Send Guard Send Refusal](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/send-guard-send-refusal.md)
+  - [Send Guard Sending Account Masked](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/send-guard-sending-account-masked.md)
+  - [Time Evidence Events](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/time-evidence-events.md)
+  - [Time Gaps Delivery to Claim](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/time-gaps-delivery-to-claim.md)
+  - [Time Gaps Payment to Claim](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/time-gaps-payment-to-claim.md)
+  - [Time Gaps Payment to Delivery](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/time-gaps-payment-to-delivery.md)
+  - [Time Gaps Payment to Order Record](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/time-gaps-payment-to-order-record.md)
+  - [Tracker Item Carrier Name Other](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/tracker-item-carrier-name-other.md)
+  - [Tracking Info Carrier Name Other](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/tracking-info-carrier-name-other.md)
+  - [Validation Error Loc](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/validation-error-loc.md)
+  - [Velocity Response Currency](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/velocity-response-currency.md)
+  - [Velocity Response Ratio](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/velocity-response-ratio.md)
+  - [Webhook Event Projection Event Type](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/webhook-event-projection-event-type.md)
+  - [Webhook Event Projection Id](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/webhook-event-projection-id.md)
+  - [Webhook Event Projection Resource Id](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/webhook-event-projection-resource-id.md)
+  - [Webhook Event Projection Resource Status](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/webhook-event-projection-resource-status.md)
+  - [Webhook Event Projection Resource Type](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/webhook-event-projection-resource-type.md)
+  - [Webhook Verify Response Paypal Debug Id](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/webhook-verify-response-paypal-debug-id.md)
+  - [Analysis Reason](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/analysis-reason.md)
+  - [Card Brand](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/card-brand.md)
+  - [Card Category](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/card-category.md)
+  - [Card Image Url](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/card-image-url.md)
+  - [Evidence Receipt Invoice Id](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/evidence-receipt-invoice-id.md)
+  - [Evidence Receipt Paypal Debug Id](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/evidence-receipt-paypal-debug-id.md)
+  - [Form Placeholder](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/form-placeholder.md)
+  - [Reply Fallback Reason](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/reply-fallback-reason.md)
+  - [Signal Category](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/signal-category.md)
+  - [Signal Confidence](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/signal-confidence.md)
+  - [Time Evidence 1 Events](http://localhost:3000/llms-pages/python/models/oneof-anyof-definitions/time-evidence-1-events.md)
+## SDK Infrastructure
+- Configuration
+  - [ProxySettings](http://localhost:3000/llms-pages/python/sdk-infrastructure/configuration/proxysettings.md)
+  - [Environment-Based Client Initialization](http://localhost:3000/llms-pages/python/sdk-infrastructure/configuration/environment-based-client-initialization.md)
+- HTTP
+  - [HttpResponse](http://localhost:3000/llms-pages/python/sdk-infrastructure/http/httpresponse.md)
+  - [HttpRequest](http://localhost:3000/llms-pages/python/sdk-infrastructure/http/httprequest.md)
+- Utilities
+  - [ApiHelper](http://localhost:3000/llms-pages/python/sdk-infrastructure/utilities/apihelper.md)
+  - [HttpDateTime](http://localhost:3000/llms-pages/python/sdk-infrastructure/utilities/httpdatetime.md)
+  - [RFC3339DateTime](http://localhost:3000/llms-pages/python/sdk-infrastructure/utilities/rfc3339datetime.md)
+  - [UnixDateTime](http://localhost:3000/llms-pages/python/sdk-infrastructure/utilities/unixdatetime.md)

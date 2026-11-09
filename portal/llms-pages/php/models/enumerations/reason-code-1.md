@@ -1,0 +1,38 @@
+# Reason Code 1
+
+Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRlJlYXNvbkNvZGUx
+
+
+# Enum Type Name
+
+`ReasonCode1Enum`
+
+
+# Fields
+
+| Name |
+|  --- |
+| `SUMMARY_COVERAGE_INCOMPLETE` |
+| `CURRENT_POLICY_APPLICABILITY_NOT_ESTABLISHED` |
+| `FUTURE_OBSERVATION` |
+| `STALE_OBSERVATION` |
+| `DOCUMENT_UPDATE_DATE_MISSING` |
+| `DOCUMENT_UPDATE_IN_FUTURE` |
+| `UNKNOWN_EFFECTIVE_DATE` |
+| `EFFECTIVE_DATE_IN_FUTURE` |
+| `API_REFERENCE_NOT_POLICY` |
+| `PROCEDURE_NOT_APPLICABLE_POLICY` |
+| `NO_OFFICIAL_POLICY_COVERAGE` |
+| `NO_REFERENCE_COVERAGE` |
+
+
+# Example
+
+```php
+use TradeGlotLocalConsoleLib\Models\ReasonCode1Enum;
+
+$reasonCode1 = ReasonCode1Enum::NO_OFFICIAL_POLICY_COVERAGE;
+```
+
+
+

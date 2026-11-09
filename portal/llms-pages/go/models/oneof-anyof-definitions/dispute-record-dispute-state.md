@@ -1,0 +1,29 @@
+# Dispute Record Dispute State
+
+Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkRpc3B1dGVSZWNvcmREaXNwdXRlU3RhdGU
+
+
+# Class Name
+
+`DisputeRecordDisputeState`
+
+
+# Cases
+
+| Type | Factory Method |
+|  --- | --- |
+| `string` | models.DisputeRecordDisputeStateContainer.FromString(string mString) |
+
+
+# string
+
+## Initialization Code
+
+### Example
+
+```go
+value := models.DisputeRecordDisputeStateContainer.FromString("String0")
+```
+
+
+

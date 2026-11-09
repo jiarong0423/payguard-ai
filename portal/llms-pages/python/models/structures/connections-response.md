@@ -1,0 +1,32 @@
+# Connections Response
+
+Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkNvbm5lY3Rpb25zUmVzcG9uc2U
+
+Deployment mode only. Never a key, a key's presence, a value or a variable name.
+
+
+# Class Name
+
+`ConnectionsResponse`
+
+
+# Fields
+
+| Name | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `mode` | [`ModeEnum`](http://localhost:3000/llms-pages/python/models/enumerations/mode.md) | Required | Mode. |
+
+
+# Example
+
+```python
+from tradeglotlocalconsole.models.connections_response import ConnectionsResponse
+from tradeglotlocalconsole.models.mode_enum import ModeEnum
+
+connections_response = ConnectionsResponse(
+    mode=ModeEnum.LOCAL
+)
+```
+
+
+

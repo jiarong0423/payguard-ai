@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TradeGlot: static fallback</title>
+<meta name="description" content="Static page that stays up when the hosted TradeGlot demo is asleep.">
+<style>
+:root{--bg:#faf6ef;--fg:#23211d;--muted:#5d584f;--card:#fff;--line:#ddd5c6;--accent:#3b36c9;--note:#fff3d6;--noteline:#e0b44a}
+@media (prefers-color-scheme:dark){:root{--bg:#161512;--fg:#efeae0;--muted:#aaa397;--card:#201e1a;--line:#3a362f;--accent:#9d9aff;--note:#2f2711;--noteline:#8a6b1c}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:760px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:1.7rem;line-height:1.2;margin:0 0 8px}
+h2{font-size:1.15rem;margin:28px 0 8px}
+p{margin:0 0 12px}
+a{color:var(--accent);overflow-wrap:anywhere}
+.note{background:var(--note);border:1px solid var(--noteline);border-radius:10px;padding:12px 14px;margin:16px 0}
+.btn{display:inline-block;margin:4px 0 8px;padding:12px 18px;border-radius:10px;background:var(--accent);color:var(--bg);font-weight:600;text-decoration:none}
+figure{margin:0 0 20px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px}
+figure img{display:block;width:100%;height:auto;border-radius:6px}
+figcaption{font-size:.92rem;color:var(--muted);padding:8px 4px 2px}
+ul{padding-left:1.2rem;margin:0 0 12px}
+li{margin-bottom:6px}
+.small{font-size:.88rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+<h1>TradeGlot</h1>
+<p>TradeGlot is an advisory tool that translates cross-border shipping policies for small merchants before they ship, and formats their records into dispute evidence that a person reviews before anything is sent to PayPal Sandbox. It uses synthetic data and decides no case.</p>
+
+<div class="note">
+<p><strong>The live demo may take about a minute to wake.</strong> It runs on a free hosting plan that sleeps when idle. If you see an error page or a blank screen on the first try, wait a minute and reload. This page and the pictures below stay available meanwhile.</p>
+<a class="btn" href="https://payguard-demo-j2b3.onrender.com/start.html">Open the live start page</a>
+</div>
+
+<h2>The main flow in 5 pictures</h2>
+<figure>
+<img src="img/main_flow.gif" width="800" height="450" alt="Animated loop of the five pictures below, three seconds each">
+<figcaption>The same five pictures as a loop, three seconds each.</figcaption>
+</figure>
+
+<figure>
+<img src="img/01_how_it_works.jpg" width="1100" height="619" alt="Diagram: seller console, TradeGlot server with rules first, optional Gemini and code checks, PayPal Sandbox and Gemini as services">
+<figcaption><strong>1. How it works.</strong> Rules answer first, the optional model only maps a sentence to form fields, code checks every result, and the seller decides. The hosted demo makes only read-only PayPal Sandbox reads.</figcaption>
+</figure>
+<figure>
+<img src="img/02_evidence_guide.jpg" width="1100" height="619" alt="Diagram of the evidence guide funnel from input gate to fixed templates">
+<figcaption><strong>2. The evidence guide.</strong> Pressure phrases and reported speech stop at a fixed answer before any model is used; a trial run of 36 Gemini calls on synthetic sentences filled 0 wrong items (small sample, no user study).</figcaption>
+</figure>
+<figure>
+<img src="img/03_review_zip.jpg" width="1100" height="619" alt="The downloaded review ZIP opened and each file's SHA-256 compared with its manifest">
+<figcaption><strong>3. The review pack.</strong> The downloadable Internal Review ZIP lists seven entries; each file's SHA-256 was recomputed and matched the manifest. Synthetic data, nothing submitted to PayPal.</figcaption>
+</figure>
+<figure>
+<img src="img/04_refusals_locked.jpg" width="1100" height="619" alt="Three refused sends: already answered, different reason, different amount; Nothing was sent">
+<figcaption><strong>4. Wrong send? Locked.</strong> Three recorded refusals in PayPal Sandbox tests (already answered, different reason, different amount): nothing was sent.</figcaption>
+</figure>
+<figure>
+<img src="img/05_ask_confirm.jpg" width="800" height="618" alt="A dialog asking the user before a question goes to an AI model">
+<figcaption><strong>5. Ask first.</strong> Actions that spend a model call, write to PayPal Sandbox or wipe the session ask for confirmation first.</figcaption>
+</figure>
+
+<h2>Proof you can open without the demo</h2>
+<ul>
+<li><a href="https://github.com/jiarong0423/payguard-ai">Repository</a> (the project was formerly called PayGuard AI; the repository name and the Devpost address still use it)</li>
+<li><a href="https://github.com/jiarong0423/payguard-ai/blob/main/docs/evidence/RECEIPT_20261105_live.md">Receipt of a real Sandbox send</a> (masked, with the PayPal-Debug-Id)</li>
+<li><a href="https://github.com/jiarong0423/payguard-ai/blob/main/docs/evidence/READBACK_20261109.md">Read-back note, 2026-11-09</a>: for two of three sends, the file PayPal's Sandbox returned matched the SHA-256 recorded at send time; the first send had no recorded fingerprint and was not compared</li>
+</ul>
+
+<p class="small">Limits: synthetic data and PayPal Sandbox only; no user study; PayPal or the card issuer decides every dispute. Full list in the repository README under Real vs simulated.</p>
+</main>
+</body>
+</html>

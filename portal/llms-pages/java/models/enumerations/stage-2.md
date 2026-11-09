@@ -1,0 +1,33 @@
+# Stage 2
+
+Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlN0YWdlMg
+
+Stage.
+
+
+# Enum Type Name
+
+`Stage2Enum`
+
+
+# Fields
+
+| Name |
+|  --- |
+| `SOURCE_COMPLIANCE` |
+| `VELOCITY_GUARD` |
+| `DISPUTE_MEDIATION` |
+| `GUIDE` |
+| `STUDIO_AGENT` |
+
+
+# Example
+
+```java
+import m18000.m0.m0.m127.models.Stage2Enum;
+
+Stage2Enum stage2 = Stage2Enum.STUDIO_AGENT;
+```
+
+
+

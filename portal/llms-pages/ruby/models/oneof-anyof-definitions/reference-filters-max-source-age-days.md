@@ -1,0 +1,29 @@
+# Reference Filters Max Source Age Days
+
+Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlJlZmVyZW5jZUZpbHRlcnNNYXhTb3VyY2VBZ2VEYXlz
+
+
+# Data Type
+
+`Integer`
+
+
+# Cases
+
+| Type |
+|  --- |
+| `Integer` |
+
+
+# Integer
+
+## Initialization Code
+
+### Example
+
+```ruby
+value = 0
+```
+
+
+

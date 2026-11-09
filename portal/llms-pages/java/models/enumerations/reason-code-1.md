@@ -1,0 +1,38 @@
+# Reason Code 1
+
+Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlJlYXNvbkNvZGUx
+
+
+# Enum Type Name
+
+`ReasonCode1Enum`
+
+
+# Fields
+
+| Name |
+|  --- |
+| `SUMMARY_COVERAGE_INCOMPLETE` |
+| `CURRENT_POLICY_APPLICABILITY_NOT_ESTABLISHED` |
+| `FUTURE_OBSERVATION` |
+| `STALE_OBSERVATION` |
+| `DOCUMENT_UPDATE_DATE_MISSING` |
+| `DOCUMENT_UPDATE_IN_FUTURE` |
+| `UNKNOWN_EFFECTIVE_DATE` |
+| `EFFECTIVE_DATE_IN_FUTURE` |
+| `API_REFERENCE_NOT_POLICY` |
+| `PROCEDURE_NOT_APPLICABLE_POLICY` |
+| `NO_OFFICIAL_POLICY_COVERAGE` |
+| `NO_REFERENCE_COVERAGE` |
+
+
+# Example
+
+```java
+import m18000.m0.m0.m127.models.ReasonCode1Enum;
+
+ReasonCode1Enum reasonCode1 = ReasonCode1Enum.NO_OFFICIAL_POLICY_COVERAGE;
+```
+
+
+

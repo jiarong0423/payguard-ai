@@ -1,0 +1,33 @@
+# Guide Field Result
+
+Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkd1aWRlRmllbGRSZXN1bHQ
+
+GuideFieldResult.
+
+
+# Class Name
+
+`GuideFieldResult`
+
+
+# Fields
+
+| Name | Type | Tags | Description |
+|  --- | --- | --- | --- |
+| `deferred` | `TrueClass \| FalseClass` | Required | Deferred. |
+| `item` | `String` | Required | Item. |
+| `valid` | `TrueClass \| FalseClass` | Required | Valid. |
+
+
+# Example
+
+```ruby
+guide_field_result = GuideFieldResult.new(
+  false,
+  'item8',
+  false
+)
+```
+
+
+

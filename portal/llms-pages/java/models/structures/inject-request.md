@@ -1,0 +1,33 @@
+# Inject Request
+
+Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkluamVjdFJlcXVlc3Q
+
+InjectRequest.
+
+
+# Class Name
+
+`InjectRequest`
+
+
+# Fields
+
+| Name | Type | Tags | Description | Getter | Setter |
+|  --- | --- | --- | --- | --- | --- |
+| `Scenario` | [`Scenario5Enum`](http://localhost:3000/llms-pages/java/models/enumerations/scenario-5.md) | Required | Scenario. | Scenario5Enum getScenario() | setScenario(Scenario5Enum scenario) |
+
+
+# Example
+
+```java
+import m18000.m0.m0.m127.models.InjectRequest;
+import m18000.m0.m0.m127.models.Scenario5Enum;
+
+InjectRequest injectRequest = new InjectRequest.Builder(
+    Scenario5Enum.BURST
+)
+.build();
+```
+
+
+

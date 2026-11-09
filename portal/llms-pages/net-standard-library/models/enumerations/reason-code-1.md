@@ -1,0 +1,38 @@
+# Reason Code 1
+
+Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRlJlYXNvbkNvZGUx
+
+
+# Enum Type Name
+
+`ReasonCode1Enum`
+
+
+# Fields
+
+| Name |
+|  --- |
+| `SUMMARYCOVERAGEINCOMPLETE` |
+| `CURRENTPOLICYAPPLICABILITYNOTESTABLISHED` |
+| `FUTUREOBSERVATION` |
+| `STALEOBSERVATION` |
+| `DOCUMENTUPDATEDATEMISSING` |
+| `DOCUMENTUPDATEINFUTURE` |
+| `UNKNOWNEFFECTIVEDATE` |
+| `EFFECTIVEDATEINFUTURE` |
+| `APIREFERENCENOTPOLICY` |
+| `PROCEDURENOTAPPLICABLEPOLICY` |
+| `NOOFFICIALPOLICYCOVERAGE` |
+| `NOREFERENCECOVERAGE` |
+
+
+# Example
+
+```csharp
+using TradeGlotLocalConsole.Standard.Models;
+
+ReasonCode1Enum reasonCode1 = ReasonCode1Enum.NOOFFICIALPOLICYCOVERAGE;
+```
+
+
+

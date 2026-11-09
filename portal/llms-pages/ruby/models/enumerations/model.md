@@ -1,0 +1,28 @@
+# Model
+
+Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRk1vZGVs
+
+Model.
+
+
+# Enum Type Name
+
+`ModelEnum`
+
+
+# Fields
+
+| Name |
+|  --- |
+| `ENUM_GEMINI38FLASH` |
+| `NVIDIANEMOTRON3NANO4B` |
+
+
+# Example
+
+```ruby
+model = ModelEnum::ENUM_GEMINI38FLASH
+```
+
+
+
