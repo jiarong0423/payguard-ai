@@ -1,0 +1,48 @@
+{
+ "receipts": [
+  {
+   "called_at": "2026-11-09T04:59:15Z",
+   "category": null,
+   "confidence": null,
+   "http_status": 403,
+   "latency_seconds": 0.632,
+   "query": "Bamboo cutting board",
+   "reason": "upstream_error",
+   "reply_sha256": "12a22880bc2e59f8278b4a5e547567f0aa14d020ea456598267fa00208cfebc5",
+   "result_status": "UNAVAILABLE"
+  },
+  {
+   "called_at": "2026-11-09T04:59:16Z",
+   "category": null,
+   "confidence": null,
+   "http_status": 403,
+   "latency_seconds": 0.563,
+   "query": "Cotton bath towel set",
+   "reason": "upstream_error",
+   "reply_sha256": "12a22880bc2e59f8278b4a5e547567f0aa14d020ea456598267fa00208cfebc5",
+   "result_status": "UNAVAILABLE"
+  },
+  {
+   "called_at": "2026-11-09T04:59:17Z",
+   "category": null,
+   "confidence": null,
+   "http_status": 403,
+   "latency_seconds": 0.565,
+   "query": "Bluetooth speaker portable",
+   "reason": "upstream_error",
+   "reply_sha256": "12a22880bc2e59f8278b4a5e547567f0aa14d020ea456598267fa00208cfebc5",
+   "result_status": "UNAVAILABLE"
+  },
+  {
+   "called_at": "2026-11-09T04:59:17Z",
+   "category": null,
+   "confidence": null,
+   "http_status": 403,
+   "latency_seconds": 0.564,
+   "query": "Running shoes for women size 8",
+   "reason": "upstream_error",
+   "reply_sha256": "12a22880bc2e59f8278b4a5e547567f0aa14d020ea456598267fa00208cfebc5",
+   "result_status": "UNAVAILABLE"
+  }
+ ]
+}

@@ -10,14 +10,14 @@ The script uses only the Python standard library, reads files only, makes no net
 
 ## Counting scope
 
-The file set is the public candidate: every path in `public_export_manifest.json` (416 files) plus the manifest and `public_export_manifest.sha256`, which makes the 415 tracked files. A fresh copy also contains `.venv`, `node_modules`, `frontend/dist` and build logs; none of these is counted. The script also checks every file against the sha256 in the manifest and reports any that differ. A "line" is a physical line (a newline-terminated line, the same as `wc -l`), so blank lines and comments are included. A "word" is a whitespace-separated token (`str.split()`).
+The file set is the public candidate: every path in `public_export_manifest.json` (420 files) plus the manifest and `public_export_manifest.sha256`, which makes the 415 tracked files. A fresh copy also contains `.venv`, `node_modules`, `frontend/dist` and build logs; none of these is counted. The script also checks every file against the sha256 in the manifest and reports any that differ. A "line" is a physical line (a newline-terminated line, the same as `wc -l`), so blank lines and comments are included. A "word" is a whitespace-separated token (`str.split()`).
 
 ## The numbers
 
 | Claim | Value | Command or rule |
 |---|---|---|
-| Tracked files | 418 | 416 manifest paths + `public_export_manifest.json` + `public_export_manifest.sha256` |
-| Python source lines | 22,543 | all `*.py` outside `tests/` (backend, src, tools, integrations) |
+| Tracked files | 422 | 420 manifest paths + `public_export_manifest.json` + `public_export_manifest.sha256` |
+| Python source lines | 22,609 | all `*.py` outside `tests/` (backend, src, tools, integrations) |
 | Python test lines | 18,481 | all `tests/**/*.py` |
 | Front-end lines | 14,252 | `frontend/src/**/*.{jsx,js,css}`, 75 files; see below |
 | JSX files / pages | 24 / 5 | `frontend/**/*.jsx`; `frontend/*.html` (index, dashboard, evidence, proof, scenarios; `public/offline.html` is the service-worker fallback, not a page) |
@@ -26,8 +26,8 @@ The file set is the public candidate: every path in `public_export_manifest.json
 | Python tests | 1,121 (9 skipped) | `unittest` discovery over `tests/`, loaded and counted, not run |
 | Red-team requests | 1,727 | run-time only, see below |
 | Words in documents | 86,743 (page says about 86,743; the script allows 1% either way) | see below |
-| Evidence files | 35 | files directly in `docs/evidence/` (30 `.md`, 5 `.json`) |
-| Diagrams and images | 36 | every `*.png` and `*.svg` in the file set: 30 under `docs/`, 6 application icons under `frontend/public/icons`; `.mmd` sources are not counted |
+| Evidence files | 36 | files directly in `docs/evidence/` (30 `.md`, 6 `.json`) |
+| Diagrams and images | 38 | every `*.png` and `*.svg` in the file set: 32 under `docs/`, 6 application icons under `frontend/public/icons`; `.mmd` sources are not counted |
 | PayPal clauses | 140 | `len(snippets)` in `data/country_rules/paypal_country_rules_v1.json` |
 | Export / import rules | 313 / 368 = 681 | sum of `len(rules)` over `export_rules[country]` and `import_rules[country]`, ten countries |
 | Evidence-guide benchmark | 268 cases | sum of `cases` over the seven corpora in `docs/evidence/guide_benchmark_v1.json`; the same 268 in each of the three flows |

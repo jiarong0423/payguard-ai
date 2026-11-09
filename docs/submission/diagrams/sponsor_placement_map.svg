@@ -1,0 +1,256 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="5934" viewBox="0 0 1000 5934" font-family="Helvetica, Arial, sans-serif" role="img" aria-labelledby="sp-t sp-d">
+<title id="sp-t">TradeGlot: where each sponsor tool sits</title>
+<desc id="sp-d">Product blocks (case intake, rules, sales spike, evidence buffer, dispute evidence, review ZIP, dashboard, proof page, hosted gateway, API docs) each with the sponsor tool chips that run there, their status (hosted, recorded, read-only, local only, not in product path) and the controls a visitor can use.</desc>
+<!-- sponsor placement map, 2026-11-09. Control names copied from frontend/src. -->
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3b3a36"/></marker></defs>
+<rect width="1000" height="5934" fill="#fbf7ef"/>
+<text x="30" y="62" font-size="46" fill="#1f1e1b" font-weight="700">Where each sponsor tool sits</text>
+<text x="30" y="104" font-size="28" fill="#5b5953">Blocks of the TradeGlot product on the left. Each</text>
+<text x="30" y="138" font-size="28" fill="#5b5953">sponsor tool is a chip on the block where it runs,</text>
+<text x="30" y="172" font-size="28" fill="#5b5953">with the control a visitor can use there.</text>
+<text x="30" y="242" font-size="26" fill="#1f1e1b" font-weight="700">Status words:</text>
+<rect x="30" y="260" width="118" height="38" rx="19" fill="#e3efe5" stroke="#2f5a3c" stroke-width="2"/>
+<text x="89.0" y="287" font-size="26" fill="#2f5a3c" font-weight="700" text-anchor="middle">Hosted</text>
+<text x="162" y="287" font-size="26" fill="#5b5953">public demo, synthetic data</text>
+<rect x="30" y="308" width="148" height="38" rx="19" fill="#fdf0d5" stroke="#7a4f00" stroke-width="2"/>
+<text x="104.0" y="335" font-size="26" fill="#7a4f00" font-weight="700" text-anchor="middle">Recorded</text>
+<text x="192" y="335" font-size="26" fill="#5b5953">saved real run replayed</text>
+<rect x="30" y="356" width="163" height="38" rx="19" fill="#e3efe5" stroke="#2f5a3c" stroke-width="2"/>
+<text x="111.5" y="383" font-size="26" fill="#2f5a3c" font-weight="700" text-anchor="middle">Read-only</text>
+<text x="207" y="383" font-size="26" fill="#5b5953">reads only, nothing sent</text>
+<rect x="30" y="404" width="178" height="38" rx="19" fill="#e9e7e0" stroke="#3b3a36" stroke-width="2"/>
+<text x="119.0" y="431" font-size="26" fill="#3b3a36" font-weight="700" text-anchor="middle">Local only</text>
+<text x="222" y="431" font-size="26" fill="#5b5953">owner machine only</text>
+<rect x="30" y="452" width="313" height="38" rx="19" fill="#f4f2ec" stroke="#3b3a36" stroke-width="2"/>
+<text x="186.5" y="479" font-size="26" fill="#3b3a36" font-weight="700" text-anchor="middle">Not in product path</text>
+<text x="357" y="479" font-size="26" fill="#5b5953">dashed chip, run once or outside</text>
+<text x="30" y="540" font-size="26" fill="#8a877f" font-weight="700" letter-spacing="1.5">SELLER CONSOLE: ONE PAGE, THREE STEPS</text>
+<rect x="30" y="558" width="360" height="504" rx="16" fill="#ffffff" stroke="#3b3a36" stroke-width="3"/>
+<text x="50" y="604" font-size="32" fill="#1f1e1b" font-weight="700">Case intake</text>
+<text x="50" y="648" font-size="26" fill="#5b5953">Step 01 Policy</text>
+<text x="50" y="680" font-size="26" fill="#5b5953">pre-check: item</text>
+<text x="50" y="712" font-size="26" fill="#5b5953">description and country.</text>
+<line x1="390" y1="680.0" x2="440" y2="680.0" stroke="#3b6b4a" stroke-width="3"/>
+<rect x="440" y="558" width="530" height="244" rx="16" fill="#ffffff" stroke="#3b6b4a" stroke-width="3"/>
+<text x="458" y="606" font-size="32" fill="#1f1e1b" font-weight="700">PayPal Sandbox</text>
+<rect x="458" y="620" width="178" height="36" rx="18" fill="#e9e7e0" stroke="#3b3a36" stroke-width="2"/>
+<text x="547.0" y="646" font-size="26" fill="#3b3a36" font-weight="700" text-anchor="middle">Local only</text>
+<text x="458" y="686" font-size="26" fill="#5b5953">The unsent invoice draft needs the</text>
+<text x="458" y="718" font-size="26" fill="#5b5953">owner&#x27;s Sandbox keys. The hosted</text>
+<text x="458" y="750" font-size="26" fill="#5b5953">demo shows sample data.</text>
+<text x="458" y="790" font-size="26" fill="#3b6b4a" font-weight="700">Button: Create Sandbox draft</text>
+<line x1="390" y1="940.0" x2="440" y2="940.0" stroke="#8a877f" stroke-width="3"/>
+<rect x="440" y="818" width="530" height="244" rx="16" fill="#ffffff" stroke="#8a877f" stroke-width="3"/>
+<text x="458" y="866" font-size="32" fill="#1f1e1b" font-weight="700">Channel3</text>
+<rect x="458" y="880" width="148" height="36" rx="18" fill="#fdf0d5" stroke="#7a4f00" stroke-width="2"/>
+<text x="532.0" y="906" font-size="26" fill="#7a4f00" font-weight="700" text-anchor="middle">Recorded</text>
+<text x="458" y="946" font-size="26" fill="#5b5953">Five real searches replayed. Live</text>
+<text x="458" y="978" font-size="26" fill="#5b5953">search is local only.</text>
+<text x="458" y="1018" font-size="26" fill="#3b3a36" font-weight="700">Buttons: This is my product / None</text>
+<text x="458" y="1050" font-size="26" fill="#3b3a36" font-weight="700">of these is my product</text>
+<line x1="210.0" y1="1078" x2="210.0" y2="1094" stroke="#3b3a36" stroke-width="3" marker-end="url(#arr)"/>
+<rect x="30" y="1096" width="360" height="372" rx="16" fill="#ffffff" stroke="#3b3a36" stroke-width="3"/>
+<text x="50" y="1142" font-size="32" fill="#1f1e1b" font-weight="700">Rules and policy</text>
+<text x="50" y="1186" font-size="26" fill="#5b5953">Country rules and claim</text>
+<text x="50" y="1218" font-size="26" fill="#5b5953">check run first, in</text>
+<text x="50" y="1250" font-size="26" fill="#5b5953">code. Evidence guide</text>
+<text x="50" y="1282" font-size="26" fill="#5b5953">sits here.</text>
+<line x1="390" y1="1282.0" x2="440" y2="1282.0" stroke="#4f46e5" stroke-width="3"/>
+<rect x="440" y="1096" width="530" height="372" rx="16" fill="#ffffff" stroke="#4f46e5" stroke-width="3"/>
+<text x="458" y="1144" font-size="32" fill="#1f1e1b" font-weight="700">Gemini</text>
+<rect x="458" y="1158" width="118" height="36" rx="18" fill="#e3efe5" stroke="#2f5a3c" stroke-width="2"/>
+<text x="517.0" y="1184" font-size="26" fill="#2f5a3c" font-weight="700" text-anchor="middle">Hosted</text>
+<text x="458" y="1224" font-size="26" fill="#5b5953">Hosted: keyword rules unless the</text>
+<text x="458" y="1256" font-size="26" fill="#5b5953">operator opts in (capped).</text>
+<text x="458" y="1288" font-size="26" fill="#5b5953">Evidence brief and Studio agents:</text>
+<text x="458" y="1320" font-size="26" fill="#5b5953">local only.</text>
+<text x="458" y="1360" font-size="26" fill="#4f46e5" font-weight="700">Closed-option choice, then code</text>
+<text x="458" y="1392" font-size="26" fill="#4f46e5" font-weight="700">checks</text>
+<text x="458" y="1424" font-size="26" fill="#4f46e5" font-weight="700">Replayed examples: Show the model&#x27;s</text>
+<text x="458" y="1456" font-size="26" fill="#4f46e5" font-weight="700">closed reply</text>
+<line x1="210.0" y1="1484" x2="210.0" y2="1500" stroke="#3b3a36" stroke-width="3" marker-end="url(#arr)"/>
+<rect x="30" y="1502" width="360" height="536" rx="16" fill="#ffffff" stroke="#3b3a36" stroke-width="3"/>
+<text x="50" y="1548" font-size="32" fill="#1f1e1b" font-weight="700">Sales spike</text>
+<text x="50" y="1592" font-size="26" fill="#5b5953">Step 02: hourly chart</text>
+<text x="50" y="1624" font-size="26" fill="#5b5953">and the orders behind</text>
+<text x="50" y="1656" font-size="26" fill="#5b5953">the alert.</text>
+<line x1="390" y1="1656.0" x2="440" y2="1656.0" stroke="#4f46e5" stroke-width="3"/>
+<rect x="440" y="1502" width="530" height="308" rx="16" fill="#ffffff" stroke="#4f46e5" stroke-width="3"/>
+<text x="458" y="1550" font-size="32" fill="#1f1e1b" font-weight="700">AG Charts</text>
+<rect x="458" y="1564" width="118" height="36" rx="18" fill="#e3efe5" stroke="#2f5a3c" stroke-width="2"/>
+<text x="517.0" y="1590" font-size="26" fill="#2f5a3c" font-weight="700" text-anchor="middle">Hosted</text>
+<text x="458" y="1630" font-size="26" fill="#5b5953">Bar and line, cross-lines,</text>
+<text x="458" y="1662" font-size="26" fill="#5b5953">tooltip.</text>
+<text x="458" y="1702" font-size="26" fill="#4f46e5" font-weight="700">Buttons: Highlight peak hour,</text>
+<text x="458" y="1734" font-size="26" fill="#4f46e5" font-weight="700">Highlight hours above the line,</text>
+<text x="458" y="1766" font-size="26" fill="#4f46e5" font-weight="700">Reset</text>
+<text x="458" y="1798" font-size="26" fill="#4f46e5" font-weight="700">Tabs: Hourly / Monthly</text>
+<line x1="390" y1="1932.0" x2="440" y2="1932.0" stroke="#4f46e5" stroke-width="3"/>
+<rect x="440" y="1826" width="530" height="212" rx="16" fill="#ffffff" stroke="#4f46e5" stroke-width="3"/>
+<text x="458" y="1874" font-size="32" fill="#1f1e1b" font-weight="700">AG Grid</text>
+<rect x="458" y="1888" width="118" height="36" rx="18" fill="#e3efe5" stroke="#2f5a3c" stroke-width="2"/>
+<text x="517.0" y="1914" font-size="26" fill="#2f5a3c" font-weight="700" text-anchor="middle">Hosted</text>
+<text x="458" y="1954" font-size="26" fill="#5b5953">Orders table, synthetic data.</text>
+<text x="458" y="1994" font-size="26" fill="#4f46e5" font-weight="700">Field: Filter orders (quick filter)</text>
+<text x="458" y="2026" font-size="26" fill="#4f46e5" font-weight="700">Tabs: Chart / Orders table</text>
+<line x1="210.0" y1="2054" x2="210.0" y2="2070" stroke="#3b3a36" stroke-width="3" marker-end="url(#arr)"/>
+<rect x="30" y="2072" width="360" height="308" rx="16" fill="#ffffff" stroke="#3b3a36" stroke-width="3"/>
+<text x="50" y="2118" font-size="32" fill="#1f1e1b" font-weight="700">Evidence buffer</text>
+<text x="50" y="2162" font-size="26" fill="#5b5953">Optional: all orders in</text>
+<text x="50" y="2194" font-size="26" fill="#5b5953">one table.</text>
+<line x1="390" y1="2226.0" x2="440" y2="2226.0" stroke="#4f46e5" stroke-width="3"/>
+<rect x="440" y="2072" width="530" height="308" rx="16" fill="#ffffff" stroke="#4f46e5" stroke-width="3"/>
+<text x="458" y="2120" font-size="32" fill="#1f1e1b" font-weight="700">AG Grid</text>
+<rect x="458" y="2134" width="118" height="36" rx="18" fill="#e3efe5" stroke="#2f5a3c" stroke-width="2"/>
+<text x="517.0" y="2160" font-size="26" fill="#2f5a3c" font-weight="700" text-anchor="middle">Hosted</text>
+<text x="458" y="2200" font-size="26" fill="#5b5953">Same grid, amount bands.</text>
+<text x="458" y="2240" font-size="26" fill="#4f46e5" font-weight="700">Chips: All orders / Under 8.00 /</text>
+<text x="458" y="2272" font-size="26" fill="#4f46e5" font-weight="700">8.00 to 11.99 / 12.00 or more</text>
+<text x="458" y="2304" font-size="26" fill="#4f46e5" font-weight="700">Button: Highlight orders of 12.00 or</text>
+<text x="458" y="2336" font-size="26" fill="#4f46e5" font-weight="700">more</text>
+<text x="458" y="2368" font-size="26" fill="#4f46e5" font-weight="700">Field: Filter visible rows</text>
+<line x1="210.0" y1="2396" x2="210.0" y2="2412" stroke="#3b3a36" stroke-width="3" marker-end="url(#arr)"/>
+<rect x="30" y="2414" width="360" height="1056" rx="16" fill="#ffffff" stroke="#3b3a36" stroke-width="3"/>
+<text x="50" y="2460" font-size="32" fill="#1f1e1b" font-weight="700">Dispute evidence</text>
+<text x="50" y="2504" font-size="26" fill="#5b5953">Step 03: case queue,</text>
+<text x="50" y="2536" font-size="26" fill="#5b5953">draft, human review,</text>
+<text x="50" y="2568" font-size="26" fill="#5b5953">deadline board.</text>
+<line x1="390" y1="2536.0" x2="440" y2="2536.0" stroke="#3b6b4a" stroke-width="3"/>
+<rect x="440" y="2414" width="530" height="244" rx="16" fill="#ffffff" stroke="#3b6b4a" stroke-width="3"/>
+<text x="458" y="2462" font-size="32" fill="#1f1e1b" font-weight="700">PayPal Sandbox</text>
+<rect x="458" y="2476" width="163" height="36" rx="18" fill="#e3efe5" stroke="#2f5a3c" stroke-width="2"/>
+<text x="539.5" y="2502" font-size="26" fill="#2f5a3c" font-weight="700" text-anchor="middle">Read-only</text>
+<text x="458" y="2542" font-size="26" fill="#5b5953">Hosted: reads only, sends refused.</text>
+<text x="458" y="2574" font-size="26" fill="#5b5953">Two real sends were local, kept as</text>
+<text x="458" y="2606" font-size="26" fill="#5b5953">receipts.</text>
+<text x="458" y="2646" font-size="26" fill="#3b6b4a" font-weight="700">Button: Load dispute case</text>
+<line x1="390" y1="2796.0" x2="440" y2="2796.0" stroke="#4f46e5" stroke-width="3"/>
+<rect x="440" y="2674" width="530" height="244" rx="16" fill="#ffffff" stroke="#4f46e5" stroke-width="3"/>
+<text x="458" y="2722" font-size="32" fill="#1f1e1b" font-weight="700">AG Grid</text>
+<rect x="458" y="2736" width="118" height="36" rx="18" fill="#e3efe5" stroke="#2f5a3c" stroke-width="2"/>
+<text x="517.0" y="2762" font-size="26" fill="#2f5a3c" font-weight="700" text-anchor="middle">Hosted</text>
+<text x="458" y="2802" font-size="26" fill="#5b5953">Guided gap filling: replayed</text>
+<text x="458" y="2834" font-size="26" fill="#5b5953">examples table.</text>
+<text x="458" y="2874" font-size="26" fill="#4f46e5" font-weight="700">Buttons: Export as CSV, Export step</text>
+<text x="458" y="2906" font-size="26" fill="#4f46e5" font-weight="700">N as CSV</text>
+<line x1="390" y1="3040.0" x2="440" y2="3040.0" stroke="#3b6b4a" stroke-width="3"/>
+<rect x="440" y="2934" width="530" height="212" rx="16" fill="#f7f5ef" stroke="#3b6b4a" stroke-width="3" stroke-dasharray="9 7"/>
+<text x="458" y="2982" font-size="32" fill="#1f1e1b" font-weight="700">PayPal official MCP</text>
+<rect x="458" y="2996" width="313" height="36" rx="18" fill="#f4f2ec" stroke="#3b3a36" stroke-width="2"/>
+<text x="614.5" y="3022" font-size="26" fill="#3b3a36" font-weight="700" text-anchor="middle">Not in product path</text>
+<text x="458" y="3062" font-size="26" fill="#5b5953">One read-only run: disputes.list</text>
+<text x="458" y="3094" font-size="26" fill="#5b5953">and disputes.get.</text>
+<text x="458" y="3134" font-size="26" fill="#3b6b4a" font-weight="700">No control in the product</text>
+<line x1="390" y1="3316.0" x2="440" y2="3316.0" stroke="#8a877f" stroke-width="3"/>
+<rect x="440" y="3162" width="530" height="308" rx="16" fill="#ffffff" stroke="#8a877f" stroke-width="3"/>
+<text x="458" y="3210" font-size="32" fill="#1f1e1b" font-weight="700">Bryntum</text>
+<rect x="458" y="3224" width="118" height="36" rx="18" fill="#e3efe5" stroke="#2f5a3c" stroke-width="2"/>
+<text x="517.0" y="3250" font-size="26" fill="#2f5a3c" font-weight="700" text-anchor="middle">Hosted</text>
+<text x="458" y="3290" font-size="26" fill="#5b5953">Scheduler Community: one row per</text>
+<text x="458" y="3322" font-size="26" fill="#5b5953">case.</text>
+<text x="458" y="3362" font-size="26" fill="#3b3a36" font-weight="700">Buttons: Highlight tight deadlines,</text>
+<text x="458" y="3394" font-size="26" fill="#3b3a36" font-weight="700">Download my plan (.ics), Reset plans</text>
+<text x="458" y="3426" font-size="26" fill="#3b3a36" font-weight="700">Chips: All cases / Due within 3 days</text>
+<text x="458" y="3458" font-size="26" fill="#3b3a36" font-weight="700">or past due / Open window</text>
+<line x1="210.0" y1="3486" x2="210.0" y2="3502" stroke="#3b3a36" stroke-width="3" marker-end="url(#arr)"/>
+<rect x="30" y="3504" width="360" height="244" rx="16" fill="#ffffff" stroke="#3b3a36" stroke-width="3"/>
+<text x="50" y="3550" font-size="32" fill="#1f1e1b" font-weight="700">Evidence packaging</text>
+<text x="50" y="3594" font-size="26" fill="#5b5953">Seven-file review ZIP,</text>
+<text x="50" y="3626" font-size="26" fill="#5b5953">made locally, never sent</text>
+<text x="50" y="3658" font-size="26" fill="#5b5953">to PayPal.</text>
+<line x1="390" y1="3626.0" x2="440" y2="3626.0" stroke="#8a877f" stroke-width="3"/>
+<rect x="440" y="3504" width="530" height="244" rx="16" fill="#ffffff" stroke="#8a877f" stroke-width="3"/>
+<text x="458" y="3552" font-size="32" fill="#1f1e1b" font-weight="700">Channel3 card</text>
+<rect x="458" y="3566" width="148" height="36" rx="18" fill="#fdf0d5" stroke="#7a4f00" stroke-width="2"/>
+<text x="532.0" y="3592" font-size="26" fill="#7a4f00" font-weight="700" text-anchor="middle">Recorded</text>
+<text x="458" y="3632" font-size="26" fill="#5b5953">The product you confirmed in step</text>
+<text x="458" y="3664" font-size="26" fill="#5b5953">01 goes in as</text>
+<text x="458" y="3696" font-size="26" fill="#5b5953">product-reference.json.</text>
+<text x="458" y="3736" font-size="26" fill="#3b3a36" font-weight="700">Button: Download review ZIP</text>
+<text x="30" y="3818" font-size="26" fill="#8a877f" font-weight="700" letter-spacing="1.5">SEPARATE PAGES</text>
+<rect x="30" y="3836" width="360" height="372" rx="16" fill="#ffffff" stroke="#3b3a36" stroke-width="3"/>
+<text x="50" y="3882" font-size="32" fill="#1f1e1b" font-weight="700">Dashboard</text>
+<text x="50" y="3926" font-size="26" fill="#5b5953">/dashboard.html: all</text>
+<text x="50" y="3958" font-size="26" fill="#5b5953">cases, deadlines,</text>
+<text x="50" y="3990" font-size="26" fill="#5b5953">checklist.</text>
+<line x1="390" y1="4022.0" x2="440" y2="4022.0" stroke="#4f46e5" stroke-width="3"/>
+<rect x="440" y="3836" width="530" height="372" rx="16" fill="#ffffff" stroke="#4f46e5" stroke-width="3"/>
+<text x="458" y="3884" font-size="32" fill="#1f1e1b" font-weight="700">AG Studio</text>
+<rect x="458" y="3898" width="118" height="36" rx="18" fill="#e3efe5" stroke="#2f5a3c" stroke-width="2"/>
+<text x="517.0" y="3924" font-size="26" fill="#2f5a3c" font-weight="700" text-anchor="middle">Hosted</text>
+<text x="458" y="3964" font-size="26" fill="#5b5953">Custom theme, two custom widgets.</text>
+<text x="458" y="3996" font-size="26" fill="#5b5953">Built-in agents run locally; the</text>
+<text x="458" y="4028" font-size="26" fill="#5b5953">hosted page replays one recorded</text>
+<text x="458" y="4060" font-size="26" fill="#5b5953">run.</text>
+<text x="458" y="4100" font-size="26" fill="#4f46e5" font-weight="700">Buttons: Ask the auditor, Replay: (a</text>
+<text x="458" y="4132" font-size="26" fill="#4f46e5" font-weight="700">recorded question), Filter by case</text>
+<text x="458" y="4164" font-size="26" fill="#4f46e5" font-weight="700">Widget toolbar: Export table,</text>
+<text x="458" y="4196" font-size="26" fill="#4f46e5" font-weight="700">Download chart</text>
+<rect x="30" y="4242" width="360" height="340" rx="16" fill="#ffffff" stroke="#3b3a36" stroke-width="3"/>
+<text x="50" y="4288" font-size="32" fill="#1f1e1b" font-weight="700">Proof page</text>
+<text x="50" y="4332" font-size="26" fill="#5b5953">/proof.html: receipts</text>
+<text x="50" y="4364" font-size="26" fill="#5b5953">and recordings, each row</text>
+<text x="50" y="4396" font-size="26" fill="#5b5953">labelled.</text>
+<line x1="390" y1="4412.0" x2="440" y2="4412.0" stroke="#8a877f" stroke-width="3"/>
+<rect x="440" y="4242" width="530" height="340" rx="16" fill="#ffffff" stroke="#8a877f" stroke-width="3"/>
+<text x="458" y="4290" font-size="32" fill="#1f1e1b" font-weight="700">Filter chips</text>
+<rect x="458" y="4304" width="118" height="36" rx="18" fill="#e3efe5" stroke="#2f5a3c" stroke-width="2"/>
+<text x="517.0" y="4330" font-size="26" fill="#2f5a3c" font-weight="700" text-anchor="middle">Hosted</text>
+<text x="458" y="4370" font-size="26" fill="#5b5953">Not a sponsor tool. Hides rows</text>
+<text x="458" y="4402" font-size="26" fill="#5b5953">only.</text>
+<text x="458" y="4442" font-size="26" fill="#3b3a36" font-weight="700">How shown: All / Real Sandbox /</text>
+<text x="458" y="4474" font-size="26" fill="#3b3a36" font-weight="700">Recorded / Test / Synthetic</text>
+<text x="458" y="4506" font-size="26" fill="#3b3a36" font-weight="700">Sponsor: PayPal, AG Grid, Bryntum,</text>
+<text x="458" y="4538" font-size="26" fill="#3b3a36" font-weight="700">Channel3, APIMatic, Postman, Render,</text>
+<text x="458" y="4570" font-size="26" fill="#3b3a36" font-weight="700">Gemini</text>
+<text x="30" y="4652" font-size="26" fill="#8a877f" font-weight="700" letter-spacing="1.5">HOSTING AND DEVELOPER SIDE</text>
+<rect x="30" y="4670" width="360" height="504" rx="16" fill="#ffffff" stroke="#3b3a36" stroke-width="3"/>
+<text x="50" y="4716" font-size="32" fill="#1f1e1b" font-weight="700">Hosted gateway</text>
+<text x="50" y="4760" font-size="26" fill="#5b5953">Public read-only demo:</text>
+<text x="50" y="4792" font-size="26" fill="#5b5953">synthetic data, every</text>
+<text x="50" y="4824" font-size="26" fill="#5b5953">write route answers 503.</text>
+<line x1="390" y1="4808.0" x2="440" y2="4808.0" stroke="#c2410c" stroke-width="3"/>
+<rect x="440" y="4670" width="530" height="276" rx="16" fill="#ffffff" stroke="#c2410c" stroke-width="3"/>
+<text x="458" y="4718" font-size="32" fill="#1f1e1b" font-weight="700">Render web service</text>
+<rect x="458" y="4732" width="118" height="36" rx="18" fill="#e3efe5" stroke="#2f5a3c" stroke-width="2"/>
+<text x="517.0" y="4758" font-size="26" fill="#2f5a3c" font-weight="700" text-anchor="middle">Hosted</text>
+<text x="458" y="4798" font-size="26" fill="#5b5953">One free Docker service from a</text>
+<text x="458" y="4830" font-size="26" fill="#5b5953">Blueprint, health check</text>
+<text x="458" y="4862" font-size="26" fill="#5b5953">/api/v1/health.</text>
+<text x="458" y="4902" font-size="26" fill="#c2410c" font-weight="700">Panel: Try the send: a recorded</text>
+<text x="458" y="4934" font-size="26" fill="#c2410c" font-weight="700">replay (nothing is sent)</text>
+<line x1="390" y1="5068.0" x2="440" y2="5068.0" stroke="#c2410c" stroke-width="3"/>
+<rect x="440" y="4962" width="530" height="212" rx="16" fill="#f7f5ef" stroke="#c2410c" stroke-width="3" stroke-dasharray="9 7"/>
+<text x="458" y="5010" font-size="32" fill="#1f1e1b" font-weight="700">Render Workflows</text>
+<rect x="458" y="5024" width="313" height="36" rx="18" fill="#f4f2ec" stroke="#3b3a36" stroke-width="2"/>
+<text x="614.5" y="5050" font-size="26" fill="#3b3a36" font-weight="700" text-anchor="middle">Not in product path</text>
+<text x="458" y="5090" font-size="26" fill="#5b5953">Two checks, three manual runs, not</text>
+<text x="458" y="5122" font-size="26" fill="#5b5953">scheduled.</text>
+<text x="458" y="5162" font-size="26" fill="#c2410c" font-weight="700">No control in the product</text>
+<rect x="30" y="5208" width="360" height="472" rx="16" fill="#ffffff" stroke="#3b3a36" stroke-width="3"/>
+<text x="50" y="5254" font-size="32" fill="#1f1e1b" font-weight="700">Local console API</text>
+<text x="50" y="5298" font-size="26" fill="#5b5953">37 operations described</text>
+<text x="50" y="5330" font-size="26" fill="#5b5953">in OpenAPI.</text>
+<line x1="390" y1="5314.0" x2="440" y2="5314.0" stroke="#4f46e5" stroke-width="3"/>
+<rect x="440" y="5208" width="530" height="212" rx="16" fill="#f7f5ef" stroke="#4f46e5" stroke-width="3" stroke-dasharray="9 7"/>
+<text x="458" y="5256" font-size="32" fill="#1f1e1b" font-weight="700">APIMatic</text>
+<rect x="458" y="5270" width="313" height="36" rx="18" fill="#f4f2ec" stroke="#3b3a36" stroke-width="2"/>
+<text x="614.5" y="5296" font-size="26" fill="#3b3a36" font-weight="700" text-anchor="middle">Not in product path</text>
+<text x="458" y="5336" font-size="26" fill="#5b5953">Validator: 0 errors. Portal</text>
+<text x="458" y="5368" font-size="26" fill="#5b5953">published as static pages.</text>
+<text x="458" y="5408" font-size="26" fill="#4f46e5" font-weight="700">Docs and SDKs, not a button</text>
+<line x1="390" y1="5558.0" x2="440" y2="5558.0" stroke="#c2410c" stroke-width="3"/>
+<rect x="440" y="5436" width="530" height="244" rx="16" fill="#f7f5ef" stroke="#c2410c" stroke-width="3" stroke-dasharray="9 7"/>
+<text x="458" y="5484" font-size="32" fill="#1f1e1b" font-weight="700">Postman / Newman</text>
+<rect x="458" y="5498" width="178" height="36" rx="18" fill="#e9e7e0" stroke="#3b3a36" stroke-width="2"/>
+<text x="547.0" y="5524" font-size="26" fill="#3b3a36" font-weight="700" text-anchor="middle">Local only</text>
+<text x="458" y="5564" font-size="26" fill="#5b5953">25-request run covers 21 of 37</text>
+<text x="458" y="5596" font-size="26" fill="#5b5953">operations: 82 assertions, 0</text>
+<text x="458" y="5628" font-size="26" fill="#5b5953">failed.</text>
+<text x="458" y="5668" font-size="26" fill="#c2410c" font-weight="700">Collection run, not a button</text>
+<text x="30" y="5760" font-size="26" fill="#5b5953">Every control above exists in frontend/src. Console</text>
+<text x="30" y="5794" font-size="26" fill="#5b5953">footer &#x27;Sponsor map&#x27; links each tool to its proof</text>
+<text x="30" y="5828" font-size="26" fill="#5b5953">rows.</text>
+<text x="30" y="5862" font-size="26" fill="#5b5953">Sandbox and synthetic data only. Nothing here</text>
+<text x="30" y="5896" font-size="26" fill="#5b5953">predicts a PayPal decision.</text>
+</svg>

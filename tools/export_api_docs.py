@@ -112,6 +112,67 @@ def describe(spec):
 
 
 SESSION_PATH = "/api/v1/demo/sessions"
+
+# Synthetic, privacy-safe examples for the developer portal. Every value is made up: masked codes, no real ids, no emails, no hashes.
+# They are written into the media types after describe(), so regeneration is deterministic. Runtime behaviour is untouched.
+_MONEY = {"currency_code": "USD", "value": "42.50"}
+_DISPUTE_META = {"source": "synthetic_fixture", "data_source_label": "Fixture", "environment": "sandbox", "evidence_class": "SYNTHETIC_FIXTURE",
+                 "observed_at": "2026-10-07T09:30:00Z", "provider_submission": "NOT_PERFORMED", "readback": "GET_LIST", "paypal_debug_id": None}
+_DISPUTE_RECORD = {"dispute_id": "PP-R-BNP-XXXX7173", "reason": "MERCHANDISE_OR_SERVICE_NOT_RECEIVED", "status": "WAITING_FOR_SELLER_RESPONSE",
+                   "dispute_life_cycle_stage": "INQUIRY", "dispute_amount": _MONEY, "create_time": "2026-10-01T08:00:00Z",
+                   "update_time": "2026-10-02T08:00:00Z", "seller_response_due_date": "2026-10-15T08:00:00Z", "dispute_state": "OPEN_INQUIRIES"}
+JSON = "application/json"
+EXAMPLES = {
+    ("GET", "/api/v1/health"): {"200": {"status": "ok", "mode": "demo", "version": "0.0.0-example", "source": "synthetic"}},
+    ("GET", "/api/v1/connections"): {"200": {"mode": "hosted_demo", "sandbox_reads": True}},
+    ("POST", SESSION_PATH): {"201": {"session_id": "sess-example-0001", "csrf_token": "csrf-example-0001", "source": "synthetic",
+                                     "expires_at": "2026-10-07T10:30:00Z"}},
+    ("POST", "/api/v1/demo/inject"): {"request": {"scenario": "burst"}},
+    ("GET", "/api/v1/paypal/status"): {"200": {"configured": False, "status": "not_configured", "environment": "sandbox",
+                                              "last_verified_at": None, "source": "paypal_sandbox", "evidence_receipt": None}},
+    ("GET", "/api/v1/paypal/disputes"): {"200": dict(_DISPUTE_META, items=[_DISPUTE_RECORD])},
+    ("GET", "/api/v1/paypal/disputes/{dispute_id}"): {"path": {"dispute_id": "PP-R-BNP-XXXX7173"}, "200": dict(
+        _DISPUTE_RECORD, source="synthetic_fixture", data_source_label="Fixture", environment="sandbox", evidence_class="SYNTHETIC_FIXTURE",
+        observed_at="2026-10-07T09:30:00Z", provider_submission="NOT_PERFORMED", readback="GET_DETAIL", paypal_debug_id=None,
+        disputed_transactions=[{"seller_transaction_id": "TXN-EXAMPLE-0001", "gross_amount": _MONEY, "seller_protection_eligible": True,
+                                "transaction_status": "COMPLETED"}],
+        evidences=[{"evidence_type": "PROOF_OF_FULFILLMENT", "source": "REQUESTED_FROM_SELLER", "action": None, "date": "2026-10-01T08:00:00Z"}])},
+    ("POST", "/api/v1/cases/route"): {"request": {"text": "handmade ceramic coffee mug"}},
+    ("POST", "/api/v1/country-rules/check"): {"request": {"seller_country": "TW", "buyer_country": "US", "account_type": "business",
+                                                          "checkout": "paypal_account", "amount": "120.00", "currency": "USD", "goods_tags": []}},
+    ("POST", "/api/v1/policy/assess"): {"request": {"jurisdiction": "US", "theme": "source_compliance", "as_of": "2026-10-07T00:00:00Z",
+                                                    "observation_max_age_days": 30}},
+    ("POST", "/api/v1/aup/review"): {"request": {"description": "Handmade ceramic coffee mug, shipped in a padded box"}},
+    ("POST", "/api/v1/paypal/disputes/provide-evidence"): {"request": {"dispute_id": "PP-R-BNP-XXXX7173", "case_ref": "case-ref-001", "submit": False}},
+}
+
+
+def add_examples(spec):
+    """Write the EXAMPLES into the media types, add the hosted 503 refusal, and describe the 422 body the application really returns."""
+    from app.demo_mode import DISABLED_ROUTES, HOSTED_DEMO_MESSAGE
+    invalid = {"error": {"code": "schema_invalid", "message": "The request does not match the accepted contract."}}
+    refused = {"error": {"code": "hosted_demo_disabled", "message": HOSTED_DEMO_MESSAGE}}
+    ref = {"$ref": "#/components/schemas/ErrorBody"}
+    for path, methods in spec["paths"].items():
+        for method, operation in methods.items():
+            key = (method.upper(), path)
+            responses = operation.setdefault("responses", {})
+            if "422" in responses:  # the application answers its own error body, not FastAPI's default list
+                responses["422"] = {"description": "The request does not match the accepted contract (schema_invalid).",
+                                    "content": {JSON: {"schema": copy.deepcopy(ref), "example": copy.deepcopy(invalid)}}}
+            if key in DISABLED_ROUTES:
+                responses["503"] = {"description": "Hosted demo only: this route makes no provider call (hosted_demo_disabled).",
+                                    "content": {JSON: {"schema": copy.deepcopy(ref), "example": copy.deepcopy(refused)}}}
+            sample = EXAMPLES.get(key, {})
+            if "request" in sample:
+                operation["requestBody"]["content"][JSON]["example"] = copy.deepcopy(sample["request"])
+            for code in ("200", "201"):
+                if code in sample:
+                    responses[code].setdefault("content", {}).setdefault(JSON, {})["example"] = copy.deepcopy(sample[code])
+            for parameter in operation.get("parameters", []):
+                if parameter.get("in") == "path" and parameter.get("name") in sample.get("path", {}):
+                    parameter["example"] = sample["path"][parameter["name"]]
+
 PATH_SAMPLES = {"case_ref": "case-ref-001", "dispute_id": "PP-D-00000001"}
 # Routes that reach PayPal Sandbox or a model when the operator has configured one; the run collection leaves them out.
 PROVIDER_PATHS = ("/api/v1/ai/evidence-brief", "/api/v1/studio/agent-turn", "/api/v1/guide/turn", "/api/v1/guide/review",
@@ -310,6 +371,7 @@ def build():
     spec["info"]["description"] = ("API of the local TradeGlot console (127.0.0.1:8000). It uses synthetic data, expects the demo "
                                    "session headers the console sets, and the hosted demo answers 503 on every route that would reach PayPal.")
     describe(spec)
+    add_examples(spec)
     items = [full_item(path, method, operation) for path in sorted(spec["paths"]) for method, operation in sorted(spec["paths"][path].items())]
     items.sort(key=lambda item: item["name"] != "POST " + SESSION_PATH)  # stable: the session request first, the rest in path order
     usage = ("A collection-level pre-request script adds the Origin header and the X-Demo-Session / X-CSRF-Token headers; the first "

@@ -192,7 +192,7 @@ Screens from the 2:50 demo (taken before the rename, so the app header in them r
 - ![The confirmation popup before a question goes to the AI model (local live mode): plain words, the cost and the daily cap, Cancel focused first](docs/submission/screens/delegate_confirm_popup.jpg)
 - ![The downloaded evidence pages: pseudonymized records, the pack's own note, PayPal's before/after readback](docs/submission/screens/evidence_pages.png)
 
-More diagrams: [architecture](docs/submission/diagrams/architecture_overview.png) ([simplified](docs/submission/diagrams/architecture_simple.png)), [evidence guide funnel](docs/submission/diagrams/evidence_guide_funnel.png), [the nine checks before evidence is sent to PayPal](docs/submission/diagrams/paypal_write_guards.png) and [a downloaded review ZIP, re-hashed and verified](docs/submission/diagrams/review_zip_verified.png).
+More diagrams: [architecture](docs/submission/diagrams/architecture_overview.png) ([simplified](docs/submission/diagrams/architecture_simple.png)), [where each sponsor tool sits, with its controls](docs/submission/diagrams/sponsor_placement_map.png), [evidence guide funnel](docs/submission/diagrams/evidence_guide_funnel.png), [the nine checks before evidence is sent to PayPal](docs/submission/diagrams/paypal_write_guards.png) and [a downloaded review ZIP, re-hashed and verified](docs/submission/diagrams/review_zip_verified.png).
 
 ## Architecture and tools at a glance
 
@@ -443,9 +443,24 @@ Each Channel3 path has its own process-local call ceiling with no retry: 20 call
 
 The built console has a web manifest, icons and a hand-written service worker, so a browser can install it as an app. The worker never intercepts `/api/` (in any casing or encoding, for any method) and never writes an `/api/` response to Cache Storage. It caches only the shell and hashed assets, and when the local API cannot be reached a navigation shows an offline page that says the console needs the local API. The development server on port 5173 never registers a worker. Not verified: a real device install, iOS Safari, a live https host; tests: `tests/frontend_pwa_contract.mjs`, `tests/test_console_static.py`.
 
+### 90-second tour of the AG Grid, AG Charts and AG Studio controls
+
+Open the [hosted demo](https://payguard-demo-j2b3.onrender.com) (the first load can take a minute to wake up). Everything below uses synthetic data and sends nothing.
+
+1. **0:00** Step 01: press "Run the step 1 example".
+2. **0:15** Step 02: press "Next", then "Load sales burst", and open the chart fold. On the hourly chart press "Highlight peak hour" (a line under the chart names the hour and the amount), then "Highlight hours above the line"; "Reset" clears both.
+3. **0:35** Press the "Orders table" tab (AG Grid). The amount chips show how many of the 50 orders fall in each band (under 8.00, 8.00 to 11.99, 12.00 or more); press one and the grid filters itself. "Highlight orders of 12.00 or more" marks those rows. The bands are not a risk score. Sort or filter any column, then "Reset".
+4. **1:00** Open the [evidence dashboard](https://payguard-demo-j2b3.onrender.com/dashboard.html) (AG Studio). Press one of the four "Replay" buttons: the recorded tool calls (view_schema, execute_query, complete_task) play one by one, then the recorded answer appears. It is labelled "Recorded live run, no model call", because the hosted site makes no model calls.
+
+[Where each sponsor tool sits, with its controls](docs/submission/diagrams/sponsor_placement_map.png) shows every control above on one map.
+
 ### Evidence deadline board (Bryntum Scheduler)
 
 Step 03 has an "Evidence deadline board": one row per dispute case on a Bryntum Scheduler whose case data is read only (the board's label reads "case data read only"), with the case's evidence events (payment, order record, delivery, messages, claim opened) as milestones and the seller response window as a bar up to the due date. Each row shows the due date, evidence readiness (present/required requirements) and the amount when the case data has one. A case due within 3 days that still has missing evidence is highlighted. Everything comes from the case queue and the drafts the console already fetched, and those case events are locked. Each case also gets one "Collect evidence" bar that can be dragged or resized in whole hours (or moved with Shift/Alt and the arrow keys); a plan that starts before now or ends after the due date snaps back with a message. A "now" line and each case's due line are drawn by the console with Community calls (the TimeRanges feature is not in the Community tier). The plan is kept only in this browser tab (sessionStorage) and is never sent; "Reset plans" clears it. A plain list carries the same facts and stays readable on a phone, where the timeline scrolls sideways inside its own box. The board uses only the MIT-licensed Community tier (`@bryntum/core-community`, `@bryntum/scheduler-community` and `@bryntum/scheduler-react-community`, pinned at `8.0.0`) and loads as a separate lazy chunk; the build refuses any trial, Business, Enterprise or non-MIT Bryntum package. The licence reading is in `docs/BRYNTUM_LICENSE_CHECK.md`; tests for the board: `tests/frontend_bryntum_board_contract.mjs` and `tests/frontend_bryntum_board_render.mjs` (a headless-Chromium render that prints SKIP and exits 0 when Playwright is not installed). `tests/frontend_optional_timeline.mjs` and `tests/frontend_bryntum_render.mjs` cover the separate optional timeline harness, which the console does not mount.
+
+![Dragging a Collect evidence bar on the Bryntum board in the hosted demo: a tooltip shows the new start and end, and the bar moves](docs/submission/sponsor_assets/bryntum_drag.gif)
+
+*Recorded against the hosted demo on 2026-11-09 (20 seconds of the page, cropped). The plan stays in the browser tab; "Download my plan (.ics)" writes it to a calendar file in the page.*
 
 ## How the guide was stress-tested
 

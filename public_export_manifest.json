@@ -1,11 +1,11 @@
 {
-  "created_at_utc": "2026-11-09T04:36:37Z",
+  "created_at_utc": "2026-11-09T05:02:47Z",
   "dependency_locks": {
     "frontend_npm": "0f98893564efb5556cc0a92710feedcb9da085108f9668fee93f29940b87f09d",
     "gemini_python": "36554331392d6102519a4ead5778704c4ff89e79da6bb9d6648b656f130724bb",
     "root_python": "bd163e5de790527ec4b5486ec884463c40fd8331a00e122d27f65de0938a270a"
   },
-  "file_count": 416,
+  "file_count": 420,
   "files": [
     {
       "bytes": 662,
@@ -43,11 +43,11 @@
       "source_sha256": "62559450a061410394f0cac8c43083a999f045200e5ad5c18c9e15096ab128be"
     },
     {
-      "bytes": 97621,
+      "bytes": 99471,
       "path": "README.md",
-      "sha256": "987c884c208d4d71dfb60fe3c8406c77cccc861b037bcd0bff7860f2b5e8a327",
+      "sha256": "ba95588b70868e39641808f53129463feb3b7e78c33f32caaee351dbb10f5ce8",
       "source_path": "README.md",
-      "source_sha256": "987c884c208d4d71dfb60fe3c8406c77cccc861b037bcd0bff7860f2b5e8a327"
+      "source_sha256": "ba95588b70868e39641808f53129463feb3b7e78c33f32caaee351dbb10f5ce8"
     },
     {
       "bytes": 12588,
@@ -295,11 +295,11 @@
       "source_sha256": "08d7b1e182fc21060b474093a61eb87d29c4ed5ef35529093491cec959cded82"
     },
     {
-      "bytes": 9362,
+      "bytes": 10187,
       "path": "docs/CHANNEL3_NOTES.md",
-      "sha256": "22bc4f2dd04fd7bfcd57681ce3090708931713e1c06c037211000066aacb1de9",
+      "sha256": "2e28bf5e1ce5aa82c1fea0bea9d48c075ca4f3de2902c8943781309b6d9f360e",
       "source_path": "docs/CHANNEL3_NOTES.md",
-      "source_sha256": "22bc4f2dd04fd7bfcd57681ce3090708931713e1c06c037211000066aacb1de9"
+      "source_sha256": "2e28bf5e1ce5aa82c1fea0bea9d48c075ca4f3de2902c8943781309b6d9f360e"
     },
     {
       "bytes": 3731,
@@ -323,11 +323,11 @@
       "source_sha256": "22e9f29809b869212f25c8aa1095dc0ac37934d582aa02c46befe801fb2a3c9a"
     },
     {
-      "bytes": 205844,
+      "bytes": 219357,
       "path": "docs/api/openapi.json",
-      "sha256": "edf5c2cac4489691da41a46f73193a41ec500f8cfae14b84991c2df5d96d028d",
+      "sha256": "feb1f07fabe950e10cf0e3fc033a6f57b9d29e67ced44fd086295db3cd0b27b4",
       "source_path": "docs/api/openapi.json",
-      "source_sha256": "edf5c2cac4489691da41a46f73193a41ec500f8cfae14b84991c2df5d96d028d"
+      "source_sha256": "feb1f07fabe950e10cf0e3fc033a6f57b9d29e67ced44fd086295db3cd0b27b4"
     },
     {
       "bytes": 42926,
@@ -486,9 +486,9 @@
     {
       "bytes": 8414,
       "path": "docs/evidence/HOW_NUMBERS_WERE_COUNTED.md",
-      "sha256": "d63fca7a941ab8679cc6fdb7bd0973956fd3e2606d7165af6fba237152d1ecfb",
+      "sha256": "da4353262277b245f3508f5f2202a4e8763ea9fb15a6d9e0c54176f8cd0f164f",
       "source_path": "docs/evidence/HOW_NUMBERS_WERE_COUNTED.md",
-      "source_sha256": "d63fca7a941ab8679cc6fdb7bd0973956fd3e2606d7165af6fba237152d1ecfb"
+      "source_sha256": "da4353262277b245f3508f5f2202a4e8763ea9fb15a6d9e0c54176f8cd0f164f"
     },
     {
       "bytes": 1692,
@@ -608,6 +608,13 @@
       "sha256": "85505194eb11308c32fd10ebc8340570d96579397a25fbd76a00b4e6ada9cd7b",
       "source_path": "docs/evidence/TEST_RUN_20261108.md",
       "source_sha256": "85505194eb11308c32fd10ebc8340570d96579397a25fbd76a00b4e6ada9cd7b"
+    },
+    {
+      "bytes": 1370,
+      "path": "docs/evidence/channel3_category_receipts_20261109.json",
+      "sha256": "8c9263d2574d23053533c0688d34064f234b675638f3c503dba7c7d8e878eaeb",
+      "source_path": "docs/evidence/channel3_category_receipts_20261109.json",
+      "source_sha256": "8c9263d2574d23053533c0688d34064f234b675638f3c503dba7c7d8e878eaeb"
     },
     {
       "bytes": 1484,
@@ -806,6 +813,20 @@
       "source_sha256": "9cff66ace80f3dcabd2a450bf55a4086e82d5a86b0f643c1d3a65784c8f1b6f1"
     },
     {
+      "bytes": 1861455,
+      "path": "docs/submission/diagrams/sponsor_placement_map.png",
+      "sha256": "479ce187d375625017986bfc167aa1319a567ab27a099dd280d3981370fb3250",
+      "source_path": "docs/submission/diagrams/sponsor_placement_map.png",
+      "source_sha256": "479ce187d375625017986bfc167aa1319a567ab27a099dd280d3981370fb3250"
+    },
+    {
+      "bytes": 24881,
+      "path": "docs/submission/diagrams/sponsor_placement_map.svg",
+      "sha256": "f81ad728a53ef835ba524ae86b70a464017b678a3763117909d485cbe9e62b90",
+      "source_path": "docs/submission/diagrams/sponsor_placement_map.svg",
+      "source_sha256": "f81ad728a53ef835ba524ae86b70a464017b678a3763117909d485cbe9e62b90"
+    },
+    {
       "bytes": 130383,
       "path": "docs/submission/payguard_judge_overview.png",
       "sha256": "faae71e1e8f3170ce031acc10ae57d9b028b5b7efc5edeae2527e226d1ad488e",
@@ -902,6 +923,13 @@
       "sha256": "ccd8285d36b0368afc1f3fc98f1a00113aa9b692e27450caad1631827c5d24f1",
       "source_path": "docs/submission/sponsor_assets/bryntum_board_phone.png",
       "source_sha256": "ccd8285d36b0368afc1f3fc98f1a00113aa9b692e27450caad1631827c5d24f1"
+    },
+    {
+      "bytes": 1300110,
+      "path": "docs/submission/sponsor_assets/bryntum_drag.gif",
+      "sha256": "1f4e37078832bc2b3287f474b61ed0e8424568a5e602bf3e0aafe4aa59f85c07",
+      "source_path": "docs/submission/sponsor_assets/bryntum_drag.gif",
+      "source_sha256": "1f4e37078832bc2b3287f474b61ed0e8424568a5e602bf3e0aafe4aa59f85c07"
     },
     {
       "bytes": 24569,
@@ -2759,11 +2787,11 @@
       "source_sha256": "0d9bc04fee0ad12622326c03a74a116ce14ef80c47c4608c219a7c4c241a2e62"
     },
     {
-      "bytes": 39056,
+      "bytes": 39289,
       "path": "tools/build_public_candidate.py",
-      "sha256": "a8b9047a1e87826a443420b2711bc0ff217312a05cd2e92937eb961719cc5aee",
+      "sha256": "b27226b968bdee977ee149f8ec40977d46fde420e9aa3671549a3f4eac96d161",
       "source_path": "tools/build_public_candidate.py",
-      "source_sha256": "a8b9047a1e87826a443420b2711bc0ff217312a05cd2e92937eb961719cc5aee"
+      "source_sha256": "b27226b968bdee977ee149f8ec40977d46fde420e9aa3671549a3f4eac96d161"
     },
     {
       "bytes": 7653,
@@ -2787,11 +2815,11 @@
       "source_sha256": "c8c2525289c5677f99a4105a844aa89e847f95a0ba01f70d0696ae68d134ff77"
     },
     {
-      "bytes": 23113,
+      "bytes": 28592,
       "path": "tools/export_api_docs.py",
-      "sha256": "82db0f06cd0c4d10902e76ca16387d8487ea5162066484474f3e36f5e42c37ab",
+      "sha256": "4f4dfbc3981de35d325fffdaf32b5d6bfd586a91b053d80c6125a9fde3020c52",
       "source_path": "tools/export_api_docs.py",
-      "source_sha256": "82db0f06cd0c4d10902e76ca16387d8487ea5162066484474f3e36f5e42c37ab"
+      "source_sha256": "4f4dfbc3981de35d325fffdaf32b5d6bfd586a91b053d80c6125a9fde3020c52"
     },
     {
       "bytes": 12467,
@@ -2880,9 +2908,9 @@
     {
       "bytes": 14792,
       "path": "tools/verify_public_numbers.py",
-      "sha256": "a5bcbb7344f19308b63460f55f391665d7b7a53d551534489f4f923721c76520",
+      "sha256": "9f1fc4ccb0867cc2b466a864baddb96ad83e887f3fd1f38d6baff68391d0d679",
       "source_path": "tools/verify_public_numbers.py",
-      "source_sha256": "a5bcbb7344f19308b63460f55f391665d7b7a53d551534489f4f923721c76520"
+      "source_sha256": "9f1fc4ccb0867cc2b466a864baddb96ad83e887f3fd1f38d6baff68391d0d679"
     },
     {
       "bytes": 87,
@@ -2925,8 +2953,8 @@
     "scope": "RECORDED_OWNER_RIGHTS_AND_ENTRANT_ELIGIBILITY"
   },
   "package_digest_algorithm": "sha256(sorted utf-8 '<file_sha256>  <relative_path>\\n' records; manifest and detached hash excluded)",
-  "package_digest_sha256": "250ea176c96a46013c465062951dbeddd0a7b0fab853d3ca5c272c1eddafb23b",
-  "public_artifact_id": "payguard-public-source-250ea176c96a4601",
+  "package_digest_sha256": "5fb77e8f62d4b0ee517d0925090431c735ea3101a403bf98e740bc7b1e873520",
+  "public_artifact_id": "payguard-public-source-5fb77e8f62d4b0ee",
   "publication_authorized": false,
   "raw_bounded_prompt_disclosure": {
     "intent": "INTENTIONAL_PUBLIC_EXECUTABLE_PRODUCT_SOURCE",

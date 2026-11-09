@@ -132,3 +132,7 @@ x-api-key: <CHANNEL3_API_KEY>
   The file holds the five recordings made on 2026-11-01; with an empty file the demo would show the lookup as off.
 - Receipts of the real calls (time, HTTP status, latency, card count, sha256 of the raw reply; no key,
   no raw reply) go to `docs/evidence/channel3_receipts_v1.json`.
+
+## Category call attempt (2026-11-09)
+
+Four real calls to `GET /v1/categories/search` (the optional category signal) were made with the project's own adapter, using the same API key that had worked for product search earlier that day. All four came back **HTTP 403** (about 0.6 s each), which the adapter reports as UNAVAILABLE / `upstream_error`. The documented error statuses for this endpoint are 401, 402, 422 and 500, so a 403 is not explained by the documentation we read; we did not find out why and did not retry (the receipts are in `docs/evidence/channel3_category_receipts_20261109.json`: query, time, status, latency, reply hash; no key and no reply body). The category signal therefore has no successful live call to show. The Channel3 product card (product search) does: see `channel3_receipts_20261109.json`.
