@@ -31,8 +31,8 @@ PUBLIC_HOST_ENV = "PAYGUARD_PUBLIC_HOST"
 HOSTED_READONLY_ENV = "PAYGUARD_HOSTED_READONLY_SANDBOX"
 HOSTED_READ_BUDGET_CODE = "hosted_read_budget_exceeded"
 # Process-wide cap on every call the hosted demo sends to PayPal (OAuth connect, list, detail), all visitors together.
-# No daily cap. The per-minute guard stays under PayPal's observed Sandbox limit (over 50 requests a minute from one IP
-# is blocked for about five minutes), so a burst of visitors cannot get the hosting address blocked.
+# No daily cap. PayPal does not publish exact rate limits (developer.paypal.com/api/rate-limiting); a 429 from PayPal can
+# follow traffic spikes, so a modest per-minute guard remains so that a burst of visitors cannot flood the Sandbox.
 HOSTED_READS_PER_MINUTE = 40
 HOSTED_READS_PER_DAY = None
 # The hosted page never shows a real dispute number: it shows a code (for example PP-R-BNP-XXXX7173). The code -> real
