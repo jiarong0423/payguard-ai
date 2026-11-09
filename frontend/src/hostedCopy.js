@@ -49,6 +49,8 @@ function baseHostedCopy(chooser) {
 // every write stays off. Without it the text above is returned unchanged.
 export function hostedCopy(chooser, sandboxReads = false) {
   const copy = baseHostedCopy(chooser);
+  // Not yet known (null): no claim either way; the pill never says "no PayPal calls" while the flag could still be on.
+  if (sandboxReads === null) return { ...copy, pill: 'Hosted demo', intro: 'This public copy runs the same code. Its PayPal Sandbox mode is being checked.' };
   if (sandboxReads !== true) return copy;
   return {
     ...copy,

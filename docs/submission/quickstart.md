@@ -16,7 +16,7 @@ Status: the Devpost project is submitted and the 2:50 video is public. The compl
 
 No install, synthetic data plus read-only Sandbox reads. The first visit can take about a minute while the free server wakes. Button labels may be reworded before judging.
 
-1. Open the [start page](https://payguard-demo-j2b3.onrender.com/start.html) and press **Run the step 1 example** in step 01. Expect "This sale is likely to be stopped.", each row linked to its source.
+1. Open the [start page](https://payguard-demo-j2b3.onrender.com/start.html) and press **Run the step 1 example** in step 01. Expect "A rule may stop this sale.", each row linked to its source.
 2. Open step 03, select a case, press **Prepare evidence draft**, then **Download review ZIP**.
 3. Open **Proof** in the top bar ([proof.html](https://payguard-demo-j2b3.onrender.com/proof.html)): each claim, how it was shown, the date and the source file.
 
@@ -70,7 +70,7 @@ For a recorded take, start a fresh backend so each stage has its single availabl
 
 In the console this stage is titled **Policy pre-check** (step 01).
 
-1. Open step 01 **Policy pre-check**. Optionally, under **Where are you shipping from and to?**, pick **Ships from** and **Ships to**, tick the goods and select **Check country rules**. A ban shows **This sale is likely to be stopped.** and the server refuses the draft (HTTP 409); a ban that binds only the post shows **The post will not carry this item.** with **Continue with another carrier**. For the draft in step 8, use a route and goods with no stop.
+1. Open step 01 **Policy pre-check**. Optionally, under **Where are you shipping from and to?**, pick **Ships from** and **Ships to**, tick the goods and select **Check country rules**. A ban shows **A rule may stop this sale.** and the server refuses the draft (HTTP 409); a ban that binds only the post shows **The post will not carry this item.** with **Continue with another carrier**. For the draft in step 8, use a route and goods with no stop.
 2. Select **High-risk Claim**, then **Run Policy Check**. Confirm that the result is `REVIEW_SIGNAL` and the official PayPal US AUP link is visible.
 3. In the **PayPal Sandbox draft (optional)** section (it opens once a check result exists), check **I reviewed the description and amount and confirm that this action creates a Sandbox draft only.**, then select **Confirm Draft Context**. The warning dialog now opens.
 4. In the warning dialog, verify the three available choices: **Return to edit**, **Cancel flow**, and **Acknowledge and continue**.

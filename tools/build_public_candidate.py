@@ -129,6 +129,7 @@ EXACT_FILES = (
     "tools/export_api_docs.py",
     "docs/api/openapi.json",
     "docs/api/postman_collection.json",
+    "docs/api/postman_run_collection.json",
     "docs/api/postman_readonly_subset.json",
     "docs/evidence/POSTMAN_RUN_20261109.md",
     "tools/mcp_interop_check.py",

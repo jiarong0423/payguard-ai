@@ -369,7 +369,8 @@ export default function App() {
   // True only when the backend says this is the hosted demo; unknown or failed reads keep the local console.
   const [hosted, setHosted] = useState(false);
   // True only when /connections says the hosted demo may make read-only Sandbox calls (connect, list, detail).
-  const [sandboxReads, setSandboxReads] = useState(false);
+  // null until GET /connections has answered: the top bar then makes no claim about PayPal calls either way.
+  const [sandboxReads, setSandboxReads] = useState(null);
   const [velocityFold, setVelocityFold] = useState(false);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState('');

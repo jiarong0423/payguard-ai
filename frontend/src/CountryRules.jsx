@@ -39,9 +39,9 @@ function withGloss(sentence, seen) {
   }
   return out;
 }
-// (optimise r24) Clock time for the before/after card ("Stopped at 10:02 → Clear at 10:04"), local 24-hour time.
+// (optimise r24) Clock time for the before/after card ("Stopped at 10:02 → No listed rule matched at 10:04"), local 24-hour time.
 const clockTime = (ms) => new Date(ms).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
-const verdictWord = (result) => (result.blocked ? 'Stopped' : result.findings.some(isPostalBan) ? 'Draft allowed (other carrier)' : 'Clear');
+const verdictWord = (result) => (result.blocked ? 'Stopped' : result.findings.some(isPostalBan) ? 'Draft allowed (other carrier)' : 'No listed rule matched');
 // A rule row reads "{Country} {side} ({tier}): {rule}. [Statute Article]". The seller reads the plain sentence
 // first; the scope and the statute move to a small second line and the source link (review r1 P0.4).
 function splitRule(text) {
@@ -145,7 +145,7 @@ function Verdict({ result, names, tags, onEdit, onContinue }) {
   const noGoods = tags.length === 0 && <span className="country-verdict-line" data-testid="country-no-goods">No goods ticked: account and shipping rules only.</span>;
   // One next step under the verdict (plan r2 E19): change the goods after a Stop, or go on to the draft.
   if (result.blocked) {
-    return <><strong className="country-verdict-big">This sale is likely to be stopped.</strong>
+    return <><strong className="country-verdict-big">A rule may stop this sale.</strong>
       <span className="country-verdict-line">No draft: {plural(block.length, 'rule')} stop{block.length === 1 ? 's' : ''} {seller} → {buyer}.</span>{noGoods}
       <span className="country-verdict-next"><button type="button" className="button button-secondary" data-testid="country-edit-item" onClick={() => onEdit(accountStop)}>{accountStop ? 'Change account' : 'Edit item'}</button></span></>;
   }

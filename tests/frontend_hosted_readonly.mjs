@@ -53,6 +53,8 @@ assert.ok(app.includes("paused: 'Refresh paused."), 'one paused notice');
 assert.equal(hostedCopy(null).pill, 'Hosted demo · no PayPal calls');
 assert.equal(hostedCopy({ chooser_mode: 'keyword', model_requested: false }, false).pill, 'Hosted demo · rules only · no PayPal calls');
 assert.ok(!/no PayPal calls|never calls PayPal/.test(JSON.stringify(hostedCopy({ chooser_mode: 'keyword' }, true))), 'reads copy is honest');
+assert.equal(hostedCopy({ chooser_mode: 'keyword' }, null).pill, 'Hosted demo', 'before the connections answer the pill makes no PayPal claim');
+assert.ok(!/no PayPal calls|never calls PayPal/.test(JSON.stringify(hostedCopy(null, null))), 'unknown state claims nothing');
 // 6. The list shows the dispute id as the API returns it (masked by the server in hosted read-only mode, never masked twice).
 assert.ok(app.includes('<strong>{row.dispute_id}</strong>') && !/sandboxReads \? maskDisputeId/u.test(app), 'the list shows the id the API returned (the server already masks it in hosted read-only mode)');
 assert.ok(app.includes("onClick={() => loadProviderDispute(row.dispute_id)}"), 'the click still sends the real id');

@@ -33,7 +33,7 @@
 <rect x="60" y="360" width="580" height="12" rx="6" fill="#b5481f"/>
 <text x="84" y="410" font-size="30" fill="#1f1d1a" font-weight="700">Render</text>
 <text x="84" y="448" font-size="22" fill="#2c2a26">Hosted demo (free web service)</text>
-<text x="84" y="477" font-size="22" fill="#2c2a26">Workflows: one manual run, 4.2 s, receipt ok</text>
+<text x="84" y="477" font-size="22" fill="#2c2a26">Workflows: 3 manual runs, about 4 s each</text>
 <text x="84" y="506" font-size="22" fill="#2c2a26">Not scheduled; no nightly claim</text>
 <line x1="84" y1="518" x2="616" y2="518" stroke="#d9d2c4"/>
 <text x="84" y="544" font-size="22" fill="#b5481f" font-family="Menlo, Courier New, monospace">RENDER_WORKFLOW_RUN_20261109.md</text>
@@ -42,7 +42,7 @@
 <text x="694" y="410" font-size="30" fill="#1f1d1a" font-weight="700">AG Grid, Charts, Studio</text>
 <text x="694" y="448" font-size="22" fill="#2c2a26">Tables and charts in the 3-step console</text>
 <text x="694" y="477" font-size="22" fill="#2c2a26">Evidence dashboard with built-in agents</text>
-<text x="694" y="506" font-size="22" fill="#2c2a26">Agents run locally; hosted replays one run</text>
+<text x="694" y="506" font-size="22" fill="#2c2a26">Agents run locally; hosted replays 4 runs</text>
 <line x1="694" y1="518" x2="1226" y2="518" stroke="#d9d2c4"/>
 <text x="694" y="544" font-size="22" fill="#4338ca" font-family="Menlo, Courier New, monospace">AG_GRID_USAGE.md</text>
 <text x="694" y="569" font-size="22" fill="#4338ca" font-family="Menlo, Courier New, monospace">docs/AG_STUDIO_NOTES.md</text>
@@ -66,16 +66,16 @@
 <rect x="670" y="592" width="580" height="12" rx="6" fill="#4338ca"/>
 <text x="694" y="642" font-size="30" fill="#1f1d1a" font-weight="700">APIMatic</text>
 <text x="694" y="680" font-size="22" fill="#2c2a26">OpenAPI check: 345 errors fixed, 0 left</text>
-<text x="694" y="709" font-size="22" fill="#2c2a26">Portal, llms.txt and 7 SDKs made locally</text>
-<text x="694" y="738" font-size="22" fill="#2c2a26">Nothing published</text>
+<text x="694" y="709" font-size="22" fill="#2c2a26">Portal and llms.txt public; 7 SDKs local</text>
+<text x="694" y="738" font-size="22" fill="#2c2a26">Examples empty; docs only</text>
 <line x1="694" y1="750" x2="1226" y2="750" stroke="#d9d2c4"/>
 <text x="694" y="776" font-size="22" fill="#4338ca" font-family="Menlo, Courier New, monospace">APIMATIC_RUN_20261109.md</text>
 <rect x="1280" y="592" width="580" height="222" rx="16" fill="#ffffff" stroke="#b5481f" stroke-width="3"/>
 <rect x="1280" y="592" width="580" height="12" rx="6" fill="#b5481f"/>
 <text x="1304" y="642" font-size="30" fill="#1f1d1a" font-weight="700">Postman</text>
 <text x="1304" y="680" font-size="22" fill="#2c2a26">Collection of 37 requests imported</text>
-<text x="1304" y="709" font-size="22" fill="#2c2a26">Newman: 10 requests, 19 assertions, 0 failed</text>
-<text x="1304" y="738" font-size="22" fill="#2c2a26">27 requests not run (bodies or writes)</text>
+<text x="1304" y="709" font-size="22" fill="#2c2a26">Newman: 25 requests, 82 assertions, 0 failed</text>
+<text x="1304" y="738" font-size="22" fill="#2c2a26">21 of 37 operations; PayPal and AI routes not run</text>
 <line x1="1304" y1="750" x2="1836" y2="750" stroke="#d9d2c4"/>
 <text x="1304" y="776" font-size="22" fill="#b5481f" font-family="Menlo, Courier New, monospace">POSTMAN_RUN_20261109.md</text>
 <rect x="60" y="824" width="580" height="222" rx="16" fill="#ffffff" stroke="#4338ca" stroke-width="3"/>
@@ -90,6 +90,6 @@
 <rect x="670" y="824" width="1190" height="222" rx="16" fill="#fff3ea" stroke="#b5481f" stroke-width="3" stroke-dasharray="10,8"/>
 <text x="694" y="874" font-size="30" fill="#b5481f" font-weight="700">What this page does not claim</text>
 <text x="694" y="922" font-size="22" fill="#2c2a26">No benchmark and no production use.</text>
-<text x="694" y="956" font-size="22" fill="#2c2a26">Postman, Render and the official MCP: one run each.</text>
-<text x="694" y="990" font-size="22" fill="#2c2a26">Nothing was published. PayPal decides every outcome.</text>
+<text x="694" y="956" font-size="22" fill="#2c2a26">Official MCP: one run. Workflows: manual only.</text>
+<text x="694" y="990" font-size="22" fill="#2c2a26">The API portal is documentation only. PayPal decides every outcome.</text>
 </svg>

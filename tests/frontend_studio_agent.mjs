@@ -124,7 +124,7 @@ const run = {
 const recording = { schema_version: RECORDING_SCHEMA, recorded_at: '2026-11-02T10:00:00Z', model: 'gemini', source: 'gemini_live_local', affects_decision: false, runs: [run],
   final_layout: { page_id: 'readiness', widgets: { 'days-chart': { type: 'column-chart-grouped' } }, widget_layout: { 'days-chart': { xTrack: 0, yTrack: 99, xSpan: 12, ySpan: 14 } } } };
 assert.equal(validateRecording(structuredClone(recording)).runs.length, 1);
-assert.equal(recordingLabel(recording), 'Recorded on 2026-11-02 with Gemini; replayed here, no model call.');
+assert.equal(recordingLabel(recording), 'Recorded live run (Gemini, 2026-11-02), no model call here.');
 const clone = () => structuredClone(recording);
 for (const [label, mutate] of [
   ['extra field', (doc) => { doc.extra = 1; }],
@@ -252,12 +252,12 @@ const ownQuestion = await runAuditor({ delegate }, 'Which cases lack proof of de
 assert.equal(delegated.length, 1, 'fixed questions are never delegated');
 assert.match(ownQuestion.reply, /How I built this/u);
 const replayRunResult = await runAuditor({ recording }, DELEGATE_EXAMPLE);
-assert.match(replayRunResult.reply, /Recorded on 2026-11-02 with Gemini; replayed here, no model call\. The data agent's answer then: I added a column chart/u);
+assert.match(replayRunResult.reply, /Recorded live run \(Gemini, 2026-11-02\), no model call here\. The data agent's answer then: I added a column chart/u);
 assert.equal(replayRunResult.events.filter((event) => event.type === 'TOOL_CALL_START').length, 2);
 const offer = await runAuditor({ recording }, 'Something else entirely');
 assert.match(offer.reply, /can be replayed for: "Which reason code appears most often across the three cases\?"/u);
 assert.deepEqual(promptStarters({ mode: 'live' }).map((entry) => entry.prompt).slice(-2), [DELEGATE_EXAMPLE, 'Are the built-in agents on?']);
-assert.equal(promptStarters({ mode: 'replay', recording }).at(-2).label, `${DELEGATE_EXAMPLE} (recorded)`);
+assert.equal(promptStarters({ mode: 'replay', recording }).at(-2).label, `${DELEGATE_EXAMPLE} (recorded live run)`);
 
 // 5. Wiring -----------------------------------------------------------------------------------------------------
 const mainSource = read('frontend/src/dashboard/main.jsx');
@@ -338,3 +338,14 @@ if (chromium && existsSync(join(frontendRoot, 'node_modules', '.bin', 'vite'))) 
 }
 
 console.log(JSON.stringify({ status: 'PASS', adapter: 'closed', recording_schema: RECORDING_SCHEMA, browser: browserStage }));
+
+// Four recorded live runs (2026-11-09): the committed recording holds all four questions and replay finds each one.
+{
+  const committed = validateRecording(json('frontend/src/data/studio_agent_run_v1.json'));
+  const questions = ['Which reason code appears most often across the three cases?', 'Which case is due first?', 'What is the total disputed amount across the three cases?', 'Which case has the most missing evidence?'];
+  assert.deepEqual(committed.runs.map((entry) => entry.question), questions, 'four recorded questions, in order');
+  assert.equal(committed.recorded_at.slice(0, 10), '2026-11-09', 'recorded_at is the latest run date');
+  for (const question of questions) assert.ok(findRecordedRun(committed, question), `replay finds: ${question}`);
+  assert.deepEqual(promptStarters({ mode: 'replay', recording: committed }).filter((entry) => entry.label.endsWith('(recorded live run)')).map((entry) => entry.prompt), questions, 'each recorded question is a clickable starter');
+  assert.equal(recordingLabel(committed), 'Recorded live run (Gemini, 2026-11-09), no model call here.');
+}

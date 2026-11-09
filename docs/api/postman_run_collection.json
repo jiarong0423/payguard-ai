@@ -1,0 +1,1151 @@
+{
+ "event": [
+  {
+   "listen": "prerequest",
+   "script": {
+    "exec": [
+     "var base = pm.variables.get('baseUrl') || 'http://127.0.0.1:8000';",
+     "var origin = (base.match(/^[a-z]+:\\/\\/[^\\/]+/i) || [base])[0];",
+     "var isSession = pm.request.method === 'POST' && /\\/api\\/v1\\/demo\\/sessions$/.test(pm.request.url.getPath());",
+     "pm.request.headers.upsert({key: 'Origin', value: origin});",
+     "var sid = pm.collectionVariables.get('sessionId');",
+     "var csrf = pm.collectionVariables.get('csrfToken');",
+     "if (!isSession && sid) { pm.request.headers.upsert({key: 'X-Demo-Session', value: sid}); }",
+     "if (!isSession && csrf && pm.request.method !== 'GET') { pm.request.headers.upsert({key: 'X-CSRF-Token', value: csrf}); }"
+    ],
+    "type": "text/javascript"
+   }
+  }
+ ],
+ "info": {
+  "description": "25 requests that are safe in the default local demo mode (no PayPal key, no model key, no outside network). A collection-level pre-request script adds the Origin header and the X-Demo-Session / X-CSRF-Token headers; the first request creates the session and stores both values. Run it in order. Requests marked negative case are deliberate refusals and are expected to answer 4xx. Run: newman run postman_run_collection.json --env-var baseUrl=http://127.0.0.1:8000",
+  "name": "TradeGlot local console API - run collection",
+  "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+ },
+ "item": [
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test('session created (201, synthetic)', function () {",
+       "  pm.response.to.have.status(201);",
+       "  var j = pm.response.json();",
+       "  pm.expect(j.source).to.eql('synthetic');",
+       "  pm.expect(j.session_id).to.be.a('string').and.not.empty;",
+       "  pm.expect(j.csrf_token).to.be.a('string').and.not.empty;",
+       "  pm.collectionVariables.set('sessionId', j.session_id);",
+       "  pm.collectionVariables.set('csrfToken', j.csrf_token);",
+       "});"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "01 Create demo session",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "Starts a synthetic demo session; its id and CSRF token are stored in collection variables for every later request. Expected status 201.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "demo",
+      "sessions"
+     ],
+     "raw": "{{baseUrl}}/api/v1/demo/sessions"
+    }
+   }
+  },
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test(\"status is 200\", function () { pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });",
+       "pm.test(\"status is \\\"ok\\\"\", function () { pm.expect(pm.response.json()[\"status\"]).to.eql(\"ok\"); });",
+       "pm.test(\"source is \\\"synthetic\\\"\", function () { pm.expect(pm.response.json()[\"source\"]).to.eql(\"synthetic\"); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "02 Health",
+   "request": {
+    "description": "Liveness check; the only route that needs no session. Expected status 200.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "health"
+     ],
+     "raw": "{{baseUrl}}/api/v1/health"
+    }
+   }
+  },
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test(\"status is 200\", function () { pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });",
+       "pm.test(\"mode is \\\"local\\\"\", function () { pm.expect(pm.response.json()[\"mode\"]).to.eql(\"local\"); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "03 Connections",
+   "request": {
+    "description": "Deployment mode only; no key, no key presence. Expected status 200.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "connections"
+     ],
+     "raw": "{{baseUrl}}/api/v1/connections"
+    }
+   }
+  },
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test(\"status is 200\", function () { pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });",
+       "pm.test(\"source is \\\"synthetic\\\"\", function () { pm.expect(pm.response.json()[\"source\"]).to.eql(\"synthetic\"); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "04 Demo state",
+   "request": {
+    "description": "The session's synthetic transactions and velocity result. Expected status 200.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "demo",
+      "state"
+     ],
+     "raw": "{{baseUrl}}/api/v1/demo/state"
+    }
+   }
+  },
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test(\"status is 200\", function () { pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });",
+       "pm.test(\"source is \\\"synthetic\\\"\", function () { pm.expect(pm.response.json()[\"source\"]).to.eql(\"synthetic\"); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "05 Inject burst scenario",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{\n  \"scenario\": \"burst\"\n}"
+    },
+    "description": "Loads the synthetic burst of small payments into this session. Expected status 200.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "demo",
+      "inject"
+     ],
+     "raw": "{{baseUrl}}/api/v1/demo/inject"
+    }
+   }
+  },
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test(\"negative case: status is 422\", function () { pm.response.to.have.status(422); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });",
+       "pm.test(\"error.code is \\\"schema_invalid\\\"\", function () { pm.expect(pm.response.json()[\"error\"][\"code\"]).to.eql(\"schema_invalid\"); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "06 Inject unknown scenario (negative case)",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{\n  \"scenario\": \"bogus\"\n}"
+    },
+    "description": "Negative case: a scenario outside burst, dispute, reset is refused with 422 schema_invalid. Expected status 422.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "demo",
+      "inject"
+     ],
+     "raw": "{{baseUrl}}/api/v1/demo/inject"
+    }
+   }
+  },
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test(\"status is 200\", function () { pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });",
+       "pm.test(\"schema_version is \\\"payguard.country_rules.v1\\\"\", function () { pm.expect(pm.response.json()[\"schema_version\"]).to.eql(\"payguard.country_rules.v1\"); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "07 Country rules: countries",
+   "request": {
+    "description": "The ten supported countries and the goods tags. Expected status 200.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "country-rules",
+      "countries"
+     ],
+     "raw": "{{baseUrl}}/api/v1/country-rules/countries"
+    }
+   }
+  },
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test(\"status is 200\", function () { pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });",
+       "pm.test(\"blocked is false\", function () { pm.expect(pm.response.json()[\"blocked\"]).to.eql(false); });",
+       "pm.test(\"cross_border is true\", function () { pm.expect(pm.response.json()[\"cross_border\"]).to.eql(true); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "08 Country rules: check TW seller to US buyer",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{\n  \"seller_country\": \"TW\",\n  \"buyer_country\": \"US\",\n  \"account_type\": \"business\",\n  \"checkout\": \"paypal_account\",\n  \"amount\": \"120.00\",\n  \"currency\": \"USD\",\n  \"goods_tags\": []\n}"
+    },
+    "description": "A passing cross-border check with no restricted goods. Expected status 200.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "country-rules",
+      "check"
+     ],
+     "raw": "{{baseUrl}}/api/v1/country-rules/check"
+    }
+   }
+  },
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test(\"negative case: status is 422\", function () { pm.response.to.have.status(422); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });",
+       "pm.test(\"error.code is \\\"schema_invalid\\\"\", function () { pm.expect(pm.response.json()[\"error\"][\"code\"]).to.eql(\"schema_invalid\"); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "09 Country rules: unknown country (negative case)",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{\n  \"seller_country\": \"XX\",\n  \"buyer_country\": \"US\"\n}"
+    },
+    "description": "Negative case: a country code outside the ten is refused with 422. Expected status 422.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "country-rules",
+      "check"
+     ],
+     "raw": "{{baseUrl}}/api/v1/country-rules/check"
+    }
+   }
+  },
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test(\"status is 200\", function () { pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });",
+       "pm.test(\"schema_version is \\\"payguard.country_rules.v1\\\"\", function () { pm.expect(pm.response.json()[\"schema_version\"]).to.eql(\"payguard.country_rules.v1\"); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "10 Country rules: search",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{\n  \"query\": \"hold\",\n  \"limit\": 3\n}"
+    },
+    "description": "Clause search over the country rules pack. Expected status 200.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "country-rules",
+      "search"
+     ],
+     "raw": "{{baseUrl}}/api/v1/country-rules/search"
+    }
+   }
+  },
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test(\"status is 200\", function () { pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });",
+       "pm.test(\"match_status is \\\"NO_MATCH\\\"\", function () { pm.expect(pm.response.json()[\"match_status\"]).to.eql(\"NO_MATCH\"); });",
+       "pm.test(\"compliance_decision is \\\"NOT_MADE\\\"\", function () { pm.expect(pm.response.json()[\"compliance_decision\"]).to.eql(\"NOT_MADE\"); });",
+       "pm.collectionVariables.set(\"descriptionDigest\", pm.response.json()[\"description_digest\"]);",
+       "pm.collectionVariables.set(\"evaluationId\", pm.response.json()[\"evaluation_id\"]);"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "11 Acceptable-use review",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{\n  \"description\": \"Handmade ceramic coffee mug, shipped in a padded box\"\n}"
+    },
+    "description": "Keyword check of a synthetic product description; stores evaluation_id and description_digest for the next two requests. Expected status 200.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "aup",
+      "review"
+     ],
+     "raw": "{{baseUrl}}/api/v1/aup/review"
+    }
+   }
+  },
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test(\"status is 200\", function () { pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });",
+       "pm.test(\"status is \\\"OFF\\\"\", function () { pm.expect(pm.response.json()[\"status\"]).to.eql(\"OFF\"); });",
+       "pm.test(\"affects_decision is false\", function () { pm.expect(pm.response.json()[\"affects_decision\"]).to.eql(false); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "12 Acceptable-use category signal",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{\n  \"evaluation_id\": \"{{evaluationId}}\",\n  \"description\": \"Handmade ceramic coffee mug, shipped in a padded box\"\n}"
+    },
+    "description": "The optional category lookup is off in the default mode. Expected status 200.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "aup",
+      "category-signal"
+     ],
+     "raw": "{{baseUrl}}/api/v1/aup/category-signal"
+    }
+   }
+  },
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test(\"status is 200\", function () { pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });",
+       "pm.test(\"choice is \\\"RETURN_TO_EDIT\\\"\", function () { pm.expect(pm.response.json()[\"choice\"]).to.eql(\"RETURN_TO_EDIT\"); });",
+       "pm.test(\"external_action_authorized is false\", function () { pm.expect(pm.response.json()[\"external_action_authorized\"]).to.eql(false); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "13 Acceptable-use acknowledge",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{\n  \"evaluation_id\": \"{{evaluationId}}\",\n  \"description_digest\": \"{{descriptionDigest}}\",\n  \"choice\": \"RETURN_TO_EDIT\"\n}"
+    },
+    "description": "Records the seller's choice for the review above. Expected status 200.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "aup",
+      "acknowledge"
+     ],
+     "raw": "{{baseUrl}}/api/v1/aup/acknowledge"
+    }
+   }
+  },
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test(\"negative case: status is 422\", function () { pm.response.to.have.status(422); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });",
+       "pm.test(\"error.code is \\\"schema_invalid\\\"\", function () { pm.expect(pm.response.json()[\"error\"][\"code\"]).to.eql(\"schema_invalid\"); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "14 Acceptable-use empty description (negative case)",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{\n  \"description\": \"\"\n}"
+    },
+    "description": "Negative case: an empty description is refused with 422. Expected status 422.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "aup",
+      "review"
+     ],
+     "raw": "{{baseUrl}}/api/v1/aup/review"
+    }
+   }
+  },
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test(\"status is 200\", function () { pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });",
+       "pm.test(\"route is \\\"digital\\\"\", function () { pm.expect(pm.response.json()[\"route\"]).to.eql(\"digital\"); });",
+       "pm.test(\"decided_by is \\\"code\\\"\", function () { pm.expect(pm.response.json()[\"decided_by\"]).to.eql(\"code\"); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "15 Case route: digital goods",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{\n  \"text\": \"online course\"\n}"
+    },
+    "description": "Which evidence list applies to this kind of goods. Expected status 200.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "cases",
+      "route"
+     ],
+     "raw": "{{baseUrl}}/api/v1/cases/route"
+    }
+   }
+  },
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test(\"status is 200\", function () { pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });",
+       "pm.test(\"current_policy_applicability is \\\"NOT_ESTABLISHED\\\"\", function () { pm.expect(pm.response.json()[\"current_policy_applicability\"]).to.eql(\"NOT_ESTABLISHED\"); });",
+       "pm.test(\"advisory_only is true\", function () { pm.expect(pm.response.json()[\"advisory_only\"]).to.eql(true); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "16 Policy assess",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{\n  \"jurisdiction\": \"US\",\n  \"theme\": \"source_compliance\",\n  \"as_of\": \"2026-10-07T00:00:00Z\",\n  \"observation_max_age_days\": 30\n}"
+    },
+    "description": "Offline applicability summary over the pinned references; no model. Expected status 200.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "policy",
+      "assess"
+     ],
+     "raw": "{{baseUrl}}/api/v1/policy/assess"
+    }
+   }
+  },
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test(\"status is 200\", function () { pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });",
+       "pm.test(\"model_generation is \\\"NOT_RUN\\\"\", function () { pm.expect(pm.response.json()[\"model_generation\"]).to.eql(\"NOT_RUN\"); });",
+       "pm.test(\"semantic_entailment is \\\"NOT_EVALUATED\\\"\", function () { pm.expect(pm.response.json()[\"semantic_entailment\"]).to.eql(\"NOT_EVALUATED\"); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "17 Advisory evaluate",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{\n  \"jurisdiction\": \"US\",\n  \"theme\": \"source_compliance\",\n  \"as_of\": \"2026-10-07T00:00:00Z\",\n  \"observation_max_age_days\": 30,\n  \"candidate_json\": \"{\\\"schema_version\\\": 1, \\\"jurisdiction\\\": \\\"US\\\", \\\"theme\\\": \\\"source_compliance\\\", \\\"as_of\\\": \\\"2026-10-07T00:00:00Z\\\", \\\"status\\\": \\\"manual_review\\\", \\\"advisory_only\\\": true, \\\"operational_authority\\\": \\\"REFERENCE_ONLY_NO_ACTION_AUTHORIZATION\\\", \\\"claims\\\": [{\\\"claim_id\\\": \\\"CLAIM_1\\\", \\\"claim_type\\\": \\\"policy_reference\\\", \\\"text\\\": \\\"The seller cites the pinned acceptable-use page.\\\", \\\"citation_chunk_ids\\\": [\\\"PP-US-AUP-POLICY\\\"]}]}\"\n}"
+    },
+    "description": "Offline structural gate over a candidate advisory; candidate_json is a JSON string. Expected status 200.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "advisory",
+      "evaluate"
+     ],
+     "raw": "{{baseUrl}}/api/v1/advisory/evaluate"
+    }
+   }
+  },
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test(\"status is 200\", function () { pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });",
+       "pm.test(\"status is \\\"references_found\\\"\", function () { pm.expect(pm.response.json()[\"status\"]).to.eql(\"references_found\"); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "18 References search",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{\n  \"query\": \"proof of delivery tracking\",\n  \"theme\": \"dispute_mediation\",\n  \"jurisdiction\": \"US\"\n}"
+    },
+    "description": "Search over the pinned official references. Expected status 200.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "references",
+      "search"
+     ],
+     "raw": "{{baseUrl}}/api/v1/references/search"
+    }
+   }
+  },
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test(\"status is 200\", function () { pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });",
+       "pm.test(\"started is false\", function () { pm.expect(pm.response.json()[\"started\"]).to.eql(false); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "19 Guide state",
+   "request": {
+    "description": "The evidence guide before it is started. Expected status 200.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "guide",
+      "state"
+     ],
+     "raw": "{{baseUrl}}/api/v1/guide/state"
+    }
+   }
+  },
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test(\"status is 200\", function () { pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });",
+       "pm.test(\"started is true\", function () { pm.expect(pm.response.json()[\"started\"]).to.eql(true); });",
+       "pm.test(\"scenario is \\\"dispute\\\"\", function () { pm.expect(pm.response.json()[\"scenario\"]).to.eql(\"dispute\"); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "20 Guide start",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{\n  \"scenario\": \"dispute\",\n  \"goods_type\": \"physical\"\n}"
+    },
+    "description": "Starts the dispute evidence guide for physical goods. Expected status 200.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "guide",
+      "start"
+     ],
+     "raw": "{{baseUrl}}/api/v1/guide/start"
+    }
+   }
+  },
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test(\"status is 200\", function () { pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });",
+       "pm.test(\"started is true\", function () { pm.expect(pm.response.json()[\"started\"]).to.eql(true); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "21 Guide form: ship date",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{\n  \"scenario\": \"dispute\",\n  \"item\": \"ship_date\",\n  \"value\": \"2026-10-01\"\n}"
+    },
+    "description": "Fills one closed form item; no model. Expected status 200.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "guide",
+      "form"
+     ],
+     "raw": "{{baseUrl}}/api/v1/guide/form"
+    }
+   }
+  },
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test(\"status is 200\", function () { pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });",
+       "pm.test(\"configured is false\", function () { pm.expect(pm.response.json()[\"configured\"]).to.eql(false); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "22 PayPal status",
+   "request": {
+    "description": "Reads the adapter state only; with no Sandbox keys it answers not_configured and makes no PayPal call. Expected status 200.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "paypal",
+      "status"
+     ],
+     "raw": "{{baseUrl}}/api/v1/paypal/status"
+    }
+   }
+  },
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test(\"status is 200\", function () { pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });",
+       "pm.test(\"content_logged is false\", function () { pm.expect(pm.response.json()[\"content_logged\"]).to.eql(false); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "23 AI usage",
+   "request": {
+    "description": "This session's AI audit log; empty because no model call was made. Expected status 200.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "ai",
+      "usage"
+     ],
+     "raw": "{{baseUrl}}/api/v1/ai/usage"
+    }
+   }
+  },
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test(\"status is 200\", function () { pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });",
+       "pm.test(\"built_in_agents is \\\"off\\\"\", function () { pm.expect(pm.response.json()[\"built_in_agents\"]).to.eql(\"off\"); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "24 Studio agent status",
+   "request": {
+    "description": "Built-in agents are off unless a model is configured. Expected status 200.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "GET",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "studio",
+      "agent-status"
+     ],
+     "raw": "{{baseUrl}}/api/v1/studio/agent-status"
+    }
+   }
+  },
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test(\"status is 200\", function () { pm.response.to.have.status(200); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });",
+       "pm.test(\"source is \\\"synthetic\\\"\", function () { pm.expect(pm.response.json()[\"source\"]).to.eql(\"synthetic\"); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "25 Reset demo",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{\n  \"scenario\": \"reset\"\n}"
+    },
+    "description": "Clears this session's demo state and guide answers. Expected status 200.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "demo",
+      "inject"
+     ],
+     "raw": "{{baseUrl}}/api/v1/demo/inject"
+    }
+   }
+  }
+ ],
+ "variable": [
+  {
+   "key": "baseUrl",
+   "value": "http://127.0.0.1:8000"
+  }
+ ]
+}

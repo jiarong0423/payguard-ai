@@ -97,17 +97,17 @@
 <rect x="40" y="860" width="420" height="190" rx="14" fill="#ffffff" stroke="#4f46e5" stroke-width="3"/>
 <text x="58" y="896" font-size="26" fill="#1f1e1b" font-weight="700">APIMatic</text>
 <text x="58" y="930" font-size="22" fill="#5b5953">validated OpenAPI: 345 → 0 errors</text>
-<text x="58" y="960" font-size="22" fill="#5b5953">local portal + SDKs, not published</text>
+<text x="58" y="960" font-size="22" fill="#5b5953">portal published; SDKs local</text>
 <text x="58" y="1020" font-size="22" fill="#4f46e5">APIMATIC_RUN_20261109.md</text>
 <rect x="468" y="860" width="420" height="190" rx="14" fill="#ffffff" stroke="#c2410c" stroke-width="3"/>
 <text x="486" y="896" font-size="26" fill="#1f1e1b" font-weight="700">Postman</text>
-<text x="486" y="930" font-size="22" fill="#5b5953">10 of 37 requests run with Newman</text>
-<text x="486" y="960" font-size="22" fill="#5b5953">19 assertions, 0 failed</text>
+<text x="486" y="930" font-size="22" fill="#5b5953">25 requests run with Newman</text>
+<text x="486" y="960" font-size="22" fill="#5b5953">82 assertions, 0 failed</text>
 <text x="486" y="1020" font-size="22" fill="#c2410c">POSTMAN_RUN_20261109.md</text>
 <rect x="896" y="860" width="520" height="190" rx="14" fill="#ffffff" stroke="#c2410c" stroke-width="3"/>
 <text x="914" y="896" font-size="26" fill="#1f1e1b" font-weight="700">Render</text>
 <text x="914" y="930" font-size="22" fill="#5b5953">hosted demo web service</text>
-<text x="914" y="960" font-size="22" fill="#5b5953">+ one Workflows run, 4.2 s</text>
+<text x="914" y="960" font-size="22" fill="#5b5953">+ Workflows runs: 3 x about 4 s</text>
 <text x="914" y="1020" font-size="22" fill="#c2410c">RENDER_WORKFLOW_RUN_20261109.md</text>
 <rect x="1424" y="860" width="446" height="190" rx="14" fill="#ffffff" stroke="#4a6a4e" stroke-width="3"/>
 <text x="1442" y="896" font-size="26" fill="#1f1e1b" font-weight="700">Our own MCP server</text>

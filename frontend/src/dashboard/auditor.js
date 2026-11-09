@@ -301,7 +301,7 @@ export function createEvidenceAuditor({ studio, getState, data, delegate = null,
           canClear: typeof clearSelections === 'function',
         });
         if (plan.intent === 'built_in') {
-          const recorded = recording ? ` A run recorded on ${recording.recorded_at.slice(0, 10)} can be replayed here: ask "${recording.runs[0].question}".` : '';
+          const recorded = recording ? ` ${recording.runs.length === 1 ? 'A recorded live run' : `${recording.runs.length} recorded live runs`} can be replayed here (no model call): ask ${recording.runs.map((run) => `"${run.question}"`).join(', ')}.` : '';
           yield* say(messageId, `${mode === 'live' ? BUILT_IN_LIVE : `${BUILT_IN_OFF}${recorded}`} I am the evidence auditor: I answer my own questions with code. ${BOUNDARY}`);
           yield { type: 'RUN_FINISHED', threadId, runId, result: { intent: 'built_in' } };
           return;
@@ -379,7 +379,7 @@ export function createEvidenceAuditor({ studio, getState, data, delegate = null,
 export function promptStarters({ mode = 'off', recording = null } = {}) {
   const starters = QUESTIONS.slice(0, 4).map((question) => ({ label: question.label, prompt: question.label }));
   if (mode === 'live') starters.push({ label: DELEGATE_EXAMPLE, prompt: DELEGATE_EXAMPLE });
-  else if (recording) starters.push({ label: `${recording.runs[0].question} (recorded)`, prompt: recording.runs[0].question });
+  else if (recording) recording.runs.forEach((run) => starters.push({ label: `${run.question} (recorded live run)`, prompt: run.question }));
   starters.push({ label: 'Are the built-in agents on?', prompt: 'Are the built-in agents on?' });
   return starters;
 }

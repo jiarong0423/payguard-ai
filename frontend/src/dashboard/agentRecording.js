@@ -78,7 +78,7 @@ export function validateRecording(doc) {
 }
 
 export function recordingLabel(doc) {
-  return `Recorded on ${doc.recorded_at.slice(0, 10)} with Gemini; replayed here, no model call.`;
+  return `Recorded live run (Gemini, ${doc.recorded_at.slice(0, 10)}), no model call here.`;
 }
 
 const normal = (text) => String(text || '').toLowerCase().replace(/[^a-z0-9 ]+/gu, ' ').replace(/\s+/gu, ' ').trim();

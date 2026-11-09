@@ -1,11 +1,95 @@
 {
+ "event": [
+  {
+   "listen": "prerequest",
+   "script": {
+    "exec": [
+     "var base = pm.variables.get('baseUrl') || 'http://127.0.0.1:8000';",
+     "var origin = (base.match(/^[a-z]+:\\/\\/[^\\/]+/i) || [base])[0];",
+     "var isSession = pm.request.method === 'POST' && /\\/api\\/v1\\/demo\\/sessions$/.test(pm.request.url.getPath());",
+     "pm.request.headers.upsert({key: 'Origin', value: origin});",
+     "var sid = pm.collectionVariables.get('sessionId');",
+     "var csrf = pm.collectionVariables.get('csrfToken');",
+     "if (!isSession && sid) { pm.request.headers.upsert({key: 'X-Demo-Session', value: sid}); }",
+     "if (!isSession && csrf && pm.request.method !== 'GET') { pm.request.headers.upsert({key: 'X-CSRF-Token', value: csrf}); }"
+    ],
+    "type": "text/javascript"
+   }
+  }
+ ],
  "info": {
-  "description": "Generated from docs/api/openapi.json by tools/export_api_docs.py. Local console only; bodies are empty skeletons.",
+  "description": "Generated from docs/api/openapi.json by tools/export_api_docs.py. Local console only. A collection-level pre-request script adds the Origin header and the X-Demo-Session / X-CSRF-Token headers; the first request creates the session and stores both values. Run it in order. Bodies are empty skeletons, so most write routes answer a documented 422; for requests with real bodies use postman_run_collection.json.",
   "name": "TradeGlot local console API",
   "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
  },
  "item": [
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "pm.test('session created (201, synthetic)', function () {",
+       "  pm.response.to.have.status(201);",
+       "  var j = pm.response.json();",
+       "  pm.expect(j.source).to.eql('synthetic');",
+       "  pm.expect(j.session_id).to.be.a('string').and.not.empty;",
+       "  pm.expect(j.csrf_token).to.be.a('string').and.not.empty;",
+       "  pm.collectionVariables.set('sessionId', j.session_id);",
+       "  pm.collectionVariables.set('csrfToken', j.csrf_token);",
+       "});"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
+   "name": "POST /api/v1/demo/sessions",
+   "request": {
+    "body": {
+     "mode": "raw",
+     "options": {
+      "raw": {
+       "language": "json"
+      }
+     },
+     "raw": "{}"
+    },
+    "description": "New Session. Local console route POST /api/v1/demo/sessions on synthetic data; advisory only.",
+    "header": [
+     {
+      "key": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "method": "POST",
+    "url": {
+     "host": [
+      "{{baseUrl}}"
+     ],
+     "path": [
+      "api",
+      "v1",
+      "demo",
+      "sessions"
+     ],
+     "raw": "{{baseUrl}}/api/v1/demo/sessions"
+    }
+   }
+  },
+  {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/advisory/evaluate",
    "request": {
     "body": {
@@ -40,6 +124,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/ai/evidence-brief",
    "request": {
     "body": {
@@ -51,7 +148,7 @@
      },
      "raw": "{}"
     },
-    "description": "Evidence Brief. Local console route POST /api/v1/ai/evidence-brief on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls.",
+    "description": "Evidence Brief. Local console route POST /api/v1/ai/evidence-brief on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls. This route can reach PayPal Sandbox or a model when the operator has configured one; it is not in postman_run_collection.json.",
     "header": [
      {
       "key": "Content-Type",
@@ -74,6 +171,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "GET /api/v1/ai/usage",
    "request": {
     "description": "(optimise r24) This session's AI calls: stage, model, tokens, latency, estimated cost. No prompt or reply\ntext is ever stored; the hosted demo makes no model call and answers an empty list.",
@@ -99,6 +209,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/aup/acknowledge",
    "request": {
     "body": {
@@ -133,6 +256,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/aup/category-signal",
    "request": {
     "body": {
@@ -167,6 +303,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/aup/product-reference",
    "request": {
     "body": {
@@ -201,6 +350,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/aup/product-reference/confirm",
    "request": {
     "body": {
@@ -236,6 +398,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/aup/review",
    "request": {
     "body": {
@@ -270,6 +445,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/cases/route",
    "request": {
     "body": {
@@ -304,6 +492,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "GET /api/v1/connections",
    "request": {
     "description": "Connections. Local console route GET /api/v1/connections on synthetic data; advisory only.",
@@ -328,6 +529,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/country-rules/check",
    "request": {
     "body": {
@@ -362,6 +576,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "GET /api/v1/country-rules/countries",
    "request": {
     "description": "Country Rules Countries. Local console route GET /api/v1/country-rules/countries on synthetic data; advisory only.",
@@ -387,6 +614,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/country-rules/search",
    "request": {
     "body": {
@@ -421,6 +661,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/demo/inject",
    "request": {
     "body": {
@@ -455,40 +708,19 @@
    }
   },
   {
-   "name": "POST /api/v1/demo/sessions",
-   "request": {
-    "body": {
-     "mode": "raw",
-     "options": {
-      "raw": {
-       "language": "json"
-      }
-     },
-     "raw": "{}"
-    },
-    "description": "New Session. Local console route POST /api/v1/demo/sessions on synthetic data; advisory only.",
-    "header": [
-     {
-      "key": "Content-Type",
-      "value": "application/json"
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
      }
-    ],
-    "method": "POST",
-    "url": {
-     "host": [
-      "{{baseUrl}}"
-     ],
-     "path": [
-      "api",
-      "v1",
-      "demo",
-      "sessions"
-     ],
-     "raw": "{{baseUrl}}/api/v1/demo/sessions"
     }
-   }
-  },
-  {
+   ],
    "name": "GET /api/v1/demo/state",
    "request": {
     "description": "State. Local console route GET /api/v1/demo/state on synthetic data; advisory only.",
@@ -514,6 +746,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/disputes/{case_ref}/approve",
    "request": {
     "body": {
@@ -541,14 +786,33 @@
       "api",
       "v1",
       "disputes",
-      "{case_ref}",
+      ":case_ref",
       "approve"
      ],
-     "raw": "{{baseUrl}}/api/v1/disputes/{case_ref}/approve"
+     "raw": "{{baseUrl}}/api/v1/disputes/:case_ref/approve",
+     "variable": [
+      {
+       "key": "case_ref",
+       "value": "case-ref-001"
+      }
+     ]
     }
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/disputes/{case_ref}/draft",
    "request": {
     "body": {
@@ -576,14 +840,33 @@
       "api",
       "v1",
       "disputes",
-      "{case_ref}",
+      ":case_ref",
       "draft"
      ],
-     "raw": "{{baseUrl}}/api/v1/disputes/{case_ref}/draft"
+     "raw": "{{baseUrl}}/api/v1/disputes/:case_ref/draft",
+     "variable": [
+      {
+       "key": "case_ref",
+       "value": "case-ref-001"
+      }
+     ]
     }
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/guide/form",
    "request": {
     "body": {
@@ -618,6 +901,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/guide/review",
    "request": {
     "body": {
@@ -629,7 +925,7 @@
      },
      "raw": "{}"
     },
-    "description": "Guide Review. Local console route POST /api/v1/guide/review on synthetic data; advisory only.",
+    "description": "Guide Review. Local console route POST /api/v1/guide/review on synthetic data; advisory only. This route can reach PayPal Sandbox or a model when the operator has configured one; it is not in postman_run_collection.json.",
     "header": [
      {
       "key": "Content-Type",
@@ -652,6 +948,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/guide/start",
    "request": {
     "body": {
@@ -686,6 +995,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "GET /api/v1/guide/state",
    "request": {
     "description": "Guide State. Local console route GET /api/v1/guide/state on synthetic data; advisory only.",
@@ -711,6 +1033,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/guide/turn",
    "request": {
     "body": {
@@ -722,7 +1057,7 @@
      },
      "raw": "{}"
     },
-    "description": "Guide Turn. Local console route POST /api/v1/guide/turn on synthetic data; advisory only.",
+    "description": "Guide Turn. Local console route POST /api/v1/guide/turn on synthetic data; advisory only. This route can reach PayPal Sandbox or a model when the operator has configured one; it is not in postman_run_collection.json.",
     "header": [
      {
       "key": "Content-Type",
@@ -745,6 +1080,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "GET /api/v1/health",
    "request": {
     "description": "Health. Local console route GET /api/v1/health on synthetic data; advisory only.",
@@ -769,6 +1117,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/paypal/connect",
    "request": {
     "body": {
@@ -780,7 +1141,7 @@
      },
      "raw": "{}"
     },
-    "description": "Connect. Local console route POST /api/v1/paypal/connect on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls.",
+    "description": "Connect. Local console route POST /api/v1/paypal/connect on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls. This route can reach PayPal Sandbox or a model when the operator has configured one; it is not in postman_run_collection.json.",
     "header": [
      {
       "key": "Content-Type",
@@ -803,9 +1164,22 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "GET /api/v1/paypal/disputes",
    "request": {
-    "description": "List Disputes. Local console route GET /api/v1/paypal/disputes on synthetic data; advisory only.",
+    "description": "List Disputes. Local console route GET /api/v1/paypal/disputes on synthetic data; advisory only. This route can reach PayPal Sandbox or a model when the operator has configured one; it is not in postman_run_collection.json.",
     "header": [
      {
       "key": "Content-Type",
@@ -828,6 +1202,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/paypal/disputes/add-tracking",
    "request": {
     "body": {
@@ -839,7 +1226,7 @@
      },
      "raw": "{}"
     },
-    "description": "Add Tracking. Local console route POST /api/v1/paypal/disputes/add-tracking on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls.",
+    "description": "Add Tracking. Local console route POST /api/v1/paypal/disputes/add-tracking on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls. This route can reach PayPal Sandbox or a model when the operator has configured one; it is not in postman_run_collection.json.",
     "header": [
      {
       "key": "Content-Type",
@@ -863,6 +1250,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/paypal/disputes/provide-evidence",
    "request": {
     "body": {
@@ -874,7 +1274,7 @@
      },
      "raw": "{}"
     },
-    "description": "Provide Evidence. Local console route POST /api/v1/paypal/disputes/provide-evidence on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls.",
+    "description": "Provide Evidence. Local console route POST /api/v1/paypal/disputes/provide-evidence on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls. This route can reach PayPal Sandbox or a model when the operator has configured one; it is not in postman_run_collection.json.",
     "header": [
      {
       "key": "Content-Type",
@@ -898,9 +1298,22 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "GET /api/v1/paypal/disputes/{dispute_id}",
    "request": {
-    "description": "Get Dispute. Local console route GET /api/v1/paypal/disputes/{dispute_id} on synthetic data; advisory only.",
+    "description": "Get Dispute. Local console route GET /api/v1/paypal/disputes/{dispute_id} on synthetic data; advisory only. This route can reach PayPal Sandbox or a model when the operator has configured one; it is not in postman_run_collection.json.",
     "header": [
      {
       "key": "Content-Type",
@@ -917,13 +1330,32 @@
       "v1",
       "paypal",
       "disputes",
-      "{dispute_id}"
+      ":dispute_id"
      ],
-     "raw": "{{baseUrl}}/api/v1/paypal/disputes/{dispute_id}"
+     "raw": "{{baseUrl}}/api/v1/paypal/disputes/:dispute_id",
+     "variable": [
+      {
+       "key": "dispute_id",
+       "value": "PP-D-00000001"
+      }
+     ]
     }
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/paypal/invoices/draft",
    "request": {
     "body": {
@@ -935,7 +1367,7 @@
      },
      "raw": "{}"
     },
-    "description": "Invoice Draft. Local console route POST /api/v1/paypal/invoices/draft on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls.",
+    "description": "Invoice Draft. Local console route POST /api/v1/paypal/invoices/draft on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls. This route can reach PayPal Sandbox or a model when the operator has configured one; it is not in postman_run_collection.json.",
     "header": [
      {
       "key": "Content-Type",
@@ -959,6 +1391,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/paypal/invoices/review",
    "request": {
     "body": {
@@ -970,7 +1415,7 @@
      },
      "raw": "{}"
     },
-    "description": "Invoice Review. Local console route POST /api/v1/paypal/invoices/review on synthetic data; advisory only.",
+    "description": "Invoice Review. Local console route POST /api/v1/paypal/invoices/review on synthetic data; advisory only. This route can reach PayPal Sandbox or a model when the operator has configured one; it is not in postman_run_collection.json.",
     "header": [
      {
       "key": "Content-Type",
@@ -994,6 +1439,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "GET /api/v1/paypal/status",
    "request": {
     "description": "Paypal Status. Local console route GET /api/v1/paypal/status on synthetic data; advisory only.",
@@ -1019,6 +1477,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/paypal/webhooks/verify",
    "request": {
     "body": {
@@ -1030,7 +1501,7 @@
      },
      "raw": "{}"
     },
-    "description": "Verify Webhook. Local console route POST /api/v1/paypal/webhooks/verify on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls.",
+    "description": "Verify Webhook. Local console route POST /api/v1/paypal/webhooks/verify on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls. This route can reach PayPal Sandbox or a model when the operator has configured one; it is not in postman_run_collection.json.",
     "header": [
      {
       "key": "Content-Type",
@@ -1054,6 +1525,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/policy/assess",
    "request": {
     "body": {
@@ -1088,6 +1572,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/references/search",
    "request": {
     "body": {
@@ -1122,6 +1619,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "GET /api/v1/studio/agent-status",
    "request": {
     "description": "Studio Agent Status. Local console route GET /api/v1/studio/agent-status on synthetic data; advisory only.",
@@ -1147,6 +1657,19 @@
    }
   },
   {
+   "event": [
+    {
+     "listen": "test",
+     "script": {
+      "exec": [
+       "var allowed = [200, 201, 401, 404, 409, 422, 429, 503];",
+       "pm.test('status is a documented answer (200, 201, 401, 404, 409, 422, 429 or 503)', function () { pm.expect(pm.response.code).to.be.oneOf(allowed); });",
+       "pm.test('body is JSON', function () { pm.response.json(); });"
+      ],
+      "type": "text/javascript"
+     }
+    }
+   ],
    "name": "POST /api/v1/studio/agent-turn",
    "request": {
     "body": {
@@ -1158,7 +1681,7 @@
      },
      "raw": "{}"
     },
-    "description": "Studio Agent Turn. Local console route POST /api/v1/studio/agent-turn on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls.",
+    "description": "Studio Agent Turn. Local console route POST /api/v1/studio/agent-turn on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls. This route can reach PayPal Sandbox or a model when the operator has configured one; it is not in postman_run_collection.json.",
     "header": [
      {
       "key": "Content-Type",

@@ -23,3 +23,7 @@ The receipt digest covers the receipt content; it is not a signature, because th
 - It shows the workflow code in this repository starts on Render, runs its checks, and returns a receipt whose commit matches the deployed commit.
 - It does not show a recurring job: the run was started by hand once. Starting it nightly would need a separate caller (a cron job with an API key), which was not built.
 - Compute is billed per second on the flex plan (Render's workflow pricing page); this run used a few seconds and was covered by the workspace's hackathon credit.
+
+## Update, later on 2026-11-09: two more manual runs
+The same task was started by hand two more times from the dashboard on the same deployed version (`e0da94b`): run `trn-0b94gdbokgp1avh9s738mmuq0` (succeeded, 4.2 s) and run `trn-0b94gdbokh7jat3og00ck053g` (succeeded, 4 s). The dashboard lists the three runs as Succeeded. The receipt body is recorded above for the first run only. There is still no schedule, so nothing here supports a nightly claim; the three runs show the task starts and finishes repeatably, not that it runs on its own.
+

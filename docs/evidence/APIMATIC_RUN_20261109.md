@@ -16,3 +16,6 @@ What this does not show:
 - The warnings and information notes were not worked down; they are mostly missing examples and descriptions.
 - No SDK was published, no context plugin was generated (it needs a published SDK), and the generated SDKs were not run against the API.
 - The first validation run failed. The description in the repository is the fixed version.
+
+## Update, later on 2026-11-09: the portal is now published
+The generated portal (with `llms.txt`) was published as static pages on GitHub Pages: https://jiarong0423.github.io/payguard-ai/portal/ (the files live on the `gh-pages` branch, not in `main`). The first version of the page pointed its assets at the local preview address and rendered blank; that was fixed by rewriting those links to the published address, then the live page was opened in a browser and showed the navigation, the API endpoints and the language tabs. The portal is documentation only: the API it describes runs on the author's computer (the hosted demo answers 503 on write routes). The SDKs were published nowhere, the portal's request and response examples are still empty, and no Copilot answer has been checked.

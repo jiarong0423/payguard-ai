@@ -27,7 +27,7 @@ assert.ok(app.includes('setCountryCheck(null); setCountryStale(false); setCountr
 assert.ok(app.includes('<CountryRules key={`country-${sessionRef.current?.session_id || \'no-session\'}-${countryResetCount}`}'), 'reset remounts the country form');
 // Wording (A5, A8, A9) and severity labels.
 assert.ok(panel.includes("const SEVERITY_TEXT = { BLOCK: 'Stopped', WARN: 'Check first', INFO: 'Note' };"), 'severity words');
-assert.ok(panel.includes('This sale is likely to be stopped.'), 'verdict is a likelihood, not an order');
+assert.ok(panel.includes('A rule may stop this sale.'), 'verdict is a likelihood, not an order');
 // r20 UX-5: the act and article are on screen, not only in the link tooltip.
 assert.ok(panel.includes('{statute && <small className="country-statute" data-testid={`country-statute-${row.code}`}>{statute}</small>}'), 'statute shown inline');
 assert.ok(!panel.includes("Don't send this order"), 'old imperative verdict removed');

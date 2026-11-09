@@ -1,6 +1,6 @@
 {
   "schema_version": "payguard.studio_agent_run.v1",
-  "recorded_at": "2026-11-08T15:57:57Z",
+  "recorded_at": "2026-11-09T04:05:57Z",
   "model": "gemini",
   "source": "gemini_live_local",
   "affects_decision": false,
@@ -59,6 +59,330 @@
       "reply": "In @table[cases], the reason code that appears most often across the three cases is \"Item not received\", with a count of 3 out of 3 cases.\n\nRow details:\n- @field[cases.case_ref] `case-ref-001`: @field[cases.reason] = `Item not received`\n- @field[cases.case_ref] `case-ref-002`: @field[cases.reason] = `Item not received`\n- @field[cases.case_ref] `case-ref-003`: @field[cases.reason] = `Item not received`",
       "turns": 3,
       "duration_ms": 17879
+    },
+    {
+      "question": "Which case is due first?",
+      "page_id": "readiness",
+      "steps": [
+        {
+          "agent": "data",
+          "tool": "view_schema",
+          "args": {},
+          "ok": true,
+          "ms": 0
+        },
+        {
+          "agent": "data",
+          "tool": "execute_query",
+          "args": {
+            "query": {
+              "kind": "apiQuery",
+              "limit": {
+                "count": 10
+              },
+              "projection": [
+                {
+                  "field": {
+                    "id": "cases.case_ref"
+                  }
+                },
+                {
+                  "field": {
+                    "id": "cases.due_date"
+                  }
+                },
+                {
+                  "field": {
+                    "id": "cases.days_to_due"
+                  }
+                },
+                {
+                  "field": {
+                    "id": "cases.due_window"
+                  }
+                }
+              ],
+              "sort": [
+                {
+                  "direction": "asc",
+                  "field": {
+                    "id": "cases.due_date"
+                  }
+                }
+              ],
+              "variant": "projection"
+            }
+          },
+          "ok": true,
+          "ms": 21
+        },
+        {
+          "agent": "data",
+          "tool": "complete_task",
+          "args": {
+            "artifacts": [],
+            "summary": "Based on @table[cases], the case that is due first is @field[cases.case_ref] `case-ref-003`:\n\n- @field[cases.case_ref]: `case-ref-003`\n  - @field[cases.due_date]: 2026-11-10T04:04:52.527Z\n  - @field[cases.days_to_due]: 1\n  - @field[cases.due_window]: Due within 3 days\n\nFor comparison, the other cases in @table[cases] are:\n- @field[cases.case_ref]: `case-ref-001`\n  - @field[cases.due_date]: 2026-11-11T04:04:52.527Z\n  - @field[cases.days_to_due]: 2\n  - @field[cases.due_window]: Due within 3 days\n- @field[cases.case_ref]: `case-ref-002`\n  - @field[cases.due_date]: 2026-11-11T04:04:52.527Z\n  - @field[cases.days_to_due]: 2\n  - @field[cases.due_window]: Due within 3 days"
+          },
+          "ok": true,
+          "ms": 0
+        }
+      ],
+      "reply": "Based on @table[cases], the case that is due first is @field[cases.case_ref] `case-ref-003`:\n\n- @field[cases.case_ref]: `case-ref-003`\n  - @field[cases.due_date]: 2026-11-10T04:04:52.527Z\n  - @field[cases.days_to_due]: 1\n  - @field[cases.due_window]: Due within 3 days\n\nFor comparison, the other cases in @table[cases] are:\n- @field[cases.case_ref]: `case-ref-001`\n  - @field[cases.due_date]: 2026-11-11T04:04:52.527Z\n  - @field[cases.days_to_due]: 2\n  - @field[cases.due_window]: Due within 3 days\n- @field[cases.case_ref]: `case-ref-002`\n  - @field[cases.due_date]: 2026-11-11T04:04:52.527Z\n  - @field[cases.days_to_due]: 2\n  - @field[cases.due_window]: Due within 3 days",
+      "turns": 3,
+      "duration_ms": 15849
+    },
+    {
+      "question": "What is the total disputed amount across the three cases?",
+      "page_id": "readiness",
+      "steps": [
+        {
+          "agent": "data",
+          "tool": "view_schema",
+          "args": {},
+          "ok": true,
+          "ms": 0
+        },
+        {
+          "agent": "data",
+          "tool": "execute_query",
+          "args": {
+            "query": {
+              "kind": "apiQuery",
+              "limit": {
+                "count": 10
+              },
+              "projection": [
+                {
+                  "field": {
+                    "id": "cases.case_ref"
+                  }
+                },
+                {
+                  "field": {
+                    "id": "cases.order_ref"
+                  }
+                },
+                {
+                  "field": {
+                    "id": "cases.reason"
+                  }
+                },
+                {
+                  "field": {
+                    "id": "cases.lifecycle_stage"
+                  }
+                },
+                {
+                  "field": {
+                    "id": "cases.readiness"
+                  }
+                },
+                {
+                  "field": {
+                    "id": "cases.days_to_due"
+                  }
+                },
+                {
+                  "field": {
+                    "id": "cases.carrier_status"
+                  }
+                },
+                {
+                  "field": {
+                    "id": "cases.submission"
+                  }
+                }
+              ],
+              "variant": "projection"
+            }
+          },
+          "ok": true,
+          "ms": 16
+        },
+        {
+          "agent": "data",
+          "tool": "execute_query",
+          "args": {
+            "query": {
+              "kind": "apiQuery",
+              "limit": {
+                "count": 50
+              },
+              "projection": [
+                {
+                  "field": {
+                    "id": "time_events.case_ref"
+                  }
+                },
+                {
+                  "field": {
+                    "id": "time_events.event"
+                  }
+                },
+                {
+                  "field": {
+                    "id": "time_events.source"
+                  }
+                }
+              ],
+              "variant": "projection"
+            }
+          },
+          "ok": true,
+          "ms": 15
+        },
+        {
+          "agent": "data",
+          "tool": "complete_task",
+          "args": {
+            "artifacts": [],
+            "summary": "There is no disputed amount field or monetary value in the dataset. Across the 3 rows in @table[cases] (@field[cases.case_ref] values `case-ref-001`, `case-ref-002`, and `case-ref-003`), the recorded fields are @field[cases.case_ref], @field[cases.order_ref], @field[cases.reason], @field[cases.lifecycle_stage], @field[cases.readiness], @field[cases.due_date], @field[cases.days_to_due], @field[cases.due_window], @field[cases.delivery_proof], @field[cases.carrier_status], @field[cases.delivered_at], @field[cases.time_flag_count], @field[cases.review_flag], and @field[cases.submission]. No disputed amount is available in the rows."
+          },
+          "ok": true,
+          "ms": 0
+        }
+      ],
+      "reply": "There is no disputed amount field or monetary value in the dataset. Across the 3 rows in @table[cases] (@field[cases.case_ref] values `case-ref-001`, `case-ref-002`, and `case-ref-003`), the recorded fields are @field[cases.case_ref], @field[cases.order_ref], @field[cases.reason], @field[cases.lifecycle_stage], @field[cases.readiness], @field[cases.due_date], @field[cases.days_to_due], @field[cases.due_window], @field[cases.delivery_proof], @field[cases.carrier_status], @field[cases.delivered_at], @field[cases.time_flag_count], @field[cases.review_flag], and @field[cases.submission]. No disputed amount is available in the rows.",
+      "turns": 4,
+      "duration_ms": 24696
+    },
+    {
+      "question": "Which case has the most missing evidence?",
+      "page_id": "readiness",
+      "steps": [
+        {
+          "agent": "data",
+          "tool": "view_schema",
+          "args": {},
+          "ok": true,
+          "ms": 0
+        },
+        {
+          "agent": "data",
+          "tool": "execute_query",
+          "args": {
+            "query": {
+              "kind": "apiQuery",
+              "limit": {
+                "count": 100
+              },
+              "projection": [
+                {
+                  "as": "case_ref",
+                  "field": {
+                    "id": "requirements.case_ref"
+                  }
+                },
+                {
+                  "as": "evidence_type",
+                  "field": {
+                    "id": "requirements.evidence_type"
+                  }
+                },
+                {
+                  "as": "state",
+                  "field": {
+                    "id": "requirements.state"
+                  }
+                },
+                {
+                  "as": "mandatory",
+                  "field": {
+                    "id": "requirements.mandatory"
+                  }
+                },
+                {
+                  "as": "proof_count",
+                  "field": {
+                    "id": "requirements.proof_count"
+                  }
+                },
+                {
+                  "as": "attachment_count",
+                  "field": {
+                    "id": "requirements.attachment_count"
+                  }
+                }
+              ],
+              "variant": "projection"
+            }
+          },
+          "ok": true,
+          "ms": 19
+        },
+        {
+          "agent": "data",
+          "tool": "execute_query",
+          "args": {
+            "query": {
+              "kind": "apiQuery",
+              "limit": {
+                "count": 100
+              },
+              "projection": [
+                {
+                  "as": "case_ref",
+                  "field": {
+                    "id": "cases.case_ref"
+                  }
+                },
+                {
+                  "as": "readiness",
+                  "field": {
+                    "id": "cases.readiness"
+                  }
+                },
+                {
+                  "as": "delivery_proof",
+                  "field": {
+                    "id": "cases.delivery_proof"
+                  }
+                },
+                {
+                  "as": "carrier_status",
+                  "field": {
+                    "id": "cases.carrier_status"
+                  }
+                },
+                {
+                  "as": "submission",
+                  "field": {
+                    "id": "cases.submission"
+                  }
+                },
+                {
+                  "as": "review_flag",
+                  "field": {
+                    "id": "cases.review_flag"
+                  }
+                },
+                {
+                  "as": "reason",
+                  "field": {
+                    "id": "cases.reason"
+                  }
+                }
+              ],
+              "variant": "projection"
+            }
+          },
+          "ok": true,
+          "ms": 17
+        },
+        {
+          "agent": "data",
+          "tool": "complete_task",
+          "args": {
+            "artifacts": [],
+            "summary": "- Case @field[cases.case_ref] `case-ref-003` has the most missing evidence, with 1 missing evidence requirement in @table[requirements].\n- In @table[requirements], @field[requirements.case_ref] `case-ref-003` has 1 record with @field[requirements.state] = `Optional evidence missing` (@field[requirements.evidence_type] = `Proof of refund`, @field[requirements.mandatory] = `Optional`, @field[requirements.proof_count] = 0, @field[requirements.attachment_count] = 0).\n- In @table[requirements], @field[requirements.case_ref] `case-ref-001` has 0 missing evidence records (1 record with @field[requirements.state] = `Required fields present`, @field[requirements.proof_count] = 1, @field[requirements.attachment_count] = 1).\n- In @table[requirements], @field[requirements.case_ref] `case-ref-002` has 0 missing evidence records (1 record with @field[requirements.state] = `Required fields present`, @field[requirements.proof_count] = 1, @field[requirements.attachment_count] = 0)."
+          },
+          "ok": true,
+          "ms": 0
+        }
+      ],
+      "reply": "- Case @field[cases.case_ref] `case-ref-003` has the most missing evidence, with 1 missing evidence requirement in @table[requirements].\n- In @table[requirements], @field[requirements.case_ref] `case-ref-003` has 1 record with @field[requirements.state] = `Optional evidence missing` (@field[requirements.evidence_type] = `Proof of refund`, @field[requirements.mandatory] = `Optional`, @field[requirements.proof_count] = 0, @field[requirements.attachment_count] = 0).\n- In @table[requirements], @field[requirements.case_ref] `case-ref-001` has 0 missing evidence records (1 record with @field[requirements.state] = `Required fields present`, @field[requirements.proof_count] = 1, @field[requirements.attachment_count] = 1).\n- In @table[requirements], @field[requirements.case_ref] `case-ref-002` has 0 missing evidence records (1 record with @field[requirements.state] = `Required fields present`, @field[requirements.proof_count] = 1, @field[requirements.attachment_count] = 0).",
+      "turns": 4,
+      "duration_ms": 22106
     }
   ],
   "final_layout": {
