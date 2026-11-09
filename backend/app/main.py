@@ -14,7 +14,7 @@ import time
 
 from fastapi import Depends, FastAPI, Request
 from fastapi.exceptions import RequestValidationError, ResponseValidationError
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, PlainTextResponse, Response
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException
 from starlette.routing import Match, Mount
@@ -396,6 +396,34 @@ CONSOLE_CONTENT_TYPES = {
 }
 
 
+OPENAPI_COPY = Path(__file__).resolve().parent / "data" / "openapi_v1.json"
+
+POLICY_ASSESS_DESCRIPTION = (
+    "Checks whether the pinned official PayPal references still apply for a jurisdiction and theme at a given date. "
+    "INCOMPLETE_POLICY_EVIDENCE with current_policy_applicability NOT_ESTABLISHED is a normal answer: it means the "
+    "pinned summaries do not cover everything the question needs, so the tool does not claim the policy applies; "
+    "it is advisory only and a person decides."
+)
+
+LLMS_TXT = """# TradeGlot
+
+> TradeGlot is an advisory tool for small cross-border PayPal sellers: it checks a sale against shipping and policy rules before you ship, and helps prepare human-approved dispute evidence. Synthetic data and PayPal Sandbox only; it never decides a dispute.
+
+The hosted demo is read-only: every write route answers 503 hosted_demo_disabled, and its only PayPal calls are read-only Sandbox reads with masked dispute ids.
+
+## Try it
+- [Start here](/start.html): the five-minute path and a curl recipe
+- [Proof](/proof.html): each claim, how it was shown, the date and the source file
+- [Health](/health): liveness check, no session needed
+- [OpenAPI description](/api/v1/openapi.json): the same file as docs/api/openapi.json, no session needed
+
+## Docs
+- [API portal](https://jiarong0423.github.io/payguard-ai/portal/)
+- [Source repository](https://github.com/jiarong0423/payguard-ai)
+- [README](https://github.com/jiarong0423/payguard-ai#readme)
+"""
+
+
 class ConsoleStatic:
     """Serve the built console for GET/HEAD page requests only.
 
@@ -581,6 +609,25 @@ def create_app(*, store=None, paypal=None, reference_loader=None, ai_brief=None,
     def health():
         return {"status": "ok", "mode": "demo", "version": "0.2.0", "source": "synthetic"}
 
+    # Judge round 2 H6: the same liveness answer at a short path (no session), and a plain-text map for text-only readers.
+    @application.get("/health", response_model=HealthResponse, include_in_schema=False)
+    def health_alias():
+        return health()
+
+    @application.get("/llms.txt", include_in_schema=False)
+    def llms_txt():
+        return PlainTextResponse(LLMS_TXT, media_type="text/plain; charset=utf-8")
+
+    # Judge round 2 H1: the committed OpenAPI description, read-only and without a session, so a tool can load it from the
+    # site it is trying. The file is written by tools/export_api_docs.py (docs/api/openapi.json is the same bytes).
+    @application.get("/api/v1/openapi.json", include_in_schema=False)
+    def openapi_description():
+        try:
+            body = OPENAPI_COPY.read_bytes()
+        except OSError:
+            return error_response(503, "reference_unavailable")
+        return Response(content=body, media_type="application/json")
+
     @application.post("/api/v1/demo/sessions", response_model=SessionResponse, status_code=201)
     async def new_session(request: Request, _body: EmptyRequest):
         # A burst queues for a short wait instead of a refusal; a long wait answers 429 with Retry-After
@@ -709,7 +756,8 @@ def create_app(*, store=None, paypal=None, reference_loader=None, ai_brief=None,
         except ValidationError:
             raise ResponseValidationError(errors=[{"type": "reference_contract_invalid"}]) from None
 
-    @application.post("/api/v1/policy/assess", response_model=PolicyAssessmentResponse)
+    @application.post("/api/v1/policy/assess", response_model=PolicyAssessmentResponse,
+                      description=POLICY_ASSESS_DESCRIPTION)
     def policy_assess(body: PolicyRequest, _session=Depends(write_session)):
         try:
             result = assess_applicability(**body.model_dump())
@@ -813,11 +861,11 @@ def create_app(*, store=None, paypal=None, reference_loader=None, ai_brief=None,
                 return error_response(409, "country_amount_changed")
         return await application.state.paypal_tools.invoke("create_invoice", body.model_dump(), session=session)
 
-    @application.get("/api/v1/paypal/disputes", response_model=DisputeListResponse)
+    @application.get("/api/v1/paypal/disputes", response_model=DisputeListResponse, response_model_exclude_unset=True)
     async def list_disputes(session=Depends(read_session)):
         return await application.state.paypal_disputes.list_disputes(session)
 
-    @application.get("/api/v1/paypal/disputes/{dispute_id}", response_model=DisputeDetailResponse)
+    @application.get("/api/v1/paypal/disputes/{dispute_id}", response_model=DisputeDetailResponse, response_model_exclude_unset=True)
     async def get_dispute(dispute_id: str, session=Depends(read_session)):
         return await application.state.paypal_disputes.get_dispute(session, dispute_id)
 

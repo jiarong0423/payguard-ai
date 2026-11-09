@@ -27,6 +27,23 @@
 <h2>What is real, what is recorded</h2>
 <p>On this page the only PayPal calls are read-only Sandbox reads of the author&rsquo;s own test disputes (ids shown as masked codes); every write is refused. Five PayPal Sandbox evidence sends were made earlier on the author&rsquo;s computer and are shown as receipts and notes. One AG Studio agent run and ten Channel3 searches were real too (five of the searches are replayed here). The data is synthetic and PayPal decides every real dispute.</p>
 
+<h2>Three claims, in plain text</h2>
+<noscript><p class="small">This page needs no JavaScript. The same facts are here for text-only readers.</p></noscript>
+<ul>
+<li>Rules decide, a person approves: a banned product to Singapore is stopped with the rule and its official source; nothing is sent to PayPal from the hosted site.</li>
+<li>The hosted site is read-only: every write route answers 503 <code>hosted_demo_disabled</code>; its only PayPal calls are read-only Sandbox reads with masked dispute ids.</li>
+<li>Every claim has a row on the <a href="https://payguard-demo-j2b3.onrender.com/proof.html">proof page</a> (also readable without JavaScript in <a href="https://github.com/jiarong0423/payguard-ai/tree/main/docs/evidence">docs/evidence</a>). Machine-readable: <a href="https://payguard-demo-j2b3.onrender.com/api/v1/openapi.json">/api/v1/openapi.json</a> and <a href="https://payguard-demo-j2b3.onrender.com/llms.txt">/llms.txt</a>.</li>
+</ul>
+
+<h2>Try the API with curl</h2>
+<p class="small">A session needs an <code>Origin</code> header equal to the site; every call then sends <code>X-Demo-Session</code>, and every POST also <code>X-CSRF-Token</code>. Connect first, otherwise the dispute list shows labelled fixtures (its <code>note</code> says so).</p>
+<pre><code>H=https://payguard-demo-j2b3.onrender.com
+curl -s -X POST $H/api/v1/demo/sessions -H "Origin: $H" -H 'Content-Type: application/json' -d '{}'   # 201: session_id, csrf_token
+# S=&lt;session_id&gt;  C=&lt;csrf_token&gt; from that answer
+curl -s -X POST $H/api/v1/paypal/connect -H "Origin: $H" -H "X-Demo-Session: $S" -H "X-CSRF-Token: $C" -H 'Content-Type: application/json' -d '{}'   # 200 connected, read-only
+curl -s $H/api/v1/paypal/disputes -H "X-Demo-Session: $S"   # 200, source paypal_sandbox, masked ids
+curl -s -X POST $H/api/v1/paypal/invoices/draft -H "Origin: $H" -H "X-Demo-Session: $S" -H "X-CSRF-Token: $C" -H 'Content-Type: application/json' -d '{}'   # 503 hosted_demo_disabled</code></pre>
+
 <h2>Prefer your own computer?</h2>
 <p>A click-through package (11 MB zip, public source plus the built console, no keys) runs the same demo locally; the send step is the same recorded replay. It needs Python 3.13 and uv; <code>RUN_FIRST.txt</code> inside has the one command. To check our numbers yourself, run <code>tools/verify_public_numbers.py</code> there: it re-counts the figures on the pages (22 of 22 match).</p>
 <p><a class="btn small" href="https://github.com/jiarong0423/payguard-ai/releases/download/demo-package-20261109/tradeglot-demo.zip">Download tradeglot-demo.zip</a></p>

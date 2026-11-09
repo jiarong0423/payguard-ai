@@ -21,12 +21,12 @@ The file set is the public candidate: every path in `public_export_manifest.json
 | Python test lines | 18,571 | all `tests/**/*.py` |
 | Front-end lines | 14,252 | `frontend/src/**/*.{jsx,js,css}`, 75 files; see below |
 | JSX files / pages | 24 / 5 | `frontend/**/*.jsx`; `frontend/*.html` (index, dashboard, evidence, proof, scenarios; `public/offline.html` is the service-worker fallback, not a page) |
-| API routes | 37 | see "Route count" |
+| API routes | 40 (37 in the OpenAPI description) | see "Route count" |
 | Node test files / lines | 51 / 7,190 | `tests/frontend_*.mjs` (the two other `.mjs` files are a token-writer and a recorder, not tests) |
-| Python tests | 1,127 (9 skipped) | `unittest` discovery over `tests/`, loaded and counted, not run |
+| Python tests | 1,134 (9 carry a skip marker at load time; how many are skipped when run depends on the environment: 2 in the run recorded in `TEST_RUN_20261109_SKIPPED.md`) | `unittest` discovery over `tests/`, loaded and counted, not run |
 | Red-team requests | 1,727 | run-time only, see below |
-| Words in documents | 88,049 (page says about 88,049; the script allows 1% either way) | see below |
-| Evidence files | 38 | files directly in `docs/evidence/` (32 `.md`, 6 `.json`) |
+| Words in documents | 90,211 (page says about 90,211; the script allows 1% either way) | see below |
+| Evidence files | 41 | files directly in `docs/evidence/` (35 `.md`, 6 `.json`) |
 | Diagrams and images | 38 | every `*.png` and `*.svg` in the file set: 32 under `docs/`, 6 application icons under `frontend/public/icons`; `.mmd` sources are not counted |
 | PayPal clauses | 140 | `len(snippets)` in `data/country_rules/paypal_country_rules_v1.json` |
 | Export / import rules | 313 / 368 = 681 | sum of `len(rules)` over `export_rules[country]` and `import_rules[country]`, ten countries |
@@ -42,23 +42,23 @@ The file set is the public candidate: every path in `public_export_manifest.json
 
 This number exists only while the program runs. `tools/redteam_input_matrix.py` reads the application's own schema (its OpenAPI document, built in memory by FastAPI), builds attack requests for every JSON route from that schema with a fixed seed (20261102), sends them in-process and prints one line: `round regression: 1727 requests; BROKEN 0, GAP 0, GUARDED 1710, OK 17`. There is no stored list of requests to count, so the script does not guess; it reports MANUAL. To reproduce, run `./tools/run.sh test` and read the line `round regression: 1727 requests; ...` (printed by `tests/test_redteam_input_matrix.py`), or run `PYTHONPATH=src:backend .venv/bin/python3 -B tools/redteam_input_matrix.py --out <empty dir>`. The count changes if a route or a field limit is added, because the requests follow the schema.
 
-### Route count (37; one reviewer found 0)
+### Route count (40 routes, 37 of them in the OpenAPI description; one reviewer found 0)
 
-The backend is FastAPI. Routes are registered inside the factory function `create_app()` in `backend/app/main.py` with decorators on a local variable named `application` (`@application.get(...)`, `@application.post(...)`), and two helper modules (`guide_routes.py`, `country_routes.py`) receive that object and decorate the same way: 29 + 5 + 3 = 37. Three things make a quick check return 0 or a different number:
+The backend is FastAPI. Routes are registered inside the factory function `create_app()` in `backend/app/main.py` with decorators on a local variable named `application` (`@application.get(...)`, `@application.post(...)`), and two helper modules (`guide_routes.py`, `country_routes.py`) receive that object and decorate the same way: 32 + 5 + 3 = 40. Three of the 32 in `main.py` (`/health`, `/llms.txt`, `/api/v1/openapi.json`) are declared with `include_in_schema=False`, so the OpenAPI description lists 37 operations. Three things make a quick check return 0 or a different number:
 
-1. `grep '@app\.'` or `'@router\.'` finds nothing, because the variable is `application`, not `app` or `router`. Matching the decorator on any receiver name finds 37.
-2. The routes do not exist at import time. They are added when `create_app()` runs, so inspecting an un-called module (or `app.router.routes` before the factory is called) shows an empty router. Calling `create_app()` gives 37 `APIRoute` entries plus one `Mount` (the static console at `/`), 38 entries in all.
-3. `openapi_url=None` and `docs_url=None`, so there is no `/openapi.json` to read the routes from over HTTP.
+1. `grep '@app\.'` or `'@router\.'` finds nothing, because the variable is `application`, not `app` or `router`. Matching the decorator on any receiver name finds 40.
+2. The routes do not exist at import time. They are added when `create_app()` runs, so inspecting an un-called module (or `app.router.routes` before the factory is called) shows an empty router. Calling `create_app()` gives 40 `APIRoute` entries plus one `Mount` (the static console at `/`), 41 entries in all (repeated on 2026-11-09: 40 `APIRoute` entries and 37 paths in `app.openapi()`).
+3. `openapi_url=None` and `docs_url=None`, so there is no FastAPI `/openapi.json`. The hosted site serves a stored copy of the description at `/api/v1/openapi.json`, which lists 37 operations and not the three hidden routes.
 
-The script counts with the `ast` module (decorated functions whose decorator is `<name>.<get|post|put|delete|patch>(...)`), so it neither runs the app nor depends on the variable name. It also confirms there are no `add_api_route` or `include_router` calls. Each route has exactly one HTTP method, so routes and method-path pairs are both 37. This was cross-checked once by calling `create_app()` and counting `APIRoute` objects: 37.
+The script counts with the `ast` module (decorated functions whose decorator is `<name>.<get|post|put|delete|patch>(...)`), so it neither runs the app nor depends on the variable name. It also confirms there are no `add_api_route` or `include_router` calls. Each route has exactly one HTTP method, so routes and method-path pairs are both 40. The cross-check by calling `create_app()` and counting `APIRoute` objects gave 40 on 2026-11-09 (37 paths in the OpenAPI description).
 
 ### Front-end lines: 14,252
 
 14,252 is the physical line count of the 75 files `frontend/src/**/*.jsx`, `*.js` and `*.css`. It excludes the JSON data files (adding them gives 16,893), `.mjs` files, the HTML pages and `frontend/public/` (adding HTML and public gives 14,255). JS and JSX without CSS is 11,018. The earlier public page said 13,463, the count of the published tree before 2026-11-08; the 15 more lines are the CSS added that day (`frontend/src/index.css` grew from 1,143 to 1,158 lines: the hint box before a draft and the toast placement rule). An independent reviewer's count of 13,553 uses the same scope.
 
-### Document words: 88,049
+### Document words: 90,211
 
-88,049 is the whitespace-token count of all 53 Markdown files in the file set (README, the security and notices files, and everything under `docs/`), with code fences and tables included. Limited to `docs/**` it is 70,164; `docs/**` plus README is 83,811. Earlier pages quoted "about 48,700" (the tree before 2026-11-08, documents only); the count grew because evidence files and a README walkthrough were added that day. The page says "about 86,743"; the script accepts one percent either way because the documents are still being edited. `tools/verify_public_numbers.py` prints the current figure and the variants.
+90,211 is the whitespace-token count of all 57 Markdown files in the file set (README, the security and notices files, and everything under `docs/`), with code fences and tables included. Limited to `docs/**` it is 70,164; `docs/**` plus README is 83,811. Earlier pages quoted "about 48,700" (the tree before 2026-11-08, documents only); the count grew because evidence files and a README walkthrough were added that day. The page says "about 86,743"; the script accepts one percent either way because the documents are still being edited. `tools/verify_public_numbers.py` prints the current figure and the variants.
 
 ### Receipts with a Debug-Id
 

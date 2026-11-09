@@ -1,11 +1,11 @@
 {
-  "created_at_utc": "2026-11-09T12:16:41Z",
+  "created_at_utc": "2026-11-09T12:30:00Z",
   "dependency_locks": {
     "frontend_npm": "0f98893564efb5556cc0a92710feedcb9da085108f9668fee93f29940b87f09d",
     "gemini_python": "36554331392d6102519a4ead5778704c4ff89e79da6bb9d6648b656f130724bb",
     "root_python": "bd163e5de790527ec4b5486ec884463c40fd8331a00e122d27f65de0938a270a"
   },
-  "file_count": 424,
+  "file_count": 428,
   "files": [
     {
       "bytes": 662,
@@ -43,11 +43,11 @@
       "source_sha256": "62559450a061410394f0cac8c43083a999f045200e5ad5c18c9e15096ab128be"
     },
     {
-      "bytes": 99862,
+      "bytes": 100583,
       "path": "README.md",
-      "sha256": "40551e97b5629092987bd0c8286935ac95ab8b688802bcf9568c9b616cffdd32",
+      "sha256": "af1db83b5b8ec223e464b567b6e8a5ff832770a738b5540d0eae1e6c86abacaf",
       "source_path": "README.md",
-      "source_sha256": "40551e97b5629092987bd0c8286935ac95ab8b688802bcf9568c9b616cffdd32"
+      "source_sha256": "af1db83b5b8ec223e464b567b6e8a5ff832770a738b5540d0eae1e6c86abacaf"
     },
     {
       "bytes": 12588,
@@ -127,6 +127,13 @@
       "source_sha256": "a7253529200850b3cd0a00d072bad29b94139995670fc8c45b5e046b56e647c4"
     },
     {
+      "bytes": 269499,
+      "path": "backend/app/data/openapi_v1.json",
+      "sha256": "014f539a31ea00e5b704b0f9c56a688f0c0a42279e9634b40ab00d59416a4aeb",
+      "source_path": "backend/app/data/openapi_v1.json",
+      "source_sha256": "014f539a31ea00e5b704b0f9c56a688f0c0a42279e9634b40ab00d59416a4aeb"
+    },
+    {
       "bytes": 13559,
       "path": "backend/app/demo_mode.py",
       "sha256": "91899fedc6d203adf3c8a9079f329262c65298ced0a80ac0f01eb5f29adf31e2",
@@ -155,11 +162,11 @@
       "source_sha256": "e19c78b4985939ad08fdca9be648124b97b12ae7c6433c5f1dcec3dc16d39f72"
     },
     {
-      "bytes": 54508,
+      "bytes": 57133,
       "path": "backend/app/main.py",
-      "sha256": "eb984c4c4dc36fdca3c3c3394a777c3383fa2fc17f67dd8bc06b84f777230e10",
+      "sha256": "0b869e3060858a8df4c080243f62608afa4c330b9e219887f40d55f06492f6bd",
       "source_path": "backend/app/main.py",
-      "source_sha256": "eb984c4c4dc36fdca3c3c3394a777c3383fa2fc17f67dd8bc06b84f777230e10"
+      "source_sha256": "0b869e3060858a8df4c080243f62608afa4c330b9e219887f40d55f06492f6bd"
     },
     {
       "bytes": 34265,
@@ -169,11 +176,11 @@
       "source_sha256": "7c980ad8f8beb28a7c7396ee9b586529f39faecc68ed6a8c1c9b122d35424a89"
     },
     {
-      "bytes": 67787,
+      "bytes": 68488,
       "path": "backend/app/paypal_disputes.py",
-      "sha256": "d8b5bfb656012d48bd99d39e91ef875dc57967e5b8b109f3fe13824fd922429f",
+      "sha256": "935ba55eee752047cf64c3fb390c426cdc25824aef044465b37ad37a686a01e0",
       "source_path": "backend/app/paypal_disputes.py",
-      "source_sha256": "d8b5bfb656012d48bd99d39e91ef875dc57967e5b8b109f3fe13824fd922429f"
+      "source_sha256": "935ba55eee752047cf64c3fb390c426cdc25824aef044465b37ad37a686a01e0"
     },
     {
       "bytes": 9263,
@@ -183,11 +190,11 @@
       "source_sha256": "e6ecaf6431434cb6223158ae039a6c07278610cdfeae229e06b9e7f3d7398bc0"
     },
     {
-      "bytes": 66909,
+      "bytes": 67097,
       "path": "backend/app/schemas.py",
-      "sha256": "254d1401b8a8319d9553a08a8dc3c32577e69a81affbe7cd2c6a842d1e70231d",
+      "sha256": "505e0c26a7083119af08316f325035d4588acf02c83b01435cac36753d86af14",
       "source_path": "backend/app/schemas.py",
-      "source_sha256": "254d1401b8a8319d9553a08a8dc3c32577e69a81affbe7cd2c6a842d1e70231d"
+      "source_sha256": "505e0c26a7083119af08316f325035d4588acf02c83b01435cac36753d86af14"
     },
     {
       "bytes": 64535,
@@ -323,25 +330,25 @@
       "source_sha256": "75521834f76a10e9c8bf86714f088ed0558516d4488c5984f4a89d2d12ca8d48"
     },
     {
-      "bytes": 7930,
+      "bytes": 8054,
       "path": "docs/SPONSOR_TECH_MAP.md",
-      "sha256": "8719a0bde5e769dc66d33635ce5eb49e04b18ea6ae0655f01ea8521e8ec41f4a",
+      "sha256": "dd89f4afdb149a19ecfe3ecaced57b93b2cf6b8b903dd945b50a6d6db74f9aa5",
       "source_path": "docs/SPONSOR_TECH_MAP.md",
-      "source_sha256": "8719a0bde5e769dc66d33635ce5eb49e04b18ea6ae0655f01ea8521e8ec41f4a"
+      "source_sha256": "dd89f4afdb149a19ecfe3ecaced57b93b2cf6b8b903dd945b50a6d6db74f9aa5"
     },
     {
-      "bytes": 268256,
+      "bytes": 269499,
       "path": "docs/api/openapi.json",
-      "sha256": "c2072a442a2676731059a66ef96ad260bd5226163d3c94c7f40f141009d099d5",
+      "sha256": "014f539a31ea00e5b704b0f9c56a688f0c0a42279e9634b40ab00d59416a4aeb",
       "source_path": "docs/api/openapi.json",
-      "source_sha256": "c2072a442a2676731059a66ef96ad260bd5226163d3c94c7f40f141009d099d5"
+      "source_sha256": "014f539a31ea00e5b704b0f9c56a688f0c0a42279e9634b40ab00d59416a4aeb"
     },
     {
-      "bytes": 42926,
+      "bytes": 43201,
       "path": "docs/api/postman_collection.json",
-      "sha256": "fedc913070146c0f08a3083f2bad9d83862e8edbca02ecffbe52b229603cb487",
+      "sha256": "c4294fd43272dcce3fd12c7fb7c0bf1255868235b62200fcf31506e8f4a876a6",
       "source_path": "docs/api/postman_collection.json",
-      "source_sha256": "fedc913070146c0f08a3083f2bad9d83862e8edbca02ecffbe52b229603cb487"
+      "source_sha256": "c4294fd43272dcce3fd12c7fb7c0bf1255868235b62200fcf31506e8f4a876a6"
     },
     {
       "bytes": 8827,
@@ -421,6 +428,13 @@
       "source_sha256": "9c64025b55922f9367c21ad26c1a1142736abf7260273c0f028931f306bf7477"
     },
     {
+      "bytes": 5252,
+      "path": "docs/evidence/AI_AND_PRIVACY_NOTE.md",
+      "sha256": "a606d1f249f48463aa36b52bc17174ad66a83edd72c48c3a4ed987f9c341bd94",
+      "source_path": "docs/evidence/AI_AND_PRIVACY_NOTE.md",
+      "source_sha256": "a606d1f249f48463aa36b52bc17174ad66a83edd72c48c3a4ed987f9c341bd94"
+    },
+    {
       "bytes": 36902,
       "path": "docs/evidence/AI_DRIFT_CONTROL.md",
       "sha256": "a90211d6a447829e3813fe4d153a9c006261e77fe7bda41af4f9bf765e9e853b",
@@ -498,11 +512,11 @@
       "source_sha256": "f4e7025655bc1169817b040f2a5e3f508ad27d96d2f6b678d364ac9cd1a222c1"
     },
     {
-      "bytes": 8414,
+      "bytes": 9043,
       "path": "docs/evidence/HOW_NUMBERS_WERE_COUNTED.md",
-      "sha256": "36a8e4e8586998bd8421f1aa93125cc3b22e8c462ea375c346a01415189c651f",
+      "sha256": "4edc50ec1989037dd550f44a4a35281c33d6d34846493fcf069f3a34c99f58d0",
       "source_path": "docs/evidence/HOW_NUMBERS_WERE_COUNTED.md",
-      "source_sha256": "36a8e4e8586998bd8421f1aa93125cc3b22e8c462ea375c346a01415189c651f"
+      "source_sha256": "4edc50ec1989037dd550f44a4a35281c33d6d34846493fcf069f3a34c99f58d0"
     },
     {
       "bytes": 1692,
@@ -545,6 +559,13 @@
       "sha256": "3246ee1a18588b8af83b29bc5797b03aa15f20dd421552ff19e7e82a0c98bc38",
       "source_path": "docs/evidence/READBACK_20261109.md",
       "source_sha256": "3246ee1a18588b8af83b29bc5797b03aa15f20dd421552ff19e7e82a0c98bc38"
+    },
+    {
+      "bytes": 530,
+      "path": "docs/evidence/README.md",
+      "sha256": "b032236789002c737d6f3f6730ad5170b2f57f35bfe518a1c2b6509b9f154c47",
+      "source_path": "docs/evidence/README.md",
+      "source_sha256": "b032236789002c737d6f3f6730ad5170b2f57f35bfe518a1c2b6509b9f154c47"
     },
     {
       "bytes": 22765,
@@ -624,11 +645,18 @@
       "source_sha256": "54e07475a0ee24260931c59b19b99b0ab7e981e5b6b805576fc48122a0dbac46"
     },
     {
-      "bytes": 4566,
+      "bytes": 4778,
       "path": "docs/evidence/TEST_RUN_20261108.md",
-      "sha256": "85505194eb11308c32fd10ebc8340570d96579397a25fbd76a00b4e6ada9cd7b",
+      "sha256": "86a0d498736f9b2cced677e37c53e0da6496c52301beda1407f83958b46834b7",
       "source_path": "docs/evidence/TEST_RUN_20261108.md",
-      "source_sha256": "85505194eb11308c32fd10ebc8340570d96579397a25fbd76a00b4e6ada9cd7b"
+      "source_sha256": "86a0d498736f9b2cced677e37c53e0da6496c52301beda1407f83958b46834b7"
+    },
+    {
+      "bytes": 2454,
+      "path": "docs/evidence/TEST_RUN_20261109_SKIPPED.md",
+      "sha256": "2c0d6a55cae44d26822bc9fb974e391250ab0a17c115f540ce3563a67e809e83",
+      "source_path": "docs/evidence/TEST_RUN_20261109_SKIPPED.md",
+      "source_sha256": "2c0d6a55cae44d26822bc9fb974e391250ab0a17c115f540ce3563a67e809e83"
     },
     {
       "bytes": 1370,
@@ -729,11 +757,11 @@
       "source_sha256": "0750cca5c12b56e25043b71bb5e5db5ba4a7142c7ffe443c9977997c749bf541"
     },
     {
-      "bytes": 19520,
+      "bytes": 19537,
       "path": "docs/submission/devpost_story.md",
-      "sha256": "99284ed8e45f30df88e50b79b062970c0b969e68ecdfd7b249f40e6045599775",
+      "sha256": "cc4748da0051f56779ab6c6b5aa3a04bf2a6800bb984e34825828e334d9a9a92",
       "source_path": "docs/submission/devpost_story.md",
-      "source_sha256": "99284ed8e45f30df88e50b79b062970c0b969e68ecdfd7b249f40e6045599775"
+      "source_sha256": "cc4748da0051f56779ab6c6b5aa3a04bf2a6800bb984e34825828e334d9a9a92"
     },
     {
       "bytes": 4267,
@@ -1100,18 +1128,18 @@
       "source_sha256": "9fae5376ca7d50207ea75be6cd22fe85fb5bace120e1d47717be3604972177a2"
     },
     {
-      "bytes": 1898,
+      "bytes": 2046,
       "path": "frontend/public/start.css",
-      "sha256": "734c87b654c35b07912921de7470f41c7fa105d6548bc59b1db4c58074bd0c97",
+      "sha256": "f700e79077537193f4c7de39f0dccf0ae3a4313e04f9391f5cac5eeebde57b99",
       "source_path": "frontend/public/start.css",
-      "source_sha256": "734c87b654c35b07912921de7470f41c7fa105d6548bc59b1db4c58074bd0c97"
+      "source_sha256": "f700e79077537193f4c7de39f0dccf0ae3a4313e04f9391f5cac5eeebde57b99"
     },
     {
-      "bytes": 4884,
+      "bytes": 6876,
       "path": "frontend/public/start.html",
-      "sha256": "b9ef59b34d0a4891f4cce6337c310d053dec3882183c48bc6208a3757a0796a9",
+      "sha256": "7ec581cee79e8958692dc0179d85b593254fd67320e3b2b5bd97779ec1040e0f",
       "source_path": "frontend/public/start.html",
-      "source_sha256": "b9ef59b34d0a4891f4cce6337c310d053dec3882183c48bc6208a3757a0796a9"
+      "source_sha256": "7ec581cee79e8958692dc0179d85b593254fd67320e3b2b5bd97779ec1040e0f"
     },
     {
       "bytes": 4657,
@@ -1725,16 +1753,16 @@
     {
       "bytes": 7894,
       "path": "integrations/gemini/check_runtime.py",
-      "sha256": "db40740b3c7cffe082e842c6686cd736154eda54384aa607b44b2ac0f8a8e25b",
+      "sha256": "eafc08f4326b7c6a37d8967c0f0784fd058801545add60876123d9b0f1b57ab1",
       "source_path": "integrations/gemini/check_runtime.py",
-      "source_sha256": "db40740b3c7cffe082e842c6686cd736154eda54384aa607b44b2ac0f8a8e25b"
+      "source_sha256": "eafc08f4326b7c6a37d8967c0f0784fd058801545add60876123d9b0f1b57ab1"
     },
     {
       "bytes": 1074,
       "path": "integrations/gemini/pyproject.toml",
-      "sha256": "7b0a145d313355741e1bfccb7e95cc29f705708e1b95cc578c8b7ba6625856b1",
+      "sha256": "1c98e7d83da084716b61e3ef787f1a2acda0aff64255ad199248cbbd5f7705ac",
       "source_path": "integrations/gemini/pyproject.toml",
-      "source_sha256": "7b0a145d313355741e1bfccb7e95cc29f705708e1b95cc578c8b7ba6625856b1"
+      "source_sha256": "1c98e7d83da084716b61e3ef787f1a2acda0aff64255ad199248cbbd5f7705ac"
     },
     {
       "bytes": 51446,
@@ -2619,11 +2647,11 @@
       "source_sha256": "32a899797a1b942a495ba11aa4eb511dd9e5228780c2142d38779772d31d5a75"
     },
     {
-      "bytes": 20653,
+      "bytes": 24823,
       "path": "tests/test_hosted_readonly_sandbox.py",
-      "sha256": "4aad66a2b443e0a774cc4b267567f0b73178c1e497e4253f7b9e7012e5e50849",
+      "sha256": "f06735982635aab71481b6f5d4fa06502db060c2010644de5daef7ecd0e9bc44",
       "source_path": "tests/test_hosted_readonly_sandbox.py",
-      "source_sha256": "4aad66a2b443e0a774cc4b267567f0b73178c1e497e4253f7b9e7012e5e50849"
+      "source_sha256": "f06735982635aab71481b6f5d4fa06502db060c2010644de5daef7ecd0e9bc44"
     },
     {
       "bytes": 2459,
@@ -2815,11 +2843,11 @@
       "source_sha256": "0d9bc04fee0ad12622326c03a74a116ce14ef80c47c4608c219a7c4c241a2e62"
     },
     {
-      "bytes": 39480,
+      "bytes": 39623,
       "path": "tools/build_public_candidate.py",
-      "sha256": "bcfb8a405f7d9b12334848dfab25240d1659b83216e5e94eefbbf10ad439ec8a",
+      "sha256": "61ded7bd65b7fe7b6458bdecddc681708d462eae6c9279f8599a350f743fa7b4",
       "source_path": "tools/build_public_candidate.py",
-      "source_sha256": "bcfb8a405f7d9b12334848dfab25240d1659b83216e5e94eefbbf10ad439ec8a"
+      "source_sha256": "61ded7bd65b7fe7b6458bdecddc681708d462eae6c9279f8599a350f743fa7b4"
     },
     {
       "bytes": 7653,
@@ -2843,11 +2871,11 @@
       "source_sha256": "c8c2525289c5677f99a4105a844aa89e847f95a0ba01f70d0696ae68d134ff77"
     },
     {
-      "bytes": 37413,
+      "bytes": 38163,
       "path": "tools/export_api_docs.py",
-      "sha256": "1b2b5d9f1c3ed104ae9eebe0601d65f23cc341834624292dbbe7542d3d69dd5c",
+      "sha256": "022f6d171007f49771fc754102075246de907775569d8568cb1ceb87db78a4aa",
       "source_path": "tools/export_api_docs.py",
-      "source_sha256": "1b2b5d9f1c3ed104ae9eebe0601d65f23cc341834624292dbbe7542d3d69dd5c"
+      "source_sha256": "022f6d171007f49771fc754102075246de907775569d8568cb1ceb87db78a4aa"
     },
     {
       "bytes": 12467,
@@ -2936,9 +2964,9 @@
     {
       "bytes": 14792,
       "path": "tools/verify_public_numbers.py",
-      "sha256": "bad04b65917fa6622bfa81f497b553a5f91de8ff88de7e3914d757b64f858631",
+      "sha256": "a411a04795b96e6281e91a0f74701603699434e5ee6861cfec05f067f7029021",
       "source_path": "tools/verify_public_numbers.py",
-      "source_sha256": "bad04b65917fa6622bfa81f497b553a5f91de8ff88de7e3914d757b64f858631"
+      "source_sha256": "a411a04795b96e6281e91a0f74701603699434e5ee6861cfec05f067f7029021"
     },
     {
       "bytes": 87,
@@ -2981,8 +3009,8 @@
     "scope": "RECORDED_OWNER_RIGHTS_AND_ENTRANT_ELIGIBILITY"
   },
   "package_digest_algorithm": "sha256(sorted utf-8 '<file_sha256>  <relative_path>\\n' records; manifest and detached hash excluded)",
-  "package_digest_sha256": "0f3c2fb56c6a0d41b10576499fad478d38e89af5377f0d20ff327d1f451189f9",
-  "public_artifact_id": "payguard-public-source-0f3c2fb56c6a0d41",
+  "package_digest_sha256": "b26987a91e835b568605be5bd782aafb76d5cce11f9ff478fd17d265add07ead",
+  "public_artifact_id": "payguard-public-source-b26987a91e835b56",
   "publication_authorized": false,
   "raw_bounded_prompt_disclosure": {
     "intent": "INTENTIONAL_PUBLIC_EXECUTABLE_PRODUCT_SOURCE",

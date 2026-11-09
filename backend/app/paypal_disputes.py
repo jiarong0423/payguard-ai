@@ -133,6 +133,10 @@ def _stamp(moment: datetime) -> str:
     return moment.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.000Z")
 
 
+FIXTURE_NOTE = ("connect_first: these rows are synthetic fixtures because no PayPal Sandbox connection is active. "
+                "Where the Sandbox is available, call POST /api/v1/paypal/connect first, then read this route again.")
+
+
 def fixture_disputes(now: datetime) -> tuple[dict, ...]:
     """Synthetic disputes in the public PayPal Disputes API JSON shape.
 
@@ -821,6 +825,17 @@ class DisputeReadbackService:
             "provider_submission": "NOT_PERFORMED",
         }
 
+    @staticmethod
+    def _note(live: bool) -> dict:
+        """Why fixture rows are shown. Nothing is added to a live (connected) answer."""
+        return {} if live else {"note": FIXTURE_NOTE}
+
+    @staticmethod
+    def _with_note(result: dict) -> dict:
+        if result.get("note") is None:
+            result.pop("note", None)
+        return result
+
     async def list_disputes(self, session: Session) -> dict:
         with self._store.lock:
             self._store._require_live_session(session, self._store._now())
@@ -836,7 +851,8 @@ class DisputeReadbackService:
                            {row["dispute_id"]: row["reason"] for row in items},
                            {row["dispute_id"]: row.get("dispute_amount") for row in items})
         try:
-            return DisputeListResponse.model_validate(dict(self._envelope(live, "GET_LIST", debug_id), items=items)).model_dump()
+            return self._with_note(DisputeListResponse.model_validate(
+                dict(self._envelope(live, "GET_LIST", debug_id), items=items, **self._note(live))).model_dump())
         except ValidationError:
             raise BoundaryError(502, "provider_response_invalid") from None
 
@@ -871,7 +887,8 @@ class DisputeReadbackService:
             self._sellers.setdefault(session.session_id, {})[dispute_id] = sellers
             self._readiness.setdefault(session.session_id, {})[dispute_id] = readiness
         try:
-            return DisputeDetailResponse.model_validate(dict(self._envelope(live, "GET_DETAIL", debug_id), **detail)).model_dump()
+            return self._with_note(DisputeDetailResponse.model_validate(
+                dict(self._envelope(live, "GET_DETAIL", debug_id), **self._note(live), **detail)).model_dump())
         except ValidationError:
             raise BoundaryError(502, "provider_response_invalid") from None
 

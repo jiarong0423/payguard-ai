@@ -148,6 +148,18 @@
       "description": "Method.",
       "type": "string"
      },
+     "note": {
+      "anyOf": [
+       {
+        "maxLength": 300,
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Note."
+     },
      "observed_at": {
       "description": "Observed at.",
       "maxLength": 27,
@@ -1686,6 +1698,18 @@
       "maxItems": 20,
       "type": "array"
      },
+     "note": {
+      "anyOf": [
+       {
+        "maxLength": 300,
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Note."
+     },
      "observed_at": {
       "description": "Observed at.",
       "maxLength": 27,
@@ -1983,6 +2007,18 @@
       },
       "maxItems": 20,
       "type": "array"
+     },
+     "note": {
+      "anyOf": [
+       {
+        "maxLength": 300,
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Note."
      },
      "observed_at": {
       "description": "Observed at.",
@@ -5328,6 +5364,18 @@
       "const": "POST",
       "description": "Method.",
       "type": "string"
+     },
+     "note": {
+      "anyOf": [
+       {
+        "maxLength": 300,
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Note."
      },
      "observed_at": {
       "description": "Observed at.",
@@ -11218,7 +11266,7 @@
   },
   "/api/v1/policy/assess": {
    "post": {
-    "description": "Policy Assess. Local console route POST /api/v1/policy/assess on synthetic data; advisory only.",
+    "description": "Checks whether the pinned official PayPal references still apply for a jurisdiction and theme at a given date. INCOMPLETE_POLICY_EVIDENCE with current_policy_applicability NOT_ESTABLISHED is a normal answer: it means the pinned summaries do not cover everything the question needs, so the tool does not claim the policy applies; it is advisory only and a person decides.",
     "operationId": "post_policy_assess",
     "requestBody": {
      "content": {
@@ -11614,6 +11662,10 @@
   {
    "description": "Local console (synthetic data)",
    "url": "http://127.0.0.1:8000"
+  },
+  {
+   "description": "Hosted demo (read-only: every write route answers 503 hosted_demo_disabled; the first request after idle can take about a minute)",
+   "url": "https://payguard-demo-j2b3.onrender.com"
   }
  ],
  "tags": [

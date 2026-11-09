@@ -128,6 +128,9 @@ EXACT_FILES = (
     "docs/evidence/PAYPAL_CLAUSES_SPOTCHECK_20261108.md",
     "docs/evidence/RULES_SPOTCHECK_20261110.md",
     "docs/evidence/TEST_RUN_20261108.md",
+    "docs/evidence/TEST_RUN_20261109_SKIPPED.md",
+    "docs/evidence/AI_AND_PRIVACY_NOTE.md",
+    "docs/evidence/README.md",
     "tools/eval_checklist_answer_key.py",
     "tools/compare_second_rater.py",
     "tools/export_api_docs.py",
@@ -291,7 +294,7 @@ TREE_FILES = {
         "__init__.py", "ai_brief.py", "ai_usage.py", "case_routing.py", "channel3.py", "channel3_products.py", "country_routes.py", "demo_mode.py", "guide_model.py", "guide_routes.py",
         "lmstudio_brief.py", "main.py", "studio_agent.py", "paypal.py", "paypal_disputes.py", "paypal_tools.py", "schemas.py", "store.py", "traffic.py",
     ),
-    "backend/app/data": ("channel3_recorded_v1.json",),
+    "backend/app/data": ("channel3_recorded_v1.json", "openapi_v1.json"),
     # The whole frontend/public tree (PWA manifest, service worker, offline page, icons); a test keeps it complete.
     "frontend/public": (
         "icons/apple-touch-icon.png", "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png",

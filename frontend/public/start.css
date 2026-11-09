@@ -21,3 +21,5 @@ li a.row:focus-visible,.btn:focus-visible{outline:3px solid var(--accent);outlin
 .small{font-size:.9rem}
 a{color:var(--accent)}
 code { overflow-wrap: anywhere; word-break: break-word; }
+
+pre { background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px; overflow-x: auto; font-size: 0.85rem; white-space: pre; }

@@ -5,7 +5,7 @@ Reads the FastAPI application in-process (no server, no network, no key). Output
 gives the same bytes, and `--check` fails when the committed files are out of date.
 
 Usage: PYTHONPATH=src:backend python3 -B tools/export_api_docs.py [--check]
-Writes docs/api/openapi.json, docs/api/postman_collection.json and docs/api/postman_run_collection.json. Exit 0 ok, 1 stale with --check, 2 import failure.
+Writes docs/api/openapi.json (and the identical served copy backend/app/data/openapi_v1.json), docs/api/postman_collection.json and docs/api/postman_run_collection.json. Exit 0 ok, 1 stale with --check, 2 import failure.
 """
 import copy
 import json
@@ -16,6 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "backend")]
 OUT = ROOT / "docs" / "api"
+SERVED_COPY = ROOT / "backend" / "app" / "data" / "openapi_v1.json"  # same bytes as docs/api/openapi.json; the hosted image has no docs/
 
 
 TAG_TEXT = {
@@ -76,7 +77,8 @@ def describe(spec):
     info["summary"] = "Read-only rule checks and a gated evidence workflow for small PayPal sellers, on synthetic data."
     info["contact"] = {"name": "TradeGlot", "url": "https://github.com/jiarong0423/payguard-ai"}
     info["license"] = {"name": "MIT", "identifier": "MIT"}
-    spec["servers"] = [{"url": "http://127.0.0.1:8000", "description": "Local console (synthetic data)"}]
+    spec["servers"] = [{"url": "http://127.0.0.1:8000", "description": "Local console (synthetic data)"},
+                       {"url": "https://payguard-demo-j2b3.onrender.com", "description": "Hosted demo (read-only: every write route answers 503 hosted_demo_disabled; the first request after idle can take about a minute)"}]
     used_tags, seen_ids = set(), set()
     for path in sorted(spec["paths"]):
         parts = [part for part in path.split("/") if part and part not in ("api", "v1")]
@@ -561,12 +563,16 @@ def main(argv):
     files = {name: json.dumps(value, indent=1, sort_keys=True, ensure_ascii=False) + "\n" for name, value in build().items()}
     if "--check" in argv:
         stale = [name for name, text in files.items() if not (OUT / name).is_file() or (OUT / name).read_text(encoding="utf-8") != text]
+        if not SERVED_COPY.is_file() or SERVED_COPY.read_text(encoding="utf-8") != files["openapi.json"]:
+            stale.append("backend/app/data/openapi_v1.json")
         print("STALE " + ", ".join(stale) if stale else "OK docs/api is up to date")
         return 1 if stale else 0
     OUT.mkdir(parents=True, exist_ok=True)
     for name, text in files.items():
         (OUT / name).write_text(text, encoding="utf-8")
         print("wrote docs/api/%s (%d bytes)" % (name, len(text.encode("utf-8"))))
+    SERVED_COPY.write_text(files["openapi.json"], encoding="utf-8")
+    print("wrote backend/app/data/openapi_v1.json (served at GET /api/v1/openapi.json)")
     return 0
 
 

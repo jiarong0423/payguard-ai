@@ -1,5 +1,7 @@
 # Sponsor technology map
 
+PayGuard AI is the earlier name of TradeGlot; receipt files and some screenshots under `docs/evidence/` keep the old name.
+
 One page that answers "what is actually used, where, and is it live on the hosted demo?". Statuses: **Hosted** = a judge can use it on the public demo (synthetic data); **Recorded** = the hosted demo replays a saved real run, no live call; **Local only** = works only on a local console with the owner's key; **Not used** = stated so nobody has to look. Versions are the ones in `frontend/package.json` and `render.yaml`.
 
 One-picture version: `docs/submission/diagrams/sponsor_evidence.png` (what ran for each sponsor, with the evidence file named on each card).

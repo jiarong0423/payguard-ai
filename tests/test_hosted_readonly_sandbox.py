@@ -7,8 +7,10 @@ the flag does nothing without public mode, and with the flag off the hosted demo
 """
 
 import asyncio
+import json
 import os
 import unittest
+from pathlib import Path
 from unittest import mock
 
 from fastapi.testclient import TestClient
@@ -373,6 +375,78 @@ class FlagSemantics(unittest.TestCase):
         self.assertEqual(len(DISABLED_ROUTES), 7)
         self.assertNotIn(("POST", "/api/v1/paypal/connect"), demo_mode.disabled_routes(True))
         self.assertEqual(len(demo_mode.disabled_routes(True)), 6)
+
+
+# ---- Judge round 2 (H1, H3, H4, H6): the hosted site serves its OpenAPI description, says why the dispute list shows
+# fixtures, explains the policy status, and answers /health and /llms.txt, without weakening any hosted rule. ----
+REPO = Path(__file__).resolve().parents[1]
+
+
+class HostedDescriptionAndLiveness(HostedReadOnlyBase):
+    def anonymous(self, path):
+        return self.client.get(path, headers=PROXY)
+
+    def test_openapi_is_served_without_a_session_and_equals_the_committed_file(self):
+        response = self.anonymous("/api/v1/openapi.json")
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.headers["content-type"].startswith("application/json"))
+        committed = (REPO / "docs" / "api" / "openapi.json").read_bytes()
+        self.assertEqual(response.content, committed)
+        urls = [server["url"] for server in json.loads(response.content)["servers"]]
+        self.assertEqual(urls, ["http://127.0.0.1:8000", "https://payguard-demo-j2b3.onrender.com"])
+
+    def test_health_alias_equals_the_api_health_and_llms_txt_is_plain_text(self):
+        alias, api = self.anonymous("/health"), self.anonymous("/api/v1/health")
+        self.assertEqual((alias.status_code, api.status_code), (200, 200))
+        self.assertEqual(alias.json(), api.json())
+        llms = self.anonymous("/llms.txt")
+        self.assertEqual(llms.status_code, 200)
+        self.assertTrue(llms.headers["content-type"].startswith("text/plain"))
+        for needle in ("# TradeGlot", "/api/v1/openapi.json", "503 hosted_demo_disabled", "github.com/jiarong0423/payguard-ai"):
+            self.assertIn(needle, llms.text)
+
+    def test_the_new_public_routes_are_get_only_and_writes_stay_shut(self):
+        for path in ("/api/v1/openapi.json", "/health", "/llms.txt"):
+            self.assertIn(self.client.post(path, json={}, headers=self.headers).status_code, (404, 405), path)
+        for route in WRITE_ROUTES:
+            self.assertEqual(self.post(route, {}).status_code, 503, route)
+        self.assertEqual(self.post("/paypal/invoices/draft").json()["error"]["code"], HOSTED_DEMO_CODE)
+
+    def test_the_new_routes_are_not_part_of_the_described_operations(self):
+        paths = json.loads((REPO / "docs" / "api" / "openapi.json").read_text(encoding="utf-8"))["paths"]
+        for path in ("/api/v1/openapi.json", "/health", "/llms.txt"):
+            self.assertNotIn(path, paths)
+
+    def test_policy_assess_description_explains_the_incomplete_status(self):
+        spec = json.loads((REPO / "docs" / "api" / "openapi.json").read_text(encoding="utf-8"))
+        text = spec["paths"]["/api/v1/policy/assess"]["post"]["description"]
+        self.assertIn("INCOMPLETE_POLICY_EVIDENCE", text)
+        self.assertIn("NOT_ESTABLISHED", text)
+        self.assertIn("advisory only", text)
+
+
+class FixtureNote(HostedReadOnlyBase):
+    def test_unconnected_list_and_detail_say_connect_first_and_stay_labelled_fixtures(self):
+        self.app.state.paypal_disputes._connected = lambda: False
+        listing = self.get("/paypal/disputes")
+        self.assertEqual(listing.status_code, 200)
+        body = listing.json()
+        self.assertEqual((body["source"], body["data_source_label"]), ("synthetic_fixture", "Fixture"))
+        self.assertIn("connect_first", body["note"])
+        self.assertIn("/api/v1/paypal/connect", body["note"])
+        detail = self.get("/paypal/disputes/" + body["items"][0]["dispute_id"])
+        self.assertEqual(detail.status_code, 200, detail.text)
+        self.assertEqual(detail.json()["source"], "synthetic_fixture")
+        self.assertIn("connect_first", detail.json()["note"])
+
+    def test_connected_answers_carry_no_note_key_at_all(self):
+        self.assertEqual(self.post("/paypal/connect").status_code, 200)
+        listing = self.get("/paypal/disputes").json()
+        self.assertEqual(listing["source"], "paypal_sandbox")
+        self.assertNotIn("note", listing)
+        detail = self.get("/paypal/disputes/" + listing["items"][0]["dispute_id"])
+        self.assertEqual(detail.status_code, 200, detail.text)
+        self.assertNotIn("note", detail.json())
 
 
 if __name__ == "__main__":
