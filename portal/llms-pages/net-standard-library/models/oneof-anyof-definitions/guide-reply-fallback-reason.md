@@ -1,6 +1,6 @@
 # Guide Reply Fallback Reason
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkd1aWRlUmVwbHlGYWxsYmFja1JlYXNvbg
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkd1aWRlUmVwbHlGYWxsYmFja1JlYXNvbg
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkd1aWRl
 
 | Type | Factory Method |
 |  --- | --- |
-| [`FallbackReasonEnum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/fallback-reason.md) | GuideReplyFallbackReason.FromFallbackReason(FallbackReasonEnum fallbackReason) |
+| [`FallbackReasonEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/fallback-reason.md) | GuideReplyFallbackReason.FromFallbackReason(FallbackReasonEnum fallbackReason) |
 
 
 # FallbackReasonEnum

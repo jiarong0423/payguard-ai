@@ -1,6 +1,6 @@
 # Guide State Response Reply
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZVJlcGx5
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZVJlcGx5
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb2
 
 | Type |
 |  --- |
-| [`GuideReply`](http://localhost:3000/llms-pages/python/models/structures/guide-reply.md) |
+| [`GuideReply`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/guide-reply.md) |
 
 
 # GuideReply

@@ -1,6 +1,6 @@
 # Product Reference Response Source
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlByb2R1Y3RSZWZlcmVuY2VSZXNwb25zZVNvdXJjZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRlByb2R1Y3RSZWZlcmVuY2VSZXNwb25zZVNvdXJjZQ
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlByb2R1Y3RSZWZlcm
 
 | Type |
 |  --- |
-| [`Source11Enum`](http://localhost:3000/llms-pages/typescript/models/enumerations/source-11.md) |
+| [`Source11Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/source-11.md) |
 
 
 # Source11Enum

@@ -1,6 +1,6 @@
 # How to Get Started
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0aCUyRl9fZ2V0dGluZ19zdGFydGVk
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0aCUyRl9fZ2V0dGluZ19zdGFydGVk
 
 
 # Introduction
@@ -97,7 +97,7 @@ The following parameters are configurable for the API Client:
 
 | Parameter | Type | Description |
 |  --- | --- | --- |
-| httpClientConfig | [`Consumer<HttpClientConfiguration.Builder>`](http://localhost:3000/llms-pages/java/sdk-infrastructure/configuration/httpclientconfiguration-builder.md) | Set up Http Client Configuration instance. |
+| httpClientConfig | [`Consumer<HttpClientConfiguration.Builder>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/sdk-infrastructure/configuration/httpclientconfiguration-builder.md) | Set up Http Client Configuration instance. |
 
 The API client can be initialized as follows:
 

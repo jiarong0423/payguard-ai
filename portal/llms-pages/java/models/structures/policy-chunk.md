@@ -1,6 +1,6 @@
 # Policy Chunk
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlBvbGljeUNodW5r
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlBvbGljeUNodW5r
 
 PolicyChunk.
 
@@ -14,14 +14,14 @@ PolicyChunk.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `CaseOutcome` | [`PolicyChunkCaseOutcome`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/policy-chunk-case-outcome.md) | Required | This is a container for any-of cases. | PolicyChunkCaseOutcome getCaseOutcome() | setCaseOutcome(PolicyChunkCaseOutcome caseOutcome) |
-| `CaseStage` | [`CaseStageEnum`](http://localhost:3000/llms-pages/java/models/enumerations/case-stage.md) | Required | Case stage. | CaseStageEnum getCaseStage() | setCaseStage(CaseStageEnum caseStage) |
+| `CaseOutcome` | [`PolicyChunkCaseOutcome`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/policy-chunk-case-outcome.md) | Required | This is a container for any-of cases. | PolicyChunkCaseOutcome getCaseOutcome() | setCaseOutcome(PolicyChunkCaseOutcome caseOutcome) |
+| `CaseStage` | [`CaseStageEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/case-stage.md) | Required | Case stage. | CaseStageEnum getCaseStage() | setCaseStage(CaseStageEnum caseStage) |
 | `ChunkId` | `String` | Required | Chunk id.<br><br>**Constraints**: *Pattern*: `^[A-Z0-9-]{1,128}$` | String getChunkId() | setChunkId(String chunkId) |
 | `Jurisdiction` | `String` | Required, Constant | Jurisdiction.<br><br>**Value**: `"US"` | String getJurisdiction() | setJurisdiction(String jurisdiction) |
-| `MaterialType` | [`MaterialType1Enum`](http://localhost:3000/llms-pages/java/models/enumerations/material-type-1.md) | Required | Material type. | MaterialType1Enum getMaterialType() | setMaterialType(MaterialType1Enum materialType) |
+| `MaterialType` | [`MaterialType1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/material-type-1.md) | Required | Material type. | MaterialType1Enum getMaterialType() | setMaterialType(MaterialType1Enum materialType) |
 | `SourceId` | `String` | Required | Source id.<br><br>**Constraints**: *Pattern*: `^[A-Z0-9-]{1,128}$` | String getSourceId() | setSourceId(String sourceId) |
 | `TextSha256` | `String` | Required | Text sha256.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` | String getTextSha256() | setTextSha256(String textSha256) |
-| `Theme` | [`ThemeEnum`](http://localhost:3000/llms-pages/java/models/enumerations/theme.md) | Required | Theme. | ThemeEnum getTheme() | setTheme(ThemeEnum theme) |
+| `Theme` | [`ThemeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/theme.md) | Required | Theme. | ThemeEnum getTheme() | setTheme(ThemeEnum theme) |
 
 
 # Example

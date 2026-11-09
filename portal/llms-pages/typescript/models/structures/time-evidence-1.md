@@ -1,6 +1,6 @@
 # Time Evidence 1
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZTE
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZTE
 
 Time evidence.
 
@@ -15,11 +15,11 @@ Time evidence.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `advisoryOnly` | `boolean \| undefined` | Optional | Advisory only. |
-| `events` | [`TimeEvidence1Events[] \| undefined`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/time-evidence-1-events.md) | Optional | This is Array of a container for any-of cases.<br><br>**Constraints**: *Minimum Items*: `2`, *Maximum Items*: `30` |
-| `flags` | [`FlagEnum[] \| undefined`](http://localhost:3000/llms-pages/typescript/models/enumerations/flag.md) | Optional | Flags.<br><br>**Constraints**: *Maximum Items*: `4` |
-| `gapsSeconds` | [`TimeGaps \| undefined`](http://localhost:3000/llms-pages/typescript/models/structures/time-gaps.md) | Optional | TimeGaps. |
-| `judgement` | [`JudgementEnum \| undefined`](http://localhost:3000/llms-pages/typescript/models/enumerations/judgement.md) | Optional | Judgement. |
-| `schemaVersion` | [`SchemaVersionEnum \| undefined`](http://localhost:3000/llms-pages/typescript/models/enumerations/schema-version.md) | Optional | Schema version. |
+| `events` | [`TimeEvidence1Events[] \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/time-evidence-1-events.md) | Optional | This is Array of a container for any-of cases.<br><br>**Constraints**: *Minimum Items*: `2`, *Maximum Items*: `30` |
+| `flags` | [`FlagEnum[] \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/flag.md) | Optional | Flags.<br><br>**Constraints**: *Maximum Items*: `4` |
+| `gapsSeconds` | [`TimeGaps \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/time-gaps.md) | Optional | TimeGaps. |
+| `judgement` | [`JudgementEnum \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/judgement.md) | Optional | Judgement. |
+| `schemaVersion` | [`SchemaVersionEnum \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/schema-version.md) | Optional | Schema version. |
 
 
 # Example

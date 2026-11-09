@@ -1,6 +1,6 @@
 # HTTP Validation Error
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I
 
 HTTPValidationError.
 
@@ -14,7 +14,7 @@ HTTPValidationError.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `Detail` | [`List<ValidationError>`](http://localhost:3000/llms-pages/net-standard-library/models/structures/validation-error.md) | Optional | Detail. |
+| `Detail` | [`List<ValidationError>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/validation-error.md) | Optional | Detail. |
 
 
 # Example

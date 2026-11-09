@@ -1,6 +1,6 @@
 # Guide State Response Analysis
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZUFuYWx5c2lz
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZUFuYWx5c2lz
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZX
 
 | Type |
 |  --- |
-| [`GuideAnalysis`](http://localhost:3000/llms-pages/typescript/models/structures/guide-analysis.md) |
+| [`GuideAnalysis`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/guide-analysis.md) |
 
 
 # GuideAnalysis

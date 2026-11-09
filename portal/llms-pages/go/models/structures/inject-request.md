@@ -1,6 +1,6 @@
 # Inject Request
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkluamVjdFJlcXVlc3Q
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkluamVjdFJlcXVlc3Q
 
 InjectRequest.
 
@@ -14,7 +14,7 @@ InjectRequest.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `Scenario` | [`models.Scenario5Enum`](http://localhost:3000/llms-pages/go/models/enumerations/scenario-5.md) | Required | Scenario. |
+| `Scenario` | [`models.Scenario5Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/scenario-5.md) | Required | Scenario. |
 
 
 # Example

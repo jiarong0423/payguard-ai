@@ -1,6 +1,6 @@
 # Dispute Draft Response
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkRpc3B1dGVEcmFmdFJlc3BvbnNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkRpc3B1dGVEcmFmdFJlc3BvbnNl
 
 DisputeDraftResponse.
 
@@ -16,20 +16,20 @@ DisputeDraftResponse.
 |  --- | --- | --- | --- | --- | --- |
 | `advisoryOnly` | `string` | Required, Constant | Advisory only.<br><br>**Value**: `'True'` | getAdvisoryOnly(): string | setAdvisoryOnly(string advisoryOnly): void |
 | `caseRef` | `string` | Required | Case ref. | getCaseRef(): string | setCaseRef(string caseRef): void |
-| `documentRedaction` | [`DocumentRedaction`](http://localhost:3000/llms-pages/php/models/structures/document-redaction.md) | Required | DocumentRedaction. | getDocumentRedaction(): DocumentRedaction | setDocumentRedaction(DocumentRedaction documentRedaction): void |
+| `documentRedaction` | [`DocumentRedaction`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/document-redaction.md) | Required | DocumentRedaction. | getDocumentRedaction(): DocumentRedaction | setDocumentRedaction(DocumentRedaction documentRedaction): void |
 | `draftDigest` | `string` | Required | Draft digest. | getDraftDigest(): string | setDraftDigest(string draftDigest): void |
-| `evidence` | [`Evidence`](http://localhost:3000/llms-pages/php/models/structures/evidence.md) | Required | Evidence. | getEvidence(): Evidence | setEvidence(Evidence evidence): void |
-| `identityRedaction` | [`IdentityRedaction`](http://localhost:3000/llms-pages/php/models/structures/identity-redaction.md) | Required | IdentityRedaction. | getIdentityRedaction(): IdentityRedaction | setIdentityRedaction(IdentityRedaction identityRedaction): void |
+| `evidence` | [`Evidence`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/evidence.md) | Required | Evidence. | getEvidence(): Evidence | setEvidence(Evidence evidence): void |
+| `identityRedaction` | [`IdentityRedaction`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/identity-redaction.md) | Required | IdentityRedaction. | getIdentityRedaction(): IdentityRedaction | setIdentityRedaction(IdentityRedaction identityRedaction): void |
 | `limitations` | `string[]` | Required | Limitations. | getLimitations(): array | setLimitations(array limitations): void |
 | `policyVersion` | `string` | Required | Policy version. | getPolicyVersion(): string | setPolicyVersion(string policyVersion): void |
 | `recommendation` | `string` | Required | Recommendation. | getRecommendation(): string | setRecommendation(string recommendation): void |
-| `restrictedOriginalSummary` | [`RestrictedOriginalSummary`](http://localhost:3000/llms-pages/php/models/structures/restricted-original-summary.md) | Required | RestrictedOriginalSummary. | getRestrictedOriginalSummary(): RestrictedOriginalSummary | setRestrictedOriginalSummary(RestrictedOriginalSummary restrictedOriginalSummary): void |
+| `restrictedOriginalSummary` | [`RestrictedOriginalSummary`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/restricted-original-summary.md) | Required | RestrictedOriginalSummary. | getRestrictedOriginalSummary(): RestrictedOriginalSummary | setRestrictedOriginalSummary(RestrictedOriginalSummary restrictedOriginalSummary): void |
 | `reviewReasons` | `string[]` | Required | Review reasons. | getReviewReasons(): array | setReviewReasons(array reviewReasons): void |
-| `routing` | [`DisputeRouting`](http://localhost:3000/llms-pages/php/models/structures/dispute-routing.md) | Required | DisputeRouting. | getRouting(): DisputeRouting | setRouting(DisputeRouting routing): void |
-| `scenarioMatch` | [`ScenarioMatch`](http://localhost:3000/llms-pages/php/models/structures/scenario-match.md) | Required | ScenarioMatch. | getScenarioMatch(): ScenarioMatch | setScenarioMatch(ScenarioMatch scenarioMatch): void |
+| `routing` | [`DisputeRouting`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/dispute-routing.md) | Required | DisputeRouting. | getRouting(): DisputeRouting | setRouting(DisputeRouting routing): void |
+| `scenarioMatch` | [`ScenarioMatch`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/scenario-match.md) | Required | ScenarioMatch. | getScenarioMatch(): ScenarioMatch | setScenarioMatch(ScenarioMatch scenarioMatch): void |
 | `source` | `string` | Required, Constant | Source.<br><br>**Value**: `'synthetic'` | getSource(): string | setSource(string source): void |
-| `status` | [`string(Status5Enum)`](http://localhost:3000/llms-pages/php/models/enumerations/status-5.md) | Required | Status. | getStatus(): string | setStatus(string status): void |
-| `timeEvidence` | [TimeEvidence](http://localhost:3000/llms-pages/php/models/structures/time-evidence.md)\|null | Optional | This is a container for any-of cases. | getTimeEvidence(): ?TimeEvidence | setTimeEvidence(?TimeEvidence timeEvidence): void |
+| `status` | [`string(Status5Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/status-5.md) | Required | Status. | getStatus(): string | setStatus(string status): void |
+| `timeEvidence` | [TimeEvidence](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/time-evidence.md)\|null | Optional | This is a container for any-of cases. | getTimeEvidence(): ?TimeEvidence | setTimeEvidence(?TimeEvidence timeEvidence): void |
 
 
 # Example

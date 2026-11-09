@@ -1,6 +1,6 @@
 # Signal
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlNpZ25hbA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRlNpZ25hbA
 
 Signal.
 
@@ -14,9 +14,9 @@ Signal.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `Category` | [`*models.SignalCategory`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/signal-category.md) | Optional | This is a container for any-of cases. |
-| `Confidence` | [`*models.SignalConfidence`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/signal-confidence.md) | Optional | This is a container for any-of cases. |
-| `Source` | [`*models.Source2Enum`](http://localhost:3000/llms-pages/go/models/enumerations/source-2.md) | Optional | Source. |
+| `Category` | [`*models.SignalCategory`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/signal-category.md) | Optional | This is a container for any-of cases. |
+| `Confidence` | [`*models.SignalConfidence`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/signal-confidence.md) | Optional | This is a container for any-of cases. |
+| `Source` | [`*models.Source2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/source-2.md) | Optional | Source. |
 
 
 # Example

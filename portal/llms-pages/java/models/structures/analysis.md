@@ -1,6 +1,6 @@
 # Analysis
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkFuYWx5c2lz
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkFuYWx5c2lz
 
 Analysis.
 
@@ -14,8 +14,8 @@ Analysis.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Reason` | [`AnalysisReason`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/analysis-reason.md) | Optional | This is a container for any-of cases. | AnalysisReason getReason() | setReason(AnalysisReason reason) |
-| `Status` | [`Status8Enum`](http://localhost:3000/llms-pages/java/models/enumerations/status-8.md) | Optional | Status. | Status8Enum getStatus() | setStatus(Status8Enum status) |
+| `Reason` | [`AnalysisReason`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/analysis-reason.md) | Optional | This is a container for any-of cases. | AnalysisReason getReason() | setReason(AnalysisReason reason) |
+| `Status` | [`Status8Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/status-8.md) | Optional | Status. | Status8Enum getStatus() | setStatus(Status8Enum status) |
 | `Turn` | `Integer` | Optional | Turn. | Integer getTurn() | setTurn(Integer turn) |
 
 

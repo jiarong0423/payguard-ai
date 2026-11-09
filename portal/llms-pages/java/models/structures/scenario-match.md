@@ -1,6 +1,6 @@
 # Scenario Match
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlNjZW5hcmlvTWF0Y2g
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlNjZW5hcmlvTWF0Y2g
 
 ScenarioMatch.
 
@@ -17,12 +17,12 @@ ScenarioMatch.
 | `CurrentPolicyApplicability` | `String` | Required, Constant | Current policy applicability.<br><br>**Value**: `"NOT_ESTABLISHED"` | String getCurrentPolicyApplicability() | setCurrentPolicyApplicability(String currentPolicyApplicability) |
 | `EngineExecution` | `String` | Required, Constant | Engine execution.<br><br>**Value**: `"NOT_RUN"` | String getEngineExecution() | setEngineExecution(String engineExecution) |
 | `EvaluationScope` | `String` | Required, Constant | Evaluation scope.<br><br>**Value**: `"AUTHORED_SYNTHETIC_DEMO_ONLY"` | String getEvaluationScope() | setEvaluationScope(String evaluationScope) |
-| `IntakeStatus` | [`IntakeStatusEnum`](http://localhost:3000/llms-pages/java/models/enumerations/intake-status.md) | Required | Intake status. | IntakeStatusEnum getIntakeStatus() | setIntakeStatus(IntakeStatusEnum intakeStatus) |
+| `IntakeStatus` | [`IntakeStatusEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/intake-status.md) | Required | Intake status. | IntakeStatusEnum getIntakeStatus() | setIntakeStatus(IntakeStatusEnum intakeStatus) |
 | `OperationalAuthority` | `String` | Required, Constant | Operational authority.<br><br>**Value**: `"REFERENCE_ONLY_NO_ACTION_AUTHORIZATION"` | String getOperationalAuthority() | setOperationalAuthority(String operationalAuthority) |
 | `Provenance` | `String` | Required, Constant | Provenance.<br><br>**Value**: `"AUTHORED_SYNTHETIC_SCENARIOS_NOT_REAL_CASES"` | String getProvenance() | setProvenance(String provenance) |
 | `RealCaseEvidence` | `String` | Required, Constant | Real case evidence.<br><br>**Value**: `"NOT_PROVIDED"` | String getRealCaseEvidence() | setRealCaseEvidence(String realCaseEvidence) |
 | `RequiredHumanReview` | `String` | Required, Constant | Required human review.<br><br>**Value**: `"True"` | String getRequiredHumanReview() | setRequiredHumanReview(String requiredHumanReview) |
-| `Scenario` | [`DisputeScenario`](http://localhost:3000/llms-pages/java/models/structures/dispute-scenario.md) | Required | DisputeScenario. | DisputeScenario getScenario() | setScenario(DisputeScenario scenario) |
+| `Scenario` | [`DisputeScenario`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/dispute-scenario.md) | Required | DisputeScenario. | DisputeScenario getScenario() | setScenario(DisputeScenario scenario) |
 | `SchemaVersion` | `int` | Required, Constant | Schema version.<br><br>**Value**: `1` | int getSchemaVersion() | setSchemaVersion(int schemaVersion) |
 | `Source` | `String` | Required, Constant | Source.<br><br>**Value**: `"local_synthetic_scenario_matcher"` | String getSource() | setSource(String source) |
 | `Status` | `String` | Required, Constant | Status.<br><br>**Value**: `"synthetic_scenarios_found"` | String getStatus() | setStatus(String status) |

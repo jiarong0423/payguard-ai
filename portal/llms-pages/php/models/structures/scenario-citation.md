@@ -1,6 +1,6 @@
 # Scenario Citation
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRlNjZW5hcmlvQ2l0YXRpb24
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRlNjZW5hcmlvQ2l0YXRpb24
 
 ScenarioCitation.
 
@@ -17,7 +17,7 @@ ScenarioCitation.
 | `chunkId` | `string` | Required | Chunk id.<br><br>**Constraints**: *Pattern*: `^[A-Z0-9-]{1,128}$` | getChunkId(): string | setChunkId(string chunkId): void |
 | `jurisdiction` | `string` | Required, Constant | Jurisdiction.<br><br>**Value**: `'US'` | getJurisdiction(): string | setJurisdiction(string jurisdiction): void |
 | `locator` | `string` | Required | Locator.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `1000` | getLocator(): string | setLocator(string locator): void |
-| `materialType` | [`string(MaterialTypeEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/material-type.md) | Required | Material type. | getMaterialType(): string | setMaterialType(string materialType): void |
+| `materialType` | [`string(MaterialTypeEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/material-type.md) | Required | Material type. | getMaterialType(): string | setMaterialType(string materialType): void |
 | `sourceId` | `string` | Required | Source id.<br><br>**Constraints**: *Pattern*: `^[A-Z0-9-]{1,128}$` | getSourceId(): string | setSourceId(string sourceId): void |
 | `textSha256` | `string` | Required | Text sha256.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` | getTextSha256(): string | setTextSha256(string textSha256): void |
 | `title` | `string` | Required | Title.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `512` | getTitle(): string | setTitle(string title): void |

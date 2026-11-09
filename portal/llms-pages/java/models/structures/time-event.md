@@ -1,6 +1,6 @@
 # Time Event
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlRpbWVFdmVudA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlRpbWVFdmVudA
 
 TimeEvent.
 
@@ -15,8 +15,8 @@ TimeEvent.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `At` | `String` | Required | At.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `40` | String getAt() | setAt(String at) |
-| `Kind` | [`KindEnum`](http://localhost:3000/llms-pages/java/models/enumerations/kind.md) | Required | Kind. | KindEnum getKind() | setKind(KindEnum kind) |
-| `Source` | [`Source5Enum`](http://localhost:3000/llms-pages/java/models/enumerations/source-5.md) | Required | Source. | Source5Enum getSource() | setSource(Source5Enum source) |
+| `Kind` | [`KindEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/kind.md) | Required | Kind. | KindEnum getKind() | setKind(KindEnum kind) |
+| `Source` | [`Source5Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/source-5.md) | Required | Source. | Source5Enum getSource() | setSource(Source5Enum source) |
 
 
 # Example

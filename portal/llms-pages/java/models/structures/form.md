@@ -1,6 +1,6 @@
 # Form
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkZvcm0
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkZvcm0
 
 Form.
 
@@ -14,9 +14,9 @@ Form.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Kind` | [`Kind2Enum`](http://localhost:3000/llms-pages/java/models/enumerations/kind-2.md) | Optional | Kind. | Kind2Enum getKind() | setKind(Kind2Enum kind) |
-| `Options` | [`List<GuideOption>`](http://localhost:3000/llms-pages/java/models/structures/guide-option.md) | Optional | Options. | List<GuideOption> getOptions() | setOptions(List<GuideOption> options) |
-| `Placeholder` | [`FormPlaceholder`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/form-placeholder.md) | Optional | This is a container for any-of cases. | FormPlaceholder getPlaceholder() | setPlaceholder(FormPlaceholder placeholder) |
+| `Kind` | [`Kind2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/kind-2.md) | Optional | Kind. | Kind2Enum getKind() | setKind(Kind2Enum kind) |
+| `Options` | [`List<GuideOption>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/guide-option.md) | Optional | Options. | List<GuideOption> getOptions() | setOptions(List<GuideOption> options) |
+| `Placeholder` | [`FormPlaceholder`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/form-placeholder.md) | Optional | This is a container for any-of cases. | FormPlaceholder getPlaceholder() | setPlaceholder(FormPlaceholder placeholder) |
 
 
 # Example

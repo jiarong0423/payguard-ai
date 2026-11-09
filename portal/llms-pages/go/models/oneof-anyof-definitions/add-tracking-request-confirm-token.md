@@ -1,6 +1,6 @@
 # Add Tracking Request Confirm Token
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkFkZFRyYWNraW5nUmVxdWVzdENvbmZpcm1Ub2tlbg
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkFkZFRyYWNraW5nUmVxdWVzdENvbmZpcm1Ub2tlbg
 
 
 # Class Name

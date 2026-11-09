@@ -1,6 +1,6 @@
 # Advisory Request
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkFkdmlzb3J5UmVxdWVzdA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkFkdmlzb3J5UmVxdWVzdA
 
 AdvisoryRequest.
 
@@ -18,7 +18,7 @@ AdvisoryRequest.
 | `CandidateJson` | `String` | Required | Candidate json.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `8192` | String getCandidateJson() | setCandidateJson(String candidateJson) |
 | `Jurisdiction` | `String` | Required, Constant | Jurisdiction.<br><br>**Value**: `"US"` | String getJurisdiction() | setJurisdiction(String jurisdiction) |
 | `ObservationMaxAgeDays` | `int` | Required | Observation max age days.<br><br>**Constraints**: `>= 0`, `<= 365000` | int getObservationMaxAgeDays() | setObservationMaxAgeDays(int observationMaxAgeDays) |
-| `Theme` | [`ThemeEnum`](http://localhost:3000/llms-pages/java/models/enumerations/theme.md) | Required | Theme. | ThemeEnum getTheme() | setTheme(ThemeEnum theme) |
+| `Theme` | [`ThemeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/theme.md) | Required | Theme. | ThemeEnum getTheme() | setTheme(ThemeEnum theme) |
 
 
 # Example

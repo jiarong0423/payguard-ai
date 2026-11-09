@@ -1,6 +1,6 @@
 # Policy Chunk
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlBvbGljeUNodW5r
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRlBvbGljeUNodW5r
 
 PolicyChunk.
 
@@ -14,14 +14,14 @@ PolicyChunk.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `caseOutcome` | [`PolicyChunkCaseOutcome`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/policy-chunk-case-outcome.md) | Required | This is a container for any-of cases. |
-| `caseStage` | [`CaseStageEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/case-stage.md) | Required | Case stage. |
+| `caseOutcome` | [`PolicyChunkCaseOutcome`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/policy-chunk-case-outcome.md) | Required | This is a container for any-of cases. |
+| `caseStage` | [`CaseStageEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/case-stage.md) | Required | Case stage. |
 | `chunkId` | `string` | Required | Chunk id.<br><br>**Constraints**: *Pattern*: `^[A-Z0-9-]{1,128}$` |
 | `jurisdiction` | `string` | Required, Constant | Jurisdiction.<br><br>**Value**: `'US'` |
-| `materialType` | [`MaterialType1Enum`](http://localhost:3000/llms-pages/typescript/models/enumerations/material-type-1.md) | Required | Material type. |
+| `materialType` | [`MaterialType1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/material-type-1.md) | Required | Material type. |
 | `sourceId` | `string` | Required | Source id.<br><br>**Constraints**: *Pattern*: `^[A-Z0-9-]{1,128}$` |
 | `textSha256` | `string` | Required | Text sha256.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` |
-| `theme` | [`ThemeEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/theme.md) | Required | Theme. |
+| `theme` | [`ThemeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/theme.md) | Required | Theme. |
 
 
 # Example

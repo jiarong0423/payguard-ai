@@ -1,6 +1,6 @@
 # Dispute Draft Response
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkRpc3B1dGVEcmFmdFJlc3BvbnNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkRpc3B1dGVEcmFmdFJlc3BvbnNl
 
 DisputeDraftResponse.
 
@@ -16,20 +16,20 @@ DisputeDraftResponse.
 |  --- | --- | --- | --- |
 | `advisoryOnly` | `string` | Required, Constant | Advisory only.<br><br>**Value**: `'True'` |
 | `caseRef` | `string` | Required | Case ref. |
-| `documentRedaction` | [`DocumentRedaction`](http://localhost:3000/llms-pages/typescript/models/structures/document-redaction.md) | Required | DocumentRedaction. |
+| `documentRedaction` | [`DocumentRedaction`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/document-redaction.md) | Required | DocumentRedaction. |
 | `draftDigest` | `string` | Required | Draft digest. |
-| `evidence` | [`Evidence`](http://localhost:3000/llms-pages/typescript/models/structures/evidence.md) | Required | Evidence. |
-| `identityRedaction` | [`IdentityRedaction`](http://localhost:3000/llms-pages/typescript/models/structures/identity-redaction.md) | Required | IdentityRedaction. |
+| `evidence` | [`Evidence`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/evidence.md) | Required | Evidence. |
+| `identityRedaction` | [`IdentityRedaction`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/identity-redaction.md) | Required | IdentityRedaction. |
 | `limitations` | `string[]` | Required | Limitations. |
 | `policyVersion` | `string` | Required | Policy version. |
 | `recommendation` | `string` | Required | Recommendation. |
-| `restrictedOriginalSummary` | [`RestrictedOriginalSummary`](http://localhost:3000/llms-pages/typescript/models/structures/restricted-original-summary.md) | Required | RestrictedOriginalSummary. |
+| `restrictedOriginalSummary` | [`RestrictedOriginalSummary`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/restricted-original-summary.md) | Required | RestrictedOriginalSummary. |
 | `reviewReasons` | `string[]` | Required | Review reasons. |
-| `routing` | [`DisputeRouting`](http://localhost:3000/llms-pages/typescript/models/structures/dispute-routing.md) | Required | DisputeRouting. |
-| `scenarioMatch` | [`ScenarioMatch`](http://localhost:3000/llms-pages/typescript/models/structures/scenario-match.md) | Required | ScenarioMatch. |
+| `routing` | [`DisputeRouting`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/dispute-routing.md) | Required | DisputeRouting. |
+| `scenarioMatch` | [`ScenarioMatch`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/scenario-match.md) | Required | ScenarioMatch. |
 | `source` | `string` | Required, Constant | Source.<br><br>**Value**: `'synthetic'` |
-| `status` | [`Status5Enum`](http://localhost:3000/llms-pages/typescript/models/enumerations/status-5.md) | Required | Status. |
-| `timeEvidence` | [`DisputeDraftResponseTimeEvidence \| undefined`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/dispute-draft-response-time-evidence.md) | Optional | This is a container for any-of cases. |
+| `status` | [`Status5Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/status-5.md) | Required | Status. |
+| `timeEvidence` | [`DisputeDraftResponseTimeEvidence \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/dispute-draft-response-time-evidence.md) | Optional | This is a container for any-of cases. |
 
 
 # Example

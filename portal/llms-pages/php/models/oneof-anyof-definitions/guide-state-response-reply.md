@@ -1,6 +1,6 @@
 # Guide State Response Reply
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZVJlcGx5
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZVJlcGx5
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZ
 
 | Type |
 |  --- |
-| [`GuideReply`](http://localhost:3000/llms-pages/php/models/structures/guide-reply.md) |
+| [`GuideReply`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/guide-reply.md) |
 
 
 # GuideReply

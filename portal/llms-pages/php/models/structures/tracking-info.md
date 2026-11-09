@@ -1,6 +1,6 @@
 # Tracking Info
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRlRyYWNraW5nSW5mbw
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRlRyYWNraW5nSW5mbw
 
 TrackingInfo.
 
@@ -14,7 +14,7 @@ TrackingInfo.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `carrierName` | [`string(CarrierNameEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/carrier-name.md) | Required | Carrier name. | getCarrierName(): string | setCarrierName(string carrierName): void |
+| `carrierName` | [`string(CarrierNameEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/carrier-name.md) | Required | Carrier name. | getCarrierName(): string | setCarrierName(string carrierName): void |
 | `carrierNameOther` | string\|null | Optional | This is a container for any-of cases. | getCarrierNameOther(): ?string | setCarrierNameOther(?string carrierNameOther): void |
 | `trackingNumber` | `string` | Required | Tracking number.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `64` | getTrackingNumber(): string | setTrackingNumber(string trackingNumber): void |
 

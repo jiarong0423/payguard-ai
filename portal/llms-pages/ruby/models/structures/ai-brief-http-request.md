@@ -1,6 +1,6 @@
 # Ai Brief Http Request
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkFpQnJpZWZIdHRwUmVxdWVzdA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkFpQnJpZWZIdHRwUmVxdWVzdA
 
 What the console may send: the stage and, for disputes, which case. Session facts are never caller input.
 
@@ -15,7 +15,7 @@ What the console may send: the stage and, for disputes, which case. Session fact
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `case_ref` | String \| nil | Optional | This is a container for any-of cases. |
-| `stage` | [`StageEnum`](http://localhost:3000/llms-pages/ruby/models/enumerations/stage.md) | Required | Stage. |
+| `stage` | [`StageEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/stage.md) | Required | Stage. |
 
 
 # Example

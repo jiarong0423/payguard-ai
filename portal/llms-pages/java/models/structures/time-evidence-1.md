@@ -1,6 +1,6 @@
 # Time Evidence 1
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZTE
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZTE
 
 Time evidence.
 
@@ -15,11 +15,11 @@ Time evidence.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `AdvisoryOnly` | `Boolean` | Optional | Advisory only. | Boolean getAdvisoryOnly() | setAdvisoryOnly(Boolean advisoryOnly) |
-| `Events` | [`List<TimeEvidence1Events>`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/time-evidence-1-events.md) | Optional | This is List of a container for any-of cases.<br><br>**Constraints**: *Minimum Items*: `2`, *Maximum Items*: `30` | List<TimeEvidence1Events> getEvents() | setEvents(List<TimeEvidence1Events> events) |
-| `Flags` | [`List<FlagEnum>`](http://localhost:3000/llms-pages/java/models/enumerations/flag.md) | Optional | Flags.<br><br>**Constraints**: *Maximum Items*: `4` | List<FlagEnum> getFlags() | setFlags(List<FlagEnum> flags) |
-| `GapsSeconds` | [`TimeGaps`](http://localhost:3000/llms-pages/java/models/structures/time-gaps.md) | Optional | TimeGaps. | TimeGaps getGapsSeconds() | setGapsSeconds(TimeGaps gapsSeconds) |
-| `Judgement` | [`JudgementEnum`](http://localhost:3000/llms-pages/java/models/enumerations/judgement.md) | Optional | Judgement. | JudgementEnum getJudgement() | setJudgement(JudgementEnum judgement) |
-| `SchemaVersion` | [`SchemaVersionEnum`](http://localhost:3000/llms-pages/java/models/enumerations/schema-version.md) | Optional | Schema version. | SchemaVersionEnum getSchemaVersion() | setSchemaVersion(SchemaVersionEnum schemaVersion) |
+| `Events` | [`List<TimeEvidence1Events>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/time-evidence-1-events.md) | Optional | This is List of a container for any-of cases.<br><br>**Constraints**: *Minimum Items*: `2`, *Maximum Items*: `30` | List<TimeEvidence1Events> getEvents() | setEvents(List<TimeEvidence1Events> events) |
+| `Flags` | [`List<FlagEnum>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/flag.md) | Optional | Flags.<br><br>**Constraints**: *Maximum Items*: `4` | List<FlagEnum> getFlags() | setFlags(List<FlagEnum> flags) |
+| `GapsSeconds` | [`TimeGaps`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/time-gaps.md) | Optional | TimeGaps. | TimeGaps getGapsSeconds() | setGapsSeconds(TimeGaps gapsSeconds) |
+| `Judgement` | [`JudgementEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/judgement.md) | Optional | Judgement. | JudgementEnum getJudgement() | setJudgement(JudgementEnum judgement) |
+| `SchemaVersion` | [`SchemaVersionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/schema-version.md) | Optional | Schema version. | SchemaVersionEnum getSchemaVersion() | setSchemaVersion(SchemaVersionEnum schemaVersion) |
 
 
 # Example

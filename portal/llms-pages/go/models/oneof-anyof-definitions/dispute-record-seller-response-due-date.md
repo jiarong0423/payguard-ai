@@ -1,6 +1,6 @@
 # Dispute Record Seller Response Due Date
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkRpc3B1dGVSZWNvcmRTZWxsZXJSZXNwb25zZUR1ZURhdGU
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkRpc3B1dGVSZWNvcmRTZWxsZXJSZXNwb25zZUR1ZURhdGU
 
 
 # Class Name

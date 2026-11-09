@@ -1,6 +1,6 @@
 # Country Rules Check Request Amount
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkNvdW50cnlSdWxlc0NoZWNrUmVxdWVzdEFtb3VudA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkNvdW50cnlSdWxlc0NoZWNrUmVxdWVzdEFtb3VudA
 
 
 # Class Name

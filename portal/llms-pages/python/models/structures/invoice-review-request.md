@@ -1,6 +1,6 @@
 # Invoice Review Request
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkludm9pY2VSZXZpZXdSZXF1ZXN0
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkludm9pY2VSZXZpZXdSZXF1ZXN0
 
 InvoiceReviewRequest.
 
@@ -17,7 +17,7 @@ InvoiceReviewRequest.
 | `acknowledgement_token` | str \| None | Optional | This is a container for any-of cases. |
 | `amount` | `str` | Required | Amount.<br><br>**Constraints**: *Pattern*: `^[0-9]{1,9}(?:\.[0-9]{1,2})?$` |
 | `confirm_sandbox_draft` | `bool` | Required | Confirm sandbox draft. |
-| `currency` | [`CurrencyEnum`](http://localhost:3000/llms-pages/python/models/enumerations/currency.md) | Required | Currency. |
+| `currency` | [`CurrencyEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/currency.md) | Required | Currency. |
 | `description` | `str` | Required | Description.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `200` |
 | `description_digest` | str \| None | Optional | This is a container for any-of cases. |
 | `evaluation_id` | str \| None | Optional | This is a container for any-of cases. |

@@ -1,6 +1,6 @@
 # Guide Review Row
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkd1aWRlUmV2aWV3Um93
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkd1aWRlUmV2aWV3Um93
 
 GuideReviewRow.
 
@@ -15,7 +15,7 @@ GuideReviewRow.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `Item` | `String` | Required | Item. | String getItem() | setItem(String item) |
-| `Source` | [`Source9Enum`](http://localhost:3000/llms-pages/java/models/enumerations/source-9.md) | Required | Source. | Source9Enum getSource() | setSource(Source9Enum source) |
+| `Source` | [`Source9Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/source-9.md) | Required | Source. | Source9Enum getSource() | setSource(Source9Enum source) |
 | `Value` | `String` | Required | Value.<br><br>**Constraints**: *Maximum Length*: `120` | String getValue() | setValue(String value) |
 
 

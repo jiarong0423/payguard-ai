@@ -1,6 +1,6 @@
 # Aup Acknowledge Response
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkF1cEFja25vd2xlZGdlUmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkF1cEFja25vd2xlZGdlUmVzcG9uc2U
 
 AupAcknowledgeResponse.
 
@@ -15,7 +15,7 @@ AupAcknowledgeResponse.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `acknowledgement_token` | str | Required | This is a container for any-of cases. |
-| `choice` | [`ChoiceEnum`](http://localhost:3000/llms-pages/python/models/enumerations/choice.md) | Required | Choice. |
+| `choice` | [`ChoiceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/choice.md) | Required | Choice. |
 | `compliance_decision` | `str` | Required, Constant | Compliance decision.<br><br>**Value**: `"NOT_MADE"` |
 | `description_digest` | `str` | Required | Description digest.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` |
 | `evaluation_id` | `str` | Required | Evaluation id.<br><br>**Constraints**: *Minimum Length*: `32`, *Maximum Length*: `128`, *Pattern*: `^[A-Za-z0-9_-]+$` |

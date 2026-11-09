@@ -1,6 +1,6 @@
 # Dispute List Response
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkRpc3B1dGVMaXN0UmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkRpc3B1dGVMaXN0UmVzcG9uc2U
 
 DisputeListResponse.
 
@@ -14,15 +14,15 @@ DisputeListResponse.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `data_source_label` | [`DataSourceLabelEnum`](http://localhost:3000/llms-pages/python/models/enumerations/data-source-label.md) | Required | Data source label. |
+| `data_source_label` | [`DataSourceLabelEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/data-source-label.md) | Required | Data source label. |
 | `environment` | `str` | Required, Constant | Environment.<br><br>**Value**: `"sandbox"` |
-| `evidence_class` | [`EvidenceClassEnum`](http://localhost:3000/llms-pages/python/models/enumerations/evidence-class.md) | Required | Evidence class. |
-| `items` | [`List[DisputeRecord]`](http://localhost:3000/llms-pages/python/models/structures/dispute-record.md) | Required | Items.<br><br>**Constraints**: *Maximum Items*: `20` |
+| `evidence_class` | [`EvidenceClassEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/evidence-class.md) | Required | Evidence class. |
+| `items` | [`List[DisputeRecord]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/dispute-record.md) | Required | Items.<br><br>**Constraints**: *Maximum Items*: `20` |
 | `observed_at` | `str` | Required | Observed at.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `27` |
 | `paypal_debug_id` | str \| None | Optional | This is a container for any-of cases. |
-| `provider_submission` | [`ProviderSubmissionEnum`](http://localhost:3000/llms-pages/python/models/enumerations/provider-submission.md) | Required | Provider submission. |
+| `provider_submission` | [`ProviderSubmissionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/provider-submission.md) | Required | Provider submission. |
 | `readback` | `str` | Required, Constant | Readback.<br><br>**Value**: `"GET_LIST"` |
-| `source` | [`SourceEnum`](http://localhost:3000/llms-pages/python/models/enumerations/source.md) | Required | Source. |
+| `source` | [`SourceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/source.md) | Required | Source. |
 
 
 # Example

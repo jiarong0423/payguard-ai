@@ -1,6 +1,6 @@
 # Guide Form Request
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkd1aWRlRm9ybVJlcXVlc3Q
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkd1aWRlRm9ybVJlcXVlc3Q
 
 One field ({item, value}) or one round of up to three fields ({fields: [...]}), never both.
 
@@ -15,9 +15,9 @@ One field ({item, value}) or one round of up to three fields ({fields: [...]}), 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `confirmReview` | `?bool` | Optional | Confirm review.<br><br>**Default**: `false` | getConfirmReview(): ?bool | setConfirmReview(?bool confirmReview): void |
-| `fields` | [GuideField](http://localhost:3000/llms-pages/php/models/structures/guide-field.md)[]\|null | Optional | This is a container for any-of cases. | getFields(): ?array | setFields(?array fields): void |
+| `fields` | [GuideField](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/guide-field.md)[]\|null | Optional | This is a container for any-of cases. | getFields(): ?array | setFields(?array fields): void |
 | `item` | string\|null | Optional | This is a container for any-of cases. | getItem(): ?string | setItem(?string item): void |
-| `scenario` | string([Scenario1Enum](http://localhost:3000/llms-pages/php/models/enumerations/scenario-1.md))\|null | Optional | This is a container for any-of cases. | getScenario(): ?string | setScenario(?string scenario): void |
+| `scenario` | string([Scenario1Enum](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/scenario-1.md))\|null | Optional | This is a container for any-of cases. | getScenario(): ?string | setScenario(?string scenario): void |
 | `value` | string\|null | Optional | This is a container for any-of cases. | getValue(): ?string | setValue(?string value): void |
 
 

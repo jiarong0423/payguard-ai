@@ -1,6 +1,6 @@
 # Reference Response
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRlJlZmVyZW5jZVJlc3BvbnNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRlJlZmVyZW5jZVJlc3BvbnNl
 
 ReferenceResponse.
 
@@ -16,15 +16,15 @@ ReferenceResponse.
 |  --- | --- | --- | --- | --- | --- |
 | `advisoryOnly` | `bool` | Required | Advisory only. | getAdvisoryOnly(): bool | setAdvisoryOnly(bool advisoryOnly): void |
 | `corpusDigest` | `string` | Required | Corpus digest.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` | getCorpusDigest(): string | setCorpusDigest(string corpusDigest): void |
-| `corpusDigests` | [`ReferenceDigests`](http://localhost:3000/llms-pages/php/models/structures/reference-digests.md) | Required | ReferenceDigests. | getCorpusDigests(): ReferenceDigests | setCorpusDigests(ReferenceDigests corpusDigests): void |
+| `corpusDigests` | [`ReferenceDigests`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/reference-digests.md) | Required | ReferenceDigests. | getCorpusDigests(): ReferenceDigests | setCorpusDigests(ReferenceDigests corpusDigests): void |
 | `corpusId` | `string` | Required, Constant | Corpus id.<br><br>**Value**: `'payguard-us-official-references-v2'` | getCorpusId(): string | setCorpusId(string corpusId): void |
-| `filtersApplied` | [`ReferenceFilters`](http://localhost:3000/llms-pages/php/models/structures/reference-filters.md) | Required | ReferenceFilters. | getFiltersApplied(): ReferenceFilters | setFiltersApplied(ReferenceFilters filtersApplied): void |
+| `filtersApplied` | [`ReferenceFilters`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/reference-filters.md) | Required | ReferenceFilters. | getFiltersApplied(): ReferenceFilters | setFiltersApplied(ReferenceFilters filtersApplied): void |
 | `limitations` | `string[]` | Required | Limitations.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `32`, *Minimum Length*: `1`, *Maximum Length*: `2000` | getLimitations(): array | setLimitations(array limitations): void |
 | `operationalAuthority` | `string` | Required, Constant | Operational authority.<br><br>**Value**: `'REFERENCE_ONLY_NO_ACTION_AUTHORIZATION'` | getOperationalAuthority(): string | setOperationalAuthority(string operationalAuthority): void |
-| `results` | [`ReferenceCitation[]`](http://localhost:3000/llms-pages/php/models/structures/reference-citation.md) | Required | Results.<br><br>**Constraints**: *Maximum Items*: `10` | getResults(): array | setResults(array results): void |
+| `results` | [`ReferenceCitation[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/reference-citation.md) | Required | Results.<br><br>**Constraints**: *Maximum Items*: `10` | getResults(): array | setResults(array results): void |
 | `schemaVersion` | `int` | Required | Schema version.<br><br>**Constraints**: `>= 1`, `<= 1` | getSchemaVersion(): int | setSchemaVersion(int schemaVersion): void |
 | `source` | `string` | Required, Constant | Source.<br><br>**Value**: `'public_reference'` | getSource(): string | setSource(string source): void |
-| `status` | [`string(Status13Enum)`](http://localhost:3000/llms-pages/php/models/enumerations/status-13.md) | Required | Status. | getStatus(): string | setStatus(string status): void |
+| `status` | [`string(Status13Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/status-13.md) | Required | Status. | getStatus(): string | setStatus(string status): void |
 
 
 # Example

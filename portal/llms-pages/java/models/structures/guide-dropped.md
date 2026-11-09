@@ -1,6 +1,6 @@
 # Guide Dropped
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkd1aWRlRHJvcHBlZA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkd1aWRlRHJvcHBlZA
 
 GuideDropped.
 
@@ -15,7 +15,7 @@ GuideDropped.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `Item` | `String` | Required | Item. | String getItem() | setItem(String item) |
-| `Reason` | [`Reason6Enum`](http://localhost:3000/llms-pages/java/models/enumerations/reason-6.md) | Required | Reason. | Reason6Enum getReason() | setReason(Reason6Enum reason) |
+| `Reason` | [`Reason6Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/reason-6.md) | Required | Reason. | Reason6Enum getReason() | setReason(Reason6Enum reason) |
 
 
 # Example

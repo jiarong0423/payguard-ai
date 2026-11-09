@@ -1,6 +1,6 @@
 # Source Updated Date Status
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlNvdXJjZVVwZGF0ZWREYXRlU3RhdHVz
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRlNvdXJjZVVwZGF0ZWREYXRlU3RhdHVz
 
 Source updated date status.
 

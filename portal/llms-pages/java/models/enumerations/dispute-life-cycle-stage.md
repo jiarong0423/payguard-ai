@@ -1,6 +1,6 @@
 # Dispute Life Cycle Stage
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkRpc3B1dGVMaWZlQ3ljbGVTdGFnZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkRpc3B1dGVMaWZlQ3ljbGVTdGFnZQ
 
 Dispute life cycle stage.
 

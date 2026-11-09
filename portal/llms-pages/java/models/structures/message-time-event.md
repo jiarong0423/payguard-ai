@@ -1,6 +1,6 @@
 # Message Time Event
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRk1lc3NhZ2VUaW1lRXZlbnQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRk1lc3NhZ2VUaW1lRXZlbnQ
 
 MessageTimeEvent.
 
@@ -15,12 +15,12 @@ MessageTimeEvent.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `At` | `String` | Required | At.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `40` | String getAt() | setAt(String at) |
-| `Channel` | [`ChannelEnum`](http://localhost:3000/llms-pages/java/models/enumerations/channel.md) | Required | Channel. | ChannelEnum getChannel() | setChannel(ChannelEnum channel) |
-| `Direction` | [`DirectionEnum`](http://localhost:3000/llms-pages/java/models/enumerations/direction.md) | Required | Direction. | DirectionEnum getDirection() | setDirection(DirectionEnum direction) |
+| `Channel` | [`ChannelEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/channel.md) | Required | Channel. | ChannelEnum getChannel() | setChannel(ChannelEnum channel) |
+| `Direction` | [`DirectionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/direction.md) | Required | Direction. | DirectionEnum getDirection() | setDirection(DirectionEnum direction) |
 | `Kind` | `String` | Required, Constant | Kind.<br><br>**Value**: `"MESSAGE"` | String getKind() | setKind(String kind) |
 | `MessageDigest` | `String` | Required | Message digest.<br><br>**Constraints**: *Pattern*: `^[0-9a-f]{64}$` | String getMessageDigest() | setMessageDigest(String messageDigest) |
 | `Source` | `String` | Required, Constant | Source.<br><br>**Value**: `"SELLER_PROVIDED_UNVERIFIED"` | String getSource() | setSource(String source) |
-| `Topic` | [`TopicEnum`](http://localhost:3000/llms-pages/java/models/enumerations/topic.md) | Required | Topic. | TopicEnum getTopic() | setTopic(TopicEnum topic) |
+| `Topic` | [`TopicEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/topic.md) | Required | Topic. | TopicEnum getTopic() | setTopic(TopicEnum topic) |
 
 
 # Example

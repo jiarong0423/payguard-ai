@@ -1,6 +1,6 @@
 # Tracker Item
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlRyYWNrZXJJdGVt
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlRyYWNrZXJJdGVt
 
 TrackerItem.
 
@@ -14,8 +14,8 @@ TrackerItem.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Carrier` | [`CarrierEnum`](http://localhost:3000/llms-pages/java/models/enumerations/carrier.md) | Required | Carrier. | CarrierEnum getCarrier() | setCarrier(CarrierEnum carrier) |
-| `CarrierNameOther` | [`TrackerItemCarrierNameOther`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/tracker-item-carrier-name-other.md) | Optional | This is a container for any-of cases. | TrackerItemCarrierNameOther getCarrierNameOther() | setCarrierNameOther(TrackerItemCarrierNameOther carrierNameOther) |
+| `Carrier` | [`CarrierEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/carrier.md) | Required | Carrier. | CarrierEnum getCarrier() | setCarrier(CarrierEnum carrier) |
+| `CarrierNameOther` | [`TrackerItemCarrierNameOther`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/tracker-item-carrier-name-other.md) | Optional | This is a container for any-of cases. | TrackerItemCarrierNameOther getCarrierNameOther() | setCarrierNameOther(TrackerItemCarrierNameOther carrierNameOther) |
 | `Status` | `String` | Required, Constant | Status.<br><br>**Value**: `"SHIPPED"` | String getStatus() | setStatus(String status) |
 | `TrackingNumber` | `String` | Required | Tracking number.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `64` | String getTrackingNumber() | setTrackingNumber(String trackingNumber) |
 | `TransactionId` | `String` | Required | Transaction id.<br><br>**Constraints**: *Pattern*: `^[A-Za-z0-9*._-]{1,64}$` | String getTransactionId() | setTransactionId(String transactionId) |

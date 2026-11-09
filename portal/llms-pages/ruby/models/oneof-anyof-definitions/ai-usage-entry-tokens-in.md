@@ -1,6 +1,6 @@
 # Ai Usage Entry Tokens In
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkFpVXNhZ2VFbnRyeVRva2Vuc0lu
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkFpVXNhZ2VFbnRyeVRva2Vuc0lu
 
 
 # Data Type

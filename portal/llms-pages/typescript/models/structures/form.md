@@ -1,6 +1,6 @@
 # Form
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkZvcm0
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkZvcm0
 
 Form.
 
@@ -14,9 +14,9 @@ Form.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `kind` | [`Kind2Enum \| undefined`](http://localhost:3000/llms-pages/typescript/models/enumerations/kind-2.md) | Optional | Kind. |
-| `options` | [`GuideOption[] \| undefined`](http://localhost:3000/llms-pages/typescript/models/structures/guide-option.md) | Optional | Options. |
-| `placeholder` | [`FormPlaceholder \| undefined`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/form-placeholder.md) | Optional | This is a container for any-of cases. |
+| `kind` | [`Kind2Enum \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/kind-2.md) | Optional | Kind. |
+| `options` | [`GuideOption[] \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/guide-option.md) | Optional | Options. |
+| `placeholder` | [`FormPlaceholder \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/form-placeholder.md) | Optional | This is a container for any-of cases. |
 
 
 # Example

@@ -1,6 +1,6 @@
 # Analysis Reason
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkFuYWx5c2lzUmVhc29u
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkFuYWx5c2lzUmVhc29u
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkFuYWx5c2lzUmVhc29u
 
 | Type | Factory Method |
 |  --- | --- |
-| [`models.Reason5Enum`](http://localhost:3000/llms-pages/go/models/enumerations/reason-5.md) | models.AnalysisReasonContainer.FromReason5(models.Reason5Enum reason5) |
+| [`models.Reason5Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/reason-5.md) | models.AnalysisReasonContainer.FromReason5(models.Reason5Enum reason5) |
 
 
 # models.Reason5Enum

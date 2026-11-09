@@ -1,6 +1,6 @@
 # Product Reference Response Reason
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlByb2R1Y3RSZWZlcmVuY2VSZXNwb25zZVJlYXNvbg
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRlByb2R1Y3RSZWZlcmVuY2VSZXNwb25zZVJlYXNvbg
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlByb2R1Y3RSZWZlcmVuY2VS
 
 | Type |
 |  --- |
-| [`Reason7Enum`](http://localhost:3000/llms-pages/ruby/models/enumerations/reason-7.md) |
+| [`Reason7Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/reason-7.md) |
 
 
 # Reason7Enum

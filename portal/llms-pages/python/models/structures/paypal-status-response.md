@@ -1,6 +1,6 @@
 # Paypal Status Response
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRlBheXBhbFN0YXR1c1Jlc3BvbnNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlBheXBhbFN0YXR1c1Jlc3BvbnNl
 
 PaypalStatusResponse.
 
@@ -16,10 +16,10 @@ PaypalStatusResponse.
 |  --- | --- | --- | --- |
 | `configured` | `bool` | Required | Configured. |
 | `environment` | `str` | Required, Constant | Environment.<br><br>**Value**: `"sandbox"` |
-| `evidence_receipt` | [SandboxEvidenceReceipt](http://localhost:3000/llms-pages/python/models/structures/sandbox-evidence-receipt.md) | Required | This is a container for any-of cases. |
+| `evidence_receipt` | [SandboxEvidenceReceipt](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/sandbox-evidence-receipt.md) | Required | This is a container for any-of cases. |
 | `last_verified_at` | str | Required | This is a container for any-of cases. |
 | `source` | `str` | Required, Constant | Source.<br><br>**Value**: `"paypal_sandbox"` |
-| `status` | [`Status11Enum`](http://localhost:3000/llms-pages/python/models/enumerations/status-11.md) | Required | Status. |
+| `status` | [`Status11Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/status-11.md) | Required | Status. |
 
 
 # Example

@@ -1,6 +1,6 @@
 # Guide Form
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkd1aWRlRm9ybQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkd1aWRlRm9ybQ
 
 GuideForm.
 
@@ -14,9 +14,9 @@ GuideForm.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `Kind` | [`models.Kind2Enum`](http://localhost:3000/llms-pages/go/models/enumerations/kind-2.md) | Required | Kind. |
-| `Options` | [`[]models.GuideOption`](http://localhost:3000/llms-pages/go/models/structures/guide-option.md) | Required | Options. |
-| `Placeholder` | [`models.GuideFormPlaceholder`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/guide-form-placeholder.md) | Required | This is a container for any-of cases. |
+| `Kind` | [`models.Kind2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/kind-2.md) | Required | Kind. |
+| `Options` | [`[]models.GuideOption`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/guide-option.md) | Required | Options. |
+| `Placeholder` | [`models.GuideFormPlaceholder`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/guide-form-placeholder.md) | Required | This is a container for any-of cases. |
 
 
 # Example

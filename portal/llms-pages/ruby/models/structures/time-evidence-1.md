@@ -1,6 +1,6 @@
 # Time Evidence 1
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZTE
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZTE
 
 Time evidence.
 
@@ -15,11 +15,11 @@ Time evidence.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `advisory_only` | `TrueClass \| FalseClass` | Optional | Advisory only. |
-| `events` | Array[[MessageTimeEvent](http://localhost:3000/llms-pages/ruby/models/structures/message-time-event.md) \| [TimeEvent](http://localhost:3000/llms-pages/ruby/models/structures/time-event.md)] \| nil | Optional | This is Array of a container for any-of cases.<br><br>**Constraints**: *Minimum Items*: `2`, *Maximum Items*: `30` |
-| `flags` | [`Array[FlagEnum]`](http://localhost:3000/llms-pages/ruby/models/enumerations/flag.md) | Optional | Flags.<br><br>**Constraints**: *Maximum Items*: `4` |
-| `gaps_seconds` | [`TimeGaps`](http://localhost:3000/llms-pages/ruby/models/structures/time-gaps.md) | Optional | TimeGaps. |
-| `judgement` | [`JudgementEnum`](http://localhost:3000/llms-pages/ruby/models/enumerations/judgement.md) | Optional | Judgement. |
-| `schema_version` | [`SchemaVersionEnum`](http://localhost:3000/llms-pages/ruby/models/enumerations/schema-version.md) | Optional | Schema version. |
+| `events` | Array[[MessageTimeEvent](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/message-time-event.md) \| [TimeEvent](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/time-event.md)] \| nil | Optional | This is Array of a container for any-of cases.<br><br>**Constraints**: *Minimum Items*: `2`, *Maximum Items*: `30` |
+| `flags` | [`Array[FlagEnum]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/flag.md) | Optional | Flags.<br><br>**Constraints**: *Maximum Items*: `4` |
+| `gaps_seconds` | [`TimeGaps`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/time-gaps.md) | Optional | TimeGaps. |
+| `judgement` | [`JudgementEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/judgement.md) | Optional | Judgement. |
+| `schema_version` | [`SchemaVersionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/schema-version.md) | Optional | Schema version. |
 
 
 # Example

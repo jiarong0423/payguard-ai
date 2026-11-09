@@ -1,6 +1,6 @@
 # Guide Reply
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkd1aWRlUmVwbHk
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkd1aWRlUmVwbHk
 
 GuideReply.
 
@@ -14,11 +14,11 @@ GuideReply.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `Chooser` | [`ChooserEnum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/chooser.md) | Required | Chooser. |
-| `Dropped` | [`List<GuideDropped>`](http://localhost:3000/llms-pages/net-standard-library/models/structures/guide-dropped.md) | Required | Dropped. |
-| `FallbackReason` | [`GuideReplyFallbackReason`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/guide-reply-fallback-reason.md) | Required | This is a container for any-of cases. |
+| `Chooser` | [`ChooserEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/chooser.md) | Required | Chooser. |
+| `Dropped` | [`List<GuideDropped>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/guide-dropped.md) | Required | Dropped. |
+| `FallbackReason` | [`GuideReplyFallbackReason`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/guide-reply-fallback-reason.md) | Required | This is a container for any-of cases. |
 | `StateChanged` | `bool` | Required | State changed. |
-| `Template` | [`TemplateEnum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/template.md) | Required | Template. |
+| `Template` | [`TemplateEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/template.md) | Required | Template. |
 | `Text` | `string` | Required | Text.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `400` |
 
 

@@ -1,6 +1,6 @@
 # Guide Turn Request Fields
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkd1aWRlVHVyblJlcXVlc3RGaWVsZHM
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkd1aWRlVHVyblJlcXVlc3RGaWVsZHM
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkd1aWRlVHVyblJlcXVlc3RG
 
 | Type | Factory Method |
 |  --- | --- |
-| [`List<GuideField>`](http://localhost:3000/llms-pages/java/models/structures/guide-field.md) | GuideTurnRequestFields.fromListOfGuideField(List<GuideField> listOfGuideField) |
+| [`List<GuideField>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/guide-field.md) | GuideTurnRequestFields.fromListOfGuideField(List<GuideField> listOfGuideField) |
 
 
 # List<GuideField>

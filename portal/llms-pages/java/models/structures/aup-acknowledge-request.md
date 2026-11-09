@@ -1,6 +1,6 @@
 # Aup Acknowledge Request
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkF1cEFja25vd2xlZGdlUmVxdWVzdA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkF1cEFja25vd2xlZGdlUmVxdWVzdA
 
 AupAcknowledgeRequest.
 
@@ -14,7 +14,7 @@ AupAcknowledgeRequest.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Choice` | [`ChoiceEnum`](http://localhost:3000/llms-pages/java/models/enumerations/choice.md) | Required | Choice. | ChoiceEnum getChoice() | setChoice(ChoiceEnum choice) |
+| `Choice` | [`ChoiceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/choice.md) | Required | Choice. | ChoiceEnum getChoice() | setChoice(ChoiceEnum choice) |
 | `DescriptionDigest` | `String` | Required | Description digest.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` | String getDescriptionDigest() | setDescriptionDigest(String descriptionDigest) |
 | `EvaluationId` | `String` | Required | Evaluation id.<br><br>**Constraints**: *Minimum Length*: `32`, *Maximum Length*: `128`, *Pattern*: `^[A-Za-z0-9_-]+$` | String getEvaluationId() | setEvaluationId(String evaluationId) |
 

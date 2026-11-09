@@ -1,6 +1,6 @@
 # Provider Money
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlByb3ZpZGVyTW9uZXk
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlByb3ZpZGVyTW9uZXk
 
 ProviderMoney.
 

@@ -1,6 +1,6 @@
 # Category Signal
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkNhdGVnb3J5U2lnbmFs
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkNhdGVnb3J5U2lnbmFs
 
 CategorySignal.
 
@@ -15,7 +15,7 @@ CategorySignal.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `category` | str | Required | This is a container for any-of cases. |
-| `confidence` | [Confidence](http://localhost:3000/llms-pages/python/models/enumerations/confidence.md) | Required | This is a container for any-of cases. |
+| `confidence` | [Confidence](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/confidence.md) | Required | This is a container for any-of cases. |
 | `source` | `str` | Required, Constant | Source.<br><br>**Value**: `"channel3"` |
 
 

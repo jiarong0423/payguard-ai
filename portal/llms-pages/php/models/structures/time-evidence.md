@@ -1,6 +1,6 @@
 # Time Evidence
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZQ
 
 TimeEvidence.
 
@@ -15,9 +15,9 @@ TimeEvidence.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `advisoryOnly` | `string` | Required, Constant | Advisory only.<br><br>**Value**: `'True'` | getAdvisoryOnly(): string | setAdvisoryOnly(string advisoryOnly): void |
-| `events` | array<[Message[TimeEvent](http://localhost:3000/llms-pages/php/models/structures/time-event.md)]($m/Message[TimeEvent]($m/TimeEvent))\|[TimeEvent](http://localhost:3000/llms-pages/php/models/structures/time-event.md)> | Required | This is Array of a container for any-of cases.<br><br>**Constraints**: *Minimum Items*: `2`, *Maximum Items*: `30` | getEvents(): array | setEvents(array events): void |
-| `flags` | [`string(FlagEnum)[]`](http://localhost:3000/llms-pages/php/models/enumerations/flag.md) | Required | Flags.<br><br>**Constraints**: *Maximum Items*: `4` | getFlags(): array | setFlags(array flags): void |
-| `gapsSeconds` | [`TimeGaps`](http://localhost:3000/llms-pages/php/models/structures/time-gaps.md) | Required | TimeGaps. | getGapsSeconds(): TimeGaps | setGapsSeconds(TimeGaps gapsSeconds): void |
+| `events` | array<[Message[TimeEvent](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/time-event.md)]($m/Message[TimeEvent]($m/TimeEvent))\|[TimeEvent](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/time-event.md)> | Required | This is Array of a container for any-of cases.<br><br>**Constraints**: *Minimum Items*: `2`, *Maximum Items*: `30` | getEvents(): array | setEvents(array events): void |
+| `flags` | [`string(FlagEnum)[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/flag.md) | Required | Flags.<br><br>**Constraints**: *Maximum Items*: `4` | getFlags(): array | setFlags(array flags): void |
+| `gapsSeconds` | [`TimeGaps`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/time-gaps.md) | Required | TimeGaps. | getGapsSeconds(): TimeGaps | setGapsSeconds(TimeGaps gapsSeconds): void |
 | `judgement` | `string` | Required, Constant | Judgement.<br><br>**Value**: `'NOT_MADE'` | getJudgement(): string | setJudgement(string judgement): void |
 | `schemaVersion` | `string` | Required, Constant | Schema version.<br><br>**Value**: `'payguard.time_evidence.v1'` | getSchemaVersion(): string | setSchemaVersion(string schemaVersion): void |
 

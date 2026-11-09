@@ -1,6 +1,6 @@
 # Reply
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlJlcGx5
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlJlcGx5
 
 Reply.
 
@@ -14,11 +14,11 @@ Reply.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Chooser` | [`ChooserEnum`](http://localhost:3000/llms-pages/java/models/enumerations/chooser.md) | Optional | Chooser. | ChooserEnum getChooser() | setChooser(ChooserEnum chooser) |
-| `Dropped` | [`List<GuideDropped>`](http://localhost:3000/llms-pages/java/models/structures/guide-dropped.md) | Optional | Dropped. | List<GuideDropped> getDropped() | setDropped(List<GuideDropped> dropped) |
-| `FallbackReason` | [`ReplyFallbackReason`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/reply-fallback-reason.md) | Optional | This is a container for any-of cases. | ReplyFallbackReason getFallbackReason() | setFallbackReason(ReplyFallbackReason fallbackReason) |
+| `Chooser` | [`ChooserEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/chooser.md) | Optional | Chooser. | ChooserEnum getChooser() | setChooser(ChooserEnum chooser) |
+| `Dropped` | [`List<GuideDropped>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/guide-dropped.md) | Optional | Dropped. | List<GuideDropped> getDropped() | setDropped(List<GuideDropped> dropped) |
+| `FallbackReason` | [`ReplyFallbackReason`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/reply-fallback-reason.md) | Optional | This is a container for any-of cases. | ReplyFallbackReason getFallbackReason() | setFallbackReason(ReplyFallbackReason fallbackReason) |
 | `StateChanged` | `Boolean` | Optional | State changed. | Boolean getStateChanged() | setStateChanged(Boolean stateChanged) |
-| `Template` | [`TemplateEnum`](http://localhost:3000/llms-pages/java/models/enumerations/template.md) | Optional | Template. | TemplateEnum getTemplate() | setTemplate(TemplateEnum template) |
+| `Template` | [`TemplateEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/template.md) | Optional | Template. | TemplateEnum getTemplate() | setTemplate(TemplateEnum template) |
 | `Text` | `String` | Optional | Text.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `400` | String getText() | setText(String text) |
 
 

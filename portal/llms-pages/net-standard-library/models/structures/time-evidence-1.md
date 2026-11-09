@@ -1,6 +1,6 @@
 # Time Evidence 1
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZTE
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZTE
 
 Time evidence.
 
@@ -15,11 +15,11 @@ Time evidence.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `AdvisoryOnly` | `bool?` | Optional | Advisory only. |
-| `Events` | [`List<TimeEvidence1Events>`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/time-evidence-1-events.md) | Optional | This is List of a container for any-of cases.<br><br>**Constraints**: *Minimum Items*: `2`, *Maximum Items*: `30` |
-| `Flags` | [`List<FlagEnum>`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/flag.md) | Optional | Flags.<br><br>**Constraints**: *Maximum Items*: `4` |
-| `GapsSeconds` | [`TimeGaps`](http://localhost:3000/llms-pages/net-standard-library/models/structures/time-gaps.md) | Optional | TimeGaps. |
-| `Judgement` | [`JudgementEnum?`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/judgement.md) | Optional | Judgement. |
-| `SchemaVersion` | [`SchemaVersionEnum?`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/schema-version.md) | Optional | Schema version. |
+| `Events` | [`List<TimeEvidence1Events>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/time-evidence-1-events.md) | Optional | This is List of a container for any-of cases.<br><br>**Constraints**: *Minimum Items*: `2`, *Maximum Items*: `30` |
+| `Flags` | [`List<FlagEnum>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/flag.md) | Optional | Flags.<br><br>**Constraints**: *Maximum Items*: `4` |
+| `GapsSeconds` | [`TimeGaps`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/time-gaps.md) | Optional | TimeGaps. |
+| `Judgement` | [`JudgementEnum?`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/judgement.md) | Optional | Judgement. |
+| `SchemaVersion` | [`SchemaVersionEnum?`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/schema-version.md) | Optional | Schema version. |
 
 
 # Example

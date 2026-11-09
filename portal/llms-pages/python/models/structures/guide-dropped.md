@@ -1,6 +1,6 @@
 # Guide Dropped
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkd1aWRlRHJvcHBlZA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkd1aWRlRHJvcHBlZA
 
 GuideDropped.
 
@@ -15,7 +15,7 @@ GuideDropped.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `item` | `str` | Required | Item. |
-| `reason` | [`Reason6Enum`](http://localhost:3000/llms-pages/python/models/enumerations/reason-6.md) | Required | Reason. |
+| `reason` | [`Reason6Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/reason-6.md) | Required | Reason. |
 
 
 # Example

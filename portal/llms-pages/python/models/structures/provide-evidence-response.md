@@ -1,6 +1,6 @@
 # Provide Evidence Response
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRlByb3ZpZGVFdmlkZW5jZVJlc3BvbnNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlByb3ZpZGVFdmlkZW5jZVJlc3BvbnNl
 
 ProvideEvidenceResponse.
 
@@ -17,23 +17,23 @@ ProvideEvidenceResponse.
 | `case_ref` | `str` | Required | Case ref.<br><br>**Constraints**: *Pattern*: `^case-ref-[0-9]{3}$` |
 | `confirm_token` | str \| None | Optional | This is a container for any-of cases. |
 | `content_type` | `str` | Required, Constant | Content type.<br><br>**Value**: `"multipart/form-data"` |
-| `data_source_label` | [`DataSourceLabelEnum`](http://localhost:3000/llms-pages/python/models/enumerations/data-source-label.md) | Required | Data source label. |
+| `data_source_label` | [`DataSourceLabelEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/data-source-label.md) | Required | Data source label. |
 | `dispute_id` | `str` | Required | Dispute id.<br><br>**Constraints**: *Pattern*: `^PP-[A-Z0-9][A-Z0-9-]{2,62}$` |
 | `environment` | `str` | Required, Constant | Environment.<br><br>**Value**: `"sandbox"` |
-| `evidence_class` | [`EvidenceClassEnum`](http://localhost:3000/llms-pages/python/models/enumerations/evidence-class.md) | Required | Evidence class. |
-| `external_send` | [`ExternalSendEnum`](http://localhost:3000/llms-pages/python/models/enumerations/external-send.md) | Required | External send. |
-| `files` | [`List[MultipartFilePart]`](http://localhost:3000/llms-pages/python/models/structures/multipart-file-part.md) | Required | Files.<br><br>**Constraints**: *Maximum Items*: `20` |
+| `evidence_class` | [`EvidenceClassEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/evidence-class.md) | Required | Evidence class. |
+| `external_send` | [`ExternalSendEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/external-send.md) | Required | External send. |
+| `files` | [`List[MultipartFilePart]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/multipart-file-part.md) | Required | Files.<br><br>**Constraints**: *Maximum Items*: `20` |
 | `human_review_required` | `str` | Required, Constant | Human review required.<br><br>**Value**: `"True"` |
-| `input` | [`EvidenceInput`](http://localhost:3000/llms-pages/python/models/structures/evidence-input.md) | Required | EvidenceInput. |
+| `input` | [`EvidenceInput`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/evidence-input.md) | Required | EvidenceInput. |
 | `method` | `str` | Required, Constant | Method.<br><br>**Value**: `"POST"` |
 | `observed_at` | `str` | Required | Observed at.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `27` |
 | `path` | `str` | Required | Path.<br><br>**Constraints**: *Pattern*: `^/v1/customer/disputes/PP-[A-Z0-9][A-Z0-9-]{2,62}/provide-evidence$` |
 | `payload_sha_256` | str \| None | Optional | This is a container for any-of cases. |
 | `paypal_debug_id` | str \| None | Optional | This is a container for any-of cases. |
-| `provider_submission` | [`ProviderSubmissionEnum`](http://localhost:3000/llms-pages/python/models/enumerations/provider-submission.md) | Required | Provider submission. |
-| `readback` | [`Readback1Enum`](http://localhost:3000/llms-pages/python/models/enumerations/readback-1.md) | Required | Readback. |
-| `send_guard` | [`SendGuard`](http://localhost:3000/llms-pages/python/models/structures/send-guard.md) | Required | (r25 send guard) What a send carries and to whom, side by side; every account id is masked (first 2, last 4). |
-| `source` | [`SourceEnum`](http://localhost:3000/llms-pages/python/models/enumerations/source.md) | Required | Source. |
+| `provider_submission` | [`ProviderSubmissionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/provider-submission.md) | Required | Provider submission. |
+| `readback` | [`Readback1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/readback-1.md) | Required | Readback. |
+| `send_guard` | [`SendGuard`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/send-guard.md) | Required | (r25 send guard) What a send carries and to whom, side by side; every account id is masked (first 2, last 4). |
+| `source` | [`SourceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/source.md) | Required | Source. |
 | `submit_flag_enabled` | `bool` | Required | Submit flag enabled. |
 
 

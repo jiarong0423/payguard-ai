@@ -1,6 +1,6 @@
 # Guide Form Request
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkd1aWRlRm9ybVJlcXVlc3Q
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkd1aWRlRm9ybVJlcXVlc3Q
 
 One field ({item, value}) or one round of up to three fields ({fields: [...]}), never both.
 
@@ -15,9 +15,9 @@ One field ({item, value}) or one round of up to three fields ({fields: [...]}), 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `confirm_review` | `bool` | Optional | Confirm review.<br><br>**Default**: `False` |
-| `fields` | List[[GuideField](http://localhost:3000/llms-pages/python/models/structures/guide-field.md)] \| None | Optional | This is a container for any-of cases. |
+| `fields` | List[[GuideField](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/guide-field.md)] \| None | Optional | This is a container for any-of cases. |
 | `item` | str \| None | Optional | This is a container for any-of cases. |
-| `scenario` | [Scenario1](http://localhost:3000/llms-pages/python/models/enumerations/scenario-1.md) \| None | Optional | This is a container for any-of cases. |
+| `scenario` | [Scenario1](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/scenario-1.md) \| None | Optional | This is a container for any-of cases. |
 | `value` | str \| None | Optional | This is a container for any-of cases. |
 
 

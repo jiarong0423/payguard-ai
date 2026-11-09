@@ -1,6 +1,6 @@
 # Guide Dropped
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkd1aWRlRHJvcHBlZA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkd1aWRlRHJvcHBlZA
 
 GuideDropped.
 
@@ -15,7 +15,7 @@ GuideDropped.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `item` | `string` | Required | Item. | getItem(): string | setItem(string item): void |
-| `reason` | [`string(Reason6Enum)`](http://localhost:3000/llms-pages/php/models/enumerations/reason-6.md) | Required | Reason. | getReason(): string | setReason(string reason): void |
+| `reason` | [`string(Reason6Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/reason-6.md) | Required | Reason. | getReason(): string | setReason(string reason): void |
 
 
 # Example

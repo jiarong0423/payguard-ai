@@ -1,6 +1,6 @@
 # Send Guard Send Refusal
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlNlbmRHdWFyZFNlbmRSZWZ1c2Fs
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRlNlbmRHdWFyZFNlbmRSZWZ1c2Fs
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlNlbmRHdWFyZFNlbmRSZWZ1
 
 | Type |
 |  --- |
-| [`SendRefusalEnum`](http://localhost:3000/llms-pages/ruby/models/enumerations/send-refusal.md) |
+| [`SendRefusalEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/send-refusal.md) |
 
 
 # SendRefusalEnum

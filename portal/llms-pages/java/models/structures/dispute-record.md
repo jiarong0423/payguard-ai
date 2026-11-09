@@ -1,6 +1,6 @@
 # Dispute Record
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkRpc3B1dGVSZWNvcmQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkRpc3B1dGVSZWNvcmQ
 
 DisputeRecord.
 
@@ -15,14 +15,14 @@ DisputeRecord.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `CreateTime` | `String` | Required | Create time.<br><br>**Constraints**: *Pattern*: `^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]{1,6})?Z$` | String getCreateTime() | setCreateTime(String createTime) |
-| `DisputeAmount` | [`ProviderMoney`](http://localhost:3000/llms-pages/java/models/structures/provider-money.md) | Required | ProviderMoney. | ProviderMoney getDisputeAmount() | setDisputeAmount(ProviderMoney disputeAmount) |
+| `DisputeAmount` | [`ProviderMoney`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/provider-money.md) | Required | ProviderMoney. | ProviderMoney getDisputeAmount() | setDisputeAmount(ProviderMoney disputeAmount) |
 | `DisputeId` | `String` | Required | Dispute id.<br><br>**Constraints**: *Pattern*: `^PP-[A-Z0-9][A-Z0-9-]{2,62}$` | String getDisputeId() | setDisputeId(String disputeId) |
-| `DisputeLifeCycleStage` | [`DisputeLifeCycleStageEnum`](http://localhost:3000/llms-pages/java/models/enumerations/dispute-life-cycle-stage.md) | Required | Dispute life cycle stage. | DisputeLifeCycleStageEnum getDisputeLifeCycleStage() | setDisputeLifeCycleStage(DisputeLifeCycleStageEnum disputeLifeCycleStage) |
-| `DisputeState` | [`DisputeRecordDisputeState`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/dispute-record-dispute-state.md) | Optional | This is a container for any-of cases. | DisputeRecordDisputeState getDisputeState() | setDisputeState(DisputeRecordDisputeState disputeState) |
-| `Reason` | [`Reason2Enum`](http://localhost:3000/llms-pages/java/models/enumerations/reason-2.md) | Required | Reason. | Reason2Enum getReason() | setReason(Reason2Enum reason) |
-| `SellerResponseDueDate` | [`DisputeRecordSellerResponseDueDate`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/dispute-record-seller-response-due-date.md) | Optional | This is a container for any-of cases. | DisputeRecordSellerResponseDueDate getSellerResponseDueDate() | setSellerResponseDueDate(DisputeRecordSellerResponseDueDate sellerResponseDueDate) |
-| `Status` | [`Status3Enum`](http://localhost:3000/llms-pages/java/models/enumerations/status-3.md) | Required | Status. | Status3Enum getStatus() | setStatus(Status3Enum status) |
-| `UpdateTime` | [`DisputeRecordUpdateTime`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/dispute-record-update-time.md) | Optional | This is a container for any-of cases. | DisputeRecordUpdateTime getUpdateTime() | setUpdateTime(DisputeRecordUpdateTime updateTime) |
+| `DisputeLifeCycleStage` | [`DisputeLifeCycleStageEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/dispute-life-cycle-stage.md) | Required | Dispute life cycle stage. | DisputeLifeCycleStageEnum getDisputeLifeCycleStage() | setDisputeLifeCycleStage(DisputeLifeCycleStageEnum disputeLifeCycleStage) |
+| `DisputeState` | [`DisputeRecordDisputeState`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/dispute-record-dispute-state.md) | Optional | This is a container for any-of cases. | DisputeRecordDisputeState getDisputeState() | setDisputeState(DisputeRecordDisputeState disputeState) |
+| `Reason` | [`Reason2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/reason-2.md) | Required | Reason. | Reason2Enum getReason() | setReason(Reason2Enum reason) |
+| `SellerResponseDueDate` | [`DisputeRecordSellerResponseDueDate`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/dispute-record-seller-response-due-date.md) | Optional | This is a container for any-of cases. | DisputeRecordSellerResponseDueDate getSellerResponseDueDate() | setSellerResponseDueDate(DisputeRecordSellerResponseDueDate sellerResponseDueDate) |
+| `Status` | [`Status3Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/status-3.md) | Required | Status. | Status3Enum getStatus() | setStatus(Status3Enum status) |
+| `UpdateTime` | [`DisputeRecordUpdateTime`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/dispute-record-update-time.md) | Optional | This is a container for any-of cases. | DisputeRecordUpdateTime getUpdateTime() | setUpdateTime(DisputeRecordUpdateTime updateTime) |
 
 
 # Example

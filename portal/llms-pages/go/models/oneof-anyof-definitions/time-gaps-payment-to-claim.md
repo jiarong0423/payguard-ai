@@ -1,6 +1,6 @@
 # Time Gaps Payment to Claim
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlRpbWVHYXBzUGF5bWVudFRvQ2xhaW0
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRlRpbWVHYXBzUGF5bWVudFRvQ2xhaW0
 
 
 # Class Name

@@ -1,6 +1,6 @@
 # Time Gaps
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlRpbWVHYXBz
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlRpbWVHYXBz
 
 TimeGaps.
 
@@ -14,10 +14,10 @@ TimeGaps.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `DeliveryToClaim` | [`TimeGapsDeliveryToClaim`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/time-gaps-delivery-to-claim.md) | Required | This is a container for any-of cases. | TimeGapsDeliveryToClaim getDeliveryToClaim() | setDeliveryToClaim(TimeGapsDeliveryToClaim deliveryToClaim) |
-| `PaymentToClaim` | [`TimeGapsPaymentToClaim`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/time-gaps-payment-to-claim.md) | Required | This is a container for any-of cases. | TimeGapsPaymentToClaim getPaymentToClaim() | setPaymentToClaim(TimeGapsPaymentToClaim paymentToClaim) |
-| `PaymentToDelivery` | [`TimeGapsPaymentToDelivery`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/time-gaps-payment-to-delivery.md) | Required | This is a container for any-of cases. | TimeGapsPaymentToDelivery getPaymentToDelivery() | setPaymentToDelivery(TimeGapsPaymentToDelivery paymentToDelivery) |
-| `PaymentToOrderRecord` | [`TimeGapsPaymentToOrderRecord`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/time-gaps-payment-to-order-record.md) | Required | This is a container for any-of cases. | TimeGapsPaymentToOrderRecord getPaymentToOrderRecord() | setPaymentToOrderRecord(TimeGapsPaymentToOrderRecord paymentToOrderRecord) |
+| `DeliveryToClaim` | [`TimeGapsDeliveryToClaim`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/time-gaps-delivery-to-claim.md) | Required | This is a container for any-of cases. | TimeGapsDeliveryToClaim getDeliveryToClaim() | setDeliveryToClaim(TimeGapsDeliveryToClaim deliveryToClaim) |
+| `PaymentToClaim` | [`TimeGapsPaymentToClaim`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/time-gaps-payment-to-claim.md) | Required | This is a container for any-of cases. | TimeGapsPaymentToClaim getPaymentToClaim() | setPaymentToClaim(TimeGapsPaymentToClaim paymentToClaim) |
+| `PaymentToDelivery` | [`TimeGapsPaymentToDelivery`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/time-gaps-payment-to-delivery.md) | Required | This is a container for any-of cases. | TimeGapsPaymentToDelivery getPaymentToDelivery() | setPaymentToDelivery(TimeGapsPaymentToDelivery paymentToDelivery) |
+| `PaymentToOrderRecord` | [`TimeGapsPaymentToOrderRecord`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/time-gaps-payment-to-order-record.md) | Required | This is a container for any-of cases. | TimeGapsPaymentToOrderRecord getPaymentToOrderRecord() | setPaymentToOrderRecord(TimeGapsPaymentToOrderRecord paymentToOrderRecord) |
 
 
 # Example

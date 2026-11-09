@@ -1,6 +1,6 @@
 # Session Response
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlNlc3Npb25SZXNwb25zZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlNlc3Npb25SZXNwb25zZQ
 
 SessionResponse.
 

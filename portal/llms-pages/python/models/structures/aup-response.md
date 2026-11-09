@@ -1,6 +1,6 @@
 # Aup Response
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkF1cFJlc3BvbnNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkF1cFJlc3BvbnNl
 
 AupResponse.
 
@@ -21,8 +21,8 @@ AupResponse.
 | `evaluated_at` | `str` | Required | Evaluated at. |
 | `evaluation_id` | `str` | Required | Evaluation id.<br><br>**Constraints**: *Minimum Length*: `32`, *Maximum Length*: `128`, *Pattern*: `^[A-Za-z0-9_-]+$` |
 | `expires_at` | `str` | Required | Expires at. |
-| `findings` | [`List[Finding]`](http://localhost:3000/llms-pages/python/models/structures/finding.md) | Required | Findings. |
-| `match_status` | [`MatchStatusEnum`](http://localhost:3000/llms-pages/python/models/enumerations/match-status.md) | Required | Match status. |
+| `findings` | [`List[Finding]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/finding.md) | Required | Findings. |
+| `match_status` | [`MatchStatusEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/match-status.md) | Required | Match status. |
 | `policy_url` | `str` | Required, Constant | Policy url.<br><br>**Value**: `"https://www.paypal.com/us/legalhub/paypal/acceptableuse-full"` |
 | `policy_version` | `str` | Required | Policy version.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `128` |
 | `recommendation` | `str` | Required | Recommendation.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `1000` |

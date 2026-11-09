@@ -1,6 +1,6 @@
 # Send Guard
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlNlbmRHdWFyZA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRlNlbmRHdWFyZA
 
 (r25 send guard) What a send carries and to whom, side by side; every account id is masked (first 2, last 4).
 
@@ -14,16 +14,16 @@ Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlNlbmRHdWFyZA
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `AccountStatus` | [`models.AccountStatusEnum`](http://localhost:3000/llms-pages/go/models/enumerations/account-status.md) | Required | Account status. |
-| `BoundDisputeMasked` | [`*models.SendGuardBoundDisputeMasked`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/send-guard-bound-dispute-masked.md) | Optional | This is a container for any-of cases. |
-| `CaseReason` | [`*models.SendGuardCaseReason`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/send-guard-case-reason.md) | Optional | This is a container for any-of cases. |
+| `AccountStatus` | [`models.AccountStatusEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/account-status.md) | Required | Account status. |
+| `BoundDisputeMasked` | [`*models.SendGuardBoundDisputeMasked`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/send-guard-bound-dispute-masked.md) | Optional | This is a container for any-of cases. |
+| `CaseReason` | [`*models.SendGuardCaseReason`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/send-guard-case-reason.md) | Optional | This is a container for any-of cases. |
 | `CaseRef` | `string` | Required | Case ref.<br><br>**Constraints**: *Pattern*: `^case-ref-[0-9]{3}$` |
-| `DisputeAmount` | [`*models.SendGuardDisputeAmount`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/send-guard-dispute-amount.md) | Optional | This is a container for any-of cases. |
+| `DisputeAmount` | [`*models.SendGuardDisputeAmount`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/send-guard-dispute-amount.md) | Optional | This is a container for any-of cases. |
 | `DisputeMasked` | `string` | Required | Dispute masked.<br><br>**Constraints**: *Pattern*: `^(?:PP-[A-Z0-9-]{2}\u2026[A-Z0-9-]{2}\|\u2026)$` |
-| `DisputeReason` | [`*models.SendGuardDisputeReason`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/send-guard-dispute-reason.md) | Optional | This is a container for any-of cases. |
-| `DisputeSellerMasked` | [`*models.SendGuardDisputeSellerMasked`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/send-guard-dispute-seller-masked.md) | Optional | This is a container for any-of cases. |
-| `SendRefusal` | [`*models.SendGuardSendRefusal`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/send-guard-send-refusal.md) | Optional | This is a container for any-of cases. |
-| `SendingAccountMasked` | [`*models.SendGuardSendingAccountMasked`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/send-guard-sending-account-masked.md) | Optional | This is a container for any-of cases. |
+| `DisputeReason` | [`*models.SendGuardDisputeReason`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/send-guard-dispute-reason.md) | Optional | This is a container for any-of cases. |
+| `DisputeSellerMasked` | [`*models.SendGuardDisputeSellerMasked`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/send-guard-dispute-seller-masked.md) | Optional | This is a container for any-of cases. |
+| `SendRefusal` | [`*models.SendGuardSendRefusal`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/send-guard-send-refusal.md) | Optional | This is a container for any-of cases. |
+| `SendingAccountMasked` | [`*models.SendGuardSendingAccountMasked`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/send-guard-sending-account-masked.md) | Optional | This is a container for any-of cases. |
 
 
 # Example

@@ -1,6 +1,6 @@
 # ApiResponse
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0aCUyRl9fYWRkaXRpb25hbF9kb2N1bWVudGF0aW9uJTJGVXRpbGl0aWVzJTJGQXBpUmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0aCUyRl9fYWRkaXRpb25hbF9kb2N1bWVudGF0aW9uJTJGVXRpbGl0aWVzJTJGQXBpUmVzcG9uc2U
 
 
 Represents the result of an API call, including response metadata and the returned data of type `T`.
@@ -9,7 +9,7 @@ Represents the result of an API call, including response metadata and the return
 
 | Name | Type | Description |
 |  --- | --- | --- |
-| request | [`HttpRequest`](http://localhost:3000/llms-pages/typescript/sdk-infrastructure/http/httprequest.md) | Original request that resulted in this response. |
+| request | [`HttpRequest`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/sdk-infrastructure/http/httprequest.md) | Original request that resulted in this response. |
 | statusCode | `number` | Response status codee. |
 | headers | `Record<string, string>` | Response headers. |
 | result | `T` | Response data. |

@@ -1,6 +1,6 @@
 # Guide State Response
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZQ
 
 GuideStateResponse.
 
@@ -15,28 +15,28 @@ GuideStateResponse.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `AdvisoryOnly` | `string` | Required, Constant | Advisory only.<br><br>**Value**: `"True"` |
-| `Analysis` | [`models.GuideStateResponseAnalysis`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/guide-state-response-analysis.md) | Required | This is a container for any-of cases. |
+| `Analysis` | [`models.GuideStateResponseAnalysis`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/guide-state-response-analysis.md) | Required | This is a container for any-of cases. |
 | `Asked` | `[]string` | Required | Asked.<br><br>**Constraints**: *Maximum Items*: `3` |
 | `AutoConfirmed` | `[]string` | Required | Auto confirmed. |
-| `ChooserMode` | [`models.ChooserModeEnum`](http://localhost:3000/llms-pages/go/models/enumerations/chooser-mode.md) | Required | Chooser mode. |
+| `ChooserMode` | [`models.ChooserModeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/chooser-mode.md) | Required | Chooser mode. |
 | `Deferred` | `[]string` | Required | Deferred. |
-| `FlowName` | [`models.GuideStateResponseFlowName`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/guide-state-response-flow-name.md) | Required | This is a container for any-of cases. |
-| `FormResult` | [`models.GuideStateResponseFormResult`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/guide-state-response-form-result.md) | Required | This is a container for any-of cases. |
-| `FormResults` | [`[]models.GuideFieldResult`](http://localhost:3000/llms-pages/go/models/structures/guide-field-result.md) | Required | Form results. |
-| `Gap` | [`models.GuideGap`](http://localhost:3000/llms-pages/go/models/structures/guide-gap.md) | Required | GuideGap. |
-| `GoodsType` | [`models.GuideStateResponseGoodsType`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/guide-state-response-goods-type.md) | Required | This is a container for any-of cases. |
-| `Items` | [`[]models.GuideItem`](http://localhost:3000/llms-pages/go/models/structures/guide-item.md) | Required | Items. |
+| `FlowName` | [`models.GuideStateResponseFlowName`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/guide-state-response-flow-name.md) | Required | This is a container for any-of cases. |
+| `FormResult` | [`models.GuideStateResponseFormResult`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/guide-state-response-form-result.md) | Required | This is a container for any-of cases. |
+| `FormResults` | [`[]models.GuideFieldResult`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/guide-field-result.md) | Required | Form results. |
+| `Gap` | [`models.GuideGap`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/guide-gap.md) | Required | GuideGap. |
+| `GoodsType` | [`models.GuideStateResponseGoodsType`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/guide-state-response-goods-type.md) | Required | This is a container for any-of cases. |
+| `Items` | [`[]models.GuideItem`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/guide-item.md) | Required | Items. |
 | `ModelRequested` | `bool` | Required | Model requested. |
 | `ModelTextShown` | `string` | Required, Constant | Model text shown.<br><br>**Value**: `"False"` |
 | `Prefill` | `map[string]string` | Required | Prefill. |
-| `Reply` | [`models.GuideStateResponseReply`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/guide-state-response-reply.md) | Required | This is a container for any-of cases. |
-| `Review` | [`[]models.GuideReviewRow`](http://localhost:3000/llms-pages/go/models/structures/guide-review-row.md) | Required | Review. |
+| `Reply` | [`models.GuideStateResponseReply`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/guide-state-response-reply.md) | Required | This is a container for any-of cases. |
+| `Review` | [`[]models.GuideReviewRow`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/guide-review-row.md) | Required | Review. |
 | `RoundsUsed` | `int` | Required | Rounds used. |
-| `Scenario` | [`models.GuideStateResponseScenario`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/guide-state-response-scenario.md) | Required | This is a container for any-of cases. |
+| `Scenario` | [`models.GuideStateResponseScenario`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/guide-state-response-scenario.md) | Required | This is a container for any-of cases. |
 | `SchemaVersion` | `int` | Required, Constant | Schema version.<br><br>**Value**: `1` |
-| `Stage` | [`models.GuideStateResponseStage`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/guide-state-response-stage.md) | Required | This is a container for any-of cases. |
+| `Stage` | [`models.GuideStateResponseStage`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/guide-state-response-stage.md) | Required | This is a container for any-of cases. |
 | `Started` | `bool` | Required | Started. |
-| `Subtraction` | [`models.GuideStateResponseSubtraction`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/guide-state-response-subtraction.md) | Required | This is a container for any-of cases. |
+| `Subtraction` | [`models.GuideStateResponseSubtraction`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/guide-state-response-subtraction.md) | Required | This is a container for any-of cases. |
 | `TurnsLimit` | `int` | Required | Turns limit. |
 | `TurnsUsed` | `int` | Required | Turns used. |
 | `ValuesStored` | `string` | Required, Constant | Values stored.<br><br>**Value**: `"False"` |

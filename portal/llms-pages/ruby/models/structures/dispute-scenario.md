@@ -1,6 +1,6 @@
 # Dispute Scenario
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkRpc3B1dGVTY2VuYXJpbw
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkRpc3B1dGVTY2VuYXJpbw
 
 DisputeScenario.
 
@@ -14,7 +14,7 @@ DisputeScenario.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `citations` | [`Array[ScenarioCitation]`](http://localhost:3000/llms-pages/ruby/models/structures/scenario-citation.md) | Required | Citations.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `20` |
+| `citations` | [`Array[ScenarioCitation]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/scenario-citation.md) | Required | Citations.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `20` |
 | `evidence_class` | `String` | Required, Constant | Evidence class.<br><br>**Value**: `'SYNTHETIC_DEMO_SCENARIO'` |
 | `expected_route` | `String` | Required, Constant | Expected route.<br><br>**Value**: `'PREPARE_REDACTED_DRAFT_FOR_HUMAN_REVIEW'` |
 | `final_authority` | `String` | Required, Constant | Final authority.<br><br>**Value**: `'PAYPAL_OR_EXTERNAL_ISSUER'` |

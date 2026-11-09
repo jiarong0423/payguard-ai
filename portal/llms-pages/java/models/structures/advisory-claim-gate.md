@@ -1,6 +1,6 @@
 # Advisory Claim Gate
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkFkdmlzb3J5Q2xhaW1HYXRl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkFkdmlzb3J5Q2xhaW1HYXRl
 
 AdvisoryClaimGate.
 
@@ -15,9 +15,9 @@ AdvisoryClaimGate.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `ClaimIndex` | `int` | Required | Claim index.<br><br>**Constraints**: `>= 0`, `<= 19` | int getClaimIndex() | setClaimIndex(int claimIndex) |
-| `ClaimType` | [`ClaimTypeEnum`](http://localhost:3000/llms-pages/java/models/enumerations/claim-type.md) | Required | Claim type. | ClaimTypeEnum getClaimType() | setClaimType(ClaimTypeEnum claimType) |
-| `ReasonCodes` | [`List<ReasonCodeEnum>`](http://localhost:3000/llms-pages/java/models/enumerations/reason-code.md) | Required | Reason codes.<br><br>**Constraints**: *Maximum Items*: `10` | List<ReasonCodeEnum> getReasonCodes() | setReasonCodes(List<ReasonCodeEnum> reasonCodes) |
-| `Status` | [`StatusEnum`](http://localhost:3000/llms-pages/java/models/enumerations/status.md) | Required | Status. | StatusEnum getStatus() | setStatus(StatusEnum status) |
+| `ClaimType` | [`ClaimTypeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/claim-type.md) | Required | Claim type. | ClaimTypeEnum getClaimType() | setClaimType(ClaimTypeEnum claimType) |
+| `ReasonCodes` | [`List<ReasonCodeEnum>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/reason-code.md) | Required | Reason codes.<br><br>**Constraints**: *Maximum Items*: `10` | List<ReasonCodeEnum> getReasonCodes() | setReasonCodes(List<ReasonCodeEnum> reasonCodes) |
+| `Status` | [`StatusEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/status.md) | Required | Status. | StatusEnum getStatus() | setStatus(StatusEnum status) |
 | `TrustedCitationChunkIds` | `List<String>` | Required | Trusted citation chunk ids.<br><br>**Constraints**: *Maximum Items*: `10`, *Pattern*: `^[A-Z0-9-]{1,128}$` | List<String> getTrustedCitationChunkIds() | setTrustedCitationChunkIds(List<String> trustedCitationChunkIds) |
 
 

@@ -1,6 +1,6 @@
 # Send Guard Send Refusal
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRlNlbmRHdWFyZFNlbmRSZWZ1c2Fs
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRlNlbmRHdWFyZFNlbmRSZWZ1c2Fs
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRlNlbmRHdWFyZFNlbmRSZWZ1c
 
 | Type |
 |  --- |
-| [`string(SendRefusalEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/send-refusal.md) |
+| [`string(SendRefusalEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/send-refusal.md) |
 
 
 # string(SendRefusalEnum)

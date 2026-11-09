@@ -1,6 +1,6 @@
 # Time Gaps
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRlRpbWVHYXBz
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRlRpbWVHYXBz
 
 TimeGaps.
 
@@ -14,10 +14,10 @@ TimeGaps.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `DeliveryToClaim` | [`TimeGapsDeliveryToClaim`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/time-gaps-delivery-to-claim.md) | Required | This is a container for any-of cases. |
-| `PaymentToClaim` | [`TimeGapsPaymentToClaim`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/time-gaps-payment-to-claim.md) | Required | This is a container for any-of cases. |
-| `PaymentToDelivery` | [`TimeGapsPaymentToDelivery`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/time-gaps-payment-to-delivery.md) | Required | This is a container for any-of cases. |
-| `PaymentToOrderRecord` | [`TimeGapsPaymentToOrderRecord`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/time-gaps-payment-to-order-record.md) | Required | This is a container for any-of cases. |
+| `DeliveryToClaim` | [`TimeGapsDeliveryToClaim`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/time-gaps-delivery-to-claim.md) | Required | This is a container for any-of cases. |
+| `PaymentToClaim` | [`TimeGapsPaymentToClaim`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/time-gaps-payment-to-claim.md) | Required | This is a container for any-of cases. |
+| `PaymentToDelivery` | [`TimeGapsPaymentToDelivery`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/time-gaps-payment-to-delivery.md) | Required | This is a container for any-of cases. |
+| `PaymentToOrderRecord` | [`TimeGapsPaymentToOrderRecord`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/time-gaps-payment-to-order-record.md) | Required | This is a container for any-of cases. |
 
 
 # Example

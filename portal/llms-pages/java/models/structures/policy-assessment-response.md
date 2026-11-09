@@ -1,6 +1,6 @@
 # Policy Assessment Response
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlBvbGljeUFzc2Vzc21lbnRSZXNwb25zZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlBvbGljeUFzc2Vzc21lbnRSZXNwb25zZQ
 
 PolicyAssessmentResponse.
 
@@ -15,20 +15,20 @@ PolicyAssessmentResponse.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `AdvisoryOnly` | `boolean` | Required | Advisory only. | boolean getAdvisoryOnly() | setAdvisoryOnly(boolean advisoryOnly) |
-| `Chunks` | [`List<PolicyChunk>`](http://localhost:3000/llms-pages/java/models/structures/policy-chunk.md) | Required | Chunks.<br><br>**Constraints**: *Maximum Items*: `29` | List<PolicyChunk> getChunks() | setChunks(List<PolicyChunk> chunks) |
+| `Chunks` | [`List<PolicyChunk>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/policy-chunk.md) | Required | Chunks.<br><br>**Constraints**: *Maximum Items*: `29` | List<PolicyChunk> getChunks() | setChunks(List<PolicyChunk> chunks) |
 | `CorpusDigest` | `String` | Required | Corpus digest.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` | String getCorpusDigest() | setCorpusDigest(String corpusDigest) |
-| `CorpusDigests` | [`ReferenceDigests`](http://localhost:3000/llms-pages/java/models/structures/reference-digests.md) | Required | ReferenceDigests. | ReferenceDigests getCorpusDigests() | setCorpusDigests(ReferenceDigests corpusDigests) |
+| `CorpusDigests` | [`ReferenceDigests`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/reference-digests.md) | Required | ReferenceDigests. | ReferenceDigests getCorpusDigests() | setCorpusDigests(ReferenceDigests corpusDigests) |
 | `CorpusId` | `String` | Required, Constant | Corpus id.<br><br>**Value**: `"payguard-us-official-references-v2"` | String getCorpusId() | setCorpusId(String corpusId) |
-| `Coverage` | [`PolicyCoverage`](http://localhost:3000/llms-pages/java/models/structures/policy-coverage.md) | Required | PolicyCoverage. | PolicyCoverage getCoverage() | setCoverage(PolicyCoverage coverage) |
+| `Coverage` | [`PolicyCoverage`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/policy-coverage.md) | Required | PolicyCoverage. | PolicyCoverage getCoverage() | setCoverage(PolicyCoverage coverage) |
 | `CurrentPolicyApplicability` | `String` | Required, Constant | Current policy applicability.<br><br>**Value**: `"NOT_ESTABLISHED"` | String getCurrentPolicyApplicability() | setCurrentPolicyApplicability(String currentPolicyApplicability) |
-| `FiltersApplied` | [`PolicyContext`](http://localhost:3000/llms-pages/java/models/structures/policy-context.md) | Required | PolicyContext. | PolicyContext getFiltersApplied() | setFiltersApplied(PolicyContext filtersApplied) |
+| `FiltersApplied` | [`PolicyContext`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/policy-context.md) | Required | PolicyContext. | PolicyContext getFiltersApplied() | setFiltersApplied(PolicyContext filtersApplied) |
 | `Limitations` | `List<String>` | Required | Limitations.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `32`, *Minimum Length*: `1`, *Maximum Length*: `2000` | List<String> getLimitations() | setLimitations(List<String> limitations) |
 | `OperationalAuthority` | `String` | Required, Constant | Operational authority.<br><br>**Value**: `"REFERENCE_ONLY_NO_ACTION_AUTHORIZATION"` | String getOperationalAuthority() | setOperationalAuthority(String operationalAuthority) |
-| `ReasonCodes` | [`List<ReasonCode1Enum>`](http://localhost:3000/llms-pages/java/models/enumerations/reason-code-1.md) | Required | Reason codes.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `15` | List<ReasonCode1Enum> getReasonCodes() | setReasonCodes(List<ReasonCode1Enum> reasonCodes) |
+| `ReasonCodes` | [`List<ReasonCode1Enum>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/reason-code-1.md) | Required | Reason codes.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `15` | List<ReasonCode1Enum> getReasonCodes() | setReasonCodes(List<ReasonCode1Enum> reasonCodes) |
 | `RequiresHumanReview` | `boolean` | Required | Requires human review. | boolean getRequiresHumanReview() | setRequiresHumanReview(boolean requiresHumanReview) |
 | `SchemaVersion` | `int` | Required | Schema version.<br><br>**Constraints**: `>= 1`, `<= 1` | int getSchemaVersion() | setSchemaVersion(int schemaVersion) |
 | `Source` | `String` | Required, Constant | Source.<br><br>**Value**: `"public_reference"` | String getSource() | setSource(String source) |
-| `Sources` | [`List<PolicySource>`](http://localhost:3000/llms-pages/java/models/structures/policy-source.md) | Required | Sources.<br><br>**Constraints**: *Maximum Items*: `16` | List<PolicySource> getSources() | setSources(List<PolicySource> sources) |
+| `Sources` | [`List<PolicySource>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/policy-source.md) | Required | Sources.<br><br>**Constraints**: *Maximum Items*: `16` | List<PolicySource> getSources() | setSources(List<PolicySource> sources) |
 | `Status` | `String` | Required, Constant | Status.<br><br>**Value**: `"INCOMPLETE_POLICY_EVIDENCE"` | String getStatus() | setStatus(String status) |
 | `Version` | `String` | Required, Constant | Version.<br><br>**Value**: `"payguard.applicability.v1"` | String getVersion() | setVersion(String version) |
 

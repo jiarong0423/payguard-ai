@@ -1,6 +1,6 @@
 # Guide Item Form
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkd1aWRlSXRlbUZvcm0
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkd1aWRlSXRlbUZvcm0
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkd1aWRlSXRlbUZvcm
 
 | Type |
 |  --- |
-| [`GuideForm`](http://localhost:3000/llms-pages/typescript/models/structures/guide-form.md) |
+| [`GuideForm`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/guide-form.md) |
 
 
 # GuideForm

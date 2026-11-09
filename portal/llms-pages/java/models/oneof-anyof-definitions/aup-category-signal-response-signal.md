@@ -1,6 +1,6 @@
 # Aup Category Signal Response Signal
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkF1cENhdGVnb3J5U2lnbmFsUmVzcG9uc2VTaWduYWw
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkF1cENhdGVnb3J5U2lnbmFsUmVzcG9uc2VTaWduYWw
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkF1cENhdGVnb3J5U2lnbmFs
 
 | Type | Factory Method |
 |  --- | --- |
-| [`CategorySignal`](http://localhost:3000/llms-pages/java/models/structures/category-signal.md) | AupCategorySignalResponseSignal.fromCategorySignal(CategorySignal categorySignal) |
+| [`CategorySignal`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/category-signal.md) | AupCategorySignalResponseSignal.fromCategorySignal(CategorySignal categorySignal) |
 
 
 # CategorySignal

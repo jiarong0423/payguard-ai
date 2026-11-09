@@ -1,6 +1,6 @@
 # Reference Citation
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlJlZmVyZW5jZUNpdGF0aW9u
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRlJlZmVyZW5jZUNpdGF0aW9u
 
 ReferenceCitation.
 
@@ -14,24 +14,24 @@ ReferenceCitation.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `caseOutcome` | [`ReferenceCitationCaseOutcome`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/reference-citation-case-outcome.md) | Required | This is a container for any-of cases. |
-| `caseStage` | [`CaseStageEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/case-stage.md) | Required | Case stage. |
+| `caseOutcome` | [`ReferenceCitationCaseOutcome`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/reference-citation-case-outcome.md) | Required | This is a container for any-of cases. |
+| `caseStage` | [`CaseStageEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/case-stage.md) | Required | Case stage. |
 | `chunkId` | `string` | Required | Chunk id.<br><br>**Constraints**: *Pattern*: `^[A-Z0-9-]{1,128}$` |
-| `decisionAcceptanceDeadline` | [`ReferenceCitationDecisionAcceptanceDeadline`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/reference-citation-decision-acceptance-deadline.md) | Required | This is a container for any-of cases. |
-| `decisionDate` | [`ReferenceCitationDecisionDate`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/reference-citation-decision-date.md) | Required | This is a container for any-of cases. |
-| `decisionDateStatus` | [`DecisionDateStatusEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/decision-date-status.md) | Required | Decision date status. |
-| `effectiveDate` | [`ReferenceCitationEffectiveDate`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/reference-citation-effective-date.md) | Required | This is a container for any-of cases. |
-| `effectiveDateStatus` | [`EffectiveDateStatusEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/effective-date-status.md) | Required | Effective date status. |
+| `decisionAcceptanceDeadline` | [`ReferenceCitationDecisionAcceptanceDeadline`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/reference-citation-decision-acceptance-deadline.md) | Required | This is a container for any-of cases. |
+| `decisionDate` | [`ReferenceCitationDecisionDate`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/reference-citation-decision-date.md) | Required | This is a container for any-of cases. |
+| `decisionDateStatus` | [`DecisionDateStatusEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/decision-date-status.md) | Required | Decision date status. |
+| `effectiveDate` | [`ReferenceCitationEffectiveDate`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/reference-citation-effective-date.md) | Required | This is a container for any-of cases. |
+| `effectiveDateStatus` | [`EffectiveDateStatusEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/effective-date-status.md) | Required | Effective date status. |
 | `jurisdiction` | `string` | Required, Constant | Jurisdiction.<br><br>**Value**: `'US'` |
 | `jurisdictionLabel` | `string` | Required | Jurisdiction label.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `2000` |
 | `locator` | `string` | Required | Locator.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `8000` |
-| `materialType` | [`MaterialType1Enum`](http://localhost:3000/llms-pages/typescript/models/enumerations/material-type-1.md) | Required | Material type. |
+| `materialType` | [`MaterialType1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/material-type-1.md) | Required | Material type. |
 | `relevanceScore` | `number` | Required | Relevance score.<br><br>**Constraints**: `>= 1`, `<= 128` |
 | `retrievedAt` | `string` | Required | Retrieved at.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `64` |
 | `sourceId` | `string` | Required | Source id.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `128` |
 | `sourceTitle` | `string` | Required | Source title.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `8000` |
-| `sourceUpdatedDate` | [`ReferenceCitationSourceUpdatedDate`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/reference-citation-source-updated-date.md) | Required | This is a container for any-of cases. |
-| `sourceUpdatedDateStatus` | [`SourceUpdatedDateStatusEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/source-updated-date-status.md) | Required | Source updated date status. |
+| `sourceUpdatedDate` | [`ReferenceCitationSourceUpdatedDate`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/reference-citation-source-updated-date.md) | Required | This is a container for any-of cases. |
+| `sourceUpdatedDateStatus` | [`SourceUpdatedDateStatusEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/source-updated-date-status.md) | Required | Source updated date status. |
 | `text` | `string` | Required | Text.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `8000` |
 | `textSha256` | `string` | Required | Text sha256.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` |
 | `title` | `string` | Required | Title.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `8000` |

@@ -1,6 +1,6 @@
 # Guide Item Form
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkd1aWRlSXRlbUZvcm0
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkd1aWRlSXRlbUZvcm0
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkd1aWRlSXRlbUZvcm0
 
 | Type | Factory Method |
 |  --- | --- |
-| [`models.GuideForm`](http://localhost:3000/llms-pages/go/models/structures/guide-form.md) | models.GuideItemFormContainer.FromGuideForm(models.GuideForm guideForm) |
+| [`models.GuideForm`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/guide-form.md) | models.GuideItemFormContainer.FromGuideForm(models.GuideForm guideForm) |
 
 
 # models.GuideForm

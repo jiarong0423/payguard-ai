@@ -1,6 +1,6 @@
 # Identity Redaction
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRklkZW50aXR5UmVkYWN0aW9u
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRklkZW50aXR5UmVkYWN0aW9u
 
 IdentityRedaction.
 
@@ -14,10 +14,10 @@ IdentityRedaction.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `fields` | [`Array[FieldEnum]`](http://localhost:3000/llms-pages/ruby/models/enumerations/field.md) | Required | Fields. |
+| `fields` | [`Array[FieldEnum]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/field.md) | Required | Fields. |
 | `method` | `String` | Required, Constant | Method.<br><br>**Value**: `'HMAC-SHA256 pseudonymization'` |
 | `synthetic` | `String` | Required, Constant | Synthetic.<br><br>**Value**: `'True'` |
-| `tokens` | [`IdentityTokens`](http://localhost:3000/llms-pages/ruby/models/structures/identity-tokens.md) | Required | IdentityTokens. |
+| `tokens` | [`IdentityTokens`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/identity-tokens.md) | Required | IdentityTokens. |
 
 
 # Example

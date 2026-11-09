@@ -1,6 +1,6 @@
 # Ai Usage Entry Tokens Out
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkFpVXNhZ2VFbnRyeVRva2Vuc091dA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkFpVXNhZ2VFbnRyeVRva2Vuc091dA
 
 
 # Class Name

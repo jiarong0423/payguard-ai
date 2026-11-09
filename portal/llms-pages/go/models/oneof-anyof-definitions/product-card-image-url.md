@@ -1,6 +1,6 @@
 # Product Card Image Url
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlByb2R1Y3RDYXJkSW1hZ2VVcmw
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRlByb2R1Y3RDYXJkSW1hZ2VVcmw
 
 
 # Class Name

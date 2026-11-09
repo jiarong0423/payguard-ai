@@ -1,6 +1,6 @@
 # Signal Confidence
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRlNpZ25hbENvbmZpZGVuY2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRlNpZ25hbENvbmZpZGVuY2U
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRlNpZ25h
 
 | Type | Factory Method |
 |  --- | --- |
-| [`ConfidenceEnum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/confidence.md) | SignalConfidence.FromConfidence(ConfidenceEnum confidence) |
+| [`ConfidenceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/confidence.md) | SignalConfidence.FromConfidence(ConfidenceEnum confidence) |
 
 
 # ConfidenceEnum

@@ -1,6 +1,6 @@
 # Dispute Draft Response
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkRpc3B1dGVEcmFmdFJlc3BvbnNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkRpc3B1dGVEcmFmdFJlc3BvbnNl
 
 DisputeDraftResponse.
 
@@ -16,20 +16,20 @@ DisputeDraftResponse.
 |  --- | --- | --- | --- |
 | `AdvisoryOnly` | `string` | Required, Constant | Advisory only.<br><br>**Value**: `"True"` |
 | `CaseRef` | `string` | Required | Case ref. |
-| `DocumentRedaction` | [`DocumentRedaction`](http://localhost:3000/llms-pages/net-standard-library/models/structures/document-redaction.md) | Required | DocumentRedaction. |
+| `DocumentRedaction` | [`DocumentRedaction`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/document-redaction.md) | Required | DocumentRedaction. |
 | `DraftDigest` | `string` | Required | Draft digest. |
-| `Evidence` | [`Evidence`](http://localhost:3000/llms-pages/net-standard-library/models/structures/evidence.md) | Required | Evidence. |
-| `IdentityRedaction` | [`IdentityRedaction`](http://localhost:3000/llms-pages/net-standard-library/models/structures/identity-redaction.md) | Required | IdentityRedaction. |
+| `Evidence` | [`Evidence`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/evidence.md) | Required | Evidence. |
+| `IdentityRedaction` | [`IdentityRedaction`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/identity-redaction.md) | Required | IdentityRedaction. |
 | `Limitations` | `List<string>` | Required | Limitations. |
 | `PolicyVersion` | `string` | Required | Policy version. |
 | `Recommendation` | `string` | Required | Recommendation. |
-| `RestrictedOriginalSummary` | [`RestrictedOriginalSummary`](http://localhost:3000/llms-pages/net-standard-library/models/structures/restricted-original-summary.md) | Required | RestrictedOriginalSummary. |
+| `RestrictedOriginalSummary` | [`RestrictedOriginalSummary`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/restricted-original-summary.md) | Required | RestrictedOriginalSummary. |
 | `ReviewReasons` | `List<string>` | Required | Review reasons. |
-| `Routing` | [`DisputeRouting`](http://localhost:3000/llms-pages/net-standard-library/models/structures/dispute-routing.md) | Required | DisputeRouting. |
-| `ScenarioMatch` | [`ScenarioMatch`](http://localhost:3000/llms-pages/net-standard-library/models/structures/scenario-match.md) | Required | ScenarioMatch. |
+| `Routing` | [`DisputeRouting`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/dispute-routing.md) | Required | DisputeRouting. |
+| `ScenarioMatch` | [`ScenarioMatch`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/scenario-match.md) | Required | ScenarioMatch. |
 | `Source` | `string` | Required, Constant | Source.<br><br>**Value**: `"synthetic"` |
-| `Status` | [`Status5Enum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/status-5.md) | Required | Status. |
-| `TimeEvidence` | [`DisputeDraftResponseTimeEvidence`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/dispute-draft-response-time-evidence.md) | Optional | This is a container for any-of cases. |
+| `Status` | [`Status5Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/status-5.md) | Required | Status. |
+| `TimeEvidence` | [`DisputeDraftResponseTimeEvidence`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/dispute-draft-response-time-evidence.md) | Optional | This is a container for any-of cases. |
 
 
 # Example

@@ -1,6 +1,6 @@
 # Send Guard
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlNlbmRHdWFyZA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlNlbmRHdWFyZA
 
 (r25 send guard) What a send carries and to whom, side by side; every account id is masked (first 2, last 4).
 
@@ -14,16 +14,16 @@ Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlNlbmRHdWFyZA
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `AccountStatus` | [`AccountStatusEnum`](http://localhost:3000/llms-pages/java/models/enumerations/account-status.md) | Required | Account status. | AccountStatusEnum getAccountStatus() | setAccountStatus(AccountStatusEnum accountStatus) |
-| `BoundDisputeMasked` | [`SendGuardBoundDisputeMasked`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/send-guard-bound-dispute-masked.md) | Optional | This is a container for any-of cases. | SendGuardBoundDisputeMasked getBoundDisputeMasked() | setBoundDisputeMasked(SendGuardBoundDisputeMasked boundDisputeMasked) |
-| `CaseReason` | [`SendGuardCaseReason`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/send-guard-case-reason.md) | Optional | This is a container for any-of cases. | SendGuardCaseReason getCaseReason() | setCaseReason(SendGuardCaseReason caseReason) |
+| `AccountStatus` | [`AccountStatusEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/account-status.md) | Required | Account status. | AccountStatusEnum getAccountStatus() | setAccountStatus(AccountStatusEnum accountStatus) |
+| `BoundDisputeMasked` | [`SendGuardBoundDisputeMasked`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/send-guard-bound-dispute-masked.md) | Optional | This is a container for any-of cases. | SendGuardBoundDisputeMasked getBoundDisputeMasked() | setBoundDisputeMasked(SendGuardBoundDisputeMasked boundDisputeMasked) |
+| `CaseReason` | [`SendGuardCaseReason`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/send-guard-case-reason.md) | Optional | This is a container for any-of cases. | SendGuardCaseReason getCaseReason() | setCaseReason(SendGuardCaseReason caseReason) |
 | `CaseRef` | `String` | Required | Case ref.<br><br>**Constraints**: *Pattern*: `^case-ref-[0-9]{3}$` | String getCaseRef() | setCaseRef(String caseRef) |
-| `DisputeAmount` | [`SendGuardDisputeAmount`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/send-guard-dispute-amount.md) | Optional | This is a container for any-of cases. | SendGuardDisputeAmount getDisputeAmount() | setDisputeAmount(SendGuardDisputeAmount disputeAmount) |
+| `DisputeAmount` | [`SendGuardDisputeAmount`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/send-guard-dispute-amount.md) | Optional | This is a container for any-of cases. | SendGuardDisputeAmount getDisputeAmount() | setDisputeAmount(SendGuardDisputeAmount disputeAmount) |
 | `DisputeMasked` | `String` | Required | Dispute masked.<br><br>**Constraints**: *Pattern*: `^(?:PP-[A-Z0-9-]{2}\u2026[A-Z0-9-]{2}\|\u2026)$` | String getDisputeMasked() | setDisputeMasked(String disputeMasked) |
-| `DisputeReason` | [`SendGuardDisputeReason`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/send-guard-dispute-reason.md) | Optional | This is a container for any-of cases. | SendGuardDisputeReason getDisputeReason() | setDisputeReason(SendGuardDisputeReason disputeReason) |
-| `DisputeSellerMasked` | [`SendGuardDisputeSellerMasked`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/send-guard-dispute-seller-masked.md) | Optional | This is a container for any-of cases. | SendGuardDisputeSellerMasked getDisputeSellerMasked() | setDisputeSellerMasked(SendGuardDisputeSellerMasked disputeSellerMasked) |
-| `SendRefusal` | [`SendGuardSendRefusal`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/send-guard-send-refusal.md) | Optional | This is a container for any-of cases. | SendGuardSendRefusal getSendRefusal() | setSendRefusal(SendGuardSendRefusal sendRefusal) |
-| `SendingAccountMasked` | [`SendGuardSendingAccountMasked`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/send-guard-sending-account-masked.md) | Optional | This is a container for any-of cases. | SendGuardSendingAccountMasked getSendingAccountMasked() | setSendingAccountMasked(SendGuardSendingAccountMasked sendingAccountMasked) |
+| `DisputeReason` | [`SendGuardDisputeReason`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/send-guard-dispute-reason.md) | Optional | This is a container for any-of cases. | SendGuardDisputeReason getDisputeReason() | setDisputeReason(SendGuardDisputeReason disputeReason) |
+| `DisputeSellerMasked` | [`SendGuardDisputeSellerMasked`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/send-guard-dispute-seller-masked.md) | Optional | This is a container for any-of cases. | SendGuardDisputeSellerMasked getDisputeSellerMasked() | setDisputeSellerMasked(SendGuardDisputeSellerMasked disputeSellerMasked) |
+| `SendRefusal` | [`SendGuardSendRefusal`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/send-guard-send-refusal.md) | Optional | This is a container for any-of cases. | SendGuardSendRefusal getSendRefusal() | setSendRefusal(SendGuardSendRefusal sendRefusal) |
+| `SendingAccountMasked` | [`SendGuardSendingAccountMasked`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/send-guard-sending-account-masked.md) | Optional | This is a container for any-of cases. | SendGuardSendingAccountMasked getSendingAccountMasked() | setSendingAccountMasked(SendGuardSendingAccountMasked sendingAccountMasked) |
 
 
 # Example

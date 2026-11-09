@@ -1,6 +1,6 @@
 # Send Guard Bound Dispute Masked
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlNlbmRHdWFyZEJvdW5kRGlzcHV0ZU1hc2tlZA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlNlbmRHdWFyZEJvdW5kRGlzcHV0ZU1hc2tlZA
 
 
 # Class Name

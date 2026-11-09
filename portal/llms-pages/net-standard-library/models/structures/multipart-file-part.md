@@ -1,6 +1,6 @@
 # Multipart File Part
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRk11bHRpcGFydEZpbGVQYXJ0
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRk11bHRpcGFydEZpbGVQYXJ0
 
 MultipartFilePart.
 
@@ -15,7 +15,7 @@ MultipartFilePart.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `ByteLength` | `int` | Required | Byte length.<br><br>**Constraints**: `>= 0`, `<= 9999999` |
-| `ContentType` | [`ContentTypeEnum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/content-type.md) | Required | Content type. |
+| `ContentType` | [`ContentTypeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/content-type.md) | Required | Content type. |
 | `Filename` | `string` | Required | Filename.<br><br>**Constraints**: *Maximum Length*: `255` |
 | `Name` | `string` | Required | Name.<br><br>**Constraints**: *Pattern*: `^file[0-9]{1,3}$` |
 

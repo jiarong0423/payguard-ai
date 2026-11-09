@@ -1,6 +1,6 @@
 # Guide Form Request Scenario
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkd1aWRlRm9ybVJlcXVlc3RTY2VuYXJpbw
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkd1aWRlRm9ybVJlcXVlc3RTY2VuYXJpbw
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkd1aWRlRm9ybVJlcXVlc3
 
 | Type |
 |  --- |
-| [`Scenario1Enum`](http://localhost:3000/llms-pages/python/models/enumerations/scenario-1.md) |
+| [`Scenario1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/scenario-1.md) |
 
 
 # Scenario1Enum

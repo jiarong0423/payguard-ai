@@ -1,6 +1,6 @@
 # Sandbox Evidence Receipt
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlNhbmRib3hFdmlkZW5jZVJlY2VpcHQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRlNhbmRib3hFdmlkZW5jZVJlY2VpcHQ
 
 SandboxEvidenceReceipt.
 
@@ -14,9 +14,9 @@ SandboxEvidenceReceipt.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `action` | [`ActionEnum`](http://localhost:3000/llms-pages/ruby/models/enumerations/action.md) | Required | Action. |
+| `action` | [`ActionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/action.md) | Required | Action. |
 | `environment` | `String` | Required, Constant | Environment.<br><br>**Value**: `'sandbox'` |
-| `evidence_class` | [`EvidenceClass3Enum`](http://localhost:3000/llms-pages/ruby/models/enumerations/evidence-class-3.md) | Required | Evidence class. |
+| `evidence_class` | [`EvidenceClass3Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/evidence-class-3.md) | Required | Evidence class. |
 | `external_send` | `String` | Required, Constant | External send.<br><br>**Value**: `'FROZEN'` |
 | `invoice_id` | String | Required | This is a container for any-of cases. |
 | `observed_at` | `String` | Required | Observed at.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `27` |
@@ -24,7 +24,7 @@ SandboxEvidenceReceipt.
 | `proof_kind` | `String` | Required, Constant | Proof kind.<br><br>**Value**: `'POST_RESPONSE_ONLY'` |
 | `schema_version` | `Integer` | Required, Constant | Schema version.<br><br>**Value**: `1` |
 | `separate_get_readback` | `String` | Required, Constant | Separate get readback.<br><br>**Value**: `'False'` |
-| `status` | [`Status10Enum`](http://localhost:3000/llms-pages/ruby/models/enumerations/status-10.md) | Required | Status. |
+| `status` | [`Status10Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/status-10.md) | Required | Status. |
 
 
 # Example

@@ -1,6 +1,6 @@
 # Time Gaps Payment to Order Record
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlRpbWVHYXBzUGF5bWVudFRvT3JkZXJSZWNvcmQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRlRpbWVHYXBzUGF5bWVudFRvT3JkZXJSZWNvcmQ
 
 
 # Class Name

@@ -1,6 +1,6 @@
 # Category Signal
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkNhdGVnb3J5U2lnbmFs
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkNhdGVnb3J5U2lnbmFs
 
 CategorySignal.
 
@@ -14,8 +14,8 @@ CategorySignal.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `Category` | [`CategorySignalCategory`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/category-signal-category.md) | Required | This is a container for any-of cases. |
-| `Confidence` | [`CategorySignalConfidence`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/category-signal-confidence.md) | Required | This is a container for any-of cases. |
+| `Category` | [`CategorySignalCategory`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/category-signal-category.md) | Required | This is a container for any-of cases. |
+| `Confidence` | [`CategorySignalConfidence`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/category-signal-confidence.md) | Required | This is a container for any-of cases. |
 | `Source` | `string` | Required, Constant | Source.<br><br>**Value**: `"channel3"` |
 
 

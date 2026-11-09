@@ -1,6 +1,6 @@
 # Environment-Based Client Initialization
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0aCUyRl9fYWRkaXRpb25hbF9kb2N1bWVudGF0aW9uJTJGQ29uZmlndXJhdGlvbiUyRkVudmlyb25tZW50LUJhc2VkJTI1MjBDbGllbnQlMjUyMEluaXRpYWxpemF0aW9u
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0aCUyRl9fYWRkaXRpb25hbF9kb2N1bWVudGF0aW9uJTJGQ29uZmlndXJhdGlvbiUyRkVudmlyb25tZW50LUJhc2VkJTI1MjBDbGllbnQlMjUyMEluaXRpYWxpemF0aW9u
 
 The SDK client can be initialized directly from environment variables using the `fromEnvironment` static method available on the `Client` class. This allows you to configure the SDK through environment variables, making it easier to manage different settings across different environments.
 
@@ -58,7 +58,7 @@ HTTP_STATUS_CODES_TO_RETRY=408,413,429,500,502
 HTTP_METHODS_TO_RETRY=GET,PUT,DELETE
 
 # Proxy Settings
-PROXY_ADDRESS=http://localhost:3000
+PROXY_ADDRESS=https://jiarong0423.github.io/payguard-ai/portal
 PROXY_PORT=8080
 PROXY_AUTH_USERNAME=username
 PROXY_AUTH_PASSWORD=password

@@ -1,6 +1,6 @@
 # Guide Start Request Goods Type
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkd1aWRlU3RhcnRSZXF1ZXN0R29vZHNUeXBl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkd1aWRlU3RhcnRSZXF1ZXN0R29vZHNUeXBl
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkd1aWRlU3RhcnRSZXF1ZXN0
 
 | Type |
 |  --- |
-| [`GoodsTypeEnum`](http://localhost:3000/llms-pages/ruby/models/enumerations/goods-type.md) |
+| [`GoodsTypeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/goods-type.md) |
 
 
 # GoodsTypeEnum

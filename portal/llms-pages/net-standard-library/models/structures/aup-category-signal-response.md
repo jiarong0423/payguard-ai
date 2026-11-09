@@ -1,6 +1,6 @@
 # Aup Category Signal Response
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkF1cENhdGVnb3J5U2lnbmFsUmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkF1cENhdGVnb3J5U2lnbmFsUmVzcG9uc2U
 
 Optional Channel3 signal shown next to the AUP result; it never changes the rule decision.
 
@@ -15,9 +15,9 @@ Optional Channel3 signal shown next to the AUP result; it never changes the rule
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `AffectsDecision` | `string` | Required, Constant | Affects decision.<br><br>**Value**: `"False"` |
-| `Reason` | [`AupCategorySignalResponseReason`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/aup-category-signal-response-reason.md) | Required | This is a container for any-of cases. |
-| `Signal` | [`AupCategorySignalResponseSignal`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/aup-category-signal-response-signal.md) | Required | This is a container for any-of cases. |
-| `Status` | [`Status2Enum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/status-2.md) | Required | Status. |
+| `Reason` | [`AupCategorySignalResponseReason`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/aup-category-signal-response-reason.md) | Required | This is a container for any-of cases. |
+| `Signal` | [`AupCategorySignalResponseSignal`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/aup-category-signal-response-signal.md) | Required | This is a container for any-of cases. |
+| `Status` | [`Status2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/status-2.md) | Required | Status. |
 
 
 # Example

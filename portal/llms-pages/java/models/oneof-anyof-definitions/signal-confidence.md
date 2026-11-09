@@ -1,6 +1,6 @@
 # Signal Confidence
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlNpZ25hbENvbmZpZGVuY2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlNpZ25hbENvbmZpZGVuY2U
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlNpZ25hbENvbmZpZGVuY2U
 
 | Type | Factory Method |
 |  --- | --- |
-| [`ConfidenceEnum`](http://localhost:3000/llms-pages/java/models/enumerations/confidence.md) | SignalConfidence.fromConfidence(ConfidenceEnum confidence) |
+| [`ConfidenceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/confidence.md) | SignalConfidence.fromConfidence(ConfidenceEnum confidence) |
 
 
 # ConfidenceEnum

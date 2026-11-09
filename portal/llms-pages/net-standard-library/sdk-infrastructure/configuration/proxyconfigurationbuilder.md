@@ -1,6 +1,6 @@
 # ProxyConfigurationBuilder
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0aCUyRl9fYWRkaXRpb25hbF9kb2N1bWVudGF0aW9uJTJGQ29uZmlndXJhdGlvbiUyRlByb3h5Q29uZmlndXJhdGlvbkJ1aWxkZXI
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0aCUyRl9fYWRkaXRpb25hbF9kb2N1bWVudGF0aW9uJTJGQ29uZmlndXJhdGlvbiUyRlByb3h5Q29uZmlndXJhdGlvbkJ1aWxkZXI
 
 
 Represents the proxy server configurations for API calls. Start building by using `new ProxyConfigurationBuilder("http://your.proxy.host")`.

@@ -1,6 +1,6 @@
 # Velocity Response
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRlZlbG9jaXR5UmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRlZlbG9jaXR5UmVzcG9uc2U
 
 VelocityResponse.
 
@@ -17,17 +17,17 @@ VelocityResponse.
 | `AdvisoryOnly` | `string` | Required, Constant | Advisory only.<br><br>**Value**: `"True"` |
 | `Alert` | `bool` | Required | Alert. |
 | `BaselineAmountPerHour` | `string` | Required | Baseline amount per hour. |
-| `BaselineProvenance` | [`BaselineProvenanceEnum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/baseline-provenance.md) | Required | Baseline provenance. |
+| `BaselineProvenance` | [`BaselineProvenanceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/baseline-provenance.md) | Required | Baseline provenance. |
 | `BaselineWindowEnd` | `string` | Required | Baseline window end. |
 | `BaselineWindowStart` | `string` | Required | Baseline window start. |
-| `Currency` | [`VelocityResponseCurrency`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/velocity-response-currency.md) | Required | This is a container for any-of cases. |
+| `Currency` | [`VelocityResponseCurrency`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/velocity-response-currency.md) | Required | This is a container for any-of cases. |
 | `CurrentAmountPerHour` | `string` | Required | Current amount per hour. |
 | `ExcludedFutureCount` | `int` | Required | Excluded future count. |
 | `ExcludedPastCount` | `int` | Required | Excluded past count. |
 | `Limitations` | `List<string>` | Required | Limitations. |
 | `PolicyVersion` | `string` | Required | Policy version. |
-| `Ratio` | [`VelocityResponseRatio`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/velocity-response-ratio.md) | Required | This is a container for any-of cases. |
-| `Status` | [`Status14Enum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/status-14.md) | Required | Status. |
+| `Ratio` | [`VelocityResponseRatio`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/velocity-response-ratio.md) | Required | This is a container for any-of cases. |
+| `Status` | [`Status14Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/status-14.md) | Required | Status. |
 | `Threshold` | `string` | Required | Threshold. |
 | `TotalAmount` | `string` | Required | Total amount. |
 | `TransactionCount` | `int` | Required | Transaction count. |

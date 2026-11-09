@@ -1,6 +1,6 @@
 # Finding
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkZpbmRpbmc
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkZpbmRpbmc
 
 Finding.
 
@@ -14,7 +14,7 @@ Finding.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `category` | [`CategoryEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/category.md) | Required | Category. |
+| `category` | [`CategoryEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/category.md) | Required | Category. |
 | `code` | `string` | Required, Constant | Code.<br><br>**Value**: `'keyword_requires_policy_review'` |
 
 

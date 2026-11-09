@@ -1,6 +1,6 @@
 # Dispute Detail Response Dispute Channel
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkRpc3B1dGVEZXRhaWxSZXNwb25zZURpc3B1dGVDaGFubmVs
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkRpc3B1dGVEZXRhaWxSZXNwb25zZURpc3B1dGVDaGFubmVs
 
 
 # Class Name

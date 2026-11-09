@@ -1,6 +1,6 @@
 # Product Card Brand
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlByb2R1Y3RDYXJkQnJhbmQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlByb2R1Y3RDYXJkQnJhbmQ
 
 
 # Class Name

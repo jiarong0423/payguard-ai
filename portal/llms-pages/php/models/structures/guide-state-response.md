@@ -1,6 +1,6 @@
 # Guide State Response
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZQ
 
 GuideStateResponse.
 
@@ -15,28 +15,28 @@ GuideStateResponse.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `advisoryOnly` | `string` | Required, Constant | Advisory only.<br><br>**Value**: `'True'` | getAdvisoryOnly(): string | setAdvisoryOnly(string advisoryOnly): void |
-| `analysis` | [GuideAnalysis](http://localhost:3000/llms-pages/php/models/structures/guide-analysis.md) | Required | This is a container for any-of cases. | getAnalysis(): GuideAnalysis | setAnalysis(GuideAnalysis analysis): void |
+| `analysis` | [GuideAnalysis](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/guide-analysis.md) | Required | This is a container for any-of cases. | getAnalysis(): GuideAnalysis | setAnalysis(GuideAnalysis analysis): void |
 | `asked` | `string[]` | Required | Asked.<br><br>**Constraints**: *Maximum Items*: `3` | getAsked(): array | setAsked(array asked): void |
 | `autoConfirmed` | `string[]` | Required | Auto confirmed. | getAutoConfirmed(): array | setAutoConfirmed(array autoConfirmed): void |
-| `chooserMode` | [`string(ChooserModeEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/chooser-mode.md) | Required | Chooser mode. | getChooserMode(): string | setChooserMode(string chooserMode): void |
+| `chooserMode` | [`string(ChooserModeEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/chooser-mode.md) | Required | Chooser mode. | getChooserMode(): string | setChooserMode(string chooserMode): void |
 | `deferred` | `string[]` | Required | Deferred. | getDeferred(): array | setDeferred(array deferred): void |
 | `flowName` | string | Required | This is a container for any-of cases. | getFlowName(): string | setFlowName(string flowName): void |
-| `formResult` | [GuideForm](http://localhost:3000/llms-pages/php/models/structures/guide-form.md)Result | Required | This is a container for any-of cases. | getFormResult(): GuideFormResult | setFormResult(GuideFormResult formResult): void |
-| `formResults` | [`GuideFieldResult[]`](http://localhost:3000/llms-pages/php/models/structures/guide-field-result.md) | Required | Form results. | getFormResults(): array | setFormResults(array formResults): void |
-| `gap` | [`GuideGap`](http://localhost:3000/llms-pages/php/models/structures/guide-gap.md) | Required | GuideGap. | getGap(): GuideGap | setGap(GuideGap gap): void |
-| `goodsType` | string([GoodsTypeEnum](http://localhost:3000/llms-pages/php/models/enumerations/goods-type.md)) | Required | This is a container for any-of cases. | getGoodsType(): string | setGoodsType(string goodsType): void |
-| `items` | [`GuideItem[]`](http://localhost:3000/llms-pages/php/models/structures/guide-item.md) | Required | Items. | getItems(): array | setItems(array items): void |
+| `formResult` | [GuideForm](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/guide-form.md)Result | Required | This is a container for any-of cases. | getFormResult(): GuideFormResult | setFormResult(GuideFormResult formResult): void |
+| `formResults` | [`GuideFieldResult[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/guide-field-result.md) | Required | Form results. | getFormResults(): array | setFormResults(array formResults): void |
+| `gap` | [`GuideGap`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/guide-gap.md) | Required | GuideGap. | getGap(): GuideGap | setGap(GuideGap gap): void |
+| `goodsType` | string([GoodsTypeEnum](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/goods-type.md)) | Required | This is a container for any-of cases. | getGoodsType(): string | setGoodsType(string goodsType): void |
+| `items` | [`GuideItem[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/guide-item.md) | Required | Items. | getItems(): array | setItems(array items): void |
 | `modelRequested` | `bool` | Required | Model requested. | getModelRequested(): bool | setModelRequested(bool modelRequested): void |
 | `modelTextShown` | `string` | Required, Constant | Model text shown.<br><br>**Value**: `'False'` | getModelTextShown(): string | setModelTextShown(string modelTextShown): void |
 | `prefill` | `array<string,string>` | Required | Prefill. | getPrefill(): array | setPrefill(array prefill): void |
-| `reply` | [GuideReply](http://localhost:3000/llms-pages/php/models/structures/guide-reply.md) | Required | This is a container for any-of cases. | getReply(): GuideReply | setReply(GuideReply reply): void |
-| `review` | [`GuideReviewRow[]`](http://localhost:3000/llms-pages/php/models/structures/guide-review-row.md) | Required | Review. | getReview(): array | setReview(array review): void |
+| `reply` | [GuideReply](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/guide-reply.md) | Required | This is a container for any-of cases. | getReply(): GuideReply | setReply(GuideReply reply): void |
+| `review` | [`GuideReviewRow[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/guide-review-row.md) | Required | Review. | getReview(): array | setReview(array review): void |
 | `roundsUsed` | `int` | Required | Rounds used. | getRoundsUsed(): int | setRoundsUsed(int roundsUsed): void |
-| `scenario` | string([Scenario1Enum](http://localhost:3000/llms-pages/php/models/enumerations/scenario-1.md)) | Required | This is a container for any-of cases. | getScenario(): string | setScenario(string scenario): void |
+| `scenario` | string([Scenario1Enum](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/scenario-1.md)) | Required | This is a container for any-of cases. | getScenario(): string | setScenario(string scenario): void |
 | `schemaVersion` | `int` | Required, Constant | Schema version.<br><br>**Value**: `1` | getSchemaVersion(): int | setSchemaVersion(int schemaVersion): void |
-| `stage` | string([Stage3Enum](http://localhost:3000/llms-pages/php/models/enumerations/stage-3.md)) | Required | This is a container for any-of cases. | getStage(): string | setStage(string stage): void |
+| `stage` | string([Stage3Enum](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/stage-3.md)) | Required | This is a container for any-of cases. | getStage(): string | setStage(string stage): void |
 | `started` | `bool` | Required | Started. | getStarted(): bool | setStarted(bool started): void |
-| `subtraction` | [GuideSubtraction](http://localhost:3000/llms-pages/php/models/structures/guide-subtraction.md) | Required | This is a container for any-of cases. | getSubtraction(): GuideSubtraction | setSubtraction(GuideSubtraction subtraction): void |
+| `subtraction` | [GuideSubtraction](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/guide-subtraction.md) | Required | This is a container for any-of cases. | getSubtraction(): GuideSubtraction | setSubtraction(GuideSubtraction subtraction): void |
 | `turnsLimit` | `int` | Required | Turns limit. | getTurnsLimit(): int | setTurnsLimit(int turnsLimit): void |
 | `turnsUsed` | `int` | Required | Turns used. | getTurnsUsed(): int | setTurnsUsed(int turnsUsed): void |
 | `valuesStored` | `string` | Required, Constant | Values stored.<br><br>**Value**: `'False'` | getValuesStored(): string | setValuesStored(string valuesStored): void |

@@ -1,6 +1,6 @@
 # Signal
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlNpZ25hbA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRlNpZ25hbA
 
 Signal.
 
@@ -15,8 +15,8 @@ Signal.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `category` | String \| nil | Optional | This is a container for any-of cases. |
-| `confidence` | [Confidence](http://localhost:3000/llms-pages/ruby/models/enumerations/confidence.md) \| nil | Optional | This is a container for any-of cases. |
-| `source` | [`Source2Enum`](http://localhost:3000/llms-pages/ruby/models/enumerations/source-2.md) | Optional | Source. |
+| `confidence` | [Confidence](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/confidence.md) \| nil | Optional | This is a container for any-of cases. |
+| `source` | [`Source2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/source-2.md) | Optional | Source. |
 
 
 # Example

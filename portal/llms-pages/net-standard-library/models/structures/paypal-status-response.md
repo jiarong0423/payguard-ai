@@ -1,6 +1,6 @@
 # Paypal Status Response
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRlBheXBhbFN0YXR1c1Jlc3BvbnNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRlBheXBhbFN0YXR1c1Jlc3BvbnNl
 
 PaypalStatusResponse.
 
@@ -16,10 +16,10 @@ PaypalStatusResponse.
 |  --- | --- | --- | --- |
 | `Configured` | `bool` | Required | Configured. |
 | `Environment` | `string` | Required, Constant | Environment.<br><br>**Value**: `"sandbox"` |
-| `EvidenceReceipt` | [`PaypalStatusResponseEvidenceReceipt`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/paypal-status-response-evidence-receipt.md) | Required | This is a container for any-of cases. |
-| `LastVerifiedAt` | [`PaypalStatusResponseLastVerifiedAt`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/paypal-status-response-last-verified-at.md) | Required | This is a container for any-of cases. |
+| `EvidenceReceipt` | [`PaypalStatusResponseEvidenceReceipt`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/paypal-status-response-evidence-receipt.md) | Required | This is a container for any-of cases. |
+| `LastVerifiedAt` | [`PaypalStatusResponseLastVerifiedAt`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/paypal-status-response-last-verified-at.md) | Required | This is a container for any-of cases. |
 | `Source` | `string` | Required, Constant | Source.<br><br>**Value**: `"paypal_sandbox"` |
-| `Status` | [`Status11Enum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/status-11.md) | Required | Status. |
+| `Status` | [`Status11Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/status-11.md) | Required | Status. |
 
 
 # Example

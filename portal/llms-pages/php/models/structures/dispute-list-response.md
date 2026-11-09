@@ -1,6 +1,6 @@
 # Dispute List Response
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkRpc3B1dGVMaXN0UmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkRpc3B1dGVMaXN0UmVzcG9uc2U
 
 DisputeListResponse.
 
@@ -14,15 +14,15 @@ DisputeListResponse.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `dataSourceLabel` | [`string(DataSourceLabelEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/data-source-label.md) | Required | Data source label. | getDataSourceLabel(): string | setDataSourceLabel(string dataSourceLabel): void |
+| `dataSourceLabel` | [`string(DataSourceLabelEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/data-source-label.md) | Required | Data source label. | getDataSourceLabel(): string | setDataSourceLabel(string dataSourceLabel): void |
 | `environment` | `string` | Required, Constant | Environment.<br><br>**Value**: `'sandbox'` | getEnvironment(): string | setEnvironment(string environment): void |
-| `evidenceClass` | [`string(EvidenceClassEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/evidence-class.md) | Required | Evidence class. | getEvidenceClass(): string | setEvidenceClass(string evidenceClass): void |
-| `items` | [`DisputeRecord[]`](http://localhost:3000/llms-pages/php/models/structures/dispute-record.md) | Required | Items.<br><br>**Constraints**: *Maximum Items*: `20` | getItems(): array | setItems(array items): void |
+| `evidenceClass` | [`string(EvidenceClassEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/evidence-class.md) | Required | Evidence class. | getEvidenceClass(): string | setEvidenceClass(string evidenceClass): void |
+| `items` | [`DisputeRecord[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/dispute-record.md) | Required | Items.<br><br>**Constraints**: *Maximum Items*: `20` | getItems(): array | setItems(array items): void |
 | `observedAt` | `string` | Required | Observed at.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `27` | getObservedAt(): string | setObservedAt(string observedAt): void |
 | `paypalDebugId` | string\|null | Optional | This is a container for any-of cases. | getPaypalDebugId(): ?string | setPaypalDebugId(?string paypalDebugId): void |
-| `providerSubmission` | [`string(ProviderSubmissionEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/provider-submission.md) | Required | Provider submission. | getProviderSubmission(): string | setProviderSubmission(string providerSubmission): void |
+| `providerSubmission` | [`string(ProviderSubmissionEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/provider-submission.md) | Required | Provider submission. | getProviderSubmission(): string | setProviderSubmission(string providerSubmission): void |
 | `readback` | `string` | Required, Constant | Readback.<br><br>**Value**: `'GET_LIST'` | getReadback(): string | setReadback(string readback): void |
-| `source` | [`string(SourceEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/source.md) | Required | Source. | getSource(): string | setSource(string source): void |
+| `source` | [`string(SourceEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/source.md) | Required | Source. | getSource(): string | setSource(string source): void |
 
 
 # Example

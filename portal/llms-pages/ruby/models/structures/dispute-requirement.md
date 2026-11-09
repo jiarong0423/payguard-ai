@@ -1,6 +1,6 @@
 # Dispute Requirement
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkRpc3B1dGVSZXF1aXJlbWVudA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkRpc3B1dGVSZXF1aXJlbWVudA
 
 DisputeRequirement.
 
@@ -21,7 +21,7 @@ DisputeRequirement.
 | `proof_count` | `Integer` | Required | Proof count.<br><br>**Constraints**: `>= 0`, `<= 128` |
 | `provider_evidence_type` | `String` | Required | Provider evidence type.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `128`, *Pattern*: `^[A-Z][A-Z0-9_]{0,127}$` |
 | `request_id` | `String` | Required | Request id.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `128`, *Pattern*: `^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$` |
-| `requirement_state` | [`RequirementStateEnum`](http://localhost:3000/llms-pages/ruby/models/enumerations/requirement-state.md) | Required | Requirement state. |
+| `requirement_state` | [`RequirementStateEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/requirement-state.md) | Required | Requirement state. |
 | `source` | `String` | Required | Source.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `128`, *Pattern*: `^[A-Z][A-Z0-9_]{0,127}$` |
 
 

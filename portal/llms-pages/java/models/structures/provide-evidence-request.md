@@ -1,6 +1,6 @@
 # Provide Evidence Request
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlByb3ZpZGVFdmlkZW5jZVJlcXVlc3Q
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlByb3ZpZGVFdmlkZW5jZVJlcXVlc3Q
 
 ProvideEvidenceRequest.
 
@@ -15,7 +15,7 @@ ProvideEvidenceRequest.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `CaseRef` | `String` | Required | Case ref.<br><br>**Constraints**: *Pattern*: `^case-ref-[0-9]{3}$` | String getCaseRef() | setCaseRef(String caseRef) |
-| `ConfirmToken` | [`ProvideEvidenceRequestConfirmToken`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/provide-evidence-request-confirm-token.md) | Optional | This is a container for any-of cases. | ProvideEvidenceRequestConfirmToken getConfirmToken() | setConfirmToken(ProvideEvidenceRequestConfirmToken confirmToken) |
+| `ConfirmToken` | [`ProvideEvidenceRequestConfirmToken`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/provide-evidence-request-confirm-token.md) | Optional | This is a container for any-of cases. | ProvideEvidenceRequestConfirmToken getConfirmToken() | setConfirmToken(ProvideEvidenceRequestConfirmToken confirmToken) |
 | `DisputeId` | `String` | Required | Dispute id.<br><br>**Constraints**: *Pattern*: `^PP-[A-Z0-9][A-Z0-9-]{2,62}$` | String getDisputeId() | setDisputeId(String disputeId) |
 | `Submit` | `Boolean` | Optional | Submit.<br><br>**Default**: `false` | Boolean getSubmit() | setSubmit(Boolean submit) |
 

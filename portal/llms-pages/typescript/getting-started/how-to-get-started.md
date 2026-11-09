@@ -1,6 +1,6 @@
 # How to Get Started
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0aCUyRl9fZ2V0dGluZ19zdGFydGVk
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0aCUyRl9fZ2V0dGluZ19zdGFydGVk
 
 
 # Introduction
@@ -82,7 +82,7 @@ The following parameters are configurable for the API Client:
 | Parameter | Type | Description |
 |  --- | --- | --- |
 | timeout | `number` | Timeout for API calls.<br>*Default*: `0` |
-| httpClientOptions | [`Partial<HttpClientOptions>`](http://localhost:3000/llms-pages/typescript/sdk-infrastructure/configuration/httpclientoptions.md) | Stable configurable http client options. |
+| httpClientOptions | [`Partial<HttpClientOptions>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/sdk-infrastructure/configuration/httpclientoptions.md) | Stable configurable http client options. |
 | unstableHttpClientOptions | `any` | Unstable configurable http client options. |
 
 The API client can be initialized as follows:
@@ -114,7 +114,7 @@ const fileContent = fs.readFileSync(absolutePath, 'utf-8');
 const client = Client.fromJsonConfig(fileContent);
 ```
 
-See the [Configuration-Based Client Initialization](http://localhost:3000/llms-pages/typescript/sdk-infrastructure/configuration/configuration-based-client-initialization.md) section for details.
+See the [Configuration-Based Client Initialization](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/sdk-infrastructure/configuration/configuration-based-client-initialization.md) section for details.
 
 ## Environment-Based Client Initialization
 
@@ -136,7 +136,7 @@ if (fs.existsSync(absolutePath)) {
 const client = Client.fromEnvironment(process.env);
 ```
 
-See the [Environment-Based Client Initialization](http://localhost:3000/llms-pages/typescript/sdk-infrastructure/configuration/environment-based-client-initialization.md) section for details.
+See the [Environment-Based Client Initialization](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/sdk-infrastructure/configuration/environment-based-client-initialization.md) section for details.
 
 
 # Test the SDK

@@ -1,6 +1,6 @@
 # Reference Request
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlJlZmVyZW5jZVJlcXVlc3Q
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRlJlZmVyZW5jZVJlcXVlc3Q
 
 ReferenceRequest.
 
@@ -14,15 +14,15 @@ ReferenceRequest.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `AsOf` | [`*models.ReferenceRequestAsOf`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/reference-request-as-of.md) | Optional | This is a container for any-of cases. |
-| `CaseStage` | [`*models.CaseStage2Enum`](http://localhost:3000/llms-pages/go/models/enumerations/case-stage-2.md) | Optional | Case stage.<br><br>**Default**: `"any"` |
+| `AsOf` | [`*models.ReferenceRequestAsOf`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/reference-request-as-of.md) | Optional | This is a container for any-of cases. |
+| `CaseStage` | [`*models.CaseStage2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/case-stage-2.md) | Optional | Case stage.<br><br>**Default**: `"any"` |
 | `Jurisdiction` | `string` | Required, Constant | Jurisdiction.<br><br>**Value**: `"US"` |
 | `Limit` | `*int` | Optional | Limit.<br><br>**Default**: `3`<br><br>**Constraints**: `>= 1`, `<= 10` |
-| `MaterialTypes` | [`*models.ReferenceRequestMaterialTypes`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/reference-request-material-types.md) | Optional | This is a container for any-of cases. |
-| `MaxSourceAgeDays` | [`*models.ReferenceRequestMaxSourceAgeDays`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/reference-request-max-source-age-days.md) | Optional | This is a container for any-of cases. |
+| `MaterialTypes` | [`*models.ReferenceRequestMaterialTypes`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/reference-request-material-types.md) | Optional | This is a container for any-of cases. |
+| `MaxSourceAgeDays` | [`*models.ReferenceRequestMaxSourceAgeDays`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/reference-request-max-source-age-days.md) | Optional | This is a container for any-of cases. |
 | `Query` | `string` | Required | Query.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `512` |
 | `RequireKnownSourceDate` | `*bool` | Optional | Require known source date.<br><br>**Default**: `false` |
-| `Theme` | [`models.ThemeEnum`](http://localhost:3000/llms-pages/go/models/enumerations/theme.md) | Required | Theme. |
+| `Theme` | [`models.ThemeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/theme.md) | Required | Theme. |
 
 
 # Example

@@ -1,6 +1,6 @@
 # Tracker Item
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRlRyYWNrZXJJdGVt
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlRyYWNrZXJJdGVt
 
 TrackerItem.
 
@@ -14,7 +14,7 @@ TrackerItem.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `carrier` | [`CarrierEnum`](http://localhost:3000/llms-pages/python/models/enumerations/carrier.md) | Required | Carrier. |
+| `carrier` | [`CarrierEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/carrier.md) | Required | Carrier. |
 | `carrier_name_other` | str \| None | Optional | This is a container for any-of cases. |
 | `status` | `str` | Required, Constant | Status.<br><br>**Value**: `"SHIPPED"` |
 | `tracking_number` | `str` | Required | Tracking number.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `64` |

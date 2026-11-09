@@ -1,6 +1,6 @@
 # Effective Date Status
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkVmZmVjdGl2ZURhdGVTdGF0dXM
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkVmZmVjdGl2ZURhdGVTdGF0dXM
 
 Effective date status.
 

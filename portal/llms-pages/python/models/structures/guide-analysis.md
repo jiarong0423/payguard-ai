@@ -1,6 +1,6 @@
 # Guide Analysis
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkd1aWRlQW5hbHlzaXM
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkd1aWRlQW5hbHlzaXM
 
 GuideAnalysis.
 
@@ -14,8 +14,8 @@ GuideAnalysis.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `reason` | [Reason5](http://localhost:3000/llms-pages/python/models/enumerations/reason-5.md) | Required | This is a container for any-of cases. |
-| `status` | [`Status8Enum`](http://localhost:3000/llms-pages/python/models/enumerations/status-8.md) | Required | Status. |
+| `reason` | [Reason5](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/reason-5.md) | Required | This is a container for any-of cases. |
+| `status` | [`Status8Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/status-8.md) | Required | Status. |
 | `turn` | `int` | Required | Turn. |
 
 

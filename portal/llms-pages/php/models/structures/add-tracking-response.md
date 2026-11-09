@@ -1,6 +1,6 @@
 # Add Tracking Response
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkFkZFRyYWNraW5nUmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkFkZFRyYWNraW5nUmVzcG9uc2U
 
 AddTrackingResponse.
 
@@ -14,25 +14,25 @@ AddTrackingResponse.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `body` | [`TrackerBatch`](http://localhost:3000/llms-pages/php/models/structures/tracker-batch.md) | Required | TrackerBatch. | getBody(): TrackerBatch | setBody(TrackerBatch body): void |
+| `body` | [`TrackerBatch`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/tracker-batch.md) | Required | TrackerBatch. | getBody(): TrackerBatch | setBody(TrackerBatch body): void |
 | `caseRef` | `string` | Required | Case ref.<br><br>**Constraints**: *Pattern*: `^case-ref-[0-9]{3}$` | getCaseRef(): string | setCaseRef(string caseRef): void |
 | `confirmToken` | string\|null | Optional | This is a container for any-of cases. | getConfirmToken(): ?string | setConfirmToken(?string confirmToken): void |
 | `contentType` | `string` | Required, Constant | Content type.<br><br>**Value**: `'application/json'` | getContentType(): string | setContentType(string contentType): void |
-| `dataSourceLabel` | [`string(DataSourceLabelEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/data-source-label.md) | Required | Data source label. | getDataSourceLabel(): string | setDataSourceLabel(string dataSourceLabel): void |
+| `dataSourceLabel` | [`string(DataSourceLabelEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/data-source-label.md) | Required | Data source label. | getDataSourceLabel(): string | setDataSourceLabel(string dataSourceLabel): void |
 | `disputeId` | `string` | Required | Dispute id.<br><br>**Constraints**: *Pattern*: `^PP-[A-Z0-9][A-Z0-9-]{2,62}$` | getDisputeId(): string | setDisputeId(string disputeId): void |
 | `environment` | `string` | Required, Constant | Environment.<br><br>**Value**: `'sandbox'` | getEnvironment(): string | setEnvironment(string environment): void |
-| `evidenceClass` | [`string(EvidenceClassEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/evidence-class.md) | Required | Evidence class. | getEvidenceClass(): string | setEvidenceClass(string evidenceClass): void |
-| `externalSend` | [`string(ExternalSendEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/external-send.md) | Required | External send. | getExternalSend(): string | setExternalSend(string externalSend): void |
+| `evidenceClass` | [`string(EvidenceClassEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/evidence-class.md) | Required | Evidence class. | getEvidenceClass(): string | setEvidenceClass(string evidenceClass): void |
+| `externalSend` | [`string(ExternalSendEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/external-send.md) | Required | External send. | getExternalSend(): string | setExternalSend(string externalSend): void |
 | `humanReviewRequired` | `string` | Required, Constant | Human review required.<br><br>**Value**: `'True'` | getHumanReviewRequired(): string | setHumanReviewRequired(string humanReviewRequired): void |
 | `method` | `string` | Required, Constant | Method.<br><br>**Value**: `'POST'` | getMethod(): string | setMethod(string method): void |
 | `observedAt` | `string` | Required | Observed at.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `27` | getObservedAt(): string | setObservedAt(string observedAt): void |
 | `path` | `string` | Required, Constant | Path.<br><br>**Value**: `'/v1/shipping/trackers-batch'` | getPath(): string | setPath(string path): void |
 | `payloadSha256` | string\|null | Optional | This is a container for any-of cases. | getPayloadSha256(): ?string | setPayloadSha256(?string payloadSha256): void |
 | `paypalDebugId` | string\|null | Optional | This is a container for any-of cases. | getPaypalDebugId(): ?string | setPaypalDebugId(?string paypalDebugId): void |
-| `providerSubmission` | [`string(ProviderSubmissionEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/provider-submission.md) | Required | Provider submission. | getProviderSubmission(): string | setProviderSubmission(string providerSubmission): void |
-| `readback` | [`string(ReadbackEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/readback.md) | Required | Readback. | getReadback(): string | setReadback(string readback): void |
-| `sendGuard` | [`SendGuard`](http://localhost:3000/llms-pages/php/models/structures/send-guard.md) | Required | (r25 send guard) What a send carries and to whom, side by side; every account id is masked (first 2, last 4). | getSendGuard(): SendGuard | setSendGuard(SendGuard sendGuard): void |
-| `source` | [`string(SourceEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/source.md) | Required | Source. | getSource(): string | setSource(string source): void |
+| `providerSubmission` | [`string(ProviderSubmissionEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/provider-submission.md) | Required | Provider submission. | getProviderSubmission(): string | setProviderSubmission(string providerSubmission): void |
+| `readback` | [`string(ReadbackEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/readback.md) | Required | Readback. | getReadback(): string | setReadback(string readback): void |
+| `sendGuard` | [`SendGuard`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/send-guard.md) | Required | (r25 send guard) What a send carries and to whom, side by side; every account id is masked (first 2, last 4). | getSendGuard(): SendGuard | setSendGuard(SendGuard sendGuard): void |
+| `source` | [`string(SourceEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/source.md) | Required | Source. | getSource(): string | setSource(string source): void |
 | `submitFlagEnabled` | `bool` | Required | Submit flag enabled. | getSubmitFlagEnabled(): bool | setSubmitFlagEnabled(bool submitFlagEnabled): void |
 
 

@@ -1,6 +1,6 @@
 # Validation Error
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlZhbGlkYXRpb25FcnJvcg
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRlZhbGlkYXRpb25FcnJvcg
 
 ValidationError.
 
@@ -16,7 +16,7 @@ ValidationError.
 |  --- | --- | --- | --- |
 | `ctx` | `unknown \| undefined` | Optional | Ctx. |
 | `input` | `unknown \| undefined` | Optional | Input. |
-| `loc` | [`ValidationErrorLoc[]`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/validation-error-loc.md) | Required | This is Array of a container for any-of cases. |
+| `loc` | [`ValidationErrorLoc[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/validation-error-loc.md) | Required | This is Array of a container for any-of cases. |
 | `msg` | `string` | Required | Msg. |
 | `type` | `string` | Required | Type. |
 

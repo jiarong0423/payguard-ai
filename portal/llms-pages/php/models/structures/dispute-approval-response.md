@@ -1,6 +1,6 @@
 # Dispute Approval Response
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkRpc3B1dGVBcHByb3ZhbFJlc3BvbnNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkRpc3B1dGVBcHByb3ZhbFJlc3BvbnNl
 
 DisputeApprovalResponse.
 

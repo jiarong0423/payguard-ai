@@ -1,6 +1,6 @@
 # Guide State Response Goods Type
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZUdvb2RzVHlwZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZUdvb2RzVHlwZQ
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZ
 
 | Type |
 |  --- |
-| [`string(GoodsTypeEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/goods-type.md) |
+| [`string(GoodsTypeEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/goods-type.md) |
 
 
 # string(GoodsTypeEnum)

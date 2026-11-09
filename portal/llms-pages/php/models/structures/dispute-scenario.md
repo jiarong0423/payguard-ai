@@ -1,6 +1,6 @@
 # Dispute Scenario
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkRpc3B1dGVTY2VuYXJpbw
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkRpc3B1dGVTY2VuYXJpbw
 
 DisputeScenario.
 
@@ -14,7 +14,7 @@ DisputeScenario.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `citations` | [`ScenarioCitation[]`](http://localhost:3000/llms-pages/php/models/structures/scenario-citation.md) | Required | Citations.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `20` | getCitations(): array | setCitations(array citations): void |
+| `citations` | [`ScenarioCitation[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/scenario-citation.md) | Required | Citations.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `20` | getCitations(): array | setCitations(array citations): void |
 | `evidenceClass` | `string` | Required, Constant | Evidence class.<br><br>**Value**: `'SYNTHETIC_DEMO_SCENARIO'` | getEvidenceClass(): string | setEvidenceClass(string evidenceClass): void |
 | `expectedRoute` | `string` | Required, Constant | Expected route.<br><br>**Value**: `'PREPARE_REDACTED_DRAFT_FOR_HUMAN_REVIEW'` | getExpectedRoute(): string | setExpectedRoute(string expectedRoute): void |
 | `finalAuthority` | `string` | Required, Constant | Final authority.<br><br>**Value**: `'PAYPAL_OR_EXTERNAL_ISSUER'` | getFinalAuthority(): string | setFinalAuthority(string finalAuthority): void |

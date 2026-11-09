@@ -1,6 +1,6 @@
 # Dispute Draft Response Time Evidence
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkRpc3B1dGVEcmFmdFJlc3BvbnNlVGltZUV2aWRlbmNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkRpc3B1dGVEcmFmdFJlc3BvbnNlVGltZUV2aWRlbmNl
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkRpc3B1dGVEcmFmdFJlc3Bv
 
 | Type |
 |  --- |
-| [`TimeEvidence`](http://localhost:3000/llms-pages/ruby/models/structures/time-evidence.md) |
+| [`TimeEvidence`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/time-evidence.md) |
 
 
 # TimeEvidence

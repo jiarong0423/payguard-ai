@@ -1,6 +1,6 @@
 # Aup Request
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkF1cFJlcXVlc3Q
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkF1cFJlcXVlc3Q
 
 AupRequest.
 

@@ -1,6 +1,6 @@
 # Send Guard Case Reason
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRlNlbmRHdWFyZENhc2VSZWFzb24
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRlNlbmRHdWFyZENhc2VSZWFzb24
 
 
 # Class Name

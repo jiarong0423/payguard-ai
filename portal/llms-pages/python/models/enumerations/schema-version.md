@@ -1,6 +1,6 @@
 # Schema Version
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRlNjaGVtYVZlcnNpb24
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlNjaGVtYVZlcnNpb24
 
 Schema version.
 

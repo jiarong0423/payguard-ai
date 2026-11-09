@@ -1,6 +1,6 @@
 # Policy Chunk Case Outcome
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRlBvbGljeUNodW5rQ2FzZU91dGNvbWU
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRlBvbGljeUNodW5rQ2FzZU91dGNvbWU
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRlBvbGlj
 
 | Type | Factory Method |
 |  --- | --- |
-| [`CaseOutcomeEnum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/case-outcome.md) | PolicyChunkCaseOutcome.FromCaseOutcome(CaseOutcomeEnum caseOutcome) |
+| [`CaseOutcomeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/case-outcome.md) | PolicyChunkCaseOutcome.FromCaseOutcome(CaseOutcomeEnum caseOutcome) |
 
 
 # CaseOutcomeEnum

@@ -1,6 +1,6 @@
 # Scenario Citation
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlNjZW5hcmlvQ2l0YXRpb24
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRlNjZW5hcmlvQ2l0YXRpb24
 
 ScenarioCitation.
 
@@ -17,7 +17,7 @@ ScenarioCitation.
 | `chunkId` | `string` | Required | Chunk id.<br><br>**Constraints**: *Pattern*: `^[A-Z0-9-]{1,128}$` |
 | `jurisdiction` | `string` | Required, Constant | Jurisdiction.<br><br>**Value**: `'US'` |
 | `locator` | `string` | Required | Locator.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `1000` |
-| `materialType` | [`MaterialTypeEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/material-type.md) | Required | Material type. |
+| `materialType` | [`MaterialTypeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/material-type.md) | Required | Material type. |
 | `sourceId` | `string` | Required | Source id.<br><br>**Constraints**: *Pattern*: `^[A-Z0-9-]{1,128}$` |
 | `textSha256` | `string` | Required | Text sha256.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` |
 | `title` | `string` | Required | Title.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `512` |

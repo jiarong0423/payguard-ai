@@ -1,6 +1,6 @@
 # Invoice Draft Request
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkludm9pY2VEcmFmdFJlcXVlc3Q
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkludm9pY2VEcmFmdFJlcXVlc3Q
 
 InvoiceDraftRequest.
 
@@ -15,7 +15,7 @@ InvoiceDraftRequest.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `amount` | `str` | Required | Amount.<br><br>**Constraints**: *Pattern*: `^[0-9]{1,9}(?:\.[0-9]{1,2})?$` |
-| `currency` | [`CurrencyEnum`](http://localhost:3000/llms-pages/python/models/enumerations/currency.md) | Required | Currency. |
+| `currency` | [`CurrencyEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/currency.md) | Required | Currency. |
 | `description` | `str` | Required | Description.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `200` |
 | `payload_digest` | `str` | Required | Payload digest.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` |
 | `review_token` | `str` | Required | Review token.<br><br>**Constraints**: *Minimum Length*: `32`, *Maximum Length*: `128` |

@@ -1,6 +1,6 @@
 # Tracker Batch
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlRyYWNrZXJCYXRjaA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlRyYWNrZXJCYXRjaA
 
 TrackerBatch.
 
@@ -14,7 +14,7 @@ TrackerBatch.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Trackers` | [`List<TrackerItem>`](http://localhost:3000/llms-pages/java/models/structures/tracker-item.md) | Required | Trackers.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `1` | List<TrackerItem> getTrackers() | setTrackers(List<TrackerItem> trackers) |
+| `Trackers` | [`List<TrackerItem>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/tracker-item.md) | Required | Trackers.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `1` | List<TrackerItem> getTrackers() | setTrackers(List<TrackerItem> trackers) |
 
 
 # Example

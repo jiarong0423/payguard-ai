@@ -1,6 +1,6 @@
 # State Response
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlN0YXRlUmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRlN0YXRlUmVzcG9uc2U
 
 StateResponse.
 
@@ -14,15 +14,15 @@ StateResponse.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `activity` | [`Array[Activity]`](http://localhost:3000/llms-pages/ruby/models/structures/activity.md) | Required | Activity. |
-| `disputes` | [`Array[DisputeSummary]`](http://localhost:3000/llms-pages/ruby/models/structures/dispute-summary.md) | Required | Disputes. |
+| `activity` | [`Array[Activity]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/activity.md) | Required | Activity. |
+| `disputes` | [`Array[DisputeSummary]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/dispute-summary.md) | Required | Disputes. |
 | `expires_at` | `String` | Required | Expires at. |
 | `policy_version` | `String` | Required | Policy version. |
-| `scenario` | [`Scenario`](http://localhost:3000/llms-pages/ruby/models/structures/scenario.md) | Required | Scenario. |
+| `scenario` | [`Scenario`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/scenario.md) | Required | Scenario. |
 | `session_id` | `String` | Required | Session id. |
 | `source` | `String` | Required, Constant | Source.<br><br>**Value**: `'synthetic'` |
-| `transactions` | [`Array[Transaction]`](http://localhost:3000/llms-pages/ruby/models/structures/transaction.md) | Required | Transactions. |
-| `velocity` | [`VelocityResponse`](http://localhost:3000/llms-pages/ruby/models/structures/velocity-response.md) | Required | VelocityResponse. |
+| `transactions` | [`Array[Transaction]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/transaction.md) | Required | Transactions. |
+| `velocity` | [`VelocityResponse`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/velocity-response.md) | Required | VelocityResponse. |
 
 
 # Example

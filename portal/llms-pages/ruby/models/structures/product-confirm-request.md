@@ -1,6 +1,6 @@
 # Product Confirm Request
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maXJtUmVxdWVzdA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maXJtUmVxdWVzdA
 
 ProductConfirmRequest.
 

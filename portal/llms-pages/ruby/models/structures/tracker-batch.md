@@ -1,6 +1,6 @@
 # Tracker Batch
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlRyYWNrZXJCYXRjaA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRlRyYWNrZXJCYXRjaA
 
 TrackerBatch.
 
@@ -14,7 +14,7 @@ TrackerBatch.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `trackers` | [`Array[TrackerItem]`](http://localhost:3000/llms-pages/ruby/models/structures/tracker-item.md) | Required | Trackers.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `1` |
+| `trackers` | [`Array[TrackerItem]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/tracker-item.md) | Required | Trackers.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `1` |
 
 
 # Example

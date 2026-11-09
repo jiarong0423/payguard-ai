@@ -1,6 +1,6 @@
 # Time Evidence 1
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZTE
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZTE
 
 Time evidence.
 
@@ -15,11 +15,11 @@ Time evidence.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `advisory_only` | `bool` | Optional | Advisory only. |
-| `events` | List[[MessageTimeEvent](http://localhost:3000/llms-pages/python/models/structures/message-time-event.md) \| [TimeEvent](http://localhost:3000/llms-pages/python/models/structures/time-event.md)] \| None | Optional | This is List of a container for any-of cases.<br><br>**Constraints**: *Minimum Items*: `2`, *Maximum Items*: `30` |
-| `flags` | [`List[FlagEnum]`](http://localhost:3000/llms-pages/python/models/enumerations/flag.md) | Optional | Flags.<br><br>**Constraints**: *Maximum Items*: `4` |
-| `gaps_seconds` | [`TimeGaps`](http://localhost:3000/llms-pages/python/models/structures/time-gaps.md) | Optional | TimeGaps. |
-| `judgement` | [`JudgementEnum`](http://localhost:3000/llms-pages/python/models/enumerations/judgement.md) | Optional | Judgement. |
-| `schema_version` | [`SchemaVersionEnum`](http://localhost:3000/llms-pages/python/models/enumerations/schema-version.md) | Optional | Schema version. |
+| `events` | List[[MessageTimeEvent](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/message-time-event.md) \| [TimeEvent](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/time-event.md)] \| None | Optional | This is List of a container for any-of cases.<br><br>**Constraints**: *Minimum Items*: `2`, *Maximum Items*: `30` |
+| `flags` | [`List[FlagEnum]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/flag.md) | Optional | Flags.<br><br>**Constraints**: *Maximum Items*: `4` |
+| `gaps_seconds` | [`TimeGaps`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/time-gaps.md) | Optional | TimeGaps. |
+| `judgement` | [`JudgementEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/judgement.md) | Optional | Judgement. |
+| `schema_version` | [`SchemaVersionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/schema-version.md) | Optional | Schema version. |
 
 
 # Example

@@ -1,6 +1,6 @@
 # Product Confirm Response Card
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maXJtUmVzcG9uc2VDYXJk
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maXJtUmVzcG9uc2VDYXJk
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maXJtUmVz
 
 | Type |
 |  --- |
-| [`ProductCard`](http://localhost:3000/llms-pages/ruby/models/structures/product-card.md) |
+| [`ProductCard`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/product-card.md) |
 
 
 # ProductCard

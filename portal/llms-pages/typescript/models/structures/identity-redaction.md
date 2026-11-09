@@ -1,6 +1,6 @@
 # Identity Redaction
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRklkZW50aXR5UmVkYWN0aW9u
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRklkZW50aXR5UmVkYWN0aW9u
 
 IdentityRedaction.
 
@@ -14,10 +14,10 @@ IdentityRedaction.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `fields` | [`FieldEnum[]`](http://localhost:3000/llms-pages/typescript/models/enumerations/field.md) | Required | Fields. |
+| `fields` | [`FieldEnum[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/field.md) | Required | Fields. |
 | `method` | `string` | Required, Constant | Method.<br><br>**Value**: `'HMAC-SHA256 pseudonymization'` |
 | `synthetic` | `string` | Required, Constant | Synthetic.<br><br>**Value**: `'True'` |
-| `tokens` | [`IdentityTokens`](http://localhost:3000/llms-pages/typescript/models/structures/identity-tokens.md) | Required | IdentityTokens. |
+| `tokens` | [`IdentityTokens`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/identity-tokens.md) | Required | IdentityTokens. |
 
 
 # Example

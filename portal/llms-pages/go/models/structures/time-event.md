@@ -1,6 +1,6 @@
 # Time Event
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlRpbWVFdmVudA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRlRpbWVFdmVudA
 
 TimeEvent.
 
@@ -15,8 +15,8 @@ TimeEvent.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `At` | `string` | Required | At.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `40` |
-| `Kind` | [`models.KindEnum`](http://localhost:3000/llms-pages/go/models/enumerations/kind.md) | Required | Kind. |
-| `Source` | [`models.Source5Enum`](http://localhost:3000/llms-pages/go/models/enumerations/source-5.md) | Required | Source. |
+| `Kind` | [`models.KindEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/kind.md) | Required | Kind. |
+| `Source` | [`models.Source5Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/source-5.md) | Required | Source. |
 
 
 # Example

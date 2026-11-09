@@ -1,6 +1,6 @@
 # Document Redaction
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkRvY3VtZW50UmVkYWN0aW9u
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkRvY3VtZW50UmVkYWN0aW9u
 
 DocumentRedaction.
 
@@ -24,7 +24,7 @@ DocumentRedaction.
 | `ReplacementCount` | `int` | Required | Replacement count.<br><br>**Constraints**: `>= 0`, `<= 128` |
 | `Reversibility` | `string` | Required, Constant | Reversibility.<br><br>**Value**: `"False"` |
 | `Source` | `string` | Required, Constant | Source.<br><br>**Value**: `"synthetic"` |
-| `Types` | [`List<TypeEnum>`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/type.md) | Required | Types.<br><br>**Constraints**: *Maximum Items*: `7` |
+| `Types` | [`List<TypeEnum>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/type.md) | Required | Types.<br><br>**Constraints**: *Maximum Items*: `7` |
 
 
 # Example

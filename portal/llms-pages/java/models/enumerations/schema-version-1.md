@@ -1,6 +1,6 @@
 # Schema Version 1
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlNjaGVtYVZlcnNpb24x
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlNjaGVtYVZlcnNpb24x
 
 Schema version.
 

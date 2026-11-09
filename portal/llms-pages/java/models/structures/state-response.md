@@ -1,6 +1,6 @@
 # State Response
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlN0YXRlUmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlN0YXRlUmVzcG9uc2U
 
 StateResponse.
 
@@ -14,15 +14,15 @@ StateResponse.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Activity` | [`List<Activity>`](http://localhost:3000/llms-pages/java/models/structures/activity.md) | Required | Activity. | List<Activity> getActivity() | setActivity(List<Activity> activity) |
-| `Disputes` | [`List<DisputeSummary>`](http://localhost:3000/llms-pages/java/models/structures/dispute-summary.md) | Required | Disputes. | List<DisputeSummary> getDisputes() | setDisputes(List<DisputeSummary> disputes) |
+| `Activity` | [`List<Activity>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/activity.md) | Required | Activity. | List<Activity> getActivity() | setActivity(List<Activity> activity) |
+| `Disputes` | [`List<DisputeSummary>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/dispute-summary.md) | Required | Disputes. | List<DisputeSummary> getDisputes() | setDisputes(List<DisputeSummary> disputes) |
 | `ExpiresAt` | `String` | Required | Expires at. | String getExpiresAt() | setExpiresAt(String expiresAt) |
 | `PolicyVersion` | `String` | Required | Policy version. | String getPolicyVersion() | setPolicyVersion(String policyVersion) |
-| `Scenario` | [`Scenario`](http://localhost:3000/llms-pages/java/models/structures/scenario.md) | Required | Scenario. | Scenario getScenario() | setScenario(Scenario scenario) |
+| `Scenario` | [`Scenario`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/scenario.md) | Required | Scenario. | Scenario getScenario() | setScenario(Scenario scenario) |
 | `SessionId` | `String` | Required | Session id. | String getSessionId() | setSessionId(String sessionId) |
 | `Source` | `String` | Required, Constant | Source.<br><br>**Value**: `"synthetic"` | String getSource() | setSource(String source) |
-| `Transactions` | [`List<Transaction>`](http://localhost:3000/llms-pages/java/models/structures/transaction.md) | Required | Transactions. | List<Transaction> getTransactions() | setTransactions(List<Transaction> transactions) |
-| `Velocity` | [`VelocityResponse`](http://localhost:3000/llms-pages/java/models/structures/velocity-response.md) | Required | VelocityResponse. | VelocityResponse getVelocity() | setVelocity(VelocityResponse velocity) |
+| `Transactions` | [`List<Transaction>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/transaction.md) | Required | Transactions. | List<Transaction> getTransactions() | setTransactions(List<Transaction> transactions) |
+| `Velocity` | [`VelocityResponse`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/velocity-response.md) | Required | VelocityResponse. | VelocityResponse getVelocity() | setVelocity(VelocityResponse velocity) |
 
 
 # Example

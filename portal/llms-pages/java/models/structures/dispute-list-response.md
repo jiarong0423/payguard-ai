@@ -1,6 +1,6 @@
 # Dispute List Response
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkRpc3B1dGVMaXN0UmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkRpc3B1dGVMaXN0UmVzcG9uc2U
 
 DisputeListResponse.
 
@@ -14,15 +14,15 @@ DisputeListResponse.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `DataSourceLabel` | [`DataSourceLabelEnum`](http://localhost:3000/llms-pages/java/models/enumerations/data-source-label.md) | Required | Data source label. | DataSourceLabelEnum getDataSourceLabel() | setDataSourceLabel(DataSourceLabelEnum dataSourceLabel) |
+| `DataSourceLabel` | [`DataSourceLabelEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/data-source-label.md) | Required | Data source label. | DataSourceLabelEnum getDataSourceLabel() | setDataSourceLabel(DataSourceLabelEnum dataSourceLabel) |
 | `Environment` | `String` | Required, Constant | Environment.<br><br>**Value**: `"sandbox"` | String getEnvironment() | setEnvironment(String environment) |
-| `EvidenceClass` | [`EvidenceClassEnum`](http://localhost:3000/llms-pages/java/models/enumerations/evidence-class.md) | Required | Evidence class. | EvidenceClassEnum getEvidenceClass() | setEvidenceClass(EvidenceClassEnum evidenceClass) |
-| `Items` | [`List<DisputeRecord>`](http://localhost:3000/llms-pages/java/models/structures/dispute-record.md) | Required | Items.<br><br>**Constraints**: *Maximum Items*: `20` | List<DisputeRecord> getItems() | setItems(List<DisputeRecord> items) |
+| `EvidenceClass` | [`EvidenceClassEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/evidence-class.md) | Required | Evidence class. | EvidenceClassEnum getEvidenceClass() | setEvidenceClass(EvidenceClassEnum evidenceClass) |
+| `Items` | [`List<DisputeRecord>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/dispute-record.md) | Required | Items.<br><br>**Constraints**: *Maximum Items*: `20` | List<DisputeRecord> getItems() | setItems(List<DisputeRecord> items) |
 | `ObservedAt` | `String` | Required | Observed at.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `27` | String getObservedAt() | setObservedAt(String observedAt) |
-| `PaypalDebugId` | [`DisputeListResponsePaypalDebugId`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/dispute-list-response-paypal-debug-id.md) | Optional | This is a container for any-of cases. | DisputeListResponsePaypalDebugId getPaypalDebugId() | setPaypalDebugId(DisputeListResponsePaypalDebugId paypalDebugId) |
-| `ProviderSubmission` | [`ProviderSubmissionEnum`](http://localhost:3000/llms-pages/java/models/enumerations/provider-submission.md) | Required | Provider submission. | ProviderSubmissionEnum getProviderSubmission() | setProviderSubmission(ProviderSubmissionEnum providerSubmission) |
+| `PaypalDebugId` | [`DisputeListResponsePaypalDebugId`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/dispute-list-response-paypal-debug-id.md) | Optional | This is a container for any-of cases. | DisputeListResponsePaypalDebugId getPaypalDebugId() | setPaypalDebugId(DisputeListResponsePaypalDebugId paypalDebugId) |
+| `ProviderSubmission` | [`ProviderSubmissionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/provider-submission.md) | Required | Provider submission. | ProviderSubmissionEnum getProviderSubmission() | setProviderSubmission(ProviderSubmissionEnum providerSubmission) |
 | `Readback` | `String` | Required, Constant | Readback.<br><br>**Value**: `"GET_LIST"` | String getReadback() | setReadback(String readback) |
-| `Source` | [`SourceEnum`](http://localhost:3000/llms-pages/java/models/enumerations/source.md) | Required | Source. | SourceEnum getSource() | setSource(SourceEnum source) |
+| `Source` | [`SourceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/source.md) | Required | Source. | SourceEnum getSource() | setSource(SourceEnum source) |
 
 
 # Example

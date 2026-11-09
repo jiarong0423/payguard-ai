@@ -1,6 +1,6 @@
 # Send Guard Dispute Amount
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRlNlbmRHdWFyZERpc3B1dGVBbW91bnQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlNlbmRHdWFyZERpc3B1dGVBbW91bnQ
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRlNlbmRHdWFyZERpc3B1dG
 
 | Type |
 |  --- |
-| [`ProviderMoney`](http://localhost:3000/llms-pages/python/models/structures/provider-money.md) |
+| [`ProviderMoney`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/provider-money.md) |
 
 
 # ProviderMoney

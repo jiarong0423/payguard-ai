@@ -1,6 +1,6 @@
 # Signal
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlNpZ25hbA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlNpZ25hbA
 
 Signal.
 
@@ -14,9 +14,9 @@ Signal.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Category` | [`SignalCategory`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/signal-category.md) | Optional | This is a container for any-of cases. | SignalCategory getCategory() | setCategory(SignalCategory category) |
-| `Confidence` | [`SignalConfidence`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/signal-confidence.md) | Optional | This is a container for any-of cases. | SignalConfidence getConfidence() | setConfidence(SignalConfidence confidence) |
-| `Source` | [`Source2Enum`](http://localhost:3000/llms-pages/java/models/enumerations/source-2.md) | Optional | Source. | Source2Enum getSource() | setSource(Source2Enum source) |
+| `Category` | [`SignalCategory`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/signal-category.md) | Optional | This is a container for any-of cases. | SignalCategory getCategory() | setCategory(SignalCategory category) |
+| `Confidence` | [`SignalConfidence`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/signal-confidence.md) | Optional | This is a container for any-of cases. | SignalConfidence getConfidence() | setConfidence(SignalConfidence confidence) |
+| `Source` | [`Source2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/source-2.md) | Optional | Source. | Source2Enum getSource() | setSource(Source2Enum source) |
 
 
 # Example

@@ -1,6 +1,6 @@
 # Policy Chunk
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRlBvbGljeUNodW5r
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlBvbGljeUNodW5r
 
 PolicyChunk.
 
@@ -14,14 +14,14 @@ PolicyChunk.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `case_outcome` | [CaseOutcome](http://localhost:3000/llms-pages/python/models/enumerations/case-outcome.md) | Required | This is a container for any-of cases. |
-| `case_stage` | [`CaseStageEnum`](http://localhost:3000/llms-pages/python/models/enumerations/case-stage.md) | Required | Case stage. |
+| `case_outcome` | [CaseOutcome](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/case-outcome.md) | Required | This is a container for any-of cases. |
+| `case_stage` | [`CaseStageEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/case-stage.md) | Required | Case stage. |
 | `chunk_id` | `str` | Required | Chunk id.<br><br>**Constraints**: *Pattern*: `^[A-Z0-9-]{1,128}$` |
 | `jurisdiction` | `str` | Required, Constant | Jurisdiction.<br><br>**Value**: `"US"` |
-| `material_type` | [`MaterialType1Enum`](http://localhost:3000/llms-pages/python/models/enumerations/material-type-1.md) | Required | Material type. |
+| `material_type` | [`MaterialType1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/material-type-1.md) | Required | Material type. |
 | `source_id` | `str` | Required | Source id.<br><br>**Constraints**: *Pattern*: `^[A-Z0-9-]{1,128}$` |
 | `text_sha_256` | `str` | Required | Text sha256.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` |
-| `theme` | [`ThemeEnum`](http://localhost:3000/llms-pages/python/models/enumerations/theme.md) | Required | Theme. |
+| `theme` | [`ThemeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/theme.md) | Required | Theme. |
 
 
 # Example

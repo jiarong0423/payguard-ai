@@ -1,6 +1,6 @@
 # Guide Start Request
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkd1aWRlU3RhcnRSZXF1ZXN0
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkd1aWRlU3RhcnRSZXF1ZXN0
 
 GuideStartRequest.
 
@@ -14,8 +14,8 @@ GuideStartRequest.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `GoodsType` | [`*models.GuideStartRequestGoodsType`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/guide-start-request-goods-type.md) | Optional | This is a container for any-of cases. |
-| `Scenario` | [`models.Scenario2Enum`](http://localhost:3000/llms-pages/go/models/enumerations/scenario-2.md) | Required | Scenario. |
+| `GoodsType` | [`*models.GuideStartRequestGoodsType`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/guide-start-request-goods-type.md) | Optional | This is a container for any-of cases. |
+| `Scenario` | [`models.Scenario2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/scenario-2.md) | Required | Scenario. |
 
 
 # Example

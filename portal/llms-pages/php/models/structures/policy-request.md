@@ -1,6 +1,6 @@
 # Policy Request
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRlBvbGljeVJlcXVlc3Q
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRlBvbGljeVJlcXVlc3Q
 
 PolicyRequest.
 
@@ -17,7 +17,7 @@ PolicyRequest.
 | `asOf` | `string` | Required | As of.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `64` | getAsOf(): string | setAsOf(string asOf): void |
 | `jurisdiction` | `string` | Required, Constant | Jurisdiction.<br><br>**Value**: `'US'` | getJurisdiction(): string | setJurisdiction(string jurisdiction): void |
 | `observationMaxAgeDays` | `int` | Required | Observation max age days.<br><br>**Constraints**: `>= 0`, `<= 365000` | getObservationMaxAgeDays(): int | setObservationMaxAgeDays(int observationMaxAgeDays): void |
-| `theme` | [`string(ThemeEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/theme.md) | Required | Theme. | getTheme(): string | setTheme(string theme): void |
+| `theme` | [`string(ThemeEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/theme.md) | Required | Theme. | getTheme(): string | setTheme(string theme): void |
 
 
 # Example

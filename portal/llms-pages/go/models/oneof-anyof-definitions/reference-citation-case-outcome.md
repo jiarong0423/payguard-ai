@@ -1,6 +1,6 @@
 # Reference Citation Case Outcome
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlJlZmVyZW5jZUNpdGF0aW9uQ2FzZU91dGNvbWU
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRlJlZmVyZW5jZUNpdGF0aW9uQ2FzZU91dGNvbWU
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlJlZmVyZW5jZUNpdGF0aW9uQ2
 
 | Type | Factory Method |
 |  --- | --- |
-| [`models.CaseOutcomeEnum`](http://localhost:3000/llms-pages/go/models/enumerations/case-outcome.md) | models.ReferenceCitationCaseOutcomeContainer.FromCaseOutcome(models.CaseOutcomeEnum caseOutcome) |
+| [`models.CaseOutcomeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/case-outcome.md) | models.ReferenceCitationCaseOutcomeContainer.FromCaseOutcome(models.CaseOutcomeEnum caseOutcome) |
 
 
 # models.CaseOutcomeEnum

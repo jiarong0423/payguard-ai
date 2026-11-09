@@ -1,6 +1,6 @@
 # Product Confirm Response
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maXJtUmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maXJtUmVzcG9uc2U
 
 The seller's own choice: one of the cards they were shown, or none of them.
 
@@ -15,14 +15,14 @@ The seller's own choice: one of the cards they were shown, or none of them.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `affects_decision` | `String` | Required, Constant | Affects decision.<br><br>**Value**: `'False'` |
-| `card` | [ProductCard](http://localhost:3000/llms-pages/ruby/models/structures/product-card.md) | Required | This is a container for any-of cases. |
+| `card` | [ProductCard](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/product-card.md) | Required | This is a container for any-of cases. |
 | `card_digest` | String | Required | This is a container for any-of cases. |
-| `choice` | [`Choice2Enum`](http://localhost:3000/llms-pages/ruby/models/enumerations/choice-2.md) | Required | Choice. |
+| `choice` | [`Choice2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/choice-2.md) | Required | Choice. |
 | `confirmed_by` | `String` | Required, Constant | Confirmed by.<br><br>**Value**: `'seller'` |
 | `description_digest` | `String` | Required | Description digest.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` |
 | `evaluation_id` | `String` | Required | Evaluation id.<br><br>**Constraints**: *Minimum Length*: `32`, *Maximum Length*: `128`, *Pattern*: `^[A-Za-z0-9_-]+$` |
 | `recorded_at` | String | Required | This is a container for any-of cases. |
-| `source` | [`Source10Enum`](http://localhost:3000/llms-pages/ruby/models/enumerations/source-10.md) | Required | Source. |
+| `source` | [`Source10Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/source-10.md) | Required | Source. |
 
 
 # Example

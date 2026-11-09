@@ -1,6 +1,6 @@
 # Guide Analysis
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkd1aWRlQW5hbHlzaXM
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkd1aWRlQW5hbHlzaXM
 
 GuideAnalysis.
 
@@ -14,8 +14,8 @@ GuideAnalysis.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `Reason` | [`models.GuideAnalysisReason`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/guide-analysis-reason.md) | Required | This is a container for any-of cases. |
-| `Status` | [`models.Status8Enum`](http://localhost:3000/llms-pages/go/models/enumerations/status-8.md) | Required | Status. |
+| `Reason` | [`models.GuideAnalysisReason`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/guide-analysis-reason.md) | Required | This is a container for any-of cases. |
+| `Status` | [`models.Status8Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/status-8.md) | Required | Status. |
 | `Turn` | `int` | Required | Turn. |
 
 

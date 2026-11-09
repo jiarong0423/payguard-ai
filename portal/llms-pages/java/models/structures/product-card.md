@@ -1,6 +1,6 @@
 # Product Card
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlByb2R1Y3RDYXJk
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlByb2R1Y3RDYXJk
 
 A Channel3 catalogue product reduced to what identifies the item; no prices, offers or buy links.
 
@@ -14,9 +14,9 @@ A Channel3 catalogue product reduced to what identifies the item; no prices, off
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Brand` | [`ProductCardBrand`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/product-card-brand.md) | Required | This is a container for any-of cases. | ProductCardBrand getBrand() | setBrand(ProductCardBrand brand) |
-| `Category` | [`ProductCardCategory`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/product-card-category.md) | Required | This is a container for any-of cases. | ProductCardCategory getCategory() | setCategory(ProductCardCategory category) |
-| `ImageUrl` | [`ProductCardImageUrl`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/product-card-image-url.md) | Required | This is a container for any-of cases. | ProductCardImageUrl getImageUrl() | setImageUrl(ProductCardImageUrl imageUrl) |
+| `Brand` | [`ProductCardBrand`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/product-card-brand.md) | Required | This is a container for any-of cases. | ProductCardBrand getBrand() | setBrand(ProductCardBrand brand) |
+| `Category` | [`ProductCardCategory`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/product-card-category.md) | Required | This is a container for any-of cases. | ProductCardCategory getCategory() | setCategory(ProductCardCategory category) |
+| `ImageUrl` | [`ProductCardImageUrl`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/product-card-image-url.md) | Required | This is a container for any-of cases. | ProductCardImageUrl getImageUrl() | setImageUrl(ProductCardImageUrl imageUrl) |
 | `KeyFeatures` | `List<String>` | Required | Key features.<br><br>**Constraints**: *Maximum Items*: `4`, *Minimum Length*: `2`, *Maximum Length*: `100`, *Pattern*: `^[A-Za-z0-9 &'\-,./+()%\"]+$` | List<String> getKeyFeatures() | setKeyFeatures(List<String> keyFeatures) |
 | `Materials` | `List<String>` | Required | Materials.<br><br>**Constraints**: *Maximum Items*: `4`, *Minimum Length*: `2`, *Maximum Length*: `40`, *Pattern*: `^[A-Za-z0-9 &'\-,./+()%\"]+$` | List<String> getMaterials() | setMaterials(List<String> materials) |
 | `ProductId` | `String` | Required | Product id.<br><br>**Constraints**: *Pattern*: `^[A-Za-z0-9_.:-]{1,64}$` | String getProductId() | setProductId(String productId) |

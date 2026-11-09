@@ -1,6 +1,6 @@
 # Multipart File Part
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRk11bHRpcGFydEZpbGVQYXJ0
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRk11bHRpcGFydEZpbGVQYXJ0
 
 MultipartFilePart.
 
@@ -15,7 +15,7 @@ MultipartFilePart.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `ByteLength` | `int` | Required | Byte length.<br><br>**Constraints**: `>= 0`, `<= 9999999` | int getByteLength() | setByteLength(int byteLength) |
-| `ContentType` | [`ContentTypeEnum`](http://localhost:3000/llms-pages/java/models/enumerations/content-type.md) | Required | Content type. | ContentTypeEnum getContentType() | setContentType(ContentTypeEnum contentType) |
+| `ContentType` | [`ContentTypeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/content-type.md) | Required | Content type. | ContentTypeEnum getContentType() | setContentType(ContentTypeEnum contentType) |
 | `Filename` | `String` | Required | Filename.<br><br>**Constraints**: *Maximum Length*: `255` | String getFilename() | setFilename(String filename) |
 | `Name` | `String` | Required | Name.<br><br>**Constraints**: *Pattern*: `^file[0-9]{1,3}$` | String getName() | setName(String name) |
 

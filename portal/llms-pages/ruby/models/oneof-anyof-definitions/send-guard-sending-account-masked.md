@@ -1,6 +1,6 @@
 # Send Guard Sending Account Masked
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlNlbmRHdWFyZFNlbmRpbmdBY2NvdW50TWFza2Vk
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRlNlbmRHdWFyZFNlbmRpbmdBY2NvdW50TWFza2Vk
 
 
 # Data Type

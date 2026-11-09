@@ -1,6 +1,6 @@
 # Post Paypal Webhooks Verify
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0ZSUyRnBheXBhbCUyRnBvc3RfcGF5cGFsX3dlYmhvb2tzX3ZlcmlmeQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0ZSUyRnBheXBhbCUyRnBvc3RfcGF5cGFsX3dlYmhvb2tzX3ZlcmlmeQ
 
 Verify Webhook. Local console route POST /api/v1/paypal/webhooks/verify on synthetic data; advisory only. The hosted demo answers 503 hosted_demo_disabled here: it makes no provider calls.
 
@@ -15,7 +15,7 @@ CompletableFuture<WebhookVerifyResponse> postPaypalWebhooksVerifyAsync()
 
 **200**: Successful Response
 
-[`WebhookVerifyResponse`](http://localhost:3000/llms-pages/java/models/structures/webhook-verify-response.md)
+[`WebhookVerifyResponse`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/webhook-verify-response.md)
 
 
 # Example Usage
@@ -44,8 +44,8 @@ paypalController.postPaypalWebhooksVerifyAsync().thenAccept(result -> {
 
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
-| 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](http://localhost:3000/llms-pages/java/models/exceptions/error-body.md) |
-| 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](http://localhost:3000/llms-pages/java/models/exceptions/error-body.md) |
+| 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/error-body.md) |
+| 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/error-body.md) |
 
 
 

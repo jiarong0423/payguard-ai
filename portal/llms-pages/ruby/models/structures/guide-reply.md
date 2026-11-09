@@ -1,6 +1,6 @@
 # Guide Reply
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkd1aWRlUmVwbHk
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkd1aWRlUmVwbHk
 
 GuideReply.
 
@@ -14,11 +14,11 @@ GuideReply.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `chooser` | [`ChooserEnum`](http://localhost:3000/llms-pages/ruby/models/enumerations/chooser.md) | Required | Chooser. |
-| `dropped` | [`Array[GuideDropped]`](http://localhost:3000/llms-pages/ruby/models/structures/guide-dropped.md) | Required | Dropped. |
-| `fallback_reason` | [FallbackReason](http://localhost:3000/llms-pages/ruby/models/enumerations/fallback-reason.md) | Required | This is a container for any-of cases. |
+| `chooser` | [`ChooserEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/chooser.md) | Required | Chooser. |
+| `dropped` | [`Array[GuideDropped]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/guide-dropped.md) | Required | Dropped. |
+| `fallback_reason` | [FallbackReason](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/fallback-reason.md) | Required | This is a container for any-of cases. |
 | `state_changed` | `TrueClass \| FalseClass` | Required | State changed. |
-| `template` | [`TemplateEnum`](http://localhost:3000/llms-pages/ruby/models/enumerations/template.md) | Required | Template. |
+| `template` | [`TemplateEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/template.md) | Required | Template. |
 | `text` | `String` | Required | Text.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `400` |
 
 

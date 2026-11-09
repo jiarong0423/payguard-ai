@@ -1,6 +1,6 @@
 # Scenario Citation
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRlNjZW5hcmlvQ2l0YXRpb24
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRlNjZW5hcmlvQ2l0YXRpb24
 
 ScenarioCitation.
 
@@ -17,7 +17,7 @@ ScenarioCitation.
 | `ChunkId` | `string` | Required | Chunk id.<br><br>**Constraints**: *Pattern*: `^[A-Z0-9-]{1,128}$` |
 | `Jurisdiction` | `string` | Required, Constant | Jurisdiction.<br><br>**Value**: `"US"` |
 | `Locator` | `string` | Required | Locator.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `1000` |
-| `MaterialType` | [`MaterialTypeEnum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/material-type.md) | Required | Material type. |
+| `MaterialType` | [`MaterialTypeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/material-type.md) | Required | Material type. |
 | `SourceId` | `string` | Required | Source id.<br><br>**Constraints**: *Pattern*: `^[A-Z0-9-]{1,128}$` |
 | `TextSha256` | `string` | Required | Text sha256.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` |
 | `Title` | `string` | Required | Title.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `512` |

@@ -1,6 +1,6 @@
 # Guide Turn Request Scenario
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkd1aWRlVHVyblJlcXVlc3RTY2VuYXJpbw
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkd1aWRlVHVyblJlcXVlc3RTY2VuYXJpbw
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkd1aWRlVHVyblJlcXVlc3RT
 
 | Type | Factory Method |
 |  --- | --- |
-| [`Scenario1Enum`](http://localhost:3000/llms-pages/java/models/enumerations/scenario-1.md) | GuideTurnRequestScenario.fromScenario1(Scenario1Enum scenario1) |
+| [`Scenario1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/scenario-1.md) | GuideTurnRequestScenario.fromScenario1(Scenario1Enum scenario1) |
 
 
 # Scenario1Enum

@@ -1,6 +1,6 @@
 # what-this-is
 
-Source: http://localhost:3000/#/php/x-redirect/cGFnZSUzQWd1aWRlcyUyRndoYXQtdGhpcy1pcw
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/cGFnZSUzQWd1aWRlcyUyRndoYXQtdGhpcy1pcw
 
 TradeGlot gives small PayPal sellers rule checks and a gated evidence workflow. Everything in this API documentation describes the **local console** (127.0.0.1:8000) and runs on **synthetic data** against the **PayPal Sandbox**.
 

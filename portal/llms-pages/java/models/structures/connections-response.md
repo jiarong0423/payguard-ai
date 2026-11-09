@@ -1,6 +1,6 @@
 # Connections Response
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkNvbm5lY3Rpb25zUmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkNvbm5lY3Rpb25zUmVzcG9uc2U
 
 Deployment mode only. Never a key, a key's presence, a value or a variable name.
 
@@ -14,7 +14,7 @@ Deployment mode only. Never a key, a key's presence, a value or a variable name.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Mode` | [`ModeEnum`](http://localhost:3000/llms-pages/java/models/enumerations/mode.md) | Required | Mode. | ModeEnum getMode() | setMode(ModeEnum mode) |
+| `Mode` | [`ModeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/mode.md) | Required | Mode. | ModeEnum getMode() | setMode(ModeEnum mode) |
 
 
 # Example

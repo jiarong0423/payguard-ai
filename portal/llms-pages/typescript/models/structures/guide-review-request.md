@@ -1,6 +1,6 @@
 # Guide Review Request
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkd1aWRlUmV2aWV3UmVxdWVzdA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkd1aWRlUmV2aWV3UmVxdWVzdA
 
 GuideReviewRequest.
 
@@ -16,7 +16,7 @@ GuideReviewRequest.
 |  --- | --- | --- | --- |
 | `change` | `string[] \| undefined` | Optional | Change.<br><br>**Constraints**: *Maximum Items*: `9`, *Minimum Length*: `1`, *Maximum Length*: `40`, *Pattern*: `^[a-z_]+$` |
 | `confirm` | `boolean \| undefined` | Optional | Confirm.<br><br>**Default**: `false` |
-| `scenario` | [`GuideReviewRequestScenario \| undefined`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/guide-review-request-scenario.md) | Optional | This is a container for any-of cases. |
+| `scenario` | [`GuideReviewRequestScenario \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/guide-review-request-scenario.md) | Optional | This is a container for any-of cases. |
 
 
 # Example

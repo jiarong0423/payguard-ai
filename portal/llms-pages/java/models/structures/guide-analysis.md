@@ -1,6 +1,6 @@
 # Guide Analysis
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkd1aWRlQW5hbHlzaXM
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkd1aWRlQW5hbHlzaXM
 
 GuideAnalysis.
 
@@ -14,8 +14,8 @@ GuideAnalysis.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Reason` | [`GuideAnalysisReason`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/guide-analysis-reason.md) | Required | This is a container for any-of cases. | GuideAnalysisReason getReason() | setReason(GuideAnalysisReason reason) |
-| `Status` | [`Status8Enum`](http://localhost:3000/llms-pages/java/models/enumerations/status-8.md) | Required | Status. | Status8Enum getStatus() | setStatus(Status8Enum status) |
+| `Reason` | [`GuideAnalysisReason`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/guide-analysis-reason.md) | Required | This is a container for any-of cases. | GuideAnalysisReason getReason() | setReason(GuideAnalysisReason reason) |
+| `Status` | [`Status8Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/status-8.md) | Required | Status. | Status8Enum getStatus() | setStatus(Status8Enum status) |
 | `Turn` | `int` | Required | Turn. | int getTurn() | setTurn(int turn) |
 
 

@@ -1,6 +1,6 @@
 # Guide Review Row
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkd1aWRlUmV2aWV3Um93
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkd1aWRlUmV2aWV3Um93
 
 GuideReviewRow.
 
@@ -15,7 +15,7 @@ GuideReviewRow.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `item` | `String` | Required | Item. |
-| `source` | [`Source9Enum`](http://localhost:3000/llms-pages/ruby/models/enumerations/source-9.md) | Required | Source. |
+| `source` | [`Source9Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/source-9.md) | Required | Source. |
 | `value` | `String` | Required | Value.<br><br>**Constraints**: *Maximum Length*: `120` |
 
 

@@ -1,6 +1,6 @@
 # Send Guard Dispute Amount
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRlNlbmRHdWFyZERpc3B1dGVBbW91bnQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRlNlbmRHdWFyZERpc3B1dGVBbW91bnQ
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRlNlbmRH
 
 | Type | Factory Method |
 |  --- | --- |
-| [`ProviderMoney`](http://localhost:3000/llms-pages/net-standard-library/models/structures/provider-money.md) | SendGuardDisputeAmount.FromProviderMoney(ProviderMoney providerMoney) |
+| [`ProviderMoney`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/provider-money.md) | SendGuardDisputeAmount.FromProviderMoney(ProviderMoney providerMoney) |
 
 
 # ProviderMoney

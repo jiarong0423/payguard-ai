@@ -1,6 +1,6 @@
 # How to Get Started
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0aCUyRl9fZ2V0dGluZ19zdGFydGVk
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0aCUyRl9fZ2V0dGluZ19zdGFydGVk
 
 
 # Introduction
@@ -88,7 +88,7 @@ The following parameters are configurable for the API Client:
 | backoff_factor | `float` | A backoff factor to apply between attempts after the second try. <br> **Default: 2** |
 | retry_statuses | `Array of int` | The http statuses on which retry is to be done. <br> **Default: [408, 413, 429, 500, 502, 503, 504, 521, 522, 524, 408, 413, 429, 500, 502, 503, 504, 521, 522, 524]** |
 | retry_methods | `Array of string` | The http methods on which retry is to be done. <br> **Default: ["GET", "PUT", "GET", "PUT"]** |
-| proxy_settings | [`ProxySettings`](http://localhost:3000/llms-pages/python/sdk-infrastructure/configuration/proxysettings.md) | Optional proxy configuration to route HTTP requests through a proxy server. |
+| proxy_settings | [`ProxySettings`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/sdk-infrastructure/configuration/proxysettings.md) | Optional proxy configuration to route HTTP requests through a proxy server. |
 
 The API client can be initialized as follows:
 
@@ -112,7 +112,7 @@ from tradeglotlocalconsole.tradeglotlocalconsole_client import Tradeglotlocalcon
 client = TradeglotlocalconsoleClient.from_environment(dotenv_path='/path/to/.env')
 ```
 
-See the [Environment-Based Client Initialization](http://localhost:3000/llms-pages/python/sdk-infrastructure/configuration/environment-based-client-initialization.md) section for details.
+See the [Environment-Based Client Initialization](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/sdk-infrastructure/configuration/environment-based-client-initialization.md) section for details.
 
 
 # Test the SDK

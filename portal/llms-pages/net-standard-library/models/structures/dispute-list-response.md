@@ -1,6 +1,6 @@
 # Dispute List Response
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkRpc3B1dGVMaXN0UmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkRpc3B1dGVMaXN0UmVzcG9uc2U
 
 DisputeListResponse.
 
@@ -14,15 +14,15 @@ DisputeListResponse.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `DataSourceLabel` | [`DataSourceLabelEnum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/data-source-label.md) | Required | Data source label. |
+| `DataSourceLabel` | [`DataSourceLabelEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/data-source-label.md) | Required | Data source label. |
 | `Environment` | `string` | Required, Constant | Environment.<br><br>**Value**: `"sandbox"` |
-| `EvidenceClass` | [`EvidenceClassEnum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/evidence-class.md) | Required | Evidence class. |
-| `Items` | [`List<DisputeRecord>`](http://localhost:3000/llms-pages/net-standard-library/models/structures/dispute-record.md) | Required | Items.<br><br>**Constraints**: *Maximum Items*: `20` |
+| `EvidenceClass` | [`EvidenceClassEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/evidence-class.md) | Required | Evidence class. |
+| `Items` | [`List<DisputeRecord>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/dispute-record.md) | Required | Items.<br><br>**Constraints**: *Maximum Items*: `20` |
 | `ObservedAt` | `string` | Required | Observed at.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `27` |
-| `PaypalDebugId` | [`DisputeListResponsePaypalDebugId`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/dispute-list-response-paypal-debug-id.md) | Optional | This is a container for any-of cases. |
-| `ProviderSubmission` | [`ProviderSubmissionEnum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/provider-submission.md) | Required | Provider submission. |
+| `PaypalDebugId` | [`DisputeListResponsePaypalDebugId`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/dispute-list-response-paypal-debug-id.md) | Optional | This is a container for any-of cases. |
+| `ProviderSubmission` | [`ProviderSubmissionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/provider-submission.md) | Required | Provider submission. |
 | `Readback` | `string` | Required, Constant | Readback.<br><br>**Value**: `"GET_LIST"` |
-| `Source` | [`SourceEnum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/source.md) | Required | Source. |
+| `Source` | [`SourceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/source.md) | Required | Source. |
 
 
 # Example

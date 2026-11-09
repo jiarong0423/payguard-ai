@@ -1,6 +1,6 @@
 # Get Guide State Scenario
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkdldEd1aWRlU3RhdGVTY2VuYXJpbw
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkdldEd1aWRlU3RhdGVTY2VuYXJpbw
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkdldEd1aWRlU3RhdGVTY2Vu
 
 | Type |
 |  --- |
-| [`Scenario1Enum`](http://localhost:3000/llms-pages/ruby/models/enumerations/scenario-1.md) |
+| [`Scenario1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/scenario-1.md) |
 
 
 # Scenario1Enum

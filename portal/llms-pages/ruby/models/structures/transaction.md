@@ -1,6 +1,6 @@
 # Transaction
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlRyYW5zYWN0aW9u
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRlRyYW5zYWN0aW9u
 
 Transaction.
 

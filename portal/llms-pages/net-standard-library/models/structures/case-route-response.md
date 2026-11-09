@@ -1,6 +1,6 @@
 # Case Route Response
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkNhc2VSb3V0ZVJlc3BvbnNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkNhc2VSb3V0ZVJlc3BvbnNl
 
 Fuzzy case routing: which goods group (and so which dispute items) applies. Code decides; advisory only.
 
@@ -18,11 +18,11 @@ Fuzzy case routing: which goods group (and so which dispute items) applies. Code
 | `DecidedBy` | `string` | Required, Constant | Decided by.<br><br>**Value**: `"code"` |
 | `FilteredOut` | `int` | Required | Filtered out.<br><br>**Constraints**: `>= 0`, `<= 1000` |
 | `Items` | `List<string>` | Required | Items.<br><br>**Constraints**: *Maximum Items*: `12` |
-| `MatchedWord` | [`CaseRouteResponseMatchedWord`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/case-route-response-matched-word.md) | Required | This is a container for any-of cases. |
-| `Matches` | [`List<CaseRouteMatch>`](http://localhost:3000/llms-pages/net-standard-library/models/structures/case-route-match.md) | Required | Matches.<br><br>**Constraints**: *Maximum Items*: `3` |
-| `Query` | [`CaseRouteResponseQuery`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/case-route-response-query.md) | Required | This is a container for any-of cases. |
-| `Reason` | [`Reason1Enum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/reason-1.md) | Required | Reason. |
-| `Route` | [`RouteEnum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/route.md) | Required | Route. |
+| `MatchedWord` | [`CaseRouteResponseMatchedWord`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/case-route-response-matched-word.md) | Required | This is a container for any-of cases. |
+| `Matches` | [`List<CaseRouteMatch>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/case-route-match.md) | Required | Matches.<br><br>**Constraints**: *Maximum Items*: `3` |
+| `Query` | [`CaseRouteResponseQuery`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/case-route-response-query.md) | Required | This is a container for any-of cases. |
+| `Reason` | [`Reason1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/reason-1.md) | Required | Reason. |
+| `Route` | [`RouteEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/route.md) | Required | Route. |
 
 
 # Example

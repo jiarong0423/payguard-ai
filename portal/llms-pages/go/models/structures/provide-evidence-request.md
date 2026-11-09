@@ -1,6 +1,6 @@
 # Provide Evidence Request
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlByb3ZpZGVFdmlkZW5jZVJlcXVlc3Q
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRlByb3ZpZGVFdmlkZW5jZVJlcXVlc3Q
 
 ProvideEvidenceRequest.
 
@@ -15,7 +15,7 @@ ProvideEvidenceRequest.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `CaseRef` | `string` | Required | Case ref.<br><br>**Constraints**: *Pattern*: `^case-ref-[0-9]{3}$` |
-| `ConfirmToken` | [`*models.ProvideEvidenceRequestConfirmToken`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/provide-evidence-request-confirm-token.md) | Optional | This is a container for any-of cases. |
+| `ConfirmToken` | [`*models.ProvideEvidenceRequestConfirmToken`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/provide-evidence-request-confirm-token.md) | Optional | This is a container for any-of cases. |
 | `DisputeId` | `string` | Required | Dispute id.<br><br>**Constraints**: *Pattern*: `^PP-[A-Z0-9][A-Z0-9-]{2,62}$` |
 | `Submit` | `*bool` | Optional | Submit.<br><br>**Default**: `false` |
 

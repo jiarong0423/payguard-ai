@@ -1,6 +1,6 @@
 # Add Tracking Request
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkFkZFRyYWNraW5nUmVxdWVzdA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkFkZFRyYWNraW5nUmVxdWVzdA
 
 AddTrackingRequest.
 
@@ -15,7 +15,7 @@ AddTrackingRequest.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `CaseRef` | `String` | Required | Case ref.<br><br>**Constraints**: *Pattern*: `^case-ref-[0-9]{3}$` | String getCaseRef() | setCaseRef(String caseRef) |
-| `ConfirmToken` | [`AddTrackingRequestConfirmToken`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/add-tracking-request-confirm-token.md) | Optional | This is a container for any-of cases. | AddTrackingRequestConfirmToken getConfirmToken() | setConfirmToken(AddTrackingRequestConfirmToken confirmToken) |
+| `ConfirmToken` | [`AddTrackingRequestConfirmToken`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/add-tracking-request-confirm-token.md) | Optional | This is a container for any-of cases. | AddTrackingRequestConfirmToken getConfirmToken() | setConfirmToken(AddTrackingRequestConfirmToken confirmToken) |
 | `DisputeId` | `String` | Required | Dispute id.<br><br>**Constraints**: *Pattern*: `^PP-[A-Z0-9][A-Z0-9-]{2,62}$` | String getDisputeId() | setDisputeId(String disputeId) |
 | `Submit` | `Boolean` | Optional | Submit.<br><br>**Default**: `false` | Boolean getSubmit() | setSubmit(Boolean submit) |
 

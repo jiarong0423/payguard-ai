@@ -1,6 +1,6 @@
 # Category Signal
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkNhdGVnb3J5U2lnbmFs
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkNhdGVnb3J5U2lnbmFs
 
 CategorySignal.
 
@@ -15,7 +15,7 @@ CategorySignal.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `category` | string | Required | This is a container for any-of cases. | getCategory(): string | setCategory(string category): void |
-| `confidence` | string([ConfidenceEnum](http://localhost:3000/llms-pages/php/models/enumerations/confidence.md)) | Required | This is a container for any-of cases. | getConfidence(): string | setConfidence(string confidence): void |
+| `confidence` | string([ConfidenceEnum](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/confidence.md)) | Required | This is a container for any-of cases. | getConfidence(): string | setConfidence(string confidence): void |
 | `source` | `string` | Required, Constant | Source.<br><br>**Value**: `'channel3'` | getSource(): string | setSource(string source): void |
 
 

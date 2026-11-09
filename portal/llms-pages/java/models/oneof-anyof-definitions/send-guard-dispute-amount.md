@@ -1,6 +1,6 @@
 # Send Guard Dispute Amount
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlNlbmRHdWFyZERpc3B1dGVBbW91bnQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlNlbmRHdWFyZERpc3B1dGVBbW91bnQ
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlNlbmRHdWFyZERpc3B1dGVB
 
 | Type | Factory Method |
 |  --- | --- |
-| [`ProviderMoney`](http://localhost:3000/llms-pages/java/models/structures/provider-money.md) | SendGuardDisputeAmount.fromProviderMoney(ProviderMoney providerMoney) |
+| [`ProviderMoney`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/provider-money.md) | SendGuardDisputeAmount.fromProviderMoney(ProviderMoney providerMoney) |
 
 
 # ProviderMoney

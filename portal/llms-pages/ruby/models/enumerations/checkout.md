@@ -1,6 +1,6 @@
 # Checkout
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkNoZWNrb3V0
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkNoZWNrb3V0
 
 Checkout.
 

@@ -1,6 +1,6 @@
 # Reply Fallback Reason
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRlJlcGx5RmFsbGJhY2tSZWFzb24
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRlJlcGx5RmFsbGJhY2tSZWFzb24
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRlJlcGx5RmFsbGJhY2tSZWFzb
 
 | Type |
 |  --- |
-| [`string(FallbackReasonEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/fallback-reason.md) |
+| [`string(FallbackReasonEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/fallback-reason.md) |
 
 
 # string(FallbackReasonEnum)

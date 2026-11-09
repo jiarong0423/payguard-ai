@@ -1,6 +1,6 @@
 # Time Evidence Events
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZUV2ZW50cw
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZUV2ZW50cw
 
 
 # Class Name
@@ -12,8 +12,8 @@ Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRlRpbWVF
 
 | Type | Factory Method |
 |  --- | --- |
-| [`MessageTimeEvent`](http://localhost:3000/llms-pages/net-standard-library/models/structures/message-time-event.md) | TimeEvidenceEvents.FromMessageTimeEvent(MessageTimeEvent messageTimeEvent) |
-| [`TimeEvent`](http://localhost:3000/llms-pages/net-standard-library/models/structures/time-event.md) | TimeEvidenceEvents.FromTimeEvent(TimeEvent timeEvent) |
+| [`MessageTimeEvent`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/message-time-event.md) | TimeEvidenceEvents.FromMessageTimeEvent(MessageTimeEvent messageTimeEvent) |
+| [`TimeEvent`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/time-event.md) | TimeEvidenceEvents.FromTimeEvent(TimeEvent timeEvent) |
 
 
 # MessageTimeEvent

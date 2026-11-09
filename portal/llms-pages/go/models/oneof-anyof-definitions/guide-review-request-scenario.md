@@ -1,6 +1,6 @@
 # Guide Review Request Scenario
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkd1aWRlUmV2aWV3UmVxdWVzdFNjZW5hcmlv
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkd1aWRlUmV2aWV3UmVxdWVzdFNjZW5hcmlv
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkd1aWRlUmV2aWV3UmVxdWVzdF
 
 | Type | Factory Method |
 |  --- | --- |
-| [`models.Scenario1Enum`](http://localhost:3000/llms-pages/go/models/enumerations/scenario-1.md) | models.GuideReviewRequestScenarioContainer.FromScenario1(models.Scenario1Enum scenario1) |
+| [`models.Scenario1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/scenario-1.md) | models.GuideReviewRequestScenarioContainer.FromScenario1(models.Scenario1Enum scenario1) |
 
 
 # models.Scenario1Enum

@@ -1,6 +1,6 @@
 # Disputed Transaction Gross Amount
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkRpc3B1dGVkVHJhbnNhY3Rpb25Hcm9zc0Ftb3VudA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkRpc3B1dGVkVHJhbnNhY3Rpb25Hcm9zc0Ftb3VudA
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkRpc3B1dGVkVHJhbnNhY3Rpb2
 
 | Type | Factory Method |
 |  --- | --- |
-| [`models.ProviderMoney`](http://localhost:3000/llms-pages/go/models/structures/provider-money.md) | models.DisputedTransactionGrossAmountContainer.FromProviderMoney(models.ProviderMoney providerMoney) |
+| [`models.ProviderMoney`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/provider-money.md) | models.DisputedTransactionGrossAmountContainer.FromProviderMoney(models.ProviderMoney providerMoney) |
 
 
 # models.ProviderMoney

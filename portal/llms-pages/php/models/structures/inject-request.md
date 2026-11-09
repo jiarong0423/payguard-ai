@@ -1,6 +1,6 @@
 # Inject Request
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkluamVjdFJlcXVlc3Q
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkluamVjdFJlcXVlc3Q
 
 InjectRequest.
 
@@ -14,7 +14,7 @@ InjectRequest.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `scenario` | [`string(Scenario5Enum)`](http://localhost:3000/llms-pages/php/models/enumerations/scenario-5.md) | Required | Scenario. | getScenario(): string | setScenario(string scenario): void |
+| `scenario` | [`string(Scenario5Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/scenario-5.md) | Required | Scenario. | getScenario(): string | setScenario(string scenario): void |
 
 
 # Example

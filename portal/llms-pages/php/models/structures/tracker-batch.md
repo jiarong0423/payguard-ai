@@ -1,6 +1,6 @@
 # Tracker Batch
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRlRyYWNrZXJCYXRjaA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRlRyYWNrZXJCYXRjaA
 
 TrackerBatch.
 
@@ -14,7 +14,7 @@ TrackerBatch.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `trackers` | [`TrackerItem[]`](http://localhost:3000/llms-pages/php/models/structures/tracker-item.md) | Required | Trackers.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `1` | getTrackers(): array | setTrackers(array trackers): void |
+| `trackers` | [`TrackerItem[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/tracker-item.md) | Required | Trackers.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `1` | getTrackers(): array | setTrackers(array trackers): void |
 
 
 # Example

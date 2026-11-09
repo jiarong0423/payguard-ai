@@ -1,6 +1,6 @@
 # Event
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkV2ZW50
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkV2ZW50
 
 
 # Class Name
@@ -13,12 +13,12 @@ Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkV2ZW50
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `At` | `String` | Optional | At.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `40` | String getAt() | setAt(String at) |
-| `Channel` | [`ChannelEnum`](http://localhost:3000/llms-pages/java/models/enumerations/channel.md) | Optional | Channel. | ChannelEnum getChannel() | setChannel(ChannelEnum channel) |
-| `Direction` | [`DirectionEnum`](http://localhost:3000/llms-pages/java/models/enumerations/direction.md) | Optional | Direction. | DirectionEnum getDirection() | setDirection(DirectionEnum direction) |
-| `Kind` | [`Kind1Enum`](http://localhost:3000/llms-pages/java/models/enumerations/kind-1.md) | Optional | Kind. | Kind1Enum getKind() | setKind(Kind1Enum kind) |
+| `Channel` | [`ChannelEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/channel.md) | Optional | Channel. | ChannelEnum getChannel() | setChannel(ChannelEnum channel) |
+| `Direction` | [`DirectionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/direction.md) | Optional | Direction. | DirectionEnum getDirection() | setDirection(DirectionEnum direction) |
+| `Kind` | [`Kind1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/kind-1.md) | Optional | Kind. | Kind1Enum getKind() | setKind(Kind1Enum kind) |
 | `MessageDigest` | `String` | Optional | Message digest.<br><br>**Constraints**: *Pattern*: `^[0-9a-f]{64}$` | String getMessageDigest() | setMessageDigest(String messageDigest) |
-| `Source` | [`Source6Enum`](http://localhost:3000/llms-pages/java/models/enumerations/source-6.md) | Optional | Source. | Source6Enum getSource() | setSource(Source6Enum source) |
-| `Topic` | [`TopicEnum`](http://localhost:3000/llms-pages/java/models/enumerations/topic.md) | Optional | Topic. | TopicEnum getTopic() | setTopic(TopicEnum topic) |
+| `Source` | [`Source6Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/source-6.md) | Optional | Source. | Source6Enum getSource() | setSource(Source6Enum source) |
+| `Topic` | [`TopicEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/topic.md) | Optional | Topic. | TopicEnum getTopic() | setTopic(TopicEnum topic) |
 
 
 # Example

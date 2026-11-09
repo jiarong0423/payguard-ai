@@ -1,6 +1,6 @@
 # Tracking Info
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlRyYWNraW5nSW5mbw
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlRyYWNraW5nSW5mbw
 
 TrackingInfo.
 
@@ -14,8 +14,8 @@ TrackingInfo.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `CarrierName` | [`CarrierNameEnum`](http://localhost:3000/llms-pages/java/models/enumerations/carrier-name.md) | Required | Carrier name. | CarrierNameEnum getCarrierName() | setCarrierName(CarrierNameEnum carrierName) |
-| `CarrierNameOther` | [`TrackingInfoCarrierNameOther`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/tracking-info-carrier-name-other.md) | Optional | This is a container for any-of cases. | TrackingInfoCarrierNameOther getCarrierNameOther() | setCarrierNameOther(TrackingInfoCarrierNameOther carrierNameOther) |
+| `CarrierName` | [`CarrierNameEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/carrier-name.md) | Required | Carrier name. | CarrierNameEnum getCarrierName() | setCarrierName(CarrierNameEnum carrierName) |
+| `CarrierNameOther` | [`TrackingInfoCarrierNameOther`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/tracking-info-carrier-name-other.md) | Optional | This is a container for any-of cases. | TrackingInfoCarrierNameOther getCarrierNameOther() | setCarrierNameOther(TrackingInfoCarrierNameOther carrierNameOther) |
 | `TrackingNumber` | `String` | Required | Tracking number.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `64` | String getTrackingNumber() | setTrackingNumber(String trackingNumber) |
 
 

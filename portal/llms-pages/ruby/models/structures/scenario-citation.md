@@ -1,6 +1,6 @@
 # Scenario Citation
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlNjZW5hcmlvQ2l0YXRpb24
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRlNjZW5hcmlvQ2l0YXRpb24
 
 ScenarioCitation.
 
@@ -17,7 +17,7 @@ ScenarioCitation.
 | `chunk_id` | `String` | Required | Chunk id.<br><br>**Constraints**: *Pattern*: `^[A-Z0-9-]{1,128}$` |
 | `jurisdiction` | `String` | Required, Constant | Jurisdiction.<br><br>**Value**: `'US'` |
 | `locator` | `String` | Required | Locator.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `1000` |
-| `material_type` | [`MaterialTypeEnum`](http://localhost:3000/llms-pages/ruby/models/enumerations/material-type.md) | Required | Material type. |
+| `material_type` | [`MaterialTypeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/material-type.md) | Required | Material type. |
 | `source_id` | `String` | Required | Source id.<br><br>**Constraints**: *Pattern*: `^[A-Z0-9-]{1,128}$` |
 | `text_sha_256` | `String` | Required | Text sha256.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` |
 | `title` | `String` | Required | Title.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `512` |

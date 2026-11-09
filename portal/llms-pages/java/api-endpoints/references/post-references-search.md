@@ -1,6 +1,6 @@
 # Post References Search
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0ZSUyRnJlZmVyZW5jZXMlMkZwb3N0X3JlZmVyZW5jZXNfc2VhcmNo
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0ZSUyRnJlZmVyZW5jZXMlMkZwb3N0X3JlZmVyZW5jZXNfc2VhcmNo
 
 References. Local console route POST /api/v1/references/search on synthetic data; advisory only.
 
@@ -16,14 +16,14 @@ CompletableFuture<ReferenceResponse> postReferencesSearchAsync(
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`ReferenceRequest`](http://localhost:3000/llms-pages/java/models/structures/reference-request.md) | Body, Required | - |
+| `body` | [`ReferenceRequest`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/reference-request.md) | Body, Required | - |
 
 
 # Response Type
 
 **200**: Successful Response
 
-[`ReferenceResponse`](http://localhost:3000/llms-pages/java/models/structures/reference-response.md)
+[`ReferenceResponse`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/reference-response.md)
 
 
 # Example Usage
@@ -65,9 +65,9 @@ referencesController.postReferencesSearchAsync(body).thenAccept(result -> {
 
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
-| 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](http://localhost:3000/llms-pages/java/models/exceptions/error-body.md) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](http://localhost:3000/llms-pages/java/models/exceptions/http-validation-error.md) |
-| 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](http://localhost:3000/llms-pages/java/models/exceptions/error-body.md) |
+| 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/error-body.md) |
+| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/http-validation-error.md) |
+| 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/exceptions/error-body.md) |
 
 
 

@@ -1,6 +1,6 @@
 # Aup Acknowledge Response Acknowledgement Token
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkF1cEFja25vd2xlZGdlUmVzcG9uc2VBY2tub3dsZWRnZW1lbnRUb2tlbg
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkF1cEFja25vd2xlZGdlUmVzcG9uc2VBY2tub3dsZWRnZW1lbnRUb2tlbg
 
 
 # Class Name

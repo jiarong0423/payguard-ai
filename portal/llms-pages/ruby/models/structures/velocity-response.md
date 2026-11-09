@@ -1,6 +1,6 @@
 # Velocity Response
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlZlbG9jaXR5UmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRlZlbG9jaXR5UmVzcG9uc2U
 
 VelocityResponse.
 
@@ -17,7 +17,7 @@ VelocityResponse.
 | `advisory_only` | `String` | Required, Constant | Advisory only.<br><br>**Value**: `'True'` |
 | `alert` | `TrueClass \| FalseClass` | Required | Alert. |
 | `baseline_amount_per_hour` | `String` | Required | Baseline amount per hour. |
-| `baseline_provenance` | [`BaselineProvenanceEnum`](http://localhost:3000/llms-pages/ruby/models/enumerations/baseline-provenance.md) | Required | Baseline provenance. |
+| `baseline_provenance` | [`BaselineProvenanceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/baseline-provenance.md) | Required | Baseline provenance. |
 | `baseline_window_end` | `String` | Required | Baseline window end. |
 | `baseline_window_start` | `String` | Required | Baseline window start. |
 | `currency` | String | Required | This is a container for any-of cases. |
@@ -27,7 +27,7 @@ VelocityResponse.
 | `limitations` | `Array[String]` | Required | Limitations. |
 | `policy_version` | `String` | Required | Policy version. |
 | `ratio` | String | Required | This is a container for any-of cases. |
-| `status` | [`Status14Enum`](http://localhost:3000/llms-pages/ruby/models/enumerations/status-14.md) | Required | Status. |
+| `status` | [`Status14Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/status-14.md) | Required | Status. |
 | `threshold` | `String` | Required | Threshold. |
 | `total_amount` | `String` | Required | Total amount. |
 | `transaction_count` | `Integer` | Required | Transaction count. |

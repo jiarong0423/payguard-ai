@@ -1,6 +1,6 @@
 # Velocity Response
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRlZlbG9jaXR5UmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlZlbG9jaXR5UmVzcG9uc2U
 
 VelocityResponse.
 
@@ -17,7 +17,7 @@ VelocityResponse.
 | `advisory_only` | `str` | Required, Constant | Advisory only.<br><br>**Value**: `"True"` |
 | `alert` | `bool` | Required | Alert. |
 | `baseline_amount_per_hour` | `str` | Required | Baseline amount per hour. |
-| `baseline_provenance` | [`BaselineProvenanceEnum`](http://localhost:3000/llms-pages/python/models/enumerations/baseline-provenance.md) | Required | Baseline provenance. |
+| `baseline_provenance` | [`BaselineProvenanceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/baseline-provenance.md) | Required | Baseline provenance. |
 | `baseline_window_end` | `str` | Required | Baseline window end. |
 | `baseline_window_start` | `str` | Required | Baseline window start. |
 | `currency` | str | Required | This is a container for any-of cases. |
@@ -27,7 +27,7 @@ VelocityResponse.
 | `limitations` | `List[str]` | Required | Limitations. |
 | `policy_version` | `str` | Required | Policy version. |
 | `ratio` | str | Required | This is a container for any-of cases. |
-| `status` | [`Status14Enum`](http://localhost:3000/llms-pages/python/models/enumerations/status-14.md) | Required | Status. |
+| `status` | [`Status14Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/status-14.md) | Required | Status. |
 | `threshold` | `str` | Required | Threshold. |
 | `total_amount` | `str` | Required | Total amount. |
 | `transaction_count` | `int` | Required | Transaction count. |

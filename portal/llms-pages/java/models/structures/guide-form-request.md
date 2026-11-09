@@ -1,6 +1,6 @@
 # Guide Form Request
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkd1aWRlRm9ybVJlcXVlc3Q
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkd1aWRlRm9ybVJlcXVlc3Q
 
 One field ({item, value}) or one round of up to three fields ({fields: [...]}), never both.
 
@@ -15,10 +15,10 @@ One field ({item, value}) or one round of up to three fields ({fields: [...]}), 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `ConfirmReview` | `Boolean` | Optional | Confirm review.<br><br>**Default**: `false` | Boolean getConfirmReview() | setConfirmReview(Boolean confirmReview) |
-| `Fields` | [`GuideFormRequestFields`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/guide-form-request-fields.md) | Optional | This is a container for any-of cases. | GuideFormRequestFields getFields() | setFields(GuideFormRequestFields fields) |
-| `Item` | [`GuideFormRequestItem`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/guide-form-request-item.md) | Optional | This is a container for any-of cases. | GuideFormRequestItem getItem() | setItem(GuideFormRequestItem item) |
-| `Scenario` | [`GuideFormRequestScenario`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/guide-form-request-scenario.md) | Optional | This is a container for any-of cases. | GuideFormRequestScenario getScenario() | setScenario(GuideFormRequestScenario scenario) |
-| `Value` | [`GuideFormRequestValue`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/guide-form-request-value.md) | Optional | This is a container for any-of cases. | GuideFormRequestValue getValue() | setValue(GuideFormRequestValue value) |
+| `Fields` | [`GuideFormRequestFields`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/guide-form-request-fields.md) | Optional | This is a container for any-of cases. | GuideFormRequestFields getFields() | setFields(GuideFormRequestFields fields) |
+| `Item` | [`GuideFormRequestItem`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/guide-form-request-item.md) | Optional | This is a container for any-of cases. | GuideFormRequestItem getItem() | setItem(GuideFormRequestItem item) |
+| `Scenario` | [`GuideFormRequestScenario`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/guide-form-request-scenario.md) | Optional | This is a container for any-of cases. | GuideFormRequestScenario getScenario() | setScenario(GuideFormRequestScenario scenario) |
+| `Value` | [`GuideFormRequestValue`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/guide-form-request-value.md) | Optional | This is a container for any-of cases. | GuideFormRequestValue getValue() | setValue(GuideFormRequestValue value) |
 
 
 # Example

@@ -1,6 +1,6 @@
 # Reply
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlJlcGx5
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRlJlcGx5
 
 Reply.
 
@@ -14,11 +14,11 @@ Reply.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `Chooser` | [`*models.ChooserEnum`](http://localhost:3000/llms-pages/go/models/enumerations/chooser.md) | Optional | Chooser. |
-| `Dropped` | [`[]models.GuideDropped`](http://localhost:3000/llms-pages/go/models/structures/guide-dropped.md) | Optional | Dropped. |
-| `FallbackReason` | [`*models.ReplyFallbackReason`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/reply-fallback-reason.md) | Optional | This is a container for any-of cases. |
+| `Chooser` | [`*models.ChooserEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/chooser.md) | Optional | Chooser. |
+| `Dropped` | [`[]models.GuideDropped`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/guide-dropped.md) | Optional | Dropped. |
+| `FallbackReason` | [`*models.ReplyFallbackReason`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/reply-fallback-reason.md) | Optional | This is a container for any-of cases. |
 | `StateChanged` | `*bool` | Optional | State changed. |
-| `Template` | [`*models.TemplateEnum`](http://localhost:3000/llms-pages/go/models/enumerations/template.md) | Optional | Template. |
+| `Template` | [`*models.TemplateEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/template.md) | Optional | Template. |
 | `Text` | `*string` | Optional | Text.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `400` |
 
 

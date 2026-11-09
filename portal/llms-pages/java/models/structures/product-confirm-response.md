@@ -1,6 +1,6 @@
 # Product Confirm Response
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maXJtUmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maXJtUmVzcG9uc2U
 
 The seller's own choice: one of the cards they were shown, or none of them.
 
@@ -15,14 +15,14 @@ The seller's own choice: one of the cards they were shown, or none of them.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `AffectsDecision` | `String` | Required, Constant | Affects decision.<br><br>**Value**: `"False"` | String getAffectsDecision() | setAffectsDecision(String affectsDecision) |
-| `Card` | [`ProductConfirmResponseCard`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/product-confirm-response-card.md) | Required | This is a container for any-of cases. | ProductConfirmResponseCard getCard() | setCard(ProductConfirmResponseCard card) |
-| `CardDigest` | [`ProductConfirmResponseCardDigest`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/product-confirm-response-card-digest.md) | Required | This is a container for any-of cases. | ProductConfirmResponseCardDigest getCardDigest() | setCardDigest(ProductConfirmResponseCardDigest cardDigest) |
-| `Choice` | [`Choice2Enum`](http://localhost:3000/llms-pages/java/models/enumerations/choice-2.md) | Required | Choice. | Choice2Enum getChoice() | setChoice(Choice2Enum choice) |
+| `Card` | [`ProductConfirmResponseCard`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/product-confirm-response-card.md) | Required | This is a container for any-of cases. | ProductConfirmResponseCard getCard() | setCard(ProductConfirmResponseCard card) |
+| `CardDigest` | [`ProductConfirmResponseCardDigest`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/product-confirm-response-card-digest.md) | Required | This is a container for any-of cases. | ProductConfirmResponseCardDigest getCardDigest() | setCardDigest(ProductConfirmResponseCardDigest cardDigest) |
+| `Choice` | [`Choice2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/choice-2.md) | Required | Choice. | Choice2Enum getChoice() | setChoice(Choice2Enum choice) |
 | `ConfirmedBy` | `String` | Required, Constant | Confirmed by.<br><br>**Value**: `"seller"` | String getConfirmedBy() | setConfirmedBy(String confirmedBy) |
 | `DescriptionDigest` | `String` | Required | Description digest.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` | String getDescriptionDigest() | setDescriptionDigest(String descriptionDigest) |
 | `EvaluationId` | `String` | Required | Evaluation id.<br><br>**Constraints**: *Minimum Length*: `32`, *Maximum Length*: `128`, *Pattern*: `^[A-Za-z0-9_-]+$` | String getEvaluationId() | setEvaluationId(String evaluationId) |
-| `RecordedAt` | [`ProductConfirmResponseRecordedAt`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/product-confirm-response-recorded-at.md) | Required | This is a container for any-of cases. | ProductConfirmResponseRecordedAt getRecordedAt() | setRecordedAt(ProductConfirmResponseRecordedAt recordedAt) |
-| `Source` | [`Source10Enum`](http://localhost:3000/llms-pages/java/models/enumerations/source-10.md) | Required | Source. | Source10Enum getSource() | setSource(Source10Enum source) |
+| `RecordedAt` | [`ProductConfirmResponseRecordedAt`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/product-confirm-response-recorded-at.md) | Required | This is a container for any-of cases. | ProductConfirmResponseRecordedAt getRecordedAt() | setRecordedAt(ProductConfirmResponseRecordedAt recordedAt) |
+| `Source` | [`Source10Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/source-10.md) | Required | Source. | Source10Enum getSource() | setSource(Source10Enum source) |
 
 
 # Example

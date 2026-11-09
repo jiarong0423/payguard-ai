@@ -1,6 +1,6 @@
 # Configuration-Based Initialization
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0aCUyRl9fYWRkaXRpb25hbF9kb2N1bWVudGF0aW9uJTJGQ29uZmlndXJhdGlvbiUyRkNvbmZpZ3VyYXRpb24tQmFzZWQlMjUyMEluaXRpYWxpemF0aW9u
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0aCUyRl9fYWRkaXRpb25hbF9kb2N1bWVudGF0aW9uJTJGQ29uZmlndXJhdGlvbiUyRkNvbmZpZ3VyYXRpb24tQmFzZWQlMjUyMEluaXRpYWxpemF0aW9u
 
 Sdk Client initialization through configuration.
 
@@ -52,7 +52,7 @@ var client = TradeGlotLocalConsoleClient.Builder
       "StatusCodesToRetry": [408, 413],
       "RequestMethodsToRetry": ["GET", "PUT", "DELETE"],
       "ProxyConfiguration": {
-        "Address": "http://localhost:3000",
+        "Address": "https://jiarong0423.github.io/payguard-ai/portal",
         "Port": 8080,
         "Tunnel": false,
         "User": "username",

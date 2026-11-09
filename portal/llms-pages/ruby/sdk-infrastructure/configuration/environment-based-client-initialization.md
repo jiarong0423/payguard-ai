@@ -1,6 +1,6 @@
 # Environment-Based Client Initialization
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0aCUyRl9fYWRkaXRpb25hbF9kb2N1bWVudGF0aW9uJTJGQ29uZmlndXJhdGlvbiUyRkVudmlyb25tZW50LUJhc2VkJTI1MjBDbGllbnQlMjUyMEluaXRpYWxpemF0aW9u
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0aCUyRl9fYWRkaXRpb25hbF9kb2N1bWVudGF0aW9uJTJGQ29uZmlndXJhdGlvbiUyRkVudmlyb25tZW50LUJhc2VkJTI1MjBDbGllbnQlMjUyMEluaXRpYWxpemF0aW9u
 
 The SDK client can also be initialized directly from environment variables using the `from_env` class method. This allows the SDK to automatically read configuration values from the runtime environment or a `.env` file.
 
@@ -54,7 +54,7 @@ BACKOFF_FACTOR=2
 RETRY_INTERVAL=1
 RETRY_STATUSES=408,413
 RETRY_METHODS=GET,PUT,DELETE
-PROXY_ADDRESS='http://localhost:3000'
+PROXY_ADDRESS='https://jiarong0423.github.io/payguard-ai/portal'
 PROXY_PORT=8080
 PROXY_USERNAME='username'
 PROXY_PASSWORD='password'

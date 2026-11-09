@@ -1,6 +1,6 @@
 # State Response
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlN0YXRlUmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRlN0YXRlUmVzcG9uc2U
 
 StateResponse.
 
@@ -14,15 +14,15 @@ StateResponse.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `activity` | [`Activity[]`](http://localhost:3000/llms-pages/typescript/models/structures/activity.md) | Required | Activity. |
-| `disputes` | [`DisputeSummary[]`](http://localhost:3000/llms-pages/typescript/models/structures/dispute-summary.md) | Required | Disputes. |
+| `activity` | [`Activity[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/activity.md) | Required | Activity. |
+| `disputes` | [`DisputeSummary[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/dispute-summary.md) | Required | Disputes. |
 | `expiresAt` | `string` | Required | Expires at. |
 | `policyVersion` | `string` | Required | Policy version. |
-| `scenario` | [`Scenario`](http://localhost:3000/llms-pages/typescript/models/structures/scenario.md) | Required | Scenario. |
+| `scenario` | [`Scenario`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/scenario.md) | Required | Scenario. |
 | `sessionId` | `string` | Required | Session id. |
 | `source` | `string` | Required, Constant | Source.<br><br>**Value**: `'synthetic'` |
-| `transactions` | [`Transaction[]`](http://localhost:3000/llms-pages/typescript/models/structures/transaction.md) | Required | Transactions. |
-| `velocity` | [`VelocityResponse`](http://localhost:3000/llms-pages/typescript/models/structures/velocity-response.md) | Required | VelocityResponse. |
+| `transactions` | [`Transaction[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/transaction.md) | Required | Transactions. |
+| `velocity` | [`VelocityResponse`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/velocity-response.md) | Required | VelocityResponse. |
 
 
 # Example

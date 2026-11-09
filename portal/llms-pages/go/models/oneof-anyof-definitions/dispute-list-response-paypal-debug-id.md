@@ -1,6 +1,6 @@
 # Dispute List Response Paypal Debug Id
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkRpc3B1dGVMaXN0UmVzcG9uc2VQYXlwYWxEZWJ1Z0lk
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkRpc3B1dGVMaXN0UmVzcG9uc2VQYXlwYWxEZWJ1Z0lk
 
 
 # Class Name

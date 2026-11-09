@@ -1,6 +1,6 @@
 # Tracking Info
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlRyYWNraW5nSW5mbw
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRlRyYWNraW5nSW5mbw
 
 TrackingInfo.
 
@@ -14,8 +14,8 @@ TrackingInfo.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `carrierName` | [`CarrierNameEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/carrier-name.md) | Required | Carrier name. |
-| `carrierNameOther` | [`TrackingInfoCarrierNameOther \| undefined`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/tracking-info-carrier-name-other.md) | Optional | This is a container for any-of cases. |
+| `carrierName` | [`CarrierNameEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/carrier-name.md) | Required | Carrier name. |
+| `carrierNameOther` | [`TrackingInfoCarrierNameOther \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/tracking-info-carrier-name-other.md) | Optional | This is a container for any-of cases. |
 | `trackingNumber` | `string` | Required | Tracking number.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `64` |
 
 

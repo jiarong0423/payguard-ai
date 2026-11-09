@@ -1,6 +1,6 @@
 # Ai Usage Response
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkFpVXNhZ2VSZXNwb25zZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkFpVXNhZ2VSZXNwb25zZQ
 
 AiUsageResponse.
 
@@ -16,9 +16,9 @@ AiUsageResponse.
 |  --- | --- | --- | --- |
 | `ContentLogged` | `bool?` | Optional | Content logged.<br><br>**Default**: `false` |
 | `CostNote` | `string` | Required | Cost note. |
-| `Entries` | [`List<AiUsageEntry>`](http://localhost:3000/llms-pages/net-standard-library/models/structures/ai-usage-entry.md) | Required | Entries.<br><br>**Constraints**: *Maximum Items*: `50` |
+| `Entries` | [`List<AiUsageEntry>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/ai-usage-entry.md) | Required | Entries.<br><br>**Constraints**: *Maximum Items*: `50` |
 | `PriceTableSource` | `string` | Required | Price table source. |
-| `Source` | [`Source1Enum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/source-1.md) | Required | Source. |
+| `Source` | [`Source1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/source-1.md) | Required | Source. |
 
 
 # Example

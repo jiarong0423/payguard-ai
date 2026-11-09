@@ -1,6 +1,6 @@
 # Guide Review Row
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkd1aWRlUmV2aWV3Um93
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkd1aWRlUmV2aWV3Um93
 
 GuideReviewRow.
 
@@ -15,7 +15,7 @@ GuideReviewRow.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `Item` | `string` | Required | Item. |
-| `Source` | [`models.Source9Enum`](http://localhost:3000/llms-pages/go/models/enumerations/source-9.md) | Required | Source. |
+| `Source` | [`models.Source9Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/source-9.md) | Required | Source. |
 | `Value` | `string` | Required | Value.<br><br>**Constraints**: *Maximum Length*: `120` |
 
 

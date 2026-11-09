@@ -1,6 +1,6 @@
 # Policy Coverage
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRlBvbGljeUNvdmVyYWdl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlBvbGljeUNvdmVyYWdl
 
 PolicyCoverage.
 
@@ -16,8 +16,8 @@ PolicyCoverage.
 |  --- | --- | --- | --- |
 | `basis` | `str` | Required, Constant | Basis.<br><br>**Value**: `"pinned_authored_summaries_only"` |
 | `complete` | `bool` | Required | Complete. |
-| `missing_official_policy_themes` | [`List[MissingOfficialPolicyThemeEnum]`](http://localhost:3000/llms-pages/python/models/enumerations/missing-official-policy-theme.md) | Required | Missing official policy themes.<br><br>**Constraints**: *Maximum Items*: `3` |
-| `official_policy_chunk_count_by_theme` | [`PolicyThemeCounts`](http://localhost:3000/llms-pages/python/models/structures/policy-theme-counts.md) | Required | PolicyThemeCounts. |
+| `missing_official_policy_themes` | [`List[MissingOfficialPolicyThemeEnum]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/missing-official-policy-theme.md) | Required | Missing official policy themes.<br><br>**Constraints**: *Maximum Items*: `3` |
+| `official_policy_chunk_count_by_theme` | [`PolicyThemeCounts`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/policy-theme-counts.md) | Required | PolicyThemeCounts. |
 | `official_policy_source_ids` | `List[str]` | Required | Official policy source ids.<br><br>**Constraints**: *Maximum Items*: `16`, *Pattern*: `^[A-Z0-9-]{1,128}$` |
 | `regional_source_count` | `int` | Required | Regional source count.<br><br>**Constraints**: `>= 0`, `<= 16` |
 | `selected_chunk_count` | `int` | Required | Selected chunk count.<br><br>**Constraints**: `>= 0`, `<= 29` |

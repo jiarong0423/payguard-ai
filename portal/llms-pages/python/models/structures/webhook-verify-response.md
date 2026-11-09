@@ -1,6 +1,6 @@
 # Webhook Verify Response
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRldlYmhvb2tWZXJpZnlSZXNwb25zZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRldlYmhvb2tWZXJpZnlSZXNwb25zZQ
 
 WebhookVerifyResponse.
 
@@ -14,7 +14,7 @@ WebhookVerifyResponse.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `event` | [`WebhookEventProjection`](http://localhost:3000/llms-pages/python/models/structures/webhook-event-projection.md) | Required | All that is kept after a SUCCESS: identifiers and status only, no amounts, payer data, links or summary. |
+| `event` | [`WebhookEventProjection`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/webhook-event-projection.md) | Required | All that is kept after a SUCCESS: identifiers and status only, no amounts, payer data, links or summary. |
 | `imported_into_demo` | `str` | Required, Constant | Imported into demo.<br><br>**Value**: `"False"` |
 | `paypal_debug_id` | str | Required | This is a container for any-of cases. |
 | `source` | `str` | Required, Constant | Source.<br><br>**Value**: `"paypal_sandbox"` |

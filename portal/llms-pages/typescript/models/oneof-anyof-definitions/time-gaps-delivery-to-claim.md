@@ -1,6 +1,6 @@
 # Time Gaps Delivery to Claim
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlRpbWVHYXBzRGVsaXZlcnlUb0NsYWlt
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRlRpbWVHYXBzRGVsaXZlcnlUb0NsYWlt
 
 
 # Class Name

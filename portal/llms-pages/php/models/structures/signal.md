@@ -1,6 +1,6 @@
 # Signal
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRlNpZ25hbA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRlNpZ25hbA
 
 Signal.
 
@@ -15,8 +15,8 @@ Signal.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `category` | string\|null | Optional | This is a container for any-of cases. | getCategory(): ?string | setCategory(?string category): void |
-| `confidence` | string([ConfidenceEnum](http://localhost:3000/llms-pages/php/models/enumerations/confidence.md))\|null | Optional | This is a container for any-of cases. | getConfidence(): ?string | setConfidence(?string confidence): void |
-| `source` | [`?string(Source2Enum)`](http://localhost:3000/llms-pages/php/models/enumerations/source-2.md) | Optional | Source. | getSource(): ?string | setSource(?string source): void |
+| `confidence` | string([ConfidenceEnum](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/confidence.md))\|null | Optional | This is a container for any-of cases. | getConfidence(): ?string | setConfidence(?string confidence): void |
+| `source` | [`?string(Source2Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/source-2.md) | Optional | Source. | getSource(): ?string | setSource(?string source): void |
 
 
 # Example

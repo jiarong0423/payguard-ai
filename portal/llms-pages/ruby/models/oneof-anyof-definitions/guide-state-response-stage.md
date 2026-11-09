@@ -1,6 +1,6 @@
 # Guide State Response Stage
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZVN0YWdl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZVN0YWdl
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25z
 
 | Type |
 |  --- |
-| [`Stage3Enum`](http://localhost:3000/llms-pages/ruby/models/enumerations/stage-3.md) |
+| [`Stage3Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/stage-3.md) |
 
 
 # Stage3Enum

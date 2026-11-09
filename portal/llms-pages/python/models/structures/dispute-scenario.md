@@ -1,6 +1,6 @@
 # Dispute Scenario
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkRpc3B1dGVTY2VuYXJpbw
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkRpc3B1dGVTY2VuYXJpbw
 
 DisputeScenario.
 
@@ -14,7 +14,7 @@ DisputeScenario.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `citations` | [`List[ScenarioCitation]`](http://localhost:3000/llms-pages/python/models/structures/scenario-citation.md) | Required | Citations.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `20` |
+| `citations` | [`List[ScenarioCitation]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/scenario-citation.md) | Required | Citations.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `20` |
 | `evidence_class` | `str` | Required, Constant | Evidence class.<br><br>**Value**: `"SYNTHETIC_DEMO_SCENARIO"` |
 | `expected_route` | `str` | Required, Constant | Expected route.<br><br>**Value**: `"PREPARE_REDACTED_DRAFT_FOR_HUMAN_REVIEW"` |
 | `final_authority` | `str` | Required, Constant | Final authority.<br><br>**Value**: `"PAYPAL_OR_EXTERNAL_ISSUER"` |

@@ -1,6 +1,6 @@
 # Time Evidence
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZQ
 
 TimeEvidence.
 
@@ -15,9 +15,9 @@ TimeEvidence.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `advisory_only` | `str` | Required, Constant | Advisory only.<br><br>**Value**: `"True"` |
-| `events` | List[[MessageTimeEvent](http://localhost:3000/llms-pages/python/models/structures/message-time-event.md) \| [TimeEvent](http://localhost:3000/llms-pages/python/models/structures/time-event.md)] | Required | This is List of a container for any-of cases.<br><br>**Constraints**: *Minimum Items*: `2`, *Maximum Items*: `30` |
-| `flags` | [`List[FlagEnum]`](http://localhost:3000/llms-pages/python/models/enumerations/flag.md) | Required | Flags.<br><br>**Constraints**: *Maximum Items*: `4` |
-| `gaps_seconds` | [`TimeGaps`](http://localhost:3000/llms-pages/python/models/structures/time-gaps.md) | Required | TimeGaps. |
+| `events` | List[[MessageTimeEvent](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/message-time-event.md) \| [TimeEvent](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/time-event.md)] | Required | This is List of a container for any-of cases.<br><br>**Constraints**: *Minimum Items*: `2`, *Maximum Items*: `30` |
+| `flags` | [`List[FlagEnum]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/flag.md) | Required | Flags.<br><br>**Constraints**: *Maximum Items*: `4` |
+| `gaps_seconds` | [`TimeGaps`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/time-gaps.md) | Required | TimeGaps. |
 | `judgement` | `str` | Required, Constant | Judgement.<br><br>**Value**: `"NOT_MADE"` |
 | `schema_version` | `str` | Required, Constant | Schema version.<br><br>**Value**: `"payguard.time_evidence.v1"` |
 

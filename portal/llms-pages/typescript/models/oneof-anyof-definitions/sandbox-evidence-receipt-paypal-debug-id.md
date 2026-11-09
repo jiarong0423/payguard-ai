@@ -1,6 +1,6 @@
 # Sandbox Evidence Receipt Paypal Debug Id
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlNhbmRib3hFdmlkZW5jZVJlY2VpcHRQYXlwYWxEZWJ1Z0lk
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRlNhbmRib3hFdmlkZW5jZVJlY2VpcHRQYXlwYWxEZWJ1Z0lk
 
 
 # Class Name

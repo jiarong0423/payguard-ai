@@ -1,6 +1,6 @@
 # Reference Filters
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlJlZmVyZW5jZUZpbHRlcnM
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRlJlZmVyZW5jZUZpbHRlcnM
 
 ReferenceFilters.
 
@@ -16,13 +16,13 @@ ReferenceFilters.
 |  --- | --- | --- | --- |
 | `age_basis` | `String` | Required, Constant | Age basis.<br><br>**Value**: `'source_updated_date_utc_calendar'` |
 | `as_of` | String | Required | This is a container for any-of cases. |
-| `case_stage` | [`CaseStage2Enum`](http://localhost:3000/llms-pages/ruby/models/enumerations/case-stage-2.md) | Required | Case stage. |
+| `case_stage` | [`CaseStage2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/case-stage-2.md) | Required | Case stage. |
 | `jurisdiction` | `String` | Required, Constant | Jurisdiction.<br><br>**Value**: `'US'` |
 | `limit` | `Integer` | Required | Limit.<br><br>**Constraints**: `>= 1`, `<= 10` |
-| `material_types` | [`Array[MaterialType4Enum]`](http://localhost:3000/llms-pages/ruby/models/enumerations/material-type-4.md) | Required | Material types.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `3` |
+| `material_types` | [`Array[MaterialType4Enum]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/material-type-4.md) | Required | Material types.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `3` |
 | `max_source_age_days` | Integer | Required | This is a container for any-of cases. |
 | `require_known_source_date` | `TrueClass \| FalseClass` | Required | Require known source date. |
-| `theme` | [`ThemeEnum`](http://localhost:3000/llms-pages/ruby/models/enumerations/theme.md) | Required | Theme. |
+| `theme` | [`ThemeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/theme.md) | Required | Theme. |
 
 
 # Example

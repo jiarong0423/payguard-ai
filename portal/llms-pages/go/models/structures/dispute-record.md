@@ -1,6 +1,6 @@
 # Dispute Record
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkRpc3B1dGVSZWNvcmQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkRpc3B1dGVSZWNvcmQ
 
 DisputeRecord.
 
@@ -15,14 +15,14 @@ DisputeRecord.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `CreateTime` | `string` | Required | Create time.<br><br>**Constraints**: *Pattern*: `^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]{1,6})?Z$` |
-| `DisputeAmount` | [`models.ProviderMoney`](http://localhost:3000/llms-pages/go/models/structures/provider-money.md) | Required | ProviderMoney. |
+| `DisputeAmount` | [`models.ProviderMoney`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/provider-money.md) | Required | ProviderMoney. |
 | `DisputeId` | `string` | Required | Dispute id.<br><br>**Constraints**: *Pattern*: `^PP-[A-Z0-9][A-Z0-9-]{2,62}$` |
-| `DisputeLifeCycleStage` | [`models.DisputeLifeCycleStageEnum`](http://localhost:3000/llms-pages/go/models/enumerations/dispute-life-cycle-stage.md) | Required | Dispute life cycle stage. |
-| `DisputeState` | [`*models.DisputeRecordDisputeState`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/dispute-record-dispute-state.md) | Optional | This is a container for any-of cases. |
-| `Reason` | [`models.Reason2Enum`](http://localhost:3000/llms-pages/go/models/enumerations/reason-2.md) | Required | Reason. |
-| `SellerResponseDueDate` | [`*models.DisputeRecordSellerResponseDueDate`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/dispute-record-seller-response-due-date.md) | Optional | This is a container for any-of cases. |
-| `Status` | [`models.Status3Enum`](http://localhost:3000/llms-pages/go/models/enumerations/status-3.md) | Required | Status. |
-| `UpdateTime` | [`*models.DisputeRecordUpdateTime`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/dispute-record-update-time.md) | Optional | This is a container for any-of cases. |
+| `DisputeLifeCycleStage` | [`models.DisputeLifeCycleStageEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/dispute-life-cycle-stage.md) | Required | Dispute life cycle stage. |
+| `DisputeState` | [`*models.DisputeRecordDisputeState`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/dispute-record-dispute-state.md) | Optional | This is a container for any-of cases. |
+| `Reason` | [`models.Reason2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/reason-2.md) | Required | Reason. |
+| `SellerResponseDueDate` | [`*models.DisputeRecordSellerResponseDueDate`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/dispute-record-seller-response-due-date.md) | Optional | This is a container for any-of cases. |
+| `Status` | [`models.Status3Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/status-3.md) | Required | Status. |
+| `UpdateTime` | [`*models.DisputeRecordUpdateTime`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/dispute-record-update-time.md) | Optional | This is a container for any-of cases. |
 
 
 # Example

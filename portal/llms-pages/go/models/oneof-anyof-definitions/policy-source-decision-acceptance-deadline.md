@@ -1,6 +1,6 @@
 # Policy Source Decision Acceptance Deadline
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlBvbGljeVNvdXJjZURlY2lzaW9uQWNjZXB0YW5jZURlYWRsaW5l
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRlBvbGljeVNvdXJjZURlY2lzaW9uQWNjZXB0YW5jZURlYWRsaW5l
 
 
 # Class Name

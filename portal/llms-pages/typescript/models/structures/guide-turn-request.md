@@ -1,6 +1,6 @@
 # Guide Turn Request
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkd1aWRlVHVyblJlcXVlc3Q
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkd1aWRlVHVyblJlcXVlc3Q
 
 GuideTurnRequest.
 
@@ -14,8 +14,8 @@ GuideTurnRequest.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `fields` | [`GuideTurnRequestFields \| undefined`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/guide-turn-request-fields.md) | Optional | This is a container for any-of cases. |
-| `scenario` | [`GuideTurnRequestScenario \| undefined`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/guide-turn-request-scenario.md) | Optional | This is a container for any-of cases. |
+| `fields` | [`GuideTurnRequestFields \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/guide-turn-request-fields.md) | Optional | This is a container for any-of cases. |
+| `scenario` | [`GuideTurnRequestScenario \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/guide-turn-request-scenario.md) | Optional | This is a container for any-of cases. |
 | `text` | `string` | Required | Text.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `1600` |
 
 

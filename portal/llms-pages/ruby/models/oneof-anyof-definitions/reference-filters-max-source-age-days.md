@@ -1,6 +1,6 @@
 # Reference Filters Max Source Age Days
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlJlZmVyZW5jZUZpbHRlcnNNYXhTb3VyY2VBZ2VEYXlz
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRlJlZmVyZW5jZUZpbHRlcnNNYXhTb3VyY2VBZ2VEYXlz
 
 
 # Data Type

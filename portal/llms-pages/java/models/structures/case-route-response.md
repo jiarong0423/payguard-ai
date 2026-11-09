@@ -1,6 +1,6 @@
 # Case Route Response
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkNhc2VSb3V0ZVJlc3BvbnNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkNhc2VSb3V0ZVJlc3BvbnNl
 
 Fuzzy case routing: which goods group (and so which dispute items) applies. Code decides; advisory only.
 
@@ -18,11 +18,11 @@ Fuzzy case routing: which goods group (and so which dispute items) applies. Code
 | `DecidedBy` | `String` | Required, Constant | Decided by.<br><br>**Value**: `"code"` | String getDecidedBy() | setDecidedBy(String decidedBy) |
 | `FilteredOut` | `int` | Required | Filtered out.<br><br>**Constraints**: `>= 0`, `<= 1000` | int getFilteredOut() | setFilteredOut(int filteredOut) |
 | `Items` | `List<String>` | Required | Items.<br><br>**Constraints**: *Maximum Items*: `12` | List<String> getItems() | setItems(List<String> items) |
-| `MatchedWord` | [`CaseRouteResponseMatchedWord`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/case-route-response-matched-word.md) | Required | This is a container for any-of cases. | CaseRouteResponseMatchedWord getMatchedWord() | setMatchedWord(CaseRouteResponseMatchedWord matchedWord) |
-| `Matches` | [`List<CaseRouteMatch>`](http://localhost:3000/llms-pages/java/models/structures/case-route-match.md) | Required | Matches.<br><br>**Constraints**: *Maximum Items*: `3` | List<CaseRouteMatch> getMatches() | setMatches(List<CaseRouteMatch> matches) |
-| `Query` | [`CaseRouteResponseQuery`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/case-route-response-query.md) | Required | This is a container for any-of cases. | CaseRouteResponseQuery getQuery() | setQuery(CaseRouteResponseQuery query) |
-| `Reason` | [`Reason1Enum`](http://localhost:3000/llms-pages/java/models/enumerations/reason-1.md) | Required | Reason. | Reason1Enum getReason() | setReason(Reason1Enum reason) |
-| `Route` | [`RouteEnum`](http://localhost:3000/llms-pages/java/models/enumerations/route.md) | Required | Route. | RouteEnum getRoute() | setRoute(RouteEnum route) |
+| `MatchedWord` | [`CaseRouteResponseMatchedWord`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/case-route-response-matched-word.md) | Required | This is a container for any-of cases. | CaseRouteResponseMatchedWord getMatchedWord() | setMatchedWord(CaseRouteResponseMatchedWord matchedWord) |
+| `Matches` | [`List<CaseRouteMatch>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/case-route-match.md) | Required | Matches.<br><br>**Constraints**: *Maximum Items*: `3` | List<CaseRouteMatch> getMatches() | setMatches(List<CaseRouteMatch> matches) |
+| `Query` | [`CaseRouteResponseQuery`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/case-route-response-query.md) | Required | This is a container for any-of cases. | CaseRouteResponseQuery getQuery() | setQuery(CaseRouteResponseQuery query) |
+| `Reason` | [`Reason1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/reason-1.md) | Required | Reason. | Reason1Enum getReason() | setReason(Reason1Enum reason) |
+| `Route` | [`RouteEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/route.md) | Required | Route. | RouteEnum getRoute() | setRoute(RouteEnum route) |
 
 
 # Example

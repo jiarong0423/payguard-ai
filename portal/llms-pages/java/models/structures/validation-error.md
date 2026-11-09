@@ -1,6 +1,6 @@
 # Validation Error
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlZhbGlkYXRpb25FcnJvcg
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlZhbGlkYXRpb25FcnJvcg
 
 ValidationError.
 
@@ -16,7 +16,7 @@ ValidationError.
 |  --- | --- | --- | --- | --- | --- |
 | `Ctx` | `Object` | Optional | Ctx. | Object getCtx() | setCtx(Object ctx) |
 | `Input` | `Object` | Optional | Input. | Object getInput() | setInput(Object input) |
-| `Loc` | [`List<ValidationErrorLoc>`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/validation-error-loc.md) | Required | This is List of a container for any-of cases. | List<ValidationErrorLoc> getLoc() | setLoc(List<ValidationErrorLoc> loc) |
+| `Loc` | [`List<ValidationErrorLoc>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/validation-error-loc.md) | Required | This is List of a container for any-of cases. | List<ValidationErrorLoc> getLoc() | setLoc(List<ValidationErrorLoc> loc) |
 | `Msg` | `String` | Required | Msg. | String getMsg() | setMsg(String msg) |
 | `Type` | `String` | Required | Type. | String getType() | setType(String type) |
 

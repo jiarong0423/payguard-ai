@@ -1,6 +1,6 @@
 # Goods Type
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkdvb2RzVHlwZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkdvb2RzVHlwZQ
 
 
 # Enum Type Name

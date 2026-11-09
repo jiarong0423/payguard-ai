@@ -1,6 +1,6 @@
 # Reference Response
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlJlZmVyZW5jZVJlc3BvbnNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRlJlZmVyZW5jZVJlc3BvbnNl
 
 ReferenceResponse.
 
@@ -16,15 +16,15 @@ ReferenceResponse.
 |  --- | --- | --- | --- |
 | `AdvisoryOnly` | `bool` | Required | Advisory only. |
 | `CorpusDigest` | `string` | Required | Corpus digest.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` |
-| `CorpusDigests` | [`models.ReferenceDigests`](http://localhost:3000/llms-pages/go/models/structures/reference-digests.md) | Required | ReferenceDigests. |
+| `CorpusDigests` | [`models.ReferenceDigests`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/reference-digests.md) | Required | ReferenceDigests. |
 | `CorpusId` | `string` | Required, Constant | Corpus id.<br><br>**Value**: `"payguard-us-official-references-v2"` |
-| `FiltersApplied` | [`models.ReferenceFilters`](http://localhost:3000/llms-pages/go/models/structures/reference-filters.md) | Required | ReferenceFilters. |
+| `FiltersApplied` | [`models.ReferenceFilters`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/reference-filters.md) | Required | ReferenceFilters. |
 | `Limitations` | `[]string` | Required | Limitations.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `32`, *Minimum Length*: `1`, *Maximum Length*: `2000` |
 | `OperationalAuthority` | `string` | Required, Constant | Operational authority.<br><br>**Value**: `"REFERENCE_ONLY_NO_ACTION_AUTHORIZATION"` |
-| `Results` | [`[]models.ReferenceCitation`](http://localhost:3000/llms-pages/go/models/structures/reference-citation.md) | Required | Results.<br><br>**Constraints**: *Maximum Items*: `10` |
+| `Results` | [`[]models.ReferenceCitation`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/reference-citation.md) | Required | Results.<br><br>**Constraints**: *Maximum Items*: `10` |
 | `SchemaVersion` | `int` | Required | Schema version.<br><br>**Constraints**: `>= 1`, `<= 1` |
 | `Source` | `string` | Required, Constant | Source.<br><br>**Value**: `"public_reference"` |
-| `Status` | [`models.Status13Enum`](http://localhost:3000/llms-pages/go/models/enumerations/status-13.md) | Required | Status. |
+| `Status` | [`models.Status13Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/status-13.md) | Required | Status. |
 
 
 # Example

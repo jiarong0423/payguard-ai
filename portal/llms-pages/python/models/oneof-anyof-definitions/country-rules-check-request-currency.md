@@ -1,6 +1,6 @@
 # Country Rules Check Request Currency
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkNvdW50cnlSdWxlc0NoZWNrUmVxdWVzdEN1cnJlbmN5
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkNvdW50cnlSdWxlc0NoZWNrUmVxdWVzdEN1cnJlbmN5
 
 
 # Data Type

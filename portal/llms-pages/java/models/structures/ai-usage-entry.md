@@ -1,6 +1,6 @@
 # Ai Usage Entry
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkFpVXNhZ2VFbnRyeQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkFpVXNhZ2VFbnRyeQ
 
 AiUsageEntry.
 
@@ -15,14 +15,14 @@ AiUsageEntry.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `At` | `String` | Required | At. | String getAt() | setAt(String at) |
-| `EstimatedCostUsd` | [`AiUsageEntryEstimatedCostUsd`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/ai-usage-entry-estimated-cost-usd.md) | Optional | This is a container for any-of cases. | AiUsageEntryEstimatedCostUsd getEstimatedCostUsd() | setEstimatedCostUsd(AiUsageEntryEstimatedCostUsd estimatedCostUsd) |
+| `EstimatedCostUsd` | [`AiUsageEntryEstimatedCostUsd`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/ai-usage-entry-estimated-cost-usd.md) | Optional | This is a container for any-of cases. | AiUsageEntryEstimatedCostUsd getEstimatedCostUsd() | setEstimatedCostUsd(AiUsageEntryEstimatedCostUsd estimatedCostUsd) |
 | `LatencyMs` | `int` | Required | Latency ms.<br><br>**Constraints**: `>= 0`, `<= 3600000` | int getLatencyMs() | setLatencyMs(int latencyMs) |
-| `Model` | [`AiUsageEntryModel`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/ai-usage-entry-model.md) | Optional | This is a container for any-of cases. | AiUsageEntryModel getModel() | setModel(AiUsageEntryModel model) |
-| `Outcome` | [`OutcomeEnum`](http://localhost:3000/llms-pages/java/models/enumerations/outcome.md) | Required | Outcome. | OutcomeEnum getOutcome() | setOutcome(OutcomeEnum outcome) |
-| `Stage` | [`Stage2Enum`](http://localhost:3000/llms-pages/java/models/enumerations/stage-2.md) | Required | Stage. | Stage2Enum getStage() | setStage(Stage2Enum stage) |
-| `TokensIn` | [`AiUsageEntryTokensIn`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/ai-usage-entry-tokens-in.md) | Optional | This is a container for any-of cases. | AiUsageEntryTokensIn getTokensIn() | setTokensIn(AiUsageEntryTokensIn tokensIn) |
-| `TokensOut` | [`AiUsageEntryTokensOut`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/ai-usage-entry-tokens-out.md) | Optional | This is a container for any-of cases. | AiUsageEntryTokensOut getTokensOut() | setTokensOut(AiUsageEntryTokensOut tokensOut) |
-| `TokensTotal` | [`AiUsageEntryTokensTotal`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/ai-usage-entry-tokens-total.md) | Optional | This is a container for any-of cases. | AiUsageEntryTokensTotal getTokensTotal() | setTokensTotal(AiUsageEntryTokensTotal tokensTotal) |
+| `Model` | [`AiUsageEntryModel`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/ai-usage-entry-model.md) | Optional | This is a container for any-of cases. | AiUsageEntryModel getModel() | setModel(AiUsageEntryModel model) |
+| `Outcome` | [`OutcomeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/outcome.md) | Required | Outcome. | OutcomeEnum getOutcome() | setOutcome(OutcomeEnum outcome) |
+| `Stage` | [`Stage2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/stage-2.md) | Required | Stage. | Stage2Enum getStage() | setStage(Stage2Enum stage) |
+| `TokensIn` | [`AiUsageEntryTokensIn`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/ai-usage-entry-tokens-in.md) | Optional | This is a container for any-of cases. | AiUsageEntryTokensIn getTokensIn() | setTokensIn(AiUsageEntryTokensIn tokensIn) |
+| `TokensOut` | [`AiUsageEntryTokensOut`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/ai-usage-entry-tokens-out.md) | Optional | This is a container for any-of cases. | AiUsageEntryTokensOut getTokensOut() | setTokensOut(AiUsageEntryTokensOut tokensOut) |
+| `TokensTotal` | [`AiUsageEntryTokensTotal`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/ai-usage-entry-tokens-total.md) | Optional | This is a container for any-of cases. | AiUsageEntryTokensTotal getTokensTotal() | setTokensTotal(AiUsageEntryTokensTotal tokensTotal) |
 
 
 # Example

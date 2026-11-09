@@ -1,6 +1,6 @@
 # Event
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkV2ZW50
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkV2ZW50
 
 
 # Interface Name
@@ -13,12 +13,12 @@ Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkV2ZW50
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `at` | `string \| undefined` | Optional | At.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `40` |
-| `channel` | [`ChannelEnum \| undefined`](http://localhost:3000/llms-pages/typescript/models/enumerations/channel.md) | Optional | Channel. |
-| `direction` | [`DirectionEnum \| undefined`](http://localhost:3000/llms-pages/typescript/models/enumerations/direction.md) | Optional | Direction. |
-| `kind` | [`Kind1Enum \| undefined`](http://localhost:3000/llms-pages/typescript/models/enumerations/kind-1.md) | Optional | Kind. |
+| `channel` | [`ChannelEnum \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/channel.md) | Optional | Channel. |
+| `direction` | [`DirectionEnum \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/direction.md) | Optional | Direction. |
+| `kind` | [`Kind1Enum \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/kind-1.md) | Optional | Kind. |
 | `messageDigest` | `string \| undefined` | Optional | Message digest.<br><br>**Constraints**: *Pattern*: `^[0-9a-f]{64}$` |
-| `source` | [`Source6Enum \| undefined`](http://localhost:3000/llms-pages/typescript/models/enumerations/source-6.md) | Optional | Source. |
-| `topic` | [`TopicEnum \| undefined`](http://localhost:3000/llms-pages/typescript/models/enumerations/topic.md) | Optional | Topic. |
+| `source` | [`Source6Enum \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/source-6.md) | Optional | Source. |
+| `topic` | [`TopicEnum \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/topic.md) | Optional | Topic. |
 
 
 # Example

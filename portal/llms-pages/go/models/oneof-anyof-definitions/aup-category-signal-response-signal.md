@@ -1,6 +1,6 @@
 # Aup Category Signal Response Signal
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkF1cENhdGVnb3J5U2lnbmFsUmVzcG9uc2VTaWduYWw
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkF1cENhdGVnb3J5U2lnbmFsUmVzcG9uc2VTaWduYWw
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkF1cENhdGVnb3J5U2lnbmFsUm
 
 | Type | Factory Method |
 |  --- | --- |
-| [`models.CategorySignal`](http://localhost:3000/llms-pages/go/models/structures/category-signal.md) | models.AupCategorySignalResponseSignalContainer.FromCategorySignal(models.CategorySignal categorySignal) |
+| [`models.CategorySignal`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/category-signal.md) | models.AupCategorySignalResponseSignalContainer.FromCategorySignal(models.CategorySignal categorySignal) |
 
 
 # models.CategorySignal

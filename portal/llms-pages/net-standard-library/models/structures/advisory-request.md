@@ -1,6 +1,6 @@
 # Advisory Request
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkFkdmlzb3J5UmVxdWVzdA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkFkdmlzb3J5UmVxdWVzdA
 
 AdvisoryRequest.
 
@@ -18,7 +18,7 @@ AdvisoryRequest.
 | `CandidateJson` | `string` | Required | Candidate json.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `8192` |
 | `Jurisdiction` | `string` | Required, Constant | Jurisdiction.<br><br>**Value**: `"US"` |
 | `ObservationMaxAgeDays` | `int` | Required | Observation max age days.<br><br>**Constraints**: `>= 0`, `<= 365000` |
-| `Theme` | [`ThemeEnum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/theme.md) | Required | Theme. |
+| `Theme` | [`ThemeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/theme.md) | Required | Theme. |
 
 
 # Example

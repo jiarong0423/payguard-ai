@@ -1,6 +1,6 @@
 # Webhook Event Projection
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRldlYmhvb2tFdmVudFByb2plY3Rpb24
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRldlYmhvb2tFdmVudFByb2plY3Rpb24
 
 All that is kept after a SUCCESS: identifiers and status only, no amounts, payer data, links or summary.
 

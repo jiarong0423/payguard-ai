@@ -1,6 +1,6 @@
 # Ai Usage Entry
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkFpVXNhZ2VFbnRyeQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkFpVXNhZ2VFbnRyeQ
 
 AiUsageEntry.
 
@@ -15,14 +15,14 @@ AiUsageEntry.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `at` | `string` | Required | At. |
-| `estimatedCostUsd` | [`AiUsageEntryEstimatedCostUsd \| undefined`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/ai-usage-entry-estimated-cost-usd.md) | Optional | This is a container for any-of cases. |
+| `estimatedCostUsd` | [`AiUsageEntryEstimatedCostUsd \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/ai-usage-entry-estimated-cost-usd.md) | Optional | This is a container for any-of cases. |
 | `latencyMs` | `number` | Required | Latency ms.<br><br>**Constraints**: `>= 0`, `<= 3600000` |
-| `model` | [`AiUsageEntryModel \| undefined`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/ai-usage-entry-model.md) | Optional | This is a container for any-of cases. |
-| `outcome` | [`OutcomeEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/outcome.md) | Required | Outcome. |
-| `stage` | [`Stage2Enum`](http://localhost:3000/llms-pages/typescript/models/enumerations/stage-2.md) | Required | Stage. |
-| `tokensIn` | [`AiUsageEntryTokensIn \| undefined`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/ai-usage-entry-tokens-in.md) | Optional | This is a container for any-of cases. |
-| `tokensOut` | [`AiUsageEntryTokensOut \| undefined`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/ai-usage-entry-tokens-out.md) | Optional | This is a container for any-of cases. |
-| `tokensTotal` | [`AiUsageEntryTokensTotal \| undefined`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/ai-usage-entry-tokens-total.md) | Optional | This is a container for any-of cases. |
+| `model` | [`AiUsageEntryModel \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/ai-usage-entry-model.md) | Optional | This is a container for any-of cases. |
+| `outcome` | [`OutcomeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/outcome.md) | Required | Outcome. |
+| `stage` | [`Stage2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/stage-2.md) | Required | Stage. |
+| `tokensIn` | [`AiUsageEntryTokensIn \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/ai-usage-entry-tokens-in.md) | Optional | This is a container for any-of cases. |
+| `tokensOut` | [`AiUsageEntryTokensOut \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/ai-usage-entry-tokens-out.md) | Optional | This is a container for any-of cases. |
+| `tokensTotal` | [`AiUsageEntryTokensTotal \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/ai-usage-entry-tokens-total.md) | Optional | This is a container for any-of cases. |
 
 
 # Example

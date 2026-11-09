@@ -1,6 +1,6 @@
 # Validation Error
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlZhbGlkYXRpb25FcnJvcg
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRlZhbGlkYXRpb25FcnJvcg
 
 ValidationError.
 
@@ -16,7 +16,7 @@ ValidationError.
 |  --- | --- | --- | --- |
 | `Ctx` | `*interface{}` | Optional | Ctx. |
 | `Input` | `*interface{}` | Optional | Input. |
-| `Loc` | [`[]models.ValidationErrorLoc`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/validation-error-loc.md) | Required | This is Array of a container for any-of cases. |
+| `Loc` | [`[]models.ValidationErrorLoc`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/validation-error-loc.md) | Required | This is Array of a container for any-of cases. |
 | `Msg` | `string` | Required | Msg. |
 | `Type` | `string` | Required | Type. |
 

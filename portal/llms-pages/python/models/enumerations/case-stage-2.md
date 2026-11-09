@@ -1,6 +1,6 @@
 # Case Stage 2
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkNhc2VTdGFnZTI
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkNhc2VTdGFnZTI
 
 Case stage.
 

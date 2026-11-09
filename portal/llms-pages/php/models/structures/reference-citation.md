@@ -1,6 +1,6 @@
 # Reference Citation
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRlJlZmVyZW5jZUNpdGF0aW9u
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRlJlZmVyZW5jZUNpdGF0aW9u
 
 ReferenceCitation.
 
@@ -14,24 +14,24 @@ ReferenceCitation.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `caseOutcome` | string([CaseOutcomeEnum](http://localhost:3000/llms-pages/php/models/enumerations/case-outcome.md)) | Required | This is a container for any-of cases. | getCaseOutcome(): string | setCaseOutcome(string caseOutcome): void |
-| `caseStage` | [`string(CaseStageEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/case-stage.md) | Required | Case stage. | getCaseStage(): string | setCaseStage(string caseStage): void |
+| `caseOutcome` | string([CaseOutcomeEnum](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/case-outcome.md)) | Required | This is a container for any-of cases. | getCaseOutcome(): string | setCaseOutcome(string caseOutcome): void |
+| `caseStage` | [`string(CaseStageEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/case-stage.md) | Required | Case stage. | getCaseStage(): string | setCaseStage(string caseStage): void |
 | `chunkId` | `string` | Required | Chunk id.<br><br>**Constraints**: *Pattern*: `^[A-Z0-9-]{1,128}$` | getChunkId(): string | setChunkId(string chunkId): void |
 | `decisionAcceptanceDeadline` | string | Required | This is a container for any-of cases. | getDecisionAcceptanceDeadline(): string | setDecisionAcceptanceDeadline(string decisionAcceptanceDeadline): void |
 | `decisionDate` | string | Required | This is a container for any-of cases. | getDecisionDate(): string | setDecisionDate(string decisionDate): void |
-| `decisionDateStatus` | [`string(DecisionDateStatusEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/decision-date-status.md) | Required | Decision date status. | getDecisionDateStatus(): string | setDecisionDateStatus(string decisionDateStatus): void |
+| `decisionDateStatus` | [`string(DecisionDateStatusEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/decision-date-status.md) | Required | Decision date status. | getDecisionDateStatus(): string | setDecisionDateStatus(string decisionDateStatus): void |
 | `effectiveDate` | string | Required | This is a container for any-of cases. | getEffectiveDate(): string | setEffectiveDate(string effectiveDate): void |
-| `effectiveDateStatus` | [`string(EffectiveDateStatusEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/effective-date-status.md) | Required | Effective date status. | getEffectiveDateStatus(): string | setEffectiveDateStatus(string effectiveDateStatus): void |
+| `effectiveDateStatus` | [`string(EffectiveDateStatusEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/effective-date-status.md) | Required | Effective date status. | getEffectiveDateStatus(): string | setEffectiveDateStatus(string effectiveDateStatus): void |
 | `jurisdiction` | `string` | Required, Constant | Jurisdiction.<br><br>**Value**: `'US'` | getJurisdiction(): string | setJurisdiction(string jurisdiction): void |
 | `jurisdictionLabel` | `string` | Required | Jurisdiction label.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `2000` | getJurisdictionLabel(): string | setJurisdictionLabel(string jurisdictionLabel): void |
 | `locator` | `string` | Required | Locator.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `8000` | getLocator(): string | setLocator(string locator): void |
-| `materialType` | [`string(MaterialType1Enum)`](http://localhost:3000/llms-pages/php/models/enumerations/material-type-1.md) | Required | Material type. | getMaterialType(): string | setMaterialType(string materialType): void |
+| `materialType` | [`string(MaterialType1Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/material-type-1.md) | Required | Material type. | getMaterialType(): string | setMaterialType(string materialType): void |
 | `relevanceScore` | `int` | Required | Relevance score.<br><br>**Constraints**: `>= 1`, `<= 128` | getRelevanceScore(): int | setRelevanceScore(int relevanceScore): void |
 | `retrievedAt` | `string` | Required | Retrieved at.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `64` | getRetrievedAt(): string | setRetrievedAt(string retrievedAt): void |
 | `sourceId` | `string` | Required | Source id.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `128` | getSourceId(): string | setSourceId(string sourceId): void |
 | `sourceTitle` | `string` | Required | Source title.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `8000` | getSourceTitle(): string | setSourceTitle(string sourceTitle): void |
 | `sourceUpdatedDate` | string | Required | This is a container for any-of cases. | getSourceUpdatedDate(): string | setSourceUpdatedDate(string sourceUpdatedDate): void |
-| `sourceUpdatedDateStatus` | [`string(SourceUpdatedDateStatusEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/source-updated-date-status.md) | Required | Source updated date status. | getSourceUpdatedDateStatus(): string | setSourceUpdatedDateStatus(string sourceUpdatedDateStatus): void |
+| `sourceUpdatedDateStatus` | [`string(SourceUpdatedDateStatusEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/source-updated-date-status.md) | Required | Source updated date status. | getSourceUpdatedDateStatus(): string | setSourceUpdatedDateStatus(string sourceUpdatedDateStatus): void |
 | `text` | `string` | Required | Text.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `8000` | getText(): string | setText(string text): void |
 | `textSha256` | `string` | Required | Text sha256.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` | getTextSha256(): string | setTextSha256(string textSha256): void |
 | `title` | `string` | Required | Title.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `8000` | getTitle(): string | setTitle(string title): void |

@@ -1,6 +1,6 @@
 # State Response
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlN0YXRlUmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRlN0YXRlUmVzcG9uc2U
 
 StateResponse.
 
@@ -14,15 +14,15 @@ StateResponse.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `Activity` | [`[]models.Activity`](http://localhost:3000/llms-pages/go/models/structures/activity.md) | Required | Activity. |
-| `Disputes` | [`[]models.DisputeSummary`](http://localhost:3000/llms-pages/go/models/structures/dispute-summary.md) | Required | Disputes. |
+| `Activity` | [`[]models.Activity`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/activity.md) | Required | Activity. |
+| `Disputes` | [`[]models.DisputeSummary`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/dispute-summary.md) | Required | Disputes. |
 | `ExpiresAt` | `string` | Required | Expires at. |
 | `PolicyVersion` | `string` | Required | Policy version. |
-| `Scenario` | [`models.Scenario`](http://localhost:3000/llms-pages/go/models/structures/scenario.md) | Required | Scenario. |
+| `Scenario` | [`models.Scenario`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/scenario.md) | Required | Scenario. |
 | `SessionId` | `string` | Required | Session id. |
 | `Source` | `string` | Required, Constant | Source.<br><br>**Value**: `"synthetic"` |
-| `Transactions` | [`[]models.Transaction`](http://localhost:3000/llms-pages/go/models/structures/transaction.md) | Required | Transactions. |
-| `Velocity` | [`models.VelocityResponse`](http://localhost:3000/llms-pages/go/models/structures/velocity-response.md) | Required | VelocityResponse. |
+| `Transactions` | [`[]models.Transaction`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/transaction.md) | Required | Transactions. |
+| `Velocity` | [`models.VelocityResponse`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/velocity-response.md) | Required | VelocityResponse. |
 
 
 # Example

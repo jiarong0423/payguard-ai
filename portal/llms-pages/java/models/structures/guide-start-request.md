@@ -1,6 +1,6 @@
 # Guide Start Request
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkd1aWRlU3RhcnRSZXF1ZXN0
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkd1aWRlU3RhcnRSZXF1ZXN0
 
 GuideStartRequest.
 
@@ -14,8 +14,8 @@ GuideStartRequest.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `GoodsType` | [`GuideStartRequestGoodsType`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/guide-start-request-goods-type.md) | Optional | This is a container for any-of cases. | GuideStartRequestGoodsType getGoodsType() | setGoodsType(GuideStartRequestGoodsType goodsType) |
-| `Scenario` | [`Scenario2Enum`](http://localhost:3000/llms-pages/java/models/enumerations/scenario-2.md) | Required | Scenario. | Scenario2Enum getScenario() | setScenario(Scenario2Enum scenario) |
+| `GoodsType` | [`GuideStartRequestGoodsType`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/guide-start-request-goods-type.md) | Optional | This is a container for any-of cases. | GuideStartRequestGoodsType getGoodsType() | setGoodsType(GuideStartRequestGoodsType goodsType) |
+| `Scenario` | [`Scenario2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/scenario-2.md) | Required | Scenario. | Scenario2Enum getScenario() | setScenario(Scenario2Enum scenario) |
 
 
 # Example

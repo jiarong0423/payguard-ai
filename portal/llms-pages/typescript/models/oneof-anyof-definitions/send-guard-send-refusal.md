@@ -1,6 +1,6 @@
 # Send Guard Send Refusal
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlNlbmRHdWFyZFNlbmRSZWZ1c2Fs
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRlNlbmRHdWFyZFNlbmRSZWZ1c2Fs
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlNlbmRHdWFyZFNlbm
 
 | Type |
 |  --- |
-| [`SendRefusalEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/send-refusal.md) |
+| [`SendRefusalEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/send-refusal.md) |
 
 
 # SendRefusalEnum

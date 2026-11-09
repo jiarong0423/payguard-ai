@@ -1,6 +1,6 @@
 # Sandbox Evidence Receipt
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRlNhbmRib3hFdmlkZW5jZVJlY2VpcHQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRlNhbmRib3hFdmlkZW5jZVJlY2VpcHQ
 
 SandboxEvidenceReceipt.
 
@@ -14,9 +14,9 @@ SandboxEvidenceReceipt.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `action` | [`string(ActionEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/action.md) | Required | Action. | getAction(): string | setAction(string action): void |
+| `action` | [`string(ActionEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/action.md) | Required | Action. | getAction(): string | setAction(string action): void |
 | `environment` | `string` | Required, Constant | Environment.<br><br>**Value**: `'sandbox'` | getEnvironment(): string | setEnvironment(string environment): void |
-| `evidenceClass` | [`string(EvidenceClass3Enum)`](http://localhost:3000/llms-pages/php/models/enumerations/evidence-class-3.md) | Required | Evidence class. | getEvidenceClass(): string | setEvidenceClass(string evidenceClass): void |
+| `evidenceClass` | [`string(EvidenceClass3Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/evidence-class-3.md) | Required | Evidence class. | getEvidenceClass(): string | setEvidenceClass(string evidenceClass): void |
 | `externalSend` | `string` | Required, Constant | External send.<br><br>**Value**: `'FROZEN'` | getExternalSend(): string | setExternalSend(string externalSend): void |
 | `invoiceId` | string | Required | This is a container for any-of cases. | getInvoiceId(): string | setInvoiceId(string invoiceId): void |
 | `observedAt` | `string` | Required | Observed at.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `27` | getObservedAt(): string | setObservedAt(string observedAt): void |
@@ -24,7 +24,7 @@ SandboxEvidenceReceipt.
 | `proofKind` | `string` | Required, Constant | Proof kind.<br><br>**Value**: `'POST_RESPONSE_ONLY'` | getProofKind(): string | setProofKind(string proofKind): void |
 | `schemaVersion` | `int` | Required, Constant | Schema version.<br><br>**Value**: `1` | getSchemaVersion(): int | setSchemaVersion(int schemaVersion): void |
 | `separateGetReadback` | `string` | Required, Constant | Separate get readback.<br><br>**Value**: `'False'` | getSeparateGetReadback(): string | setSeparateGetReadback(string separateGetReadback): void |
-| `status` | [`string(Status10Enum)`](http://localhost:3000/llms-pages/php/models/enumerations/status-10.md) | Required | Status. | getStatus(): string | setStatus(string status): void |
+| `status` | [`string(Status10Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/status-10.md) | Required | Status. | getStatus(): string | setStatus(string status): void |
 
 
 # Example

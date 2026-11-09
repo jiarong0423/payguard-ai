@@ -1,6 +1,6 @@
 # Tracker Batch
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRlRyYWNrZXJCYXRjaA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRlRyYWNrZXJCYXRjaA
 
 TrackerBatch.
 
@@ -14,7 +14,7 @@ TrackerBatch.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `Trackers` | [`List<TrackerItem>`](http://localhost:3000/llms-pages/net-standard-library/models/structures/tracker-item.md) | Required | Trackers.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `1` |
+| `Trackers` | [`List<TrackerItem>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/tracker-item.md) | Required | Trackers.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `1` |
 
 
 # Example

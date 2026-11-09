@@ -1,6 +1,6 @@
 # Product Confirm Response Card
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maXJtUmVzcG9uc2VDYXJk
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maXJtUmVzcG9uc2VDYXJk
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maXJtUmVzcG
 
 | Type | Factory Method |
 |  --- | --- |
-| [`models.ProductCard`](http://localhost:3000/llms-pages/go/models/structures/product-card.md) | models.ProductConfirmResponseCardContainer.FromProductCard(models.ProductCard productCard) |
+| [`models.ProductCard`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/product-card.md) | models.ProductConfirmResponseCardContainer.FromProductCard(models.ProductCard productCard) |
 
 
 # models.ProductCard

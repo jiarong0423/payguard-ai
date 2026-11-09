@@ -1,6 +1,6 @@
 # Aup Category Signal Response Reason
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkF1cENhdGVnb3J5U2lnbmFsUmVzcG9uc2VSZWFzb24
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkF1cENhdGVnb3J5U2lnbmFsUmVzcG9uc2VSZWFzb24
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkF1cENhdGVnb3J5U2lnbmFsU
 
 | Type |
 |  --- |
-| [`string(ReasonEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/reason.md) |
+| [`string(ReasonEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/reason.md) |
 
 
 # string(ReasonEnum)

@@ -1,6 +1,6 @@
 # Reference Citation Case Outcome
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlJlZmVyZW5jZUNpdGF0aW9uQ2FzZU91dGNvbWU
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRlJlZmVyZW5jZUNpdGF0aW9uQ2FzZU91dGNvbWU
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlJlZmVyZW5jZUNpdG
 
 | Type |
 |  --- |
-| [`CaseOutcomeEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/case-outcome.md) |
+| [`CaseOutcomeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/case-outcome.md) |
 
 
 # CaseOutcomeEnum

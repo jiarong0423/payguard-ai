@@ -1,6 +1,6 @@
 # Advisory Evaluation Response
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkFkdmlzb3J5RXZhbHVhdGlvblJlc3BvbnNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkFkdmlzb3J5RXZhbHVhdGlvblJlc3BvbnNl
 
 AdvisoryEvaluationResponse.
 
@@ -17,23 +17,23 @@ AdvisoryEvaluationResponse.
 | `PIIQuality` | `string` | Required, Constant | PII quality.<br><br>**Value**: `"NOT_EVALUATED"` |
 | `AdvisoryOnly` | `bool` | Required | Advisory only. |
 | `ClaimCount` | `int` | Required | Claim count.<br><br>**Constraints**: `>= 1`, `<= 20` |
-| `ClaimGates` | [`[]models.AdvisoryClaimGate`](http://localhost:3000/llms-pages/go/models/structures/advisory-claim-gate.md) | Required | Claim gates.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `20` |
+| `ClaimGates` | [`[]models.AdvisoryClaimGate`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/advisory-claim-gate.md) | Required | Claim gates.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `20` |
 | `CorpusDigest` | `string` | Required | Corpus digest.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` |
-| `CorpusDigests` | [`models.ReferenceDigests`](http://localhost:3000/llms-pages/go/models/structures/reference-digests.md) | Required | ReferenceDigests. |
+| `CorpusDigests` | [`models.ReferenceDigests`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/reference-digests.md) | Required | ReferenceDigests. |
 | `CorpusId` | `string` | Required, Constant | Corpus id.<br><br>**Value**: `"payguard-us-official-references-v2"` |
-| `Coverage` | [`models.PolicyCoverage`](http://localhost:3000/llms-pages/go/models/structures/policy-coverage.md) | Required | PolicyCoverage. |
+| `Coverage` | [`models.PolicyCoverage`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/policy-coverage.md) | Required | PolicyCoverage. |
 | `CurrentPolicyApplicability` | `string` | Required, Constant | Current policy applicability.<br><br>**Value**: `"NOT_ESTABLISHED"` |
 | `Limitations` | `[]string` | Required | Limitations.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `32`, *Minimum Length*: `1`, *Maximum Length*: `2000` |
 | `ModelGeneration` | `string` | Required, Constant | Model generation.<br><br>**Value**: `"NOT_RUN"` |
 | `NaturalLanguageActionAssuranceQuality` | `string` | Required, Constant | Natural language action assurance quality.<br><br>**Value**: `"NOT_EVALUATED"` |
 | `OperationalAuthority` | `string` | Required, Constant | Operational authority.<br><br>**Value**: `"REFERENCE_ONLY_NO_ACTION_AUTHORIZATION"` |
 | `PromptInjectionQuality` | `string` | Required, Constant | Prompt injection quality.<br><br>**Value**: `"NOT_EVALUATED"` |
-| `RequestedContext` | [`models.PolicyContext`](http://localhost:3000/llms-pages/go/models/structures/policy-context.md) | Required | PolicyContext. |
+| `RequestedContext` | [`models.PolicyContext`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/policy-context.md) | Required | PolicyContext. |
 | `RequiresHumanReview` | `bool` | Required | Requires human review. |
 | `SchemaVersion` | `int` | Required | Schema version.<br><br>**Constraints**: `>= 1`, `<= 1` |
 | `SemanticEntailment` | `string` | Required, Constant | Semantic entailment.<br><br>**Value**: `"NOT_EVALUATED"` |
 | `Source` | `string` | Required, Constant | Source.<br><br>**Value**: `"offline_structured_gate"` |
-| `Status` | [`models.StatusEnum`](http://localhost:3000/llms-pages/go/models/enumerations/status.md) | Required | Status. |
+| `Status` | [`models.StatusEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/status.md) | Required | Status. |
 | `Version` | `string` | Required, Constant | Version.<br><br>**Value**: `"payguard.advisory_eval.v1"` |
 
 

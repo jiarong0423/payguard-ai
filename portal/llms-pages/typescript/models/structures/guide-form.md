@@ -1,6 +1,6 @@
 # Guide Form
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkd1aWRlRm9ybQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkd1aWRlRm9ybQ
 
 GuideForm.
 
@@ -14,9 +14,9 @@ GuideForm.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `kind` | [`Kind2Enum`](http://localhost:3000/llms-pages/typescript/models/enumerations/kind-2.md) | Required | Kind. |
-| `options` | [`GuideOption[]`](http://localhost:3000/llms-pages/typescript/models/structures/guide-option.md) | Required | Options. |
-| `placeholder` | [`GuideFormPlaceholder`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/guide-form-placeholder.md) | Required | This is a container for any-of cases. |
+| `kind` | [`Kind2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/kind-2.md) | Required | Kind. |
+| `options` | [`GuideOption[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/guide-option.md) | Required | Options. |
+| `placeholder` | [`GuideFormPlaceholder`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/guide-form-placeholder.md) | Required | This is a container for any-of cases. |
 
 
 # Example

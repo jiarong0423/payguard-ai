@@ -1,6 +1,6 @@
 # Evidence Input
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkV2aWRlbmNlSW5wdXQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkV2aWRlbmNlSW5wdXQ
 
 EvidenceInput.
 
@@ -14,7 +14,7 @@ EvidenceInput.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Evidences` | [`List<EvidenceInputItem>`](http://localhost:3000/llms-pages/java/models/structures/evidence-input-item.md) | Required | Evidences.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `20` | List<EvidenceInputItem> getEvidences() | setEvidences(List<EvidenceInputItem> evidences) |
+| `Evidences` | [`List<EvidenceInputItem>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/evidence-input-item.md) | Required | Evidences.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `20` | List<EvidenceInputItem> getEvidences() | setEvidences(List<EvidenceInputItem> evidences) |
 
 
 # Example

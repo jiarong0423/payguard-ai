@@ -1,6 +1,6 @@
 # Message Time Event
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRk1lc3NhZ2VUaW1lRXZlbnQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRk1lc3NhZ2VUaW1lRXZlbnQ
 
 MessageTimeEvent.
 
@@ -15,12 +15,12 @@ MessageTimeEvent.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `at` | `string` | Required | At.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `40` |
-| `channel` | [`ChannelEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/channel.md) | Required | Channel. |
-| `direction` | [`DirectionEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/direction.md) | Required | Direction. |
+| `channel` | [`ChannelEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/channel.md) | Required | Channel. |
+| `direction` | [`DirectionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/direction.md) | Required | Direction. |
 | `kind` | `string` | Required, Constant | Kind.<br><br>**Value**: `'MESSAGE'` |
 | `messageDigest` | `string` | Required | Message digest.<br><br>**Constraints**: *Pattern*: `^[0-9a-f]{64}$` |
 | `source` | `string` | Required, Constant | Source.<br><br>**Value**: `'SELLER_PROVIDED_UNVERIFIED'` |
-| `topic` | [`TopicEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/topic.md) | Required | Topic. |
+| `topic` | [`TopicEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/topic.md) | Required | Topic. |
 
 
 # Example

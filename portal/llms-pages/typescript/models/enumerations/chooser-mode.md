@@ -1,6 +1,6 @@
 # Chooser Mode
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkNob29zZXJNb2Rl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkNob29zZXJNb2Rl
 
 Chooser mode.
 

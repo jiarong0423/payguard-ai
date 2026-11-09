@@ -1,6 +1,6 @@
 # Policy Assessment Response
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRlBvbGljeUFzc2Vzc21lbnRSZXNwb25zZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlBvbGljeUFzc2Vzc21lbnRSZXNwb25zZQ
 
 PolicyAssessmentResponse.
 
@@ -15,20 +15,20 @@ PolicyAssessmentResponse.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `advisory_only` | `bool` | Required | Advisory only. |
-| `chunks` | [`List[PolicyChunk]`](http://localhost:3000/llms-pages/python/models/structures/policy-chunk.md) | Required | Chunks.<br><br>**Constraints**: *Maximum Items*: `29` |
+| `chunks` | [`List[PolicyChunk]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/policy-chunk.md) | Required | Chunks.<br><br>**Constraints**: *Maximum Items*: `29` |
 | `corpus_digest` | `str` | Required | Corpus digest.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` |
-| `corpus_digests` | [`ReferenceDigests`](http://localhost:3000/llms-pages/python/models/structures/reference-digests.md) | Required | ReferenceDigests. |
+| `corpus_digests` | [`ReferenceDigests`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/reference-digests.md) | Required | ReferenceDigests. |
 | `corpus_id` | `str` | Required, Constant | Corpus id.<br><br>**Value**: `"payguard-us-official-references-v2"` |
-| `coverage` | [`PolicyCoverage`](http://localhost:3000/llms-pages/python/models/structures/policy-coverage.md) | Required | PolicyCoverage. |
+| `coverage` | [`PolicyCoverage`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/policy-coverage.md) | Required | PolicyCoverage. |
 | `current_policy_applicability` | `str` | Required, Constant | Current policy applicability.<br><br>**Value**: `"NOT_ESTABLISHED"` |
-| `filters_applied` | [`PolicyContext`](http://localhost:3000/llms-pages/python/models/structures/policy-context.md) | Required | PolicyContext. |
+| `filters_applied` | [`PolicyContext`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/policy-context.md) | Required | PolicyContext. |
 | `limitations` | `List[str]` | Required | Limitations.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `32`, *Minimum Length*: `1`, *Maximum Length*: `2000` |
 | `operational_authority` | `str` | Required, Constant | Operational authority.<br><br>**Value**: `"REFERENCE_ONLY_NO_ACTION_AUTHORIZATION"` |
-| `reason_codes` | [`List[ReasonCode1Enum]`](http://localhost:3000/llms-pages/python/models/enumerations/reason-code-1.md) | Required | Reason codes.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `15` |
+| `reason_codes` | [`List[ReasonCode1Enum]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/reason-code-1.md) | Required | Reason codes.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `15` |
 | `requires_human_review` | `bool` | Required | Requires human review. |
 | `schema_version` | `int` | Required | Schema version.<br><br>**Constraints**: `>= 1`, `<= 1` |
 | `source` | `str` | Required, Constant | Source.<br><br>**Value**: `"public_reference"` |
-| `sources` | [`List[PolicySource]`](http://localhost:3000/llms-pages/python/models/structures/policy-source.md) | Required | Sources.<br><br>**Constraints**: *Maximum Items*: `16` |
+| `sources` | [`List[PolicySource]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/policy-source.md) | Required | Sources.<br><br>**Constraints**: *Maximum Items*: `16` |
 | `status` | `str` | Required, Constant | Status.<br><br>**Value**: `"INCOMPLETE_POLICY_EVIDENCE"` |
 | `version` | `str` | Required, Constant | Version.<br><br>**Value**: `"payguard.applicability.v1"` |
 

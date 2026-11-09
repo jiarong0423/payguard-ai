@@ -1,6 +1,6 @@
 # Ai Usage Entry Tokens In
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkFpVXNhZ2VFbnRyeVRva2Vuc0lu
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkFpVXNhZ2VFbnRyeVRva2Vuc0lu
 
 
 # Class Name

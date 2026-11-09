@@ -1,6 +1,6 @@
 # How to Get Started
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0aCUyRl9fZ2V0dGluZ19zdGFydGVk
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0aCUyRl9fZ2V0dGluZ19zdGFydGVk
 
 
 # Introduction
@@ -43,7 +43,7 @@ The following parameters are configurable for the API Client:
 
 | Parameter | Type | Description |
 |  --- | --- | --- |
-| httpConfiguration | [`HttpConfiguration`](http://localhost:3000/llms-pages/go/sdk-infrastructure/configuration/httpconfiguration.md) | Configurable http client options like timeout and retries. |
+| httpConfiguration | [`HttpConfiguration`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/sdk-infrastructure/configuration/httpconfiguration.md) | Configurable http client options like timeout and retries. |
 
 The API client can be initialized as follows:
 

@@ -1,6 +1,6 @@
 # Analysis
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkFuYWx5c2lz
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkFuYWx5c2lz
 
 Analysis.
 
@@ -14,8 +14,8 @@ Analysis.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `reason` | [`AnalysisReason \| undefined`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/analysis-reason.md) | Optional | This is a container for any-of cases. |
-| `status` | [`Status8Enum \| undefined`](http://localhost:3000/llms-pages/typescript/models/enumerations/status-8.md) | Optional | Status. |
+| `reason` | [`AnalysisReason \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/analysis-reason.md) | Optional | This is a container for any-of cases. |
+| `status` | [`Status8Enum \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/status-8.md) | Optional | Status. |
 | `turn` | `number \| undefined` | Optional | Turn. |
 
 

@@ -1,6 +1,6 @@
 # Aup Category Signal Response Reason
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkF1cENhdGVnb3J5U2lnbmFsUmVzcG9uc2VSZWFzb24
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkF1cENhdGVnb3J5U2lnbmFsUmVzcG9uc2VSZWFzb24
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkF1cENhdGVnb3J5U2lnbmFsUm
 
 | Type | Factory Method |
 |  --- | --- |
-| [`models.ReasonEnum`](http://localhost:3000/llms-pages/go/models/enumerations/reason.md) | models.AupCategorySignalResponseReasonContainer.FromReason(models.ReasonEnum reason) |
+| [`models.ReasonEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/reason.md) | models.AupCategorySignalResponseReasonContainer.FromReason(models.ReasonEnum reason) |
 
 
 # models.ReasonEnum

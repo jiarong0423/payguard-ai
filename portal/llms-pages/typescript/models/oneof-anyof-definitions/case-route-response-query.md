@@ -1,6 +1,6 @@
 # Case Route Response Query
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkNhc2VSb3V0ZVJlc3BvbnNlUXVlcnk
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkNhc2VSb3V0ZVJlc3BvbnNlUXVlcnk
 
 
 # Class Name

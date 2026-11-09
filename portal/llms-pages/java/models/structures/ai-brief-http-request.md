@@ -1,6 +1,6 @@
 # Ai Brief Http Request
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkFpQnJpZWZIdHRwUmVxdWVzdA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkFpQnJpZWZIdHRwUmVxdWVzdA
 
 What the console may send: the stage and, for disputes, which case. Session facts are never caller input.
 
@@ -14,8 +14,8 @@ What the console may send: the stage and, for disputes, which case. Session fact
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `CaseRef` | [`AiBriefHttpRequestCaseRef`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/ai-brief-http-request-case-ref.md) | Optional | This is a container for any-of cases. | AiBriefHttpRequestCaseRef getCaseRef() | setCaseRef(AiBriefHttpRequestCaseRef caseRef) |
-| `Stage` | [`StageEnum`](http://localhost:3000/llms-pages/java/models/enumerations/stage.md) | Required | Stage. | StageEnum getStage() | setStage(StageEnum stage) |
+| `CaseRef` | [`AiBriefHttpRequestCaseRef`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/ai-brief-http-request-case-ref.md) | Optional | This is a container for any-of cases. | AiBriefHttpRequestCaseRef getCaseRef() | setCaseRef(AiBriefHttpRequestCaseRef caseRef) |
+| `Stage` | [`StageEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/stage.md) | Required | Stage. | StageEnum getStage() | setStage(StageEnum stage) |
 
 
 # Example

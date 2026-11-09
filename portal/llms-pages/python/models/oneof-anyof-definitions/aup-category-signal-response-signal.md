@@ -1,6 +1,6 @@
 # Aup Category Signal Response Signal
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkF1cENhdGVnb3J5U2lnbmFsUmVzcG9uc2VTaWduYWw
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkF1cENhdGVnb3J5U2lnbmFsUmVzcG9uc2VTaWduYWw
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkF1cENhdGVnb3J5U2lnbm
 
 | Type |
 |  --- |
-| [`CategorySignal`](http://localhost:3000/llms-pages/python/models/structures/category-signal.md) |
+| [`CategorySignal`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/category-signal.md) |
 
 
 # CategorySignal

@@ -1,6 +1,6 @@
 # Velocity Response
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlZlbG9jaXR5UmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRlZlbG9jaXR5UmVzcG9uc2U
 
 VelocityResponse.
 
@@ -17,17 +17,17 @@ VelocityResponse.
 | `advisoryOnly` | `string` | Required, Constant | Advisory only.<br><br>**Value**: `'True'` |
 | `alert` | `boolean` | Required | Alert. |
 | `baselineAmountPerHour` | `string` | Required | Baseline amount per hour. |
-| `baselineProvenance` | [`BaselineProvenanceEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/baseline-provenance.md) | Required | Baseline provenance. |
+| `baselineProvenance` | [`BaselineProvenanceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/baseline-provenance.md) | Required | Baseline provenance. |
 | `baselineWindowEnd` | `string` | Required | Baseline window end. |
 | `baselineWindowStart` | `string` | Required | Baseline window start. |
-| `currency` | [`VelocityResponseCurrency`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/velocity-response-currency.md) | Required | This is a container for any-of cases. |
+| `currency` | [`VelocityResponseCurrency`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/velocity-response-currency.md) | Required | This is a container for any-of cases. |
 | `currentAmountPerHour` | `string` | Required | Current amount per hour. |
 | `excludedFutureCount` | `number` | Required | Excluded future count. |
 | `excludedPastCount` | `number` | Required | Excluded past count. |
 | `limitations` | `string[]` | Required | Limitations. |
 | `policyVersion` | `string` | Required | Policy version. |
-| `ratio` | [`VelocityResponseRatio`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/velocity-response-ratio.md) | Required | This is a container for any-of cases. |
-| `status` | [`Status14Enum`](http://localhost:3000/llms-pages/typescript/models/enumerations/status-14.md) | Required | Status. |
+| `ratio` | [`VelocityResponseRatio`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/velocity-response-ratio.md) | Required | This is a container for any-of cases. |
+| `status` | [`Status14Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/status-14.md) | Required | Status. |
 | `threshold` | `string` | Required | Threshold. |
 | `totalAmount` | `string` | Required | Total amount. |
 | `transactionCount` | `number` | Required | Transaction count. |

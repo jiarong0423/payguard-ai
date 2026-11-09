@@ -1,6 +1,6 @@
 # Invoice Review Response
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkludm9pY2VSZXZpZXdSZXNwb25zZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkludm9pY2VSZXZpZXdSZXNwb25zZQ
 
 InvoiceReviewResponse.
 

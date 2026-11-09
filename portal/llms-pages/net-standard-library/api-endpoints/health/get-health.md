@@ -1,6 +1,6 @@
 # Get Health
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0ZSUyRmhlYWx0aCUyRmdldF9oZWFsdGg
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0ZSUyRmhlYWx0aCUyRmdldF9oZWFsdGg
 
 Health. Local console route GET /api/v1/health on synthetic data; advisory only.
 
@@ -15,7 +15,7 @@ GetHealthAsync()
 
 **200**: Successful Response
 
-[`Task<Models.HealthResponse>`](http://localhost:3000/llms-pages/net-standard-library/models/structures/health-response.md)
+[`Task<Models.HealthResponse>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/health-response.md)
 
 
 # Example Usage
@@ -40,8 +40,8 @@ catch (ApiException e)
 
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
-| 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](http://localhost:3000/llms-pages/net-standard-library/models/exceptions/error-body.md) |
-| 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](http://localhost:3000/llms-pages/net-standard-library/models/exceptions/error-body.md) |
+| 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/exceptions/error-body.md) |
+| 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/exceptions/error-body.md) |
 
 
 

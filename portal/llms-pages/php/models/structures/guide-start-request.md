@@ -1,6 +1,6 @@
 # Guide Start Request
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkd1aWRlU3RhcnRSZXF1ZXN0
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkd1aWRlU3RhcnRSZXF1ZXN0
 
 GuideStartRequest.
 
@@ -14,8 +14,8 @@ GuideStartRequest.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `goodsType` | string([GoodsTypeEnum](http://localhost:3000/llms-pages/php/models/enumerations/goods-type.md))\|null | Optional | This is a container for any-of cases. | getGoodsType(): ?string | setGoodsType(?string goodsType): void |
-| `scenario` | [`string(Scenario2Enum)`](http://localhost:3000/llms-pages/php/models/enumerations/scenario-2.md) | Required | Scenario. | getScenario(): string | setScenario(string scenario): void |
+| `goodsType` | string([GoodsTypeEnum](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/goods-type.md))\|null | Optional | This is a container for any-of cases. | getGoodsType(): ?string | setGoodsType(?string goodsType): void |
+| `scenario` | [`string(Scenario2Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/scenario-2.md) | Required | Scenario. | getScenario(): string | setScenario(string scenario): void |
 
 
 # Example

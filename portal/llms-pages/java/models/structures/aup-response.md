@@ -1,6 +1,6 @@
 # Aup Response
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkF1cFJlc3BvbnNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkF1cFJlc3BvbnNl
 
 AupResponse.
 
@@ -21,8 +21,8 @@ AupResponse.
 | `EvaluatedAt` | `String` | Required | Evaluated at. | String getEvaluatedAt() | setEvaluatedAt(String evaluatedAt) |
 | `EvaluationId` | `String` | Required | Evaluation id.<br><br>**Constraints**: *Minimum Length*: `32`, *Maximum Length*: `128`, *Pattern*: `^[A-Za-z0-9_-]+$` | String getEvaluationId() | setEvaluationId(String evaluationId) |
 | `ExpiresAt` | `String` | Required | Expires at. | String getExpiresAt() | setExpiresAt(String expiresAt) |
-| `Findings` | [`List<Finding>`](http://localhost:3000/llms-pages/java/models/structures/finding.md) | Required | Findings. | List<Finding> getFindings() | setFindings(List<Finding> findings) |
-| `MatchStatus` | [`MatchStatusEnum`](http://localhost:3000/llms-pages/java/models/enumerations/match-status.md) | Required | Match status. | MatchStatusEnum getMatchStatus() | setMatchStatus(MatchStatusEnum matchStatus) |
+| `Findings` | [`List<Finding>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/finding.md) | Required | Findings. | List<Finding> getFindings() | setFindings(List<Finding> findings) |
+| `MatchStatus` | [`MatchStatusEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/match-status.md) | Required | Match status. | MatchStatusEnum getMatchStatus() | setMatchStatus(MatchStatusEnum matchStatus) |
 | `PolicyUrl` | `String` | Required, Constant | Policy url.<br><br>**Value**: `"https://www.paypal.com/us/legalhub/paypal/acceptableuse-full"` | String getPolicyUrl() | setPolicyUrl(String policyUrl) |
 | `PolicyVersion` | `String` | Required | Policy version.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `128` | String getPolicyVersion() | setPolicyVersion(String policyVersion) |
 | `Recommendation` | `String` | Required | Recommendation.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `1000` | String getRecommendation() | setRecommendation(String recommendation) |

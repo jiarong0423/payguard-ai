@@ -1,6 +1,6 @@
 # Guide Item
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkd1aWRlSXRlbQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkd1aWRlSXRlbQ
 
 GuideItem.
 
@@ -14,12 +14,12 @@ GuideItem.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `Chunk` | [`GuideItemChunk`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/guide-item-chunk.md) | Required | This is a container for any-of cases. |
-| `Form` | [`GuideItemForm`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/guide-item-form.md) | Required | This is a container for any-of cases. |
+| `Chunk` | [`GuideItemChunk`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/guide-item-chunk.md) | Required | This is a container for any-of cases. |
+| `Form` | [`GuideItemForm`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/guide-item-form.md) | Required | This is a container for any-of cases. |
 | `Id` | `string` | Required | Id. |
 | `Label` | `string` | Required | Label. |
-| `Source` | [`Source8Enum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/source-8.md) | Required | Source. |
-| `Status` | [`Status9Enum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/status-9.md) | Required | Status. |
+| `Source` | [`Source8Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/source-8.md) | Required | Source. |
+| `Status` | [`Status9Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/status-9.md) | Required | Status. |
 
 
 # Example

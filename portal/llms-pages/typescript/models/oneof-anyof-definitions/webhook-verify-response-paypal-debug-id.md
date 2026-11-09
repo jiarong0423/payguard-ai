@@ -1,6 +1,6 @@
 # Webhook Verify Response Paypal Debug Id
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRldlYmhvb2tWZXJpZnlSZXNwb25zZVBheXBhbERlYnVnSWQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRldlYmhvb2tWZXJpZnlSZXNwb25zZVBheXBhbERlYnVnSWQ
 
 
 # Class Name

@@ -1,6 +1,6 @@
 # Evidence Receipt
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkV2aWRlbmNlUmVjZWlwdA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkV2aWRlbmNlUmVjZWlwdA
 
 Evidence receipt.
 
@@ -14,17 +14,17 @@ Evidence receipt.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `action` | [`?string(ActionEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/action.md) | Optional | Action. | getAction(): ?string | setAction(?string action): void |
-| `environment` | [`?string(EnvironmentEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/environment.md) | Optional | Environment. | getEnvironment(): ?string | setEnvironment(?string environment): void |
-| `evidenceClass` | [`?string(EvidenceClass3Enum)`](http://localhost:3000/llms-pages/php/models/enumerations/evidence-class-3.md) | Optional | Evidence class. | getEvidenceClass(): ?string | setEvidenceClass(?string evidenceClass): void |
-| `externalSend` | [`?string(ExternalSend1Enum)`](http://localhost:3000/llms-pages/php/models/enumerations/external-send-1.md) | Optional | External send. | getExternalSend(): ?string | setExternalSend(?string externalSend): void |
+| `action` | [`?string(ActionEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/action.md) | Optional | Action. | getAction(): ?string | setAction(?string action): void |
+| `environment` | [`?string(EnvironmentEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/environment.md) | Optional | Environment. | getEnvironment(): ?string | setEnvironment(?string environment): void |
+| `evidenceClass` | [`?string(EvidenceClass3Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/evidence-class-3.md) | Optional | Evidence class. | getEvidenceClass(): ?string | setEvidenceClass(?string evidenceClass): void |
+| `externalSend` | [`?string(ExternalSend1Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/external-send-1.md) | Optional | External send. | getExternalSend(): ?string | setExternalSend(?string externalSend): void |
 | `invoiceId` | string\|null | Optional | This is a container for any-of cases. | getInvoiceId(): ?string | setInvoiceId(?string invoiceId): void |
 | `observedAt` | `?string` | Optional | Observed at.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `27` | getObservedAt(): ?string | setObservedAt(?string observedAt): void |
 | `paypalDebugId` | string\|null | Optional | This is a container for any-of cases. | getPaypalDebugId(): ?string | setPaypalDebugId(?string paypalDebugId): void |
-| `proofKind` | [`?string(ProofKindEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/proof-kind.md) | Optional | Proof kind. | getProofKind(): ?string | setProofKind(?string proofKind): void |
-| `schemaVersion` | [`?int(SchemaVersion1Enum)`](http://localhost:3000/llms-pages/php/models/enumerations/schema-version-1.md) | Optional | Schema version. | getSchemaVersion(): ?int | setSchemaVersion(?int schemaVersion): void |
+| `proofKind` | [`?string(ProofKindEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/proof-kind.md) | Optional | Proof kind. | getProofKind(): ?string | setProofKind(?string proofKind): void |
+| `schemaVersion` | [`?int(SchemaVersion1Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/schema-version-1.md) | Optional | Schema version. | getSchemaVersion(): ?int | setSchemaVersion(?int schemaVersion): void |
 | `separateGetReadback` | `?bool` | Optional | Separate get readback. | getSeparateGetReadback(): ?bool | setSeparateGetReadback(?bool separateGetReadback): void |
-| `status` | [`?string(Status10Enum)`](http://localhost:3000/llms-pages/php/models/enumerations/status-10.md) | Optional | Status. | getStatus(): ?string | setStatus(?string status): void |
+| `status` | [`?string(Status10Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/status-10.md) | Optional | Status. | getStatus(): ?string | setStatus(?string status): void |
 
 
 # Example

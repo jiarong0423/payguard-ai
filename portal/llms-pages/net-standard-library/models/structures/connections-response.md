@@ -1,6 +1,6 @@
 # Connections Response
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkNvbm5lY3Rpb25zUmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkNvbm5lY3Rpb25zUmVzcG9uc2U
 
 Deployment mode only. Never a key, a key's presence, a value or a variable name.
 
@@ -14,7 +14,7 @@ Deployment mode only. Never a key, a key's presence, a value or a variable name.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `Mode` | [`ModeEnum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/mode.md) | Required | Mode. |
+| `Mode` | [`ModeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/mode.md) | Required | Mode. |
 
 
 # Example

@@ -1,6 +1,6 @@
 # Guide State Response Goods Type
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZUdvb2RzVHlwZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZUdvb2RzVHlwZQ
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZX
 
 | Type |
 |  --- |
-| [`GoodsTypeEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/goods-type.md) |
+| [`GoodsTypeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/goods-type.md) |
 
 
 # GoodsTypeEnum

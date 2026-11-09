@@ -1,6 +1,6 @@
 # Event
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkV2ZW50
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkV2ZW50
 
 
 # Class Name
@@ -13,12 +13,12 @@ Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkV2ZW50
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `at` | `String` | Optional | At.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `40` |
-| `channel` | [`ChannelEnum`](http://localhost:3000/llms-pages/ruby/models/enumerations/channel.md) | Optional | Channel. |
-| `direction` | [`DirectionEnum`](http://localhost:3000/llms-pages/ruby/models/enumerations/direction.md) | Optional | Direction. |
-| `kind` | [`Kind1Enum`](http://localhost:3000/llms-pages/ruby/models/enumerations/kind-1.md) | Optional | Kind. |
+| `channel` | [`ChannelEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/channel.md) | Optional | Channel. |
+| `direction` | [`DirectionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/direction.md) | Optional | Direction. |
+| `kind` | [`Kind1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/kind-1.md) | Optional | Kind. |
 | `message_digest` | `String` | Optional | Message digest.<br><br>**Constraints**: *Pattern*: `^[0-9a-f]{64}$` |
-| `source` | [`Source6Enum`](http://localhost:3000/llms-pages/ruby/models/enumerations/source-6.md) | Optional | Source. |
-| `topic` | [`TopicEnum`](http://localhost:3000/llms-pages/ruby/models/enumerations/topic.md) | Optional | Topic. |
+| `source` | [`Source6Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/source-6.md) | Optional | Source. |
+| `topic` | [`TopicEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/topic.md) | Optional | Topic. |
 
 
 # Example

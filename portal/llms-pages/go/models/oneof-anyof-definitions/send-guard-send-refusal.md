@@ -1,6 +1,6 @@
 # Send Guard Send Refusal
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlNlbmRHdWFyZFNlbmRSZWZ1c2Fs
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRlNlbmRHdWFyZFNlbmRSZWZ1c2Fs
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlNlbmRHdWFyZFNlbmRSZWZ1c2
 
 | Type | Factory Method |
 |  --- | --- |
-| [`models.SendRefusalEnum`](http://localhost:3000/llms-pages/go/models/enumerations/send-refusal.md) | models.SendGuardSendRefusalContainer.FromSendRefusal(models.SendRefusalEnum sendRefusal) |
+| [`models.SendRefusalEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/send-refusal.md) | models.SendGuardSendRefusalContainer.FromSendRefusal(models.SendRefusalEnum sendRefusal) |
 
 
 # models.SendRefusalEnum

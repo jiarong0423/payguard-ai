@@ -1,6 +1,6 @@
 # Guide State Response Scenario
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZVNjZW5hcmlv
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZVNjZW5hcmlv
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZX
 
 | Type |
 |  --- |
-| [`Scenario1Enum`](http://localhost:3000/llms-pages/typescript/models/enumerations/scenario-1.md) |
+| [`Scenario1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/scenario-1.md) |
 
 
 # Scenario1Enum

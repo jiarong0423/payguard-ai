@@ -1,6 +1,6 @@
 # Send Guard Dispute Amount
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlNlbmRHdWFyZERpc3B1dGVBbW91bnQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRlNlbmRHdWFyZERpc3B1dGVBbW91bnQ
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlNlbmRHdWFyZERpc3B1dGVBbW
 
 | Type | Factory Method |
 |  --- | --- |
-| [`models.ProviderMoney`](http://localhost:3000/llms-pages/go/models/structures/provider-money.md) | models.SendGuardDisputeAmountContainer.FromProviderMoney(models.ProviderMoney providerMoney) |
+| [`models.ProviderMoney`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/provider-money.md) | models.SendGuardDisputeAmountContainer.FromProviderMoney(models.ProviderMoney providerMoney) |
 
 
 # models.ProviderMoney

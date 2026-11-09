@@ -1,6 +1,6 @@
 # Paypal Status Response Evidence Receipt
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlBheXBhbFN0YXR1c1Jlc3BvbnNlRXZpZGVuY2VSZWNlaXB0
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRlBheXBhbFN0YXR1c1Jlc3BvbnNlRXZpZGVuY2VSZWNlaXB0
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlBheXBhbFN0YXR1c1Jlc3Bvbn
 
 | Type | Factory Method |
 |  --- | --- |
-| [`models.SandboxEvidenceReceipt`](http://localhost:3000/llms-pages/go/models/structures/sandbox-evidence-receipt.md) | models.PaypalStatusResponseEvidenceReceiptContainer.FromSandboxEvidenceReceipt(models.SandboxEvidenceReceipt sandboxEvidenceReceipt) |
+| [`models.SandboxEvidenceReceipt`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/sandbox-evidence-receipt.md) | models.PaypalStatusResponseEvidenceReceiptContainer.FromSandboxEvidenceReceipt(models.SandboxEvidenceReceipt sandboxEvidenceReceipt) |
 
 
 # models.SandboxEvidenceReceipt

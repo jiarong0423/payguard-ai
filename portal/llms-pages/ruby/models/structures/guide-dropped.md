@@ -1,6 +1,6 @@
 # Guide Dropped
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkd1aWRlRHJvcHBlZA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkd1aWRlRHJvcHBlZA
 
 GuideDropped.
 
@@ -15,7 +15,7 @@ GuideDropped.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `item` | `String` | Required | Item. |
-| `reason` | [`Reason6Enum`](http://localhost:3000/llms-pages/ruby/models/enumerations/reason-6.md) | Required | Reason. |
+| `reason` | [`Reason6Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/reason-6.md) | Required | Reason. |
 
 
 # Example

@@ -1,6 +1,6 @@
 # Guide State Response Analysis
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZUFuYWx5c2lz
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZUFuYWx5c2lz
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkd1aWRl
 
 | Type | Factory Method |
 |  --- | --- |
-| [`GuideAnalysis`](http://localhost:3000/llms-pages/net-standard-library/models/structures/guide-analysis.md) | GuideStateResponseAnalysis.FromGuideAnalysis(GuideAnalysis guideAnalysis) |
+| [`GuideAnalysis`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/guide-analysis.md) | GuideStateResponseAnalysis.FromGuideAnalysis(GuideAnalysis guideAnalysis) |
 
 
 # GuideAnalysis

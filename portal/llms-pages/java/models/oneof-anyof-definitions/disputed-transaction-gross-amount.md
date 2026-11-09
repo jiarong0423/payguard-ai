@@ -1,6 +1,6 @@
 # Disputed Transaction Gross Amount
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkRpc3B1dGVkVHJhbnNhY3Rpb25Hcm9zc0Ftb3VudA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkRpc3B1dGVkVHJhbnNhY3Rpb25Hcm9zc0Ftb3VudA
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkRpc3B1dGVkVHJhbnNhY3Rp
 
 | Type | Factory Method |
 |  --- | --- |
-| [`ProviderMoney`](http://localhost:3000/llms-pages/java/models/structures/provider-money.md) | DisputedTransactionGrossAmount.fromProviderMoney(ProviderMoney providerMoney) |
+| [`ProviderMoney`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/provider-money.md) | DisputedTransactionGrossAmount.fromProviderMoney(ProviderMoney providerMoney) |
 
 
 # ProviderMoney

@@ -1,6 +1,6 @@
 # Paypal Status Response
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRlBheXBhbFN0YXR1c1Jlc3BvbnNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRlBheXBhbFN0YXR1c1Jlc3BvbnNl
 
 PaypalStatusResponse.
 
@@ -16,10 +16,10 @@ PaypalStatusResponse.
 |  --- | --- | --- | --- | --- | --- |
 | `configured` | `bool` | Required | Configured. | getConfigured(): bool | setConfigured(bool configured): void |
 | `environment` | `string` | Required, Constant | Environment.<br><br>**Value**: `'sandbox'` | getEnvironment(): string | setEnvironment(string environment): void |
-| `evidenceReceipt` | [SandboxEvidenceReceipt](http://localhost:3000/llms-pages/php/models/structures/sandbox-evidence-receipt.md) | Required | This is a container for any-of cases. | getEvidenceReceipt(): SandboxEvidenceReceipt | setEvidenceReceipt(SandboxEvidenceReceipt evidenceReceipt): void |
+| `evidenceReceipt` | [SandboxEvidenceReceipt](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/sandbox-evidence-receipt.md) | Required | This is a container for any-of cases. | getEvidenceReceipt(): SandboxEvidenceReceipt | setEvidenceReceipt(SandboxEvidenceReceipt evidenceReceipt): void |
 | `lastVerifiedAt` | string | Required | This is a container for any-of cases. | getLastVerifiedAt(): string | setLastVerifiedAt(string lastVerifiedAt): void |
 | `source` | `string` | Required, Constant | Source.<br><br>**Value**: `'paypal_sandbox'` | getSource(): string | setSource(string source): void |
-| `status` | [`string(Status11Enum)`](http://localhost:3000/llms-pages/php/models/enumerations/status-11.md) | Required | Status. | getStatus(): string | setStatus(string status): void |
+| `status` | [`string(Status11Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/status-11.md) | Required | Status. | getStatus(): string | setStatus(string status): void |
 
 
 # Example

@@ -1,6 +1,6 @@
 # Guide Reply Fallback Reason
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkd1aWRlUmVwbHlGYWxsYmFja1JlYXNvbg
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkd1aWRlUmVwbHlGYWxsYmFja1JlYXNvbg
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkd1aWRlUmVwbHlGYWxsYmFja1
 
 | Type | Factory Method |
 |  --- | --- |
-| [`models.FallbackReasonEnum`](http://localhost:3000/llms-pages/go/models/enumerations/fallback-reason.md) | models.GuideReplyFallbackReasonContainer.FromFallbackReason(models.FallbackReasonEnum fallbackReason) |
+| [`models.FallbackReasonEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/fallback-reason.md) | models.GuideReplyFallbackReasonContainer.FromFallbackReason(models.FallbackReasonEnum fallbackReason) |
 
 
 # models.FallbackReasonEnum

@@ -1,6 +1,6 @@
 # Product Confirm Response
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maXJtUmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maXJtUmVzcG9uc2U
 
 The seller's own choice: one of the cards they were shown, or none of them.
 
@@ -15,14 +15,14 @@ The seller's own choice: one of the cards they were shown, or none of them.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `affectsDecision` | `string` | Required, Constant | Affects decision.<br><br>**Value**: `'False'` | getAffectsDecision(): string | setAffectsDecision(string affectsDecision): void |
-| `card` | [ProductCard](http://localhost:3000/llms-pages/php/models/structures/product-card.md) | Required | This is a container for any-of cases. | getCard(): ProductCard | setCard(ProductCard card): void |
+| `card` | [ProductCard](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/product-card.md) | Required | This is a container for any-of cases. | getCard(): ProductCard | setCard(ProductCard card): void |
 | `cardDigest` | string | Required | This is a container for any-of cases. | getCardDigest(): string | setCardDigest(string cardDigest): void |
-| `choice` | [`string(Choice2Enum)`](http://localhost:3000/llms-pages/php/models/enumerations/choice-2.md) | Required | Choice. | getChoice(): string | setChoice(string choice): void |
+| `choice` | [`string(Choice2Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/choice-2.md) | Required | Choice. | getChoice(): string | setChoice(string choice): void |
 | `confirmedBy` | `string` | Required, Constant | Confirmed by.<br><br>**Value**: `'seller'` | getConfirmedBy(): string | setConfirmedBy(string confirmedBy): void |
 | `descriptionDigest` | `string` | Required | Description digest.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` | getDescriptionDigest(): string | setDescriptionDigest(string descriptionDigest): void |
 | `evaluationId` | `string` | Required | Evaluation id.<br><br>**Constraints**: *Minimum Length*: `32`, *Maximum Length*: `128`, *Pattern*: `^[A-Za-z0-9_-]+$` | getEvaluationId(): string | setEvaluationId(string evaluationId): void |
 | `recordedAt` | string | Required | This is a container for any-of cases. | getRecordedAt(): string | setRecordedAt(string recordedAt): void |
-| `source` | [`string(Source10Enum)`](http://localhost:3000/llms-pages/php/models/enumerations/source-10.md) | Required | Source. | getSource(): string | setSource(string source): void |
+| `source` | [`string(Source10Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/source-10.md) | Required | Source. | getSource(): string | setSource(string source): void |
 
 
 # Example

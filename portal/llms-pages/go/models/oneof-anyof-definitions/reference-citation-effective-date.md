@@ -1,6 +1,6 @@
 # Reference Citation Effective Date
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlJlZmVyZW5jZUNpdGF0aW9uRWZmZWN0aXZlRGF0ZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRlJlZmVyZW5jZUNpdGF0aW9uRWZmZWN0aXZlRGF0ZQ
 
 
 # Class Name

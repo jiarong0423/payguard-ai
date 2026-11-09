@@ -1,6 +1,6 @@
 # Identity Redaction
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRklkZW50aXR5UmVkYWN0aW9u
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRklkZW50aXR5UmVkYWN0aW9u
 
 IdentityRedaction.
 
@@ -14,10 +14,10 @@ IdentityRedaction.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `fields` | [`string(FieldEnum)[]`](http://localhost:3000/llms-pages/php/models/enumerations/field.md) | Required | Fields. | getFields(): array | setFields(array fields): void |
+| `fields` | [`string(FieldEnum)[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/field.md) | Required | Fields. | getFields(): array | setFields(array fields): void |
 | `method` | `string` | Required, Constant | Method.<br><br>**Value**: `'HMAC-SHA256 pseudonymization'` | getMethod(): string | setMethod(string method): void |
 | `synthetic` | `string` | Required, Constant | Synthetic.<br><br>**Value**: `'True'` | getSynthetic(): string | setSynthetic(string synthetic): void |
-| `tokens` | [`IdentityTokens`](http://localhost:3000/llms-pages/php/models/structures/identity-tokens.md) | Required | IdentityTokens. | getTokens(): IdentityTokens | setTokens(IdentityTokens tokens): void |
+| `tokens` | [`IdentityTokens`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/identity-tokens.md) | Required | IdentityTokens. | getTokens(): IdentityTokens | setTokens(IdentityTokens tokens): void |
 
 
 # Example

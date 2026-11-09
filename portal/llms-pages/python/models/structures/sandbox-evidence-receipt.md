@@ -1,6 +1,6 @@
 # Sandbox Evidence Receipt
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRlNhbmRib3hFdmlkZW5jZVJlY2VpcHQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlNhbmRib3hFdmlkZW5jZVJlY2VpcHQ
 
 SandboxEvidenceReceipt.
 
@@ -14,9 +14,9 @@ SandboxEvidenceReceipt.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `action` | [`ActionEnum`](http://localhost:3000/llms-pages/python/models/enumerations/action.md) | Required | Action. |
+| `action` | [`ActionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/action.md) | Required | Action. |
 | `environment` | `str` | Required, Constant | Environment.<br><br>**Value**: `"sandbox"` |
-| `evidence_class` | [`EvidenceClass3Enum`](http://localhost:3000/llms-pages/python/models/enumerations/evidence-class-3.md) | Required | Evidence class. |
+| `evidence_class` | [`EvidenceClass3Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/evidence-class-3.md) | Required | Evidence class. |
 | `external_send` | `str` | Required, Constant | External send.<br><br>**Value**: `"FROZEN"` |
 | `invoice_id` | str | Required | This is a container for any-of cases. |
 | `observed_at` | `str` | Required | Observed at.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `27` |
@@ -24,7 +24,7 @@ SandboxEvidenceReceipt.
 | `proof_kind` | `str` | Required, Constant | Proof kind.<br><br>**Value**: `"POST_RESPONSE_ONLY"` |
 | `schema_version` | `int` | Required, Constant | Schema version.<br><br>**Value**: `1` |
 | `separate_get_readback` | `str` | Required, Constant | Separate get readback.<br><br>**Value**: `"False"` |
-| `status` | [`Status10Enum`](http://localhost:3000/llms-pages/python/models/enumerations/status-10.md) | Required | Status. |
+| `status` | [`Status10Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/status-10.md) | Required | Status. |
 
 
 # Example

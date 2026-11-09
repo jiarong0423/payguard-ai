@@ -1,6 +1,6 @@
 # Product Reference Response Reason
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlByb2R1Y3RSZWZlcmVuY2VSZXNwb25zZVJlYXNvbg
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRlByb2R1Y3RSZWZlcmVuY2VSZXNwb25zZVJlYXNvbg
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlByb2R1Y3RSZWZlcm
 
 | Type |
 |  --- |
-| [`Reason7Enum`](http://localhost:3000/llms-pages/typescript/models/enumerations/reason-7.md) |
+| [`Reason7Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/reason-7.md) |
 
 
 # Reason7Enum

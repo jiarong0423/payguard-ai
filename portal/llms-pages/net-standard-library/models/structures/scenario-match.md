@@ -1,6 +1,6 @@
 # Scenario Match
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRlNjZW5hcmlvTWF0Y2g
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRlNjZW5hcmlvTWF0Y2g
 
 ScenarioMatch.
 
@@ -17,12 +17,12 @@ ScenarioMatch.
 | `CurrentPolicyApplicability` | `string` | Required, Constant | Current policy applicability.<br><br>**Value**: `"NOT_ESTABLISHED"` |
 | `EngineExecution` | `string` | Required, Constant | Engine execution.<br><br>**Value**: `"NOT_RUN"` |
 | `EvaluationScope` | `string` | Required, Constant | Evaluation scope.<br><br>**Value**: `"AUTHORED_SYNTHETIC_DEMO_ONLY"` |
-| `IntakeStatus` | [`IntakeStatusEnum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/intake-status.md) | Required | Intake status. |
+| `IntakeStatus` | [`IntakeStatusEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/intake-status.md) | Required | Intake status. |
 | `OperationalAuthority` | `string` | Required, Constant | Operational authority.<br><br>**Value**: `"REFERENCE_ONLY_NO_ACTION_AUTHORIZATION"` |
 | `Provenance` | `string` | Required, Constant | Provenance.<br><br>**Value**: `"AUTHORED_SYNTHETIC_SCENARIOS_NOT_REAL_CASES"` |
 | `RealCaseEvidence` | `string` | Required, Constant | Real case evidence.<br><br>**Value**: `"NOT_PROVIDED"` |
 | `RequiredHumanReview` | `string` | Required, Constant | Required human review.<br><br>**Value**: `"True"` |
-| `Scenario` | [`DisputeScenario`](http://localhost:3000/llms-pages/net-standard-library/models/structures/dispute-scenario.md) | Required | DisputeScenario. |
+| `Scenario` | [`DisputeScenario`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/dispute-scenario.md) | Required | DisputeScenario. |
 | `SchemaVersion` | `int` | Required, Constant | Schema version.<br><br>**Value**: `1` |
 | `Source` | `string` | Required, Constant | Source.<br><br>**Value**: `"local_synthetic_scenario_matcher"` |
 | `Status` | `string` | Required, Constant | Status.<br><br>**Value**: `"synthetic_scenarios_found"` |

@@ -1,6 +1,6 @@
 # Paypal Status Response
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlBheXBhbFN0YXR1c1Jlc3BvbnNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlBheXBhbFN0YXR1c1Jlc3BvbnNl
 
 PaypalStatusResponse.
 
@@ -16,10 +16,10 @@ PaypalStatusResponse.
 |  --- | --- | --- | --- | --- | --- |
 | `Configured` | `boolean` | Required | Configured. | boolean getConfigured() | setConfigured(boolean configured) |
 | `Environment` | `String` | Required, Constant | Environment.<br><br>**Value**: `"sandbox"` | String getEnvironment() | setEnvironment(String environment) |
-| `EvidenceReceipt` | [`PaypalStatusResponseEvidenceReceipt`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/paypal-status-response-evidence-receipt.md) | Required | This is a container for any-of cases. | PaypalStatusResponseEvidenceReceipt getEvidenceReceipt() | setEvidenceReceipt(PaypalStatusResponseEvidenceReceipt evidenceReceipt) |
-| `LastVerifiedAt` | [`PaypalStatusResponseLastVerifiedAt`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/paypal-status-response-last-verified-at.md) | Required | This is a container for any-of cases. | PaypalStatusResponseLastVerifiedAt getLastVerifiedAt() | setLastVerifiedAt(PaypalStatusResponseLastVerifiedAt lastVerifiedAt) |
+| `EvidenceReceipt` | [`PaypalStatusResponseEvidenceReceipt`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/paypal-status-response-evidence-receipt.md) | Required | This is a container for any-of cases. | PaypalStatusResponseEvidenceReceipt getEvidenceReceipt() | setEvidenceReceipt(PaypalStatusResponseEvidenceReceipt evidenceReceipt) |
+| `LastVerifiedAt` | [`PaypalStatusResponseLastVerifiedAt`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/paypal-status-response-last-verified-at.md) | Required | This is a container for any-of cases. | PaypalStatusResponseLastVerifiedAt getLastVerifiedAt() | setLastVerifiedAt(PaypalStatusResponseLastVerifiedAt lastVerifiedAt) |
 | `Source` | `String` | Required, Constant | Source.<br><br>**Value**: `"paypal_sandbox"` | String getSource() | setSource(String source) |
-| `Status` | [`Status11Enum`](http://localhost:3000/llms-pages/java/models/enumerations/status-11.md) | Required | Status. | Status11Enum getStatus() | setStatus(Status11Enum status) |
+| `Status` | [`Status11Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/status-11.md) | Required | Status. | Status11Enum getStatus() | setStatus(Status11Enum status) |
 
 
 # Example

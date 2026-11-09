@@ -1,6 +1,6 @@
 # Country Rules Search Request
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkNvdW50cnlSdWxlc1NlYXJjaFJlcXVlc3Q
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkNvdW50cnlSdWxlc1NlYXJjaFJlcXVlc3Q
 
 CountryRulesSearchRequest.
 

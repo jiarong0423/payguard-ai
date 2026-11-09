@@ -1,6 +1,6 @@
 # Policy Coverage
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlBvbGljeUNvdmVyYWdl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlBvbGljeUNvdmVyYWdl
 
 PolicyCoverage.
 
@@ -16,8 +16,8 @@ PolicyCoverage.
 |  --- | --- | --- | --- | --- | --- |
 | `Basis` | `String` | Required, Constant | Basis.<br><br>**Value**: `"pinned_authored_summaries_only"` | String getBasis() | setBasis(String basis) |
 | `Complete` | `boolean` | Required | Complete. | boolean getComplete() | setComplete(boolean complete) |
-| `MissingOfficialPolicyThemes` | [`List<MissingOfficialPolicyThemeEnum>`](http://localhost:3000/llms-pages/java/models/enumerations/missing-official-policy-theme.md) | Required | Missing official policy themes.<br><br>**Constraints**: *Maximum Items*: `3` | List<MissingOfficialPolicyThemeEnum> getMissingOfficialPolicyThemes() | setMissingOfficialPolicyThemes(List<MissingOfficialPolicyThemeEnum> missingOfficialPolicyThemes) |
-| `OfficialPolicyChunkCountByTheme` | [`PolicyThemeCounts`](http://localhost:3000/llms-pages/java/models/structures/policy-theme-counts.md) | Required | PolicyThemeCounts. | PolicyThemeCounts getOfficialPolicyChunkCountByTheme() | setOfficialPolicyChunkCountByTheme(PolicyThemeCounts officialPolicyChunkCountByTheme) |
+| `MissingOfficialPolicyThemes` | [`List<MissingOfficialPolicyThemeEnum>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/missing-official-policy-theme.md) | Required | Missing official policy themes.<br><br>**Constraints**: *Maximum Items*: `3` | List<MissingOfficialPolicyThemeEnum> getMissingOfficialPolicyThemes() | setMissingOfficialPolicyThemes(List<MissingOfficialPolicyThemeEnum> missingOfficialPolicyThemes) |
+| `OfficialPolicyChunkCountByTheme` | [`PolicyThemeCounts`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/policy-theme-counts.md) | Required | PolicyThemeCounts. | PolicyThemeCounts getOfficialPolicyChunkCountByTheme() | setOfficialPolicyChunkCountByTheme(PolicyThemeCounts officialPolicyChunkCountByTheme) |
 | `OfficialPolicySourceIds` | `List<String>` | Required | Official policy source ids.<br><br>**Constraints**: *Maximum Items*: `16`, *Pattern*: `^[A-Z0-9-]{1,128}$` | List<String> getOfficialPolicySourceIds() | setOfficialPolicySourceIds(List<String> officialPolicySourceIds) |
 | `RegionalSourceCount` | `int` | Required | Regional source count.<br><br>**Constraints**: `>= 0`, `<= 16` | int getRegionalSourceCount() | setRegionalSourceCount(int regionalSourceCount) |
 | `SelectedChunkCount` | `int` | Required | Selected chunk count.<br><br>**Constraints**: `>= 0`, `<= 29` | int getSelectedChunkCount() | setSelectedChunkCount(int selectedChunkCount) |

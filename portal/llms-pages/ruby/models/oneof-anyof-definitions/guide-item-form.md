@@ -1,6 +1,6 @@
 # Guide Item Form
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkd1aWRlSXRlbUZvcm0
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkd1aWRlSXRlbUZvcm0
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkd1aWRlSXRlbUZvcm0
 
 | Type |
 |  --- |
-| [`GuideForm`](http://localhost:3000/llms-pages/ruby/models/structures/guide-form.md) |
+| [`GuideForm`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/guide-form.md) |
 
 
 # GuideForm

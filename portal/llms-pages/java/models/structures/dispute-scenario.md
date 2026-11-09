@@ -1,6 +1,6 @@
 # Dispute Scenario
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkRpc3B1dGVTY2VuYXJpbw
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkRpc3B1dGVTY2VuYXJpbw
 
 DisputeScenario.
 
@@ -14,7 +14,7 @@ DisputeScenario.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Citations` | [`List<ScenarioCitation>`](http://localhost:3000/llms-pages/java/models/structures/scenario-citation.md) | Required | Citations.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `20` | List<ScenarioCitation> getCitations() | setCitations(List<ScenarioCitation> citations) |
+| `Citations` | [`List<ScenarioCitation>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/scenario-citation.md) | Required | Citations.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `20` | List<ScenarioCitation> getCitations() | setCitations(List<ScenarioCitation> citations) |
 | `EvidenceClass` | `String` | Required, Constant | Evidence class.<br><br>**Value**: `"SYNTHETIC_DEMO_SCENARIO"` | String getEvidenceClass() | setEvidenceClass(String evidenceClass) |
 | `ExpectedRoute` | `String` | Required, Constant | Expected route.<br><br>**Value**: `"PREPARE_REDACTED_DRAFT_FOR_HUMAN_REVIEW"` | String getExpectedRoute() | setExpectedRoute(String expectedRoute) |
 | `FinalAuthority` | `String` | Required, Constant | Final authority.<br><br>**Value**: `"PAYPAL_OR_EXTERNAL_ISSUER"` | String getFinalAuthority() | setFinalAuthority(String finalAuthority) |

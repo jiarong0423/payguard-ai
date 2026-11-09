@@ -1,6 +1,6 @@
 # Error Body
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkVycm9yQm9keQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkVycm9yQm9keQ
 
 The error body every refusal uses.
 
@@ -14,7 +14,7 @@ The error body every refusal uses.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `error` | [`Error`](http://localhost:3000/llms-pages/ruby/models/structures/error.md) | Required | What was refused and why. |
+| `error` | [`Error`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/error.md) | Required | What was refused and why. |
 
 
 # Example

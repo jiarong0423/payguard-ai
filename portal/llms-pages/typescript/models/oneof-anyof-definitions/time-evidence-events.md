@@ -1,6 +1,6 @@
 # Time Evidence Events
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZUV2ZW50cw
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZUV2ZW50cw
 
 
 # Class Name
@@ -12,8 +12,8 @@ Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZU
 
 | Type |
 |  --- |
-| [`MessageTimeEvent`](http://localhost:3000/llms-pages/typescript/models/structures/message-time-event.md) |
-| [`TimeEvent`](http://localhost:3000/llms-pages/typescript/models/structures/time-event.md) |
+| [`MessageTimeEvent`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/message-time-event.md) |
+| [`TimeEvent`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/time-event.md) |
 
 
 # MessageTimeEvent

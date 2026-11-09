@@ -1,6 +1,6 @@
 # Time Evidence 1 Events
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZTFFdmVudHM
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZTFFdmVudHM
 
 
 # Class Name
@@ -12,8 +12,8 @@ Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZTFFdmVudH
 
 | Type | Factory Method |
 |  --- | --- |
-| [`models.MessageTimeEvent`](http://localhost:3000/llms-pages/go/models/structures/message-time-event.md) | models.TimeEvidence1EventsContainer.FromMessageTimeEvent(models.MessageTimeEvent messageTimeEvent) |
-| [`models.TimeEvent`](http://localhost:3000/llms-pages/go/models/structures/time-event.md) | models.TimeEvidence1EventsContainer.FromTimeEvent(models.TimeEvent timeEvent) |
+| [`models.MessageTimeEvent`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/message-time-event.md) | models.TimeEvidence1EventsContainer.FromMessageTimeEvent(models.MessageTimeEvent messageTimeEvent) |
+| [`models.TimeEvent`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/time-event.md) | models.TimeEvidence1EventsContainer.FromTimeEvent(models.TimeEvent timeEvent) |
 
 
 # models.MessageTimeEvent

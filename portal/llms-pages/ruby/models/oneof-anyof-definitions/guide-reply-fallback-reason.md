@@ -1,6 +1,6 @@
 # Guide Reply Fallback Reason
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkd1aWRlUmVwbHlGYWxsYmFja1JlYXNvbg
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkd1aWRlUmVwbHlGYWxsYmFja1JlYXNvbg
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkd1aWRlUmVwbHlGYWxsYmFj
 
 | Type |
 |  --- |
-| [`FallbackReasonEnum`](http://localhost:3000/llms-pages/ruby/models/enumerations/fallback-reason.md) |
+| [`FallbackReasonEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/fallback-reason.md) |
 
 
 # FallbackReasonEnum

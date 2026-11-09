@@ -1,6 +1,6 @@
 # Post Advisory Evaluate
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0ZSUyRm90aGVyJTJGcG9zdF9hZHZpc29yeV9ldmFsdWF0ZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0ZSUyRm90aGVyJTJGcG9zdF9hZHZpc29yeV9ldmFsdWF0ZQ
 
 Advisory Evaluate. Local console route POST /api/v1/advisory/evaluate on synthetic data; advisory only.
 
@@ -15,14 +15,14 @@ function postAdvisoryEvaluate(AdvisoryRequest $body): AdvisoryEvaluationResponse
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`AdvisoryRequest`](http://localhost:3000/llms-pages/php/models/structures/advisory-request.md) | Body, Required | - |
+| `body` | [`AdvisoryRequest`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/advisory-request.md) | Body, Required | - |
 
 
 # Response Type
 
 **200**: Successful Response
 
-[`AdvisoryEvaluationResponse`](http://localhost:3000/llms-pages/php/models/structures/advisory-evaluation-response.md)
+[`AdvisoryEvaluationResponse`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/advisory-evaluation-response.md)
 
 
 # Example Usage
@@ -55,9 +55,9 @@ try {
 
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
-| 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](http://localhost:3000/llms-pages/php/models/exceptions/error-body.md) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](http://localhost:3000/llms-pages/php/models/exceptions/http-validation-error.md) |
-| 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](http://localhost:3000/llms-pages/php/models/exceptions/error-body.md) |
+| 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/exceptions/error-body.md) |
+| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/exceptions/http-validation-error.md) |
+| 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/exceptions/error-body.md) |
 
 
 

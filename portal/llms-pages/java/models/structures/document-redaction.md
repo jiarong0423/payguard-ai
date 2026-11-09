@@ -1,6 +1,6 @@
 # Document Redaction
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkRvY3VtZW50UmVkYWN0aW9u
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkRvY3VtZW50UmVkYWN0aW9u
 
 DocumentRedaction.
 
@@ -24,7 +24,7 @@ DocumentRedaction.
 | `ReplacementCount` | `int` | Required | Replacement count.<br><br>**Constraints**: `>= 0`, `<= 128` | int getReplacementCount() | setReplacementCount(int replacementCount) |
 | `Reversibility` | `String` | Required, Constant | Reversibility.<br><br>**Value**: `"False"` | String getReversibility() | setReversibility(String reversibility) |
 | `Source` | `String` | Required, Constant | Source.<br><br>**Value**: `"synthetic"` | String getSource() | setSource(String source) |
-| `Types` | [`List<TypeEnum>`](http://localhost:3000/llms-pages/java/models/enumerations/type.md) | Required | Types.<br><br>**Constraints**: *Maximum Items*: `7` | List<TypeEnum> getTypes() | setTypes(List<TypeEnum> types) |
+| `Types` | [`List<TypeEnum>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/type.md) | Required | Types.<br><br>**Constraints**: *Maximum Items*: `7` | List<TypeEnum> getTypes() | setTypes(List<TypeEnum> types) |
 
 
 # Example

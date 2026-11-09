@@ -1,6 +1,6 @@
 # Policy Context
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRlBvbGljeUNvbnRleHQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlBvbGljeUNvbnRleHQ
 
 PolicyContext.
 
@@ -17,7 +17,7 @@ PolicyContext.
 | `as_of` | `str` | Required | As of.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `64` |
 | `jurisdiction` | `str` | Required, Constant | Jurisdiction.<br><br>**Value**: `"US"` |
 | `observation_max_age_days` | `int` | Required | Observation max age days.<br><br>**Constraints**: `>= 0`, `<= 365000` |
-| `theme` | [`ThemeEnum`](http://localhost:3000/llms-pages/python/models/enumerations/theme.md) | Required | Theme. |
+| `theme` | [`ThemeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/theme.md) | Required | Theme. |
 
 
 # Example

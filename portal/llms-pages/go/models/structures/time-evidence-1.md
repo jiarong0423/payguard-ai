@@ -1,6 +1,6 @@
 # Time Evidence 1
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZTE
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZTE
 
 Time evidence.
 
@@ -15,11 +15,11 @@ Time evidence.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `AdvisoryOnly` | `*bool` | Optional | Advisory only. |
-| `Events` | [`[]models.TimeEvidence1Events`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/time-evidence-1-events.md) | Optional | This is Array of a container for any-of cases.<br><br>**Constraints**: *Minimum Items*: `2`, *Maximum Items*: `30` |
-| `Flags` | [`[]models.FlagEnum`](http://localhost:3000/llms-pages/go/models/enumerations/flag.md) | Optional | Flags.<br><br>**Constraints**: *Maximum Items*: `4` |
-| `GapsSeconds` | [`*models.TimeGaps`](http://localhost:3000/llms-pages/go/models/structures/time-gaps.md) | Optional | TimeGaps. |
-| `Judgement` | [`*models.JudgementEnum`](http://localhost:3000/llms-pages/go/models/enumerations/judgement.md) | Optional | Judgement. |
-| `SchemaVersion` | [`*models.SchemaVersionEnum`](http://localhost:3000/llms-pages/go/models/enumerations/schema-version.md) | Optional | Schema version. |
+| `Events` | [`[]models.TimeEvidence1Events`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/time-evidence-1-events.md) | Optional | This is Array of a container for any-of cases.<br><br>**Constraints**: *Minimum Items*: `2`, *Maximum Items*: `30` |
+| `Flags` | [`[]models.FlagEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/flag.md) | Optional | Flags.<br><br>**Constraints**: *Maximum Items*: `4` |
+| `GapsSeconds` | [`*models.TimeGaps`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/time-gaps.md) | Optional | TimeGaps. |
+| `Judgement` | [`*models.JudgementEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/judgement.md) | Optional | Judgement. |
+| `SchemaVersion` | [`*models.SchemaVersionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/schema-version.md) | Optional | Schema version. |
 
 
 # Example

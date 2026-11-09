@@ -1,6 +1,6 @@
 # Guide Analysis Reason
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkd1aWRlQW5hbHlzaXNSZWFzb24
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkd1aWRlQW5hbHlzaXNSZWFzb24
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkd1aWRlQW5hbHlzaX
 
 | Type |
 |  --- |
-| [`Reason5Enum`](http://localhost:3000/llms-pages/typescript/models/enumerations/reason-5.md) |
+| [`Reason5Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/reason-5.md) |
 
 
 # Reason5Enum

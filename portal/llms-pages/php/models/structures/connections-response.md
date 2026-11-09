@@ -1,6 +1,6 @@
 # Connections Response
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkNvbm5lY3Rpb25zUmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkNvbm5lY3Rpb25zUmVzcG9uc2U
 
 Deployment mode only. Never a key, a key's presence, a value or a variable name.
 
@@ -14,7 +14,7 @@ Deployment mode only. Never a key, a key's presence, a value or a variable name.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `mode` | [`string(ModeEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/mode.md) | Required | Mode. | getMode(): string | setMode(string mode): void |
+| `mode` | [`string(ModeEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/mode.md) | Required | Mode. | getMode(): string | setMode(string mode): void |
 
 
 # Example

@@ -1,8 +1,8 @@
 # HttpClientConfiguration.Builder
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0aCUyRl9fYWRkaXRpb25hbF9kb2N1bWVudGF0aW9uJTJGQ29uZmlndXJhdGlvbiUyRkh0dHBDbGllbnRDb25maWd1cmF0aW9uLkJ1aWxkZXI
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0aCUyRl9fYWRkaXRpb25hbF9kb2N1bWVudGF0aW9uJTJGQ29uZmlndXJhdGlvbiUyRkh0dHBDbGllbnRDb25maWd1cmF0aW9uLkJ1aWxkZXI
 
-Class to build instances of [HttpClientConfiguration](http://localhost:3000/llms-pages/java/sdk-infrastructure/configuration/httpclientconfiguration.md).
+Class to build instances of [HttpClientConfiguration](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/sdk-infrastructure/configuration/httpclientconfiguration.md).
 
 # Constructors
 
@@ -24,8 +24,8 @@ Class to build instances of [HttpClientConfiguration](http://localhost:3000/llms
 | `shouldRetryOnTimeout(boolean shouldRetryOnTimeout)` | Sets whether to retry on request timeout. | `HttpClientConfiguration.Builder` |
 | `httpClientInstance(okhttp3.OkHttpClient httpClientInstance)` | Sets the okhttpclient instance used to make the http calls. | `HttpClientConfiguration.Builder` |
 | `httpClientInstance(okhttp3.OkHttpClient httpClientInstance, boolean overrideHttpClientConfigurations)` | Sets the okhttpclient instance used to make the http calls and an option to Allow the SDK to override HTTP client instance's settings used for features like retries, timeouts etc. | `HttpClientConfiguration.Builder` |
-| <code>proxyConfig([HttpProxyConfiguration.Builder](http://localhost:3000/llms-pages/java/sdk-infrastructure/configuration/httpproxyconfiguration-builder.md) proxyBuilder)</code> | Sets the proxy configuration for the underlying HTTP client. | `HttpClientConfiguration.Builder` |
-| `build()` | Builds a new HttpClientConfiguration object using the set fields. | [`HttpClientConfiguration`](http://localhost:3000/llms-pages/java/sdk-infrastructure/configuration/httpclientconfiguration.md) |
+| <code>proxyConfig([HttpProxyConfiguration.Builder](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/sdk-infrastructure/configuration/httpproxyconfiguration-builder.md) proxyBuilder)</code> | Sets the proxy configuration for the underlying HTTP client. | `HttpClientConfiguration.Builder` |
+| `build()` | Builds a new HttpClientConfiguration object using the set fields. | [`HttpClientConfiguration`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/sdk-infrastructure/configuration/httpclientconfiguration.md) |
 
 
 

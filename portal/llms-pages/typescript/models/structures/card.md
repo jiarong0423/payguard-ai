@@ -1,6 +1,6 @@
 # Card
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkNhcmQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkNhcmQ
 
 Card.
 
@@ -14,9 +14,9 @@ Card.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `brand` | [`CardBrand \| undefined`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/card-brand.md) | Optional | This is a container for any-of cases. |
-| `category` | [`CardCategory \| undefined`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/card-category.md) | Optional | This is a container for any-of cases. |
-| `imageUrl` | [`CardImageUrl \| undefined`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/card-image-url.md) | Optional | This is a container for any-of cases. |
+| `brand` | [`CardBrand \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/card-brand.md) | Optional | This is a container for any-of cases. |
+| `category` | [`CardCategory \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/card-category.md) | Optional | This is a container for any-of cases. |
+| `imageUrl` | [`CardImageUrl \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/card-image-url.md) | Optional | This is a container for any-of cases. |
 | `keyFeatures` | `string[] \| undefined` | Optional | Key features.<br><br>**Constraints**: *Maximum Items*: `4`, *Minimum Length*: `2`, *Maximum Length*: `100`, *Pattern*: `^[A-Za-z0-9 &'\-,./+()%\"]+$` |
 | `materials` | `string[] \| undefined` | Optional | Materials.<br><br>**Constraints**: *Maximum Items*: `4`, *Minimum Length*: `2`, *Maximum Length*: `40`, *Pattern*: `^[A-Za-z0-9 &'\-,./+()%\"]+$` |
 | `productId` | `string \| undefined` | Optional | Product id.<br><br>**Constraints**: *Pattern*: `^[A-Za-z0-9_.:-]{1,64}$` |

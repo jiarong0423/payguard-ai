@@ -1,6 +1,6 @@
 # How to Get Started
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0aCUyRl9fZ2V0dGluZ19zdGFydGVk
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0aCUyRl9fZ2V0dGluZ19zdGFydGVk
 
 
 # Introduction
@@ -66,7 +66,7 @@ The following parameters are configurable for the API Client:
 | Parameter | Type | Description |
 |  --- | --- | --- |
 | Timeout | `TimeSpan` | Http client timeout.<br>*Default*: `TimeSpan.FromSeconds(100)` |
-| HttpClientConfiguration | [`Action<HttpClientConfiguration.Builder>`](http://localhost:3000/llms-pages/net-standard-library/sdk-infrastructure/configuration/httpclientconfigurationbuilder.md) | Action delegate that configures the HTTP client by using the HttpClientConfiguration.Builder for customizing API call settings.<br>*Default*: `new HttpClient()` |
+| HttpClientConfiguration | [`Action<HttpClientConfiguration.Builder>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/sdk-infrastructure/configuration/httpclientconfigurationbuilder.md) | Action delegate that configures the HTTP client by using the HttpClientConfiguration.Builder for customizing API call settings.<br>*Default*: `new HttpClient()` |
 
 The API client can be initialized as follows:
 
@@ -102,7 +102,7 @@ var client = TradeGlotLocalConsoleClient
     .FromConfiguration(configuration.GetSection("TradeGlotLocalConsole"));
 ```
 
-See the [Configuration-Based Initialization](http://localhost:3000/llms-pages/net-standard-library/sdk-infrastructure/configuration/configuration-based-initialization.md) section for details.
+See the [Configuration-Based Initialization](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/sdk-infrastructure/configuration/configuration-based-initialization.md) section for details.
 
 
 # Test the SDK

@@ -1,6 +1,6 @@
 # Policy Assessment Response
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRlBvbGljeUFzc2Vzc21lbnRSZXNwb25zZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRlBvbGljeUFzc2Vzc21lbnRSZXNwb25zZQ
 
 PolicyAssessmentResponse.
 
@@ -15,20 +15,20 @@ PolicyAssessmentResponse.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `AdvisoryOnly` | `bool` | Required | Advisory only. |
-| `Chunks` | [`List<PolicyChunk>`](http://localhost:3000/llms-pages/net-standard-library/models/structures/policy-chunk.md) | Required | Chunks.<br><br>**Constraints**: *Maximum Items*: `29` |
+| `Chunks` | [`List<PolicyChunk>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/policy-chunk.md) | Required | Chunks.<br><br>**Constraints**: *Maximum Items*: `29` |
 | `CorpusDigest` | `string` | Required | Corpus digest.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` |
-| `CorpusDigests` | [`ReferenceDigests`](http://localhost:3000/llms-pages/net-standard-library/models/structures/reference-digests.md) | Required | ReferenceDigests. |
+| `CorpusDigests` | [`ReferenceDigests`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/reference-digests.md) | Required | ReferenceDigests. |
 | `CorpusId` | `string` | Required, Constant | Corpus id.<br><br>**Value**: `"payguard-us-official-references-v2"` |
-| `Coverage` | [`PolicyCoverage`](http://localhost:3000/llms-pages/net-standard-library/models/structures/policy-coverage.md) | Required | PolicyCoverage. |
+| `Coverage` | [`PolicyCoverage`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/policy-coverage.md) | Required | PolicyCoverage. |
 | `CurrentPolicyApplicability` | `string` | Required, Constant | Current policy applicability.<br><br>**Value**: `"NOT_ESTABLISHED"` |
-| `FiltersApplied` | [`PolicyContext`](http://localhost:3000/llms-pages/net-standard-library/models/structures/policy-context.md) | Required | PolicyContext. |
+| `FiltersApplied` | [`PolicyContext`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/policy-context.md) | Required | PolicyContext. |
 | `Limitations` | `List<string>` | Required | Limitations.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `32`, *Minimum Length*: `1`, *Maximum Length*: `2000` |
 | `OperationalAuthority` | `string` | Required, Constant | Operational authority.<br><br>**Value**: `"REFERENCE_ONLY_NO_ACTION_AUTHORIZATION"` |
-| `ReasonCodes` | [`List<ReasonCode1Enum>`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/reason-code-1.md) | Required | Reason codes.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `15` |
+| `ReasonCodes` | [`List<ReasonCode1Enum>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/reason-code-1.md) | Required | Reason codes.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `15` |
 | `RequiresHumanReview` | `bool` | Required | Requires human review. |
 | `SchemaVersion` | `int` | Required | Schema version.<br><br>**Constraints**: `>= 1`, `<= 1` |
 | `Source` | `string` | Required, Constant | Source.<br><br>**Value**: `"public_reference"` |
-| `Sources` | [`List<PolicySource>`](http://localhost:3000/llms-pages/net-standard-library/models/structures/policy-source.md) | Required | Sources.<br><br>**Constraints**: *Maximum Items*: `16` |
+| `Sources` | [`List<PolicySource>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/policy-source.md) | Required | Sources.<br><br>**Constraints**: *Maximum Items*: `16` |
 | `Status` | `string` | Required, Constant | Status.<br><br>**Value**: `"INCOMPLETE_POLICY_EVIDENCE"` |
 | `Version` | `string` | Required, Constant | Version.<br><br>**Value**: `"payguard.applicability.v1"` |
 

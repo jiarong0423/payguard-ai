@@ -1,6 +1,6 @@
 # Connections Response
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkNvbm5lY3Rpb25zUmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkNvbm5lY3Rpb25zUmVzcG9uc2U
 
 Deployment mode only. Never a key, a key's presence, a value or a variable name.
 
@@ -14,7 +14,7 @@ Deployment mode only. Never a key, a key's presence, a value or a variable name.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `Mode` | [`models.ModeEnum`](http://localhost:3000/llms-pages/go/models/enumerations/mode.md) | Required | Mode. |
+| `Mode` | [`models.ModeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/mode.md) | Required | Mode. |
 
 
 # Example

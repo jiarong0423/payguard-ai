@@ -1,6 +1,6 @@
 # Guide Form Request Fields
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkd1aWRlRm9ybVJlcXVlc3RGaWVsZHM
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkd1aWRlRm9ybVJlcXVlc3RGaWVsZHM
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkd1aWRlRm9ybVJlcXVlc3RG
 
 | Type |
 |  --- |
-| [`Array[GuideField]`](http://localhost:3000/llms-pages/ruby/models/structures/guide-field.md) |
+| [`Array[GuideField]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/guide-field.md) |
 
 
 # Array[GuideField]

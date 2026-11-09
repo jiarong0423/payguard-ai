@@ -1,6 +1,6 @@
 # Guide Turn Request
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkd1aWRlVHVyblJlcXVlc3Q
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkd1aWRlVHVyblJlcXVlc3Q
 
 GuideTurnRequest.
 
@@ -14,8 +14,8 @@ GuideTurnRequest.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `fields` | Array[[GuideField](http://localhost:3000/llms-pages/ruby/models/structures/guide-field.md)] \| nil | Optional | This is a container for any-of cases. |
-| `scenario` | [Scenario1](http://localhost:3000/llms-pages/ruby/models/enumerations/scenario-1.md) \| nil | Optional | This is a container for any-of cases. |
+| `fields` | Array[[GuideField](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/guide-field.md)] \| nil | Optional | This is a container for any-of cases. |
+| `scenario` | [Scenario1](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/scenario-1.md) \| nil | Optional | This is a container for any-of cases. |
 | `text` | `String` | Required | Text.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `1600` |
 
 

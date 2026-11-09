@@ -1,6 +1,6 @@
 # Guide State Response
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZQ
 
 GuideStateResponse.
 
@@ -15,28 +15,28 @@ GuideStateResponse.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `AdvisoryOnly` | `String` | Required, Constant | Advisory only.<br><br>**Value**: `"True"` | String getAdvisoryOnly() | setAdvisoryOnly(String advisoryOnly) |
-| `Analysis` | [`GuideStateResponseAnalysis`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/guide-state-response-analysis.md) | Required | This is a container for any-of cases. | GuideStateResponseAnalysis getAnalysis() | setAnalysis(GuideStateResponseAnalysis analysis) |
+| `Analysis` | [`GuideStateResponseAnalysis`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/guide-state-response-analysis.md) | Required | This is a container for any-of cases. | GuideStateResponseAnalysis getAnalysis() | setAnalysis(GuideStateResponseAnalysis analysis) |
 | `Asked` | `List<String>` | Required | Asked.<br><br>**Constraints**: *Maximum Items*: `3` | List<String> getAsked() | setAsked(List<String> asked) |
 | `AutoConfirmed` | `List<String>` | Required | Auto confirmed. | List<String> getAutoConfirmed() | setAutoConfirmed(List<String> autoConfirmed) |
-| `ChooserMode` | [`ChooserModeEnum`](http://localhost:3000/llms-pages/java/models/enumerations/chooser-mode.md) | Required | Chooser mode. | ChooserModeEnum getChooserMode() | setChooserMode(ChooserModeEnum chooserMode) |
+| `ChooserMode` | [`ChooserModeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/chooser-mode.md) | Required | Chooser mode. | ChooserModeEnum getChooserMode() | setChooserMode(ChooserModeEnum chooserMode) |
 | `Deferred` | `List<String>` | Required | Deferred. | List<String> getDeferred() | setDeferred(List<String> deferred) |
-| `FlowName` | [`GuideStateResponseFlowName`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/guide-state-response-flow-name.md) | Required | This is a container for any-of cases. | GuideStateResponseFlowName getFlowName() | setFlowName(GuideStateResponseFlowName flowName) |
-| `FormResult` | [`GuideStateResponseFormResult`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/guide-state-response-form-result.md) | Required | This is a container for any-of cases. | GuideStateResponseFormResult getFormResult() | setFormResult(GuideStateResponseFormResult formResult) |
-| `FormResults` | [`List<GuideFieldResult>`](http://localhost:3000/llms-pages/java/models/structures/guide-field-result.md) | Required | Form results. | List<GuideFieldResult> getFormResults() | setFormResults(List<GuideFieldResult> formResults) |
-| `Gap` | [`GuideGap`](http://localhost:3000/llms-pages/java/models/structures/guide-gap.md) | Required | GuideGap. | GuideGap getGap() | setGap(GuideGap gap) |
-| `GoodsType` | [`GuideStateResponseGoodsType`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/guide-state-response-goods-type.md) | Required | This is a container for any-of cases. | GuideStateResponseGoodsType getGoodsType() | setGoodsType(GuideStateResponseGoodsType goodsType) |
-| `Items` | [`List<GuideItem>`](http://localhost:3000/llms-pages/java/models/structures/guide-item.md) | Required | Items. | List<GuideItem> getItems() | setItems(List<GuideItem> items) |
+| `FlowName` | [`GuideStateResponseFlowName`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/guide-state-response-flow-name.md) | Required | This is a container for any-of cases. | GuideStateResponseFlowName getFlowName() | setFlowName(GuideStateResponseFlowName flowName) |
+| `FormResult` | [`GuideStateResponseFormResult`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/guide-state-response-form-result.md) | Required | This is a container for any-of cases. | GuideStateResponseFormResult getFormResult() | setFormResult(GuideStateResponseFormResult formResult) |
+| `FormResults` | [`List<GuideFieldResult>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/guide-field-result.md) | Required | Form results. | List<GuideFieldResult> getFormResults() | setFormResults(List<GuideFieldResult> formResults) |
+| `Gap` | [`GuideGap`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/guide-gap.md) | Required | GuideGap. | GuideGap getGap() | setGap(GuideGap gap) |
+| `GoodsType` | [`GuideStateResponseGoodsType`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/guide-state-response-goods-type.md) | Required | This is a container for any-of cases. | GuideStateResponseGoodsType getGoodsType() | setGoodsType(GuideStateResponseGoodsType goodsType) |
+| `Items` | [`List<GuideItem>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/guide-item.md) | Required | Items. | List<GuideItem> getItems() | setItems(List<GuideItem> items) |
 | `ModelRequested` | `boolean` | Required | Model requested. | boolean getModelRequested() | setModelRequested(boolean modelRequested) |
 | `ModelTextShown` | `String` | Required, Constant | Model text shown.<br><br>**Value**: `"False"` | String getModelTextShown() | setModelTextShown(String modelTextShown) |
 | `Prefill` | `Map<String, String>` | Required | Prefill. | Map<String, String> getPrefill() | setPrefill(Map<String, String> prefill) |
-| `Reply` | [`GuideStateResponseReply`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/guide-state-response-reply.md) | Required | This is a container for any-of cases. | GuideStateResponseReply getReply() | setReply(GuideStateResponseReply reply) |
-| `Review` | [`List<GuideReviewRow>`](http://localhost:3000/llms-pages/java/models/structures/guide-review-row.md) | Required | Review. | List<GuideReviewRow> getReview() | setReview(List<GuideReviewRow> review) |
+| `Reply` | [`GuideStateResponseReply`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/guide-state-response-reply.md) | Required | This is a container for any-of cases. | GuideStateResponseReply getReply() | setReply(GuideStateResponseReply reply) |
+| `Review` | [`List<GuideReviewRow>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/guide-review-row.md) | Required | Review. | List<GuideReviewRow> getReview() | setReview(List<GuideReviewRow> review) |
 | `RoundsUsed` | `int` | Required | Rounds used. | int getRoundsUsed() | setRoundsUsed(int roundsUsed) |
-| `Scenario` | [`GuideStateResponseScenario`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/guide-state-response-scenario.md) | Required | This is a container for any-of cases. | GuideStateResponseScenario getScenario() | setScenario(GuideStateResponseScenario scenario) |
+| `Scenario` | [`GuideStateResponseScenario`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/guide-state-response-scenario.md) | Required | This is a container for any-of cases. | GuideStateResponseScenario getScenario() | setScenario(GuideStateResponseScenario scenario) |
 | `SchemaVersion` | `int` | Required, Constant | Schema version.<br><br>**Value**: `1` | int getSchemaVersion() | setSchemaVersion(int schemaVersion) |
-| `Stage` | [`GuideStateResponseStage`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/guide-state-response-stage.md) | Required | This is a container for any-of cases. | GuideStateResponseStage getStage() | setStage(GuideStateResponseStage stage) |
+| `Stage` | [`GuideStateResponseStage`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/guide-state-response-stage.md) | Required | This is a container for any-of cases. | GuideStateResponseStage getStage() | setStage(GuideStateResponseStage stage) |
 | `Started` | `boolean` | Required | Started. | boolean getStarted() | setStarted(boolean started) |
-| `Subtraction` | [`GuideStateResponseSubtraction`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/guide-state-response-subtraction.md) | Required | This is a container for any-of cases. | GuideStateResponseSubtraction getSubtraction() | setSubtraction(GuideStateResponseSubtraction subtraction) |
+| `Subtraction` | [`GuideStateResponseSubtraction`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/guide-state-response-subtraction.md) | Required | This is a container for any-of cases. | GuideStateResponseSubtraction getSubtraction() | setSubtraction(GuideStateResponseSubtraction subtraction) |
 | `TurnsLimit` | `int` | Required | Turns limit. | int getTurnsLimit() | setTurnsLimit(int turnsLimit) |
 | `TurnsUsed` | `int` | Required | Turns used. | int getTurnsUsed() | setTurnsUsed(int turnsUsed) |
 | `ValuesStored` | `String` | Required, Constant | Values stored.<br><br>**Value**: `"False"` | String getValuesStored() | setValuesStored(String valuesStored) |

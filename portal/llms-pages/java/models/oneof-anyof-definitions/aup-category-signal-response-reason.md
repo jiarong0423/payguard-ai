@@ -1,6 +1,6 @@
 # Aup Category Signal Response Reason
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkF1cENhdGVnb3J5U2lnbmFsUmVzcG9uc2VSZWFzb24
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkF1cENhdGVnb3J5U2lnbmFsUmVzcG9uc2VSZWFzb24
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkF1cENhdGVnb3J5U2lnbmFs
 
 | Type | Factory Method |
 |  --- | --- |
-| [`ReasonEnum`](http://localhost:3000/llms-pages/java/models/enumerations/reason.md) | AupCategorySignalResponseReason.fromReason(ReasonEnum reason) |
+| [`ReasonEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/reason.md) | AupCategorySignalResponseReason.fromReason(ReasonEnum reason) |
 
 
 # ReasonEnum

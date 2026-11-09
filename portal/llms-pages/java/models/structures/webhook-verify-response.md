@@ -1,6 +1,6 @@
 # Webhook Verify Response
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRldlYmhvb2tWZXJpZnlSZXNwb25zZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRldlYmhvb2tWZXJpZnlSZXNwb25zZQ
 
 WebhookVerifyResponse.
 
@@ -14,9 +14,9 @@ WebhookVerifyResponse.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Event` | [`WebhookEventProjection`](http://localhost:3000/llms-pages/java/models/structures/webhook-event-projection.md) | Required | All that is kept after a SUCCESS: identifiers and status only, no amounts, payer data, links or summary. | WebhookEventProjection getEvent() | setEvent(WebhookEventProjection event) |
+| `Event` | [`WebhookEventProjection`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/webhook-event-projection.md) | Required | All that is kept after a SUCCESS: identifiers and status only, no amounts, payer data, links or summary. | WebhookEventProjection getEvent() | setEvent(WebhookEventProjection event) |
 | `ImportedIntoDemo` | `String` | Required, Constant | Imported into demo.<br><br>**Value**: `"False"` | String getImportedIntoDemo() | setImportedIntoDemo(String importedIntoDemo) |
-| `PaypalDebugId` | [`WebhookVerifyResponsePaypalDebugId`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/webhook-verify-response-paypal-debug-id.md) | Required | This is a container for any-of cases. | WebhookVerifyResponsePaypalDebugId getPaypalDebugId() | setPaypalDebugId(WebhookVerifyResponsePaypalDebugId paypalDebugId) |
+| `PaypalDebugId` | [`WebhookVerifyResponsePaypalDebugId`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/webhook-verify-response-paypal-debug-id.md) | Required | This is a container for any-of cases. | WebhookVerifyResponsePaypalDebugId getPaypalDebugId() | setPaypalDebugId(WebhookVerifyResponsePaypalDebugId paypalDebugId) |
 | `Source` | `String` | Required, Constant | Source.<br><br>**Value**: `"paypal_sandbox"` | String getSource() | setSource(String source) |
 | `VerificationStatus` | `String` | Required, Constant | Verification status.<br><br>**Value**: `"SUCCESS"` | String getVerificationStatus() | setVerificationStatus(String verificationStatus) |
 

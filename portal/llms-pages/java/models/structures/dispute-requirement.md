@@ -1,6 +1,6 @@
 # Dispute Requirement
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkRpc3B1dGVSZXF1aXJlbWVudA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkRpc3B1dGVSZXF1aXJlbWVudA
 
 DisputeRequirement.
 
@@ -15,13 +15,13 @@ DisputeRequirement.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `AcceptedAttachmentCount` | `int` | Required | Accepted attachment count.<br><br>**Constraints**: `>= 0`, `<= 20` | int getAcceptedAttachmentCount() | setAcceptedAttachmentCount(int acceptedAttachmentCount) |
-| `Action` | [`DisputeRequirementAction`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/dispute-requirement-action.md) | Optional | This is a container for any-of cases. | DisputeRequirementAction getAction() | setAction(DisputeRequirementAction action) |
-| `EvidenceType` | [`DisputeRequirementEvidenceType`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/dispute-requirement-evidence-type.md) | Optional | This is a container for any-of cases. | DisputeRequirementEvidenceType getEvidenceType() | setEvidenceType(DisputeRequirementEvidenceType evidenceType) |
+| `Action` | [`DisputeRequirementAction`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/dispute-requirement-action.md) | Optional | This is a container for any-of cases. | DisputeRequirementAction getAction() | setAction(DisputeRequirementAction action) |
+| `EvidenceType` | [`DisputeRequirementEvidenceType`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/dispute-requirement-evidence-type.md) | Optional | This is a container for any-of cases. | DisputeRequirementEvidenceType getEvidenceType() | setEvidenceType(DisputeRequirementEvidenceType evidenceType) |
 | `Mandatory` | `boolean` | Required | Mandatory. | boolean getMandatory() | setMandatory(boolean mandatory) |
 | `ProofCount` | `int` | Required | Proof count.<br><br>**Constraints**: `>= 0`, `<= 128` | int getProofCount() | setProofCount(int proofCount) |
 | `ProviderEvidenceType` | `String` | Required | Provider evidence type.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `128`, *Pattern*: `^[A-Z][A-Z0-9_]{0,127}$` | String getProviderEvidenceType() | setProviderEvidenceType(String providerEvidenceType) |
 | `RequestId` | `String` | Required | Request id.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `128`, *Pattern*: `^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$` | String getRequestId() | setRequestId(String requestId) |
-| `RequirementState` | [`RequirementStateEnum`](http://localhost:3000/llms-pages/java/models/enumerations/requirement-state.md) | Required | Requirement state. | RequirementStateEnum getRequirementState() | setRequirementState(RequirementStateEnum requirementState) |
+| `RequirementState` | [`RequirementStateEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/requirement-state.md) | Required | Requirement state. | RequirementStateEnum getRequirementState() | setRequirementState(RequirementStateEnum requirementState) |
 | `Source` | `String` | Required | Source.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `128`, *Pattern*: `^[A-Z][A-Z0-9_]{0,127}$` | String getSource() | setSource(String source) |
 
 

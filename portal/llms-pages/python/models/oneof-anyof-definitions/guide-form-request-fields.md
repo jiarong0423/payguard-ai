@@ -1,6 +1,6 @@
 # Guide Form Request Fields
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkd1aWRlRm9ybVJlcXVlc3RGaWVsZHM
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkd1aWRlRm9ybVJlcXVlc3RGaWVsZHM
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkd1aWRlRm9ybVJlcXVlc3
 
 | Type |
 |  --- |
-| [`List[GuideField]`](http://localhost:3000/llms-pages/python/models/structures/guide-field.md) |
+| [`List[GuideField]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/guide-field.md) |
 
 
 # List[GuideField]

@@ -1,6 +1,6 @@
 # Aup Acknowledge Response
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkF1cEFja25vd2xlZGdlUmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkF1cEFja25vd2xlZGdlUmVzcG9uc2U
 
 AupAcknowledgeResponse.
 
@@ -14,12 +14,12 @@ AupAcknowledgeResponse.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `AcknowledgementToken` | [`AupAcknowledgeResponseAcknowledgementToken`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/aup-acknowledge-response-acknowledgement-token.md) | Required | This is a container for any-of cases. | AupAcknowledgeResponseAcknowledgementToken getAcknowledgementToken() | setAcknowledgementToken(AupAcknowledgeResponseAcknowledgementToken acknowledgementToken) |
-| `Choice` | [`ChoiceEnum`](http://localhost:3000/llms-pages/java/models/enumerations/choice.md) | Required | Choice. | ChoiceEnum getChoice() | setChoice(ChoiceEnum choice) |
+| `AcknowledgementToken` | [`AupAcknowledgeResponseAcknowledgementToken`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/aup-acknowledge-response-acknowledgement-token.md) | Required | This is a container for any-of cases. | AupAcknowledgeResponseAcknowledgementToken getAcknowledgementToken() | setAcknowledgementToken(AupAcknowledgeResponseAcknowledgementToken acknowledgementToken) |
+| `Choice` | [`ChoiceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/choice.md) | Required | Choice. | ChoiceEnum getChoice() | setChoice(ChoiceEnum choice) |
 | `ComplianceDecision` | `String` | Required, Constant | Compliance decision.<br><br>**Value**: `"NOT_MADE"` | String getComplianceDecision() | setComplianceDecision(String complianceDecision) |
 | `DescriptionDigest` | `String` | Required | Description digest.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` | String getDescriptionDigest() | setDescriptionDigest(String descriptionDigest) |
 | `EvaluationId` | `String` | Required | Evaluation id.<br><br>**Constraints**: *Minimum Length*: `32`, *Maximum Length*: `128`, *Pattern*: `^[A-Za-z0-9_-]+$` | String getEvaluationId() | setEvaluationId(String evaluationId) |
-| `ExpiresAt` | [`AupAcknowledgeResponseExpiresAt`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/aup-acknowledge-response-expires-at.md) | Required | This is a container for any-of cases. | AupAcknowledgeResponseExpiresAt getExpiresAt() | setExpiresAt(AupAcknowledgeResponseExpiresAt expiresAt) |
+| `ExpiresAt` | [`AupAcknowledgeResponseExpiresAt`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/aup-acknowledge-response-expires-at.md) | Required | This is a container for any-of cases. | AupAcknowledgeResponseExpiresAt getExpiresAt() | setExpiresAt(AupAcknowledgeResponseExpiresAt expiresAt) |
 | `ExternalActionAuthorized` | `String` | Required, Constant | External action authorized.<br><br>**Value**: `"False"` | String getExternalActionAuthorized() | setExternalActionAuthorized(String externalActionAuthorized) |
 | `Source` | `String` | Required, Constant | Source.<br><br>**Value**: `"synthetic"` | String getSource() | setSource(String source) |
 | `WarningCopyVersion` | `String` | Required, Constant | Warning copy version.<br><br>**Value**: `"aup-warning-v1"` | String getWarningCopyVersion() | setWarningCopyVersion(String warningCopyVersion) |

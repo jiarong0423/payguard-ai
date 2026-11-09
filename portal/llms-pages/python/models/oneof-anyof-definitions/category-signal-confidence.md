@@ -1,6 +1,6 @@
 # Category Signal Confidence
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkNhdGVnb3J5U2lnbmFsQ29uZmlkZW5jZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkNhdGVnb3J5U2lnbmFsQ29uZmlkZW5jZQ
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkNhdGVnb3J5U2lnbmFsQ2
 
 | Type |
 |  --- |
-| [`ConfidenceEnum`](http://localhost:3000/llms-pages/python/models/enumerations/confidence.md) |
+| [`ConfidenceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/confidence.md) |
 
 
 # ConfidenceEnum

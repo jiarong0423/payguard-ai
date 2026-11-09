@@ -1,6 +1,6 @@
 # Card Image Url
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkNhcmRJbWFnZVVybA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkNhcmRJbWFnZVVybA
 
 
 # Data Type

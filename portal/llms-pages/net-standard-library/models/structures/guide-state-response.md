@@ -1,6 +1,6 @@
 # Guide State Response
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZQ
 
 GuideStateResponse.
 
@@ -15,28 +15,28 @@ GuideStateResponse.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `AdvisoryOnly` | `string` | Required, Constant | Advisory only.<br><br>**Value**: `"True"` |
-| `Analysis` | [`GuideStateResponseAnalysis`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/guide-state-response-analysis.md) | Required | This is a container for any-of cases. |
+| `Analysis` | [`GuideStateResponseAnalysis`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/guide-state-response-analysis.md) | Required | This is a container for any-of cases. |
 | `Asked` | `List<string>` | Required | Asked.<br><br>**Constraints**: *Maximum Items*: `3` |
 | `AutoConfirmed` | `List<string>` | Required | Auto confirmed. |
-| `ChooserMode` | [`ChooserModeEnum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/chooser-mode.md) | Required | Chooser mode. |
+| `ChooserMode` | [`ChooserModeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/chooser-mode.md) | Required | Chooser mode. |
 | `Deferred` | `List<string>` | Required | Deferred. |
-| `FlowName` | [`GuideStateResponseFlowName`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/guide-state-response-flow-name.md) | Required | This is a container for any-of cases. |
-| `FormResult` | [`GuideStateResponseFormResult`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/guide-state-response-form-result.md) | Required | This is a container for any-of cases. |
-| `FormResults` | [`List<GuideFieldResult>`](http://localhost:3000/llms-pages/net-standard-library/models/structures/guide-field-result.md) | Required | Form results. |
-| `Gap` | [`GuideGap`](http://localhost:3000/llms-pages/net-standard-library/models/structures/guide-gap.md) | Required | GuideGap. |
-| `GoodsType` | [`GuideStateResponseGoodsType`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/guide-state-response-goods-type.md) | Required | This is a container for any-of cases. |
-| `Items` | [`List<GuideItem>`](http://localhost:3000/llms-pages/net-standard-library/models/structures/guide-item.md) | Required | Items. |
+| `FlowName` | [`GuideStateResponseFlowName`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/guide-state-response-flow-name.md) | Required | This is a container for any-of cases. |
+| `FormResult` | [`GuideStateResponseFormResult`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/guide-state-response-form-result.md) | Required | This is a container for any-of cases. |
+| `FormResults` | [`List<GuideFieldResult>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/guide-field-result.md) | Required | Form results. |
+| `Gap` | [`GuideGap`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/guide-gap.md) | Required | GuideGap. |
+| `GoodsType` | [`GuideStateResponseGoodsType`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/guide-state-response-goods-type.md) | Required | This is a container for any-of cases. |
+| `Items` | [`List<GuideItem>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/guide-item.md) | Required | Items. |
 | `ModelRequested` | `bool` | Required | Model requested. |
 | `ModelTextShown` | `string` | Required, Constant | Model text shown.<br><br>**Value**: `"False"` |
 | `Prefill` | `Dictionary<string, string>` | Required | Prefill. |
-| `Reply` | [`GuideStateResponseReply`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/guide-state-response-reply.md) | Required | This is a container for any-of cases. |
-| `Review` | [`List<GuideReviewRow>`](http://localhost:3000/llms-pages/net-standard-library/models/structures/guide-review-row.md) | Required | Review. |
+| `Reply` | [`GuideStateResponseReply`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/guide-state-response-reply.md) | Required | This is a container for any-of cases. |
+| `Review` | [`List<GuideReviewRow>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/guide-review-row.md) | Required | Review. |
 | `RoundsUsed` | `int` | Required | Rounds used. |
-| `Scenario` | [`GuideStateResponseScenario`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/guide-state-response-scenario.md) | Required | This is a container for any-of cases. |
+| `Scenario` | [`GuideStateResponseScenario`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/guide-state-response-scenario.md) | Required | This is a container for any-of cases. |
 | `SchemaVersion` | `int` | Required, Constant | Schema version.<br><br>**Value**: `1` |
-| `Stage` | [`GuideStateResponseStage`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/guide-state-response-stage.md) | Required | This is a container for any-of cases. |
+| `Stage` | [`GuideStateResponseStage`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/guide-state-response-stage.md) | Required | This is a container for any-of cases. |
 | `Started` | `bool` | Required | Started. |
-| `Subtraction` | [`GuideStateResponseSubtraction`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/guide-state-response-subtraction.md) | Required | This is a container for any-of cases. |
+| `Subtraction` | [`GuideStateResponseSubtraction`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/guide-state-response-subtraction.md) | Required | This is a container for any-of cases. |
 | `TurnsLimit` | `int` | Required | Turns limit. |
 | `TurnsUsed` | `int` | Required | Turns used. |
 | `ValuesStored` | `string` | Required, Constant | Values stored.<br><br>**Value**: `"False"` |

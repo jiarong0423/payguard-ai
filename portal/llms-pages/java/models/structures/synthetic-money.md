@@ -1,6 +1,6 @@
 # Synthetic Money
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlN5bnRoZXRpY01vbmV5
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlN5bnRoZXRpY01vbmV5
 
 Same shape as the PayPal Disputes `dispute_amount` (ProviderMoney below); values are synthetic.
 

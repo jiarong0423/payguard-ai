@@ -1,6 +1,6 @@
 # Tracker Item
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRlRyYWNrZXJJdGVt
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRlRyYWNrZXJJdGVt
 
 TrackerItem.
 
@@ -14,7 +14,7 @@ TrackerItem.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `carrier` | [`string(CarrierEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/carrier.md) | Required | Carrier. | getCarrier(): string | setCarrier(string carrier): void |
+| `carrier` | [`string(CarrierEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/carrier.md) | Required | Carrier. | getCarrier(): string | setCarrier(string carrier): void |
 | `carrierNameOther` | string\|null | Optional | This is a container for any-of cases. | getCarrierNameOther(): ?string | setCarrierNameOther(?string carrierNameOther): void |
 | `status` | `string` | Required, Constant | Status.<br><br>**Value**: `'SHIPPED'` | getStatus(): string | setStatus(string status): void |
 | `trackingNumber` | `string` | Required | Tracking number.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `64` | getTrackingNumber(): string | setTrackingNumber(string trackingNumber): void |

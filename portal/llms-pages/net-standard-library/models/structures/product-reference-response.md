@@ -1,6 +1,6 @@
 # Product Reference Response
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRlByb2R1Y3RSZWZlcmVuY2VSZXNwb25zZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRlByb2R1Y3RSZWZlcmVuY2VSZXNwb25zZQ
 
 Up to three Channel3 products for the seller to pick from; advisory, never changes the AUP decision.
 
@@ -15,11 +15,11 @@ Up to three Channel3 products for the seller to pick from; advisory, never chang
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `AffectsDecision` | `string` | Required, Constant | Affects decision.<br><br>**Value**: `"False"` |
-| `Cards` | [`List<ProductCard>`](http://localhost:3000/llms-pages/net-standard-library/models/structures/product-card.md) | Required | Cards.<br><br>**Constraints**: *Maximum Items*: `3` |
-| `Reason` | [`ProductReferenceResponseReason`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/product-reference-response-reason.md) | Required | This is a container for any-of cases. |
-| `RecordedAt` | [`ProductReferenceResponseRecordedAt`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/product-reference-response-recorded-at.md) | Required | This is a container for any-of cases. |
-| `Source` | [`ProductReferenceResponseSource`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/product-reference-response-source.md) | Required | This is a container for any-of cases. |
-| `Status` | [`Status12Enum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/status-12.md) | Required | Status. |
+| `Cards` | [`List<ProductCard>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/product-card.md) | Required | Cards.<br><br>**Constraints**: *Maximum Items*: `3` |
+| `Reason` | [`ProductReferenceResponseReason`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/product-reference-response-reason.md) | Required | This is a container for any-of cases. |
+| `RecordedAt` | [`ProductReferenceResponseRecordedAt`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/product-reference-response-recorded-at.md) | Required | This is a container for any-of cases. |
+| `Source` | [`ProductReferenceResponseSource`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/product-reference-response-source.md) | Required | This is a container for any-of cases. |
+| `Status` | [`Status12Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/status-12.md) | Required | Status. |
 
 
 # Example

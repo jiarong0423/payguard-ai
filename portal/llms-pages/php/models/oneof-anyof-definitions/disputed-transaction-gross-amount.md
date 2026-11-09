@@ -1,6 +1,6 @@
 # Disputed Transaction Gross Amount
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkRpc3B1dGVkVHJhbnNhY3Rpb25Hcm9zc0Ftb3VudA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkRpc3B1dGVkVHJhbnNhY3Rpb25Hcm9zc0Ftb3VudA
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkRpc3B1dGVkVHJhbnNhY3Rpb
 
 | Type |
 |  --- |
-| [`ProviderMoney`](http://localhost:3000/llms-pages/php/models/structures/provider-money.md) |
+| [`ProviderMoney`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/provider-money.md) |
 
 
 # ProviderMoney

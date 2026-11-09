@@ -1,6 +1,6 @@
 # Country Rules Check Request
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkNvdW50cnlSdWxlc0NoZWNrUmVxdWVzdA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkNvdW50cnlSdWxlc0NoZWNrUmVxdWVzdA
 
 Seller and buyer countries plus closed choices; no free text reaches the check.
 
@@ -14,14 +14,14 @@ Seller and buyer countries plus closed choices; no free text reaches the check.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `account_opened` | [`AccountOpenedEnum`](http://localhost:3000/llms-pages/python/models/enumerations/account-opened.md) | Optional | Account opened.<br><br>**Default**: `"unknown"` |
-| `account_type` | [`AccountTypeEnum`](http://localhost:3000/llms-pages/python/models/enumerations/account-type.md) | Optional | Account type.<br><br>**Default**: `"business"` |
+| `account_opened` | [`AccountOpenedEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/account-opened.md) | Optional | Account opened.<br><br>**Default**: `"unknown"` |
+| `account_type` | [`AccountTypeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/account-type.md) | Optional | Account type.<br><br>**Default**: `"business"` |
 | `amount` | str \| None | Optional | This is a container for any-of cases. |
-| `buyer_country` | [`BuyerCountryEnum`](http://localhost:3000/llms-pages/python/models/enumerations/buyer-country.md) | Required | Buyer country. |
-| `checkout` | [`CheckoutEnum`](http://localhost:3000/llms-pages/python/models/enumerations/checkout.md) | Optional | Checkout.<br><br>**Default**: `"paypal_account"` |
+| `buyer_country` | [`BuyerCountryEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/buyer-country.md) | Required | Buyer country. |
+| `checkout` | [`CheckoutEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/checkout.md) | Optional | Checkout.<br><br>**Default**: `"paypal_account"` |
 | `currency` | str \| None | Optional | This is a container for any-of cases. |
 | `goods_tags` | `List[str]` | Optional | Goods tags.<br><br>**Constraints**: *Maximum Items*: `16` |
-| `seller_country` | [`SellerCountryEnum`](http://localhost:3000/llms-pages/python/models/enumerations/seller-country.md) | Required | Seller country. |
+| `seller_country` | [`SellerCountryEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/seller-country.md) | Required | Seller country. |
 
 
 # Example

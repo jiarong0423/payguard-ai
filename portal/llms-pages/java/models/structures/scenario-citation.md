@@ -1,6 +1,6 @@
 # Scenario Citation
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlNjZW5hcmlvQ2l0YXRpb24
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlNjZW5hcmlvQ2l0YXRpb24
 
 ScenarioCitation.
 
@@ -17,7 +17,7 @@ ScenarioCitation.
 | `ChunkId` | `String` | Required | Chunk id.<br><br>**Constraints**: *Pattern*: `^[A-Z0-9-]{1,128}$` | String getChunkId() | setChunkId(String chunkId) |
 | `Jurisdiction` | `String` | Required, Constant | Jurisdiction.<br><br>**Value**: `"US"` | String getJurisdiction() | setJurisdiction(String jurisdiction) |
 | `Locator` | `String` | Required | Locator.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `1000` | String getLocator() | setLocator(String locator) |
-| `MaterialType` | [`MaterialTypeEnum`](http://localhost:3000/llms-pages/java/models/enumerations/material-type.md) | Required | Material type. | MaterialTypeEnum getMaterialType() | setMaterialType(MaterialTypeEnum materialType) |
+| `MaterialType` | [`MaterialTypeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/material-type.md) | Required | Material type. | MaterialTypeEnum getMaterialType() | setMaterialType(MaterialTypeEnum materialType) |
 | `SourceId` | `String` | Required | Source id.<br><br>**Constraints**: *Pattern*: `^[A-Z0-9-]{1,128}$` | String getSourceId() | setSourceId(String sourceId) |
 | `TextSha256` | `String` | Required | Text sha256.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` | String getTextSha256() | setTextSha256(String textSha256) |
 | `Title` | `String` | Required | Title.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `512` | String getTitle() | setTitle(String title) |

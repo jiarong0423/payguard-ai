@@ -1,6 +1,6 @@
 # Ai Usage Entry
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkFpVXNhZ2VFbnRyeQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkFpVXNhZ2VFbnRyeQ
 
 AiUsageEntry.
 
@@ -18,8 +18,8 @@ AiUsageEntry.
 | `estimated_cost_usd` | str \| None | Optional | This is a container for any-of cases. |
 | `latency_ms` | `int` | Required | Latency ms.<br><br>**Constraints**: `>= 0`, `<= 3600000` |
 | `model` | str \| None | Optional | This is a container for any-of cases. |
-| `outcome` | [`OutcomeEnum`](http://localhost:3000/llms-pages/python/models/enumerations/outcome.md) | Required | Outcome. |
-| `stage` | [`Stage2Enum`](http://localhost:3000/llms-pages/python/models/enumerations/stage-2.md) | Required | Stage. |
+| `outcome` | [`OutcomeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/outcome.md) | Required | Outcome. |
+| `stage` | [`Stage2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/stage-2.md) | Required | Stage. |
 | `tokens_in` | int \| None | Optional | This is a container for any-of cases. |
 | `tokens_out` | int \| None | Optional | This is a container for any-of cases. |
 | `tokens_total` | int \| None | Optional | This is a container for any-of cases. |

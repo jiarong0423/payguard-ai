@@ -1,6 +1,6 @@
 # Finding
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkZpbmRpbmc
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkZpbmRpbmc
 
 Finding.
 
@@ -14,7 +14,7 @@ Finding.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `Category` | [`CategoryEnum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/category.md) | Required | Category. |
+| `Category` | [`CategoryEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/category.md) | Required | Category. |
 | `Code` | `string` | Required, Constant | Code.<br><br>**Value**: `"keyword_requires_policy_review"` |
 
 

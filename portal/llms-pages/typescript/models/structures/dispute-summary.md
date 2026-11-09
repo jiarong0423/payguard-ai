@@ -1,6 +1,6 @@
 # Dispute Summary
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkRpc3B1dGVTdW1tYXJ5
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkRpc3B1dGVTdW1tYXJ5
 
 DisputeSummary.
 
@@ -15,12 +15,12 @@ DisputeSummary.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `caseRef` | `string` | Required | Case ref. |
-| `disputeAmount` | [`SyntheticMoney`](http://localhost:3000/llms-pages/typescript/models/structures/synthetic-money.md) | Required | Same shape as the PayPal Disputes `dispute_amount` (ProviderMoney below); values are synthetic. |
+| `disputeAmount` | [`SyntheticMoney`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/synthetic-money.md) | Required | Same shape as the PayPal Disputes `dispute_amount` (ProviderMoney below); values are synthetic. |
 | `openedAt` | `string` | Required | Opened at. |
 | `orderRef` | `string` | Required | Order ref. |
 | `reason` | `string` | Required | Reason. |
 | `sellerResponseDueDate` | `string` | Required | Seller response due date. |
-| `status` | [`Status7Enum`](http://localhost:3000/llms-pages/typescript/models/enumerations/status-7.md) | Required | Status. |
+| `status` | [`Status7Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/status-7.md) | Required | Status. |
 
 
 # Example

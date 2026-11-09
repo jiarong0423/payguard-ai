@@ -1,6 +1,6 @@
 # Dispute Amount
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkRpc3B1dGVBbW91bnQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkRpc3B1dGVBbW91bnQ
 
 Dispute amount.
 

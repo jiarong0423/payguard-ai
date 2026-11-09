@@ -1,6 +1,6 @@
 # Time Evidence
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZQ
 
 TimeEvidence.
 
@@ -15,9 +15,9 @@ TimeEvidence.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `AdvisoryOnly` | `string` | Required, Constant | Advisory only.<br><br>**Value**: `"True"` |
-| `Events` | [`List<TimeEvidenceEvents>`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/time-evidence-events.md) | Required | This is List of a container for any-of cases.<br><br>**Constraints**: *Minimum Items*: `2`, *Maximum Items*: `30` |
-| `Flags` | [`List<FlagEnum>`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/flag.md) | Required | Flags.<br><br>**Constraints**: *Maximum Items*: `4` |
-| `GapsSeconds` | [`TimeGaps`](http://localhost:3000/llms-pages/net-standard-library/models/structures/time-gaps.md) | Required | TimeGaps. |
+| `Events` | [`List<TimeEvidenceEvents>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/time-evidence-events.md) | Required | This is List of a container for any-of cases.<br><br>**Constraints**: *Minimum Items*: `2`, *Maximum Items*: `30` |
+| `Flags` | [`List<FlagEnum>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/flag.md) | Required | Flags.<br><br>**Constraints**: *Maximum Items*: `4` |
+| `GapsSeconds` | [`TimeGaps`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/time-gaps.md) | Required | TimeGaps. |
 | `Judgement` | `string` | Required, Constant | Judgement.<br><br>**Value**: `"NOT_MADE"` |
 | `SchemaVersion` | `string` | Required, Constant | Schema version.<br><br>**Value**: `"payguard.time_evidence.v1"` |
 

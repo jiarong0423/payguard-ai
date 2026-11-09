@@ -1,6 +1,6 @@
 # Form
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkZvcm0
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkZvcm0
 
 Form.
 
@@ -14,8 +14,8 @@ Form.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `kind` | [`?string(Kind2Enum)`](http://localhost:3000/llms-pages/php/models/enumerations/kind-2.md) | Optional | Kind. | getKind(): ?string | setKind(?string kind): void |
-| `options` | [`?(GuideOption[])`](http://localhost:3000/llms-pages/php/models/structures/guide-option.md) | Optional | Options. | getOptions(): ?array | setOptions(?array options): void |
+| `kind` | [`?string(Kind2Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/kind-2.md) | Optional | Kind. | getKind(): ?string | setKind(?string kind): void |
+| `options` | [`?(GuideOption[])`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/guide-option.md) | Optional | Options. | getOptions(): ?array | setOptions(?array options): void |
 | `placeholder` | string\|null | Optional | This is a container for any-of cases. | getPlaceholder(): ?string | setPlaceholder(?string placeholder): void |
 
 

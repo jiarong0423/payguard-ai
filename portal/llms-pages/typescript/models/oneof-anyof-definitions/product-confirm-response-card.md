@@ -1,6 +1,6 @@
 # Product Confirm Response Card
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maXJtUmVzcG9uc2VDYXJk
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maXJtUmVzcG9uc2VDYXJk
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maX
 
 | Type |
 |  --- |
-| [`ProductCard`](http://localhost:3000/llms-pages/typescript/models/structures/product-card.md) |
+| [`ProductCard`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/product-card.md) |
 
 
 # ProductCard

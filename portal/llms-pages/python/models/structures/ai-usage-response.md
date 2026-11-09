@@ -1,6 +1,6 @@
 # Ai Usage Response
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkFpVXNhZ2VSZXNwb25zZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkFpVXNhZ2VSZXNwb25zZQ
 
 AiUsageResponse.
 
@@ -16,9 +16,9 @@ AiUsageResponse.
 |  --- | --- | --- | --- |
 | `content_logged` | `bool` | Optional | Content logged.<br><br>**Default**: `False` |
 | `cost_note` | `str` | Required | Cost note. |
-| `entries` | [`List[AiUsageEntry]`](http://localhost:3000/llms-pages/python/models/structures/ai-usage-entry.md) | Required | Entries.<br><br>**Constraints**: *Maximum Items*: `50` |
+| `entries` | [`List[AiUsageEntry]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/ai-usage-entry.md) | Required | Entries.<br><br>**Constraints**: *Maximum Items*: `50` |
 | `price_table_source` | `str` | Required | Price table source. |
-| `source` | [`Source1Enum`](http://localhost:3000/llms-pages/python/models/enumerations/source-1.md) | Required | Source. |
+| `source` | [`Source1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/source-1.md) | Required | Source. |
 
 
 # Example

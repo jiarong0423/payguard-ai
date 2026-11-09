@@ -1,6 +1,6 @@
 # Guide Reply Fallback Reason
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkd1aWRlUmVwbHlGYWxsYmFja1JlYXNvbg
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkd1aWRlUmVwbHlGYWxsYmFja1JlYXNvbg
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkd1aWRlUmVwbHlGYWxsYmFj
 
 | Type | Factory Method |
 |  --- | --- |
-| [`FallbackReasonEnum`](http://localhost:3000/llms-pages/java/models/enumerations/fallback-reason.md) | GuideReplyFallbackReason.fromFallbackReason(FallbackReasonEnum fallbackReason) |
+| [`FallbackReasonEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/fallback-reason.md) | GuideReplyFallbackReason.fromFallbackReason(FallbackReasonEnum fallbackReason) |
 
 
 # FallbackReasonEnum

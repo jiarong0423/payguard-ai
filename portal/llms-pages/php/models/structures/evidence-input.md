@@ -1,6 +1,6 @@
 # Evidence Input
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkV2aWRlbmNlSW5wdXQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkV2aWRlbmNlSW5wdXQ
 
 EvidenceInput.
 
@@ -14,7 +14,7 @@ EvidenceInput.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `evidences` | [`EvidenceInputItem[]`](http://localhost:3000/llms-pages/php/models/structures/evidence-input-item.md) | Required | Evidences.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `20` | getEvidences(): array | setEvidences(array evidences): void |
+| `evidences` | [`EvidenceInputItem[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/evidence-input-item.md) | Required | Evidences.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `20` | getEvidences(): array | setEvidences(array evidences): void |
 
 
 # Example

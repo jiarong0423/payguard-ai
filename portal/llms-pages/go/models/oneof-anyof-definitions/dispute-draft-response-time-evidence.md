@@ -1,6 +1,6 @@
 # Dispute Draft Response Time Evidence
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkRpc3B1dGVEcmFmdFJlc3BvbnNlVGltZUV2aWRlbmNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkRpc3B1dGVEcmFmdFJlc3BvbnNlVGltZUV2aWRlbmNl
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkRpc3B1dGVEcmFmdFJlc3Bvbn
 
 | Type | Factory Method |
 |  --- | --- |
-| [`models.TimeEvidence`](http://localhost:3000/llms-pages/go/models/structures/time-evidence.md) | models.DisputeDraftResponseTimeEvidenceContainer.FromTimeEvidence(models.TimeEvidence timeEvidence) |
+| [`models.TimeEvidence`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/time-evidence.md) | models.DisputeDraftResponseTimeEvidenceContainer.FromTimeEvidence(models.TimeEvidence timeEvidence) |
 
 
 # models.TimeEvidence

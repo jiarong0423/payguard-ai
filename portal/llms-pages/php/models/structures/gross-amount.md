@@ -1,6 +1,6 @@
 # Gross Amount
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkdyb3NzQW1vdW50
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkdyb3NzQW1vdW50
 
 Gross amount.
 

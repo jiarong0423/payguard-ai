@@ -1,6 +1,6 @@
 # Guide Turn Request Fields
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkd1aWRlVHVyblJlcXVlc3RGaWVsZHM
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkd1aWRlVHVyblJlcXVlc3RGaWVsZHM
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkd1aWRlVHVyblJlcX
 
 | Type |
 |  --- |
-| [`GuideField[]`](http://localhost:3000/llms-pages/typescript/models/structures/guide-field.md) |
+| [`GuideField[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/guide-field.md) |
 
 
 # GuideField[]

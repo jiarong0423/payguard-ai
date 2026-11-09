@@ -1,6 +1,6 @@
 # Category Signal
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkNhdGVnb3J5U2lnbmFs
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkNhdGVnb3J5U2lnbmFs
 
 CategorySignal.
 
@@ -14,8 +14,8 @@ CategorySignal.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Category` | [`CategorySignalCategory`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/category-signal-category.md) | Required | This is a container for any-of cases. | CategorySignalCategory getCategory() | setCategory(CategorySignalCategory category) |
-| `Confidence` | [`CategorySignalConfidence`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/category-signal-confidence.md) | Required | This is a container for any-of cases. | CategorySignalConfidence getConfidence() | setConfidence(CategorySignalConfidence confidence) |
+| `Category` | [`CategorySignalCategory`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/category-signal-category.md) | Required | This is a container for any-of cases. | CategorySignalCategory getCategory() | setCategory(CategorySignalCategory category) |
+| `Confidence` | [`CategorySignalConfidence`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/category-signal-confidence.md) | Required | This is a container for any-of cases. | CategorySignalConfidence getConfidence() | setConfidence(CategorySignalConfidence confidence) |
 | `Source` | `String` | Required, Constant | Source.<br><br>**Value**: `"channel3"` | String getSource() | setSource(String source) |
 
 

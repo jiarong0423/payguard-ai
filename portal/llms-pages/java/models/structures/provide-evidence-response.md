@@ -1,6 +1,6 @@
 # Provide Evidence Response
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlByb3ZpZGVFdmlkZW5jZVJlc3BvbnNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlByb3ZpZGVFdmlkZW5jZVJlc3BvbnNl
 
 ProvideEvidenceResponse.
 
@@ -15,25 +15,25 @@ ProvideEvidenceResponse.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `CaseRef` | `String` | Required | Case ref.<br><br>**Constraints**: *Pattern*: `^case-ref-[0-9]{3}$` | String getCaseRef() | setCaseRef(String caseRef) |
-| `ConfirmToken` | [`ProvideEvidenceResponseConfirmToken`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/provide-evidence-response-confirm-token.md) | Optional | This is a container for any-of cases. | ProvideEvidenceResponseConfirmToken getConfirmToken() | setConfirmToken(ProvideEvidenceResponseConfirmToken confirmToken) |
+| `ConfirmToken` | [`ProvideEvidenceResponseConfirmToken`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/provide-evidence-response-confirm-token.md) | Optional | This is a container for any-of cases. | ProvideEvidenceResponseConfirmToken getConfirmToken() | setConfirmToken(ProvideEvidenceResponseConfirmToken confirmToken) |
 | `ContentType` | `String` | Required, Constant | Content type.<br><br>**Value**: `"multipart/form-data"` | String getContentType() | setContentType(String contentType) |
-| `DataSourceLabel` | [`DataSourceLabelEnum`](http://localhost:3000/llms-pages/java/models/enumerations/data-source-label.md) | Required | Data source label. | DataSourceLabelEnum getDataSourceLabel() | setDataSourceLabel(DataSourceLabelEnum dataSourceLabel) |
+| `DataSourceLabel` | [`DataSourceLabelEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/data-source-label.md) | Required | Data source label. | DataSourceLabelEnum getDataSourceLabel() | setDataSourceLabel(DataSourceLabelEnum dataSourceLabel) |
 | `DisputeId` | `String` | Required | Dispute id.<br><br>**Constraints**: *Pattern*: `^PP-[A-Z0-9][A-Z0-9-]{2,62}$` | String getDisputeId() | setDisputeId(String disputeId) |
 | `Environment` | `String` | Required, Constant | Environment.<br><br>**Value**: `"sandbox"` | String getEnvironment() | setEnvironment(String environment) |
-| `EvidenceClass` | [`EvidenceClassEnum`](http://localhost:3000/llms-pages/java/models/enumerations/evidence-class.md) | Required | Evidence class. | EvidenceClassEnum getEvidenceClass() | setEvidenceClass(EvidenceClassEnum evidenceClass) |
-| `ExternalSend` | [`ExternalSendEnum`](http://localhost:3000/llms-pages/java/models/enumerations/external-send.md) | Required | External send. | ExternalSendEnum getExternalSend() | setExternalSend(ExternalSendEnum externalSend) |
-| `Files` | [`List<MultipartFilePart>`](http://localhost:3000/llms-pages/java/models/structures/multipart-file-part.md) | Required | Files.<br><br>**Constraints**: *Maximum Items*: `20` | List<MultipartFilePart> getFiles() | setFiles(List<MultipartFilePart> files) |
+| `EvidenceClass` | [`EvidenceClassEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/evidence-class.md) | Required | Evidence class. | EvidenceClassEnum getEvidenceClass() | setEvidenceClass(EvidenceClassEnum evidenceClass) |
+| `ExternalSend` | [`ExternalSendEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/external-send.md) | Required | External send. | ExternalSendEnum getExternalSend() | setExternalSend(ExternalSendEnum externalSend) |
+| `Files` | [`List<MultipartFilePart>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/multipart-file-part.md) | Required | Files.<br><br>**Constraints**: *Maximum Items*: `20` | List<MultipartFilePart> getFiles() | setFiles(List<MultipartFilePart> files) |
 | `HumanReviewRequired` | `String` | Required, Constant | Human review required.<br><br>**Value**: `"True"` | String getHumanReviewRequired() | setHumanReviewRequired(String humanReviewRequired) |
-| `Input` | [`EvidenceInput`](http://localhost:3000/llms-pages/java/models/structures/evidence-input.md) | Required | EvidenceInput. | EvidenceInput getInput() | setInput(EvidenceInput input) |
+| `Input` | [`EvidenceInput`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/evidence-input.md) | Required | EvidenceInput. | EvidenceInput getInput() | setInput(EvidenceInput input) |
 | `Method` | `String` | Required, Constant | Method.<br><br>**Value**: `"POST"` | String getMethod() | setMethod(String method) |
 | `ObservedAt` | `String` | Required | Observed at.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `27` | String getObservedAt() | setObservedAt(String observedAt) |
 | `Path` | `String` | Required | Path.<br><br>**Constraints**: *Pattern*: `^/v1/customer/disputes/PP-[A-Z0-9][A-Z0-9-]{2,62}/provide-evidence$` | String getPath() | setPath(String path) |
-| `PayloadSha256` | [`ProvideEvidenceResponsePayloadSha256`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/provide-evidence-response-payload-sha-256.md) | Optional | This is a container for any-of cases. | ProvideEvidenceResponsePayloadSha256 getPayloadSha256() | setPayloadSha256(ProvideEvidenceResponsePayloadSha256 payloadSha256) |
-| `PaypalDebugId` | [`ProvideEvidenceResponsePaypalDebugId`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/provide-evidence-response-paypal-debug-id.md) | Optional | This is a container for any-of cases. | ProvideEvidenceResponsePaypalDebugId getPaypalDebugId() | setPaypalDebugId(ProvideEvidenceResponsePaypalDebugId paypalDebugId) |
-| `ProviderSubmission` | [`ProviderSubmissionEnum`](http://localhost:3000/llms-pages/java/models/enumerations/provider-submission.md) | Required | Provider submission. | ProviderSubmissionEnum getProviderSubmission() | setProviderSubmission(ProviderSubmissionEnum providerSubmission) |
-| `Readback` | [`Readback1Enum`](http://localhost:3000/llms-pages/java/models/enumerations/readback-1.md) | Required | Readback. | Readback1Enum getReadback() | setReadback(Readback1Enum readback) |
-| `SendGuard` | [`SendGuard`](http://localhost:3000/llms-pages/java/models/structures/send-guard.md) | Required | (r25 send guard) What a send carries and to whom, side by side; every account id is masked (first 2, last 4). | SendGuard getSendGuard() | setSendGuard(SendGuard sendGuard) |
-| `Source` | [`SourceEnum`](http://localhost:3000/llms-pages/java/models/enumerations/source.md) | Required | Source. | SourceEnum getSource() | setSource(SourceEnum source) |
+| `PayloadSha256` | [`ProvideEvidenceResponsePayloadSha256`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/provide-evidence-response-payload-sha-256.md) | Optional | This is a container for any-of cases. | ProvideEvidenceResponsePayloadSha256 getPayloadSha256() | setPayloadSha256(ProvideEvidenceResponsePayloadSha256 payloadSha256) |
+| `PaypalDebugId` | [`ProvideEvidenceResponsePaypalDebugId`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/provide-evidence-response-paypal-debug-id.md) | Optional | This is a container for any-of cases. | ProvideEvidenceResponsePaypalDebugId getPaypalDebugId() | setPaypalDebugId(ProvideEvidenceResponsePaypalDebugId paypalDebugId) |
+| `ProviderSubmission` | [`ProviderSubmissionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/provider-submission.md) | Required | Provider submission. | ProviderSubmissionEnum getProviderSubmission() | setProviderSubmission(ProviderSubmissionEnum providerSubmission) |
+| `Readback` | [`Readback1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/readback-1.md) | Required | Readback. | Readback1Enum getReadback() | setReadback(Readback1Enum readback) |
+| `SendGuard` | [`SendGuard`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/send-guard.md) | Required | (r25 send guard) What a send carries and to whom, side by side; every account id is masked (first 2, last 4). | SendGuard getSendGuard() | setSendGuard(SendGuard sendGuard) |
+| `Source` | [`SourceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/source.md) | Required | Source. | SourceEnum getSource() | setSource(SourceEnum source) |
 | `SubmitFlagEnabled` | `boolean` | Required | Submit flag enabled. | boolean getSubmitFlagEnabled() | setSubmitFlagEnabled(boolean submitFlagEnabled) |
 
 

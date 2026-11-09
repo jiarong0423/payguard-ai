@@ -1,6 +1,6 @@
 # Aup Category Signal Response
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkF1cENhdGVnb3J5U2lnbmFsUmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkF1cENhdGVnb3J5U2lnbmFsUmVzcG9uc2U
 
 Optional Channel3 signal shown next to the AUP result; it never changes the rule decision.
 
@@ -15,9 +15,9 @@ Optional Channel3 signal shown next to the AUP result; it never changes the rule
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `AffectsDecision` | `String` | Required, Constant | Affects decision.<br><br>**Value**: `"False"` | String getAffectsDecision() | setAffectsDecision(String affectsDecision) |
-| `Reason` | [`AupCategorySignalResponseReason`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/aup-category-signal-response-reason.md) | Required | This is a container for any-of cases. | AupCategorySignalResponseReason getReason() | setReason(AupCategorySignalResponseReason reason) |
-| `Signal` | [`AupCategorySignalResponseSignal`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/aup-category-signal-response-signal.md) | Required | This is a container for any-of cases. | AupCategorySignalResponseSignal getSignal() | setSignal(AupCategorySignalResponseSignal signal) |
-| `Status` | [`Status2Enum`](http://localhost:3000/llms-pages/java/models/enumerations/status-2.md) | Required | Status. | Status2Enum getStatus() | setStatus(Status2Enum status) |
+| `Reason` | [`AupCategorySignalResponseReason`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/aup-category-signal-response-reason.md) | Required | This is a container for any-of cases. | AupCategorySignalResponseReason getReason() | setReason(AupCategorySignalResponseReason reason) |
+| `Signal` | [`AupCategorySignalResponseSignal`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/aup-category-signal-response-signal.md) | Required | This is a container for any-of cases. | AupCategorySignalResponseSignal getSignal() | setSignal(AupCategorySignalResponseSignal signal) |
+| `Status` | [`Status2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/status-2.md) | Required | Status. | Status2Enum getStatus() | setStatus(Status2Enum status) |
 
 
 # Example

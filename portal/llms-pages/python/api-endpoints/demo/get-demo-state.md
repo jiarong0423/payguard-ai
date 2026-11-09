@@ -1,6 +1,6 @@
 # Get Demo State
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0ZSUyRmRlbW8lMkZnZXRfZGVtb19zdGF0ZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0ZSUyRmRlbW8lMkZnZXRfZGVtb19zdGF0ZQ
 
 State. Local console route GET /api/v1/demo/state on synthetic data; advisory only.
 
@@ -15,7 +15,7 @@ def get_demo_state(self)
 
 **200**: Successful Response
 
-[`StateResponse`](http://localhost:3000/llms-pages/python/models/structures/state-response.md)
+[`StateResponse`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/state-response.md)
 
 
 # Example Usage
@@ -30,8 +30,8 @@ print(result)
 
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
-| 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](http://localhost:3000/llms-pages/python/models/exceptions/error-body.md) |
-| 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](http://localhost:3000/llms-pages/python/models/exceptions/error-body.md) |
+| 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/exceptions/error-body.md) |
+| 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/exceptions/error-body.md) |
 
 
 

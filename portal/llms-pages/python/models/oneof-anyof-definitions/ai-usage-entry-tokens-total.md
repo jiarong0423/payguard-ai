@@ -1,6 +1,6 @@
 # Ai Usage Entry Tokens Total
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkFpVXNhZ2VFbnRyeVRva2Vuc1RvdGFs
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkFpVXNhZ2VFbnRyeVRva2Vuc1RvdGFs
 
 
 # Data Type

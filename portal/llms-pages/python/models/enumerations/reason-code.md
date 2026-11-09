@@ -1,6 +1,6 @@
 # Reason Code
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRlJlYXNvbkNvZGU
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlJlYXNvbkNvZGU
 
 
 # Enum Type Name

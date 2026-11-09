@@ -1,6 +1,6 @@
 # Card
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkNhcmQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkNhcmQ
 
 Card.
 
@@ -14,9 +14,9 @@ Card.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `Brand` | [`*models.CardBrand`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/card-brand.md) | Optional | This is a container for any-of cases. |
-| `Category` | [`*models.CardCategory`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/card-category.md) | Optional | This is a container for any-of cases. |
-| `ImageUrl` | [`*models.CardImageUrl`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/card-image-url.md) | Optional | This is a container for any-of cases. |
+| `Brand` | [`*models.CardBrand`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/card-brand.md) | Optional | This is a container for any-of cases. |
+| `Category` | [`*models.CardCategory`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/card-category.md) | Optional | This is a container for any-of cases. |
+| `ImageUrl` | [`*models.CardImageUrl`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/card-image-url.md) | Optional | This is a container for any-of cases. |
 | `KeyFeatures` | `[]string` | Optional | Key features.<br><br>**Constraints**: *Maximum Items*: `4`, *Minimum Length*: `2`, *Maximum Length*: `100`, *Pattern*: `^[A-Za-z0-9 &'\-,./+()%\"]+$` |
 | `Materials` | `[]string` | Optional | Materials.<br><br>**Constraints**: *Maximum Items*: `4`, *Minimum Length*: `2`, *Maximum Length*: `40`, *Pattern*: `^[A-Za-z0-9 &'\-,./+()%\"]+$` |
 | `ProductId` | `*string` | Optional | Product id.<br><br>**Constraints**: *Pattern*: `^[A-Za-z0-9_.:-]{1,64}$` |

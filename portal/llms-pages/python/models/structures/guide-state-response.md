@@ -1,6 +1,6 @@
 # Guide State Response
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZQ
 
 GuideStateResponse.
 
@@ -15,28 +15,28 @@ GuideStateResponse.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `advisory_only` | `str` | Required, Constant | Advisory only.<br><br>**Value**: `"True"` |
-| `analysis` | [GuideAnalysis](http://localhost:3000/llms-pages/python/models/structures/guide-analysis.md) | Required | This is a container for any-of cases. |
+| `analysis` | [GuideAnalysis](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/guide-analysis.md) | Required | This is a container for any-of cases. |
 | `asked` | `List[str]` | Required | Asked.<br><br>**Constraints**: *Maximum Items*: `3` |
 | `auto_confirmed` | `List[str]` | Required | Auto confirmed. |
-| `chooser_mode` | [`ChooserModeEnum`](http://localhost:3000/llms-pages/python/models/enumerations/chooser-mode.md) | Required | Chooser mode. |
+| `chooser_mode` | [`ChooserModeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/chooser-mode.md) | Required | Chooser mode. |
 | `deferred` | `List[str]` | Required | Deferred. |
 | `flow_name` | str | Required | This is a container for any-of cases. |
-| `form_result` | [GuideFormResult](http://localhost:3000/llms-pages/python/models/structures/guide-form-result.md) | Required | This is a container for any-of cases. |
-| `form_results` | [`List[GuideFieldResult]`](http://localhost:3000/llms-pages/python/models/structures/guide-field-result.md) | Required | Form results. |
-| `gap` | [`GuideGap`](http://localhost:3000/llms-pages/python/models/structures/guide-gap.md) | Required | GuideGap. |
-| `goods_type` | [GoodsType](http://localhost:3000/llms-pages/python/models/enumerations/goods-type.md) | Required | This is a container for any-of cases. |
-| `items` | [`List[GuideItem]`](http://localhost:3000/llms-pages/python/models/structures/guide-item.md) | Required | Items. |
+| `form_result` | [GuideFormResult](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/guide-form-result.md) | Required | This is a container for any-of cases. |
+| `form_results` | [`List[GuideFieldResult]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/guide-field-result.md) | Required | Form results. |
+| `gap` | [`GuideGap`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/guide-gap.md) | Required | GuideGap. |
+| `goods_type` | [GoodsType](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/goods-type.md) | Required | This is a container for any-of cases. |
+| `items` | [`List[GuideItem]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/guide-item.md) | Required | Items. |
 | `model_requested` | `bool` | Required | Model requested. |
 | `model_text_shown` | `str` | Required, Constant | Model text shown.<br><br>**Value**: `"False"` |
 | `prefill` | `Dict[str, str]` | Required | Prefill. |
-| `reply` | [GuideReply](http://localhost:3000/llms-pages/python/models/structures/guide-reply.md) | Required | This is a container for any-of cases. |
-| `review` | [`List[GuideReviewRow]`](http://localhost:3000/llms-pages/python/models/structures/guide-review-row.md) | Required | Review. |
+| `reply` | [GuideReply](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/guide-reply.md) | Required | This is a container for any-of cases. |
+| `review` | [`List[GuideReviewRow]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/guide-review-row.md) | Required | Review. |
 | `rounds_used` | `int` | Required | Rounds used. |
-| `scenario` | [Scenario1](http://localhost:3000/llms-pages/python/models/enumerations/scenario-1.md) | Required | This is a container for any-of cases. |
+| `scenario` | [Scenario1](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/scenario-1.md) | Required | This is a container for any-of cases. |
 | `schema_version` | `int` | Required, Constant | Schema version.<br><br>**Value**: `1` |
-| `stage` | [Stage3](http://localhost:3000/llms-pages/python/models/enumerations/stage-3.md) | Required | This is a container for any-of cases. |
+| `stage` | [Stage3](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/stage-3.md) | Required | This is a container for any-of cases. |
 | `started` | `bool` | Required | Started. |
-| `subtraction` | [GuideSubtraction](http://localhost:3000/llms-pages/python/models/structures/guide-subtraction.md) | Required | This is a container for any-of cases. |
+| `subtraction` | [GuideSubtraction](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/guide-subtraction.md) | Required | This is a container for any-of cases. |
 | `turns_limit` | `int` | Required | Turns limit. |
 | `turns_used` | `int` | Required | Turns used. |
 | `values_stored` | `str` | Required, Constant | Values stored.<br><br>**Value**: `"False"` |

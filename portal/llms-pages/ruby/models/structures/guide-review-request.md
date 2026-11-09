@@ -1,6 +1,6 @@
 # Guide Review Request
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkd1aWRlUmV2aWV3UmVxdWVzdA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkd1aWRlUmV2aWV3UmVxdWVzdA
 
 GuideReviewRequest.
 
@@ -16,7 +16,7 @@ GuideReviewRequest.
 |  --- | --- | --- | --- |
 | `change` | `Array[String]` | Optional | Change.<br><br>**Constraints**: *Maximum Items*: `9`, *Minimum Length*: `1`, *Maximum Length*: `40`, *Pattern*: `^[a-z_]+$` |
 | `confirm` | `TrueClass \| FalseClass` | Optional | Confirm.<br><br>**Default**: `false` |
-| `scenario` | [Scenario1](http://localhost:3000/llms-pages/ruby/models/enumerations/scenario-1.md) \| nil | Optional | This is a container for any-of cases. |
+| `scenario` | [Scenario1](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/scenario-1.md) \| nil | Optional | This is a container for any-of cases. |
 
 
 # Example

@@ -1,6 +1,6 @@
 # Dispute Record Update Time
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkRpc3B1dGVSZWNvcmRVcGRhdGVUaW1l
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkRpc3B1dGVSZWNvcmRVcGRhdGVUaW1l
 
 
 # Class Name

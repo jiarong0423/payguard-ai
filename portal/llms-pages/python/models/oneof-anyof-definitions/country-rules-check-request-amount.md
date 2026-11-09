@@ -1,6 +1,6 @@
 # Country Rules Check Request Amount
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkNvdW50cnlSdWxlc0NoZWNrUmVxdWVzdEFtb3VudA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkNvdW50cnlSdWxlc0NoZWNrUmVxdWVzdEFtb3VudA
 
 
 # Data Type

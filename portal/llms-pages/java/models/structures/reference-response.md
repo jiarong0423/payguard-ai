@@ -1,6 +1,6 @@
 # Reference Response
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlJlZmVyZW5jZVJlc3BvbnNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlJlZmVyZW5jZVJlc3BvbnNl
 
 ReferenceResponse.
 
@@ -16,15 +16,15 @@ ReferenceResponse.
 |  --- | --- | --- | --- | --- | --- |
 | `AdvisoryOnly` | `boolean` | Required | Advisory only. | boolean getAdvisoryOnly() | setAdvisoryOnly(boolean advisoryOnly) |
 | `CorpusDigest` | `String` | Required | Corpus digest.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` | String getCorpusDigest() | setCorpusDigest(String corpusDigest) |
-| `CorpusDigests` | [`ReferenceDigests`](http://localhost:3000/llms-pages/java/models/structures/reference-digests.md) | Required | ReferenceDigests. | ReferenceDigests getCorpusDigests() | setCorpusDigests(ReferenceDigests corpusDigests) |
+| `CorpusDigests` | [`ReferenceDigests`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/reference-digests.md) | Required | ReferenceDigests. | ReferenceDigests getCorpusDigests() | setCorpusDigests(ReferenceDigests corpusDigests) |
 | `CorpusId` | `String` | Required, Constant | Corpus id.<br><br>**Value**: `"payguard-us-official-references-v2"` | String getCorpusId() | setCorpusId(String corpusId) |
-| `FiltersApplied` | [`ReferenceFilters`](http://localhost:3000/llms-pages/java/models/structures/reference-filters.md) | Required | ReferenceFilters. | ReferenceFilters getFiltersApplied() | setFiltersApplied(ReferenceFilters filtersApplied) |
+| `FiltersApplied` | [`ReferenceFilters`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/reference-filters.md) | Required | ReferenceFilters. | ReferenceFilters getFiltersApplied() | setFiltersApplied(ReferenceFilters filtersApplied) |
 | `Limitations` | `List<String>` | Required | Limitations.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `32`, *Minimum Length*: `1`, *Maximum Length*: `2000` | List<String> getLimitations() | setLimitations(List<String> limitations) |
 | `OperationalAuthority` | `String` | Required, Constant | Operational authority.<br><br>**Value**: `"REFERENCE_ONLY_NO_ACTION_AUTHORIZATION"` | String getOperationalAuthority() | setOperationalAuthority(String operationalAuthority) |
-| `Results` | [`List<ReferenceCitation>`](http://localhost:3000/llms-pages/java/models/structures/reference-citation.md) | Required | Results.<br><br>**Constraints**: *Maximum Items*: `10` | List<ReferenceCitation> getResults() | setResults(List<ReferenceCitation> results) |
+| `Results` | [`List<ReferenceCitation>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/reference-citation.md) | Required | Results.<br><br>**Constraints**: *Maximum Items*: `10` | List<ReferenceCitation> getResults() | setResults(List<ReferenceCitation> results) |
 | `SchemaVersion` | `int` | Required | Schema version.<br><br>**Constraints**: `>= 1`, `<= 1` | int getSchemaVersion() | setSchemaVersion(int schemaVersion) |
 | `Source` | `String` | Required, Constant | Source.<br><br>**Value**: `"public_reference"` | String getSource() | setSource(String source) |
-| `Status` | [`Status13Enum`](http://localhost:3000/llms-pages/java/models/enumerations/status-13.md) | Required | Status. | Status13Enum getStatus() | setStatus(Status13Enum status) |
+| `Status` | [`Status13Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/status-13.md) | Required | Status. | Status13Enum getStatus() | setStatus(Status13Enum status) |
 
 
 # Example

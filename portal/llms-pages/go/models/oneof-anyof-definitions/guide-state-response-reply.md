@@ -1,6 +1,6 @@
 # Guide State Response Reply
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZVJlcGx5
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZVJlcGx5
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZV
 
 | Type | Factory Method |
 |  --- | --- |
-| [`models.GuideReply`](http://localhost:3000/llms-pages/go/models/structures/guide-reply.md) | models.GuideStateResponseReplyContainer.FromGuideReply(models.GuideReply guideReply) |
+| [`models.GuideReply`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/guide-reply.md) | models.GuideStateResponseReplyContainer.FromGuideReply(models.GuideReply guideReply) |
 
 
 # models.GuideReply

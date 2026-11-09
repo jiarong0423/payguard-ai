@@ -1,6 +1,6 @@
 # Invoice Draft Response
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkludm9pY2VEcmFmdFJlc3BvbnNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkludm9pY2VEcmFmdFJlc3BvbnNl
 
 InvoiceDraftResponse.
 
@@ -15,7 +15,7 @@ InvoiceDraftResponse.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `environment` | `str` | Required, Constant | Environment.<br><br>**Value**: `"sandbox"` |
-| `evidence_receipt` | [`SandboxEvidenceReceipt`](http://localhost:3000/llms-pages/python/models/structures/sandbox-evidence-receipt.md) | Required | SandboxEvidenceReceipt. |
+| `evidence_receipt` | [`SandboxEvidenceReceipt`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/sandbox-evidence-receipt.md) | Required | SandboxEvidenceReceipt. |
 | `external_send` | `str` | Required, Constant | External send.<br><br>**Value**: `"FROZEN"` |
 | `invoice_id` | `str` | Required | Invoice id.<br><br>**Constraints**: *Minimum Length*: `13`, *Maximum Length*: `69`, *Pattern*: `^INV2-[A-Z0-9-]{8,64}$` |
 | `source` | `str` | Required, Constant | Source.<br><br>**Value**: `"paypal_sandbox"` |

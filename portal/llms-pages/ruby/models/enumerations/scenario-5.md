@@ -1,6 +1,6 @@
 # Scenario 5
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlNjZW5hcmlvNQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRlNjZW5hcmlvNQ
 
 Scenario.
 

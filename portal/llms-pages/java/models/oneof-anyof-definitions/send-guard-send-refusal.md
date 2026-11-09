@@ -1,6 +1,6 @@
 # Send Guard Send Refusal
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlNlbmRHdWFyZFNlbmRSZWZ1c2Fs
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlNlbmRHdWFyZFNlbmRSZWZ1c2Fs
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlNlbmRHdWFyZFNlbmRSZWZ1
 
 | Type | Factory Method |
 |  --- | --- |
-| [`SendRefusalEnum`](http://localhost:3000/llms-pages/java/models/enumerations/send-refusal.md) | SendGuardSendRefusal.fromSendRefusal(SendRefusalEnum sendRefusal) |
+| [`SendRefusalEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/send-refusal.md) | SendGuardSendRefusal.fromSendRefusal(SendRefusalEnum sendRefusal) |
 
 
 # SendRefusalEnum

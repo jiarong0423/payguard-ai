@@ -1,6 +1,6 @@
 # ApiError
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0aCUyRl9fYWRkaXRpb25hbF9kb2N1bWVudGF0aW9uJTJGVXRpbGl0aWVzJTJGQXBpRXJyb3I
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0aCUyRl9fYWRkaXRpb25hbF9kb2N1bWVudGF0aW9uJTJGVXRpbGl0aWVzJTJGQXBpRXJyb3I
 
 Thrown when the HTTP status code is not okay.
 
@@ -10,7 +10,7 @@ The ApiError extends the ApiResponse interface, so all ApiResponse properties ar
 
 | Name | Type | Description |
 |  --- | --- | --- |
-| request | [`HttpRequest`](http://localhost:3000/llms-pages/typescript/sdk-infrastructure/http/httprequest.md) | Original request that resulted in this response. |
+| request | [`HttpRequest`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/sdk-infrastructure/http/httprequest.md) | Original request that resulted in this response. |
 | statusCode | `number` | Response status code. |
 | headers | `Record<string, string>` | Response headers. |
 | result | `T` | Response data. |

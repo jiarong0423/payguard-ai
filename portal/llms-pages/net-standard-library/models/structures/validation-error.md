@@ -1,6 +1,6 @@
 # Validation Error
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRlZhbGlkYXRpb25FcnJvcg
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRlZhbGlkYXRpb25FcnJvcg
 
 ValidationError.
 
@@ -16,7 +16,7 @@ ValidationError.
 |  --- | --- | --- | --- |
 | `Ctx` | `object` | Optional | Ctx. |
 | `Input` | `object` | Optional | Input. |
-| `Loc` | [`List<ValidationErrorLoc>`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/validation-error-loc.md) | Required | This is List of a container for any-of cases. |
+| `Loc` | [`List<ValidationErrorLoc>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/validation-error-loc.md) | Required | This is List of a container for any-of cases. |
 | `Msg` | `string` | Required | Msg. |
 | `Type` | `string` | Required | Type. |
 

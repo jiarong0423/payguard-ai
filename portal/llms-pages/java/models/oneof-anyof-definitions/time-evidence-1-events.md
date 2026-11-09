@@ -1,6 +1,6 @@
 # Time Evidence 1 Events
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZTFFdmVudHM
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZTFFdmVudHM
 
 
 # Class Name
@@ -12,8 +12,8 @@ Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZTFFdmVu
 
 | Type | Factory Method |
 |  --- | --- |
-| [`MessageTimeEvent`](http://localhost:3000/llms-pages/java/models/structures/message-time-event.md) | TimeEvidence1Events.fromMessageTimeEvent(MessageTimeEvent messageTimeEvent) |
-| [`TimeEvent`](http://localhost:3000/llms-pages/java/models/structures/time-event.md) | TimeEvidence1Events.fromTimeEvent(TimeEvent timeEvent) |
+| [`MessageTimeEvent`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/message-time-event.md) | TimeEvidence1Events.fromMessageTimeEvent(MessageTimeEvent messageTimeEvent) |
+| [`TimeEvent`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/time-event.md) | TimeEvidence1Events.fromTimeEvent(TimeEvent timeEvent) |
 
 
 # MessageTimeEvent

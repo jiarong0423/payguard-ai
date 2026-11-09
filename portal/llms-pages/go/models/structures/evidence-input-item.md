@@ -1,6 +1,6 @@
 # Evidence Input Item
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkV2aWRlbmNlSW5wdXRJdGVt
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkV2aWRlbmNlSW5wdXRJdGVt
 
 EvidenceInputItem.
 
@@ -14,7 +14,7 @@ EvidenceInputItem.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `EvidenceInfo` | [`models.EvidenceInfo`](http://localhost:3000/llms-pages/go/models/structures/evidence-info.md) | Required | EvidenceInfo. |
+| `EvidenceInfo` | [`models.EvidenceInfo`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/evidence-info.md) | Required | EvidenceInfo. |
 | `EvidenceType` | `string` | Required | Evidence type.<br><br>**Constraints**: *Pattern*: `^[A-Z][A-Z0-9_]{0,63}$` |
 | `Notes` | `string` | Required | Notes.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `2000` |
 

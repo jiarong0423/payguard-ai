@@ -1,6 +1,6 @@
 # Guide Reply
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkd1aWRlUmVwbHk
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkd1aWRlUmVwbHk
 
 GuideReply.
 
@@ -14,11 +14,11 @@ GuideReply.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `chooser` | [`ChooserEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/chooser.md) | Required | Chooser. |
-| `dropped` | [`GuideDropped[]`](http://localhost:3000/llms-pages/typescript/models/structures/guide-dropped.md) | Required | Dropped. |
-| `fallbackReason` | [`GuideReplyFallbackReason`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/guide-reply-fallback-reason.md) | Required | This is a container for any-of cases. |
+| `chooser` | [`ChooserEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/chooser.md) | Required | Chooser. |
+| `dropped` | [`GuideDropped[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/guide-dropped.md) | Required | Dropped. |
+| `fallbackReason` | [`GuideReplyFallbackReason`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/guide-reply-fallback-reason.md) | Required | This is a container for any-of cases. |
 | `stateChanged` | `boolean` | Required | State changed. |
-| `template` | [`TemplateEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/template.md) | Required | Template. |
+| `template` | [`TemplateEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/template.md) | Required | Template. |
 | `text` | `string` | Required | Text.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `400` |
 
 

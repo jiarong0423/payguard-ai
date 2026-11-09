@@ -1,6 +1,6 @@
 # Sandbox Evidence Receipt
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlNhbmRib3hFdmlkZW5jZVJlY2VpcHQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRlNhbmRib3hFdmlkZW5jZVJlY2VpcHQ
 
 SandboxEvidenceReceipt.
 
@@ -14,17 +14,17 @@ SandboxEvidenceReceipt.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `Action` | [`models.ActionEnum`](http://localhost:3000/llms-pages/go/models/enumerations/action.md) | Required | Action. |
+| `Action` | [`models.ActionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/action.md) | Required | Action. |
 | `Environment` | `string` | Required, Constant | Environment.<br><br>**Value**: `"sandbox"` |
-| `EvidenceClass` | [`models.EvidenceClass3Enum`](http://localhost:3000/llms-pages/go/models/enumerations/evidence-class-3.md) | Required | Evidence class. |
+| `EvidenceClass` | [`models.EvidenceClass3Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/evidence-class-3.md) | Required | Evidence class. |
 | `ExternalSend` | `string` | Required, Constant | External send.<br><br>**Value**: `"FROZEN"` |
-| `InvoiceId` | [`models.SandboxEvidenceReceiptInvoiceId`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/sandbox-evidence-receipt-invoice-id.md) | Required | This is a container for any-of cases. |
+| `InvoiceId` | [`models.SandboxEvidenceReceiptInvoiceId`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/sandbox-evidence-receipt-invoice-id.md) | Required | This is a container for any-of cases. |
 | `ObservedAt` | `string` | Required | Observed at.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `27` |
-| `PaypalDebugId` | [`models.SandboxEvidenceReceiptPaypalDebugId`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/sandbox-evidence-receipt-paypal-debug-id.md) | Required | This is a container for any-of cases. |
+| `PaypalDebugId` | [`models.SandboxEvidenceReceiptPaypalDebugId`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/sandbox-evidence-receipt-paypal-debug-id.md) | Required | This is a container for any-of cases. |
 | `ProofKind` | `string` | Required, Constant | Proof kind.<br><br>**Value**: `"POST_RESPONSE_ONLY"` |
 | `SchemaVersion` | `int` | Required, Constant | Schema version.<br><br>**Value**: `1` |
 | `SeparateGetReadback` | `string` | Required, Constant | Separate get readback.<br><br>**Value**: `"False"` |
-| `Status` | [`models.Status10Enum`](http://localhost:3000/llms-pages/go/models/enumerations/status-10.md) | Required | Status. |
+| `Status` | [`models.Status10Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/status-10.md) | Required | Status. |
 
 
 # Example

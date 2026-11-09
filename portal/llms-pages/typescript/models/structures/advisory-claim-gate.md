@@ -1,6 +1,6 @@
 # Advisory Claim Gate
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkFkdmlzb3J5Q2xhaW1HYXRl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkFkdmlzb3J5Q2xhaW1HYXRl
 
 AdvisoryClaimGate.
 
@@ -15,9 +15,9 @@ AdvisoryClaimGate.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `claimIndex` | `number` | Required | Claim index.<br><br>**Constraints**: `>= 0`, `<= 19` |
-| `claimType` | [`ClaimTypeEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/claim-type.md) | Required | Claim type. |
-| `reasonCodes` | [`ReasonCodeEnum[]`](http://localhost:3000/llms-pages/typescript/models/enumerations/reason-code.md) | Required | Reason codes.<br><br>**Constraints**: *Maximum Items*: `10` |
-| `status` | [`StatusEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/status.md) | Required | Status. |
+| `claimType` | [`ClaimTypeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/claim-type.md) | Required | Claim type. |
+| `reasonCodes` | [`ReasonCodeEnum[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/reason-code.md) | Required | Reason codes.<br><br>**Constraints**: *Maximum Items*: `10` |
+| `status` | [`StatusEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/status.md) | Required | Status. |
 | `trustedCitationChunkIds` | `string[]` | Required | Trusted citation chunk ids.<br><br>**Constraints**: *Maximum Items*: `10`, *Pattern*: `^[A-Z0-9-]{1,128}$` |
 
 

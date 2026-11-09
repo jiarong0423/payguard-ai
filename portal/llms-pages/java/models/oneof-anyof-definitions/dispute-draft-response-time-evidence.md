@@ -1,6 +1,6 @@
 # Dispute Draft Response Time Evidence
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkRpc3B1dGVEcmFmdFJlc3BvbnNlVGltZUV2aWRlbmNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkRpc3B1dGVEcmFmdFJlc3BvbnNlVGltZUV2aWRlbmNl
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkRpc3B1dGVEcmFmdFJlc3Bv
 
 | Type | Factory Method |
 |  --- | --- |
-| [`TimeEvidence`](http://localhost:3000/llms-pages/java/models/structures/time-evidence.md) | DisputeDraftResponseTimeEvidence.fromTimeEvidence(TimeEvidence timeEvidence) |
+| [`TimeEvidence`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/time-evidence.md) | DisputeDraftResponseTimeEvidence.fromTimeEvidence(TimeEvidence timeEvidence) |
 
 
 # TimeEvidence

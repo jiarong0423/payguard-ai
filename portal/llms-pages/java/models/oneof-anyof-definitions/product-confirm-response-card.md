@@ -1,6 +1,6 @@
 # Product Confirm Response Card
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maXJtUmVzcG9uc2VDYXJk
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maXJtUmVzcG9uc2VDYXJk
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maXJtUmVz
 
 | Type | Factory Method |
 |  --- | --- |
-| [`ProductCard`](http://localhost:3000/llms-pages/java/models/structures/product-card.md) | ProductConfirmResponseCard.fromProductCard(ProductCard productCard) |
+| [`ProductCard`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/product-card.md) | ProductConfirmResponseCard.fromProductCard(ProductCard productCard) |
 
 
 # ProductCard

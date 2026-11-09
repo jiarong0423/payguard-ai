@@ -1,6 +1,6 @@
 # Guide Start Request
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkd1aWRlU3RhcnRSZXF1ZXN0
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkd1aWRlU3RhcnRSZXF1ZXN0
 
 GuideStartRequest.
 
@@ -14,8 +14,8 @@ GuideStartRequest.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `goods_type` | [GoodsType](http://localhost:3000/llms-pages/ruby/models/enumerations/goods-type.md) \| nil | Optional | This is a container for any-of cases. |
-| `scenario` | [`Scenario2Enum`](http://localhost:3000/llms-pages/ruby/models/enumerations/scenario-2.md) | Required | Scenario. |
+| `goods_type` | [GoodsType](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/goods-type.md) \| nil | Optional | This is a container for any-of cases. |
+| `scenario` | [`Scenario2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/scenario-2.md) | Required | Scenario. |
 
 
 # Example

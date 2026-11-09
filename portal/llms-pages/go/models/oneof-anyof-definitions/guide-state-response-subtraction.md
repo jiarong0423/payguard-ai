@@ -1,6 +1,6 @@
 # Guide State Response Subtraction
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZVN1YnRyYWN0aW9u
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZVN1YnRyYWN0aW9u
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZV
 
 | Type | Factory Method |
 |  --- | --- |
-| [`models.GuideSubtraction`](http://localhost:3000/llms-pages/go/models/structures/guide-subtraction.md) | models.GuideStateResponseSubtractionContainer.FromGuideSubtraction(models.GuideSubtraction guideSubtraction) |
+| [`models.GuideSubtraction`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/guide-subtraction.md) | models.GuideStateResponseSubtractionContainer.FromGuideSubtraction(models.GuideSubtraction guideSubtraction) |
 
 
 # models.GuideSubtraction

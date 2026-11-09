@@ -1,6 +1,6 @@
 # Product Reference Response Source
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRlByb2R1Y3RSZWZlcmVuY2VSZXNwb25zZVNvdXJjZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRlByb2R1Y3RSZWZlcmVuY2VSZXNwb25zZVNvdXJjZQ
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRlByb2R1
 
 | Type | Factory Method |
 |  --- | --- |
-| [`Source11Enum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/source-11.md) | ProductReferenceResponseSource.FromSource11(Source11Enum source11) |
+| [`Source11Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/source-11.md) | ProductReferenceResponseSource.FromSource11(Source11Enum source11) |
 
 
 # Source11Enum

@@ -1,6 +1,6 @@
 # Tracking Info
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlRyYWNraW5nSW5mbw
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRlRyYWNraW5nSW5mbw
 
 TrackingInfo.
 
@@ -14,8 +14,8 @@ TrackingInfo.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `CarrierName` | [`models.CarrierNameEnum`](http://localhost:3000/llms-pages/go/models/enumerations/carrier-name.md) | Required | Carrier name. |
-| `CarrierNameOther` | [`*models.TrackingInfoCarrierNameOther`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/tracking-info-carrier-name-other.md) | Optional | This is a container for any-of cases. |
+| `CarrierName` | [`models.CarrierNameEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/carrier-name.md) | Required | Carrier name. |
+| `CarrierNameOther` | [`*models.TrackingInfoCarrierNameOther`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/tracking-info-carrier-name-other.md) | Optional | This is a container for any-of cases. |
 | `TrackingNumber` | `string` | Required | Tracking number.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `64` |
 
 

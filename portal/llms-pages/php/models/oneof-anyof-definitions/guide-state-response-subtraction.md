@@ -1,6 +1,6 @@
 # Guide State Response Subtraction
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZVN1YnRyYWN0aW9u
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZVN1YnRyYWN0aW9u
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZ
 
 | Type |
 |  --- |
-| [`GuideSubtraction`](http://localhost:3000/llms-pages/php/models/structures/guide-subtraction.md) |
+| [`GuideSubtraction`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/guide-subtraction.md) |
 
 
 # GuideSubtraction

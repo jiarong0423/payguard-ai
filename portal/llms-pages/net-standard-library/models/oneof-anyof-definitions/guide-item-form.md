@@ -1,6 +1,6 @@
 # Guide Item Form
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkd1aWRlSXRlbUZvcm0
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkd1aWRlSXRlbUZvcm0
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkd1aWRl
 
 | Type | Factory Method |
 |  --- | --- |
-| [`GuideForm`](http://localhost:3000/llms-pages/net-standard-library/models/structures/guide-form.md) | GuideItemForm.FromGuideForm(GuideForm guideForm) |
+| [`GuideForm`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/guide-form.md) | GuideItemForm.FromGuideForm(GuideForm guideForm) |
 
 
 # GuideForm

@@ -1,6 +1,6 @@
 # Ai Usage Response
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkFpVXNhZ2VSZXNwb25zZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkFpVXNhZ2VSZXNwb25zZQ
 
 AiUsageResponse.
 
@@ -16,9 +16,9 @@ AiUsageResponse.
 |  --- | --- | --- | --- | --- | --- |
 | `ContentLogged` | `Boolean` | Optional | Content logged.<br><br>**Default**: `false` | Boolean getContentLogged() | setContentLogged(Boolean contentLogged) |
 | `CostNote` | `String` | Required | Cost note. | String getCostNote() | setCostNote(String costNote) |
-| `Entries` | [`List<AiUsageEntry>`](http://localhost:3000/llms-pages/java/models/structures/ai-usage-entry.md) | Required | Entries.<br><br>**Constraints**: *Maximum Items*: `50` | List<AiUsageEntry> getEntries() | setEntries(List<AiUsageEntry> entries) |
+| `Entries` | [`List<AiUsageEntry>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/ai-usage-entry.md) | Required | Entries.<br><br>**Constraints**: *Maximum Items*: `50` | List<AiUsageEntry> getEntries() | setEntries(List<AiUsageEntry> entries) |
 | `PriceTableSource` | `String` | Required | Price table source. | String getPriceTableSource() | setPriceTableSource(String priceTableSource) |
-| `Source` | [`Source1Enum`](http://localhost:3000/llms-pages/java/models/enumerations/source-1.md) | Required | Source. | Source1Enum getSource() | setSource(Source1Enum source) |
+| `Source` | [`Source1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/source-1.md) | Required | Source. | Source1Enum getSource() | setSource(Source1Enum source) |
 
 
 # Example

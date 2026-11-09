@@ -1,6 +1,6 @@
 # Multipart File Part
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRk11bHRpcGFydEZpbGVQYXJ0
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRk11bHRpcGFydEZpbGVQYXJ0
 
 MultipartFilePart.
 
@@ -15,7 +15,7 @@ MultipartFilePart.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `byteLength` | `number` | Required | Byte length.<br><br>**Constraints**: `>= 0`, `<= 9999999` |
-| `contentType` | [`ContentTypeEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/content-type.md) | Required | Content type. |
+| `contentType` | [`ContentTypeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/content-type.md) | Required | Content type. |
 | `filename` | `string` | Required | Filename.<br><br>**Constraints**: *Maximum Length*: `255` |
 | `name` | `string` | Required | Name.<br><br>**Constraints**: *Pattern*: `^file[0-9]{1,3}$` |
 

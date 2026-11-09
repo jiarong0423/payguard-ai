@@ -1,6 +1,6 @@
 # Policy Coverage
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRlBvbGljeUNvdmVyYWdl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRlBvbGljeUNvdmVyYWdl
 
 PolicyCoverage.
 
@@ -16,8 +16,8 @@ PolicyCoverage.
 |  --- | --- | --- | --- | --- | --- |
 | `basis` | `string` | Required, Constant | Basis.<br><br>**Value**: `'pinned_authored_summaries_only'` | getBasis(): string | setBasis(string basis): void |
 | `complete` | `bool` | Required | Complete. | getComplete(): bool | setComplete(bool complete): void |
-| `missingOfficialPolicyThemes` | [`string(MissingOfficialPolicyThemeEnum)[]`](http://localhost:3000/llms-pages/php/models/enumerations/missing-official-policy-theme.md) | Required | Missing official policy themes.<br><br>**Constraints**: *Maximum Items*: `3` | getMissingOfficialPolicyThemes(): array | setMissingOfficialPolicyThemes(array missingOfficialPolicyThemes): void |
-| `officialPolicyChunkCountByTheme` | [`PolicyThemeCounts`](http://localhost:3000/llms-pages/php/models/structures/policy-theme-counts.md) | Required | PolicyThemeCounts. | getOfficialPolicyChunkCountByTheme(): PolicyThemeCounts | setOfficialPolicyChunkCountByTheme(PolicyThemeCounts officialPolicyChunkCountByTheme): void |
+| `missingOfficialPolicyThemes` | [`string(MissingOfficialPolicyThemeEnum)[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/missing-official-policy-theme.md) | Required | Missing official policy themes.<br><br>**Constraints**: *Maximum Items*: `3` | getMissingOfficialPolicyThemes(): array | setMissingOfficialPolicyThemes(array missingOfficialPolicyThemes): void |
+| `officialPolicyChunkCountByTheme` | [`PolicyThemeCounts`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/policy-theme-counts.md) | Required | PolicyThemeCounts. | getOfficialPolicyChunkCountByTheme(): PolicyThemeCounts | setOfficialPolicyChunkCountByTheme(PolicyThemeCounts officialPolicyChunkCountByTheme): void |
 | `officialPolicySourceIds` | `string[]` | Required | Official policy source ids.<br><br>**Constraints**: *Maximum Items*: `16`, *Pattern*: `^[A-Z0-9-]{1,128}$` | getOfficialPolicySourceIds(): array | setOfficialPolicySourceIds(array officialPolicySourceIds): void |
 | `regionalSourceCount` | `int` | Required | Regional source count.<br><br>**Constraints**: `>= 0`, `<= 16` | getRegionalSourceCount(): int | setRegionalSourceCount(int regionalSourceCount): void |
 | `selectedChunkCount` | `int` | Required | Selected chunk count.<br><br>**Constraints**: `>= 0`, `<= 29` | getSelectedChunkCount(): int | setSelectedChunkCount(int selectedChunkCount): void |

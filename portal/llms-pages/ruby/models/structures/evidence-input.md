@@ -1,6 +1,6 @@
 # Evidence Input
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkV2aWRlbmNlSW5wdXQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkV2aWRlbmNlSW5wdXQ
 
 EvidenceInput.
 
@@ -14,7 +14,7 @@ EvidenceInput.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `evidences` | [`Array[EvidenceInputItem]`](http://localhost:3000/llms-pages/ruby/models/structures/evidence-input-item.md) | Required | Evidences.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `20` |
+| `evidences` | [`Array[EvidenceInputItem]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/evidence-input-item.md) | Required | Evidences.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `20` |
 
 
 # Example

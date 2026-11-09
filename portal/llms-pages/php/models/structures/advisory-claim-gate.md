@@ -1,6 +1,6 @@
 # Advisory Claim Gate
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkFkdmlzb3J5Q2xhaW1HYXRl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkFkdmlzb3J5Q2xhaW1HYXRl
 
 AdvisoryClaimGate.
 
@@ -15,9 +15,9 @@ AdvisoryClaimGate.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `claimIndex` | `int` | Required | Claim index.<br><br>**Constraints**: `>= 0`, `<= 19` | getClaimIndex(): int | setClaimIndex(int claimIndex): void |
-| `claimType` | [`string(ClaimTypeEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/claim-type.md) | Required | Claim type. | getClaimType(): string | setClaimType(string claimType): void |
-| `reasonCodes` | [`string(ReasonCodeEnum)[]`](http://localhost:3000/llms-pages/php/models/enumerations/reason-code.md) | Required | Reason codes.<br><br>**Constraints**: *Maximum Items*: `10` | getReasonCodes(): array | setReasonCodes(array reasonCodes): void |
-| `status` | [`string(StatusEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/status.md) | Required | Status. | getStatus(): string | setStatus(string status): void |
+| `claimType` | [`string(ClaimTypeEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/claim-type.md) | Required | Claim type. | getClaimType(): string | setClaimType(string claimType): void |
+| `reasonCodes` | [`string(ReasonCodeEnum)[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/reason-code.md) | Required | Reason codes.<br><br>**Constraints**: *Maximum Items*: `10` | getReasonCodes(): array | setReasonCodes(array reasonCodes): void |
+| `status` | [`string(StatusEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/status.md) | Required | Status. | getStatus(): string | setStatus(string status): void |
 | `trustedCitationChunkIds` | `string[]` | Required | Trusted citation chunk ids.<br><br>**Constraints**: *Maximum Items*: `10`, *Pattern*: `^[A-Z0-9-]{1,128}$` | getTrustedCitationChunkIds(): array | setTrustedCitationChunkIds(array trustedCitationChunkIds): void |
 
 

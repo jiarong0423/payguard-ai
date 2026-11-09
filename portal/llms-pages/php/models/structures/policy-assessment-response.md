@@ -1,6 +1,6 @@
 # Policy Assessment Response
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRlBvbGljeUFzc2Vzc21lbnRSZXNwb25zZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRlBvbGljeUFzc2Vzc21lbnRSZXNwb25zZQ
 
 PolicyAssessmentResponse.
 
@@ -15,20 +15,20 @@ PolicyAssessmentResponse.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `advisoryOnly` | `bool` | Required | Advisory only. | getAdvisoryOnly(): bool | setAdvisoryOnly(bool advisoryOnly): void |
-| `chunks` | [`PolicyChunk[]`](http://localhost:3000/llms-pages/php/models/structures/policy-chunk.md) | Required | Chunks.<br><br>**Constraints**: *Maximum Items*: `29` | getChunks(): array | setChunks(array chunks): void |
+| `chunks` | [`PolicyChunk[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/policy-chunk.md) | Required | Chunks.<br><br>**Constraints**: *Maximum Items*: `29` | getChunks(): array | setChunks(array chunks): void |
 | `corpusDigest` | `string` | Required | Corpus digest.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` | getCorpusDigest(): string | setCorpusDigest(string corpusDigest): void |
-| `corpusDigests` | [`ReferenceDigests`](http://localhost:3000/llms-pages/php/models/structures/reference-digests.md) | Required | ReferenceDigests. | getCorpusDigests(): ReferenceDigests | setCorpusDigests(ReferenceDigests corpusDigests): void |
+| `corpusDigests` | [`ReferenceDigests`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/reference-digests.md) | Required | ReferenceDigests. | getCorpusDigests(): ReferenceDigests | setCorpusDigests(ReferenceDigests corpusDigests): void |
 | `corpusId` | `string` | Required, Constant | Corpus id.<br><br>**Value**: `'payguard-us-official-references-v2'` | getCorpusId(): string | setCorpusId(string corpusId): void |
-| `coverage` | [`PolicyCoverage`](http://localhost:3000/llms-pages/php/models/structures/policy-coverage.md) | Required | PolicyCoverage. | getCoverage(): PolicyCoverage | setCoverage(PolicyCoverage coverage): void |
+| `coverage` | [`PolicyCoverage`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/policy-coverage.md) | Required | PolicyCoverage. | getCoverage(): PolicyCoverage | setCoverage(PolicyCoverage coverage): void |
 | `currentPolicyApplicability` | `string` | Required, Constant | Current policy applicability.<br><br>**Value**: `'NOT_ESTABLISHED'` | getCurrentPolicyApplicability(): string | setCurrentPolicyApplicability(string currentPolicyApplicability): void |
-| `filtersApplied` | [`PolicyContext`](http://localhost:3000/llms-pages/php/models/structures/policy-context.md) | Required | PolicyContext. | getFiltersApplied(): PolicyContext | setFiltersApplied(PolicyContext filtersApplied): void |
+| `filtersApplied` | [`PolicyContext`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/policy-context.md) | Required | PolicyContext. | getFiltersApplied(): PolicyContext | setFiltersApplied(PolicyContext filtersApplied): void |
 | `limitations` | `string[]` | Required | Limitations.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `32`, *Minimum Length*: `1`, *Maximum Length*: `2000` | getLimitations(): array | setLimitations(array limitations): void |
 | `operationalAuthority` | `string` | Required, Constant | Operational authority.<br><br>**Value**: `'REFERENCE_ONLY_NO_ACTION_AUTHORIZATION'` | getOperationalAuthority(): string | setOperationalAuthority(string operationalAuthority): void |
-| `reasonCodes` | [`string(ReasonCode1Enum)[]`](http://localhost:3000/llms-pages/php/models/enumerations/reason-code-1.md) | Required | Reason codes.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `15` | getReasonCodes(): array | setReasonCodes(array reasonCodes): void |
+| `reasonCodes` | [`string(ReasonCode1Enum)[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/reason-code-1.md) | Required | Reason codes.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `15` | getReasonCodes(): array | setReasonCodes(array reasonCodes): void |
 | `requiresHumanReview` | `bool` | Required | Requires human review. | getRequiresHumanReview(): bool | setRequiresHumanReview(bool requiresHumanReview): void |
 | `schemaVersion` | `int` | Required | Schema version.<br><br>**Constraints**: `>= 1`, `<= 1` | getSchemaVersion(): int | setSchemaVersion(int schemaVersion): void |
 | `source` | `string` | Required, Constant | Source.<br><br>**Value**: `'public_reference'` | getSource(): string | setSource(string source): void |
-| `sources` | [`PolicySource[]`](http://localhost:3000/llms-pages/php/models/structures/policy-source.md) | Required | Sources.<br><br>**Constraints**: *Maximum Items*: `16` | getSources(): array | setSources(array sources): void |
+| `sources` | [`PolicySource[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/policy-source.md) | Required | Sources.<br><br>**Constraints**: *Maximum Items*: `16` | getSources(): array | setSources(array sources): void |
 | `status` | `string` | Required, Constant | Status.<br><br>**Value**: `'INCOMPLETE_POLICY_EVIDENCE'` | getStatus(): string | setStatus(string status): void |
 | `version` | `string` | Required, Constant | Version.<br><br>**Value**: `'payguard.applicability.v1'` | getVersion(): string | setVersion(string version): void |
 

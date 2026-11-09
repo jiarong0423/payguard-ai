@@ -1,6 +1,6 @@
 # Add Tracking Response
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkFkZFRyYWNraW5nUmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkFkZFRyYWNraW5nUmVzcG9uc2U
 
 AddTrackingResponse.
 
@@ -14,25 +14,25 @@ AddTrackingResponse.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`TrackerBatch`](http://localhost:3000/llms-pages/typescript/models/structures/tracker-batch.md) | Required | TrackerBatch. |
+| `body` | [`TrackerBatch`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/tracker-batch.md) | Required | TrackerBatch. |
 | `caseRef` | `string` | Required | Case ref.<br><br>**Constraints**: *Pattern*: `^case-ref-[0-9]{3}$` |
-| `confirmToken` | [`AddTrackingResponseConfirmToken \| undefined`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/add-tracking-response-confirm-token.md) | Optional | This is a container for any-of cases. |
+| `confirmToken` | [`AddTrackingResponseConfirmToken \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/add-tracking-response-confirm-token.md) | Optional | This is a container for any-of cases. |
 | `contentType` | `string` | Required, Constant | Content type.<br><br>**Value**: `'application/json'` |
-| `dataSourceLabel` | [`DataSourceLabelEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/data-source-label.md) | Required | Data source label. |
+| `dataSourceLabel` | [`DataSourceLabelEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/data-source-label.md) | Required | Data source label. |
 | `disputeId` | `string` | Required | Dispute id.<br><br>**Constraints**: *Pattern*: `^PP-[A-Z0-9][A-Z0-9-]{2,62}$` |
 | `environment` | `string` | Required, Constant | Environment.<br><br>**Value**: `'sandbox'` |
-| `evidenceClass` | [`EvidenceClassEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/evidence-class.md) | Required | Evidence class. |
-| `externalSend` | [`ExternalSendEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/external-send.md) | Required | External send. |
+| `evidenceClass` | [`EvidenceClassEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/evidence-class.md) | Required | Evidence class. |
+| `externalSend` | [`ExternalSendEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/external-send.md) | Required | External send. |
 | `humanReviewRequired` | `string` | Required, Constant | Human review required.<br><br>**Value**: `'True'` |
 | `method` | `string` | Required, Constant | Method.<br><br>**Value**: `'POST'` |
 | `observedAt` | `string` | Required | Observed at.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `27` |
 | `path` | `string` | Required, Constant | Path.<br><br>**Value**: `'/v1/shipping/trackers-batch'` |
-| `payloadSha256` | [`AddTrackingResponsePayloadSha256 \| undefined`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/add-tracking-response-payload-sha-256.md) | Optional | This is a container for any-of cases. |
-| `paypalDebugId` | [`AddTrackingResponsePaypalDebugId \| undefined`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/add-tracking-response-paypal-debug-id.md) | Optional | This is a container for any-of cases. |
-| `providerSubmission` | [`ProviderSubmissionEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/provider-submission.md) | Required | Provider submission. |
-| `readback` | [`ReadbackEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/readback.md) | Required | Readback. |
-| `sendGuard` | [`SendGuard`](http://localhost:3000/llms-pages/typescript/models/structures/send-guard.md) | Required | (r25 send guard) What a send carries and to whom, side by side; every account id is masked (first 2, last 4). |
-| `source` | [`SourceEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/source.md) | Required | Source. |
+| `payloadSha256` | [`AddTrackingResponsePayloadSha256 \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/add-tracking-response-payload-sha-256.md) | Optional | This is a container for any-of cases. |
+| `paypalDebugId` | [`AddTrackingResponsePaypalDebugId \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/add-tracking-response-paypal-debug-id.md) | Optional | This is a container for any-of cases. |
+| `providerSubmission` | [`ProviderSubmissionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/provider-submission.md) | Required | Provider submission. |
+| `readback` | [`ReadbackEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/readback.md) | Required | Readback. |
+| `sendGuard` | [`SendGuard`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/send-guard.md) | Required | (r25 send guard) What a send carries and to whom, side by side; every account id is masked (first 2, last 4). |
+| `source` | [`SourceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/source.md) | Required | Source. |
 | `submitFlagEnabled` | `boolean` | Required | Submit flag enabled. |
 
 

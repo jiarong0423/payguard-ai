@@ -1,6 +1,6 @@
 # Reference Citation Case Outcome
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlJlZmVyZW5jZUNpdGF0aW9uQ2FzZU91dGNvbWU
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlJlZmVyZW5jZUNpdGF0aW9uQ2FzZU91dGNvbWU
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlJlZmVyZW5jZUNpdGF0aW9u
 
 | Type | Factory Method |
 |  --- | --- |
-| [`CaseOutcomeEnum`](http://localhost:3000/llms-pages/java/models/enumerations/case-outcome.md) | ReferenceCitationCaseOutcome.fromCaseOutcome(CaseOutcomeEnum caseOutcome) |
+| [`CaseOutcomeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/case-outcome.md) | ReferenceCitationCaseOutcome.fromCaseOutcome(CaseOutcomeEnum caseOutcome) |
 
 
 # CaseOutcomeEnum

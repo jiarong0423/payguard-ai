@@ -1,6 +1,6 @@
 # Guide Item
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkd1aWRlSXRlbQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkd1aWRlSXRlbQ
 
 GuideItem.
 
@@ -15,11 +15,11 @@ GuideItem.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `chunk` | str | Required | This is a container for any-of cases. |
-| `form` | [GuideForm](http://localhost:3000/llms-pages/python/models/structures/guide-form.md) | Required | This is a container for any-of cases. |
+| `form` | [GuideForm](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/guide-form.md) | Required | This is a container for any-of cases. |
 | `id` | `str` | Required | Id. |
 | `label` | `str` | Required | Label. |
-| `source` | [`Source8Enum`](http://localhost:3000/llms-pages/python/models/enumerations/source-8.md) | Required | Source. |
-| `status` | [`Status9Enum`](http://localhost:3000/llms-pages/python/models/enumerations/status-9.md) | Required | Status. |
+| `source` | [`Source8Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/source-8.md) | Required | Source. |
+| `status` | [`Status9Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/status-9.md) | Required | Status. |
 
 
 # Example

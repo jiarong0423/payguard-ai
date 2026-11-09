@@ -1,6 +1,6 @@
 # Ai Brief Http Request Case Ref
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkFpQnJpZWZIdHRwUmVxdWVzdENhc2VSZWY
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkFpQnJpZWZIdHRwUmVxdWVzdENhc2VSZWY
 
 
 # Data Type

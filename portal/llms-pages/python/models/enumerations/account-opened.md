@@ -1,6 +1,6 @@
 # Account Opened
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkFjY291bnRPcGVuZWQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkFjY291bnRPcGVuZWQ
 
 Account opened.
 

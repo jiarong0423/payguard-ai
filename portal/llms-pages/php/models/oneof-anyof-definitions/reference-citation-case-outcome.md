@@ -1,6 +1,6 @@
 # Reference Citation Case Outcome
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRlJlZmVyZW5jZUNpdGF0aW9uQ2FzZU91dGNvbWU
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRlJlZmVyZW5jZUNpdGF0aW9uQ2FzZU91dGNvbWU
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRlJlZmVyZW5jZUNpdGF0aW9uQ
 
 | Type |
 |  --- |
-| [`string(CaseOutcomeEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/case-outcome.md) |
+| [`string(CaseOutcomeEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/case-outcome.md) |
 
 
 # string(CaseOutcomeEnum)

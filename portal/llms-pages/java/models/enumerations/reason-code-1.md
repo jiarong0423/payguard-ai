@@ -1,6 +1,6 @@
 # Reason Code 1
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlJlYXNvbkNvZGUx
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlJlYXNvbkNvZGUx
 
 
 # Enum Type Name

@@ -1,6 +1,6 @@
 # Document Redaction
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkRvY3VtZW50UmVkYWN0aW9u
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkRvY3VtZW50UmVkYWN0aW9u
 
 DocumentRedaction.
 
@@ -24,7 +24,7 @@ DocumentRedaction.
 | `replacementCount` | `int` | Required | Replacement count.<br><br>**Constraints**: `>= 0`, `<= 128` | getReplacementCount(): int | setReplacementCount(int replacementCount): void |
 | `reversibility` | `string` | Required, Constant | Reversibility.<br><br>**Value**: `'False'` | getReversibility(): string | setReversibility(string reversibility): void |
 | `source` | `string` | Required, Constant | Source.<br><br>**Value**: `'synthetic'` | getSource(): string | setSource(string source): void |
-| `types` | [`string(TypeEnum)[]`](http://localhost:3000/llms-pages/php/models/enumerations/type.md) | Required | Types.<br><br>**Constraints**: *Maximum Items*: `7` | getTypes(): array | setTypes(array types): void |
+| `types` | [`string(TypeEnum)[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/type.md) | Required | Types.<br><br>**Constraints**: *Maximum Items*: `7` | getTypes(): array | setTypes(array types): void |
 
 
 # Example

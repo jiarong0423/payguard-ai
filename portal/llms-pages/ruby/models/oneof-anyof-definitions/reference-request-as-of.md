@@ -1,6 +1,6 @@
 # Reference Request as Of
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlJlZmVyZW5jZVJlcXVlc3RBc09m
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRlJlZmVyZW5jZVJlcXVlc3RBc09m
 
 
 # Data Type

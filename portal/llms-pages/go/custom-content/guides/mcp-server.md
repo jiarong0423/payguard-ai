@@ -1,6 +1,6 @@
 # mcp-server
 
-Source: http://localhost:3000/#/go/x-redirect/cGFnZSUzQWd1aWRlcyUyRm1jcC1zZXJ2ZXI
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/cGFnZSUzQWd1aWRlcyUyRm1jcC1zZXJ2ZXI
 
 The repository ships a small read-only MCP server, `src/payguard/mcp_server.py`, built on the Python standard library. It speaks newline-delimited JSON-RPC 2.0 over stdio.
 

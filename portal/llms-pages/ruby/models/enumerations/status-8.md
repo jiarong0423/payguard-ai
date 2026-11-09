@@ -1,6 +1,6 @@
 # Status 8
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlN0YXR1czg
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRlN0YXR1czg
 
 Status.
 

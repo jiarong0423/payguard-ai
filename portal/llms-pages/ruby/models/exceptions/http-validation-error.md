@@ -1,6 +1,6 @@
 # HTTP Validation Error
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I
 
 HTTPValidationError.
 
@@ -14,7 +14,7 @@ HTTPValidationError.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `detail` | [`Array[ValidationError]`](http://localhost:3000/llms-pages/ruby/models/structures/validation-error.md) | Optional | Detail. |
+| `detail` | [`Array[ValidationError]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/validation-error.md) | Optional | Detail. |
 
 
 # Example

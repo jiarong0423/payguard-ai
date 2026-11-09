@@ -1,6 +1,6 @@
 # Policy Coverage
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRlBvbGljeUNvdmVyYWdl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRlBvbGljeUNvdmVyYWdl
 
 PolicyCoverage.
 
@@ -16,8 +16,8 @@ PolicyCoverage.
 |  --- | --- | --- | --- |
 | `Basis` | `string` | Required, Constant | Basis.<br><br>**Value**: `"pinned_authored_summaries_only"` |
 | `Complete` | `bool` | Required | Complete. |
-| `MissingOfficialPolicyThemes` | [`List<MissingOfficialPolicyThemeEnum>`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/missing-official-policy-theme.md) | Required | Missing official policy themes.<br><br>**Constraints**: *Maximum Items*: `3` |
-| `OfficialPolicyChunkCountByTheme` | [`PolicyThemeCounts`](http://localhost:3000/llms-pages/net-standard-library/models/structures/policy-theme-counts.md) | Required | PolicyThemeCounts. |
+| `MissingOfficialPolicyThemes` | [`List<MissingOfficialPolicyThemeEnum>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/missing-official-policy-theme.md) | Required | Missing official policy themes.<br><br>**Constraints**: *Maximum Items*: `3` |
+| `OfficialPolicyChunkCountByTheme` | [`PolicyThemeCounts`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/policy-theme-counts.md) | Required | PolicyThemeCounts. |
 | `OfficialPolicySourceIds` | `List<string>` | Required | Official policy source ids.<br><br>**Constraints**: *Maximum Items*: `16`, *Pattern*: `^[A-Z0-9-]{1,128}$` |
 | `RegionalSourceCount` | `int` | Required | Regional source count.<br><br>**Constraints**: `>= 0`, `<= 16` |
 | `SelectedChunkCount` | `int` | Required | Selected chunk count.<br><br>**Constraints**: `>= 0`, `<= 29` |

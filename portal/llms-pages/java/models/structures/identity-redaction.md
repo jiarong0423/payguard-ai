@@ -1,6 +1,6 @@
 # Identity Redaction
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRklkZW50aXR5UmVkYWN0aW9u
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRklkZW50aXR5UmVkYWN0aW9u
 
 IdentityRedaction.
 
@@ -14,10 +14,10 @@ IdentityRedaction.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Fields` | [`List<FieldEnum>`](http://localhost:3000/llms-pages/java/models/enumerations/field.md) | Required | Fields. | List<FieldEnum> getFields() | setFields(List<FieldEnum> fields) |
+| `Fields` | [`List<FieldEnum>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/field.md) | Required | Fields. | List<FieldEnum> getFields() | setFields(List<FieldEnum> fields) |
 | `Method` | `String` | Required, Constant | Method.<br><br>**Value**: `"HMAC-SHA256 pseudonymization"` | String getMethod() | setMethod(String method) |
 | `Synthetic` | `String` | Required, Constant | Synthetic.<br><br>**Value**: `"True"` | String getSynthetic() | setSynthetic(String synthetic) |
-| `Tokens` | [`IdentityTokens`](http://localhost:3000/llms-pages/java/models/structures/identity-tokens.md) | Required | IdentityTokens. | IdentityTokens getTokens() | setTokens(IdentityTokens tokens) |
+| `Tokens` | [`IdentityTokens`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/identity-tokens.md) | Required | IdentityTokens. | IdentityTokens getTokens() | setTokens(IdentityTokens tokens) |
 
 
 # Example

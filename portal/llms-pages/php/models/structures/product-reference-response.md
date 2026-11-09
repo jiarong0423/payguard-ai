@@ -1,6 +1,6 @@
 # Product Reference Response
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRlByb2R1Y3RSZWZlcmVuY2VSZXNwb25zZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRlByb2R1Y3RSZWZlcmVuY2VSZXNwb25zZQ
 
 Up to three Channel3 products for the seller to pick from; advisory, never changes the AUP decision.
 
@@ -15,11 +15,11 @@ Up to three Channel3 products for the seller to pick from; advisory, never chang
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `affectsDecision` | `string` | Required, Constant | Affects decision.<br><br>**Value**: `'False'` | getAffectsDecision(): string | setAffectsDecision(string affectsDecision): void |
-| `cards` | [`ProductCard[]`](http://localhost:3000/llms-pages/php/models/structures/product-card.md) | Required | Cards.<br><br>**Constraints**: *Maximum Items*: `3` | getCards(): array | setCards(array cards): void |
-| `reason` | string([Reason7Enum](http://localhost:3000/llms-pages/php/models/enumerations/reason-7.md)) | Required | This is a container for any-of cases. | getReason(): string | setReason(string reason): void |
+| `cards` | [`ProductCard[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/product-card.md) | Required | Cards.<br><br>**Constraints**: *Maximum Items*: `3` | getCards(): array | setCards(array cards): void |
+| `reason` | string([Reason7Enum](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/reason-7.md)) | Required | This is a container for any-of cases. | getReason(): string | setReason(string reason): void |
 | `recordedAt` | string | Required | This is a container for any-of cases. | getRecordedAt(): string | setRecordedAt(string recordedAt): void |
-| `source` | string([Source11Enum](http://localhost:3000/llms-pages/php/models/enumerations/source-11.md)) | Required | This is a container for any-of cases. | getSource(): string | setSource(string source): void |
-| `status` | [`string(Status12Enum)`](http://localhost:3000/llms-pages/php/models/enumerations/status-12.md) | Required | Status. | getStatus(): string | setStatus(string status): void |
+| `source` | string([Source11Enum](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/source-11.md)) | Required | This is a container for any-of cases. | getSource(): string | setSource(string source): void |
+| `status` | [`string(Status12Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/status-12.md) | Required | Status. | getStatus(): string | setStatus(string status): void |
 
 
 # Example

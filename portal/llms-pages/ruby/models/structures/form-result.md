@@ -1,6 +1,6 @@
 # Form Result
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkZvcm1SZXN1bHQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkZvcm1SZXN1bHQ
 
 Form result.
 

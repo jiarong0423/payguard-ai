@@ -1,6 +1,6 @@
 # Evidence Input Item
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkV2aWRlbmNlSW5wdXRJdGVt
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkV2aWRlbmNlSW5wdXRJdGVt
 
 EvidenceInputItem.
 
@@ -14,7 +14,7 @@ EvidenceInputItem.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `EvidenceInfo` | [`EvidenceInfo`](http://localhost:3000/llms-pages/java/models/structures/evidence-info.md) | Required | EvidenceInfo. | EvidenceInfo getEvidenceInfo() | setEvidenceInfo(EvidenceInfo evidenceInfo) |
+| `EvidenceInfo` | [`EvidenceInfo`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/evidence-info.md) | Required | EvidenceInfo. | EvidenceInfo getEvidenceInfo() | setEvidenceInfo(EvidenceInfo evidenceInfo) |
 | `EvidenceType` | `String` | Required | Evidence type.<br><br>**Constraints**: *Pattern*: `^[A-Z][A-Z0-9_]{0,63}$` | String getEvidenceType() | setEvidenceType(String evidenceType) |
 | `Notes` | `String` | Required | Notes.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `2000` | String getNotes() | setNotes(String notes) |
 

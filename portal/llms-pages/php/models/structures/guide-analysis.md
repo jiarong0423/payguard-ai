@@ -1,6 +1,6 @@
 # Guide Analysis
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkd1aWRlQW5hbHlzaXM
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkd1aWRlQW5hbHlzaXM
 
 GuideAnalysis.
 
@@ -14,8 +14,8 @@ GuideAnalysis.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `reason` | string([Reason5Enum](http://localhost:3000/llms-pages/php/models/enumerations/reason-5.md)) | Required | This is a container for any-of cases. | getReason(): string | setReason(string reason): void |
-| `status` | [`string(Status8Enum)`](http://localhost:3000/llms-pages/php/models/enumerations/status-8.md) | Required | Status. | getStatus(): string | setStatus(string status): void |
+| `reason` | string([Reason5Enum](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/reason-5.md)) | Required | This is a container for any-of cases. | getReason(): string | setReason(string reason): void |
+| `status` | [`string(Status8Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/status-8.md) | Required | Status. | getStatus(): string | setStatus(string status): void |
 | `turn` | `int` | Required | Turn. | getTurn(): int | setTurn(int turn): void |
 
 

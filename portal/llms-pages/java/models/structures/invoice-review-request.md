@@ -1,6 +1,6 @@
 # Invoice Review Request
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkludm9pY2VSZXZpZXdSZXF1ZXN0
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkludm9pY2VSZXZpZXdSZXF1ZXN0
 
 InvoiceReviewRequest.
 
@@ -14,13 +14,13 @@ InvoiceReviewRequest.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `AcknowledgementToken` | [`InvoiceReviewRequestAcknowledgementToken`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/invoice-review-request-acknowledgement-token.md) | Optional | This is a container for any-of cases. | InvoiceReviewRequestAcknowledgementToken getAcknowledgementToken() | setAcknowledgementToken(InvoiceReviewRequestAcknowledgementToken acknowledgementToken) |
+| `AcknowledgementToken` | [`InvoiceReviewRequestAcknowledgementToken`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/invoice-review-request-acknowledgement-token.md) | Optional | This is a container for any-of cases. | InvoiceReviewRequestAcknowledgementToken getAcknowledgementToken() | setAcknowledgementToken(InvoiceReviewRequestAcknowledgementToken acknowledgementToken) |
 | `Amount` | `String` | Required | Amount.<br><br>**Constraints**: *Pattern*: `^[0-9]{1,9}(?:\.[0-9]{1,2})?$` | String getAmount() | setAmount(String amount) |
 | `ConfirmSandboxDraft` | `boolean` | Required | Confirm sandbox draft. | boolean getConfirmSandboxDraft() | setConfirmSandboxDraft(boolean confirmSandboxDraft) |
-| `Currency` | [`CurrencyEnum`](http://localhost:3000/llms-pages/java/models/enumerations/currency.md) | Required | Currency. | CurrencyEnum getCurrency() | setCurrency(CurrencyEnum currency) |
+| `Currency` | [`CurrencyEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/currency.md) | Required | Currency. | CurrencyEnum getCurrency() | setCurrency(CurrencyEnum currency) |
 | `Description` | `String` | Required | Description.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `200` | String getDescription() | setDescription(String description) |
-| `DescriptionDigest` | [`InvoiceReviewRequestDescriptionDigest`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/invoice-review-request-description-digest.md) | Optional | This is a container for any-of cases. | InvoiceReviewRequestDescriptionDigest getDescriptionDigest() | setDescriptionDigest(InvoiceReviewRequestDescriptionDigest descriptionDigest) |
-| `EvaluationId` | [`InvoiceReviewRequestEvaluationId`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/invoice-review-request-evaluation-id.md) | Optional | This is a container for any-of cases. | InvoiceReviewRequestEvaluationId getEvaluationId() | setEvaluationId(InvoiceReviewRequestEvaluationId evaluationId) |
+| `DescriptionDigest` | [`InvoiceReviewRequestDescriptionDigest`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/invoice-review-request-description-digest.md) | Optional | This is a container for any-of cases. | InvoiceReviewRequestDescriptionDigest getDescriptionDigest() | setDescriptionDigest(InvoiceReviewRequestDescriptionDigest descriptionDigest) |
+| `EvaluationId` | [`InvoiceReviewRequestEvaluationId`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/invoice-review-request-evaluation-id.md) | Optional | This is a container for any-of cases. | InvoiceReviewRequestEvaluationId getEvaluationId() | setEvaluationId(InvoiceReviewRequestEvaluationId evaluationId) |
 
 
 # Example

@@ -1,6 +1,6 @@
 # Guide Turn Request
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkd1aWRlVHVyblJlcXVlc3Q
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkd1aWRlVHVyblJlcXVlc3Q
 
 GuideTurnRequest.
 
@@ -14,8 +14,8 @@ GuideTurnRequest.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Fields` | [`GuideTurnRequestFields`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/guide-turn-request-fields.md) | Optional | This is a container for any-of cases. | GuideTurnRequestFields getFields() | setFields(GuideTurnRequestFields fields) |
-| `Scenario` | [`GuideTurnRequestScenario`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/guide-turn-request-scenario.md) | Optional | This is a container for any-of cases. | GuideTurnRequestScenario getScenario() | setScenario(GuideTurnRequestScenario scenario) |
+| `Fields` | [`GuideTurnRequestFields`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/guide-turn-request-fields.md) | Optional | This is a container for any-of cases. | GuideTurnRequestFields getFields() | setFields(GuideTurnRequestFields fields) |
+| `Scenario` | [`GuideTurnRequestScenario`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/guide-turn-request-scenario.md) | Optional | This is a container for any-of cases. | GuideTurnRequestScenario getScenario() | setScenario(GuideTurnRequestScenario scenario) |
 | `Text` | `String` | Required | Text.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `1600` | String getText() | setText(String text) |
 
 

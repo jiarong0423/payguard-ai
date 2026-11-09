@@ -1,6 +1,6 @@
 # Judgement
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkp1ZGdlbWVudA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkp1ZGdlbWVudA
 
 Judgement.
 

@@ -1,6 +1,6 @@
 # Policy Source Source Updated Date
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlBvbGljeVNvdXJjZVNvdXJjZVVwZGF0ZWREYXRl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRlBvbGljeVNvdXJjZVNvdXJjZVVwZGF0ZWREYXRl
 
 
 # Data Type

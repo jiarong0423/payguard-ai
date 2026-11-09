@@ -1,6 +1,6 @@
 # Case Route Response
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkNhc2VSb3V0ZVJlc3BvbnNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkNhc2VSb3V0ZVJlc3BvbnNl
 
 Fuzzy case routing: which goods group (and so which dispute items) applies. Code decides; advisory only.
 
@@ -19,10 +19,10 @@ Fuzzy case routing: which goods group (and so which dispute items) applies. Code
 | `filtered_out` | `int` | Required | Filtered out.<br><br>**Constraints**: `>= 0`, `<= 1000` |
 | `items` | `List[str]` | Required | Items.<br><br>**Constraints**: *Maximum Items*: `12` |
 | `matched_word` | str | Required | This is a container for any-of cases. |
-| `matches` | [`List[CaseRouteMatch]`](http://localhost:3000/llms-pages/python/models/structures/case-route-match.md) | Required | Matches.<br><br>**Constraints**: *Maximum Items*: `3` |
+| `matches` | [`List[CaseRouteMatch]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/case-route-match.md) | Required | Matches.<br><br>**Constraints**: *Maximum Items*: `3` |
 | `query` | str | Required | This is a container for any-of cases. |
-| `reason` | [`Reason1Enum`](http://localhost:3000/llms-pages/python/models/enumerations/reason-1.md) | Required | Reason. |
-| `route` | [`RouteEnum`](http://localhost:3000/llms-pages/python/models/enumerations/route.md) | Required | Route. |
+| `reason` | [`Reason1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/reason-1.md) | Required | Reason. |
+| `route` | [`RouteEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/route.md) | Required | Route. |
 
 
 # Example

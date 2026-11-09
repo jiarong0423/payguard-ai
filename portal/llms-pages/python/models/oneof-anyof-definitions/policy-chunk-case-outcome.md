@@ -1,6 +1,6 @@
 # Policy Chunk Case Outcome
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRlBvbGljeUNodW5rQ2FzZU91dGNvbWU
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlBvbGljeUNodW5rQ2FzZU91dGNvbWU
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRlBvbGljeUNodW5rQ2FzZU
 
 | Type |
 |  --- |
-| [`CaseOutcomeEnum`](http://localhost:3000/llms-pages/python/models/enumerations/case-outcome.md) |
+| [`CaseOutcomeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/case-outcome.md) |
 
 
 # CaseOutcomeEnum

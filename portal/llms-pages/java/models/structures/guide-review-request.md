@@ -1,6 +1,6 @@
 # Guide Review Request
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkd1aWRlUmV2aWV3UmVxdWVzdA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkd1aWRlUmV2aWV3UmVxdWVzdA
 
 GuideReviewRequest.
 
@@ -16,7 +16,7 @@ GuideReviewRequest.
 |  --- | --- | --- | --- | --- | --- |
 | `Change` | `List<String>` | Optional | Change.<br><br>**Constraints**: *Maximum Items*: `9`, *Minimum Length*: `1`, *Maximum Length*: `40`, *Pattern*: `^[a-z_]+$` | List<String> getChange() | setChange(List<String> change) |
 | `Confirm` | `Boolean` | Optional | Confirm.<br><br>**Default**: `false` | Boolean getConfirm() | setConfirm(Boolean confirm) |
-| `Scenario` | [`GuideReviewRequestScenario`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/guide-review-request-scenario.md) | Optional | This is a container for any-of cases. | GuideReviewRequestScenario getScenario() | setScenario(GuideReviewRequestScenario scenario) |
+| `Scenario` | [`GuideReviewRequestScenario`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/guide-review-request-scenario.md) | Optional | This is a container for any-of cases. | GuideReviewRequestScenario getScenario() | setScenario(GuideReviewRequestScenario scenario) |
 
 
 # Example

@@ -1,6 +1,6 @@
 # Time Gaps
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlRpbWVHYXBz
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRlRpbWVHYXBz
 
 TimeGaps.
 
@@ -14,10 +14,10 @@ TimeGaps.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `deliveryToClaim` | [`TimeGapsDeliveryToClaim`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/time-gaps-delivery-to-claim.md) | Required | This is a container for any-of cases. |
-| `paymentToClaim` | [`TimeGapsPaymentToClaim`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/time-gaps-payment-to-claim.md) | Required | This is a container for any-of cases. |
-| `paymentToDelivery` | [`TimeGapsPaymentToDelivery`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/time-gaps-payment-to-delivery.md) | Required | This is a container for any-of cases. |
-| `paymentToOrderRecord` | [`TimeGapsPaymentToOrderRecord`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/time-gaps-payment-to-order-record.md) | Required | This is a container for any-of cases. |
+| `deliveryToClaim` | [`TimeGapsDeliveryToClaim`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/time-gaps-delivery-to-claim.md) | Required | This is a container for any-of cases. |
+| `paymentToClaim` | [`TimeGapsPaymentToClaim`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/time-gaps-payment-to-claim.md) | Required | This is a container for any-of cases. |
+| `paymentToDelivery` | [`TimeGapsPaymentToDelivery`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/time-gaps-payment-to-delivery.md) | Required | This is a container for any-of cases. |
+| `paymentToOrderRecord` | [`TimeGapsPaymentToOrderRecord`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/time-gaps-payment-to-order-record.md) | Required | This is a container for any-of cases. |
 
 
 # Example

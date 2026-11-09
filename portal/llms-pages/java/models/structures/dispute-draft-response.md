@@ -1,6 +1,6 @@
 # Dispute Draft Response
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkRpc3B1dGVEcmFmdFJlc3BvbnNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkRpc3B1dGVEcmFmdFJlc3BvbnNl
 
 DisputeDraftResponse.
 
@@ -16,20 +16,20 @@ DisputeDraftResponse.
 |  --- | --- | --- | --- | --- | --- |
 | `AdvisoryOnly` | `String` | Required, Constant | Advisory only.<br><br>**Value**: `"True"` | String getAdvisoryOnly() | setAdvisoryOnly(String advisoryOnly) |
 | `CaseRef` | `String` | Required | Case ref. | String getCaseRef() | setCaseRef(String caseRef) |
-| `DocumentRedaction` | [`DocumentRedaction`](http://localhost:3000/llms-pages/java/models/structures/document-redaction.md) | Required | DocumentRedaction. | DocumentRedaction getDocumentRedaction() | setDocumentRedaction(DocumentRedaction documentRedaction) |
+| `DocumentRedaction` | [`DocumentRedaction`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/document-redaction.md) | Required | DocumentRedaction. | DocumentRedaction getDocumentRedaction() | setDocumentRedaction(DocumentRedaction documentRedaction) |
 | `DraftDigest` | `String` | Required | Draft digest. | String getDraftDigest() | setDraftDigest(String draftDigest) |
-| `Evidence` | [`Evidence`](http://localhost:3000/llms-pages/java/models/structures/evidence.md) | Required | Evidence. | Evidence getEvidence() | setEvidence(Evidence evidence) |
-| `IdentityRedaction` | [`IdentityRedaction`](http://localhost:3000/llms-pages/java/models/structures/identity-redaction.md) | Required | IdentityRedaction. | IdentityRedaction getIdentityRedaction() | setIdentityRedaction(IdentityRedaction identityRedaction) |
+| `Evidence` | [`Evidence`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/evidence.md) | Required | Evidence. | Evidence getEvidence() | setEvidence(Evidence evidence) |
+| `IdentityRedaction` | [`IdentityRedaction`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/identity-redaction.md) | Required | IdentityRedaction. | IdentityRedaction getIdentityRedaction() | setIdentityRedaction(IdentityRedaction identityRedaction) |
 | `Limitations` | `List<String>` | Required | Limitations. | List<String> getLimitations() | setLimitations(List<String> limitations) |
 | `PolicyVersion` | `String` | Required | Policy version. | String getPolicyVersion() | setPolicyVersion(String policyVersion) |
 | `Recommendation` | `String` | Required | Recommendation. | String getRecommendation() | setRecommendation(String recommendation) |
-| `RestrictedOriginalSummary` | [`RestrictedOriginalSummary`](http://localhost:3000/llms-pages/java/models/structures/restricted-original-summary.md) | Required | RestrictedOriginalSummary. | RestrictedOriginalSummary getRestrictedOriginalSummary() | setRestrictedOriginalSummary(RestrictedOriginalSummary restrictedOriginalSummary) |
+| `RestrictedOriginalSummary` | [`RestrictedOriginalSummary`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/restricted-original-summary.md) | Required | RestrictedOriginalSummary. | RestrictedOriginalSummary getRestrictedOriginalSummary() | setRestrictedOriginalSummary(RestrictedOriginalSummary restrictedOriginalSummary) |
 | `ReviewReasons` | `List<String>` | Required | Review reasons. | List<String> getReviewReasons() | setReviewReasons(List<String> reviewReasons) |
-| `Routing` | [`DisputeRouting`](http://localhost:3000/llms-pages/java/models/structures/dispute-routing.md) | Required | DisputeRouting. | DisputeRouting getRouting() | setRouting(DisputeRouting routing) |
-| `ScenarioMatch` | [`ScenarioMatch`](http://localhost:3000/llms-pages/java/models/structures/scenario-match.md) | Required | ScenarioMatch. | ScenarioMatch getScenarioMatch() | setScenarioMatch(ScenarioMatch scenarioMatch) |
+| `Routing` | [`DisputeRouting`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/dispute-routing.md) | Required | DisputeRouting. | DisputeRouting getRouting() | setRouting(DisputeRouting routing) |
+| `ScenarioMatch` | [`ScenarioMatch`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/scenario-match.md) | Required | ScenarioMatch. | ScenarioMatch getScenarioMatch() | setScenarioMatch(ScenarioMatch scenarioMatch) |
 | `Source` | `String` | Required, Constant | Source.<br><br>**Value**: `"synthetic"` | String getSource() | setSource(String source) |
-| `Status` | [`Status5Enum`](http://localhost:3000/llms-pages/java/models/enumerations/status-5.md) | Required | Status. | Status5Enum getStatus() | setStatus(Status5Enum status) |
-| `TimeEvidence` | [`DisputeDraftResponseTimeEvidence`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/dispute-draft-response-time-evidence.md) | Optional | This is a container for any-of cases. | DisputeDraftResponseTimeEvidence getTimeEvidence() | setTimeEvidence(DisputeDraftResponseTimeEvidence timeEvidence) |
+| `Status` | [`Status5Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/status-5.md) | Required | Status. | Status5Enum getStatus() | setStatus(Status5Enum status) |
+| `TimeEvidence` | [`DisputeDraftResponseTimeEvidence`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/dispute-draft-response-time-evidence.md) | Optional | This is a container for any-of cases. | DisputeDraftResponseTimeEvidence getTimeEvidence() | setTimeEvidence(DisputeDraftResponseTimeEvidence timeEvidence) |
 
 
 # Example

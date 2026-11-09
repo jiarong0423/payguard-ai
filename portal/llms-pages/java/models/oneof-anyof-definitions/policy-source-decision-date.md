@@ -1,6 +1,6 @@
 # Policy Source Decision Date
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlBvbGljeVNvdXJjZURlY2lzaW9uRGF0ZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlBvbGljeVNvdXJjZURlY2lzaW9uRGF0ZQ
 
 
 # Class Name

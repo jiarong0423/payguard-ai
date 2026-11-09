@@ -1,6 +1,6 @@
 # Reference Citation
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRlJlZmVyZW5jZUNpdGF0aW9u
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlJlZmVyZW5jZUNpdGF0aW9u
 
 ReferenceCitation.
 
@@ -14,24 +14,24 @@ ReferenceCitation.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `case_outcome` | [CaseOutcome](http://localhost:3000/llms-pages/python/models/enumerations/case-outcome.md) | Required | This is a container for any-of cases. |
-| `case_stage` | [`CaseStageEnum`](http://localhost:3000/llms-pages/python/models/enumerations/case-stage.md) | Required | Case stage. |
+| `case_outcome` | [CaseOutcome](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/case-outcome.md) | Required | This is a container for any-of cases. |
+| `case_stage` | [`CaseStageEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/case-stage.md) | Required | Case stage. |
 | `chunk_id` | `str` | Required | Chunk id.<br><br>**Constraints**: *Pattern*: `^[A-Z0-9-]{1,128}$` |
 | `decision_acceptance_deadline` | str | Required | This is a container for any-of cases. |
 | `decision_date` | str | Required | This is a container for any-of cases. |
-| `decision_date_status` | [`DecisionDateStatusEnum`](http://localhost:3000/llms-pages/python/models/enumerations/decision-date-status.md) | Required | Decision date status. |
+| `decision_date_status` | [`DecisionDateStatusEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/decision-date-status.md) | Required | Decision date status. |
 | `effective_date` | str | Required | This is a container for any-of cases. |
-| `effective_date_status` | [`EffectiveDateStatusEnum`](http://localhost:3000/llms-pages/python/models/enumerations/effective-date-status.md) | Required | Effective date status. |
+| `effective_date_status` | [`EffectiveDateStatusEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/effective-date-status.md) | Required | Effective date status. |
 | `jurisdiction` | `str` | Required, Constant | Jurisdiction.<br><br>**Value**: `"US"` |
 | `jurisdiction_label` | `str` | Required | Jurisdiction label.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `2000` |
 | `locator` | `str` | Required | Locator.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `8000` |
-| `material_type` | [`MaterialType1Enum`](http://localhost:3000/llms-pages/python/models/enumerations/material-type-1.md) | Required | Material type. |
+| `material_type` | [`MaterialType1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/material-type-1.md) | Required | Material type. |
 | `relevance_score` | `int` | Required | Relevance score.<br><br>**Constraints**: `>= 1`, `<= 128` |
 | `retrieved_at` | `str` | Required | Retrieved at.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `64` |
 | `source_id` | `str` | Required | Source id.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `128` |
 | `source_title` | `str` | Required | Source title.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `8000` |
 | `source_updated_date` | str | Required | This is a container for any-of cases. |
-| `source_updated_date_status` | [`SourceUpdatedDateStatusEnum`](http://localhost:3000/llms-pages/python/models/enumerations/source-updated-date-status.md) | Required | Source updated date status. |
+| `source_updated_date_status` | [`SourceUpdatedDateStatusEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/source-updated-date-status.md) | Required | Source updated date status. |
 | `text` | `str` | Required | Text.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `8000` |
 | `text_sha_256` | `str` | Required | Text sha256.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` |
 | `title` | `str` | Required | Title.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `8000` |

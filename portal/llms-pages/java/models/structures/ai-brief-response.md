@@ -1,6 +1,6 @@
 # Ai Brief Response
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkFpQnJpZWZSZXNwb25zZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkFpQnJpZWZSZXNwb25zZQ
 
 AiBriefResponse.
 
@@ -16,22 +16,22 @@ AiBriefResponse.
 |  --- | --- | --- | --- | --- | --- |
 | `AdvisoryOnly` | `String` | Required, Constant | Advisory only.<br><br>**Value**: `"True"` | String getAdvisoryOnly() | setAdvisoryOnly(String advisoryOnly) |
 | `AiGenerated` | `String` | Required, Constant | Ai generated.<br><br>**Value**: `"True"` | String getAiGenerated() | setAiGenerated(String aiGenerated) |
-| `Brief` | [`GeneratedBrief`](http://localhost:3000/llms-pages/java/models/structures/generated-brief.md) | Required | GeneratedBrief. | GeneratedBrief getBrief() | setBrief(GeneratedBrief brief) |
+| `Brief` | [`GeneratedBrief`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/generated-brief.md) | Required | GeneratedBrief. | GeneratedBrief getBrief() | setBrief(GeneratedBrief brief) |
 | `ComplianceDecision` | `String` | Required, Constant | Compliance decision.<br><br>**Value**: `"NOT_MADE"` | String getComplianceDecision() | setComplianceDecision(String complianceDecision) |
 | `ContextDigest` | `String` | Required | Context digest.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` | String getContextDigest() | setContextDigest(String contextDigest) |
 | `CorpusDigest` | `String` | Required | Corpus digest.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` | String getCorpusDigest() | setCorpusDigest(String corpusDigest) |
 | `CurrentPolicyApplicability` | `String` | Required, Constant | Current policy applicability.<br><br>**Value**: `"NOT_ESTABLISHED"` | String getCurrentPolicyApplicability() | setCurrentPolicyApplicability(String currentPolicyApplicability) |
-| `ExecutionEvidence` | [`ExecutionEvidenceEnum`](http://localhost:3000/llms-pages/java/models/enumerations/execution-evidence.md) | Required | Execution evidence. | ExecutionEvidenceEnum getExecutionEvidence() | setExecutionEvidence(ExecutionEvidenceEnum executionEvidence) |
+| `ExecutionEvidence` | [`ExecutionEvidenceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/execution-evidence.md) | Required | Execution evidence. | ExecutionEvidenceEnum getExecutionEvidence() | setExecutionEvidence(ExecutionEvidenceEnum executionEvidence) |
 | `ExternalActionAuthorized` | `String` | Required, Constant | External action authorized.<br><br>**Value**: `"False"` | String getExternalActionAuthorized() | setExternalActionAuthorized(String externalActionAuthorized) |
-| `FixtureId` | [`FixtureIdEnum`](http://localhost:3000/llms-pages/java/models/enumerations/fixture-id.md) | Required | Fixture id. | FixtureIdEnum getFixtureId() | setFixtureId(FixtureIdEnum fixtureId) |
+| `FixtureId` | [`FixtureIdEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/fixture-id.md) | Required | Fixture id. | FixtureIdEnum getFixtureId() | setFixtureId(FixtureIdEnum fixtureId) |
 | `HumanReviewRequired` | `String` | Required, Constant | Human review required.<br><br>**Value**: `"True"` | String getHumanReviewRequired() | setHumanReviewRequired(String humanReviewRequired) |
 | `Limitations` | `List<String>` | Required | Limitations.<br><br>**Constraints**: *Minimum Items*: `3`, *Maximum Items*: `3` | List<String> getLimitations() | setLimitations(List<String> limitations) |
-| `Model` | [`ModelEnum`](http://localhost:3000/llms-pages/java/models/enumerations/model.md) | Required | Model. | ModelEnum getModel() | setModel(ModelEnum model) |
+| `Model` | [`ModelEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/model.md) | Required | Model. | ModelEnum getModel() | setModel(ModelEnum model) |
 | `PromptContractDigest` | `String` | Required | Prompt contract digest.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` | String getPromptContractDigest() | setPromptContractDigest(String promptContractDigest) |
 | `PromptContractId` | `String` | Required, Constant | Prompt contract id.<br><br>**Value**: `"payguard-bounded-advisory-v3"` | String getPromptContractId() | setPromptContractId(String promptContractId) |
 | `SchemaVersion` | `String` | Required, Constant | Schema version.<br><br>**Value**: `"1.0"` | String getSchemaVersion() | setSchemaVersion(String schemaVersion) |
 | `SemanticEntailment` | `String` | Required, Constant | Semantic entailment.<br><br>**Value**: `"NOT_EVALUATED"` | String getSemanticEntailment() | setSemanticEntailment(String semanticEntailment) |
-| `Stage` | [`StageEnum`](http://localhost:3000/llms-pages/java/models/enumerations/stage.md) | Required | Stage. | StageEnum getStage() | setStage(StageEnum stage) |
+| `Stage` | [`StageEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/stage.md) | Required | Stage. | StageEnum getStage() | setStage(StageEnum stage) |
 | `Status` | `String` | Required, Constant | Status.<br><br>**Value**: `"completed"` | String getStatus() | setStatus(String status) |
 | `WorkflowTransitionAuthorized` | `String` | Required, Constant | Workflow transition authorized.<br><br>**Value**: `"False"` | String getWorkflowTransitionAuthorized() | setWorkflowTransitionAuthorized(String workflowTransitionAuthorized) |
 

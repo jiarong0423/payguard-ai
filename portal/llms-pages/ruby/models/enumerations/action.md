@@ -1,6 +1,6 @@
 # Action
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkFjdGlvbg
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkFjdGlvbg
 
 Action.
 

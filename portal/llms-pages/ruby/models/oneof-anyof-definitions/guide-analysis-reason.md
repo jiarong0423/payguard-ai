@@ -1,6 +1,6 @@
 # Guide Analysis Reason
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkd1aWRlQW5hbHlzaXNSZWFzb24
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkd1aWRlQW5hbHlzaXNSZWFzb24
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkd1aWRlQW5hbHlzaXNSZWFz
 
 | Type |
 |  --- |
-| [`Reason5Enum`](http://localhost:3000/llms-pages/ruby/models/enumerations/reason-5.md) |
+| [`Reason5Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/reason-5.md) |
 
 
 # Reason5Enum

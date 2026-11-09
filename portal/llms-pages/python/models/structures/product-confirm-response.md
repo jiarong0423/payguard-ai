@@ -1,6 +1,6 @@
 # Product Confirm Response
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maXJtUmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maXJtUmVzcG9uc2U
 
 The seller's own choice: one of the cards they were shown, or none of them.
 
@@ -15,14 +15,14 @@ The seller's own choice: one of the cards they were shown, or none of them.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `affects_decision` | `str` | Required, Constant | Affects decision.<br><br>**Value**: `"False"` |
-| `card` | [ProductCard](http://localhost:3000/llms-pages/python/models/structures/product-card.md) | Required | This is a container for any-of cases. |
+| `card` | [ProductCard](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/product-card.md) | Required | This is a container for any-of cases. |
 | `card_digest` | str | Required | This is a container for any-of cases. |
-| `choice` | [`Choice2Enum`](http://localhost:3000/llms-pages/python/models/enumerations/choice-2.md) | Required | Choice. |
+| `choice` | [`Choice2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/choice-2.md) | Required | Choice. |
 | `confirmed_by` | `str` | Required, Constant | Confirmed by.<br><br>**Value**: `"seller"` |
 | `description_digest` | `str` | Required | Description digest.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` |
 | `evaluation_id` | `str` | Required | Evaluation id.<br><br>**Constraints**: *Minimum Length*: `32`, *Maximum Length*: `128`, *Pattern*: `^[A-Za-z0-9_-]+$` |
 | `recorded_at` | str | Required | This is a container for any-of cases. |
-| `source` | [`Source10Enum`](http://localhost:3000/llms-pages/python/models/enumerations/source-10.md) | Required | Source. |
+| `source` | [`Source10Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/source-10.md) | Required | Source. |
 
 
 # Example

@@ -1,6 +1,6 @@
 # Guide State Response Goods Type
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZUdvb2RzVHlwZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZUdvb2RzVHlwZQ
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25z
 
 | Type |
 |  --- |
-| [`GoodsTypeEnum`](http://localhost:3000/llms-pages/ruby/models/enumerations/goods-type.md) |
+| [`GoodsTypeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/goods-type.md) |
 
 
 # GoodsTypeEnum

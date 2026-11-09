@@ -1,6 +1,6 @@
 # Evidence Receipt
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkV2aWRlbmNlUmVjZWlwdA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkV2aWRlbmNlUmVjZWlwdA
 
 Evidence receipt.
 
@@ -14,17 +14,17 @@ Evidence receipt.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `Action` | [`*models.ActionEnum`](http://localhost:3000/llms-pages/go/models/enumerations/action.md) | Optional | Action. |
-| `Environment` | [`*models.EnvironmentEnum`](http://localhost:3000/llms-pages/go/models/enumerations/environment.md) | Optional | Environment. |
-| `EvidenceClass` | [`*models.EvidenceClass3Enum`](http://localhost:3000/llms-pages/go/models/enumerations/evidence-class-3.md) | Optional | Evidence class. |
-| `ExternalSend` | [`*models.ExternalSend1Enum`](http://localhost:3000/llms-pages/go/models/enumerations/external-send-1.md) | Optional | External send. |
-| `InvoiceId` | [`*models.EvidenceReceiptInvoiceId`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/evidence-receipt-invoice-id.md) | Optional | This is a container for any-of cases. |
+| `Action` | [`*models.ActionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/action.md) | Optional | Action. |
+| `Environment` | [`*models.EnvironmentEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/environment.md) | Optional | Environment. |
+| `EvidenceClass` | [`*models.EvidenceClass3Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/evidence-class-3.md) | Optional | Evidence class. |
+| `ExternalSend` | [`*models.ExternalSend1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/external-send-1.md) | Optional | External send. |
+| `InvoiceId` | [`*models.EvidenceReceiptInvoiceId`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/evidence-receipt-invoice-id.md) | Optional | This is a container for any-of cases. |
 | `ObservedAt` | `*string` | Optional | Observed at.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `27` |
-| `PaypalDebugId` | [`*models.EvidenceReceiptPaypalDebugId`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/evidence-receipt-paypal-debug-id.md) | Optional | This is a container for any-of cases. |
-| `ProofKind` | [`*models.ProofKindEnum`](http://localhost:3000/llms-pages/go/models/enumerations/proof-kind.md) | Optional | Proof kind. |
-| `SchemaVersion` | [`*models.SchemaVersion1Enum`](http://localhost:3000/llms-pages/go/models/enumerations/schema-version-1.md) | Optional | Schema version. |
+| `PaypalDebugId` | [`*models.EvidenceReceiptPaypalDebugId`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/evidence-receipt-paypal-debug-id.md) | Optional | This is a container for any-of cases. |
+| `ProofKind` | [`*models.ProofKindEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/proof-kind.md) | Optional | Proof kind. |
+| `SchemaVersion` | [`*models.SchemaVersion1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/schema-version-1.md) | Optional | Schema version. |
 | `SeparateGetReadback` | `*bool` | Optional | Separate get readback. |
-| `Status` | [`*models.Status10Enum`](http://localhost:3000/llms-pages/go/models/enumerations/status-10.md) | Optional | Status. |
+| `Status` | [`*models.Status10Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/status-10.md) | Optional | Status. |
 
 
 # Example

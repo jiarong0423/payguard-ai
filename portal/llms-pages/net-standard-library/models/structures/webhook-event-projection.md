@@ -1,6 +1,6 @@
 # Webhook Event Projection
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRldlYmhvb2tFdmVudFByb2plY3Rpb24
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRldlYmhvb2tFdmVudFByb2plY3Rpb24
 
 All that is kept after a SUCCESS: identifiers and status only, no amounts, payer data, links or summary.
 
@@ -14,11 +14,11 @@ All that is kept after a SUCCESS: identifiers and status only, no amounts, payer
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `EventType` | [`WebhookEventProjectionEventType`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/webhook-event-projection-event-type.md) | Required | This is a container for any-of cases. |
-| `Id` | [`WebhookEventProjectionId`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/webhook-event-projection-id.md) | Required | This is a container for any-of cases. |
-| `ResourceId` | [`WebhookEventProjectionResourceId`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/webhook-event-projection-resource-id.md) | Required | This is a container for any-of cases. |
-| `ResourceStatus` | [`WebhookEventProjectionResourceStatus`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/webhook-event-projection-resource-status.md) | Required | This is a container for any-of cases. |
-| `ResourceType` | [`WebhookEventProjectionResourceType`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/webhook-event-projection-resource-type.md) | Required | This is a container for any-of cases. |
+| `EventType` | [`WebhookEventProjectionEventType`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/webhook-event-projection-event-type.md) | Required | This is a container for any-of cases. |
+| `Id` | [`WebhookEventProjectionId`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/webhook-event-projection-id.md) | Required | This is a container for any-of cases. |
+| `ResourceId` | [`WebhookEventProjectionResourceId`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/webhook-event-projection-resource-id.md) | Required | This is a container for any-of cases. |
+| `ResourceStatus` | [`WebhookEventProjectionResourceStatus`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/webhook-event-projection-resource-status.md) | Required | This is a container for any-of cases. |
+| `ResourceType` | [`WebhookEventProjectionResourceType`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/webhook-event-projection-resource-type.md) | Required | This is a container for any-of cases. |
 
 
 # Example

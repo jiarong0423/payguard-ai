@@ -1,6 +1,6 @@
 # Velocity Response
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRlZlbG9jaXR5UmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRlZlbG9jaXR5UmVzcG9uc2U
 
 VelocityResponse.
 
@@ -17,7 +17,7 @@ VelocityResponse.
 | `advisoryOnly` | `string` | Required, Constant | Advisory only.<br><br>**Value**: `'True'` | getAdvisoryOnly(): string | setAdvisoryOnly(string advisoryOnly): void |
 | `alert` | `bool` | Required | Alert. | getAlert(): bool | setAlert(bool alert): void |
 | `baselineAmountPerHour` | `string` | Required | Baseline amount per hour. | getBaselineAmountPerHour(): string | setBaselineAmountPerHour(string baselineAmountPerHour): void |
-| `baselineProvenance` | [`string(BaselineProvenanceEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/baseline-provenance.md) | Required | Baseline provenance. | getBaselineProvenance(): string | setBaselineProvenance(string baselineProvenance): void |
+| `baselineProvenance` | [`string(BaselineProvenanceEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/baseline-provenance.md) | Required | Baseline provenance. | getBaselineProvenance(): string | setBaselineProvenance(string baselineProvenance): void |
 | `baselineWindowEnd` | `string` | Required | Baseline window end. | getBaselineWindowEnd(): string | setBaselineWindowEnd(string baselineWindowEnd): void |
 | `baselineWindowStart` | `string` | Required | Baseline window start. | getBaselineWindowStart(): string | setBaselineWindowStart(string baselineWindowStart): void |
 | `currency` | string | Required | This is a container for any-of cases. | getCurrency(): string | setCurrency(string currency): void |
@@ -27,7 +27,7 @@ VelocityResponse.
 | `limitations` | `string[]` | Required | Limitations. | getLimitations(): array | setLimitations(array limitations): void |
 | `policyVersion` | `string` | Required | Policy version. | getPolicyVersion(): string | setPolicyVersion(string policyVersion): void |
 | `ratio` | string | Required | This is a container for any-of cases. | getRatio(): string | setRatio(string ratio): void |
-| `status` | [`string(Status14Enum)`](http://localhost:3000/llms-pages/php/models/enumerations/status-14.md) | Required | Status. | getStatus(): string | setStatus(string status): void |
+| `status` | [`string(Status14Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/status-14.md) | Required | Status. | getStatus(): string | setStatus(string status): void |
 | `threshold` | `string` | Required | Threshold. | getThreshold(): string | setThreshold(string threshold): void |
 | `totalAmount` | `string` | Required | Total amount. | getTotalAmount(): string | setTotalAmount(string totalAmount): void |
 | `transactionCount` | `int` | Required | Transaction count. | getTransactionCount(): int | setTransactionCount(int transactionCount): void |

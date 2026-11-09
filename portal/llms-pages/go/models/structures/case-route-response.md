@@ -1,6 +1,6 @@
 # Case Route Response
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkNhc2VSb3V0ZVJlc3BvbnNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkNhc2VSb3V0ZVJlc3BvbnNl
 
 Fuzzy case routing: which goods group (and so which dispute items) applies. Code decides; advisory only.
 
@@ -18,11 +18,11 @@ Fuzzy case routing: which goods group (and so which dispute items) applies. Code
 | `DecidedBy` | `string` | Required, Constant | Decided by.<br><br>**Value**: `"code"` |
 | `FilteredOut` | `int` | Required | Filtered out.<br><br>**Constraints**: `>= 0`, `<= 1000` |
 | `Items` | `[]string` | Required | Items.<br><br>**Constraints**: *Maximum Items*: `12` |
-| `MatchedWord` | [`models.CaseRouteResponseMatchedWord`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/case-route-response-matched-word.md) | Required | This is a container for any-of cases. |
-| `Matches` | [`[]models.CaseRouteMatch`](http://localhost:3000/llms-pages/go/models/structures/case-route-match.md) | Required | Matches.<br><br>**Constraints**: *Maximum Items*: `3` |
-| `Query` | [`models.CaseRouteResponseQuery`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/case-route-response-query.md) | Required | This is a container for any-of cases. |
-| `Reason` | [`models.Reason1Enum`](http://localhost:3000/llms-pages/go/models/enumerations/reason-1.md) | Required | Reason. |
-| `Route` | [`models.RouteEnum`](http://localhost:3000/llms-pages/go/models/enumerations/route.md) | Required | Route. |
+| `MatchedWord` | [`models.CaseRouteResponseMatchedWord`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/case-route-response-matched-word.md) | Required | This is a container for any-of cases. |
+| `Matches` | [`[]models.CaseRouteMatch`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/case-route-match.md) | Required | Matches.<br><br>**Constraints**: *Maximum Items*: `3` |
+| `Query` | [`models.CaseRouteResponseQuery`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/case-route-response-query.md) | Required | This is a container for any-of cases. |
+| `Reason` | [`models.Reason1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/reason-1.md) | Required | Reason. |
+| `Route` | [`models.RouteEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/route.md) | Required | Route. |
 
 
 # Example

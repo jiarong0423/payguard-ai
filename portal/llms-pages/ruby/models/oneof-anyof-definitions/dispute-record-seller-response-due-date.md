@@ -1,6 +1,6 @@
 # Dispute Record Seller Response Due Date
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkRpc3B1dGVSZWNvcmRTZWxsZXJSZXNwb25zZUR1ZURhdGU
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkRpc3B1dGVSZWNvcmRTZWxsZXJSZXNwb25zZUR1ZURhdGU
 
 
 # Data Type

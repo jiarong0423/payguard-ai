@@ -1,6 +1,6 @@
 # Get Guide State Scenario
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkdldEd1aWRlU3RhdGVTY2VuYXJpbw
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkdldEd1aWRlU3RhdGVTY2VuYXJpbw
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkdldEd1aWRlU3RhdGVTY2VuYX
 
 | Type | Factory Method |
 |  --- | --- |
-| [`models.Scenario1Enum`](http://localhost:3000/llms-pages/go/models/enumerations/scenario-1.md) | models.GetGuideStateScenarioContainer.FromScenario1(models.Scenario1Enum scenario1) |
+| [`models.Scenario1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/enumerations/scenario-1.md) | models.GetGuideStateScenarioContainer.FromScenario1(models.Scenario1Enum scenario1) |
 
 
 # models.Scenario1Enum

@@ -1,6 +1,6 @@
 # Guide Start Request Goods Type
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkd1aWRlU3RhcnRSZXF1ZXN0R29vZHNUeXBl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkd1aWRlU3RhcnRSZXF1ZXN0R29vZHNUeXBl
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkd1aWRlU3RhcnRSZXF1ZX
 
 | Type |
 |  --- |
-| [`GoodsTypeEnum`](http://localhost:3000/llms-pages/python/models/enumerations/goods-type.md) |
+| [`GoodsTypeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/goods-type.md) |
 
 
 # GoodsTypeEnum

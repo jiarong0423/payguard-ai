@@ -1,6 +1,6 @@
 # Guide Form Request Fields
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkd1aWRlRm9ybVJlcXVlc3RGaWVsZHM
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkd1aWRlRm9ybVJlcXVlc3RGaWVsZHM
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkd1aWRl
 
 | Type | Factory Method |
 |  --- | --- |
-| [`List<GuideField>`](http://localhost:3000/llms-pages/net-standard-library/models/structures/guide-field.md) | GuideFormRequestFields.FromListOfGuideField(List<GuideField> listOfGuideField) |
+| [`List<GuideField>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/guide-field.md) | GuideFormRequestFields.FromListOfGuideField(List<GuideField> listOfGuideField) |
 
 
 # List<GuideField>

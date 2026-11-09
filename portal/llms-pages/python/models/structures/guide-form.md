@@ -1,6 +1,6 @@
 # Guide Form
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkd1aWRlRm9ybQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkd1aWRlRm9ybQ
 
 GuideForm.
 
@@ -14,8 +14,8 @@ GuideForm.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `kind` | [`Kind2Enum`](http://localhost:3000/llms-pages/python/models/enumerations/kind-2.md) | Required | Kind. |
-| `options` | [`List[GuideOption]`](http://localhost:3000/llms-pages/python/models/structures/guide-option.md) | Required | Options. |
+| `kind` | [`Kind2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/kind-2.md) | Required | Kind. |
+| `options` | [`List[GuideOption]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/guide-option.md) | Required | Options. |
 | `placeholder` | str | Required | This is a container for any-of cases. |
 
 

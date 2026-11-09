@@ -1,6 +1,6 @@
 # Dispute Draft Response Time Evidence
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkRpc3B1dGVEcmFmdFJlc3BvbnNlVGltZUV2aWRlbmNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkRpc3B1dGVEcmFmdFJlc3BvbnNlVGltZUV2aWRlbmNl
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkRpc3B1
 
 | Type | Factory Method |
 |  --- | --- |
-| [`TimeEvidence`](http://localhost:3000/llms-pages/net-standard-library/models/structures/time-evidence.md) | DisputeDraftResponseTimeEvidence.FromTimeEvidence(TimeEvidence timeEvidence) |
+| [`TimeEvidence`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/structures/time-evidence.md) | DisputeDraftResponseTimeEvidence.FromTimeEvidence(TimeEvidence timeEvidence) |
 
 
 # TimeEvidence

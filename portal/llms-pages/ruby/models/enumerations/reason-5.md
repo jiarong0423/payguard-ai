@@ -1,6 +1,6 @@
 # Reason 5
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRlJlYXNvbjU
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRlJlYXNvbjU
 
 
 # Enum Type Name

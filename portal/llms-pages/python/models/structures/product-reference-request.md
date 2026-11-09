@@ -1,6 +1,6 @@
 # Product Reference Request
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRlByb2R1Y3RSZWZlcmVuY2VSZXF1ZXN0
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlByb2R1Y3RSZWZlcmVuY2VSZXF1ZXN0
 
 ProductReferenceRequest.
 

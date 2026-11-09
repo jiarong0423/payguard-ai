@@ -1,6 +1,6 @@
 # Event
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkV2ZW50
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkV2ZW50
 
 
 # Class Name
@@ -13,12 +13,12 @@ Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkV2ZW50
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `At` | `string` | Optional | At.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `40` |
-| `Channel` | [`ChannelEnum?`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/channel.md) | Optional | Channel. |
-| `Direction` | [`DirectionEnum?`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/direction.md) | Optional | Direction. |
-| `Kind` | [`Kind1Enum?`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/kind-1.md) | Optional | Kind. |
+| `Channel` | [`ChannelEnum?`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/channel.md) | Optional | Channel. |
+| `Direction` | [`DirectionEnum?`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/direction.md) | Optional | Direction. |
+| `Kind` | [`Kind1Enum?`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/kind-1.md) | Optional | Kind. |
 | `MessageDigest` | `string` | Optional | Message digest.<br><br>**Constraints**: *Pattern*: `^[0-9a-f]{64}$` |
-| `Source` | [`Source6Enum?`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/source-6.md) | Optional | Source. |
-| `Topic` | [`TopicEnum?`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/topic.md) | Optional | Topic. |
+| `Source` | [`Source6Enum?`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/source-6.md) | Optional | Source. |
+| `Topic` | [`TopicEnum?`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/topic.md) | Optional | Topic. |
 
 
 # Example

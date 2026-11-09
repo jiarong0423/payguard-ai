@@ -1,6 +1,6 @@
 # HTTP Validation Error
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I
 
 HTTPValidationError.
 
@@ -14,7 +14,7 @@ HTTPValidationError.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `Detail` | [`[]models.ValidationError`](http://localhost:3000/llms-pages/go/models/structures/validation-error.md) | Optional | Detail. |
+| `Detail` | [`[]models.ValidationError`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/structures/validation-error.md) | Optional | Detail. |
 
 
 # Example

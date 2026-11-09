@@ -1,6 +1,6 @@
 # Guide Form
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkd1aWRlRm9ybQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkd1aWRlRm9ybQ
 
 GuideForm.
 
@@ -14,9 +14,9 @@ GuideForm.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Kind` | [`Kind2Enum`](http://localhost:3000/llms-pages/java/models/enumerations/kind-2.md) | Required | Kind. | Kind2Enum getKind() | setKind(Kind2Enum kind) |
-| `Options` | [`List<GuideOption>`](http://localhost:3000/llms-pages/java/models/structures/guide-option.md) | Required | Options. | List<GuideOption> getOptions() | setOptions(List<GuideOption> options) |
-| `Placeholder` | [`GuideFormPlaceholder`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/guide-form-placeholder.md) | Required | This is a container for any-of cases. | GuideFormPlaceholder getPlaceholder() | setPlaceholder(GuideFormPlaceholder placeholder) |
+| `Kind` | [`Kind2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/kind-2.md) | Required | Kind. | Kind2Enum getKind() | setKind(Kind2Enum kind) |
+| `Options` | [`List<GuideOption>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/guide-option.md) | Required | Options. | List<GuideOption> getOptions() | setOptions(List<GuideOption> options) |
+| `Placeholder` | [`GuideFormPlaceholder`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/guide-form-placeholder.md) | Required | This is a container for any-of cases. | GuideFormPlaceholder getPlaceholder() | setPlaceholder(GuideFormPlaceholder placeholder) |
 
 
 # Example

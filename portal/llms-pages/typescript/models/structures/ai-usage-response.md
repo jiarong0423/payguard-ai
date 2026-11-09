@@ -1,6 +1,6 @@
 # Ai Usage Response
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkFpVXNhZ2VSZXNwb25zZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkFpVXNhZ2VSZXNwb25zZQ
 
 AiUsageResponse.
 
@@ -16,9 +16,9 @@ AiUsageResponse.
 |  --- | --- | --- | --- |
 | `contentLogged` | `boolean \| undefined` | Optional | Content logged.<br><br>**Default**: `false` |
 | `costNote` | `string` | Required | Cost note. |
-| `entries` | [`AiUsageEntry[]`](http://localhost:3000/llms-pages/typescript/models/structures/ai-usage-entry.md) | Required | Entries.<br><br>**Constraints**: *Maximum Items*: `50` |
+| `entries` | [`AiUsageEntry[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/ai-usage-entry.md) | Required | Entries.<br><br>**Constraints**: *Maximum Items*: `50` |
 | `priceTableSource` | `string` | Required | Price table source. |
-| `source` | [`Source1Enum`](http://localhost:3000/llms-pages/typescript/models/enumerations/source-1.md) | Required | Source. |
+| `source` | [`Source1Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/source-1.md) | Required | Source. |
 
 
 # Example

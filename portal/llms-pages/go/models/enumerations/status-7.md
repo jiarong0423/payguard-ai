@@ -1,6 +1,6 @@
 # Status 7
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlN0YXR1czc
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRlN0YXR1czc
 
 Status.
 

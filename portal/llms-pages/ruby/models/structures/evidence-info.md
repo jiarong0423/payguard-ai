@@ -1,6 +1,6 @@
 # Evidence Info
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkV2aWRlbmNlSW5mbw
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkV2aWRlbmNlSW5mbw
 
 EvidenceInfo.
 
@@ -14,7 +14,7 @@ EvidenceInfo.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `tracking_info` | [`Array[TrackingInfo]`](http://localhost:3000/llms-pages/ruby/models/structures/tracking-info.md) | Required | Tracking info.<br><br>**Constraints**: *Maximum Items*: `10` |
+| `tracking_info` | [`Array[TrackingInfo]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/tracking-info.md) | Required | Tracking info.<br><br>**Constraints**: *Maximum Items*: `10` |
 
 
 # Example

@@ -1,6 +1,6 @@
 # Guide Item
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkd1aWRlSXRlbQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkd1aWRlSXRlbQ
 
 GuideItem.
 
@@ -14,12 +14,12 @@ GuideItem.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Chunk` | [`GuideItemChunk`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/guide-item-chunk.md) | Required | This is a container for any-of cases. | GuideItemChunk getChunk() | setChunk(GuideItemChunk chunk) |
-| `Form` | [`GuideItemForm`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/guide-item-form.md) | Required | This is a container for any-of cases. | GuideItemForm getForm() | setForm(GuideItemForm form) |
+| `Chunk` | [`GuideItemChunk`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/guide-item-chunk.md) | Required | This is a container for any-of cases. | GuideItemChunk getChunk() | setChunk(GuideItemChunk chunk) |
+| `Form` | [`GuideItemForm`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/guide-item-form.md) | Required | This is a container for any-of cases. | GuideItemForm getForm() | setForm(GuideItemForm form) |
 | `Id` | `String` | Required | Id. | String getId() | setId(String id) |
 | `Label` | `String` | Required | Label. | String getLabel() | setLabel(String label) |
-| `Source` | [`Source8Enum`](http://localhost:3000/llms-pages/java/models/enumerations/source-8.md) | Required | Source. | Source8Enum getSource() | setSource(Source8Enum source) |
-| `Status` | [`Status9Enum`](http://localhost:3000/llms-pages/java/models/enumerations/status-9.md) | Required | Status. | Status9Enum getStatus() | setStatus(Status9Enum status) |
+| `Source` | [`Source8Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/source-8.md) | Required | Source. | Source8Enum getSource() | setSource(Source8Enum source) |
+| `Status` | [`Status9Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/status-9.md) | Required | Status. | Status9Enum getStatus() | setStatus(Status9Enum status) |
 
 
 # Example

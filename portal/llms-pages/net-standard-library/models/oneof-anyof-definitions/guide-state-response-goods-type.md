@@ -1,6 +1,6 @@
 # Guide State Response Goods Type
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZUdvb2RzVHlwZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkd1aWRlU3RhdGVSZXNwb25zZUdvb2RzVHlwZQ
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkd1aWRl
 
 | Type | Factory Method |
 |  --- | --- |
-| [`GoodsTypeEnum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/goods-type.md) | GuideStateResponseGoodsType.FromGoodsType(GoodsTypeEnum goodsType) |
+| [`GoodsTypeEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/goods-type.md) | GuideStateResponseGoodsType.FromGoodsType(GoodsTypeEnum goodsType) |
 
 
 # GoodsTypeEnum

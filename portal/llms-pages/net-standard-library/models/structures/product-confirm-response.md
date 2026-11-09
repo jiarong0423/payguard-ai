@@ -1,6 +1,6 @@
 # Product Confirm Response
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maXJtUmVzcG9uc2U
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRlByb2R1Y3RDb25maXJtUmVzcG9uc2U
 
 The seller's own choice: one of the cards they were shown, or none of them.
 
@@ -15,14 +15,14 @@ The seller's own choice: one of the cards they were shown, or none of them.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `AffectsDecision` | `string` | Required, Constant | Affects decision.<br><br>**Value**: `"False"` |
-| `Card` | [`ProductConfirmResponseCard`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/product-confirm-response-card.md) | Required | This is a container for any-of cases. |
-| `CardDigest` | [`ProductConfirmResponseCardDigest`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/product-confirm-response-card-digest.md) | Required | This is a container for any-of cases. |
-| `Choice` | [`Choice2Enum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/choice-2.md) | Required | Choice. |
+| `Card` | [`ProductConfirmResponseCard`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/product-confirm-response-card.md) | Required | This is a container for any-of cases. |
+| `CardDigest` | [`ProductConfirmResponseCardDigest`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/product-confirm-response-card-digest.md) | Required | This is a container for any-of cases. |
+| `Choice` | [`Choice2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/choice-2.md) | Required | Choice. |
 | `ConfirmedBy` | `string` | Required, Constant | Confirmed by.<br><br>**Value**: `"seller"` |
 | `DescriptionDigest` | `string` | Required | Description digest.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` |
 | `EvaluationId` | `string` | Required | Evaluation id.<br><br>**Constraints**: *Minimum Length*: `32`, *Maximum Length*: `128`, *Pattern*: `^[A-Za-z0-9_-]+$` |
-| `RecordedAt` | [`ProductConfirmResponseRecordedAt`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/product-confirm-response-recorded-at.md) | Required | This is a container for any-of cases. |
-| `Source` | [`Source10Enum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/source-10.md) | Required | Source. |
+| `RecordedAt` | [`ProductConfirmResponseRecordedAt`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/product-confirm-response-recorded-at.md) | Required | This is a container for any-of cases. |
+| `Source` | [`Source10Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/source-10.md) | Required | Source. |
 
 
 # Example

@@ -1,6 +1,6 @@
 # Guide Analysis Reason
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkd1aWRlQW5hbHlzaXNSZWFzb24
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkd1aWRlQW5hbHlzaXNSZWFzb24
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkd1aWRlQW5hbHlzaXNSZWFzb
 
 | Type |
 |  --- |
-| [`string(Reason5Enum)`](http://localhost:3000/llms-pages/php/models/enumerations/reason-5.md) |
+| [`string(Reason5Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/reason-5.md) |
 
 
 # string(Reason5Enum)

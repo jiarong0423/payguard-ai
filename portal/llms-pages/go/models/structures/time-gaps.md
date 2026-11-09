@@ -1,6 +1,6 @@
 # Time Gaps
 
-Source: http://localhost:3000/#/go/x-redirect/JTI0bSUyRlRpbWVHYXBz
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/go/x-redirect/JTI0bSUyRlRpbWVHYXBz
 
 TimeGaps.
 
@@ -14,10 +14,10 @@ TimeGaps.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `DeliveryToClaim` | [`models.TimeGapsDeliveryToClaim`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/time-gaps-delivery-to-claim.md) | Required | This is a container for any-of cases. |
-| `PaymentToClaim` | [`models.TimeGapsPaymentToClaim`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/time-gaps-payment-to-claim.md) | Required | This is a container for any-of cases. |
-| `PaymentToDelivery` | [`models.TimeGapsPaymentToDelivery`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/time-gaps-payment-to-delivery.md) | Required | This is a container for any-of cases. |
-| `PaymentToOrderRecord` | [`models.TimeGapsPaymentToOrderRecord`](http://localhost:3000/llms-pages/go/models/oneof-anyof-definitions/time-gaps-payment-to-order-record.md) | Required | This is a container for any-of cases. |
+| `DeliveryToClaim` | [`models.TimeGapsDeliveryToClaim`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/time-gaps-delivery-to-claim.md) | Required | This is a container for any-of cases. |
+| `PaymentToClaim` | [`models.TimeGapsPaymentToClaim`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/time-gaps-payment-to-claim.md) | Required | This is a container for any-of cases. |
+| `PaymentToDelivery` | [`models.TimeGapsPaymentToDelivery`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/time-gaps-payment-to-delivery.md) | Required | This is a container for any-of cases. |
+| `PaymentToOrderRecord` | [`models.TimeGapsPaymentToOrderRecord`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/go/models/oneof-anyof-definitions/time-gaps-payment-to-order-record.md) | Required | This is a container for any-of cases. |
 
 
 # Example

@@ -1,6 +1,6 @@
 # Evidence Input
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkV2aWRlbmNlSW5wdXQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkV2aWRlbmNlSW5wdXQ
 
 EvidenceInput.
 
@@ -14,7 +14,7 @@ EvidenceInput.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `evidences` | [`EvidenceInputItem[]`](http://localhost:3000/llms-pages/typescript/models/structures/evidence-input-item.md) | Required | Evidences.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `20` |
+| `evidences` | [`EvidenceInputItem[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/evidence-input-item.md) | Required | Evidences.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `20` |
 
 
 # Example

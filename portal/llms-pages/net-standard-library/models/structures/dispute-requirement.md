@@ -1,6 +1,6 @@
 # Dispute Requirement
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkRpc3B1dGVSZXF1aXJlbWVudA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkRpc3B1dGVSZXF1aXJlbWVudA
 
 DisputeRequirement.
 
@@ -15,13 +15,13 @@ DisputeRequirement.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `AcceptedAttachmentCount` | `int` | Required | Accepted attachment count.<br><br>**Constraints**: `>= 0`, `<= 20` |
-| `Action` | [`DisputeRequirementAction`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/dispute-requirement-action.md) | Optional | This is a container for any-of cases. |
-| `EvidenceType` | [`DisputeRequirementEvidenceType`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/dispute-requirement-evidence-type.md) | Optional | This is a container for any-of cases. |
+| `Action` | [`DisputeRequirementAction`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/dispute-requirement-action.md) | Optional | This is a container for any-of cases. |
+| `EvidenceType` | [`DisputeRequirementEvidenceType`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/dispute-requirement-evidence-type.md) | Optional | This is a container for any-of cases. |
 | `Mandatory` | `bool` | Required | Mandatory. |
 | `ProofCount` | `int` | Required | Proof count.<br><br>**Constraints**: `>= 0`, `<= 128` |
 | `ProviderEvidenceType` | `string` | Required | Provider evidence type.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `128`, *Pattern*: `^[A-Z][A-Z0-9_]{0,127}$` |
 | `RequestId` | `string` | Required | Request id.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `128`, *Pattern*: `^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$` |
-| `RequirementState` | [`RequirementStateEnum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/requirement-state.md) | Required | Requirement state. |
+| `RequirementState` | [`RequirementStateEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/requirement-state.md) | Required | Requirement state. |
 | `Source` | `string` | Required | Source.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `128`, *Pattern*: `^[A-Z][A-Z0-9_]{0,127}$` |
 
 

@@ -1,6 +1,6 @@
 # Dispute Summary
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkRpc3B1dGVTdW1tYXJ5
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkRpc3B1dGVTdW1tYXJ5
 
 DisputeSummary.
 
@@ -15,12 +15,12 @@ DisputeSummary.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `case_ref` | `str` | Required | Case ref. |
-| `dispute_amount` | [`SyntheticMoney`](http://localhost:3000/llms-pages/python/models/structures/synthetic-money.md) | Required | Same shape as the PayPal Disputes `dispute_amount` (ProviderMoney below); values are synthetic. |
+| `dispute_amount` | [`SyntheticMoney`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/synthetic-money.md) | Required | Same shape as the PayPal Disputes `dispute_amount` (ProviderMoney below); values are synthetic. |
 | `opened_at` | `str` | Required | Opened at. |
 | `order_ref` | `str` | Required | Order ref. |
 | `reason` | `str` | Required | Reason. |
 | `seller_response_due_date` | `str` | Required | Seller response due date. |
-| `status` | [`Status7Enum`](http://localhost:3000/llms-pages/python/models/enumerations/status-7.md) | Required | Status. |
+| `status` | [`Status7Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/status-7.md) | Required | Status. |
 
 
 # Example

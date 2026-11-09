@@ -1,6 +1,6 @@
 # Paypal Status Response Evidence Receipt
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlBheXBhbFN0YXR1c1Jlc3BvbnNlRXZpZGVuY2VSZWNlaXB0
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRlBheXBhbFN0YXR1c1Jlc3BvbnNlRXZpZGVuY2VSZWNlaXB0
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlBheXBhbFN0YXR1c1
 
 | Type |
 |  --- |
-| [`SandboxEvidenceReceipt`](http://localhost:3000/llms-pages/typescript/models/structures/sandbox-evidence-receipt.md) |
+| [`SandboxEvidenceReceipt`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/sandbox-evidence-receipt.md) |
 
 
 # SandboxEvidenceReceipt

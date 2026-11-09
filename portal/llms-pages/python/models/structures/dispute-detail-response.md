@@ -1,6 +1,6 @@
 # Dispute Detail Response
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkRpc3B1dGVEZXRhaWxSZXNwb25zZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkRpc3B1dGVEZXRhaWxSZXNwb25zZQ
 
 DisputeDetailResponse.
 
@@ -15,24 +15,24 @@ DisputeDetailResponse.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `create_time` | `str` | Required | Create time.<br><br>**Constraints**: *Pattern*: `^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]{1,6})?Z$` |
-| `data_source_label` | [`DataSourceLabelEnum`](http://localhost:3000/llms-pages/python/models/enumerations/data-source-label.md) | Required | Data source label. |
-| `dispute_amount` | [`ProviderMoney`](http://localhost:3000/llms-pages/python/models/structures/provider-money.md) | Required | ProviderMoney. |
+| `data_source_label` | [`DataSourceLabelEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/data-source-label.md) | Required | Data source label. |
+| `dispute_amount` | [`ProviderMoney`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/provider-money.md) | Required | ProviderMoney. |
 | `dispute_channel` | str \| None | Optional | This is a container for any-of cases. |
 | `dispute_id` | `str` | Required | Dispute id.<br><br>**Constraints**: *Pattern*: `^PP-[A-Z0-9][A-Z0-9-]{2,62}$` |
-| `dispute_life_cycle_stage` | [`DisputeLifeCycleStageEnum`](http://localhost:3000/llms-pages/python/models/enumerations/dispute-life-cycle-stage.md) | Required | Dispute life cycle stage. |
+| `dispute_life_cycle_stage` | [`DisputeLifeCycleStageEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/dispute-life-cycle-stage.md) | Required | Dispute life cycle stage. |
 | `dispute_state` | str \| None | Optional | This is a container for any-of cases. |
-| `disputed_transactions` | [`List[DisputedTransaction]`](http://localhost:3000/llms-pages/python/models/structures/disputed-transaction.md) | Required | Disputed transactions.<br><br>**Constraints**: *Maximum Items*: `10` |
+| `disputed_transactions` | [`List[DisputedTransaction]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/disputed-transaction.md) | Required | Disputed transactions.<br><br>**Constraints**: *Maximum Items*: `10` |
 | `environment` | `str` | Required, Constant | Environment.<br><br>**Value**: `"sandbox"` |
-| `evidence_class` | [`EvidenceClassEnum`](http://localhost:3000/llms-pages/python/models/enumerations/evidence-class.md) | Required | Evidence class. |
-| `evidences` | [`List[DisputeEvidenceRow]`](http://localhost:3000/llms-pages/python/models/structures/dispute-evidence-row.md) | Required | Evidences.<br><br>**Constraints**: *Maximum Items*: `20` |
+| `evidence_class` | [`EvidenceClassEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/evidence-class.md) | Required | Evidence class. |
+| `evidences` | [`List[DisputeEvidenceRow]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/dispute-evidence-row.md) | Required | Evidences.<br><br>**Constraints**: *Maximum Items*: `20` |
 | `observed_at` | `str` | Required | Observed at.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `27` |
 | `paypal_debug_id` | str \| None | Optional | This is a container for any-of cases. |
-| `provider_submission` | [`ProviderSubmissionEnum`](http://localhost:3000/llms-pages/python/models/enumerations/provider-submission.md) | Required | Provider submission. |
+| `provider_submission` | [`ProviderSubmissionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/provider-submission.md) | Required | Provider submission. |
 | `readback` | `str` | Required, Constant | Readback.<br><br>**Value**: `"GET_DETAIL"` |
-| `reason` | [`Reason2Enum`](http://localhost:3000/llms-pages/python/models/enumerations/reason-2.md) | Required | Reason. |
+| `reason` | [`Reason2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/reason-2.md) | Required | Reason. |
 | `seller_response_due_date` | str \| None | Optional | This is a container for any-of cases. |
-| `source` | [`SourceEnum`](http://localhost:3000/llms-pages/python/models/enumerations/source.md) | Required | Source. |
-| `status` | [`Status3Enum`](http://localhost:3000/llms-pages/python/models/enumerations/status-3.md) | Required | Status. |
+| `source` | [`SourceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/source.md) | Required | Source. |
+| `status` | [`Status3Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/status-3.md) | Required | Status. |
 | `update_time` | str \| None | Optional | This is a container for any-of cases. |
 
 

@@ -1,6 +1,6 @@
 # Dispute Evidence Row
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRkRpc3B1dGVFdmlkZW5jZVJvdw
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRkRpc3B1dGVFdmlkZW5jZVJvdw
 
 DisputeEvidenceRow.
 
@@ -17,7 +17,7 @@ DisputeEvidenceRow.
 | `action` | str \| None | Optional | This is a container for any-of cases. |
 | `date` | str \| None | Optional | This is a container for any-of cases. |
 | `evidence_type` | `str` | Required | Evidence type.<br><br>**Constraints**: *Pattern*: `^[A-Z][A-Z0-9_]{0,63}$` |
-| `source` | [`Source3Enum`](http://localhost:3000/llms-pages/python/models/enumerations/source-3.md) | Required | Source. |
+| `source` | [`Source3Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/source-3.md) | Required | Source. |
 
 
 # Example

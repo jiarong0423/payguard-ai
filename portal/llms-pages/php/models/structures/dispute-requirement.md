@@ -1,6 +1,6 @@
 # Dispute Requirement
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkRpc3B1dGVSZXF1aXJlbWVudA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkRpc3B1dGVSZXF1aXJlbWVudA
 
 DisputeRequirement.
 
@@ -21,7 +21,7 @@ DisputeRequirement.
 | `proofCount` | `int` | Required | Proof count.<br><br>**Constraints**: `>= 0`, `<= 128` | getProofCount(): int | setProofCount(int proofCount): void |
 | `providerEvidenceType` | `string` | Required | Provider evidence type.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `128`, *Pattern*: `^[A-Z][A-Z0-9_]{0,127}$` | getProviderEvidenceType(): string | setProviderEvidenceType(string providerEvidenceType): void |
 | `requestId` | `string` | Required | Request id.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `128`, *Pattern*: `^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$` | getRequestId(): string | setRequestId(string requestId): void |
-| `requirementState` | [`string(RequirementStateEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/requirement-state.md) | Required | Requirement state. | getRequirementState(): string | setRequirementState(string requirementState): void |
+| `requirementState` | [`string(RequirementStateEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/requirement-state.md) | Required | Requirement state. | getRequirementState(): string | setRequirementState(string requirementState): void |
 | `source` | `string` | Required | Source.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `128`, *Pattern*: `^[A-Z][A-Z0-9_]{0,127}$` | getSource(): string | setSource(string source): void |
 
 

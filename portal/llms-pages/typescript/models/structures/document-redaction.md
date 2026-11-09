@@ -1,6 +1,6 @@
 # Document Redaction
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkRvY3VtZW50UmVkYWN0aW9u
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkRvY3VtZW50UmVkYWN0aW9u
 
 DocumentRedaction.
 
@@ -24,7 +24,7 @@ DocumentRedaction.
 | `replacementCount` | `number` | Required | Replacement count.<br><br>**Constraints**: `>= 0`, `<= 128` |
 | `reversibility` | `string` | Required, Constant | Reversibility.<br><br>**Value**: `'False'` |
 | `source` | `string` | Required, Constant | Source.<br><br>**Value**: `'synthetic'` |
-| `types` | [`TypeEnum[]`](http://localhost:3000/llms-pages/typescript/models/enumerations/type.md) | Required | Types.<br><br>**Constraints**: *Maximum Items*: `7` |
+| `types` | [`TypeEnum[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/type.md) | Required | Types.<br><br>**Constraints**: *Maximum Items*: `7` |
 
 
 # Example

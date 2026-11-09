@@ -1,6 +1,6 @@
 # Dispute Detail Response
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRkRpc3B1dGVEZXRhaWxSZXNwb25zZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRkRpc3B1dGVEZXRhaWxSZXNwb25zZQ
 
 DisputeDetailResponse.
 
@@ -15,25 +15,25 @@ DisputeDetailResponse.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `createTime` | `string` | Required | Create time.<br><br>**Constraints**: *Pattern*: `^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]{1,6})?Z$` |
-| `dataSourceLabel` | [`DataSourceLabelEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/data-source-label.md) | Required | Data source label. |
-| `disputeAmount` | [`ProviderMoney`](http://localhost:3000/llms-pages/typescript/models/structures/provider-money.md) | Required | ProviderMoney. |
-| `disputeChannel` | [`DisputeDetailResponseDisputeChannel \| undefined`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/dispute-detail-response-dispute-channel.md) | Optional | This is a container for any-of cases. |
+| `dataSourceLabel` | [`DataSourceLabelEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/data-source-label.md) | Required | Data source label. |
+| `disputeAmount` | [`ProviderMoney`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/provider-money.md) | Required | ProviderMoney. |
+| `disputeChannel` | [`DisputeDetailResponseDisputeChannel \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/dispute-detail-response-dispute-channel.md) | Optional | This is a container for any-of cases. |
 | `disputeId` | `string` | Required | Dispute id.<br><br>**Constraints**: *Pattern*: `^PP-[A-Z0-9][A-Z0-9-]{2,62}$` |
-| `disputeLifeCycleStage` | [`DisputeLifeCycleStageEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/dispute-life-cycle-stage.md) | Required | Dispute life cycle stage. |
-| `disputeState` | [`DisputeDetailResponseDisputeState \| undefined`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/dispute-detail-response-dispute-state.md) | Optional | This is a container for any-of cases. |
-| `disputedTransactions` | [`DisputedTransaction[]`](http://localhost:3000/llms-pages/typescript/models/structures/disputed-transaction.md) | Required | Disputed transactions.<br><br>**Constraints**: *Maximum Items*: `10` |
+| `disputeLifeCycleStage` | [`DisputeLifeCycleStageEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/dispute-life-cycle-stage.md) | Required | Dispute life cycle stage. |
+| `disputeState` | [`DisputeDetailResponseDisputeState \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/dispute-detail-response-dispute-state.md) | Optional | This is a container for any-of cases. |
+| `disputedTransactions` | [`DisputedTransaction[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/disputed-transaction.md) | Required | Disputed transactions.<br><br>**Constraints**: *Maximum Items*: `10` |
 | `environment` | `string` | Required, Constant | Environment.<br><br>**Value**: `'sandbox'` |
-| `evidenceClass` | [`EvidenceClassEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/evidence-class.md) | Required | Evidence class. |
-| `evidences` | [`DisputeEvidenceRow[]`](http://localhost:3000/llms-pages/typescript/models/structures/dispute-evidence-row.md) | Required | Evidences.<br><br>**Constraints**: *Maximum Items*: `20` |
+| `evidenceClass` | [`EvidenceClassEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/evidence-class.md) | Required | Evidence class. |
+| `evidences` | [`DisputeEvidenceRow[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/dispute-evidence-row.md) | Required | Evidences.<br><br>**Constraints**: *Maximum Items*: `20` |
 | `observedAt` | `string` | Required | Observed at.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `27` |
-| `paypalDebugId` | [`DisputeDetailResponsePaypalDebugId \| undefined`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/dispute-detail-response-paypal-debug-id.md) | Optional | This is a container for any-of cases. |
-| `providerSubmission` | [`ProviderSubmissionEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/provider-submission.md) | Required | Provider submission. |
+| `paypalDebugId` | [`DisputeDetailResponsePaypalDebugId \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/dispute-detail-response-paypal-debug-id.md) | Optional | This is a container for any-of cases. |
+| `providerSubmission` | [`ProviderSubmissionEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/provider-submission.md) | Required | Provider submission. |
 | `readback` | `string` | Required, Constant | Readback.<br><br>**Value**: `'GET_DETAIL'` |
-| `reason` | [`Reason2Enum`](http://localhost:3000/llms-pages/typescript/models/enumerations/reason-2.md) | Required | Reason. |
-| `sellerResponseDueDate` | [`DisputeDetailResponseSellerResponseDueDate \| undefined`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/dispute-detail-response-seller-response-due-date.md) | Optional | This is a container for any-of cases. |
-| `source` | [`SourceEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/source.md) | Required | Source. |
-| `status` | [`Status3Enum`](http://localhost:3000/llms-pages/typescript/models/enumerations/status-3.md) | Required | Status. |
-| `updateTime` | [`DisputeDetailResponseUpdateTime \| undefined`](http://localhost:3000/llms-pages/typescript/models/oneof-anyof-definitions/dispute-detail-response-update-time.md) | Optional | This is a container for any-of cases. |
+| `reason` | [`Reason2Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/reason-2.md) | Required | Reason. |
+| `sellerResponseDueDate` | [`DisputeDetailResponseSellerResponseDueDate \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/dispute-detail-response-seller-response-due-date.md) | Optional | This is a container for any-of cases. |
+| `source` | [`SourceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/source.md) | Required | Source. |
+| `status` | [`Status3Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/status-3.md) | Required | Status. |
+| `updateTime` | [`DisputeDetailResponseUpdateTime \| undefined`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/oneof-anyof-definitions/dispute-detail-response-update-time.md) | Optional | This is a container for any-of cases. |
 
 
 # Example

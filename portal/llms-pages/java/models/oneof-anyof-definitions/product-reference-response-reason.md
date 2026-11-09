@@ -1,6 +1,6 @@
 # Product Reference Response Reason
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlByb2R1Y3RSZWZlcmVuY2VSZXNwb25zZVJlYXNvbg
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRlByb2R1Y3RSZWZlcmVuY2VSZXNwb25zZVJlYXNvbg
 
 
 # Class Name
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRlByb2R1Y3RSZWZlcmVuY2VS
 
 | Type | Factory Method |
 |  --- | --- |
-| [`Reason7Enum`](http://localhost:3000/llms-pages/java/models/enumerations/reason-7.md) | ProductReferenceResponseReason.fromReason7(Reason7Enum reason7) |
+| [`Reason7Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/reason-7.md) | ProductReferenceResponseReason.fromReason7(Reason7Enum reason7) |
 
 
 # Reason7Enum

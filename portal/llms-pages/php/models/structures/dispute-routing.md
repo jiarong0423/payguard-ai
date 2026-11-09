@@ -1,6 +1,6 @@
 # Dispute Routing
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkRpc3B1dGVSb3V0aW5n
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkRpc3B1dGVSb3V0aW5n
 
 DisputeRouting.
 
@@ -15,17 +15,17 @@ DisputeRouting.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `availableActions` | `string[]` | Required | Available actions.<br><br>**Constraints**: *Maximum Items*: `20` | getAvailableActions(): array | setAvailableActions(array availableActions): void |
-| `disputeLifeCycleStage` | [`string(DisputeLifeCycleStageEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/dispute-life-cycle-stage.md) | Required | Dispute life cycle stage. | getDisputeLifeCycleStage(): string | setDisputeLifeCycleStage(string disputeLifeCycleStage): void |
-| `dueState` | [`string(DueStateEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/due-state.md) | Required | Due state. | getDueState(): string | setDueState(string dueState): void |
+| `disputeLifeCycleStage` | [`string(DisputeLifeCycleStageEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/dispute-life-cycle-stage.md) | Required | Dispute life cycle stage. | getDisputeLifeCycleStage(): string | setDisputeLifeCycleStage(string disputeLifeCycleStage): void |
+| `dueState` | [`string(DueStateEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/due-state.md) | Required | Due state. | getDueState(): string | setDueState(string dueState): void |
 | `humanReviewRequired` | `string` | Required, Constant | Human review required.<br><br>**Value**: `'True'` | getHumanReviewRequired(): string | setHumanReviewRequired(string humanReviewRequired): void |
-| `overallState` | [`string(OverallStateEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/overall-state.md) | Required | Overall state. | getOverallState(): string | setOverallState(string overallState): void |
+| `overallState` | [`string(OverallStateEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/overall-state.md) | Required | Overall state. | getOverallState(): string | setOverallState(string overallState): void |
 | `providerSubmission` | `string` | Required, Constant | Provider submission.<br><br>**Value**: `'NOT_PERFORMED'` | getProviderSubmission(): string | setProviderSubmission(string providerSubmission): void |
-| `reason` | [`string(Reason2Enum)`](http://localhost:3000/llms-pages/php/models/enumerations/reason-2.md) | Required | Reason. | getReason(): string | setReason(string reason): void |
-| `requirements` | [`DisputeRequirement[]`](http://localhost:3000/llms-pages/php/models/structures/dispute-requirement.md) | Required | Requirements.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `20` | getRequirements(): array | setRequirements(array requirements): void |
+| `reason` | [`string(Reason2Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/reason-2.md) | Required | Reason. | getReason(): string | setReason(string reason): void |
+| `requirements` | [`DisputeRequirement[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/dispute-requirement.md) | Required | Requirements.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `20` | getRequirements(): array | setRequirements(array requirements): void |
 | `schemaVersion` | `int` | Required, Constant | Schema version.<br><br>**Value**: `1` | getSchemaVersion(): int | setSchemaVersion(int schemaVersion): void |
 | `sellerResponseDueDate` | `string` | Required | Seller response due date.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `64` | getSellerResponseDueDate(): string | setSellerResponseDueDate(string sellerResponseDueDate): void |
 | `snapshotClass` | `string` | Required, Constant | Snapshot class.<br><br>**Value**: `'SYNTHETIC_PROVIDER_FIXTURE'` | getSnapshotClass(): string | setSnapshotClass(string snapshotClass): void |
-| `status` | [`string(Status3Enum)`](http://localhost:3000/llms-pages/php/models/enumerations/status-3.md) | Required | Status. | getStatus(): string | setStatus(string status): void |
+| `status` | [`string(Status3Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/status-3.md) | Required | Status. | getStatus(): string | setStatus(string status): void |
 
 
 # Example

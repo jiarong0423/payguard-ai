@@ -1,6 +1,6 @@
 # Policy Assessment Response
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlBvbGljeUFzc2Vzc21lbnRSZXNwb25zZQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRlBvbGljeUFzc2Vzc21lbnRSZXNwb25zZQ
 
 PolicyAssessmentResponse.
 
@@ -15,20 +15,20 @@ PolicyAssessmentResponse.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `advisoryOnly` | `boolean` | Required | Advisory only. |
-| `chunks` | [`PolicyChunk[]`](http://localhost:3000/llms-pages/typescript/models/structures/policy-chunk.md) | Required | Chunks.<br><br>**Constraints**: *Maximum Items*: `29` |
+| `chunks` | [`PolicyChunk[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/policy-chunk.md) | Required | Chunks.<br><br>**Constraints**: *Maximum Items*: `29` |
 | `corpusDigest` | `string` | Required | Corpus digest.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` |
-| `corpusDigests` | [`ReferenceDigests`](http://localhost:3000/llms-pages/typescript/models/structures/reference-digests.md) | Required | ReferenceDigests. |
+| `corpusDigests` | [`ReferenceDigests`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/reference-digests.md) | Required | ReferenceDigests. |
 | `corpusId` | `string` | Required, Constant | Corpus id.<br><br>**Value**: `'payguard-us-official-references-v2'` |
-| `coverage` | [`PolicyCoverage`](http://localhost:3000/llms-pages/typescript/models/structures/policy-coverage.md) | Required | PolicyCoverage. |
+| `coverage` | [`PolicyCoverage`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/policy-coverage.md) | Required | PolicyCoverage. |
 | `currentPolicyApplicability` | `string` | Required, Constant | Current policy applicability.<br><br>**Value**: `'NOT_ESTABLISHED'` |
-| `filtersApplied` | [`PolicyContext`](http://localhost:3000/llms-pages/typescript/models/structures/policy-context.md) | Required | PolicyContext. |
+| `filtersApplied` | [`PolicyContext`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/policy-context.md) | Required | PolicyContext. |
 | `limitations` | `string[]` | Required | Limitations.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `32`, *Minimum Length*: `1`, *Maximum Length*: `2000` |
 | `operationalAuthority` | `string` | Required, Constant | Operational authority.<br><br>**Value**: `'REFERENCE_ONLY_NO_ACTION_AUTHORIZATION'` |
-| `reasonCodes` | [`ReasonCode1Enum[]`](http://localhost:3000/llms-pages/typescript/models/enumerations/reason-code-1.md) | Required | Reason codes.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `15` |
+| `reasonCodes` | [`ReasonCode1Enum[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/reason-code-1.md) | Required | Reason codes.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `15` |
 | `requiresHumanReview` | `boolean` | Required | Requires human review. |
 | `schemaVersion` | `number` | Required | Schema version.<br><br>**Constraints**: `>= 1`, `<= 1` |
 | `source` | `string` | Required, Constant | Source.<br><br>**Value**: `'public_reference'` |
-| `sources` | [`PolicySource[]`](http://localhost:3000/llms-pages/typescript/models/structures/policy-source.md) | Required | Sources.<br><br>**Constraints**: *Maximum Items*: `16` |
+| `sources` | [`PolicySource[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/structures/policy-source.md) | Required | Sources.<br><br>**Constraints**: *Maximum Items*: `16` |
 | `status` | `string` | Required, Constant | Status.<br><br>**Value**: `'INCOMPLETE_POLICY_EVIDENCE'` |
 | `version` | `string` | Required, Constant | Version.<br><br>**Value**: `'payguard.applicability.v1'` |
 

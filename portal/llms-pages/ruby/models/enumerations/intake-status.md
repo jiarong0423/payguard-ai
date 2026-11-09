@@ -1,6 +1,6 @@
 # Intake Status
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkludGFrZVN0YXR1cw
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkludGFrZVN0YXR1cw
 
 Intake status.
 

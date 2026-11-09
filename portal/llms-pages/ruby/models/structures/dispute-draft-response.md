@@ -1,6 +1,6 @@
 # Dispute Draft Response
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0bSUyRkRpc3B1dGVEcmFmdFJlc3BvbnNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0bSUyRkRpc3B1dGVEcmFmdFJlc3BvbnNl
 
 DisputeDraftResponse.
 
@@ -16,20 +16,20 @@ DisputeDraftResponse.
 |  --- | --- | --- | --- |
 | `advisory_only` | `String` | Required, Constant | Advisory only.<br><br>**Value**: `'True'` |
 | `case_ref` | `String` | Required | Case ref. |
-| `document_redaction` | [`DocumentRedaction`](http://localhost:3000/llms-pages/ruby/models/structures/document-redaction.md) | Required | DocumentRedaction. |
+| `document_redaction` | [`DocumentRedaction`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/document-redaction.md) | Required | DocumentRedaction. |
 | `draft_digest` | `String` | Required | Draft digest. |
-| `evidence` | [`Evidence`](http://localhost:3000/llms-pages/ruby/models/structures/evidence.md) | Required | Evidence. |
-| `identity_redaction` | [`IdentityRedaction`](http://localhost:3000/llms-pages/ruby/models/structures/identity-redaction.md) | Required | IdentityRedaction. |
+| `evidence` | [`Evidence`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/evidence.md) | Required | Evidence. |
+| `identity_redaction` | [`IdentityRedaction`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/identity-redaction.md) | Required | IdentityRedaction. |
 | `limitations` | `Array[String]` | Required | Limitations. |
 | `policy_version` | `String` | Required | Policy version. |
 | `recommendation` | `String` | Required | Recommendation. |
-| `restricted_original_summary` | [`RestrictedOriginalSummary`](http://localhost:3000/llms-pages/ruby/models/structures/restricted-original-summary.md) | Required | RestrictedOriginalSummary. |
+| `restricted_original_summary` | [`RestrictedOriginalSummary`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/restricted-original-summary.md) | Required | RestrictedOriginalSummary. |
 | `review_reasons` | `Array[String]` | Required | Review reasons. |
-| `routing` | [`DisputeRouting`](http://localhost:3000/llms-pages/ruby/models/structures/dispute-routing.md) | Required | DisputeRouting. |
-| `scenario_match` | [`ScenarioMatch`](http://localhost:3000/llms-pages/ruby/models/structures/scenario-match.md) | Required | ScenarioMatch. |
+| `routing` | [`DisputeRouting`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/dispute-routing.md) | Required | DisputeRouting. |
+| `scenario_match` | [`ScenarioMatch`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/scenario-match.md) | Required | ScenarioMatch. |
 | `source` | `String` | Required, Constant | Source.<br><br>**Value**: `'synthetic'` |
-| `status` | [`Status5Enum`](http://localhost:3000/llms-pages/ruby/models/enumerations/status-5.md) | Required | Status. |
-| `time_evidence` | [TimeEvidence](http://localhost:3000/llms-pages/ruby/models/structures/time-evidence.md) \| nil | Optional | This is a container for any-of cases. |
+| `status` | [`Status5Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/enumerations/status-5.md) | Required | Status. |
+| `time_evidence` | [TimeEvidence](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/time-evidence.md) \| nil | Optional | This is a container for any-of cases. |
 
 
 # Example

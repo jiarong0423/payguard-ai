@@ -1,6 +1,6 @@
 # Card
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkNhcmQ
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkNhcmQ
 
 Card.
 
@@ -14,9 +14,9 @@ Card.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Brand` | [`CardBrand`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/card-brand.md) | Optional | This is a container for any-of cases. | CardBrand getBrand() | setBrand(CardBrand brand) |
-| `Category` | [`CardCategory`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/card-category.md) | Optional | This is a container for any-of cases. | CardCategory getCategory() | setCategory(CardCategory category) |
-| `ImageUrl` | [`CardImageUrl`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/card-image-url.md) | Optional | This is a container for any-of cases. | CardImageUrl getImageUrl() | setImageUrl(CardImageUrl imageUrl) |
+| `Brand` | [`CardBrand`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/card-brand.md) | Optional | This is a container for any-of cases. | CardBrand getBrand() | setBrand(CardBrand brand) |
+| `Category` | [`CardCategory`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/card-category.md) | Optional | This is a container for any-of cases. | CardCategory getCategory() | setCategory(CardCategory category) |
+| `ImageUrl` | [`CardImageUrl`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/card-image-url.md) | Optional | This is a container for any-of cases. | CardImageUrl getImageUrl() | setImageUrl(CardImageUrl imageUrl) |
 | `KeyFeatures` | `List<String>` | Optional | Key features.<br><br>**Constraints**: *Maximum Items*: `4`, *Minimum Length*: `2`, *Maximum Length*: `100`, *Pattern*: `^[A-Za-z0-9 &'\-,./+()%\"]+$` | List<String> getKeyFeatures() | setKeyFeatures(List<String> keyFeatures) |
 | `Materials` | `List<String>` | Optional | Materials.<br><br>**Constraints**: *Maximum Items*: `4`, *Minimum Length*: `2`, *Maximum Length*: `40`, *Pattern*: `^[A-Za-z0-9 &'\-,./+()%\"]+$` | List<String> getMaterials() | setMaterials(List<String> materials) |
 | `ProductId` | `String` | Optional | Product id.<br><br>**Constraints**: *Pattern*: `^[A-Za-z0-9_.:-]{1,64}$` | String getProductId() | setProductId(String productId) |

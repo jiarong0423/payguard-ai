@@ -1,6 +1,6 @@
 # Post Guide Start
 
-Source: http://localhost:3000/#/ruby/x-redirect/JTI0ZSUyRmd1aWRlJTJGcG9zdF9ndWlkZV9zdGFydA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/ruby/x-redirect/JTI0ZSUyRmd1aWRlJTJGcG9zdF9ndWlkZV9zdGFydA
 
 Guide Start. Local console route POST /api/v1/guide/start on synthetic data; advisory only.
 
@@ -15,14 +15,14 @@ def post_guide_start(body)
 
 | Parameter | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `body` | [`GuideStartRequest`](http://localhost:3000/llms-pages/ruby/models/structures/guide-start-request.md) | Body, Required | - |
+| `body` | [`GuideStartRequest`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/guide-start-request.md) | Body, Required | - |
 
 
 # Response Type
 
 **200**: Successful Response
 
-[`GuideStateResponse`](http://localhost:3000/llms-pages/ruby/models/structures/guide-state-response.md)
+[`GuideStateResponse`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/structures/guide-state-response.md)
 
 
 # Example Usage
@@ -41,9 +41,9 @@ puts result
 
 | HTTP Status Code | Error Description | Exception Class |
 |  --- | --- | --- |
-| 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](http://localhost:3000/llms-pages/ruby/models/exceptions/error-body.md) |
-| 422 | Validation Error | [`HTTPValidationErrorException`](http://localhost:3000/llms-pages/ruby/models/exceptions/http-validation-error.md) |
-| 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](http://localhost:3000/llms-pages/ruby/models/exceptions/error-body.md) |
+| 401 | A valid demo session is required (session_required). | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/exceptions/error-body.md) |
+| 422 | Validation Error | [`HTTPValidationErrorException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/exceptions/http-validation-error.md) |
+| 429 | Too many requests; the body says when to retry. | [`ErrorBodyException`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/ruby/models/exceptions/error-body.md) |
 
 
 

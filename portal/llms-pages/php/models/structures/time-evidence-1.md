@@ -1,6 +1,6 @@
 # Time Evidence 1
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZTE
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRlRpbWVFdmlkZW5jZTE
 
 Time evidence.
 
@@ -15,11 +15,11 @@ Time evidence.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `advisoryOnly` | `?bool` | Optional | Advisory only. | getAdvisoryOnly(): ?bool | setAdvisoryOnly(?bool advisoryOnly): void |
-| `events` | array<[Message[TimeEvent](http://localhost:3000/llms-pages/php/models/structures/time-event.md)]($m/Message[TimeEvent]($m/TimeEvent))\|[TimeEvent](http://localhost:3000/llms-pages/php/models/structures/time-event.md)>\|null | Optional | This is Array of a container for any-of cases.<br><br>**Constraints**: *Minimum Items*: `2`, *Maximum Items*: `30` | getEvents(): ?array | setEvents(?array events): void |
-| `flags` | [`?(string(FlagEnum)[])`](http://localhost:3000/llms-pages/php/models/enumerations/flag.md) | Optional | Flags.<br><br>**Constraints**: *Maximum Items*: `4` | getFlags(): ?array | setFlags(?array flags): void |
-| `gapsSeconds` | [`?TimeGaps`](http://localhost:3000/llms-pages/php/models/structures/time-gaps.md) | Optional | TimeGaps. | getGapsSeconds(): ?TimeGaps | setGapsSeconds(?TimeGaps gapsSeconds): void |
-| `judgement` | [`?string(JudgementEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/judgement.md) | Optional | Judgement. | getJudgement(): ?string | setJudgement(?string judgement): void |
-| `schemaVersion` | [`?string(SchemaVersionEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/schema-version.md) | Optional | Schema version. | getSchemaVersion(): ?string | setSchemaVersion(?string schemaVersion): void |
+| `events` | array<[Message[TimeEvent](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/time-event.md)]($m/Message[TimeEvent]($m/TimeEvent))\|[TimeEvent](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/time-event.md)>\|null | Optional | This is Array of a container for any-of cases.<br><br>**Constraints**: *Minimum Items*: `2`, *Maximum Items*: `30` | getEvents(): ?array | setEvents(?array events): void |
+| `flags` | [`?(string(FlagEnum)[])`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/flag.md) | Optional | Flags.<br><br>**Constraints**: *Maximum Items*: `4` | getFlags(): ?array | setFlags(?array flags): void |
+| `gapsSeconds` | [`?TimeGaps`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/time-gaps.md) | Optional | TimeGaps. | getGapsSeconds(): ?TimeGaps | setGapsSeconds(?TimeGaps gapsSeconds): void |
+| `judgement` | [`?string(JudgementEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/judgement.md) | Optional | Judgement. | getJudgement(): ?string | setJudgement(?string judgement): void |
+| `schemaVersion` | [`?string(SchemaVersionEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/schema-version.md) | Optional | Schema version. | getSchemaVersion(): ?string | setSchemaVersion(?string schemaVersion): void |
 
 
 # Example

@@ -1,6 +1,6 @@
 # Case Route Response
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkNhc2VSb3V0ZVJlc3BvbnNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkNhc2VSb3V0ZVJlc3BvbnNl
 
 Fuzzy case routing: which goods group (and so which dispute items) applies. Code decides; advisory only.
 
@@ -19,10 +19,10 @@ Fuzzy case routing: which goods group (and so which dispute items) applies. Code
 | `filteredOut` | `int` | Required | Filtered out.<br><br>**Constraints**: `>= 0`, `<= 1000` | getFilteredOut(): int | setFilteredOut(int filteredOut): void |
 | `items` | `string[]` | Required | Items.<br><br>**Constraints**: *Maximum Items*: `12` | getItems(): array | setItems(array items): void |
 | `matchedWord` | string | Required | This is a container for any-of cases. | getMatchedWord(): string | setMatchedWord(string matchedWord): void |
-| `matches` | [`CaseRouteMatch[]`](http://localhost:3000/llms-pages/php/models/structures/case-route-match.md) | Required | Matches.<br><br>**Constraints**: *Maximum Items*: `3` | getMatches(): array | setMatches(array matches): void |
+| `matches` | [`CaseRouteMatch[]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/case-route-match.md) | Required | Matches.<br><br>**Constraints**: *Maximum Items*: `3` | getMatches(): array | setMatches(array matches): void |
 | `query` | string | Required | This is a container for any-of cases. | getQuery(): string | setQuery(string query): void |
-| `reason` | [`string(Reason1Enum)`](http://localhost:3000/llms-pages/php/models/enumerations/reason-1.md) | Required | Reason. | getReason(): string | setReason(string reason): void |
-| `route` | [`string(RouteEnum)`](http://localhost:3000/llms-pages/php/models/enumerations/route.md) | Required | Route. | getRoute(): string | setRoute(string route): void |
+| `reason` | [`string(Reason1Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/reason-1.md) | Required | Reason. | getReason(): string | setReason(string reason): void |
+| `route` | [`string(RouteEnum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/route.md) | Required | Route. | getRoute(): string | setRoute(string route): void |
 
 
 # Example

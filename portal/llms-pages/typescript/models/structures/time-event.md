@@ -1,6 +1,6 @@
 # Time Event
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRlRpbWVFdmVudA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRlRpbWVFdmVudA
 
 TimeEvent.
 
@@ -15,8 +15,8 @@ TimeEvent.
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
 | `at` | `string` | Required | At.<br><br>**Constraints**: *Minimum Length*: `20`, *Maximum Length*: `40` |
-| `kind` | [`KindEnum`](http://localhost:3000/llms-pages/typescript/models/enumerations/kind.md) | Required | Kind. |
-| `source` | [`Source5Enum`](http://localhost:3000/llms-pages/typescript/models/enumerations/source-5.md) | Required | Source. |
+| `kind` | [`KindEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/kind.md) | Required | Kind. |
+| `source` | [`Source5Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/typescript/models/enumerations/source-5.md) | Required | Source. |
 
 
 # Example

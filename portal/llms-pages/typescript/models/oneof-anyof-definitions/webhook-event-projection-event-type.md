@@ -1,6 +1,6 @@
 # Webhook Event Projection Event Type
 
-Source: http://localhost:3000/#/typescript/x-redirect/JTI0bSUyRldlYmhvb2tFdmVudFByb2plY3Rpb25FdmVudFR5cGU
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/typescript/x-redirect/JTI0bSUyRldlYmhvb2tFdmVudFByb2plY3Rpb25FdmVudFR5cGU
 
 
 # Class Name

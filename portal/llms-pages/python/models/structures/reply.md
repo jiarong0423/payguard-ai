@@ -1,6 +1,6 @@
 # Reply
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRlJlcGx5
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlJlcGx5
 
 Reply.
 
@@ -14,11 +14,11 @@ Reply.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `chooser` | [`ChooserEnum`](http://localhost:3000/llms-pages/python/models/enumerations/chooser.md) | Optional | Chooser. |
-| `dropped` | [`List[GuideDropped]`](http://localhost:3000/llms-pages/python/models/structures/guide-dropped.md) | Optional | Dropped. |
-| `fallback_reason` | [FallbackReason](http://localhost:3000/llms-pages/python/models/enumerations/fallback-reason.md) \| None | Optional | This is a container for any-of cases. |
+| `chooser` | [`ChooserEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/chooser.md) | Optional | Chooser. |
+| `dropped` | [`List[GuideDropped]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/guide-dropped.md) | Optional | Dropped. |
+| `fallback_reason` | [FallbackReason](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/fallback-reason.md) \| None | Optional | This is a container for any-of cases. |
 | `state_changed` | `bool` | Optional | State changed. |
-| `template` | [`TemplateEnum`](http://localhost:3000/llms-pages/python/models/enumerations/template.md) | Optional | Template. |
+| `template` | [`TemplateEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/template.md) | Optional | Template. |
 | `text` | `str` | Optional | Text.<br><br>**Constraints**: *Minimum Length*: `1`, *Maximum Length*: `400` |
 
 

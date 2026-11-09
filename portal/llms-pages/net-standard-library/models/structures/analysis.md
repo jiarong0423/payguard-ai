@@ -1,6 +1,6 @@
 # Analysis
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkFuYWx5c2lz
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkFuYWx5c2lz
 
 Analysis.
 
@@ -14,8 +14,8 @@ Analysis.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `Reason` | [`AnalysisReason`](http://localhost:3000/llms-pages/net-standard-library/models/oneof-anyof-definitions/analysis-reason.md) | Optional | This is a container for any-of cases. |
-| `Status` | [`Status8Enum?`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/status-8.md) | Optional | Status. |
+| `Reason` | [`AnalysisReason`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/oneof-anyof-definitions/analysis-reason.md) | Optional | This is a container for any-of cases. |
+| `Status` | [`Status8Enum?`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/status-8.md) | Optional | Status. |
 | `Turn` | `int?` | Optional | Turn. |
 
 

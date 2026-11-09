@@ -1,6 +1,6 @@
 # Dispute Evidence Row
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkRpc3B1dGVFdmlkZW5jZVJvdw
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkRpc3B1dGVFdmlkZW5jZVJvdw
 
 DisputeEvidenceRow.
 
@@ -14,10 +14,10 @@ DisputeEvidenceRow.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Action` | [`DisputeEvidenceRowAction`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/dispute-evidence-row-action.md) | Optional | This is a container for any-of cases. | DisputeEvidenceRowAction getAction() | setAction(DisputeEvidenceRowAction action) |
-| `Date` | [`DisputeEvidenceRowDate`](http://localhost:3000/llms-pages/java/models/oneof-anyof-definitions/dispute-evidence-row-date.md) | Optional | This is a container for any-of cases. | DisputeEvidenceRowDate getDate() | setDate(DisputeEvidenceRowDate date) |
+| `Action` | [`DisputeEvidenceRowAction`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/dispute-evidence-row-action.md) | Optional | This is a container for any-of cases. | DisputeEvidenceRowAction getAction() | setAction(DisputeEvidenceRowAction action) |
+| `Date` | [`DisputeEvidenceRowDate`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/oneof-anyof-definitions/dispute-evidence-row-date.md) | Optional | This is a container for any-of cases. | DisputeEvidenceRowDate getDate() | setDate(DisputeEvidenceRowDate date) |
 | `EvidenceType` | `String` | Required | Evidence type.<br><br>**Constraints**: *Pattern*: `^[A-Z][A-Z0-9_]{0,63}$` | String getEvidenceType() | setEvidenceType(String evidenceType) |
-| `Source` | [`Source3Enum`](http://localhost:3000/llms-pages/java/models/enumerations/source-3.md) | Required | Source. | Source3Enum getSource() | setSource(Source3Enum source) |
+| `Source` | [`Source3Enum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/enumerations/source-3.md) | Required | Source. | Source3Enum getSource() | setSource(Source3Enum source) |
 
 
 # Example

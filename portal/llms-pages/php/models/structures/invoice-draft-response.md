@@ -1,6 +1,6 @@
 # Invoice Draft Response
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkludm9pY2VEcmFmdFJlc3BvbnNl
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkludm9pY2VEcmFmdFJlc3BvbnNl
 
 InvoiceDraftResponse.
 
@@ -15,7 +15,7 @@ InvoiceDraftResponse.
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
 | `environment` | `string` | Required, Constant | Environment.<br><br>**Value**: `'sandbox'` | getEnvironment(): string | setEnvironment(string environment): void |
-| `evidenceReceipt` | [`SandboxEvidenceReceipt`](http://localhost:3000/llms-pages/php/models/structures/sandbox-evidence-receipt.md) | Required | SandboxEvidenceReceipt. | getEvidenceReceipt(): SandboxEvidenceReceipt | setEvidenceReceipt(SandboxEvidenceReceipt evidenceReceipt): void |
+| `evidenceReceipt` | [`SandboxEvidenceReceipt`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/structures/sandbox-evidence-receipt.md) | Required | SandboxEvidenceReceipt. | getEvidenceReceipt(): SandboxEvidenceReceipt | setEvidenceReceipt(SandboxEvidenceReceipt evidenceReceipt): void |
 | `externalSend` | `string` | Required, Constant | External send.<br><br>**Value**: `'FROZEN'` | getExternalSend(): string | setExternalSend(string externalSend): void |
 | `invoiceId` | `string` | Required | Invoice id.<br><br>**Constraints**: *Minimum Length*: `13`, *Maximum Length*: `69`, *Pattern*: `^INV2-[A-Z0-9-]{8,64}$` | getInvoiceId(): string | setInvoiceId(string invoiceId): void |
 | `source` | `string` | Required, Constant | Source.<br><br>**Value**: `'paypal_sandbox'` | getSource(): string | setSource(string source): void |

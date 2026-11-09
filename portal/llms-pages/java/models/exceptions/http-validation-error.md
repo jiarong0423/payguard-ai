@@ -1,6 +1,6 @@
 # HTTP Validation Error
 
-Source: http://localhost:3000/#/java/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/java/x-redirect/JTI0bSUyRkhUVFBWYWxpZGF0aW9uRXJyb3I
 
 HTTPValidationError.
 
@@ -14,7 +14,7 @@ HTTPValidationError.
 
 | Name | Type | Tags | Description | Getter | Setter |
 |  --- | --- | --- | --- | --- | --- |
-| `Detail` | [`List<ValidationError>`](http://localhost:3000/llms-pages/java/models/structures/validation-error.md) | Optional | Detail. | List<ValidationError> getDetail() | setDetail(List<ValidationError> detail) |
+| `Detail` | [`List<ValidationError>`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/java/models/structures/validation-error.md) | Optional | Detail. | List<ValidationError> getDetail() | setDetail(List<ValidationError> detail) |
 
 
 # Example

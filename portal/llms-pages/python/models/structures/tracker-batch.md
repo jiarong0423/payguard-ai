@@ -1,6 +1,6 @@
 # Tracker Batch
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRlRyYWNrZXJCYXRjaA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlRyYWNrZXJCYXRjaA
 
 TrackerBatch.
 
@@ -14,7 +14,7 @@ TrackerBatch.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `trackers` | [`List[TrackerItem]`](http://localhost:3000/llms-pages/python/models/structures/tracker-item.md) | Required | Trackers.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `1` |
+| `trackers` | [`List[TrackerItem]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/structures/tracker-item.md) | Required | Trackers.<br><br>**Constraints**: *Minimum Items*: `1`, *Maximum Items*: `1` |
 
 
 # Example

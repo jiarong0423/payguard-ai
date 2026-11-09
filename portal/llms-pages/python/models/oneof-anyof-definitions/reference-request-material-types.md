@@ -1,6 +1,6 @@
 # Reference Request Material Types
 
-Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRlJlZmVyZW5jZVJlcXVlc3RNYXRlcmlhbFR5cGVz
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/python/x-redirect/JTI0bSUyRlJlZmVyZW5jZVJlcXVlc3RNYXRlcmlhbFR5cGVz
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/python/x-redirect/JTI0bSUyRlJlZmVyZW5jZVJlcXVlc3
 
 | Type |
 |  --- |
-| [`List[MaterialType4Enum]`](http://localhost:3000/llms-pages/python/models/enumerations/material-type-4.md) |
+| [`List[MaterialType4Enum]`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/python/models/enumerations/material-type-4.md) |
 
 
 # List[MaterialType4Enum]

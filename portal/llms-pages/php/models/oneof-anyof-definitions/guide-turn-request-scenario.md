@@ -1,6 +1,6 @@
 # Guide Turn Request Scenario
 
-Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkd1aWRlVHVyblJlcXVlc3RTY2VuYXJpbw
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/php/x-redirect/JTI0bSUyRkd1aWRlVHVyblJlcXVlc3RTY2VuYXJpbw
 
 
 # Data Type
@@ -12,7 +12,7 @@ Source: http://localhost:3000/#/php/x-redirect/JTI0bSUyRkd1aWRlVHVyblJlcXVlc3RTY
 
 | Type |
 |  --- |
-| [`string(Scenario1Enum)`](http://localhost:3000/llms-pages/php/models/enumerations/scenario-1.md) |
+| [`string(Scenario1Enum)`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/php/models/enumerations/scenario-1.md) |
 
 
 # string(Scenario1Enum)

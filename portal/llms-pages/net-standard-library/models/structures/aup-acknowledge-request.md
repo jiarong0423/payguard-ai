@@ -1,6 +1,6 @@
 # Aup Acknowledge Request
 
-Source: http://localhost:3000/#/net-standard-library/x-redirect/JTI0bSUyRkF1cEFja25vd2xlZGdlUmVxdWVzdA
+Source: https://jiarong0423.github.io/payguard-ai/portal/#/net-standard-library/x-redirect/JTI0bSUyRkF1cEFja25vd2xlZGdlUmVxdWVzdA
 
 AupAcknowledgeRequest.
 
@@ -14,7 +14,7 @@ AupAcknowledgeRequest.
 
 | Name | Type | Tags | Description |
 |  --- | --- | --- | --- |
-| `Choice` | [`ChoiceEnum`](http://localhost:3000/llms-pages/net-standard-library/models/enumerations/choice.md) | Required | Choice. |
+| `Choice` | [`ChoiceEnum`](https://jiarong0423.github.io/payguard-ai/portal/llms-pages/net-standard-library/models/enumerations/choice.md) | Required | Choice. |
 | `DescriptionDigest` | `string` | Required | Description digest.<br><br>**Constraints**: *Pattern*: `^[a-f0-9]{64}$` |
 | `EvaluationId` | `string` | Required | Evaluation id.<br><br>**Constraints**: *Minimum Length*: `32`, *Maximum Length*: `128`, *Pattern*: `^[A-Za-z0-9_-]+$` |
 
