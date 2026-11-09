@@ -34,7 +34,7 @@ flowchart TB
             C3API["Channel3 API"]
         end
     end
-    subgraph Hosted["Hosted demo on Render (PAYGUARD_DEMO_MODE=public): no PayPal calls"]
+    subgraph Hosted["Hosted demo on Render (PAYGUARD_DEMO_MODE=public): read-only Sandbox reads"]
         HPAGES["Same pages, rules engines and synthetic scenarios<br/>Sample disputes, recorded guide turns, recorded Channel3 searches<br/>Live guide: keywords, or Gemini if the operator opts in (5 a minute, 20 a day)"]
         HGATE["Public host, proxy headers, traffic gate"]
         HSTUB["PayPal, AI brief, LM Studio and Studio agent turn<br/>stubs: 503 hosted_demo_disabled, no provider call"]

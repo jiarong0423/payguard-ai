@@ -1,6 +1,6 @@
 # TradeGlot hosted public demo image (optional; local use needs none of this).
 # The container runs with PAYGUARD_DEMO_MODE=public: every provider adapter is a refusing
-# stub, no PayPal or local-model call is possible, and the image holds no keys. (r32) The one exception is the
+# stub (or, with PAYGUARD_HOSTED_READONLY_SANDBOX=enabled, a read-only Sandbox wrapper), no PayPal write or local-model call is possible, and the image holds no keys. (r32) The one exception is the
 # evidence guide's Gemini chooser, used only when the operator sets PAYGUARD_HOSTED_GUIDE_MODEL=gemini and passes a
 # free-tier GEMINI_API_KEY as a service secret at run time; without both, the guide stays on keywords.
 

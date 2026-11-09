@@ -33,7 +33,8 @@ from .ai_brief import AiBriefError, AiBriefHttpRequest, AiBriefResponse, Evidenc
 from .ai_usage import COST_NOTE, PRICE_TABLE_SOURCE, AiUsageLog, AiUsageResponse
 from .lmstudio_brief import LmStudioConfig, LmStudioEvidenceBriefAdapter
 from .demo_mode import (HOSTED_DEMO_CODE, HOSTED_DEMO_MESSAGE, HostedDemoBriefStub, HostedDemoGuardMiddleware,
-                        HostedDemoPaypalStub, public_demo_enabled, require_public_host)
+                        HostedDemoPaypalStub, HostedReadOnlyPaypalAdapter, HOSTED_READ_BUDGET_CODE,
+                        disabled_routes, hosted_readonly_enabled, public_demo_enabled, require_public_host)
 from .channel3 import build_channel3_adapter
 from .channel3_products import build_channel3_product_adapter, card_digest
 from .case_routing import CaseRouter
@@ -230,6 +231,9 @@ def error_response(status: int, code: str, retry_after: int | None = None, *, ex
                       if retry_after else "Try again in about two minutes."))
     elif code == HOSTED_DEMO_CODE:
         message = HOSTED_DEMO_MESSAGE
+    elif code == HOSTED_READ_BUDGET_CODE:
+        message = ("The hosted demo's shared Sandbox read limit was reached. Reads resume automatically"
+                   + (f" in about {retry_after} seconds." if retry_after else " shortly."))
     elif code == INPUT_REFUSED_CODE:
         message = INPUT_REFUSED_MESSAGE
     elif code.startswith("ai_"):
@@ -443,15 +447,20 @@ def register_optional_country_routes(application, read_session, write_session):
 
 
 def create_app(*, store=None, paypal=None, reference_loader=None, ai_brief=None, channel3=None,
-               channel3_products=None, studio_model=None) -> FastAPI:
+               channel3_products=None, studio_model=None, hosted_sandbox_inner=None) -> FastAPI:
     # PAYGUARD_DEMO_MODE=public (hosted demo): every provider adapter, injected or default, is
     # replaced by a refusing stub. Off by default; then nothing below differs from the local console.
     demo_public = public_demo_enabled()
     hosted_host = require_public_host() if demo_public else None
+    readonly_sandbox = hosted_readonly_enabled() if demo_public else False
     if demo_public:
-        paypal, ai_brief = HostedDemoPaypalStub(), HostedDemoBriefStub()
+        # Read-only Sandbox switch: the wrapper owns the only provider seam; an injected `paypal` is still ignored.
+        paypal = (HostedReadOnlyPaypalAdapter(hosted_sandbox_inner if hosted_sandbox_inner is not None else PaypalAdapter())
+                  if readonly_sandbox else HostedDemoPaypalStub())
+        ai_brief = HostedDemoBriefStub()
     application = FastAPI(title="TradeGlot Local Console", version="0.2.0", docs_url=None, redoc_url=None, openapi_url=None)
     application.state.demo_mode = "public" if demo_public else "off"
+    application.state.hosted_readonly = readonly_sandbox
     application.state.store = store or SessionStore(ai_attempt_budget=PROCESS_AI_ATTEMPT_BUDGET)
     application.state.paypal = paypal or PaypalAdapter()
     application.state.paypal_tools = SafePaypalToolGateway(application.state.store, application.state.paypal)
@@ -475,7 +484,8 @@ def create_app(*, store=None, paypal=None, reference_loader=None, ai_brief=None,
     application.state.case_router = CaseRouter(products=application.state.channel3_products)
     if demo_public:
         # Added first so it runs inside the boundary: Host, Origin and body checks still run before it.
-        application.add_middleware(HostedDemoGuardMiddleware, error_response=error_response)
+        application.add_middleware(HostedDemoGuardMiddleware, error_response=error_response,
+                                routes=disabled_routes(readonly_sandbox))
         # Per-visitor pacing and a bounded in-flight queue, hosted demo only (owner 2026-11-03).
         application.add_middleware(TrafficGate, proxied=True)
         application.state.store.per_client_limits = True
@@ -741,10 +751,12 @@ def create_app(*, store=None, paypal=None, reference_loader=None, ai_brief=None,
     def approve(case_ref: str, body: ApproveRequest, session=Depends(write_session)):
         return application.state.store.approve(session, case_ref, body.draft_digest)
 
-    @application.get("/api/v1/connections", response_model=ConnectionsResponse)
+    @application.get("/api/v1/connections", response_model=ConnectionsResponse, response_model_exclude_unset=True)
     def connections(_session=Depends(read_session)):
         # Read-only deployment mode for the console. It reads the mode fixed at startup, never the environment,
         # so the hosted demo cannot reveal whether any key is present.
+        if application.state.hosted_readonly:
+            return {"mode": "hosted_demo", "sandbox_reads": True}
         return {"mode": "hosted_demo" if application.state.demo_mode == "public" else "local"}
 
     @application.get("/api/v1/paypal/status", response_model=PaypalStatusResponse)
@@ -810,7 +822,7 @@ def create_app(*, store=None, paypal=None, reference_loader=None, ai_brief=None,
 
     @application.post("/api/v1/paypal/disputes/add-tracking", response_model=AddTrackingResponse)
     async def add_tracking(body: AddTrackingRequest, session=Depends(write_session)):
-        # Hosted demo: no provider calls (the stub adapter has no tracking action).
+        # Hosted demo: never a provider write (neither adapter has a tracking action).
         if application.state.demo_mode == "public":
             return error_response(503, HOSTED_DEMO_CODE)
         return await application.state.paypal_disputes.add_tracking(session, body.model_dump())

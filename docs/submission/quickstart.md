@@ -10,7 +10,7 @@ The current demo video is the [2:50 cut](https://youtu.be/_GORnHWShU4). The [his
 
 The [published 2:50 demonstration](https://youtu.be/_GORnHWShU4) is the final edited video; the script's timestamps belong to the earlier 2:02 cut and are not seek positions in the current video.
 
-Status: the Devpost project is submitted and the 2:50 video is public. The complete repository run instructions here are the selected functional-demo path. An optional hosted demo also runs (README, "Hosted demo"); it makes no PayPal calls, only its evidence guide can use Gemini when the operator opts in (at most 5 calls a minute and 20 a day), and a hosted deployment with PayPal calls is unperformed. A new local export stays `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` until its exact bytes pass security review, independent acceptance and repository readback; only an accepted same-byte public source release records `PUBLIC_SOURCE_PUBLISHED`. Neither state establishes a public or production-hosted service.
+Status: the Devpost project is submitted and the 2:50 video is public. The complete repository run instructions here are the selected functional-demo path. An optional hosted demo also runs (README, "Hosted demo"); its only PayPal calls are read-only Sandbox reads, only its evidence guide can use Gemini when the operator opts in (at most 5 calls a minute and 20 a day), and a hosted deployment that writes to PayPal is unperformed. A new local export stays `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` until its exact bytes pass security review, independent acceptance and repository readback; only an accepted same-byte public source release records `PUBLIC_SOURCE_PUBLISHED`. Neither state establishes a public or production-hosted service.
 
 ## Start the console
 
@@ -44,7 +44,7 @@ npm run dev
 
 Open `http://127.0.0.1:5173`. Keep both processes running. (`./tools/run.sh start` instead builds the console and serves it on `http://127.0.0.1:8000`; on a terminal it first asks whether the guide may use Gemini, which calls the paid API, default no.) If the API is unavailable, the UI fails visibly instead of loading a hidden mock.
 
-This loopback walkthrough is the selected functional-demo path and runs locally. The optional hosted demo makes no PayPal calls and shows less (README, "Hosted demo").
+This loopback walkthrough is the selected functional-demo path and runs locally. The optional hosted demo makes only read-only PayPal Sandbox reads and shows less (README, "Hosted demo").
 
 ## Understand the banner before the demo
 
@@ -189,6 +189,6 @@ These commands validate the local runtime and source contract. The export manife
 - A production or live account: only a fictitious US Business Sandbox seller was used.
 - A Sandbox dispute through the Disputes calls: the list and one detail were read live on 2026-10-31 for one author-created Sandbox test case, and again before and after each send; on 2026-11-04 one provide-evidence send to another Sandbox test dispute succeeded ([masked receipt](../evidence/RECEIPT_20261104_live.md)); on 2026-11-05 (UTC+8) a second send to a newly filed Sandbox test dispute succeeded ([masked receipt](../evidence/RECEIPT_20261105_live.md)); other rows run against mocked transport and the sample disputes; connect your own Sandbox app to run them live.
 - Authentic Gemini output on your machine: the brief needs your own Vertex AI project; the guide can use Vertex AI or an AI Studio API key.
-- Hosted operation with provider calls, or multi-user operation: the console is a loopback demo; the optional hosted demo makes no PayPal calls, and only its guide can use Gemini when the operator opts in.
+- Hosted operation with provider calls, or multi-user operation: the console is a loopback demo; the optional hosted demo makes only read-only PayPal Sandbox reads, and only its guide can use Gemini when the operator opts in.
 
 See the [current architecture](../decisions/2026Q4/architecture.md), [official source register](../decisions/2026Q4/us_official_source_register.md) and [US mainline contract](../decisions/2026Q4/us_mainline_contract.md).

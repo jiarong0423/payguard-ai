@@ -22,7 +22,7 @@ assert.ok(!/from '\.\/api\.js'/u.test(replay), 'the replay does not import the A
 assert.ok(replay.includes('Recorded, nothing is sent'), 'chip says recorded, nothing is sent');
 assert.ok(replay.includes('Nothing was sent just now.'), 'result says nothing was sent');
 assert.ok(replay.includes('Replay of a recorded real send.'), 'result is labelled a replay');
-assert.ok(replay.includes('The hosted demo makes no PayPal calls.'), 'note repeats the hosted promise');
+assert.ok(replay.includes('Nothing on this page sends anything to PayPal.'), 'note repeats the hosted promise');
 
 // The same two steps as the console: tick, Continue, three seconds, Send.
 assert.ok(replay.includes('REPLAY_WAIT_SECONDS = 3'), 'three second wait');

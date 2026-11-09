@@ -49,5 +49,5 @@
 <rect x="80" y="896" width="1760" height="120" rx="18" fill="#ffffff" stroke="#8a877f" stroke-width="2"/>
 <line x1="960" y1="920" x2="960" y2="992" stroke="#d9d3c7" stroke-width="2"/>
 <text x="112" y="968" font-size="26" fill="#1f1e1b"><tspan font-weight="700">Local console</tspan><tspan fill="#5b5953">  real calls once keys and switches are set</tspan></text>
-<text x="992" y="968" font-size="30" fill="#1f1e1b"><tspan font-weight="700">Hosted demo</tspan><tspan fill="#5b5953">  rules by default, no PayPal calls</tspan></text>
+<text x="992" y="968" font-size="30" fill="#1f1e1b"><tspan font-weight="700">Hosted demo</tspan><tspan fill="#5b5953">  rules by default, read-only Sandbox reads</tspan></text>
 </svg>

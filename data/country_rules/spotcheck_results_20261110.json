@@ -1,0 +1,818 @@
+{
+ "date": "2026-11-10",
+ "seed": 20261110,
+ "verdict_source": "author (Claude), not Gemini",
+ "gemini_status": "not run; prompt file prepared for the owner",
+ "rules": [
+  {
+   "id": "AU-EX-GEN-01",
+   "country": "AU",
+   "direction": "export",
+   "url": "https://www.abf.gov.au/importing-exporting-and-manufacturing/exporting/how-to-export/export-requirements",
+   "verdict": "W",
+   "depth": "full",
+   "fragment": "\"value of more than AUD2,000\"",
+   "note": "Declaration trigger and the under-AUD2,000 exemption match (ABF page). \"Australia charges no export duty\" is not on this page."
+  },
+  {
+   "id": "AU-EX-PS-02",
+   "country": "AU",
+   "direction": "export",
+   "url": "https://www.abf.gov.au/importing-exporting-and-manufacturing/prohibited-goods/list-of-items",
+   "verdict": "X",
+   "depth": "none",
+   "fragment": "-",
+   "note": "ABF list-of-items page: only 1.6 kB of page chrome in static HTML; the list is not there (same gap as AU-IM-CO-01 on 2026-11-08)."
+  },
+  {
+   "id": "AU-EX-CR-01",
+   "country": "AU",
+   "direction": "export",
+   "url": "https://www.legislation.gov.au/C2004A03252/latest/text",
+   "verdict": "W",
+   "depth": "headings",
+   "fragment": "\"9 Unlawful exports\"",
+   "note": "Federal Register page showed only the Act table of contents (ss. 7, 9, 10: movable cultural heritage, unlawful exports, grant of permits). Body of s. 9-10 not read."
+  },
+  {
+   "id": "AU-IM-MD-02",
+   "country": "AU",
+   "direction": "import",
+   "url": "https://www.tga.gov.au/products/unapproved-therapeutic-goods/access-pathways/personal-importation-scheme",
+   "verdict": "C",
+   "depth": "full",
+   "fragment": "\"prohibited from being imported under any circumstances\"",
+   "note": "TGA Personal Importation Scheme page: counterfeit medicines and medical devices."
+  },
+  {
+   "id": "AU-IM-TB-01",
+   "country": "AU",
+   "direction": "import",
+   "url": "https://www.abf.gov.au/importing-exporting-and-manufacturing/prohibited-goods/list-of-items",
+   "verdict": "X",
+   "depth": "none",
+   "fragment": "-",
+   "note": "Same ABF list-of-items page as AU-EX-PS-02; list body not in static HTML."
+  },
+  {
+   "id": "AU-IM-RW-02",
+   "country": "AU",
+   "direction": "import",
+   "url": "https://www.acma.gov.au/buying-or-selling-electrical-products",
+   "verdict": "C",
+   "depth": "full",
+   "fragment": "\"the same laws apply to you\"",
+   "note": "ACMA page: online/post/in-person radio device sellers treated like larger retailers; penalties apply."
+  },
+  {
+   "id": "CA-EX-PS-01",
+   "country": "CA",
+   "direction": "export",
+   "url": "https://www.canadapost-postescanada.ca/cpc/doc/en/support/non-mailable-matter.pdf",
+   "verdict": "C",
+   "depth": "full",
+   "fragment": "\"The Plant Protection Act and the Convention on International Trade\"",
+   "note": "Canada Post non-mailable-matter PDF s. 4.10 lists plants, seeds, fruits, bark, plant parts, soil; CFIA Plant Health permit office named."
+  },
+  {
+   "id": "CA-EX-GEN-03",
+   "country": "CA",
+   "direction": "export",
+   "url": "https://laws-lois.justice.gc.ca/eng/acts/E-19/section-13.html",
+   "verdict": "C",
+   "depth": "extract",
+   "fragment": "\"No person shall export or transfer, or attempt to export\"",
+   "note": "Export and Import Permits Act s. 13 (WebFetch extract): Export Control List goods/technology, and goods to Area Control List countries, need a permit."
+  },
+  {
+   "id": "CA-EX-LA-02",
+   "country": "CA",
+   "direction": "export",
+   "url": "https://laws-lois.justice.gc.ca/eng/regulations/C.R.C.,_c._296/FullText.html",
+   "verdict": "C",
+   "depth": "extract",
+   "fragment": "(WebFetch summary of s. 69(1))",
+   "note": "Evidence of importing-country sanitary compliance plus a certificate from a veterinary inspector or endorsed accredited veterinarian. Only 100,000 of 313,611 chars were read; summary, not verbatim."
+  },
+  {
+   "id": "CA-IM-LA-02",
+   "country": "CA",
+   "direction": "import",
+   "url": "https://laws-lois.justice.gc.ca/eng/acts/W-8.5/section-6.html",
+   "verdict": "C",
+   "depth": "extract",
+   "fragment": "\"No person shall import into Canada any animal or plant that was taken\"",
+   "note": "WAPPRIITA s. 6(1); parts/derivatives wording from WebFetch summary."
+  },
+  {
+   "id": "CA-IM-JW-01",
+   "country": "CA",
+   "direction": "import",
+   "url": "https://laws-lois.justice.gc.ca/eng/acts/E-18.5/FullText.html",
+   "verdict": "C",
+   "depth": "extract",
+   "fragment": "\"was issued by a participant\"",
+   "note": "s. 14(1): compliant container, Kimberley Process Certificate issued by a participant, not invalidated, accurate."
+  },
+  {
+   "id": "CA-IM-FD-02",
+   "country": "CA",
+   "direction": "import",
+   "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2018-108/FullText.html",
+   "verdict": "C",
+   "depth": "extract",
+   "fragment": "\"Any food that is imported must have been manufactured\"",
+   "note": "SFCR s. 11(1) equivalence and s. 13(1)(a) importer name and licence number."
+  },
+  {
+   "id": "CN-EX-LA-02",
+   "country": "CN",
+   "direction": "export",
+   "url": "https://www.moa.gov.cn/ztzl/gjzwbhgy/flfg/201205/t20120525_2635872.htm",
+   "verdict": "W",
+   "depth": "extract",
+   "fragment": "\"向口岸动植物检疫机关报检\"",
+   "note": "Animal and Plant Quarantine Law art. 20 (declare before export) located. The \"isolation at designated sites\" part is not in the passages retrieved."
+  },
+  {
+   "id": "CN-EX-FD-01",
+   "country": "CN",
+   "direction": "export",
+   "url": "https://www.moa.gov.cn/ztzl/gjzwbhgy/flfg/201205/t20120525_2635872.htm",
+   "verdict": "W",
+   "depth": "extract",
+   "fragment": "\"向口岸动植物检疫机关报检\"",
+   "note": "Art. 20 located; the examples \"meat products, animal-based pet food\" are not named in art. 20."
+  },
+  {
+   "id": "CN-EX-CU-02",
+   "country": "CN",
+   "direction": "export",
+   "url": "https://www.pbc.gov.cn/tiaofasi/144941/3581332/3582861/2018072309595152720.pdf",
+   "verdict": "X",
+   "depth": "none",
+   "fragment": "-",
+   "note": "PBC regulation PDF is image-only (no text layer); not verified (needs OCR)."
+  },
+  {
+   "id": "CN-IM-WP-01",
+   "country": "CN",
+   "direction": "import",
+   "url": "https://www.gov.cn/zhengce/1993-02/26/content_5723395.htm",
+   "verdict": "C",
+   "depth": "full",
+   "fragment": "\"各种武器、仿真武器、弹药及爆炸物品\"",
+   "note": "Item 1 of the import-ban list on the gov.cn page."
+  },
+  {
+   "id": "CN-IM-FD-03",
+   "country": "CN",
+   "direction": "import",
+   "url": "https://www.moa.gov.cn/ztzl/gjzwbhgy/flfg/201205/t20120525_2635872.htm",
+   "verdict": "C",
+   "depth": "extract",
+   "fragment": "\"邮寄进境的动植物\"",
+   "note": "Arts. 31-32: mail quarantine at the international mail exchange, released if passed, otherwise returned or destroyed. Examples \"tea, dried goods\" not named."
+  },
+  {
+   "id": "CN-IM-LA-02",
+   "country": "CN",
+   "direction": "import",
+   "url": "https://www.moa.gov.cn/ztzl/gjzwbhgy/flfg/201205/t20120525_2635872.htm",
+   "verdict": "C",
+   "depth": "extract",
+   "fragment": "\"作退回或者销毁处理\"",
+   "note": "Art. 29 para. 2: listed items carried or posted in are returned or destroyed."
+  },
+  {
+   "id": "GD-DE-EX-EC-01",
+   "country": "DE",
+   "direction": "export",
+   "url": "https://www.zoll.de/DE/Privatpersonen/Postsendungen-Internetbestellungen/Sendungen-in-einen-Nicht-EU-Staat/Einschraenkungen/Waren/waren_node.html",
+   "verdict": "C",
+   "depth": "extract",
+   "fragment": "\"Artenschutz\"",
+   "note": "Zoll postal-export page lists species protection, dual-use, torture goods, rough diamonds, cultural goods, weapons. The negative claim (no e-cigarette restriction) cannot be proven from a list."
+  },
+  {
+   "id": "DE-EX-RW-01",
+   "country": "DE",
+   "direction": "export",
+   "url": "https://www.zoll.de/DE/Privatpersonen/Postsendungen-Internetbestellungen/Sendungen-in-einen-Nicht-EU-Staat/Einschraenkungen/Waren/Dual-Use-Gueter/dual-use-gueter_node.html",
+   "verdict": "W",
+   "depth": "extract",
+   "fragment": "\"Solche Güter können beim Versand\"",
+   "note": "Dual-use page names electronics/telecom/IT, software, and BAFA. The words \"Ausfuhrgenehmigung\" and Regulation 2021/821 art. 3 are not on the page text retrieved."
+  },
+  {
+   "id": "GD-DE-EX-TO-01",
+   "country": "DE",
+   "direction": "export",
+   "url": "https://www.zoll.de/DE/Privatpersonen/Postsendungen-Internetbestellungen/Sendungen-in-einen-Nicht-EU-Staat/Einschraenkungen/Waren/waren_node.html",
+   "verdict": "C",
+   "depth": "extract",
+   "fragment": "\"Artenschutz\"",
+   "note": "Same Zoll page as GD-DE-EX-EC-01; negative claim not provable from a list."
+  },
+  {
+   "id": "DE-IM-CU-01",
+   "country": "DE",
+   "direction": "import",
+   "url": "https://www.gesetze-im-internet.de/zollvg/__12a.html",
+   "verdict": "W",
+   "depth": "extract",
+   "fragment": "\"binnen einer Frist von 30 Tagen\"",
+   "note": "ZollVG s. 12a(2): EUR 10,000 and 30-day disclosure located. The page does not mention post or courier; it speaks of unaccompanied cash."
+  },
+  {
+   "id": "DE-IM-RW-01",
+   "country": "DE",
+   "direction": "import",
+   "url": "https://www.zoll.de/DE/Privatpersonen/Postsendungen-Internetbestellungen/Sendungen-aus-einem-Nicht-EU-Staat/Einschraenkungen/Waren/Produktsicherheit-und-konformitaet/produktsicherheit-und-konformitaet_node.html",
+   "verdict": "C",
+   "depth": "extract",
+   "fragment": "\"Laserpointer mit einer Leistung von mehr als einem Milliwatt\"",
+   "note": "Zoll product-safety page: jammers and laser pointers over 1 mW banned; toys and electrical devices must meet safety requirements."
+  },
+  {
+   "id": "GD-DE-IM-FD-04",
+   "country": "DE",
+   "direction": "import",
+   "url": "https://www.zoll.de/DE/Privatpersonen/Postsendungen-Internetbestellungen/Sendungen-aus-einem-Nicht-EU-Staat/Einschraenkungen/Waren/Lebensmittel-und-Futtermittel/lebensmittel-und-futtermittel_node.html",
+   "verdict": "C",
+   "depth": "extract",
+   "fragment": "\"im Postversand nicht\"",
+   "note": "Zoll food page: caviar needs CITES documents; no exemption for small personal quantities by post."
+  },
+  {
+   "id": "GB-EX-RX-01",
+   "country": "GB",
+   "direction": "export",
+   "url": "https://www.legislation.gov.uk/ukpga/1971/38/section/3",
+   "verdict": "C",
+   "depth": "extract",
+   "fragment": "\"the exportation of a controlled drug\"",
+   "note": "Misuse of Drugs Act 1971 s. 3(1)(b) and s. 3(2)(b) (licence of the Secretary of State). Rule says Home Office licence."
+  },
+  {
+   "id": "GB-EX-LA-02",
+   "country": "GB",
+   "direction": "export",
+   "url": "https://www.gov.uk/guidance/cites-imports-and-exports",
+   "verdict": "W",
+   "depth": "extract",
+   "fragment": "\"You must apply for a permit\"",
+   "note": "GOV.UK CITES page: permit needed to move a specimen into or out of GB; APHA issues permits. It does not say \"certificate\" or \"re-export\" in those words in the passages retrieved."
+  },
+  {
+   "id": "GB-EX-CU-01",
+   "country": "GB",
+   "direction": "export",
+   "url": "https://www.gov.uk/guidance/taking-cash-in-and-out-of-great-britain",
+   "verdict": "W",
+   "depth": "extract",
+   "fragment": "\"You must declare cash of £10,000 or more\"",
+   "note": "Located. Page says \"customs authorities\", not Border Force."
+  },
+  {
+   "id": "GB-IM-CO-02",
+   "country": "GB",
+   "direction": "import",
+   "url": "https://www.gov.uk/guidance/import-vat-and-customs-duty-on-gifts",
+   "verdict": "C",
+   "depth": "extract",
+   "fragment": "\"Perfumes with a flashpoint of less than 60°C\"",
+   "note": "GOV.UK gifts page (updated 2024-10-18): banned from international mail."
+  },
+  {
+   "id": "GB-IM-LA-03",
+   "country": "GB",
+   "direction": "import",
+   "url": "https://www.gov.uk/bringing-plants-and-wood-into-great-britain/print",
+   "verdict": "W",
+   "depth": "extract",
+   "fragment": "\"You’ll need to apply for a permit or certificate\"",
+   "note": "Plants and wood page: CITES permit, CN22/CN23, Border Force seizure located. The page covers plants; animals are not covered there."
+  },
+  {
+   "id": "GB-IM-RW-01",
+   "country": "GB",
+   "direction": "import",
+   "url": "https://www.legislation.gov.uk/uksi/2017/1206/contents",
+   "verdict": "W",
+   "depth": "headings",
+   "fragment": "\"21. Requirements which must be satisfied before an importer places\"",
+   "note": "legislation.gov.uk contents list only; reg. 21 body not read."
+  },
+  {
+   "id": "HK-EX-WP-01",
+   "country": "HK",
+   "direction": "export",
+   "url": "https://www.customs.gov.hk/en/service-enforcement-information/trade-facilitation/prohibited-articles/controlled-exports/index.html",
+   "verdict": "W",
+   "depth": "extract",
+   "fragment": "\"air guns and air rifles with muzzle energy greater than 2 joules\"",
+   "note": "Air guns, stun guns, crossbows over 6 kg, Police licence and TID licence for the Munitions List located. Pepper sprays are not named; page mentions noxious-gas aerosols (dog repellents)."
+  },
+  {
+   "id": "HK-EX-GEN-01",
+   "country": "HK",
+   "direction": "export",
+   "url": "https://www.elegislation.gov.hk/hk/cap60E!en",
+   "verdict": "X",
+   "depth": "none",
+   "fragment": "-",
+   "note": "elegislation.gov.hk Cap. 60E page is a JavaScript shell (\"Loading required resource\")."
+  },
+  {
+   "id": "HK-EX-EC-01",
+   "country": "HK",
+   "direction": "export",
+   "url": "https://www.elegislation.gov.hk/hk/cap371!en",
+   "verdict": "X",
+   "depth": "none",
+   "fragment": "-",
+   "note": "elegislation.gov.hk Cap. 371 page is a JavaScript shell."
+  },
+  {
+   "id": "HK-IM-CU-01",
+   "country": "HK",
+   "direction": "import",
+   "url": "https://www.customs.gov.hk/en/faqs/currency-and-bearer-negotiable-instruments/index.html",
+   "verdict": "C",
+   "depth": "extract",
+   "fragment": "\"an advance electronic declaration must be made\"",
+   "note": "Customs FAQ: HKD 120,000 per batch as cargo; postal packets excluded."
+  },
+  {
+   "id": "HK-IM-EC-01",
+   "country": "HK",
+   "direction": "import",
+   "url": "https://www.elegislation.gov.hk/hk/cap60!en",
+   "verdict": "X",
+   "depth": "none",
+   "fragment": "-",
+   "note": "elegislation.gov.hk Cap. 60 page is a JavaScript shell."
+  },
+  {
+   "id": "HK-IM-FD-03",
+   "country": "HK",
+   "direction": "import",
+   "url": "https://www.customs.gov.hk/en/service-enforcement-information/trade-facilitation/prohibited-articles/controlled-imports/index.html",
+   "verdict": "W",
+   "depth": "extract",
+   "fragment": "\"specific legal requirements or administrative arrangements\"",
+   "note": "Customs page is a link list naming milk, frozen confections, colouring, sweeteners, preservatives, metals; the legal detail is not on the page."
+  },
+  {
+   "id": "JP-EX-TO-01",
+   "country": "JP",
+   "direction": "export",
+   "url": "https://www.post.japanpost.jp/service/send/oversea/attention/restriction/index.html",
+   "verdict": "W",
+   "depth": "extract",
+   "fragment": "\"国別に輸入を禁止している品物がございます\"",
+   "note": "Japan Post lists tobacco among items often prohibited by destination countries. \"Japan does not bar tobacco exports\" is not stated on the page."
+  },
+  {
+   "id": "JP-EX-BH-01",
+   "country": "JP",
+   "direction": "export",
+   "url": "https://www.post.japanpost.jp/service/send/oversea/attention/restriction/index.html",
+   "verdict": "C",
+   "depth": "extract",
+   "fragment": "\"国際航空運送協会（IATA）の「危険物に関する規則」\"",
+   "note": "Japan Post: IATA dangerous goods cannot be mailed by any service; fireworks, lighter fuel, gas cylinders, matches, bleach, pesticides, mercury, wet batteries listed. Dry ice not seen in the extract (cut off)."
+  },
+  {
+   "id": "JP-EX-CU-02",
+   "country": "JP",
+   "direction": "export",
+   "url": "https://laws.e-gov.go.jp/law/355CO0000000260",
+   "verdict": "X",
+   "depth": "none",
+   "fragment": "-",
+   "note": "e-Gov law page is a JavaScript shell."
+  },
+  {
+   "id": "JP-IM-WE-01",
+   "country": "JP",
+   "direction": "import",
+   "url": "https://laws.e-gov.go.jp/law/329AC0000000061",
+   "verdict": "X",
+   "depth": "none",
+   "fragment": "-",
+   "note": "e-Gov law page is a JavaScript shell."
+  },
+  {
+   "id": "JP-IM-BH-01",
+   "country": "JP",
+   "direction": "import",
+   "url": "https://laws.e-gov.go.jp/law/336AC0000000234",
+   "verdict": "X",
+   "depth": "none",
+   "fragment": "-",
+   "note": "e-Gov law page is a JavaScript shell."
+  },
+  {
+   "id": "JP-IM-CF-01",
+   "country": "JP",
+   "direction": "import",
+   "url": "https://laws.e-gov.go.jp/law/329AC0000000061",
+   "verdict": "X",
+   "depth": "none",
+   "fragment": "-",
+   "note": "e-Gov law page is a JavaScript shell."
+  },
+  {
+   "id": "SG-EX-BH-01",
+   "country": "SG",
+   "direction": "export",
+   "url": "https://www.singpost.com/support/sending-an-item/general-prohibition-dangerous-goods",
+   "verdict": "C",
+   "depth": "extract",
+   "fragment": "\"Explosives\"",
+   "note": "SingPost dangerous-goods page: classes 1-9 with ammunition, aerosols, alcohol/perfume, matches, bleach, pesticides, wet and sealed lead-acid batteries, magnets, dry ice."
+  },
+  {
+   "id": "SG-EX-GEN-01",
+   "country": "SG",
+   "direction": "export",
+   "url": "https://www.customs.gov.sg/doing-business/export-operations/export-procedures/permit-exemptions/",
+   "verdict": "C",
+   "depth": "extract",
+   "fragment": "\"unless they are dutiable or controlled\"",
+   "note": "Singapore Customs permit-exemptions page (updated 2026-02-11): parcel post and air exports up to S$1,000."
+  },
+  {
+   "id": "SG-EX-CF-01",
+   "country": "SG",
+   "direction": "export",
+   "url": "https://www.customs.gov.sg/doing-business/compliance/border-enforcement-of-intellectual-property-rights/",
+   "verdict": "W",
+   "depth": "extract",
+   "fragment": "\"Are suspected to infringe the registered trade mark, copyright\"",
+   "note": "Rights-holder notice covers trade mark, copyright, GI and registered design; the ex-officio list names trade mark, copyright and GI only. The rule gives all four for both routes."
+  },
+  {
+   "id": "SG-IM-TO-01",
+   "country": "SG",
+   "direction": "import",
+   "url": "https://www.hsa.gov.sg/tobacco-regulation/overview/",
+   "verdict": "W",
+   "depth": "extract",
+   "fragment": "\"A valid tobacco licence is required\"",
+   "note": "HSA page (updated 2026-10-20): SP specification for parcel post, return of non-compliant products, licence. \"Dutiable at any value\" is not on this page."
+  },
+  {
+   "id": "SG-IM-FD-01",
+   "country": "SG",
+   "direction": "import",
+   "url": "https://www.sfa.gov.sg/food-import-export/commercial-imports/what-you-need-to-know-for-import-of-food",
+   "verdict": "C",
+   "depth": "extract",
+   "fragment": "\"you must apply for an import permit using TradeNet\"",
+   "note": "SFA page (updated 2026-09-07): licence or registration, TradeNet permit per consignment, parcel-post receipts counted as commercial import."
+  },
+  {
+   "id": "SG-IM-BH-01",
+   "country": "SG",
+   "direction": "import",
+   "url": "https://www.singpost.com/support/sending-an-item/general-prohibition-dangerous-goods",
+   "verdict": "W",
+   "depth": "extract",
+   "fragment": "\"Explosives\"",
+   "note": "Same SingPost page as SG-EX-BH-01. The page lists the classes under general \"must not be shipped\" and does not restate them for inbound mail."
+  },
+  {
+   "id": "TW-EX-CU-01",
+   "country": "TW",
+   "direction": "export",
+   "url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=G0380131",
+   "verdict": "C",
+   "depth": "extract",
+   "fragment": "\"以貨物運送、快遞、郵寄或其他相類之方法運送前項各款物品出入境者，亦同\"",
+   "note": "Anti-Money Laundering Act art. 14 para. 2 (courier or post covered). Thresholds per item are summarised only."
+  },
+  {
+   "id": "TW-EX-TB-01",
+   "country": "TW",
+   "direction": "export",
+   "url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=G0350072",
+   "verdict": "W",
+   "depth": "extract",
+   "fragment": "\"據實申報物品名稱、數量、價值\"",
+   "note": "Art. 16 (export parcels declared on mailing documents) contains nothing about tobacco; the negative claim \"no restriction found\" cannot be verified from this page."
+  },
+  {
+   "id": "TW-EX-PL-01",
+   "country": "TW",
+   "direction": "export",
+   "url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=M0140001",
+   "verdict": "C",
+   "depth": "extract",
+   "fragment": "\"輸入國要求提出檢疫證明者，輸出人得申請\"",
+   "note": "Plant Protection and Quarantine Act art. 20."
+  },
+  {
+   "id": "TW-IM-FD-05",
+   "country": "TW",
+   "direction": "import",
+   "url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=G0350072",
+   "verdict": "C",
+   "depth": "extract",
+   "fragment": "\"進口六公斤以下之寵物食品，免申請「飼料輸入登記證」\"",
+   "note": "Art. 14 para. 1 item 1."
+  },
+  {
+   "id": "G3-TW-IM-BH-03",
+   "country": "TW",
+   "direction": "import",
+   "url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=K0070004",
+   "verdict": "W",
+   "depth": "extract",
+   "fragment": "\"載運危險品之船舶，應符合下列條件\"",
+   "note": "Ship Act art. 34 has three alternative conditions (older ships, newer ships, ships under 500 GT); the rule states only the classification-society one."
+  },
+  {
+   "id": "TW-IM-RF-01",
+   "country": "TW",
+   "direction": "import",
+   "url": "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=K0060146",
+   "verdict": "W",
+   "depth": "extract",
+   "fragment": "\"申請第二級電信管制射頻器材進口者\"",
+   "note": "Art. 9 located; the extract gives hand-carried 6-10 units, mailed 3-10 units, max 10 a year. The rule's \"2 units per shipment without permit\" figure was not confirmed in the extract."
+  },
+  {
+   "id": "US-EX-CF-01",
+   "country": "US",
+   "direction": "export",
+   "url": "https://www.govinfo.gov/link/uscode/18/2320?type=usc&year=mostrecent&link-type=html",
+   "verdict": "C",
+   "depth": "full",
+   "fragment": "\"make, import, export, obtain control of\"",
+   "note": "18 U.S.C. 2320(f)(5) definition of traffic; (a)(1) knowing use of a counterfeit mark. 2320 also bars export of prohibited goods."
+  },
+  {
+   "id": "GA-US-EX-JW-02",
+   "country": "US",
+   "direction": "export",
+   "url": "https://pe.usps.com/text/imm/immc1_013.htm",
+   "verdict": "C",
+   "depth": "extract",
+   "fragment": "\"controlled through the Kimberley Process Certification Scheme\"",
+   "note": "USPS IMM 134.3 (immc1_013)."
+  },
+  {
+   "id": "US-EX-BH-01",
+   "country": "US",
+   "direction": "export",
+   "url": "https://pe.usps.com/cpim/ftp/pubs/pub52/pub52.pdf",
+   "verdict": "X",
+   "depth": "none",
+   "fragment": "-",
+   "note": "USPS Pub. 52 PDF returned as raw compressed bytes through the fetch tool; not parsed."
+  },
+  {
+   "id": "US-IM-GEN-05",
+   "country": "US",
+   "direction": "import",
+   "url": "https://www.ecfr.gov/current/title-19/section-134.11",
+   "verdict": "X",
+   "depth": "none",
+   "fragment": "-",
+   "note": "eCFR returned a 302 to unblock.federalregister.gov; not followed."
+  },
+  {
+   "id": "US-IM-MD-01",
+   "country": "US",
+   "direction": "import",
+   "url": "https://www.ecfr.gov/current/title-21/section-807.40",
+   "verdict": "X",
+   "depth": "none",
+   "fragment": "-",
+   "note": "eCFR returned a 302 to unblock.federalregister.gov; not followed."
+  },
+  {
+   "id": "US-IM-EC-01",
+   "country": "US",
+   "direction": "import",
+   "url": "https://pe.usps.com/cpim/ftp/pubs/pub52/pub52.pdf",
+   "verdict": "X",
+   "depth": "none",
+   "fragment": "-",
+   "note": "Same Pub. 52 PDF; unreadable."
+  },
+  {
+   "id": "GA-DE-IM-BH-02",
+   "country": "DE",
+   "direction": "import",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32023R1542",
+   "verdict": "X",
+   "depth": "none",
+   "fragment": "-",
+   "note": "EUR-Lex page is 478,636 chars; the fetch read the first 100,000 (recitals only), so arts. 3(1)(47) and 55(2) were not reached."
+  },
+  {
+   "id": "TW-IM-RX-02",
+   "country": "TW",
+   "direction": "import",
+   "url": "https://www.fda.gov.tw/Tc/newsContent.aspx?cid=4&id=t623657",
+   "verdict": "W",
+   "depth": "extract",
+   "fragment": "\"管制藥品不得郵寄或快遞\"",
+   "note": "TFDA page states the rule; the cited art. 16 of the Controlled Drugs Act is not named on the page."
+  },
+  {
+   "id": "HK-EX-CO-01",
+   "country": "HK",
+   "direction": "export",
+   "url": "https://www.elegislation.gov.hk/hk/cap640!en",
+   "verdict": "X",
+   "depth": "none",
+   "fragment": "-",
+   "note": "elegislation.gov.hk Cap. 640 page is a JavaScript shell."
+  },
+  {
+   "id": "CN-IM-CU-01",
+   "country": "CN",
+   "direction": "import",
+   "url": "https://www.gov.cn/zhengce/1993-02/26/content_5723395.htm",
+   "verdict": "C",
+   "depth": "extract",
+   "fragment": "\"国家货币\"",
+   "note": "Restricted import item 4 on the gov.cn page (it says 国家货币, not 人民币)."
+  }
+ ],
+ "clauses": [
+  {
+   "id": "GB-buyer_protection_exclusions-1",
+   "verdict": "I",
+   "page_date": "12 Oct 2026",
+   "fragment": "\"Payments made using PayPal Payouts\"",
+   "note": "Every item of the row is on the page; the page also lists \"payments that you have not sent using your PayPal account\", which the row omits."
+  },
+  {
+   "id": "DE-cross_border_currency-1",
+   "verdict": "PN",
+   "page_date": "4. November 2026",
+   "fragment": "\"Sofortzahlung auf Ihr Bankkonto\"",
+   "note": "Standard bank transfer and instant payment to a linked bank account on the page. Page date newer than the pinned 2026-09-07; only the withdrawal passage compared."
+  },
+  {
+   "id": "JP-aup_prohibited-2",
+   "verdict": "C",
+   "page_date": "2022年11月2日",
+   "fragment": "(none of the searched terms appear)",
+   "note": "Page is ~3 kB; no entry for animals, plants, seeds, food, cosmetics, batteries or hazardous goods; general-law duty present."
+  },
+  {
+   "id": "TW-seller_protection_proof-1",
+   "verdict": "W",
+   "page_date": "Jan 26, 2026",
+   "fragment": "\"two days after PayPal notified you\"",
+   "note": "All proof elements located (2 days, 7 days, tracking, ship/delivery date). Page asks for city, country or postal code; the row says city/state or postcode. Page date newer than pinned 2025-12-11."
+  },
+  {
+   "id": "CA-seller_protection_proof-1",
+   "verdict": "C",
+   "page_date": "January 26, 2026",
+   "fragment": "\"no later than two days after PayPal notified you\"",
+   "note": "All elements located, including \"city/province, city/country, or postal/zip code\"."
+  },
+  {
+   "id": "CA-aup_prohibited-1",
+   "verdict": "W",
+   "page_date": "November 2, 2022",
+   "fragment": "\"narcotics, steroids, certain controlled substances\"",
+   "note": "Items (a)-(k) match. \"Selling items not yet owned\" was not found by keyword search on this page."
+  },
+  {
+   "id": "SG-seller_protection_proof-1",
+   "verdict": "W",
+   "page_date": "26 January 2026",
+   "fragment": "\"two days after PayPal notified you\"",
+   "note": "Same as TW row: city, country or postal code wording differs slightly from the row."
+  },
+  {
+   "id": "DE-seller_protection-1",
+   "verdict": "W",
+   "page_date": "17. Juli 2025",
+   "fragment": "\"an eine andere Adresse weitergeleitet\"",
+   "note": "Redirected-parcel loss of coverage located and the date matches. The Germany-address condition and the claim types were not checked (keyword search missed them)."
+  },
+  {
+   "id": "TW-seller_protection_guest_checkout-1",
+   "verdict": "PN",
+   "page_date": "Jan 26, 2026",
+   "fragment": "\"registered in the following countries\"",
+   "note": "Taiwan is not on the exclusion list, so the row holds. Page date newer than pinned 2025-12-11."
+  },
+  {
+   "id": "GB-dispute_process-1",
+   "verdict": "NL",
+   "page_date": "12 October 2026",
+   "fragment": "-",
+   "note": "User agreement page opened (148,756 chars, date matches); keyword searches for the liability, response-time and chargeback passages found nothing. Not counted as checked."
+  },
+  {
+   "id": "US-buyer_protection_exclusions-1",
+   "verdict": "I",
+   "page_date": "January 26, 2026",
+   "fragment": "\"Real estate, including residential property.\"",
+   "note": "Row items located; the page adds payments initiated through a third-party platform with the account/routing number, and PayPal World QR payments. The list was read to its 17th item only."
+  },
+  {
+   "id": "CN-seller_protection_proof-1",
+   "verdict": "W",
+   "page_date": "January 26, 2026",
+   "fragment": "\"no later than two days after PayPal notified you\"",
+   "note": "Same wording difference as TW row (city, country or postal code)."
+  },
+  {
+   "id": "AU-buyer_protection_exclusions-1",
+   "verdict": "I",
+   "page_date": "1 July 2024",
+   "fragment": "\"Payments that you have not sent using your PayPal account\"",
+   "note": "AU page also excludes in-person pickup for Significantly Not as Described claims, which the row attributes to INR only."
+  },
+  {
+   "id": "SG-dispute_process-1",
+   "verdict": "W",
+   "page_date": "28 May 2026",
+   "fragment": "\"the card issuer, not PayPal, will determine who wins\"",
+   "note": "Card-issuer decision and reversal/chargeback hold language located. Seller liability and the \"answer within the timeframe PayPal communicates\" wording were not located on this page."
+  },
+  {
+   "id": "HK-aup_prohibited-1",
+   "verdict": "W",
+   "page_date": "2 November 2022",
+   "fragment": "\"narcotics, steroids, certain controlled substances\"",
+   "note": "Same text as the CA page: items (a)-(k) match; \"not yet owned\" not found by keyword search."
+  },
+  {
+   "id": "JP-dispute_process-1",
+   "verdict": "C",
+   "page_date": "2026年5月28日",
+   "fragment": "\"PayPalではなく、カード発行会社が\"",
+   "note": "Seller liable for the full reversed amount plus fees; must answer PayPal within the notified period; card issuer decides chargebacks."
+  },
+  {
+   "id": "AU-cross_border_currency-1",
+   "verdict": "C",
+   "page_date": "5 October 2026",
+   "fragment": "\"Any PayPal balance in US Dollars may be withdrawn to a US bank account\"",
+   "note": "Convert to AUD for withdrawal; USD to a linked US bank with a fee."
+  },
+  {
+   "id": "US-seller_protection-1",
+   "verdict": "I",
+   "page_date": "January 26, 2026",
+   "fragment": "\"The primary address for your PayPal account must be in the United States\"",
+   "note": "Unauthorized and INR cover, US address and redirect rule located. The page limits Unauthorized cover to PayPal-hosted environments and excludes INR chargebacks filed with the card issuer; the row omits both."
+  },
+  {
+   "id": "HK-holds_reserves-1",
+   "verdict": "NL",
+   "page_date": "28 May 2026",
+   "fragment": "\"PayPal may limit the payment methods available\"",
+   "note": "Payment review and holds are described, but no \"up to 30 days\" hold period was found in the passages searched (the 30 days that appear concern unclaimed payments and pending orders). Candidate inconsistency; needs a full read."
+  },
+  {
+   "id": "CN-aup_prohibited-2",
+   "verdict": "C",
+   "page_date": "2022年11月2日",
+   "fragment": "(none of the searched terms appear)",
+   "note": "c2 page was served in Chinese here; no entry for animals, plants, seeds, food, cosmetics, batteries or hazardous goods."
+  },
+  {
+   "id": "DE-aup_prohibited-1",
+   "verdict": "C",
+   "page_date": "17. Juli 2023",
+   "fragment": "\"Zigaretten\"",
+   "note": "Items (a)-(k) and \"noch nicht verfügt\" located."
+  },
+  {
+   "id": "CA-privacy-1",
+   "verdict": "C",
+   "page_date": "October 12, 2026",
+   "fragment": "\"PayPal Canada Co. MaRS Centre West Tower\"",
+   "note": "Contact table lists PayPal Canada Co., Toronto; PIPEDA is not named on the page."
+  },
+  {
+   "id": "GB-seller_protection-1",
+   "verdict": "W",
+   "page_date": "12 October 2026",
+   "fragment": "\"one of the countries to which this user agreement applies\"",
+   "note": "Redirect rule and Unauthorized/INR located. The named list (UK, Guernsey, Isle of Man, Jersey) is not on the page text read."
+  },
+  {
+   "id": "DE-buyer_protection-1",
+   "verdict": "C",
+   "page_date": "15. April 2025",
+   "fragment": "\"innerhalb von 180 Tagen\"",
+   "note": "180 days to open, 20 days to escalate; no 30-day limit found; 15 April 2025 change notice present."
+  }
+ ]
+}

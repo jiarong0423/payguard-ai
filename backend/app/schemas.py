@@ -84,6 +84,8 @@ class HealthResponse(Contract):
 class ConnectionsResponse(Contract):
     """Deployment mode only. Never a key, a key's presence, a value or a variable name."""
     mode: Literal["local", "hosted_demo"]
+    # Present (true) only on the hosted demo with PAYGUARD_HOSTED_READONLY_SANDBOX=enabled: real read-only Sandbox calls.
+    sandbox_reads: bool | None = None
 
 
 class SessionResponse(Contract):

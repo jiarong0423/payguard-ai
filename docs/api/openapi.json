@@ -1384,6 +1384,17 @@
        "hosted_demo"
       ],
       "type": "string"
+     },
+     "sandbox_reads": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Sandbox reads."
      }
     },
     "required": [

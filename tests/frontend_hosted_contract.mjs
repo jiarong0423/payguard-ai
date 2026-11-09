@@ -37,13 +37,13 @@ for (const payload of [{ mode: 'public' }, { mode: 'hosted_demo', paypal: { conf
 }
 
 // 3. Top bar: the hosted pill replaces LOCAL DEMO; the Why? popover is fixed text and calls no API.
-assert.ok(app.includes("{hosted ? <HostedBadge guideChooser={guideChooser} /> : <Badge tone=\"blue\" dot>LOCAL DEMO</Badge>}"), 'LOCAL DEMO stays the local badge');
-const badge = app.slice(app.indexOf('function HostedBadge({ guideChooser = null })'), app.indexOf('export default function App()'));
+assert.ok(app.includes("{hosted ? <HostedBadge guideChooser={guideChooser} sandboxReads={sandboxReads} /> : <Badge tone=\"blue\" dot>LOCAL DEMO</Badge>}"), 'LOCAL DEMO stays the local badge');
+const badge = app.slice(app.indexOf('function HostedBadge({ guideChooser = null, sandboxReads = false })'), app.indexOf('export default function App()'));
 assert.ok(badge.length > 0, 'HostedBadge component present');
 assert.ok(!/apiRequest|fetch\(|connectSandbox|generateAiBrief/.test(badge), 'the popover calls no API');
 assert.ok(badge.includes('data-testid="connections-hosted"') && badge.includes('aria-expanded={open}'), 'pill is the popover toggle');
 // (r34 #1) The pill and the Gemini lines come from hostedCopy(guideChooser), the guide API's chooser status.
-assert.ok(badge.includes('const copy = hostedCopy(guideChooser);') && badge.includes('<span className="hosted-label-full">{copy.pill}</span>'), 'pill text from the chooser status');
+assert.ok(badge.includes('const copy = hostedCopy(guideChooser, sandboxReads);') && badge.includes('<span className="hosted-label-full">{copy.pill}</span>'), 'pill text from the chooser status');
 assert.equal(hostedCopy({ chooser_mode: 'keyword', model_requested: false }).pill, 'Hosted demo · rules only · no PayPal calls', 'pill text, rules only');
 assert.ok(badge.includes('<span className="hosted-label-short">Hosted demo</span>'), 'narrow-screen pill text');
 assert.ok(badge.includes('data-testid="connections-why"') && badge.includes('>Why?<'), 'Why? popover');
@@ -73,7 +73,7 @@ const NOTES = {
 };
 for (const [key, text] of Object.entries(NOTES)) assert.ok(app.includes(`  ${key}: '${text.replace(/'/g, "\\'")}',`), `hosted note ${key}`);
 const swaps = [
-  ['{hosted ? <p className="hosted-note" data-testid="hosted-note-sandbox">{HOSTED_NOTES.sandbox}</p> : <Button data-testid="sandbox-connect"', 'Connect US Sandbox'],
+  ['{hosted && !sandboxReads ? <p className="hosted-note" data-testid="hosted-note-sandbox">{HOSTED_NOTES.sandbox}</p> : <Button data-testid="sandbox-connect"', 'Connect US Sandbox'],
   ['{hosted ? <p className="hosted-note" data-testid="hosted-note-invoice">{HOSTED_NOTES.invoice}</p> : <Button data-testid="invoice-create"', 'Create Sandbox draft'],
   ['{hosted ? null : <Button data-testid={`ai-generate-${stage}`}', 'Generate AI brief'],
   ['{hosted ? <p className="hosted-note" data-testid="hosted-note-evidence">{HOSTED_NOTES.evidence}</p> : <><Button data-testid="evidence-preview"', 'Prepare evidence request (preview)'],
@@ -81,7 +81,8 @@ const swaps = [
 // The top-bar Sandbox card (owner 2026-11-03) is one other place, and it renders only when not hosted. The phone bar
 // after Confirm Draft Context (attack r22) is the other: it offers Connect or Create Sandbox draft only when not hosted.
 // (r32 J4 P1-2) The phone bar's Dispute step offers the preview after the local review, only when not hosted.
-const extraPlaces = { 'Connect US Sandbox': 2, 'Create Sandbox draft': 1, 'Prepare evidence request (preview)': 1 };
+// (read-only Sandbox) The disputes list adds one more Connect, shown only when sandboxReads is on.
+const extraPlaces = { 'Connect US Sandbox': 3, 'Create Sandbox draft': 1, 'Prepare evidence request (preview)': 1 };
 assert.ok(app.includes("receipt && !hosted && providerDisputeDetail && !evidencePreview\n            ? { key: 'evidence-preview', label: 'Prepare evidence request (preview)'"), 'phone bar preview is local only');
 assert.ok(app.includes("? (receipt && !hosted && evidenceSubmitReady\n") && app.includes(": receipt && !hosted && trackingSubmitReady\n"), 'phone bar sends are local only');
 assert.ok(app.includes('{!hosted && <TopbarSandbox '), 'top-bar Sandbox card is local only');
@@ -95,9 +96,9 @@ assert.equal((app.match(/onGenerateAi=\{generateAiBrief\} hosted=\{hosted\}/g) |
 assert.ok(app.includes('data-testid="evidence-submit"') && app.indexOf('data-testid="evidence-submit"') < app.indexOf('</>}', app.indexOf('hosted-note-evidence')), 'Submit sits inside the local branch');
 assert.ok(app.includes('<details className="technical-details" data-testid="evidence-technical-details">'), 'technical details stay in both modes');
 // Step 03 text no longer points a hosted visitor at Connect.
-assert.ok(app.includes(": hosted ? <span data-testid=\"hosted-note-disputes\">{HOSTED_NOTES.disputes}</span> : 'Sample cases. Connect the Sandbox in Step 01 to see real Sandbox cases.'}"), 'step 03 hosted text');
+assert.ok(app.includes(": hosted && !sandboxReads ? <span data-testid=\"hosted-note-disputes\">{HOSTED_NOTES.disputes}</span> : sandboxReads ? <span data-testid=\"hosted-note-disputes-reads\">{HOSTED_NOTES.disputesReads}</span> : 'Sample cases. Connect the Sandbox in Step 01 to see real Sandbox cases.'}"), 'step 03 hosted text');
 // Sandbox status badge and footer.
-assert.ok(app.includes("{hosted ? 'Local run only' : sandbox?.status === 'not_configured' ? 'Awaiting connection'"), 'sandbox badge');
+assert.ok(app.includes("{hosted && !sandboxReads ? 'Local run only' : hosted && sandbox?.status === 'not_configured' ? 'Read-only · not connected' : sandbox?.status === 'not_configured' ? 'Awaiting connection'"), 'sandbox badge');
 assert.ok(app.includes("{hosted ? <span data-testid=\"hosted-note-footer\">Hosted demo</span> : 'Local prototype'}"), 'footer');
 // Second line of defense: a 503 hosted_demo_disabled becomes a neutral notice, not the red error box.
 assert.ok(app.includes("if (failure.code === 'hosted_demo_disabled') { setNotice(HOSTED_DISABLED_NOTICE); return; }"), 'actions: neutral notice');

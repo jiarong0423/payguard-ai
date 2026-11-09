@@ -73,6 +73,10 @@ REGION_TEXT_FILES = frozenset({
     # (2026-11-08) The source spot-check quotes short fragments of the official pages in their own language (Chinese, Japanese).
     "docs/evidence/RULES_SPOTCHECK_20261108.md",
     "docs/evidence/PAYPAL_CLAUSES_SPOTCHECK_20261108.md",
+    # (2026-11-10) The extended spot-check and its per-item results quote the same kind of short fragments.
+    "docs/evidence/RULES_SPOTCHECK_20261110.md",
+    "data/country_rules/spotcheck_results_20261110.json",
+    "data/country_rules/spotcheck_sample_20261110.json",
 })
 MAPPED_SOURCE_PATHS = {"tools/run.sh": "tools/public_run.sh"}
 

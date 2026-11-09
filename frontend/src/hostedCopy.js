@@ -13,7 +13,7 @@ export function hostedGeminiMode(chooser) {
   return 'unknown';
 }
 
-export function hostedCopy(chooser) {
+function baseHostedCopy(chooser) {
   const mode = hostedGeminiMode(chooser);
   if (mode === 'gemini') {
     return {
@@ -42,5 +42,19 @@ export function hostedCopy(chooser) {
     guides: 'Guides and recorded replays',
     local: 'Gemini evidence brief',
     gemini: `Start a guide to see it (guide only, at most ${HOSTED_GUIDE_CAPS})`,
+  };
+}
+
+// `sandboxReads`: GET /connections said sandbox_reads (read-only Sandbox reads on). PayPal is then called for reads only;
+// every write stays off. Without it the text above is returned unchanged.
+export function hostedCopy(chooser, sandboxReads = false) {
+  const copy = baseHostedCopy(chooser);
+  if (sandboxReads !== true) return copy;
+  return {
+    ...copy,
+    pill: copy.mode === 'off' ? 'Hosted demo · rules only · read-only Sandbox' : 'Hosted demo · read-only Sandbox',
+    intro: 'This public copy can read your US Sandbox disputes (read-only GET calls to the PayPal Sandbox, shared across visitors and capped). It cannot create, change or send anything. Gemini stays as shown below.',
+    local: 'Gemini evidence brief, Sandbox draft, evidence and tracking sends',
+    sandbox: 'Read-only: connect and list or open disputes',
   };
 }

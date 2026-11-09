@@ -560,7 +560,9 @@ function assertContract(path, payload, session, body) {
     } else if (valid) valid = payload.acknowledgement_token === null && payload.expires_at === null;
   } else if (path === '/connections') {
     // Deployment mode only: the console never learns whether a key is present.
-    valid = valid && pk(payload, ['mode']) && ['local', 'hosted_demo'].includes(payload.mode);
+    // sandbox_reads: true appears only on the hosted demo with read-only Sandbox reads switched on (never a key or a name).
+    valid = valid && (pk(payload, ['mode']) ? ['local', 'hosted_demo'].includes(payload.mode)
+      : pk(payload, ['mode', 'sandbox_reads']) && payload.mode === 'hosted_demo' && payload.sandbox_reads === true);
   } else if (path === '/paypal/status' || path === '/paypal/connect') {
     valid = valid && pk(payload,['configured','status','environment','last_verified_at','source','evidence_receipt'])
       && payload.source === 'paypal_sandbox' && payload.environment === 'sandbox' && typeof payload.configured === 'boolean'

@@ -145,7 +145,7 @@
   <text x="112" y="992" font-size="21" fill="#5b5953">real PayPal Sandbox and Gemini calls, started by the seller</text>
   <line x1="960" y1="928" x2="960" y2="1020" stroke="#d6d2c8" stroke-width="2"/>
   <text x="992" y="950" font-size="25" font-weight="700" fill="#1f1e1b">Public hosted demo (Render)</text>
-  <text x="992" y="980" font-size="19" fill="#5b5953">rules by default; no PayPal calls</text>
+  <text x="992" y="980" font-size="19" fill="#5b5953">rules by default; read-only Sandbox reads</text>
   <text x="992" y="1004" font-size="19" fill="#5b5953">the guide may use Gemini only if the operator opts in (free-tier key, 5 a minute, 20 a day)</text>
   <text x="992" y="1028" font-size="19" fill="#5b5953">replays recorded guide turns and Channel3 searches</text>
 </svg>
