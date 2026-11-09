@@ -35,6 +35,8 @@
   #disputes .case-summary p { font-size: 13px; }
   #disputes .step-section { margin: 12px 14px 0; }
   #disputes .evidence-board { gap: 12px; }
+  /* Boxes next to each other keep their own height instead of stretching to the taller neighbour (no big empty boxes). */
+  #disputes .evidence-workspace > .dispute-route, #disputes .evidence-workspace > .step-one-evidence, #disputes .evidence-workspace > .privacy-strip { align-self: start; }
   #disputes .board-list { gap: 14px; }
   #disputes .board-row { padding: 10px 14px; }
   #disputes .board-row-head { font-size: 16px; }
@@ -42,4 +44,15 @@
   #disputes .board-plan-help { margin-bottom: 8px; font-size: 13px; }
   #disputes .board-chips { margin-bottom: 8px; gap: 8px; }
   #disputes .board-timeline figcaption { margin-bottom: 8px; }
+  /* Numbers taken from open-source dashboards (shadcn/ui dashboard-01: chart 250px; Tabler / Grafana: panel gap 8-12px). */
+  .velocity-chart-canvas { height: 230px; }
+  .page-top .hero-compact h1 { font-size: 24px; margin: 4px 0 0; }
+  .stage-heading { padding-top: 10px; padding-bottom: 10px; }
+  /* Gap between the title row and the step bar, a little more of the 1920 width. */
+  .page-top { margin-bottom: 8px; }
+  .journey { margin-bottom: 12px; }
+}
+
+@media (min-width: 1700px) {
+  .main-content { width: min(94%, 1680px); }
 }

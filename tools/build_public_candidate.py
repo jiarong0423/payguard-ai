@@ -315,7 +315,7 @@ TREE_FILES = {
     "frontend/src/data": ("blind_trend_v1.json", "channel3_receipts_v1.json", "dashboard_disputes_v1.json", "guide_benchmark_v1.json",
                           "guide_replays_v1.json", "proof_facts_v1.json", "stress_test_v1.json", "studio_agent_run_v1.json"),
     "frontend/src/proof": ("main.jsx", "proof.css", "proofData.js"),
-    "frontend/src/wide": ("bottom.css", "header.css", "relax.css", "step01.css", "step02.css", "step03.css"),
+    "frontend/src/wide": ("bottom.css", "header.css", "relax.css", "side.css", "step01.css", "step02.css", "step03.css"),
     "frontend/src/scenarios": ("main.jsx", "scenarios.css", "workOrders.js"),
     "frontend/src/shared": ("asOf.js", "asOfSource.js", "sessionLedger.js"),
     "frontend/src/theme": ("base.css", "chartTheme.js", "format.js", "motion.js", "tokens.css", "tokens.js", "writeTokensCss.mjs"),

@@ -49,10 +49,10 @@ const LOCKED_FEATURES = {
 const HOUR_RESOLUTION = { unit: 'hour', increment: 1 };
 
 const COLUMNS = [
-  { text: 'Case', field: 'name', width: 150, htmlEncode: true },
-  { text: 'Due', field: 'dueText', width: 130, htmlEncode: true },
+  { text: 'Case', field: 'name', width: 200, htmlEncode: true },
+  { text: 'Due', field: 'dueText', width: 170, htmlEncode: true },
   { text: 'Evidence', field: 'readinessLabel', width: 120, htmlEncode: true },
-  { text: 'Amount', field: 'amountText', width: 110, htmlEncode: true },
+  { text: 'Amount', field: 'amountText', width: 120, htmlEncode: true },
 ];
 
 // Phones (phone r3 P2 #9): the list above already carries due, evidence and amount, so the timeline keeps one narrow

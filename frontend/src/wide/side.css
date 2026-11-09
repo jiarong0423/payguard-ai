@@ -1,0 +1,10 @@
+/* Right-hand side column for steps 02 and 03 (viewport 1280px and wider): the guide, the sources fold and the Next bar sit
+   beside the main content instead of under it, so each step needs less height. Below 1280px the two wrappers are plain blocks. */
+@media (min-width: 1280px) {
+  #velocity .stage-body, #disputes .stage-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 340px); gap: 0 16px; align-items: start; }
+  #velocity .stage-main, #disputes .stage-main { min-width: 0; }
+  #velocity .stage-side, #disputes .stage-side { min-width: 0; display: flex; flex-direction: column; gap: 10px; padding: 12px 16px 12px 0; }
+  #velocity .stage-side > *, #disputes .stage-side > * { margin: 0; }
+  #velocity .stage-side .stage-next, #disputes .stage-side .stage-next { flex-direction: column; align-items: stretch; gap: 8px; padding: 10px 12px; }
+  #velocity .stage-side .stage-next .button, #disputes .stage-side .stage-next .button { width: 100%; justify-content: center; }
+}

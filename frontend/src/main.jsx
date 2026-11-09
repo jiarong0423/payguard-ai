@@ -10,6 +10,7 @@ import './wide/step02.css';
 import './wide/step03.css';
 import './wide/bottom.css';
 import './wide/relax.css';
+import './wide/side.css';
 
 createRoot(document.getElementById('root')).render(<App />);
 startPwa({ production: import.meta.env.PROD });

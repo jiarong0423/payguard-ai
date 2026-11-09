@@ -32,8 +32,8 @@
   #velocity .velocity-selected-detail p { margin-top: 6px; }
 
   /* Guide fold and "More" fold: closer together and shorter; the next-step bar is one slim line. */
-  #velocity .stage-content > .step-section, #velocity .stage-content > .step-more { margin: 8px 16px 0; }
-  #velocity .stage-content > .step-section .optional-trigger { padding-top: 6px; padding-bottom: 6px; min-height: 0; }
+  #velocity .stage-side > .step-section, #velocity .stage-side > .step-more { margin: 0; }
+  #velocity .stage-side > .step-section .optional-trigger { padding-top: 6px; padding-bottom: 6px; min-height: 0; }
   #velocity .step-more > summary { min-height: 40px; padding: 4px 16px; }
   #velocity .stage-next { margin: 8px 16px 10px; padding: 4px 8px 4px 16px; }
   #velocity .stage-next .button { min-height: 36px; padding-top: 4px; padding-bottom: 4px; }
