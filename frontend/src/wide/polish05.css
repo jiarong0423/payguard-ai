@@ -1,0 +1,16 @@
+/* polish05 >=1280 */
+@media (min-width:1280px){
+/* 34px fields */
+.reference-inner :is(input:not([type=checkbox]),select,button){min-height:34px;padding:5px 10px}
+/* tight label */
+.reference-form>label{gap:2px}
+/* rows, wrap */
+.policy-panel .reference-form{display:flex;flex-wrap:wrap;align-items:end}
+.policy-panel .reference-form>*{flex:1 1 9em}
+/* time fits; full rows */
+.policy-panel .reference-query{flex-grow:3}
+.policy-panel .reference-form>:is(div,p){flex-basis:100%}
+.policy-panel p{order:1}
+/* 1-line context */
+.reference-fixed-context{flex-flow:row wrap;gap:0 8px;padding:4px 8px}
+}

@@ -809,3 +809,94 @@
 .analytics-grid-chips button:focus-visible { outline: 3px solid rgb(37 99 235 / 28%); outline-offset: 2px; }
 .analytics-grid-note { margin: 0 0 8px; color: #475569; font-size: 14px; }
 .analytics-row-large { background-color: #fef3c7 !important; font-weight: 700; box-shadow: inset 4px 0 0 #d97706; }
+
+/* Wide screens (1280px+), video round 2: the opened Merchant Evidence Buffer as one compact, full-width workspace.
+   Only spacing and placement change here; every text, control and disclaimer stays visible. */
+@media (min-width: 1280px) {
+  /* Opened workspace uses the full page width, so the right half of the page is no longer empty beside the panel. */
+  .main-content > #analytics.is-open:has([data-testid="community-analytics-dashboard"]) { width: 100%; }
+  /* Session activity follows under the full-width panel at full width instead of leaving the left half empty. */
+  .main-content:has(> #analytics.is-open [data-testid="community-analytics-dashboard"]) > #activity { width: 100%; }
+
+  /* Title bar: tighter padding; the large empty band above the cards shrinks. */
+  .analytics-toolbar { padding: 10px 16px; }
+  /* Title stays the largest text but no longer dominates the panel. */
+  .analytics-toolbar strong { font-size: 19px; }
+  /* Subtitle keeps a readable 14px on one line. */
+  .analytics-toolbar small { font-size: 14px; line-height: 1.4; }
+  /* Rights note: slimmer strip, same words. */
+  .analytics-rights-note { margin: 10px 16px 0; padding: 6px 12px; }
+
+  /* Workspace: three equal columns; dense flow lets the guide fill the slot beside Authority and Pulse. */
+  .analytics-desktop-workspace { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-flow: row dense; gap: 12px; padding: 10px 16px 14px; }
+  /* Lifecycle and the transaction table keep the full row; the other three cards share one row. */
+  .analytics-authority, .analytics-pulse, .analytics-guide { grid-column: auto; }
+  /* Cards: less inner padding so content, not whitespace, fills them. */
+  .analytics-card { padding: 12px 14px; }
+  /* Card header: smaller gap to the card body. */
+  .analytics-card-header { margin-bottom: 8px; align-items: center; }
+  /* Card titles at 16px: still the heading, less height per card. */
+  .analytics-card-header strong { font-size: 16px; }
+
+  /* Lifecycle stages: height from content instead of a fixed 126px minimum. */
+  .analytics-stage { min-height: 0; padding: 10px 12px; gap: 8px; }
+  /* Status pill sits right under the stage copy. */
+  .analytics-stage .analytics-status { align-self: start; }
+
+  /* Authority map: label and owner on one line each, tighter list. */
+  .analytics-authority ul { gap: 6px; }
+  /* Each boundary row: label column plus owner column, so three rows stay short. */
+  .analytics-authority li { grid-template-columns: 116px minmax(0, 1fr); align-items: baseline; gap: 2px 10px; padding: 7px 10px; }
+  /* Boundary sentence and the two other footnotes sit closer to their card body. */
+  .analytics-authority p, .analytics-pulse > p, .analytics-guide > small { margin-top: 8px; }
+
+  /* Evidence pulse: the three counts become one compact stats row instead of three stacked bars. */
+  .analytics-pulse-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  /* Each stat: count above label, left aligned, in a light tile. */
+  .analytics-pulse-row { padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 8px; background: #f8fafc; }
+  /* Number first and large, label below it, so each tile reads at a glance. */
+  .analytics-pulse-row > div:first-child { flex-direction: column-reverse; align-items: flex-start; gap: 2px; margin-bottom: 6px; }
+  /* Count size for the stat tile. */
+  .analytics-pulse-row strong { font-size: 20px; line-height: 1.1; }
+
+  /* Guide: buttons and the answer stay, with less padding; it now shares the row with Authority and Pulse. */
+  .analytics-guide-prompts { gap: 6px; }
+  /* Guide buttons: shorter, same 14px text. */
+  .analytics-guide-prompts button { min-height: 32px; padding: 0 10px; }
+  /* Guide footnote: a block with its own 1.45 line height (as an inline element it inherited a looser line box). */
+  .analytics-guide > small { display: block; line-height: 1.45; }
+  /* Answer box: no fixed minimum height, 14px text. */
+  .analytics-guide-response { min-height: 0; margin-top: 8px; padding: 8px 10px; font-size: 14px; line-height: 1.45; }
+
+  /* Merchant Evidence Buffer, transaction review (moved from wide/compact.css): the amount bands, the one-line note and the
+     row filter form one toolbar block above the grid (the grid itself uses 36px rows and a 38px header, set in AnalyticsDashboard.jsx).
+     Changed after measuring: with the note in its own middle column it shrank to 0-16px wide and 293px tall at 1280/1440,
+     so the note now sits under the chips and the filter sits beside both. */
+  .analytics-grid-widget { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 16px; row-gap: 4px; align-items: center; }
+  /* Moved: every child spans the full row unless placed below. */
+  .analytics-grid-widget > * { grid-column: 1 / -1; }
+  /* Moved: chips in the first toolbar column, first toolbar line. */
+  .analytics-grid-widget > .analytics-grid-chips { grid-column: 1; grid-row: 2; margin: 0; }
+  /* Moved: the "not a risk score" note at 13px, one line right under the chips (was its own column, see above). */
+  .analytics-grid-widget > .analytics-grid-note { grid-column: 1; grid-row: 3; margin: 0; font-size: 13px; }
+  /* Moved: the row filter in the last column, centred beside chips and note. */
+  .analytics-grid-widget > .analytics-grid-tools { grid-column: 2; grid-row: 2 / span 2; display: flex; align-items: center; gap: 8px; margin: 0; }
+  /* The table follows the toolbar block. */
+  .analytics-grid-widget > .analytics-grid-frame { grid-row: 4; margin-top: 4px; }
+  /* Moved: chips 32px high instead of 44px. */
+  .analytics-grid-chips button { min-height: 32px; padding: 4px 12px; }
+
+  /* Chips at 14px with 6px gaps so all six fit in one line beside the note and filter at 1920. */
+  .analytics-grid-chips { gap: 6px; }
+  /* Chip text 14px (owner minimum is 13px). */
+  .analytics-grid-chips button { font-size: 14px; padding: 4px 10px; }
+  /* Filter input matches the 32px chips and is narrower so the toolbar stays one row. */
+  .analytics-grid-tools input { width: 180px; min-height: 32px; font-size: 14px; }
+  /* Filter label 13px bold, on one line. */
+  .analytics-grid-tools label { font-size: 13px; white-space: nowrap; }
+  /* Grid: 38px header + 8 full 36px rows + 2px border, so no half-cut row at the bottom. */
+  .analytics-grid-frame { height: 328px; }
+
+  /* Footer strip: slimmer. */
+  .analytics-footer { padding: 8px 16px; }
+}

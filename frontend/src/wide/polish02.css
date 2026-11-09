@@ -23,4 +23,8 @@
 
   /* Footer: the shield icon sits in line with "TradeGlot / Local prototype" instead of on a line of its own. */
   .main-content > footer > span:first-of-type { display: inline-flex; align-items: center; gap: 6px; }
+  /* Step 02 guide bar on one line like steps 01 and 03. */
+  #velocity #guide-live-velocity > .optional-heading .optional-trigger { min-height: 0; padding-top: 6px; padding-bottom: 6px; }
+  #velocity #guide-live-velocity > .optional-heading .optional-trigger > span:first-child > span { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 12px; }
+  #velocity #guide-live-velocity > .optional-heading .optional-trigger small { margin-top: 0; }
 }

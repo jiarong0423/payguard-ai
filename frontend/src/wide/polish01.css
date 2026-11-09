@@ -22,4 +22,15 @@
   #compliance .stage-content:has(> #guide-live-preflight.is-open) > .stage-next { grid-column: 1 / -1; grid-row: 6; margin: 0 16px 12px; }
   #compliance .stage-content:has(> #guide-live-preflight.is-open) { grid-template-rows: auto auto 1fr auto auto auto; }
   #compliance .stage-content:has(> #guide-live-preflight.is-open) > .stage-block { grid-row: 1 / span 3; }
+  /* Step 01 guide bar on one line like step 03 ("Tell it what happened" beside the title), for the same look in all steps. */
+  #compliance #guide-live-preflight > .optional-heading .optional-trigger { min-height: 0; padding-top: 6px; padding-bottom: 6px; }
+  #compliance #guide-live-preflight > .optional-heading .optional-trigger > span:first-child > span { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 12px; }
+  #compliance #guide-live-preflight > .optional-heading .optional-trigger small { margin-top: 0; }
+  /* "See all rules and notes", once opened, scrolls inside a fixed height instead of pushing the page down; every rule stays. */
+  #compliance .country-all-rules[open] > :not(summary) { max-height: 300px; overflow-y: auto; }
+}
+
+/* 1280-1599px: the goods ticks column is narrower than one tick (166px vs 199px), so the ticks take the full form width. */
+@media (min-width: 1280px) and (max-width: 1599px) {
+  #compliance .country-form > .country-tags { grid-column: 1 / -1; }
 }

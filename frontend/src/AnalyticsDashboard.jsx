@@ -296,8 +296,8 @@ export default function AnalyticsDashboard({ aup, state }) {
             columnDefs={columnDefs}
             defaultColDef={{ filter: true, resizable: true, sortable: true }}
             getRowId={({ data }) => data.order_id}
-            headerHeight={42}
-            rowHeight={42}
+            headerHeight={38}
+            rowHeight={36}
             quickFilterText={quickFilter}
             onGridReady={(event) => { gridApi.current = event.api; }}
             getRowClass={({ data }) => (highlight && Number(data?.amount) >= HIGHLIGHT_FROM ? 'analytics-row-large' : undefined)}

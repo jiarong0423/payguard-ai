@@ -1,0 +1,8 @@
+/* Long parts scroll inside their own box instead of making the page taller (owner: inner scroll, do not raise the container). */
+@media (min-width: 1280px) {
+  .guide-live-log { max-height: 300px; min-height: 120px; }
+  .step-more[open] > .step-more-body { max-height: 360px; overflow-y: auto; }
+  #disputes .provider-disputes[open] > .provider-disputes-body { max-height: 360px; overflow-y: auto; }
+  #disputes .dispute-details[open] > .dispute-detail-content { max-height: 320px; overflow-y: auto; }
+  #compliance .country-all-rules[open] > :not(summary) { max-height: 300px; overflow-y: auto; }
+}
