@@ -87,3 +87,16 @@ body { margin: 0; background: var(--pg-color-canvas); color: var(--pg-color-ink)
 .proof-download-demo { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 16px; border: 1px solid var(--pg-color-accent-strong); border-radius: var(--pg-radius-control); background: transparent; color: var(--pg-color-accent-strong); font-size: 16px; font-weight: 650; text-decoration: none; box-sizing: border-box; justify-self: start; }
 .proof-download-demo:hover { background: var(--pg-color-recede); }
 @media (max-width: 640px) { .proof-download-demo { justify-self: stretch; } }
+
+/* Filter chips: real buttons, 44px tall, pressed state shown by colour and a check mark, not colour alone. */
+.proof-filters { display: grid; gap: var(--pg-space-2); margin: var(--pg-space-3) 0; }
+.proof-filters h2 { margin: 0; font-size: 18px; }
+.proof-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.proof-filter-chip { min-height: 44px; padding: 0 14px; border: 1px solid var(--pg-color-rule); border-radius: 999px; background: var(--pg-color-panel); color: var(--pg-color-ink); font: inherit; font-size: 16px; cursor: pointer; }
+.proof-filter-chip[aria-pressed="true"] { border-color: var(--pg-color-accent-strong); background: var(--pg-color-recede); color: var(--pg-color-accent-strong); font-weight: 650; }
+.proof-filter-chip[aria-pressed="true"]::before { content: "\2713\00a0"; }
+.proof-filter-chip:focus-visible { outline: 2px solid var(--pg-color-focus); outline-offset: 2px; }
+.proof-filter-count { margin: 0; color: var(--pg-color-muted); font-size: 16px; }
+.proof-chip-count { margin-left: 4px; padding: 0 6px; border-radius: 999px; background: var(--pg-color-recede); font-size: 14px; }
+.proof-filter-reset { justify-self: start; }
+.proof-filter-reset:disabled { opacity: 1; color: var(--pg-color-muted); cursor: not-allowed; }

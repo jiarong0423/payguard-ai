@@ -16,6 +16,7 @@ import { initialReport, PAGE_TITLES, pageTracks } from './layout.js';
 import { compactTheme, payguardTheme } from './theme.js';
 import DelegateConfirm, { answerYes } from './DelegateConfirm.jsx';
 import { CUSTOM_WIDGETS } from './widgets.jsx';
+import RecordedRuns from './RecordedRuns.jsx';
 import { AUDITOR_ID, BOUNDARY, BUILT_IN_AGENT_IDS, createEvidenceAuditor, plainSummary, promptStarters } from './auditor.js';
 import { createGeminiAdapter, createSessionClient, fetchAgentStatus } from './studioAgentClient.js';
 import { createRecorder, recordingLabel, validateRecording } from './agentRecording.js';
@@ -386,6 +387,7 @@ function Dashboard({ setup }) {
           <p className="pg-sources">Sources: frontend/src/data/dashboard_disputes_v1.json (tools/build_dashboard_data.py), guide_benchmark_v1.json, channel3_receipts_v1.json; the recorded guide benchmark and the recorded Channel3 searches. Method and limits: docs/AG_STUDIO_NOTES.md.</p>
         </div>
       </details>
+      {setup.mode === 'replay' && <RecordedRuns recording={RECORDING} />}
       <main className="pg-studio" data-testid="dashboard-studio" ref={studioRef} style={{ height: studioHeight }}>
         {/* (red team r27 B) No key: a key that flips with the layout remounted Studio and dropped the thread and the canvas. */}
         <AgStudioProvider licenseKey={LICENSE_KEY} modules={[AgStudioAiModule]}>

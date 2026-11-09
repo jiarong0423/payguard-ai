@@ -49,3 +49,19 @@
 .board-canvas .b-timeline-sub-grid .payguard-board-line-due { background: repeating-linear-gradient(to bottom, var(--pg-color-risk, #93454a) 0 6px, transparent 6px 10px); }
 .board-canvas .payguard-board-plan { cursor: grab; }
 .board-canvas .payguard-board-plan.b-active { outline: 2px solid var(--pg-color-focus); outline-offset: 1px; }
+
+.board-plan-download { min-height: 44px; }
+.board-plan-download:disabled { opacity: 1; background: var(--pg-color-recede); color: var(--pg-color-muted); cursor: not-allowed; }
+.board-plan-ics-note { flex-basis: 100%; color: var(--pg-color-muted); font-size: 14px; line-height: 1.4; }
+@media (max-width: 640px) { .board-plan-reset { min-height: 44px; } }
+
+/* Urgency chips and the Bryntum bar styling they switch (event cls). */
+.board-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 8px; }
+.board-chips button { min-height: 44px; padding: 0 14px; border: 1px solid var(--pg-color-rule); border-radius: 999px; background: var(--pg-color-panel); color: var(--pg-color-ink); font: inherit; font-size: 15px; cursor: pointer; }
+.board-chips button span { margin-left: 4px; padding: 0 6px; border-radius: 999px; background: var(--pg-color-recede); font-size: 14px; }
+.board-chips button[aria-pressed="true"] { border-color: var(--pg-color-accent-strong); color: var(--pg-color-accent-strong); font-weight: 700; }
+.board-chips button[aria-pressed="true"]::before { content: "\2713\00a0"; }
+.board-chips button:disabled { color: var(--pg-color-muted); cursor: not-allowed; }
+.board-chips button:focus-visible { outline: 2px solid var(--pg-color-focus); outline-offset: 2px; }
+.board-canvas .b-sch-event-wrap.payguard-board-glow .b-sch-event, .board-canvas .payguard-board-glow.b-sch-event { box-shadow: 0 0 0 3px var(--pg-color-risk), 0 0 12px 2px var(--pg-color-risk); }
+.board-canvas .b-sch-event-wrap.payguard-board-dim, .board-canvas .payguard-board-dim.b-sch-event { opacity: 0.3; }

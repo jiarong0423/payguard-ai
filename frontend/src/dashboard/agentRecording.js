@@ -163,3 +163,16 @@ export async function* replayRun(run, { studio, getState, toolContext, idPrefix 
       content: result.success ? result.response : result.issues.map((issue) => issue.message).join('; ') };
   }
 }
+
+// One-click "Replay" list on the hosted dashboard: the recorded steps shown one by one, each after its recorded
+// duration (capped, so a long step does not stall a judge). Pure: returns when each step appears, in ms from the click.
+export const REPLAY_STEP_CAP_MS = 700;
+export const REPLAY_MIN_STEP_MS = 250;
+export function replaySchedule(run, { cap = REPLAY_STEP_CAP_MS, min = REPLAY_MIN_STEP_MS } = {}) {
+  let at = 0;
+  return (run?.steps || []).map((step, index) => {
+    at += Math.min(cap, Math.max(min, Number(step.ms) || 0));
+    return { index, at, agent: step.agent, tool: step.tool, ok: step.ok, ms: step.ms };
+  });
+}
+export const REPLAY_BADGE = 'Recorded live run, no model call';

@@ -1,11 +1,11 @@
 // Public proof page (/proof.html, optimise r24). A static page built only from committed JSON in this repository: what
 // was shown for each scenario, how (real PayPal Sandbox call, recorded real run, automated test or synthetic data),
 // when, and the file it comes from. It calls nothing: no fetch, no API, no session. Not linked from other pages yet.
-import { StrictMode } from 'react';
+import { StrictMode, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import facts from '../data/proof_facts_v1.json';
 import receipts from '../data/channel3_receipts_v1.json';
-import { HISTORY_CUTOFF, LATEST_ALSO, LATEST_ROWS, METHOD_ORDER, REFUSED_LABEL, channel3Summary, dateLabel, groupProof, methodCounts, refusedCount, splitHistory } from './proofData.js';
+import { HISTORY_CUTOFF, LATEST_ALSO, LATEST_ROWS, METHOD_ORDER, REFUSED_LABEL, channel3Summary, dateLabel, groupProof, methodCounts, refusedCount, splitHistory, PROOF_SPONSORS, PROOF_METHOD_CHIPS, parseProofHash, proofHash, rowMatches } from './proofData.js';
 import './proof.css';
 
 const ICONS = {
@@ -88,8 +88,41 @@ function ProofRow({ row }) {
   </li>;
 }
 
+
+// Filter chips (2026-11-09): by how it was shown and by sponsor tool. Hides rows only; "Latest evidence" stays. The state is
+// kept in the URL hash (#sponsor=Bryntum) so a judge can link to a view. Pure page state: no request.
+function ProofFilters({ filter, setFilter, shown, total }) {
+  // Live counts: each chip says how many rows it would show with the other filter kept.
+  const countFor = (next) => facts.rows.filter((row) => rowMatches(row, next)).length;
+  const active = filter.method !== 'ALL' || filter.sponsor !== '';
+  const noRow = filter.sponsor && shown === 0;
+  return <section className="proof-filters" aria-labelledby="proof-filters-title" data-testid="proof-filters">
+    <h2 id="proof-filters-title">Filter the rows</h2>
+    <div className="proof-chip-row" role="group" aria-label="How it was shown" data-testid="proof-method-chips">
+      {PROOF_METHOD_CHIPS.map(([value, label]) => <button key={value} type="button" className="proof-filter-chip" aria-pressed={filter.method === value} data-testid={`proof-filter-${value}`} onClick={() => setFilter({ ...filter, method: value })}>{label} <span className="proof-chip-count">{countFor({ ...filter, method: value })}</span></button>)}
+    </div>
+    <div className="proof-chip-row" role="group" aria-label="Sponsor tool" data-testid="proof-sponsor-chips">
+      {PROOF_SPONSORS.map((name) => <button key={name} type="button" className="proof-filter-chip" aria-pressed={filter.sponsor === name} data-testid={`proof-sponsor-${name.replace(/\s+/gu, '-')}`} onClick={() => setFilter({ ...filter, sponsor: filter.sponsor === name ? '' : name })}>{name} <span className="proof-chip-count">{countFor({ ...filter, sponsor: name })}</span></button>)}
+    </div>
+    <button type="button" className="proof-filter-chip proof-filter-reset" data-testid="proof-filter-reset" disabled={!active} onClick={() => setFilter({ method: 'ALL', sponsor: '' })}>Reset</button>
+    <p className="proof-filter-count" role="status" aria-live="polite" data-testid="proof-filter-count">Showing {shown} of {total}{noRow ? `. No proof row names ${filter.sponsor}; it is shown in the product itself (see the Sponsor map in the console footer).` : ''}</p>
+  </section>;
+}
+
 function ProofPage() {
-  const sections = groupProof(facts);
+  const [filter, setFilterState] = useState(() => parseProofHash(window.location.hash));
+  const setFilter = (next) => { setFilterState(next); window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}${proofHash(next)}`); };
+  useEffect(() => {
+    // A link to a view (#sponsor=...) or to a row (#row-...) from anywhere on the page. A row anchor clears the filters so the row exists, then scrolls to it.
+    const onHash = () => {
+      setFilterState(parseProofHash(window.location.hash));
+      if (window.location.hash.startsWith('#row-')) window.requestAnimationFrame(() => document.getElementById(window.location.hash.slice(1))?.scrollIntoView());
+    };
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
+  const sections = groupProof(facts).map((section) => ({ ...section, rows: section.rows.filter((row) => rowMatches(row, filter)) })).filter((section) => section.rows.length > 0 || (!filter.sponsor && filter.method === 'ALL'));
+  const shownCount = sections.reduce((sum, section) => sum + section.rows.length, 0);
   const channel3 = channel3Summary(receipts);
   return <div className="proof-shell">
     <a className="proof-skip" href="#proof-main">Skip to the proof</a>
@@ -102,7 +135,8 @@ function ProofPage() {
       </div>
       <Latest />
       <Legend />
-      <RecordedSend />
+      <ProofFilters filter={filter} setFilter={setFilter} shown={shownCount} total={facts.rows.length} />
+      {(!filter.sponsor || filter.sponsor === 'PayPal') && (filter.method === 'ALL' || filter.method === 'REAL_SANDBOX') && <RecordedSend />}
       {sections.map((section) => <section key={section.id} className="proof-section" aria-labelledby={`proof-${section.id}`} data-testid="proof-section" data-scenario={section.id}>
         <h2 id={`proof-${section.id}`}>{section.number && <span className="proof-number">{section.number}</span>}{section.label}</h2>
         {(() => {

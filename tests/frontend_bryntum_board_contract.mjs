@@ -352,4 +352,23 @@ assert.deepEqual(readStoredPlans(fake), {}, 'other schema ignored');
 memory.set(PLAN_STORAGE_KEY, '{not json');
 assert.deepEqual(readStoredPlans(fake), {});
 
+// "Download my plan (.ics)" (2026-11-09): RFC 5545 text, one VEVENT per case, UTC, CRLF, no personal data, no network.
+{
+  const { plansToIcs, PLAN_ICS_EMPTY_REASON } = await import('../frontend/src/board/boardData.js');
+  assert.equal(plansToIcs({}), null, 'no plan, no file');
+  assert.ok(PLAN_ICS_EMPTY_REASON.length > 10);
+  const ics = plansToIcs({ 'case-ref-002': { startMs: Date.UTC(2026, 10, 10, 9), endMs: Date.UTC(2026, 10, 10, 12) }, 'case-ref-001': { startMs: Date.UTC(2026, 10, 9, 8), endMs: Date.UTC(2026, 10, 9, 20) } }, { now: Date.UTC(2026, 10, 9, 7, 30) });
+  assert.ok(ics.startsWith('BEGIN:VCALENDAR\r\nVERSION:2.0\r\n') && ics.endsWith('END:VCALENDAR\r\n'), 'calendar frame, CRLF');
+  assert.ok(!/[^\r]\n/u.test(ics), 'every line ends in CRLF');
+  assert.equal((ics.match(/BEGIN:VEVENT/gu) || []).length, 2, 'one VEVENT per case');
+  assert.equal((ics.match(/END:VEVENT/gu) || []).length, 2);
+  assert.ok(ics.includes('DTSTART:20261109T080000Z\r\nDTEND:20261109T200000Z') && ics.includes('DTSTART:20261110T090000Z\r\nDTEND:20261110T120000Z'), 'UTC start and end');
+  assert.ok(ics.includes('SUMMARY:Collect evidence for case-ref-001') && ics.includes('DTSTAMP:20261109T073000Z'));
+  assert.ok(ics.indexOf('case-ref-001') < ics.indexOf('case-ref-002'), 'sorted by case');
+  assert.ok(!/@(?!tradeglot\.invalid)[a-z]/iu.test(ics) && !/https?:/u.test(ics), 'no e-mail, no link');
+  const boardSrc = readFileSync(join(projectRoot, 'frontend/src/board/EvidenceBoard.jsx'), 'utf8');
+  assert.ok(boardSrc.includes('data-testid="evidence-board-plan-ics"') && boardSrc.includes('Download my plan (.ics)') && boardSrc.includes('disabled={!Object.keys(plans).length}'), 'button, disabled without a plan');
+  assert.ok(!/fetch\(|apiRequest/u.test(boardSrc.slice(boardSrc.indexOf('const downloadPlan'), boardSrc.indexOf('const resetPlans'))), 'the download makes no request');
+}
+
 console.log(`frontend_bryntum_board_contract: ok (${board.rows.length} rows, ${board.events.length} events, highlighted ${board.highlighted.join(',')}; ${manifest.dependencies['@bryntum/scheduler-community']} MIT${installed.installed ? ', installed' : ''})`);

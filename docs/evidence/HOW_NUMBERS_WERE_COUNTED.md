@@ -10,19 +10,19 @@ The script uses only the Python standard library, reads files only, makes no net
 
 ## Counting scope
 
-The file set is the public candidate: every path in `public_export_manifest.json` (413 files) plus the manifest and `public_export_manifest.sha256`, which makes the 415 tracked files. A fresh copy also contains `.venv`, `node_modules`, `frontend/dist` and build logs; none of these is counted. The script also checks every file against the sha256 in the manifest and reports any that differ. A "line" is a physical line (a newline-terminated line, the same as `wc -l`), so blank lines and comments are included. A "word" is a whitespace-separated token (`str.split()`).
+The file set is the public candidate: every path in `public_export_manifest.json` (416 files) plus the manifest and `public_export_manifest.sha256`, which makes the 415 tracked files. A fresh copy also contains `.venv`, `node_modules`, `frontend/dist` and build logs; none of these is counted. The script also checks every file against the sha256 in the manifest and reports any that differ. A "line" is a physical line (a newline-terminated line, the same as `wc -l`), so blank lines and comments are included. A "word" is a whitespace-separated token (`str.split()`).
 
 ## The numbers
 
 | Claim | Value | Command or rule |
 |---|---|---|
-| Tracked files | 415 | 413 manifest paths + `public_export_manifest.json` + `public_export_manifest.sha256` |
-| Python source lines | 22,542 | all `*.py` outside `tests/` (backend, src, tools, integrations) |
+| Tracked files | 418 | 416 manifest paths + `public_export_manifest.json` + `public_export_manifest.sha256` |
+| Python source lines | 22,543 | all `*.py` outside `tests/` (backend, src, tools, integrations) |
 | Python test lines | 18,481 | all `tests/**/*.py` |
-| Front-end lines | 13,906 | `frontend/src/**/*.{jsx,js,css}`, 73 files; see below |
-| JSX files / pages | 23 / 5 | `frontend/**/*.jsx`; `frontend/*.html` (index, dashboard, evidence, proof, scenarios; `public/offline.html` is the service-worker fallback, not a page) |
+| Front-end lines | 14,252 | `frontend/src/**/*.{jsx,js,css}`, 75 files; see below |
+| JSX files / pages | 24 / 5 | `frontend/**/*.jsx`; `frontend/*.html` (index, dashboard, evidence, proof, scenarios; `public/offline.html` is the service-worker fallback, not a page) |
 | API routes | 37 | see "Route count" |
-| Node test files / lines | 50 / 7,059 | `tests/frontend_*.mjs` (the two other `.mjs` files are a token-writer and a recorder, not tests) |
+| Node test files / lines | 51 / 7,190 | `tests/frontend_*.mjs` (the two other `.mjs` files are a token-writer and a recorder, not tests) |
 | Python tests | 1,121 (9 skipped) | `unittest` discovery over `tests/`, loaded and counted, not run |
 | Red-team requests | 1,727 | run-time only, see below |
 | Words in documents | 86,743 (page says about 86,743; the script allows 1% either way) | see below |
@@ -52,9 +52,9 @@ The backend is FastAPI. Routes are registered inside the factory function `creat
 
 The script counts with the `ast` module (decorated functions whose decorator is `<name>.<get|post|put|delete|patch>(...)`), so it neither runs the app nor depends on the variable name. It also confirms there are no `add_api_route` or `include_router` calls. Each route has exactly one HTTP method, so routes and method-path pairs are both 37. This was cross-checked once by calling `create_app()` and counting `APIRoute` objects: 37.
 
-### Front-end lines: 13,906
+### Front-end lines: 14,252
 
-13,906 is the physical line count of the 73 files `frontend/src/**/*.jsx`, `*.js` and `*.css`. It excludes the JSON data files (adding them gives 16,893), `.mjs` files, the HTML pages and `frontend/public/` (adding HTML and public gives 14,255). JS and JSX without CSS is 11,018. The earlier public page said 13,463, the count of the published tree before 2026-11-08; the 15 more lines are the CSS added that day (`frontend/src/index.css` grew from 1,143 to 1,158 lines: the hint box before a draft and the toast placement rule). An independent reviewer's count of 13,553 uses the same scope.
+14,252 is the physical line count of the 75 files `frontend/src/**/*.jsx`, `*.js` and `*.css`. It excludes the JSON data files (adding them gives 16,893), `.mjs` files, the HTML pages and `frontend/public/` (adding HTML and public gives 14,255). JS and JSX without CSS is 11,018. The earlier public page said 13,463, the count of the published tree before 2026-11-08; the 15 more lines are the CSS added that day (`frontend/src/index.css` grew from 1,143 to 1,158 lines: the hint box before a draft and the toast placement rule). An independent reviewer's count of 13,553 uses the same scope.
 
 ### Document words: 86,743
 

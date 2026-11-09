@@ -293,3 +293,43 @@ export function writeStoredPlans(storage, plans) {
     return false;
   }
 }
+
+// "Download my plan (.ics)": the seller's own "Collect evidence" bars as a calendar file (RFC 5545), built in the page.
+// One VEVENT per case, UTC times, CRLF line ends. Only the case reference and the planned hours: no name, e-mail or
+// amount, and nothing is sent anywhere.
+export const PLAN_ICS_NAME = 'tradeglot-evidence-plan.ics';
+export const PLAN_ICS_EMPTY_REASON = 'No plan yet: a case with time left gets a Collect evidence bar to download.';
+const icsTime = (ms) => new Date(ms).toISOString().replace(/[-:]/gu, '').replace(/\.\d{3}Z$/u, 'Z');
+const icsText = (text) => String(text).replace(/\\/gu, '\\\\').replace(/;/gu, '\;').replace(/,/gu, '\\,').replace(/\r?\n/gu, '\\n');
+export function plansToIcs(plans, { now = Date.now() } = {}) {
+  const entries = Object.entries(plans || {}).filter(([, plan]) => Number.isFinite(plan?.startMs) && Number.isFinite(plan?.endMs) && plan.endMs > plan.startMs);
+  if (!entries.length) return null;
+  const stamp = icsTime(now instanceof Date ? now.getTime() : Number(now));
+  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//TradeGlot demo//Evidence plan//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH'];
+  for (const [ref, plan] of entries.sort(([a], [b]) => (a < b ? -1 : 1))) {
+    lines.push('BEGIN:VEVENT', `UID:${icsText(ref)}-plan@tradeglot.invalid`, `DTSTAMP:${stamp}`, `DTSTART:${icsTime(plan.startMs)}`, `DTEND:${icsTime(plan.endMs)}`,
+      `SUMMARY:${icsText(`Collect evidence for ${ref}`)}`, 'DESCRIPTION:Planning aid from the TradeGlot demo. Not sent to PayPal.', 'END:VEVENT');
+  }
+  lines.push('END:VCALENDAR');
+  return `${lines.join('\r\n')}\r\n`;
+}
+
+// Quick classify and highlight on the deadline board (2026-11-09): "tight" is a response window that is past due or due within
+// DUE_SOON_DAYS days, whatever the evidence state; the rest are open. Pure helpers; Bryntum only restyles the bars.
+export const TIGHT_STATUSES = new Set(['PAST_DUE', 'DUE_SOON', 'DUE_SOON_MISSING', 'DUE_SOON_NO_DRAFT']);
+export const isTight = (row) => TIGHT_STATUSES.has(row?.status);
+export const URGENCY_CHIPS = Object.freeze([['all', 'All cases'], ['tight', `Due within ${DUE_SOON_DAYS} days or past due`], ['open', 'Open window']]);
+export function urgencyCounts(rows) {
+  const list = Array.isArray(rows) ? rows : [];
+  const tight = list.filter(isTight).length;
+  return { all: list.length, tight, open: list.length - tight };
+}
+// Extra class names for one bar: it glows when "Highlight tight deadlines" is on and its case is tight, and it is dimmed
+// when a chip other than All is chosen and its case is not in that group.
+export function barClasses(row, { focus = 'all', glow = false } = {}) {
+  const out = [];
+  if (glow && isTight(row)) out.push('payguard-board-glow');
+  if (focus === 'tight' && !isTight(row)) out.push('payguard-board-dim');
+  if (focus === 'open' && isTight(row)) out.push('payguard-board-dim');
+  return out.join(' ');
+}

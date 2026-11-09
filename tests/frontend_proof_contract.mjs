@@ -215,4 +215,33 @@ assert.deepEqual(channel3Summary({}), { count: 0, allOk: false, cards: [], minLa
   assert.ok(!/fetch\(|XMLHttpRequest/u.test(pageMain()), 'proof page still makes no request');
 }
 
+// Filter chips and sponsors (2026-11-09): sponsors come only from the rows' own evidence; filters hide rows, state is in the URL hash.
+{
+  const { PROOF_SPONSORS, PROOF_METHOD_CHIPS, parseProofHash, proofHash, rowMatches } = await import('../frontend/src/proof/proofData.js');
+  assert.deepEqual(PROOF_SPONSORS, ['PayPal', 'AG Grid', 'Bryntum', 'Channel3', 'APIMatic', 'Postman', 'Render', 'Gemini']);
+  assert.deepEqual(PROOF_METHOD_CHIPS.map(([, label]) => label), ['All', 'Real Sandbox', 'Recorded', 'Test', 'Synthetic']);
+  const byId = Object.fromEntries(facts.rows.map((row) => [row.id, row]));
+  assert.deepEqual(byId['cross-render-workflow-run'].sponsors, ['Render']);
+  assert.deepEqual(byId['cross-postman-newman-run'].sponsors, ['Postman']);
+  assert.deepEqual(byId['cross-apimatic-run'].sponsors, ['APIMatic']);
+  assert.deepEqual(byId['dispute-hosted-readonly-live'].sponsors, ['PayPal', 'Render']);
+  assert.deepEqual(byId['policy-channel3-search'].sponsors, ['Channel3']);
+  assert.deepEqual(byId['dispute-readback-hash-match'].sponsors, ['PayPal']);
+  for (const row of facts.rows) for (const name of row.sponsors || []) assert.ok(PROOF_SPONSORS.includes(name), `${row.id}: known sponsor ${name}`);
+  const count = (filter) => facts.rows.filter((row) => rowMatches(row, filter)).length;
+  assert.equal(count({}), 28, 'no filter shows all 28');
+  assert.equal(count({ method: 'REAL_SANDBOX' }), 13);
+  assert.equal(count({ sponsor: 'Bryntum' }), 0, 'no proof row names Bryntum: the page says so instead of inventing one');
+  assert.ok(count({ sponsor: 'Render' }) === 2 && count({ sponsor: 'PayPal' }) === 13);
+  assert.deepEqual(parseProofHash('#sponsor=Bryntum'), { method: 'ALL', sponsor: 'Bryntum' });
+  assert.deepEqual(parseProofHash('#sponsor=Nope&method=RECORDED'), { method: 'RECORDED', sponsor: '' });
+  assert.deepEqual(parseProofHash('#row-dispute-list-read'), { method: 'ALL', sponsor: '' });
+  assert.equal(proofHash({ method: 'RECORDED', sponsor: 'AG Grid' }), '#sponsor=AG%20Grid&method=RECORDED');
+  assert.equal(proofHash({}), '');
+  const main = read('frontend/src/proof/main.jsx');
+  assert.ok(main.includes('aria-live="polite" data-testid="proof-filter-count">Showing {shown} of {total}'), 'count is announced');
+  assert.ok(main.includes('data-testid="proof-filter-reset"') && main.includes('proof-chip-count') && main.includes('aria-pressed={filter.method === value}'), 'live counts, Reset and aria-pressed');
+  assert.ok(main.includes('<Latest />') && main.includes("window.addEventListener('hashchange'"), 'Latest stays; the hash is followed');
+}
+
 console.log(`frontend_proof_contract: ok (${facts.rows.length} rows; ${METHOD_ORDER.map((method) => `${method} ${counts[method]}`).join(', ')}; every quote found in its source)`);

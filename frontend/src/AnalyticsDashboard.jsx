@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { AgGridReact, themeQuartz } from './grid/agGrid.jsx';
 import './AnalyticsDashboard.css';
 
@@ -15,6 +15,16 @@ const analyticsGridTheme = themeQuartz.withParams({
   fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
   fontSize: 15,
 });
+
+// Quick classify and highlight for the order grid. Bands and the 12.00 line are fixed demo thresholds, not risk scores:
+// they only sort the same synthetic rows by amount. Uses AG Grid's own number filter (setFilterModel) and getRowClass.
+export const AMOUNT_BANDS = Object.freeze([
+  { id: 'all', label: 'All orders', test: () => true, model: null },
+  { id: 'low', label: 'Under 8.00', test: (n) => n < 8, model: { filterType: 'number', type: 'lessThan', filter: 8 } },
+  { id: 'mid', label: '8.00 to 11.99', test: (n) => n >= 8 && n < 12, model: { filterType: 'number', operator: 'AND', conditions: [{ filterType: 'number', type: 'greaterThanOrEqual', filter: 8 }, { filterType: 'number', type: 'lessThan', filter: 12 }] } },
+  { id: 'high', label: '12.00 or more', test: (n) => n >= 12, model: { filterType: 'number', type: 'greaterThanOrEqual', filter: 12 } },
+]);
+export const HIGHLIGHT_FROM = 12;
 
 function statusTone(status) {
   if (status === 'Advisory review' || status === 'Needs evidence') return 'amber';
@@ -168,6 +178,9 @@ export default function AnalyticsDashboard({ aup, state }) {
   const [mode, setMode] = useState('view');
   const [guideResponse, setGuideResponse] = useState('Select a bounded prompt to explain the current synthetic dashboard.');
   const [quickFilter, setQuickFilter] = useState('');
+  const [band, setBand] = useState('all');
+  const [highlight, setHighlight] = useState(false);
+  const gridApi = useRef(null);
   const transactionCount = state?.transactions?.length || 0;
   const disputeCount = state?.disputes?.length || 0;
   const aupFindingCount = aup?.findings?.length || 0;
@@ -216,10 +229,20 @@ export default function AnalyticsDashboard({ aup, state }) {
   const rowData = useMemo(() => transactions, [transactions]);
   const columnDefs = useMemo(() => [
     { field: 'order_id', headerName: 'Order', minWidth: 150, flex: 1.3 },
-    { field: 'amount', headerName: 'Amount', minWidth: 110, valueFormatter: ({ value }) => Number(value).toFixed(2) },
+    { field: 'amount', headerName: 'Amount', minWidth: 110, filter: 'agNumberColumnFilter', valueGetter: ({ data }) => Number(data.amount), valueFormatter: ({ value }) => Number(value).toFixed(2) },
     { field: 'currency', headerName: 'Currency', minWidth: 100 },
     { field: 'occurred_at', headerName: 'Captured at', minWidth: 220, flex: 1.2, valueFormatter: ({ value }) => utcDateTime(value) },
   ], []);
+
+  const bandCounts = useMemo(() => Object.fromEntries(AMOUNT_BANDS.map((entry) => [entry.id, rowData.filter((row) => entry.test(Number(row.amount))).length])), [rowData]);
+  const applyBand = (id) => {
+    setBand(id);
+    gridApi.current?.setFilterModel(id === 'all' ? null : { amount: AMOUNT_BANDS.find((entry) => entry.id === id).model });
+  };
+  const resetGrid = () => { setBand('all'); setHighlight(false); setQuickFilter(''); gridApi.current?.setFilterModel(null); };
+  useEffect(() => { gridApi.current?.redrawRows?.(); }, [highlight]);
+  const gridActive = band !== 'all' || highlight || quickFilter !== '';
+  useEffect(() => { gridApi.current?.setFilterModel(band === 'all' ? null : { amount: AMOUNT_BANDS.find((entry) => entry.id === band).model }); }, [rowData.length]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const prompts = [
     { id: 'attention', label: 'What needs attention?', prompt: 'Which stages need human attention in this synthetic dashboard?' },
@@ -256,6 +279,12 @@ export default function AnalyticsDashboard({ aup, state }) {
           <div><span>TRANSACTION REVIEW</span><strong>Synthetic transaction table</strong></div>
           <em>AG Grid Community · {transactions.length} rows</em>
         </div>
+        <div className="analytics-grid-chips" role="group" aria-label="Quick classify orders by amount" data-testid="analytics-grid-bands">
+          {AMOUNT_BANDS.map((entry) => <button key={entry.id} type="button" aria-pressed={band === entry.id} data-testid={`analytics-band-${entry.id}`} onClick={() => applyBand(entry.id)}>{entry.label} <span>{bandCounts[entry.id]}</span></button>)}
+          <button type="button" aria-pressed={highlight} data-testid="analytics-highlight-large" onClick={() => setHighlight((on) => !on)}>Highlight orders of {HIGHLIGHT_FROM}.00 or more</button>
+          <button type="button" data-testid="analytics-grid-reset" disabled={!gridActive} onClick={resetGrid}>Reset</button>
+        </div>
+        <p className="analytics-grid-note" role="status" aria-live="polite">These bands only sort the synthetic rows by amount. They are not a risk score.</p>
         <div className="analytics-grid-tools">
           <label htmlFor="analytics-grid-filter">Filter visible rows</label>
           <input id="analytics-grid-filter" type="search" maxLength={200} value={quickFilter} onChange={(event) => setQuickFilter(event.target.value)} placeholder="Order or currency" />
@@ -270,6 +299,8 @@ export default function AnalyticsDashboard({ aup, state }) {
             headerHeight={42}
             rowHeight={42}
             quickFilterText={quickFilter}
+            onGridReady={(event) => { gridApi.current = event.api; }}
+            getRowClass={({ data }) => (highlight && Number(data?.amount) >= HIGHLIGHT_FROM ? 'analytics-row-large' : undefined)}
             overlayNoRowsTemplate="Select Load sales burst to view transactions"
           />
         </div>

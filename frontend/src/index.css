@@ -1241,3 +1241,10 @@ footer { padding: 8px 0 0; }
   .footer-download-demo { display: inline-flex; width: 100%; margin-top: 4px; }
 }
 @media (min-width: 641px) { .footer-download-demo { display: none; } }
+
+/* Sponsor map: a footer fold, one line per sponsor tool, links 44px tall. */
+.sponsor-map { flex-basis: 100%; }
+.sponsor-map > summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; color: var(--pg-color-accent-strong); font-weight: 650; }
+.sponsor-map ul { list-style: none; margin: 0 0 8px; padding: 0; display: grid; gap: 8px; }
+.sponsor-map li { display: grid; gap: 2px; font-size: var(--type-meta); line-height: 1.45; }
+.sponsor-map li a { display: inline-flex; align-items: center; min-height: 44px; color: var(--pg-color-accent-strong); font-weight: 650; width: fit-content; }

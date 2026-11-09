@@ -10,7 +10,7 @@ import {
   ModuleRegistry,
   NumberAxisModule,
 } from 'ag-charts-community';
-import { buildMonthlyHistory, buildVelocityHourlyRows, monthlyChartOptions, money, percent, velocityChartOptions } from './velocityChartData.js';
+import { buildMonthlyHistory, buildVelocityHourlyRows, hoursAbove, peakHourOf, monthlyChartOptions, money, percent, velocityChartOptions } from './velocityChartData.js';
 import './charts.css';
 
 // Only the AG Charts Community modules this chart needs, so the lazy chunk stays small.
@@ -22,19 +22,22 @@ export default function VelocityChart({ velocity, transactions, compact = false 
   const monthlyRef = useRef(null);
   const monthlyChartRef = useRef(null);
   const [view, setView] = useState('hourly');
+  const [mark, setMark] = useState('');
   const model = useMemo(() => buildVelocityHourlyRows(velocity, transactions), [velocity, transactions]);
   const monthly = useMemo(() => buildMonthlyHistory(velocity), [velocity]);
   const currentMonth = monthly.rows[monthly.rows.length - 1];
   const spikeTotal = model.rows.filter((row) => row.window === 'spike').reduce((sum, row) => sum + row.spike, 0);
+  const peak = peakHourOf(model.rows);
+  const overCount = hoursAbove(model.rows, model.reviewLine).length;
   const baselineRow = model.rows.find((row) => row.window === 'baseline');
 
   useEffect(() => {
     if (!containerRef.current || model.rows.length === 0) return undefined;
-    const options = velocityChartOptions(model, containerRef.current, { compact });
+    const options = velocityChartOptions(model, containerRef.current, { compact, mark });
     if (chartRef.current) chartRef.current.update(options);
     else chartRef.current = AgCharts.create(options);
     return undefined;
-  }, [model, compact]);
+  }, [model, compact, mark]);
 
   useEffect(() => {
     if (!monthlyRef.current || monthly.rows.length === 0) return undefined;
@@ -62,6 +65,12 @@ export default function VelocityChart({ velocity, transactions, compact = false 
       {[['hourly', 'Hourly'], ['monthly', 'Monthly']].map(([key, label]) => <button key={key} type="button" role="tab" id={`velocity-period-${key}`} aria-selected={view === key} aria-controls={`velocity-period-pane-${key}`} className={view === key ? 'is-active' : ''} onClick={() => choose(key)}>{label}</button>)}
     </div>}
     <figure id="velocity-period-pane-hourly" role="tabpanel" aria-labelledby="velocity-period-hourly" hidden={view !== 'hourly'} className="velocity-chart" data-testid="velocity-chart" aria-label="Hourly amount chart, baseline window versus spike window">
+      <div className="velocity-mark-chips" role="group" aria-label="Highlight on the chart" data-testid="velocity-mark-chips">
+        <button type="button" aria-pressed={mark === 'peak'} disabled={!peak} data-testid="velocity-mark-peak" onClick={() => setMark(mark === 'peak' ? '' : 'peak')}>Highlight peak hour <span>{peak ? 1 : 0}</span></button>
+        <button type="button" aria-pressed={mark === 'over'} disabled={!overCount} data-testid="velocity-mark-over" onClick={() => setMark(mark === 'over' ? '' : 'over')}>Highlight hours above the line <span>{overCount}</span></button>
+        <button type="button" disabled={!mark} data-testid="velocity-mark-reset" onClick={() => setMark('')}>Reset</button>
+      </div>
+      {mark === 'peak' && peak && <p className="velocity-mark-note" role="status" aria-live="polite" data-testid="velocity-mark-note">Peak hour {peak.label.replace(' ▲', '')} UTC: {money(peak.spike)} {model.currency}.</p>}
       <div ref={containerRef} className="velocity-chart-canvas" />
       <figcaption data-testid="velocity-chart-summary">
         Spike {money(spikeTotal)} {model.currency} vs usual {baselineRow ? `${money(baselineRow.baseline)} ${model.currency}/h` : '—'}. No PayPal action predicted.

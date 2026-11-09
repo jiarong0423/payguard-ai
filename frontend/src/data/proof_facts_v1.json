@@ -58,6 +58,9 @@
         "status DRAFT, external_send FROZEN (not sent), environment sandbox",
         "proof_kind POST_RESPONSE_ONLY",
         "observed_at 2026-10-31T02:30:46Z, invoice id INV2-U3KH-...-PQCK (masked)"
+      ],
+      "sponsors": [
+        "PayPal"
       ]
     },
     {
@@ -71,6 +74,9 @@
       "quotes": [
         "Sandbox invoice draft created · INV2-...RG5U · Draft · not sent · Live Sandbox response · Verified from the creation response only · Not submitted",
         "status: DRAFT, not sent to the buyer. The full invoice id and the response body are not kept."
+      ],
+      "sponsors": [
+        "PayPal"
       ]
     },
     {
@@ -82,7 +88,10 @@
       "date": "2026-11-01",
       "source": "docs/evidence/channel3_receipts_v1.json",
       "check": "channel3_receipts",
-      "quotes": []
+      "quotes": [],
+      "sponsors": [
+        "Channel3"
+      ]
     },
     {
       "id": "policy-gemini-api",
@@ -95,6 +104,9 @@
       "quotes": [
         "| Policy pre-check (`preflight_v2`) | 0/12 | 1.00 | 0.76 | 0 | 0 | 0 | 5.2 s / 26.2 s |",
         "Precision here means: of the fields the model filled in, the share that were right. It is not accuracy."
+      ],
+      "sponsors": [
+        "Gemini"
       ]
     },
     {
@@ -135,6 +147,9 @@
       "source": "docs/evidence/GEMINI_GUIDE_RUNS_20261103.md",
       "quotes": [
         "| Sales spike (`velocity_v2`, prompt 7e49835) | 0/12 | 1.00 | 0.95 | 0 | 0 | 0 | 6.1 s / 65.4 s |"
+      ],
+      "sponsors": [
+        "Gemini"
       ]
     },
     {
@@ -149,6 +164,9 @@
         "| Sales spike, round 1 | 0/12 | 0.90 | 2 | 0 | 0 |",
         "| Sales spike, round 2 after fix 7e49835 | 0/12 | 1.00 | 0 | 0 | 0 |",
         "a spike reason counts only when the same clause says sales or orders went up"
+      ],
+      "sponsors": [
+        "Gemini"
       ]
     },
     {
@@ -165,6 +183,9 @@
         "dispute_id PP-R-OJX-... (masked)",
         "status WAITING_FOR_SELLER_RESPONSE",
         "seller_response_due_date 2026-11-20"
+      ],
+      "sponsors": [
+        "PayPal"
       ]
     },
     {
@@ -177,6 +198,9 @@
       "source": "docs/evidence/RECEIPT_20261031_live.md",
       "quotes": [
         "single read at 02:39:53Z (HTTP 200): the disputed transaction was HELD; evidence entries were the buyer's CREATE and a PROOF_OF_FULFILLMENT request to the seller."
+      ],
+      "sponsors": [
+        "PayPal"
       ]
     },
     {
@@ -192,6 +216,9 @@
         "status WAITING_FOR_BUYER_RESPONSE (before: WAITING_FOR_SELLER_RESPONSE)",
         "PROOF_OF_FULFILLMENT SUBMITTED_BY_SELLER",
         "The evidence file was a synthetic placeholder PDF (43 bytes)"
+      ],
+      "sponsors": [
+        "PayPal"
       ]
     },
     {
@@ -205,6 +232,9 @@
       "source": "docs/evidence/RECEIPT_20261104_live.md",
       "quotes": [
         "refused with \"This dispute does not match the selected case (reason or amount differ).\" The send stayed locked and no provide-evidence call was made for it."
+      ],
+      "sponsors": [
+        "PayPal"
       ]
     },
     {
@@ -219,6 +249,9 @@
       "quotes": [
         "Later read of the unauthorized dispute PP-R-BHF-...: reason UNAUTHORISED, stage CHARGEBACK",
         "Preview with case-ref-001 selected: refused with the same message; the send stayed locked and nothing was sent."
+      ],
+      "sponsors": [
+        "PayPal"
       ]
     },
     {
@@ -236,6 +269,9 @@
         "PROOF_OF_FULFILLMENT SUBMITTED_BY_SELLER",
         "PayPal-Debug-Id of that read: ca5554cf42ef6.",
         "(14028 bytes, 7 entries: 6 listed files and the manifest) passed all 8 local checks"
+      ],
+      "sponsors": [
+        "PayPal"
       ]
     },
     {
@@ -250,6 +286,9 @@
       "quotes": [
         "Locked: PayPal already has seller evidence for this dispute.",
         "The dispute amount in PayPal (158.00 TWD) differs from the selected case's amount (48.00 USD). Select the case it belongs to. Nothing was sent."
+      ],
+      "sponsors": [
+        "PayPal"
       ]
     },
     {
@@ -264,6 +303,9 @@
         "The local console ran with the evidence send switch on",
         "the server refused it and nothing was sent",
         "the owner pressed the green Send"
+      ],
+      "sponsors": [
+        "PayPal"
       ]
     },
     {
@@ -276,6 +318,9 @@
       "source": "docs/evidence/GEMINI_GUIDE_RUNS_20261103.md",
       "quotes": [
         "| Dispute evidence (`heldout_v4`) | 0/12 | 1.00 | 0.83 | 0 | 0 (7/8 right) | 0 | 5.1 s / 25.2 s |"
+      ],
+      "sponsors": [
+        "Gemini"
       ]
     },
     {
@@ -290,6 +335,9 @@
         "## API round: `gemini-3.8-flash`, 36 calls, 0 errors",
         "36 API calls in total (12 per situation); a small sample, not a guarantee.",
         "The model never decides a dispute, a policy question or a PayPal action."
+      ],
+      "sponsors": [
+        "Gemini"
       ]
     },
     {
@@ -351,6 +399,9 @@
         "The file sent was the generated delivery PDF (`synthetic-delivery.pdf`, 2,015 bytes), not the 43-byte placeholder of the earlier sends.",
         "PayPal-Debug-Id of the read `ca578476fa829`",
         "It does not cover send 1 (no fingerprint had been recorded then)"
+      ],
+      "sponsors": [
+        "PayPal"
       ]
     },
     {
@@ -365,6 +416,9 @@
         "The first read-backs (both disputes) answered HTTP 404 for the document.",
         "The cause was the read-back tool",
         "`tools/sandbox_readback_hash.py` now asks for the PDF first, and a test covers it."
+      ],
+      "sponsors": [
+        "PayPal"
       ]
     },
     {
@@ -387,6 +441,10 @@
         "the reply holds no full dispute id",
         "opening a case by an unknown or a full id",
         "An opened case still carries its Sandbox transaction id"
+      ],
+      "sponsors": [
+        "PayPal",
+        "Render"
       ]
     },
     {
@@ -403,6 +461,9 @@
         "\"cards\": 3,",
         "\"latency_seconds\": 1.138,",
         "\"latency_seconds\": 2.126,"
+      ],
+      "sponsors": [
+        "Channel3"
       ]
     },
     {
@@ -419,6 +480,9 @@
         "It does not show the write paths, the hosted site, or the PayPal Sandbox calls through Postman.",
         "| requests | 25 executed, 0 failed |",
         "| assertions | 82, 0 failed |"
+      ],
+      "sponsors": [
+        "Postman"
       ]
     },
     {
@@ -434,6 +498,9 @@
         "`ok: true`, `drift: false`, `secrets_used: false`, `network_used: false`",
         "No schedule exists, so nothing here supports a \"nightly\" claim.",
         "The same task was started by hand two more times from the dashboard on the same deployed version (`e0da94b`)"
+      ],
+      "sponsors": [
+        "Render"
       ]
     },
     {
@@ -449,6 +516,9 @@
         "Succeeded: 0 errors, 556 warnings, 1,291 information notes",
         "No Copilot answer has been checked, so none is claimed.",
         "The generated portal (with `llms.txt`) was published as static pages on GitHub Pages: https://jiarong0423.github.io/payguard-ai/portal/ (the files live on the `gh-pages` branch, not in `main`)."
+      ],
+      "sponsors": [
+        "APIMatic"
       ]
     }
   ],

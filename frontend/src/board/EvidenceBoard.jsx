@@ -11,7 +11,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore
 import { BryntumScheduler, available } from 'virtual:payguard-optional-timeline';
 import {
   DUE_SOON_DAYS, PLAN_MESSAGES, PLAN_NAME, buildEvidenceBoard, defaultPlan, planEvents, planWindowOf, readStoredPlans,
-  restorePlans, shiftPlan, validatePlan, wallToUtcMs, writeStoredPlans,
+  restorePlans, shiftPlan, URGENCY_CHIPS, urgencyCounts, barClasses, plansToIcs, PLAN_ICS_NAME, PLAN_ICS_EMPTY_REASON, validatePlan, wallToUtcMs, writeStoredPlans,
 } from './boardData.js';
 import { utcWallClock } from '../optional/timelineModel.js';
 import './board.css';
@@ -141,6 +141,9 @@ export default function EvidenceBoard({ disputes, drafts }) {
   const plansRef = useRef(restored);
   const verdictRef = useRef(null);
   const [message, setMessage] = useState('');
+  const lastCls = useRef({});
+  const [focus, setFocus] = useState('all');
+  const [glow, setGlow] = useState(false);
   useEffect(() => {
     plansRef.current = restored;
     setPlans(restored);
@@ -249,6 +252,17 @@ export default function EvidenceBoard({ disputes, drafts }) {
     keep(ref, proposal);
   }, [judge, keep]);
 
+  // "Download my plan (.ics)": built here from the plans in this tab; no request, no personal data.
+  const downloadPlan = useCallback(() => {
+    const text = plansToIcs(plansRef.current);
+    if (!text || typeof document === 'undefined') return;
+    const url = URL.createObjectURL(new Blob([text], { type: 'text/calendar;charset=utf-8' }));
+    const link = document.createElement('a');
+    link.href = url; link.download = PLAN_ICS_NAME;
+    document.body.appendChild(link); link.click(); link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+    setMessage('Plan downloaded as a calendar file. It was made in this page and not sent anywhere.');
+  }, []);
   const resetPlans = useCallback(() => {
     if (!board) return;
     const next = {};
@@ -287,6 +301,23 @@ export default function EvidenceBoard({ disputes, drafts }) {
     };
   }, [board, phone, schedulerKey, onPlanKey]);
 
+  // Quick classify and highlight: Bryntum's own event styling (a record's cls); case data and the plan are not touched.
+  useEffect(() => {
+    const scheduler = schedulerRef.current?.instance;
+    if (!scheduler || !board) return undefined;
+    const rowById = Object.fromEntries(board.rows.map((row) => [row.id, row]));
+    if (lastCls.current.scheduler !== scheduler) lastCls.current = { scheduler };
+    const baseCls = Object.fromEntries(events.map((event) => [event.id, event.cls || '']));
+    {
+      scheduler.eventStore.forEach((record) => {
+        // The class names the event was created with, plus the classes this chip state asks for (assigned as one string).
+        const next = `${baseCls[record.id] || ''} ${barClasses(rowById[record.resourceId], { focus, glow })}`.trim();
+        if (lastCls.current[record.id] !== next) { lastCls.current[record.id] = next; record.cls = next; }
+      });
+    }
+    return undefined;
+  }, [board, events, focus, glow, schedulerKey, phone]);
+
   if (!board) return <p className="board-empty" data-testid="evidence-board-empty">Load the dispute case to see its evidence and response window.</p>;
   // Missing evidence and "no draft yet" are counted apart, so the summary never says none while a card reads "No draft yet" (r20 UX-2).
   const soon = [board.missingSoon && `${board.missingSoon} due within ${DUE_SOON_DAYS} days with evidence missing`, board.noDraftSoon && `${board.noDraftSoon} due within ${DUE_SOON_DAYS} days with no draft yet`].filter(Boolean);
@@ -302,9 +333,16 @@ export default function EvidenceBoard({ disputes, drafts }) {
         Drag or resize each <strong>{PLAN_NAME}</strong> bar to plan when you will gather the proof, in whole hours, between now and the due date.
         With a bar focused (Tab, then the arrow keys), Shift+←/→ moves it one hour and Alt+←/→ moves its end. The plan stays in this tab and is not sent anywhere.
       </p>
+      <div className="board-chips" role="group" aria-label="Quick classify cases by urgency" data-testid="evidence-board-urgency">
+        {URGENCY_CHIPS.map(([key, label]) => <button key={key} type="button" aria-pressed={focus === key} data-testid={`evidence-board-urgency-${key}`} onClick={() => setFocus(key)}>{label} <span>{urgencyCounts(board.rows)[key]}</span></button>)}
+        <button type="button" aria-pressed={glow} data-testid="evidence-board-glow" onClick={() => setGlow((on) => !on)}>Highlight tight deadlines</button>
+        <button type="button" data-testid="evidence-board-urgency-reset" disabled={focus === 'all' && !glow} onClick={() => { setFocus('all'); setGlow(false); }}>Reset</button>
+      </div>
       <div className="board-plan-bar">
         <p className="board-plan-message" role="status" aria-live="polite" data-testid="evidence-board-plan-message">{message}</p>
         <button type="button" className="board-plan-reset" data-testid="evidence-board-plan-reset" onClick={resetPlans}>Reset plans</button>
+        <button type="button" className="board-plan-reset board-plan-download" data-testid="evidence-board-plan-ics" disabled={!Object.keys(plans).length} aria-describedby="evidence-board-plan-ics-note" onClick={downloadPlan}>Download my plan (.ics)</button>
+        <small id="evidence-board-plan-ics-note" className="board-plan-ics-note" data-testid="evidence-board-plan-ics-note">{Object.keys(plans).length ? 'A calendar file of your Collect evidence bars; made in this page, not sent.' : PLAN_ICS_EMPTY_REASON}</small>
       </div>
       <div className="board-scroll" tabIndex={0} role="region" aria-label="Evidence deadline timeline, scrolls sideways" aria-describedby="evidence-board-plan-help">
         {/* Keyed on the layout too: a phone and a desktop scheduler differ in columns and fit, so a fresh one is made. */}

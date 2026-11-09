@@ -109,7 +109,19 @@ function rangeLabel(datum) {
 }
 
 // compact: phones, where the page shows its own unpaginated legend (App.jsx PhoneChartLegend) because this one pages.
-export function velocityChartOptions({ rows, reviewLine, currency }, container, { compact = false } = {}) {
+// The spike-window hour with the largest amount, and the hours above the review line (counts for the chart's highlight chips).
+export function peakHourOf(rows) {
+  const spikes = (rows || []).filter((row) => row.window === 'spike' && Number.isFinite(row.spike));
+  return spikes.length ? spikes.reduce((best, row) => (row.spike > best.spike ? row : best)) : null;
+}
+export function hoursAbove(rows, reviewLine) {
+  return reviewLine === null ? [] : (rows || []).filter((row) => row.window === 'spike' && row.spike > reviewLine);
+}
+
+// `mark`: '' (none), 'peak' (outline the largest hour, soften the rest) or 'over' (outline the hours above the review line).
+export function velocityChartOptions({ rows, reviewLine, currency }, container, { compact = false, mark = '' } = {}) {
+  const peak = mark === 'peak' ? peakHourOf(rows) : null;
+  const picked = (datum) => (mark === 'peak' ? Boolean(peak) && datum.key === peak.key : mark === 'over' ? reviewLine !== null && datum.spike > reviewLine : true);
   const baselineRate = rows.find((row) => row.window === 'baseline')?.baseline || null;
   return {
     container,
@@ -130,7 +142,11 @@ export function velocityChartOptions({ rows, reviewLine, currency }, container, 
       {
         type: 'bar', xKey: 'label', yKey: 'spike', yName: 'Spike window (amber = above the line)', fill: SPIKE_FILL,
         cornerRadius: 3,
-        itemStyler: ({ datum }) => (reviewLine !== null && datum && datum.spike > reviewLine ? { fill: FLAG_FILL } : {}),
+        itemStyler: ({ datum }) => {
+          const base = reviewLine !== null && datum && datum.spike > reviewLine ? { fill: FLAG_FILL } : {};
+          if (!mark || !datum) return base;
+          return picked(datum) ? { ...base, stroke: '#0f172a', strokeWidth: 3 } : { ...base, fillOpacity: 0.3 };
+        },
         label: { enabled: true, placement: 'outside-end', fontSize: 16, fontWeight: 700, color: SPIKE_FILL,
           formatter: ({ value }) => (value && baselineRate > 0 ? `×${(value / baselineRate).toFixed(1)}` : '') },
         tooltip: { renderer: ({ datum }) => ({ heading: 'Spike window', title: rangeLabel(datum),

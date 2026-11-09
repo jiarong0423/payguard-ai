@@ -64,3 +64,35 @@ export function methodCounts(facts) {
   for (const row of facts?.rows || []) if (row.method in counts) counts[row.method] += 1;
   return counts;
 }
+
+// (2026-11-09) Filters on the proof page: how it was shown (method) and which sponsor tool a row involves. A row's
+// `sponsors` array in proof_facts_v1.json names only tools its own evidence file shows; rows without it match no
+// sponsor chip. The state lives in the URL hash so a judge can link to it, for example #sponsor=Bryntum.
+export const PROOF_SPONSORS = Object.freeze(['PayPal', 'AG Grid', 'Bryntum', 'Channel3', 'APIMatic', 'Postman', 'Render', 'Gemini']);
+export const PROOF_METHOD_CHIPS = Object.freeze([['ALL', 'All'], ['REAL_SANDBOX', 'Real Sandbox'], ['RECORDED', 'Recorded'], ['TEST', 'Test'], ['SYNTHETIC', 'Synthetic']]);
+
+// '#sponsor=Bryntum&method=RECORDED' -> { method, sponsor }. Any other hash (a row anchor, none) is no filter.
+export function parseProofHash(hash) {
+  const state = { method: 'ALL', sponsor: '' };
+  const text = String(hash || '').replace(/^#/u, '');
+  if (!text.includes('=')) return state;
+  for (const part of text.split('&')) {
+    const [key, raw = ''] = part.split('=');
+    let value = '';
+    try { value = decodeURIComponent(raw.replace(/\+/gu, ' ')); } catch { value = ''; }
+    if (key === 'sponsor' && PROOF_SPONSORS.includes(value)) state.sponsor = value;
+    if (key === 'method' && METHOD_ORDER.includes(value)) state.method = value;
+  }
+  return state;
+}
+export function proofHash({ method = 'ALL', sponsor = '' } = {}) {
+  const parts = [];
+  if (sponsor) parts.push(`sponsor=${encodeURIComponent(sponsor)}`);
+  if (method && method !== 'ALL') parts.push(`method=${method}`);
+  return parts.length ? `#${parts.join('&')}` : '';
+}
+export function rowMatches(row, { method = 'ALL', sponsor = '' } = {}) {
+  if (method !== 'ALL' && row.method !== method) return false;
+  if (sponsor && !(Array.isArray(row.sponsors) && row.sponsors.includes(sponsor))) return false;
+  return true;
+}

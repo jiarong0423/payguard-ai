@@ -26,3 +26,13 @@
 .benchmark-facts { display: grid; gap: 8px; margin: 0; padding: 16px 16px 16px 32px; border-radius: var(--pg-radius-card); background: #eef2ff; font-size: 15px; line-height: 1.5; color: #1e1b4b; }
 .benchmark-chart-canvas { width: 100%; min-height: 240px; border: 1px solid #e0e7ff; border-radius: var(--pg-radius-card); overflow: hidden; background: #ffffff; box-shadow: 0 1px 2px rgba(30, 27, 75, 0.06); }
 .benchmark-note { margin: 0; font-size: 14px; color: #64748b; }
+
+/* Chart highlight chips: real buttons, 44px, pressed state shown with a check mark. */
+.velocity-mark-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 8px; }
+.velocity-mark-chips button { min-height: 44px; padding: 0 14px; border: 1px solid var(--pg-color-rule, #cbd5e1); border-radius: 999px; background: var(--pg-color-panel, #ffffff); color: var(--pg-color-ink, #0f172a); font: inherit; font-size: 15px; cursor: pointer; }
+.velocity-mark-chips button span { margin-left: 4px; padding: 0 6px; border-radius: 999px; background: var(--pg-color-recede, #f1f5f9); font-size: 14px; }
+.velocity-mark-chips button[aria-pressed="true"] { border-color: var(--pg-color-accent-strong, #4338ca); color: var(--pg-color-accent-strong, #4338ca); font-weight: 700; }
+.velocity-mark-chips button[aria-pressed="true"]::before { content: "\2713\00a0"; }
+.velocity-mark-chips button:disabled { color: var(--pg-color-muted, #64748b); cursor: not-allowed; }
+.velocity-mark-chips button:focus-visible { outline: 2px solid var(--pg-color-focus, #2563eb); outline-offset: 2px; }
+.velocity-mark-note { margin: 0 0 8px; font-size: 15px; color: var(--pg-color-ink, #0f172a); }
