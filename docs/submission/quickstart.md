@@ -6,11 +6,11 @@ This walkthrough uses synthetic data, a US official-reference profile for the Ac
 
 The overview shows the policy and ten-country rules check before a draft and the Sandbox send that runs only after one human approval.
 
-The current demo video is the [2:50 cut](https://youtu.be/_GORnHWShU4). The [historical demonstration script](video_script.md) is the plan for the earlier 2:02 cut and has no country rules scene.
+The current demo video is the [2:59 cut](https://youtu.be/o0A-zj2_1rc) (2026-11-10); it replaces the earlier [2:50 cut](https://youtu.be/_GORnHWShU4). The [historical demonstration script](video_script.md) is the plan for the earlier 2:02 cut and has no country rules scene.
 
-The [published 2:50 demonstration](https://youtu.be/_GORnHWShU4) is the final edited video; the script's timestamps belong to the earlier 2:02 cut and are not seek positions in the current video.
+The [2:59 demonstration](https://youtu.be/o0A-zj2_1rc) is the final edited video; the script's timestamps belong to the earlier 2:02 cut and are not seek positions in the current video.
 
-Status: the Devpost project is submitted and the 2:50 video is public. The complete repository run instructions here are the selected functional-demo path. An optional hosted demo also runs (README, "Hosted demo"); its only PayPal calls are read-only Sandbox reads, only its evidence guide can use Gemini when the operator opts in (at most 5 calls a minute and 20 a day), and a hosted deployment that writes to PayPal is unperformed. A new local export stays `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` until its exact bytes pass security review, independent acceptance and repository readback; only an accepted same-byte public source release records `PUBLIC_SOURCE_PUBLISHED`. Neither state establishes a public or production-hosted service.
+Status: the Devpost project is submitted and the 2:59 video is on YouTube. The complete repository run instructions here are the selected functional-demo path. An optional hosted demo also runs (README, "Hosted demo"); its only PayPal calls are read-only Sandbox reads, only its evidence guide can use Gemini when the operator opts in (at most 5 calls a minute and 20 a day), and a hosted deployment that writes to PayPal is unperformed. A new local export stays `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` until its exact bytes pass security review, independent acceptance and repository readback; only an accepted same-byte public source release records `PUBLIC_SOURCE_PUBLISHED`. Neither state establishes a public or production-hosted service.
 
 ## Fastest path: three clicks on the hosted demo
 
