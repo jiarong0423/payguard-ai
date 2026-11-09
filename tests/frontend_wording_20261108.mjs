@@ -8,6 +8,6 @@ assert.ok(rules.includes('No cited rule stops this sale.'), 'verdict kept');
 assert.ok(rules.includes('This is not clearance. Only the listed country and PayPal rules were checked; payment type, address match and carrier limits are not covered.'), 'not-clearance line');
 assert.ok(rules.includes('This compares your declaration only. Changing a declaration does not change what PayPal or a carrier will do.'), 'before/after note');
 assert.ok(app.includes('The baseline here is a local demo setting, not a PayPal limit.'), 'baseline note');
-assert.ok(rules.includes('an earlier sample of 36') && rules.includes('a recorded spot-check on 2026-11-08 sampled 48 of the 681 rules and compared 44 (34 consistent, 10 wording differs; 4 could not be opened)'), 'audit text');
+assert.equal(rules.includes('an earlier sample of 36') || rules.includes('34 consistent'), false, 'no audit numbers on the screen (2026-11-09)');
 assert.ok(app.includes("'You approve every step'") && !app.includes('Human in the loop'), 'case review title');
 console.log('frontend_wording_20261108: 8 assertions passed');

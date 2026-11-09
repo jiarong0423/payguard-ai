@@ -30,6 +30,20 @@ export function groupProof(facts) {
   return scenarios.map((scenario) => ({ ...scenario, rows: rows.filter((row) => row.scenario === scenario.id) }));
 }
 
+// (2026-11-09) The newest evidence shows first; older rows go to a closed "Earlier runs (history)" fold per scenario. Rows dated
+// on or after HISTORY_CUTOFF stay open; a scenario with fewer than MIN_OPEN of them is topped up with its newest older rows,
+// so no scenario opens empty. Nothing is dropped or reworded: every row appears exactly once, in its original order.
+export const HISTORY_CUTOFF = '2026-11-09';
+export const MIN_OPEN = 2;
+export function splitHistory(rows) {
+  const list = Array.isArray(rows) ? rows : [];
+  const open = new Set(list.filter((row) => row.date >= HISTORY_CUTOFF));
+  const older = list.filter((row) => !open.has(row)).map((row, index) => ({ row, index }))
+    .sort((left, right) => (left.row.date < right.row.date ? 1 : left.row.date > right.row.date ? -1 : left.index - right.index));
+  for (const { row } of older) { if (open.size >= MIN_OPEN) break; open.add(row); }
+  return { current: list.filter((row) => open.has(row)), history: list.filter((row) => !open.has(row)) };
+}
+
 // (r48) Real Sandbox rows that are refusals: TradeGlot sent no evidence to that dispute. Counted apart so the real-call
 // count is not read as sends.
 export const REFUSED_LABEL = 'refused before any send call';

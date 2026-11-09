@@ -47,7 +47,7 @@ assert.ok(css.includes('.button.is-blocked { cursor: not-allowed; opacity: .45; 
 }
 
 // P2: the phone bar's Check country rules shows loading and aria-busy from the panel's own request.
-assert.ok(panel.includes('export default function CountryRules({ session, onResult, onContinue, onSessionExpired, onBusy }) {'), 'panel reports busy');
+assert.ok(panel.includes('export default function CountryRules({ session, onResult, onContinue, onSessionExpired, onBusy, onExample }) {'), 'panel reports busy');
 assert.ok(panel.includes('useEffect(() => { onBusy?.(busy); }, [busy]);'), 'busy forwarded');
 assert.ok(app.includes('onBusy={setCountryBusy}') && app.includes('loading: countryBusy })'), 'bar uses it');
 

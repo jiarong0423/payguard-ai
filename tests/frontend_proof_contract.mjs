@@ -6,7 +6,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { METHOD_ORDER, PROOF_SCHEMA, REFUSED_LABEL, channel3Summary, dateLabel, groupProof, methodCounts, refusedCount } from '../frontend/src/proof/proofData.js';
+import { HISTORY_CUTOFF, METHOD_ORDER, MIN_OPEN, PROOF_SCHEMA, REFUSED_LABEL, channel3Summary, dateLabel, groupProof, methodCounts, refusedCount, splitHistory } from '../frontend/src/proof/proofData.js';
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (path) => readFileSync(join(projectRoot, path), 'utf8');
@@ -169,6 +169,28 @@ const counts = methodCounts(facts);
 assert.equal(Object.values(counts).reduce((sum, value) => sum + value, 0), facts.rows.length);
 assert.deepEqual(groupProof({}), []);
 assert.deepEqual(channel3Summary({}), { count: 0, allOk: false, cards: [], minLatency: null, maxLatency: null, dates: [] });
+
+// 6b. (2026-11-09) History fold: the newest rows open, older rows in a closed per-scenario fold; nothing dropped, reworded or reordered.
+{
+  assert.equal(HISTORY_CUTOFF, '2026-11-09');
+  let shownOpen = 0, shownHistory = 0;
+  for (const section of sections) {
+    const { current, history } = splitHistory(section.rows);
+    assert.equal(current.length + history.length, section.rows.length, `${section.id}: every row appears once`);
+    assert.deepEqual([...current, ...history].map((row) => row.id).sort(), section.rows.map((row) => row.id).sort(), `${section.id}: same rows`);
+    assert.deepEqual(current.map((row) => row.id), section.rows.filter((row) => current.includes(row)).map((row) => row.id), `${section.id}: open rows keep their order`);
+    assert.ok(section.rows.filter((row) => row.date >= HISTORY_CUTOFF).every((row) => current.includes(row)), `${section.id}: every 2026-11-09 row is open`);
+    assert.ok(current.length >= Math.min(MIN_OPEN, section.rows.length), `${section.id}: never opens empty`);
+    assert.ok(history.every((row) => row.date < HISTORY_CUTOFF), `${section.id}: history holds older rows only`);
+    shownOpen += current.length; shownHistory += history.length;
+  }
+  assert.equal(shownOpen + shownHistory, facts.rows.length);
+  assert.ok(shownHistory > 0 && shownOpen > 0, 'both groups are used');
+  assert.deepEqual(splitHistory(undefined), { current: [], history: [] });
+  const page = pageMain();
+  assert.ok(page.includes('data-testid="proof-history"') && page.includes('Earlier runs (history)') && page.includes('<details className="proof-history"'), 'a closed fold per scenario, labelled');
+  assert.equal(/<details[^>]*proof-history[^>]*\sopen/u.test(page), false, 'history is closed by default');
+}
 
 // 7. (2026-11-08) Recorded real send: a text timeline of the 2026-11-05 send. Each quote must be in the receipt; the page calls nothing.
 {

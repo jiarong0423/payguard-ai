@@ -11,16 +11,15 @@ const css = readFileSync(new URL('../frontend/src/index.css', import.meta.url), 
 const panelCss = readFileSync(new URL('../frontend/src/CountryRules.css', import.meta.url), 'utf8');
 
 // Scenario 1: before/after card, line-by-line status, expiry warning, different default countries, neutral label.
-assert.ok(panel.includes('export const RULE_AUDIT_SAMPLE = Object.freeze({ TW: \'2026-11-02\', CN: \'2026-11-02\' });'), 'only TW and CN are in the sample audit');
-assert.ok(panel.includes('the r10 audit (2026-11-02) compared a sample of 36 TW and'), 'sample list cites its audit');
-assert.ok(panel.includes('data-testid="country-verdict-line-check"') && panel.includes('data-testid="country-row-line-check"'), 'verdict and rows show the status');
+assert.equal(/RULE_AUDIT_SAMPLE|the r10 audit|country-row-line-check/u.test(panel), false, 'no per-row audit status or sample list on the screen (2026-11-09)');
+assert.ok(panel.includes('data-testid="country-verdict-line-check"'), 'one muted line under the sources points to Proof');
 assert.ok(panel.includes('data-testid="country-row-source-date"> · source read {retrievedAt}'), 'rows show the source date');
 assert.ok(panel.includes('Stopped at {clockTime(before.at)} → {after.word} at {clockTime(after.at)}'), 'before/after line with both times');
 assert.ok(panel.includes('{!result.blocked && unlock?.after && <BeforeAfter record={unlock} names={names} />}'), 'card only after a later non-stop result');
 assert.ok(panel.includes("setUnlock((current) => (payload.blocked ? { before: entry, after: null } : current ? { before: current.before, after: entry } : null));"), 'a Stop starts a new pair');
 assert.ok(panel.includes("const away = [home === 'US' ? 'CA' : 'US', ...codes].find((code) => code !== home && codes.includes(code)) || home;"), 'ships-to default differs');
 assert.ok(panel.includes('setForm({ seller_country: home, buyer_country: away,'), 'defaults use two countries');
-assert.ok(app.includes("{aup ? (aup.match_status === 'REVIEW_SIGNAL' ? 'REVIEW SIGNAL' : 'POLICY CHECK') : aupPhase === 'loading' ? 'CHECKING' : 'NOT CHECKED YET'}"), 'no REVIEW SIGNAL before a check');
+assert.ok(app.includes("{aup ? (aup.match_status === 'REVIEW_SIGNAL' ? 'REVIEW SIGNAL' : 'POLICY CHECK') : aupPhase === 'loading' ? 'CHECKING' : countryCheck ? 'COUNTRY CHECK DONE' : 'NOT CHECKED YET'}"), 'no REVIEW SIGNAL before a check');
 assert.equal(app.includes('<span className="meta-label">REVIEW SIGNAL</span>'), false, 'unconditional label removed');
 assert.ok(app.includes('const AUP_WARN_MS = 30000;') && app.includes('data-testid="aup-keep-result"'), 'expiry warning with Keep');
 assert.ok(app.includes('That uses one of the 5 policy checks allowed per 2 minutes.'), 'Keep states its cost');

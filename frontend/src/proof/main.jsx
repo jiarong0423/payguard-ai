@@ -5,7 +5,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import facts from '../data/proof_facts_v1.json';
 import receipts from '../data/channel3_receipts_v1.json';
-import { METHOD_ORDER, REFUSED_LABEL, channel3Summary, dateLabel, groupProof, methodCounts, refusedCount } from './proofData.js';
+import { METHOD_ORDER, REFUSED_LABEL, channel3Summary, dateLabel, groupProof, methodCounts, refusedCount, splitHistory } from './proofData.js';
 import './proof.css';
 
 const ICONS = {
@@ -91,7 +91,14 @@ function ProofPage() {
       <Legend />
       {sections.map((section) => <section key={section.id} className="proof-section" aria-labelledby={`proof-${section.id}`} data-testid="proof-section" data-scenario={section.id}>
         <h2 id={`proof-${section.id}`}>{section.number && <span className="proof-number">{section.number}</span>}{section.label}</h2>
-        <ul className="proof-rows">{section.rows.map((row) => <ProofRow key={row.id} row={row} />)}</ul>
+        {(() => {
+          const { current, history } = splitHistory(section.rows);
+          return <>
+            <ul className="proof-rows">{current.map((row) => <ProofRow key={row.id} row={row} />)}</ul>
+            {history.length > 0 && <details className="proof-history" data-testid="proof-history"><summary>Earlier runs (history) · {history.length} row{history.length === 1 ? '' : 's'}</summary>
+              <ul className="proof-rows">{history.map((row) => <ProofRow key={row.id} row={row} />)}</ul></details>}
+          </>;
+        })()}
       </section>)}
       <footer className="proof-foot" data-testid="proof-foot">
         <p>Channel3 receipts on this page: {channel3.count} searches on {channel3.dates.join(', ')}, latency {channel3.minLatency} to {channel3.maxLatency} s, recomputed from <code>frontend/src/data/channel3_receipts_v1.json</code>.</p>

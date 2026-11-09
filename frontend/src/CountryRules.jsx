@@ -29,20 +29,19 @@ const CARRIER_HOSTS = /^https:\/\/([a-z0-9-]+\.)*(usps\.com|canadapost-postescan
 const sourceLabel = (url) => (/^https:\/\/(www|developer)\.paypal\.com\//.test(url) ? 'PayPal source'
   : CARRIER_HOSTS.test(url) ? 'Postal operator rule' : 'Official government source');
 const plural = (count, word) => `${count} ${word}${count === 1 ? '' : 's'}`;
-// (optimise r24, r48) Countries in the rules-accuracy sample audit, with its date. The rules pack has no per-country or
-// per-rule audit field, so this is hard-coded from the record: the r10 audit (2026-11-02) compared a sample of 36 TW and
-// CN rules with their sources; no country's rules were all checked line by line. Names come from the pack at run time.
-export const RULE_AUDIT_SAMPLE = Object.freeze({ TW: '2026-11-02', CN: '2026-11-02' });
-export const ruleAuditText = (names = {}) => `an earlier sample of 36 ${names.TW || 'TW'} and ${names.CN || 'CN'} rules was compared with their sources on 2026-11-02, and a recorded spot-check on 2026-11-08 sampled 48 of the 681 rules and compared 44 (34 consistent, 10 wording differs; 4 could not be opened); the other rules are not checked line by line`;
+// Plain-words help for the three terms sellers meet first in the rule sentences; each is explained once per result.
+const GLOSSARY = [['EEI', 'the US customs export filing'], ['ENDS', 'e-cigarettes and similar vaping products'], ['nonmailable', 'the post will not carry it']];
+function withGloss(sentence, seen) {
+  let out = sentence;
+  for (const [term, meaning] of GLOSSARY) {
+    const match = seen.has(term) ? null : new RegExp(`\\b${term}\\b`).exec(out);
+    if (match) { seen.add(term); out = `${out.slice(0, match.index + term.length)} (${meaning})${out.slice(match.index + term.length)}`; }
+  }
+  return out;
+}
 // (optimise r24) Clock time for the before/after card ("Stopped at 10:02 → Clear at 10:04"), local 24-hour time.
 const clockTime = (ms) => new Date(ms).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
 const verdictWord = (result) => (result.blocked ? 'Stopped' : result.findings.some(isPostalBan) ? 'Draft allowed (other carrier)' : 'Clear');
-// Which country a rule row is about: its scope ("<Country> import (restricted)") or its sentence starts with the name.
-function rowCountry(row, names) {
-  const text = row.text || '';
-  return Object.keys(names).find((code) => names[code] && text.startsWith(names[code])) || null;
-}
-
 // A rule row reads "{Country} {side} ({tier}): {rule}. [Statute Article]". The seller reads the plain sentence
 // first; the scope and the statute move to a small second line and the source link (review r1 P0.4).
 function splitRule(text) {
@@ -80,19 +79,17 @@ function SevIcon({ severity }) {
 
 // The link reads "Source" on one line; the statute or source kind sits in its tooltip and accessible name (plan r2 C11).
 // The act and article also show as a small line of their own, so a viewer can read the act the video names (r20 UX-5).
-function Finding({ row, names, retrievedAt }) {
+function Finding({ row, retrievedAt, gloss }) {
   const { sentence, scope, statute } = splitRule(row.text);
   const label = statute ? `Source: ${statute}` : sourceLabel(row.source);
-  // (optimise r24, r48) Each row says when its source was read and whether its country was in the sample audit.
-  const country = rowCountry(row, names);
   return <li className={`country-finding sev-${row.severity.toLowerCase()}`} data-testid={`country-finding-${row.code}`}>
     <span className="country-sev"><SevIcon severity={row.severity} />{SEVERITY_TEXT[row.severity]}</span>
-    <span className="country-finding-body"><span>{sentence}</span>
+    <span className="country-finding-body"><span>{gloss(sentence)}</span>
       {statute && <small className="country-statute" data-testid={`country-statute-${row.code}`}>{statute}</small>}
       <small>{scope && <span>{scope} · </span>}<a href={row.source} target="_blank" rel="noopener noreferrer" title={label}
         aria-label={`${label}${scope ? ` (${scope})` : ''}, opens in a new tab`}>Source ↗</a>
         {retrievedAt && <span data-testid="country-row-source-date"> · source read {retrievedAt}</span>}
-        {country && <span className={`country-line-check${RULE_AUDIT_SAMPLE[country] ? ' is-checked' : ''}`} data-testid="country-row-line-check"> · {RULE_AUDIT_SAMPLE[country] ? `country in the ${RULE_AUDIT_SAMPLE[country]} sample check of 36 rules` : 'not yet checked line by line'}</span>}</small></span>
+      </small></span>
   </li>;
 }
 
@@ -130,12 +127,11 @@ function findingsBySeverity(unordered) {
     info: findings.filter((row) => row.severity === 'INFO'), action: findings.filter((row) => row.severity !== 'INFO') };
 }
 
-// (optimise r24, r48) The rule audit's coverage (a 36-rule TW and CN sample; see RULE_AUDIT_SAMPLE). (r30 J4 #6a)
-// A coverage note of the rule audit, not of this check: it sits muted under the source lines, not in bold under the
-// verdict, where it read as "the check was not done".
-function LineCheckNote({ names }) {
+// A muted line under the source lines (not in the verdict, where it read as "the check was not done"): how the rules were checked
+// is on the Proof page, so no audit numbers sit on this screen.
+function LineCheckNote() {
   return <small className="country-footnote country-line-check-note" data-testid="country-verdict-line-check">
-    Rule audit: {ruleAuditText(names)}.</small>;
+    Rules are paraphrased from official pages; see <a href="/proof.html">Proof</a> for how they were checked.</small>;
 }
 
 // One big line, then the count line (review r1 P0.3; wording per the PayPal-side red teams: the block may come from a
@@ -178,7 +174,7 @@ const SESSION_EXPIRED_TEXT = 'The demo session expired. Select Reconnect at the 
 // same local rules check as the Check country rules button. No other request kind, no PayPal call, no model call.
 export const EXAMPLE_ROUTE = Object.freeze({ seller_country: 'US', buyer_country: 'SG', goods_tags: Object.freeze(['e_cigarettes']) });
 
-export default function CountryRules({ session, onResult, onContinue, onSessionExpired, onBusy }) {
+export default function CountryRules({ session, onResult, onContinue, onSessionExpired, onBusy, onExample }) {
   const [catalog, setCatalog] = useState(null);
   const [unavailable, setUnavailable] = useState(false);
   const [form, setForm] = useState(null);
@@ -278,6 +274,7 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
     setForm(next);
     setAmountNote('');
     exampleRef.current = true;
+    onExample?.();
     runCheck(next);
   };
   async function runCheck(values) {
@@ -336,13 +333,16 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
   const countryOptions = catalog.countries.map((row) => [row.code, row.name]);
   const groups = result ? findingsBySeverity(result.findings) : null;
   const views = groups ? [
-    ['key', 'Key rules', 'country-key-rules'],
+    ['key', 'Key rules', 'country-key-tab'],
     ...(groups.action.length > SUMMARY_ROWS ? [['all', `All rules (${groups.action.length})`, 'country-more-rules']] : []),
     // Same word as the row label "Note" (red team 2026-11-03 P2-3).
     ...(groups.info.length > 0 ? [['info', `Notes (${groups.info.length})`, 'country-good-to-know']] : []),
   ] : [];
-  const shown = views.some(([key]) => key === view) ? view : 'key';
-  const rows = !groups ? [] : shown === 'all' ? groups.action : shown === 'info' ? groups.info : groups.action.slice(0, SUMMARY_ROWS);
+  // Key rules always show; the rest (all rules, notes) sit in one closed "See all rules and notes" fold.
+  const foldViews = views.filter(([key]) => key !== 'key');
+  const shown = foldViews.some(([key]) => key === view) ? view : foldViews[0]?.[0];
+  const keyRows = !groups ? [] : groups.action.slice(0, SUMMARY_ROWS);
+  const foldRows = !groups ? [] : shown === 'info' ? groups.info : groups.action;
   const editItem = (account = false) => {
     if (account) {
       const details = formRef.current?.querySelector('details.country-optional');
@@ -367,7 +367,7 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
       <h3 id="country-rules-title">Where are you shipping from and to?</h3>
       <p>TradeGlot compares PayPal rules with official export and import rules.</p>
       <button type="button" className="button button-secondary country-try-example" data-testid="country-try-example" aria-disabled={busy || waiting || undefined}
-        title="Fills United States to Singapore with E-cigarettes ticked and runs the same check" onClick={tryExample}>Try the example</button>
+        title="Fills United States to Singapore with E-cigarettes ticked and runs the same check" onClick={tryExample}>Fill from example</button>
       <small className="country-try-note" data-testid="country-try-note">United States to Singapore, e-cigarettes. Synthetic data, no PayPal calls; fills the form and runs the check.</small>
     </div>
     <div className="country-form" ref={formRef}>
@@ -414,15 +414,24 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
     {result && <div ref={resultRef} tabIndex={-1} className={`country-result ${result.blocked ? 'is-blocked' : result.findings.some(isPostalBan) ? 'is-caution' : 'is-clear'}`} data-testid="country-result">
       <div className="country-verdict" data-testid="country-verdict"><Verdict result={result} names={names} tags={result.checked_tags} onEdit={editItem} onContinue={onContinue} /></div>
       {!result.blocked && unlock?.after && <BeforeAfter record={unlock} names={names} />}
-      {(groups.action.length > SUMMARY_ROWS || groups.info.length > 0) && <div className="segmented" role="tablist" aria-label="Which rules to show"
-        onKeyDown={(event) => tabKeyDown(event, views.map(([key]) => key), shown, setView, (key) => `country-view-${key}`)}>
-        {views.map(([key, label, testId]) => <button key={key} type="button" role="tab" id={`country-view-${key}`} data-testid={testId} aria-selected={shown === key} tabIndex={shown === key ? 0 : -1} aria-controls="country-view-rows" className={shown === key ? 'is-active' : ''} onClick={() => setView(key)}>{label}</button>)}
-      </div>}
-      <div id="country-view-rows" role="tabpanel" aria-labelledby={`country-view-${shown}`}>
-        {rows.length > 0 ? <ul>{rows.map((row) => <Finding key={`${row.code}-${row.text}`} row={row} names={names} retrievedAt={result.retrieved_at} />)}</ul> : <p className="country-footnote">No rule to check first.</p>}
-      </div>
-      <small className="country-footnote">Paraphrased from official sources, {result.retrieved_at}. Not legal advice.</small>
-      <LineCheckNote names={names} />
+      {(() => {
+        const seen = new Set();
+        const list = (items) => <ul>{items.map((row) => <Finding key={`${row.code}-${row.text}`} row={row} retrievedAt={result.retrieved_at} gloss={(text) => withGloss(text, seen)} />)}</ul>;
+        return <>
+          <div id="country-view-rows" data-testid="country-key-rules">
+            {keyRows.length > 0 ? list(keyRows) : <p className="country-footnote">No rule to check first.</p>}
+          </div>
+          {foldViews.length > 0 && <details className="sandbox-details country-all-rules" data-testid="country-all-rules"><summary>See all rules and notes</summary>
+            <div className="segmented" role="tablist" aria-label="Which rules to show"
+              onKeyDown={(event) => tabKeyDown(event, foldViews.map(([key]) => key), shown, setView, (key) => `country-view-${key}`)}>
+              {foldViews.map(([key, label, testId]) => <button key={key} type="button" role="tab" id={`country-view-${key}`} data-testid={testId} aria-selected={shown === key} tabIndex={shown === key ? 0 : -1} aria-controls="country-view-fold" className={shown === key ? 'is-active' : ''} onClick={() => setView(key)}>{label}</button>)}
+            </div>
+            <div id="country-view-fold" role="tabpanel" aria-labelledby={`country-view-${shown}`}>{list(foldRows)}</div>
+          </details>}
+        </>;
+      })()}
+      <small className="country-footnote">Paraphrased from official pages, {result.retrieved_at}. Not legal advice.</small>
+      <LineCheckNote />
     </div>}
     </div>
   </section>;

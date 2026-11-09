@@ -70,3 +70,7 @@ body { margin: 0; background: var(--pg-color-canvas); color: var(--pg-color-ink)
 .proof-recorded-file, .proof-recorded-limit, .proof-recorded-source { margin: var(--pg-space-3) 0 0; font-size: 14px; color: var(--pg-color-muted); }
 .proof-recorded-file { color: var(--pg-color-ink); font-weight: 600; }
 @media (max-width: 640px) { .proof-recorded-steps li { grid-template-columns: 1fr; gap: var(--pg-space-1); } }
+
+/* Earlier runs: a closed fold per scenario (2026-11-09). */
+.proof-history { margin-top: var(--pg-space-3); }
+.proof-history > summary { cursor: pointer; font-weight: 600; font-size: 15px; color: var(--pg-color-muted); padding: var(--pg-space-2) 0; }

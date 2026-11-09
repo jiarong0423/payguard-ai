@@ -8,7 +8,7 @@ const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
 
 // Button exists, with its label and test id.
 assert.ok(panel.includes('data-testid="country-try-example"'), 'button has a test id');
-assert.ok(/onClick=\{tryExample\}>Try the example<\/button>/.test(panel), 'button reads "Try the example" and runs tryExample');
+assert.ok(/onClick=\{tryExample\}>Fill from example<\/button>/.test(panel), 'the card button reads "Fill from example" (the hero reads "Run the full example") and runs tryExample');
 // Prefill values: United States to Singapore, E-cigarettes only.
 assert.ok(panel.includes("seller_country: 'US', buyer_country: 'SG', goods_tags: Object.freeze(['e_cigarettes'])"), 'example is US to SG with e_cigarettes');
 assert.ok(panel.includes('const next = { ...form, ...EXAMPLE_ROUTE, goods_tags: [...EXAMPLE_ROUTE.goods_tags] };'), 'example overwrites route and goods on the existing form state');
@@ -33,7 +33,7 @@ assert.ok(!/\.country-try-example\s*\{[^}]*display:\s*none/.test(css), 'never hi
 assert.ok(panel.includes('Synthetic data, no PayPal calls'), 'the note under the button says synthetic data and no PayPal calls');
 assert.ok(!readFileSync(new URL('../frontend/src/App.jsx', import.meta.url), 'utf8').includes('<p>Results show here.</p>'), 'right pane no longer reads as empty');
 // README step 1 names the button; the phone Proof link is named in step 5.
-assert.ok(readme.includes('select **Try the example**'), 'README step 1 uses the button');
+assert.ok(readme.includes('select **Run the full example**'), 'README step 1 uses the button');
 assert.ok(readme.includes('**Next: dispute evidence**') && readme.includes('**Load dispute case**'), 'README step 4 names the path');
 assert.ok(readme.includes('**Proof and receipts** link under the page title'), 'README step 5 names the phone link');
 

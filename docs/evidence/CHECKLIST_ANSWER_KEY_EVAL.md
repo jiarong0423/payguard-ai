@@ -1,4 +1,4 @@
-# Checklist answer-key evaluation (v1 and v2 held-out, reported separately)
+# Checklist answer-key evaluation (v1 and v2, reported separately; v2 is held out by case, not by theme, and its author had seen the v1 results)
 
 **Status: both answer keys were drafted by the project author together with an AI assistant from public PayPal sources; neither has been reviewed by any third party, by PayPal, or by a dispute professional, so every number below is a self-evaluation of a small hand-written set and says nothing about real dispute traffic.**
 
