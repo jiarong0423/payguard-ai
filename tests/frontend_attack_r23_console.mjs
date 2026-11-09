@@ -76,7 +76,7 @@ assert.ok(!/writeStored\([^)]*aup/.test(app), 'no check result is stored');
   assert.ok(timer.includes("await apiRequest('/demo/state', { session });") && timer.includes('if (failure.status === 401) end();'), 'server confirms');
   assert.ok(timer.includes("document.addEventListener('visibilitychange', onVisible);"), 'a sleeping tab checks on return');
 }
-assert.ok(app.includes("const SESSION_EXPIRED_TEXT = 'Session expired — select Reconnect"), 'plain expiry text');
+assert.ok(app.includes("const SESSION_EXPIRED_TEXT = 'Session expired. Select Reconnect"), 'plain expiry text');
 
 // P2 #4: Enter on Confirm Draft Context moves focus to the next control.
 assert.ok(app.includes("focusWhenIdle(AFTER_DRAFT_CONTEXT, { scroll: 'fallback' });"), 'focus after Confirm Draft Context');

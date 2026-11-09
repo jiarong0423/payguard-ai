@@ -145,7 +145,7 @@ for (const directPresentationLeak of [
   '<strong>{draft.routing?.overall_state}</strong>',
   '>{row.requirement_state}</Badge>',
 ]) forbidText(appSource, directPresentationLeak);
-requireText(appSource, 'Live Sandbox connection verified · credentials remain off-screen');
+requireText(appSource, 'Live Sandbox connection verified · credentials stay hidden');
 for (const reviewProof of [
   'Internal Review ZIP contents',
   'Seven fixed files · generated locally · not sent to PayPal',
@@ -161,7 +161,7 @@ for (const providerContext of [
 ]) requireText(appSource, providerContext, `provider-context boundary ${providerContext}`);
 requireText(appSource, 'Check capacity and tracking or delivery records; this demo has none.',
   'Stage 2 reminder must not claim verified order proof');
-requireText(appSource, 'This stage-level signal does not verify fulfillment evidence, classify this order as fraud, or predict any PayPal action.',
+requireText(appSource, 'This signal does not prove fraud, check delivery or predict what PayPal will do.',
   'Stage 2 limits stay visible');
 requireText(
   appSource,

@@ -100,7 +100,7 @@ AG Studio, AG Grid Enterprise and AG Charts Enterprise are commercial software f
 ## Known limits
 
 - Three synthetic cases at a fixed as-of time; the dashboard is a view of the demo data, not of real disputes.
-- The built-in agents have run live once (2026-11-04, one question, local console). The hosted replay still needs the owner's recording.
+- The built-in agents have run live on the local console (2026-11-04, several runs none saved; then on a freshly started console four questions went through the popup and one finished, which is the recorded one); the hosted dashboard replays that recorded run and calls no model.
 - On a phone the AI panel takes the screen while it is open; the dashboard goes back to the canvas after an auditor answer.
 - The dashboard bundle is about 870 kB gzip. It loads only on `/dashboard.html`; the console and evidence page load no AG Studio code.
 

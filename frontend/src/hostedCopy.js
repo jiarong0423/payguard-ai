@@ -52,9 +52,7 @@ export function hostedCopy(chooser, sandboxReads = false) {
   if (sandboxReads !== true) return copy;
   return {
     ...copy,
-    pill: copy.mode === 'off' ? 'Hosted demo · rules only · read-only Sandbox' : 'Hosted demo · read-only Sandbox',
-    intro: 'This public copy can read your US Sandbox disputes (read-only GET calls to the PayPal Sandbox, shared across visitors and capped). It cannot create, change or send anything. Gemini stays as shown below.',
-    local: 'Gemini evidence brief, Sandbox draft, evidence and tracking sends',
-    sandbox: 'Read-only: connect and list or open disputes',
+    pill: 'Hosted demo · read-only Sandbox',
+    intro: 'This public copy only reads the PayPal Sandbox; it cannot write.',
   };
 }

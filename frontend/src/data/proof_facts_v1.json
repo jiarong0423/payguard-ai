@@ -1,6 +1,6 @@
 {
   "schema_version": "payguard.proof_facts.v1",
-  "source_note": "Facts copied by hand on 2026-11-04 and 2026-11-05 (optimise r24, r36) from the evidence files named in each row: docs/evidence/RECEIPT_20261031_live.md, docs/evidence/RECEIPT_20261104_live.md, docs/evidence/RECEIPT_20261105_live.md, docs/evidence/channel3_receipts_v1.json, docs/evidence/GEMINI_GUIDE_RUNS_20261103.md and docs/evidence/RED_TEAM_ROUNDS_20261104.md. Each row's quotes are checked word for word against its source by tests/frontend_proof_contract.mjs; the Channel3 row is recomputed from the receipts. Identifiers stay masked exactly as in the receipts. No secret, token, e-mail address or response body is copied.",
+  "source_note": "Facts copied by hand on 2026-11-04, 2026-11-05 and 2026-11-09 (optimise r24, r36; the 2026-11-09 rows) from the evidence files named in each row: docs/evidence/RECEIPT_20261031_live.md, docs/evidence/RECEIPT_20261104_live.md, docs/evidence/RECEIPT_20261105_live.md, docs/evidence/channel3_receipts_v1.json, docs/evidence/GEMINI_GUIDE_RUNS_20261103.md, docs/evidence/RED_TEAM_ROUNDS_20261104.md, docs/evidence/READBACK_20261109.md, docs/evidence/HOSTED_READONLY_LIVE_20261109.md, docs/evidence/channel3_receipts_20261109.json, docs/evidence/POSTMAN_RUN_20261109.md, docs/evidence/RENDER_WORKFLOW_RUN_20261109.md and docs/evidence/APIMATIC_RUN_20261109.md. Each row's quotes are checked word for word against its source by tests/frontend_proof_contract.mjs; the Channel3 row is recomputed from the receipts. Identifiers stay masked exactly as in the receipts. No secret, token, e-mail address or response body is copied.",
   "methods": {
     "REAL_SANDBOX": { "label": "Real Sandbox call", "simulated": false, "meaning": "A real call to PayPal's Sandbox through PayGuard, made by the author with two Sandbox test accounts. Sandbox test data, not a real merchant case. Rows marked refused before any send call are refusals: PayGuard sent no evidence to that dispute." },
     "RECORDED": { "label": "Recorded real run", "simulated": false, "meaning": "A real run against an outside service (Channel3 search, Gemini) made once and recorded in the file named. This page shows the record; it calls nothing." },
@@ -231,6 +231,76 @@
       "date_end": "2026-11-04",
       "source": "docs/evidence/RED_TEAM_ROUNDS_20261104.md",
       "quotes": ["Nothing in these rounds called PayPal Live or a real payment; r27 used the owner's Gemini key (a paid model) on the local console, as did the later r31 and r32 judge rounds.", "browser and phone attacks ran against an isolated rules-only copy of the console with PayPal not configured"]
+    },
+    {
+      "id": "dispute-readback-hash-match",
+      "scenario": "dispute",
+      "proven": "TradeGlot sent a generated 2,015-byte delivery PDF to three Sandbox test disputes on 2026-11-09. For two of them, the file PayPal serves back has the same SHA-256 as the fingerprint recorded at send time; the first was not compared because no fingerprint had been recorded then.",
+      "how": "Read-only read-back in the author's own terminal: one token request, one dispute read and one document download per dispute. Sends 2 and 3 returned PayPal-Debug-Id ca5782cf8df90 and f492438834396; the read of send 2 returned ca578476fa829. Each read-back showed WAITING_FOR_BUYER_RESPONSE and one listed document named synthetic-delivery.pdf. This does not mean PayPal accepted the evidence; PayPal decides every outcome. Dispute ids are masked in the source file and not reproduced here.",
+      "method": "REAL_SANDBOX",
+      "date": "2026-11-09",
+      "source": "docs/evidence/READBACK_20261109.md",
+      "quotes": ["the file PayPal serves has the same SHA-256 as the file the console recorded when it sent", "not compared: no fingerprint of the sent bytes had been recorded", "The file sent was the generated delivery PDF (`synthetic-delivery.pdf`, 2,015 bytes), not the 43-byte placeholder of the earlier sends.", "PayPal-Debug-Id of the read `ca578476fa829`", "It does not cover send 1 (no fingerprint had been recorded then)"]
+    },
+    {
+      "id": "dispute-readback-404-fixed",
+      "scenario": "dispute",
+      "proven": "The first read-backs of the sent file answered HTTP 404; the cause was TradeGlot's own read-back tool, not PayPal, and it is fixed.",
+      "how": "The tool asked PayPal's content service for the document with Accept: application/json. The same request with Accept: application/pdf returns the file. The tool now asks for the PDF first and a test covers it.",
+      "method": "REAL_SANDBOX",
+      "date": "2026-11-09",
+      "source": "docs/evidence/READBACK_20261109.md",
+      "quotes": ["The first read-backs (both disputes) answered HTTP 404 for the document.", "The cause was the read-back tool", "`tools/sandbox_readback_hash.py` now asks for the PDF first, and a test covers it."]
+    },
+    {
+      "id": "dispute-hosted-readonly-live",
+      "scenario": "dispute",
+      "proven": "The public hosted demo made real read-only calls to PayPal's Sandbox on 2026-11-09: the OAuth connect and the dispute list (8 author-created test disputes). All six write and provider routes answered 503.",
+      "how": "Checked from a browser on the Render demo (commit b017f5d) with the read-only switch on. Connect returned 200 with PayPal-Debug-Id ca57912b83dab; the list returned 200, evidence class AUTHENTIC_SANDBOX_RESPONSE, provider_submission NOT_PERFORMED, PayPal-Debug-Id ca57913a83e52. Known gap: that list returned the Sandbox dispute ids in full although the wording said masked. A change to return masked codes has unit tests and was not yet deployed or re-checked live when the source file was written, and an opened case still carries its Sandbox transaction id.",
+      "method": "REAL_SANDBOX",
+      "date": "2026-11-09",
+      "source": "docs/evidence/HOSTED_READONLY_LIVE_20261109.md",
+      "quotes": ["The hosted site really calls PayPal's Sandbox for reads (OAuth token and the dispute list), and every write route is refused.", "evidence class `AUTHENTIC_SANDBOX_RESPONSE`", "PayPal-Debug-Id `ca57912b83dab`", "8 disputes (author-created Sandbox test cases, USD 48.00 to 158.00)", "returned the Sandbox dispute ids in full", "The change has unit tests and was not yet deployed or re-checked live when this file was written.", "An opened case still carries its Sandbox transaction id."]
+    },
+    {
+      "id": "policy-channel3-search-round2",
+      "scenario": "policy",
+      "proven": "A second round of 5 live Channel3 searches on 2026-11-09 all answered HTTP 200 with 3 product cards each.",
+      "how": "Run on the author's machine; latency 1.1 to 2.1 s. The receipts keep the query, status, card count, latency and a sha256 of each reply, not the reply itself. The page copy of the earlier round (2026-11-01) is a separate row.",
+      "method": "RECORDED",
+      "date": "2026-11-09",
+      "source": "docs/evidence/channel3_receipts_20261109.json",
+      "quotes": ["\"called_at\": \"2026-11-09T01:06:12Z\",", "\"http_status\": 200,", "\"cards\": 3,", "\"latency_seconds\": 1.138,", "\"latency_seconds\": 2.126,"]
+    },
+    {
+      "id": "cross-postman-newman-run",
+      "scenario": "cross",
+      "proven": "The generated Postman collection was driven by Newman against the local console on 2026-11-09: 10 read-only requests, 19 assertions, 0 failed.",
+      "how": "A read-only subset (the session request and 9 GET requests that need no path parameter) ran against a local server in default demo mode: no PayPal Sandbox keys, no Gemini key, no network beyond loopback. The first unmodified run was refused (403 origin_required, then 401) until the two required headers were added. The 27 other requests were not run, and this shows nothing about the hosted site or PayPal calls.",
+      "method": "TEST",
+      "date": "2026-11-09",
+      "source": "docs/evidence/POSTMAN_RUN_20261109.md",
+      "quotes": ["10 requests, 19 assertions (status and JSON body), 0 failed.", "no PayPal Sandbox keys, no Gemini key, no network beyond loopback", "It does not show the write paths, the hosted site, or the PayPal Sandbox calls through Postman."]
+    },
+    {
+      "id": "cross-render-workflow-run",
+      "scenario": "cross",
+      "proven": "One manual run of the TradeGlot evidence_integrity task on a Render Workflow succeeded in 4.2 s on 2026-11-09 and returned a receipt with ok true.",
+      "how": "Created from the public repository (commit e0da94b), started by hand once. Receipt body: ok true, drift false, secrets_used false, network_used false. There is no schedule, so no nightly claim is made. The receipt digest is not a signature.",
+      "method": "RECORDED",
+      "date": "2026-11-09",
+      "source": "docs/evidence/RENDER_WORKFLOW_RUN_20261109.md",
+      "quotes": ["Succeeded, 4.2 s (queued 0.5 s, ran 3.7 s)", "`ok: true`, `drift: false`, `secrets_used: false`, `network_used: false`", "No schedule exists, so nothing here supports a \"nightly\" claim."]
+    },
+    {
+      "id": "cross-apimatic-run",
+      "scenario": "cross",
+      "proven": "TradeGlot's API description passed APIMatic validation with 0 errors on 2026-11-09 after the first run failed with 345; a documentation portal and SDKs were generated locally and nothing was published.",
+      "how": "APIMatic CLI 1.5.0 on the generated OpenAPI file (37 operations). The first run failed on duplicate schema titles and one exclusive bound; the export tool was fixed, and the second run succeeded. Portal, llms.txt and SDKs for seven languages were produced as local folders only. The API Copilot panel was configured but no Copilot answer has been checked, so none is claimed, and the SDKs were not run against the API.",
+      "method": "RECORDED",
+      "date": "2026-11-09",
+      "source": "docs/evidence/APIMATIC_RUN_20261109.md",
+      "quotes": ["Failed: 345 errors (344 duplicate schema titles, 1 `exclusiveMaximum` type), 331 warnings, 1,291 information notes", "Succeeded: 0 errors, 556 warnings, 1,291 information notes", "Nothing was published: every output below is a local folder and none of it is in this repository.", "No Copilot answer has been checked, so none is claimed."]
     }
   ],
   "recorded_send": {

@@ -4,7 +4,9 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
-import { assertAiBrief, assertReferences, assertSandboxReceipt, REFERENCE_TYPES } from '../frontend/src/api.js';
+import { assertAiBrief, assertReferences, assertSandboxReceipt, loadReferenceContract, REFERENCE_TYPES } from '../frontend/src/api.js';
+// The reference corpus loads on demand (first-load budget); the checks below need it loaded first, as apiRequest does.
+await loadReferenceContract();
 import {
   REFERENCE_COMBINED_DIGEST,
   REFERENCE_CORPUS_ID,

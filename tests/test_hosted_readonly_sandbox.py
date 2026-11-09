@@ -59,8 +59,8 @@ class Recorder:
             return httpx.Response(200, json={"access_token": "synthetic-token", "token_type": "Bearer", "expires_in": 3600})
         if request.method == "GET" and request.url.path == "/v1/customer/disputes":
             return httpx.Response(200, json=sandbox_list_reply())
-        if request.method == "GET" and request.url.path == "/v1/customer/disputes/PP-D-SANDBOX01":
-            return httpx.Response(200, json=sandbox_detail_reply())
+        if request.method == "GET" and request.url.path.startswith("/v1/customer/disputes/PP-"):
+            return httpx.Response(200, json=sandbox_detail_reply(request.url.path.rsplit("/", 1)[1]))
         return httpx.Response(500, json={})
 
     def posts(self):
@@ -108,13 +108,15 @@ class WriteRoutesStayShut(HostedReadOnlyBase):
     def test_only_connect_opens_and_only_the_oauth_post_leaves(self):
         self.assertEqual(self.post("/paypal/connect").status_code, 200)
         self.assertEqual(self.get("/paypal/disputes").status_code, 200)
-        self.assertEqual(self.get("/paypal/disputes/PP-D-SANDBOX01").status_code, 200)
+        code = self.get("/paypal/disputes").json()["items"][0]["dispute_id"]
+        self.assertEqual(self.get("/paypal/disputes/" + code).status_code, 200)
         for route in WRITE_ROUTES:
             self.post(route, {"dispute_id": "PP-D-SANDBOX01"})
         self.assertEqual(self.recorder.posts(), [("POST", "/v1/oauth2/token")])
         self.assertEqual(self.recorder.calls[0], ("POST", "/v1/oauth2/token"))
         self.assertEqual({c for c in self.recorder.calls if c[0] == "GET"},
                          {("GET", "/v1/customer/disputes"), ("GET", "/v1/customer/disputes/PP-D-SANDBOX01")})
+
 
     def test_connections_reports_sandbox_reads_and_live_data_is_labelled(self):
         self.assertEqual(self.get("/connections").json(), {"mode": "hosted_demo", "sandbox_reads": True})
@@ -177,6 +179,107 @@ class ConnectIsIdempotent(HostedReadOnlyBase):
         self.assertEqual(self.get("/paypal/status").json()["status"], "disconnected")
         self.assertEqual(self.post("/paypal/connect").status_code, 200)
         self.assertEqual(self.recorder.calls.count(("POST", "/v1/oauth2/token")), 2)
+
+
+# TST marks a synthetic id for tools/validate_public_candidate.py (it rejects real-looking dispute numbers in public text).
+REAL_IDS = ("PP-R-TST-010007173", "PP-R-TST-020007173", "PP-R-TST-030007172")  # the first two share prefix and last four: the same base code
+
+
+class RealIdRecorder(Recorder):
+    """Provider stub whose dispute ids are fake but realistic; two of them end in the same four characters."""
+
+    def __call__(self, request):
+        response = super().__call__(request)
+        if request.method == "GET" and request.url.path == "/v1/customer/disputes":
+            rows = sandbox_list_reply()["items"]
+            items = [dict(rows[index % 2], dispute_id=real) for index, real in enumerate(REAL_IDS)]
+            return httpx.Response(200, json={"items": items})
+        return response
+
+
+class MaskedDisputeIds(HostedReadOnlyBase):
+    def setUp(self):
+        super().setUp()
+        self.recorder = RealIdRecorder()
+        self.app.state.paypal._inner = make_inner(self.recorder)
+        self.post("/paypal/connect")
+
+    def listing(self):
+        response = self.get("/paypal/disputes")
+        self.assertEqual(response.status_code, 200, response.text)
+        return response
+
+    def test_list_response_never_holds_a_real_id_and_codes_are_valid_and_unique(self):
+        response = self.listing()
+        for real in REAL_IDS:
+            self.assertNotIn(real, response.text)
+            self.assertNotIn(real[-9:], response.text, "not even the long tail of the real number")
+        codes = [row["dispute_id"] for row in response.json()["items"]]
+        self.assertEqual(len(codes), 3)
+        self.assertEqual(len(set(codes)), 3, "the two ids that share a tail must not collide")
+        for code in codes:
+            self.assertRegex(code, r"^PP-[A-Z0-9][A-Z0-9-]{2,62}$")
+            self.assertNotIn(code, REAL_IDS)
+        self.assertEqual([row["dispute_id"] for row in self.listing().json()["items"]], codes, "stable across reads")
+
+    def test_detail_by_code_works_and_its_whole_response_has_no_real_id(self):
+        code = self.listing().json()["items"][0]["dispute_id"]
+        response = self.get("/paypal/disputes/" + code)
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertEqual(response.json()["dispute_id"], code)
+        for real in REAL_IDS:
+            self.assertNotIn(real, response.text)
+        self.assertIn(("GET", "/v1/customer/disputes/" + REAL_IDS[0]), self.recorder.calls, "the server still asks PayPal by the real id")
+
+    def test_a_real_id_or_an_unknown_code_is_refused_and_never_reaches_paypal(self):
+        self.listing()
+        before = list(self.recorder.calls)
+        for real in REAL_IDS:
+            self.assertEqual(self.get("/paypal/disputes/" + real).status_code, 404, real)
+        self.assertEqual(self.get("/paypal/disputes/PP-R-TST-XXXX9999").status_code, 404)
+        self.assertEqual(self.recorder.calls, before)
+
+    def test_nothing_is_learned_before_a_list_and_the_code_table_is_bounded(self):
+        self.assertEqual(self.get("/paypal/disputes/PP-R-TST-XXXX7173").status_code, 404)
+        wrapper = self.app.state.paypal
+        for index in range(demo_mode.HOSTED_ID_MAP_LIMIT * 3):
+            wrapper._code_for(f"PP-R-TST-{index:09d}")
+        self.assertLessEqual(len(wrapper._real_by_code), demo_mode.HOSTED_ID_MAP_LIMIT)
+        self.assertEqual(len(wrapper._real_by_code), len(wrapper._code_by_real))
+
+    def test_deep_masking_reaches_nested_fields_and_links(self):
+        class Inner:
+            def status(self):
+                return {"status": "connected"}
+
+            async def get_dispute(self, dispute_id):
+                return {"dispute_id": dispute_id, "links": [{"href": "https://x/v1/customer/disputes/" + dispute_id}],
+                        "nested": {"deep": [dispute_id, {"again": "ref " + dispute_id}]}, "paypal_debug_id": "abc"}
+
+            async def list_disputes(self, page_size=10):
+                return [{"dispute_id": REAL_IDS[0]}]
+        wrapper = HostedReadOnlyPaypalAdapter(Inner())
+
+        async def run():
+            code = (await wrapper.list_disputes())[0]["dispute_id"]
+            return code, await wrapper.get_dispute(code)
+        code, detail = asyncio.run(run())
+        self.assertNotIn(REAL_IDS[0], repr(detail))
+        self.assertEqual(detail["dispute_id"], code)
+        self.assertIn(code, detail["nested"]["deep"])
+
+    def test_local_mode_does_not_mask(self):
+        recorder = RealIdRecorder()
+        with env():
+            app = create_app(store=SessionStore(), paypal=make_inner(recorder))
+            with TestClient(app, base_url="http://127.0.0.1:8000", client=("127.0.0.1", 9), raise_server_exceptions=False) as client:
+                headers = {"Origin": "http://127.0.0.1:8000"}
+                session = client.post(ROOT + "/demo/sessions", json={}, headers=headers).json()
+                headers.update({"X-Demo-Session": session["session_id"], "X-CSRF-Token": session["csrf_token"]})
+                self.assertEqual(client.post(ROOT + "/paypal/connect", json={}, headers=headers).status_code, 200)
+                listing = client.get(ROOT + "/paypal/disputes", headers=headers)
+                self.assertEqual([row["dispute_id"] for row in listing.json()["items"]], list(REAL_IDS))
+                self.assertEqual(client.get(ROOT + "/paypal/disputes/" + REAL_IDS[0], headers=headers).json()["dispute_id"], REAL_IDS[0])
 
 
 class WrapperSurface(unittest.TestCase):

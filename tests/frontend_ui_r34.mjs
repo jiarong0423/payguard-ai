@@ -35,7 +35,7 @@ const css = read('frontend/src/index.css');
   assert.ok(guide.includes("const modeBadge = view?.chooser_mode === 'gemini' ? <Badge tone=\"muted\">Rules + Gemini</Badge>"), 'badge reads the same field');
   assert.equal(app.split('onChooser={setGuideChooser}').length - 1, 3, 'all three guides report');
   assert.ok(app.includes('<HostedBadge guideChooser={guideChooser} sandboxReads={sandboxReads} />'), 'badge gets the status');
-  assert.ok(app.includes("const HOSTED_DISABLED_NOTICE = 'This needs a local run: the hosted demo cannot send, create or change anything on PayPal and has no AI brief.';"), 'notice no longer says "no Gemini calls"');
+  assert.ok(app.includes("const HOSTED_DISABLED_NOTICE = 'This needs a local run: the hosted demo cannot write to PayPal and has no AI brief.';"), 'notice no longer says "no Gemini calls"');
 }
 
 // ---- #2: PayPal already has seller evidence (SUBMITTED_BY_SELLER row or not waiting for the seller). ----
@@ -97,7 +97,7 @@ const grab = (name) => { const match = section.match(new RegExp(`(?:const ${name
 
 // ---- #9: after the local review the summary says what is next; server values stay in Technical details. ----
 {
-  assert.ok(app.includes("<strong data-testid=\"dispute-readiness\">{receipt || reviewedOnServer ? 'Reviewed locally · next: preview and send' : operatorLabel(draft.routing?.overall_state)}</strong>"));
+  assert.ok(app.includes("<strong data-testid=\"dispute-readiness\">{receipt || reviewedOnServer ? 'Reviewed · next: preview and send' : operatorLabel(draft.routing?.overall_state)}</strong>"));
   assert.ok(app.includes('{!(receipt || reviewedOnServer) && <small data-testid="dispute-actions">Next options:'), 'Next options hidden after the review');
   assert.ok(app.includes('<p data-testid="dispute-route-server">Server routing: {operatorLabel(draft.routing.overall_state)} · next options:'), 'server values in Technical details');
 }

@@ -16,11 +16,11 @@ Selling across borders means rules you only learn after an order is stopped. Tra
 
 **Try it in 60 seconds** (no sign-in, synthetic data): open the [start page](https://payguard-demo-j2b3.onrender.com/start.html), press *Try the example*, then open step 03 and press *Prepare evidence draft*.
 
-**What is real:** five PayPal Sandbox evidence sends (two with receipts; three on 11/9 with a read-back note, two of them checked byte for byte against the SHA-256 recorded at send time), one live Gemini evidence brief and one recorded AG Studio agent run. The hosted page's only PayPal calls are read-only Sandbox reads (it can list and open the author's own Sandbox test disputes, with ids masked in the list; every write route is refused).
+**What is real:** five PayPal Sandbox evidence sends (two with receipts; three on 11/9 with a read-back note, two of them checked byte for byte against the SHA-256 recorded at send time), one live Gemini evidence brief under the current contract and one recorded AG Studio agent run. The hosted page's only PayPal calls are read-only Sandbox reads (it can list and open the author's own Sandbox test disputes, every write route is refused; a later code change shows the list ids as masked codes).
 
 *Translating international shipping rules and merchant records for PayPal dispute evidence.* Formerly called PayGuard AI (the name used in the video and the receipts). [Download and click through on your computer](https://drive.google.com/file/d/1iVl4L3Ng1du_yRHI24gvkvFWyu5mR7Cp/view?usp=drive_link) (8 MB zip, SHA-256 `3cad8b4fbbedd21a...`; the full value is on the start page). [Repository](https://github.com/jiarong0423/payguard-ai).
 
-**A buyer says the parcel never arrived. TradeGlot turns the seller's order records into a reviewed evidence package, and after one person approves, sends it to the PayPal Sandbox dispute.** PayPal Sandbox accepted that request twice (2026-11-04 and 2026-11-05, UTC+8) and the dispute moved to waiting for the buyer.
+**A buyer says the parcel never arrived. TradeGlot turns the seller's order records into a reviewed evidence package, and after one person approves, sends it to the PayPal Sandbox dispute.** PayPal Sandbox accepted that request five times (2026-11-04, 2026-11-05 and three times on 2026-11-09, UTC+8) and each dispute moved to waiting for the buyer.
 
 **Rules first. AI only picks from closed options. One person's approval sends.**
 
@@ -62,12 +62,12 @@ Every action that writes to PayPal Sandbox, spends the Studio allowance or wipes
 
 Counted on the public repository on 2026-11-08 with `.venv/bin/python3 -B tools/verify_public_numbers.py` (no network):
 
-- 391 tracked files. Python: 22,210 lines of backend, source and tools plus 18,169 lines of tests. Front end: 13,730 lines (23 JSX components, 5 pages). 37 API routes.
-- 1,104 Python tests (9 skipped) passed in the author's last local run of this file set (recorded in `docs/evidence/TEST_RUN_20261108.md`; the earlier CI run covered 1,058), plus 50 Node contract and browser tests (6,973 lines) and a red-team request matrix of 1,727 requests (0 broken, 0 gaps); the test count and the matrix line are printed at the end of `./tools/run.sh test`.
-- 47 Markdown files, about 82,899 words; 28 evidence files; 22 diagrams and images.
+- 394 tracked files. Python: 22,258 lines of backend, source and tools plus 18,272 lines of tests. Front end: 13,722 lines (23 JSX components, 5 pages). 37 API routes.
+- 1,110 Python tests (9 skipped) passed in the author's last local run of this file set (recorded in `docs/evidence/TEST_RUN_20261108.md`; the earlier CI run covered 1,058), plus 50 Node contract and browser tests (7,001 lines) and a red-team request matrix of 1,727 requests (0 broken, 0 gaps); the test count and the matrix line are printed at the end of `./tools/run.sh test`.
+- 48 Markdown files, about 83,649 words; 29 evidence files; 24 diagrams and images.
 - Data: 140 PayPal clauses and 681 export and import rules for ten countries; a 268-case evidence-guide benchmark; 601 scored guide replies.
 - Attack rounds r21 to r23 also ran on a real Android phone (86 sequences) and in a desktop browser (94 sequences), besides backend matrices of 143 and 119 cases.
-- The public history had 46 commits on 2026-11-09 (the count grows with each push); the development history behind it had 261 commits over 12 working days (2026-10-08 to 2026-11-05). Only the public count can be reproduced (`git rev-list --count HEAD`); the development count is the author's own.
+- The public history had 60 commits on 2026-11-09 (the count grows with each push); the development history behind it had 261 commits over 12 working days (2026-10-08 to 2026-11-05). Only the public count can be reproduced (`git rev-list --count HEAD`); the development count is the author's own.
 
 ## Checks added on 2026-11-08
 
@@ -104,7 +104,7 @@ The hard part was letting the app write to PayPal Sandbox without letting AI dec
 
 - There was no user study; the guide's numbers are measured on a fixed corpus.
 - Of the 681 rules, 112 were sampled in two draws and 92 compared with their pages (62 consistent, 30 wording differs, 0 inconsistent), and 20 could not be opened; the verdicts are one reader's; an earlier sample of 36 had no record file; the rest have not been checked line by line.
-- In both Sandbox sends (2026-11-04 and 2026-11-05) the attached file was a 43-byte synthetic placeholder PDF; Sandbox acceptance is not a decision on the evidence.
+- In the first two Sandbox sends (2026-11-04 and 2026-11-05) the attached file was a 43-byte synthetic placeholder PDF; the three sends of 2026-11-09 carried a generated 2,015-byte PDF. Sandbox acceptance is not a decision on the evidence.
 - Shipment tracking and webhook signature checks are built and tested but have not been run against the Sandbox. The current Gemini evidence-brief contract was tested against fake models and has run live once, on 2026-11-09 on my local console; one run is not a benchmark.
 - AG Studio's built-in agents ran live on my local console on 2026-11-04 (several runs, none saved) and again on 2026-11-08, when one question was recorded; the hosted dashboard replays that recording, labelled as recorded, with no model call.
 - Pinned references are older than PayPal's pages: PayPal's US Acceptable Use Policy and User Agreement pages both show "Last updated on November 4, 2026" (read 2026-11-08); TradeGlot's pinned references are dated 2022-10-29 and 2026-09-14 and were not refreshed. The 18 pre-approval categories still match; the prohibited-list paraphrase is incomplete. A recorded spot-check of the PayPal clauses is in docs/evidence/PAYPAL_CLAUSES_SPOTCHECK_20261108.md.
@@ -133,7 +133,7 @@ TradeGlot calls the **PayPal Sandbox REST API** (`api-m.sandbox.paypal.com`) thr
 | Unsent invoice draft after the policy pre-check | `POST /v2/invoicing/invoices` | Real Sandbox call, 2026-10-06, 2026-10-31 and one during the video recording on 2026-11-05 (UTC+8); status `DRAFT`, never sent; refused by the server (HTTP 409) after a country-rules ban |
 | Dispute list | `GET /v1/customer/disputes` | Real Sandbox read, 2026-10-31 (one author-created test dispute), and again around the sends on 2026-11-04 and 2026-11-05. Without a connection sample data in the same JSON shape is used, labelled **Sample** |
 | Dispute detail | `GET /v1/customer/disputes/{id}` | Real Sandbox read, 2026-10-31 (HTTP 200), and the fresh reads after each send on 2026-11-04 and 2026-11-05 (readback PayPal-Debug-Id `ca5554cf42ef6` on 2026-11-05) |
-| Evidence send | `POST /v1/customer/disputes/{id}/provide-evidence` | Real Sandbox send, 2026-11-04 and 2026-11-05 (UTC+8), each to its own author-created test dispute; PayPal Sandbox accepted the request and the dispute moved to waiting for the buyer (not a decision on the evidence). Sent only after the local review, `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`, `submit: true` and the single-use confirmation; mismatched, already-answered and different-amount disputes are refused |
+| Evidence send | `POST /v1/customer/disputes/{id}/provide-evidence` | Real Sandbox sends, 2026-11-04, 2026-11-05 and three on 2026-11-09 (UTC+8), each to its own author-created test dispute; PayPal Sandbox accepted the request and the dispute moved to waiting for the buyer (not a decision on the evidence). Sent only after the local review, `PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled`, `submit: true` and the single-use confirmation; mismatched, already-answered and different-amount disputes are refused |
 | Sales-spike orders, dispute checklist, evidence ZIP | local synthetic data | Sample data by design |
 
 Shipment tracking and webhook signature checks are also built and tested, but have not yet been run against the Sandbox.
@@ -167,4 +167,4 @@ What to look for: (1) the policy warning and the optional country check appear b
 
 ## Update log
 
-- 2026-11-05: Dispute list and detail ran against a live Sandbox test dispute on 2026-10-31. The gated `provide-evidence` request was accepted by PayPal Sandbox for two author-created test disputes (2026-11-04 and 2026-11-05, UTC+8); already-answered, different-reason and different-amount test disputes were refused with nothing sent. Added the ten-country rules check, AG Charts, the AG Studio dashboard, the Bryntum deadline board, the hosted demo with its Proof page, and the new 2:50 video.
+- 2026-11-05: Dispute list and detail ran against a live Sandbox test dispute on 2026-10-31. The gated `provide-evidence` request was accepted by PayPal Sandbox for five author-created test disputes (2026-11-04, 2026-11-05 and three on 2026-11-09, UTC+8); already-answered, different-reason and different-amount test disputes were refused with nothing sent. Added the ten-country rules check, AG Charts, the AG Studio dashboard, the Bryntum deadline board, the hosted demo with its Proof page, and the new 2:50 video.

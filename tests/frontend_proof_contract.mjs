@@ -27,7 +27,10 @@ assert.match(facts.source_note, /tests\/frontend_proof_contract\.mjs/u, 'source 
 
 // 2. Rows: unique ids, known scenario and method, ISO dates, a committed source file, quotes found verbatim in it.
 const SANDBOX_RECEIPTS = ['docs/evidence/RECEIPT_20261031_live.md', 'docs/evidence/RECEIPT_20261104_live.md', 'docs/evidence/RECEIPT_20261105_live.md'];
-const SOURCES = new Set([...SANDBOX_RECEIPTS, 'docs/evidence/channel3_receipts_v1.json', 'docs/evidence/GEMINI_GUIDE_RUNS_20261103.md', 'docs/evidence/RED_TEAM_ROUNDS_20261104.md']);
+// (2026-11-09) Evidence files added that day: a read-back, the hosted read-only live check, a second Channel3 round, and three tool runs.
+const NEW_SANDBOX_SOURCES = ['docs/evidence/READBACK_20261109.md', 'docs/evidence/HOSTED_READONLY_LIVE_20261109.md'];
+const NEW_OTHER_SOURCES = ['docs/evidence/channel3_receipts_20261109.json', 'docs/evidence/POSTMAN_RUN_20261109.md', 'docs/evidence/RENDER_WORKFLOW_RUN_20261109.md', 'docs/evidence/APIMATIC_RUN_20261109.md'];
+const SOURCES = new Set([...SANDBOX_RECEIPTS, ...NEW_SANDBOX_SOURCES, ...NEW_OTHER_SOURCES, 'docs/evidence/channel3_receipts_v1.json', 'docs/evidence/GEMINI_GUIDE_RUNS_20261103.md', 'docs/evidence/RED_TEAM_ROUNDS_20261104.md']);
 const ids = new Set();
 for (const row of facts.rows) {
   assert.ok(!ids.has(row.id), `${row.id} unique`);
@@ -48,7 +51,7 @@ for (const row of facts.rows) {
 }
 for (const scenario of facts.scenarios) assert.ok(facts.rows.filter((row) => row.scenario === scenario.id).length >= 2, `${scenario.id} has rows`);
 // The Sandbox rows come from the three masked live receipts (10-31 reads, 11-04 send, 11-05 recorded send) only; the sales burst is the synthetic one.
-assert.deepEqual(facts.rows.filter((row) => row.method === 'REAL_SANDBOX').map((row) => row.id), ['policy-invoice-draft', 'policy-invoice-draft-recorded', 'dispute-list-read', 'dispute-single-read', 'dispute-evidence-sent', 'dispute-mismatch-refused', 'dispute-unauthorized-refused', 'dispute-evidence-sent-recorded', 'dispute-resend-amount-refused', 'dispute-submit-gated']);
+assert.deepEqual(facts.rows.filter((row) => row.method === 'REAL_SANDBOX').map((row) => row.id), ['policy-invoice-draft', 'policy-invoice-draft-recorded', 'dispute-list-read', 'dispute-single-read', 'dispute-evidence-sent', 'dispute-mismatch-refused', 'dispute-unauthorized-refused', 'dispute-evidence-sent-recorded', 'dispute-resend-amount-refused', 'dispute-submit-gated', 'dispute-readback-hash-match', 'dispute-readback-404-fixed', 'dispute-hosted-readonly-live']);
 // (2026-11-05) The gate row states the current fact: two gated Sandbox sends, not the retired 2026-10-31 "mocked-transport tests only" wording.
 assert.ok(!JSON.stringify(facts).includes('mocked-transport tests only'), 'no retired submit wording on /proof.html');
 assert.ok(/two sends/u.test(facts.rows.find((row) => row.id === 'dispute-submit-gated').proven), 'gate row names the two sends');
@@ -61,11 +64,11 @@ assert.deepEqual(facts.rows.filter((row) => row.refused).map((row) => row.id), [
 assert.equal(refusedCount(facts), 3);
 assert.equal(REFUSED_LABEL, 'refused before any send call');
 assert.ok(pageMain().includes('data-testid="proof-refused">{REFUSED_LABEL}</span>'), 'refusal rows carry their own label');
-for (const receipt of SANDBOX_RECEIPTS) {
+for (const receipt of [...SANDBOX_RECEIPTS, ...NEW_SANDBOX_SOURCES, ...NEW_OTHER_SOURCES]) {
   assert.ok(facts.source_note.includes(receipt), `footer source list names ${receipt}`);
 }
 // (2026-11-04) Each real evidence send has its own masked receipt.
-assert.ok(facts.rows.filter((row) => row.method === 'REAL_SANDBOX').every((row) => SANDBOX_RECEIPTS.includes(row.source)));
+assert.ok(facts.rows.filter((row) => row.method === 'REAL_SANDBOX').every((row) => [...SANDBOX_RECEIPTS, ...NEW_SANDBOX_SOURCES].includes(row.source)));
 assert.deepEqual(facts.rows.filter((row) => row.method === 'SYNTHETIC').map((row) => row.id), ['velocity-synthetic-burst']);
 assert.ok(facts.rows.filter((row) => row.source === 'docs/evidence/RED_TEAM_ROUNDS_20261104.md').every((row) => row.method === 'TEST'), 'attack rounds are tests');
 // Dates agree with the files they come from.
@@ -90,6 +93,30 @@ const channelRow = facts.rows.find((row) => row.check === 'channel3_receipts');
 assert.equal(channelRow.date, channel3.dates[0]);
 assert.ok(channelRow.proven.includes(`${channel3.count} searches, all HTTP 200, ${channel3.cards[0]} product cards each`));
 assert.ok(channelRow.how.includes(`latency ${Math.floor(channel3.minLatency * 10) / 10} to ${Math.round(channel3.maxLatency * 10) / 10} s`));
+
+// 3b. (2026-11-09) The second Channel3 round: numbers recomputed from its receipts file; the 11-09 rows say TradeGlot and carry their date.
+{
+  const round2 = JSON.parse(read('docs/evidence/channel3_receipts_20261109.json'));
+  const summary = channel3Summary(round2);
+  assert.deepEqual(summary, { count: 5, allOk: true, cards: [3], minLatency: 1.138, maxLatency: 2.126, dates: ['2026-11-09'] });
+  const row = facts.rows.find((item) => item.id === 'policy-channel3-search-round2');
+  assert.equal(row.date, '2026-11-09');
+  assert.ok(row.proven.includes(`${summary.count} live Channel3 searches`) && row.proven.includes('HTTP 200') && row.proven.includes(`${summary.cards[0]} product cards each`));
+  assert.ok(row.how.includes(`latency ${Math.floor(summary.minLatency * 10) / 10} to ${Math.round(summary.maxLatency * 10) / 10} s`));
+  const newRows = facts.rows.filter((item) => item.date === '2026-11-09');
+  assert.deepEqual(newRows.map((item) => item.id), ['dispute-readback-hash-match', 'dispute-readback-404-fixed', 'dispute-hosted-readonly-live', 'policy-channel3-search-round2', 'cross-postman-newman-run', 'cross-render-workflow-run', 'cross-apimatic-run']);
+  for (const item of newRows) {
+    assert.ok(!/PayGuard/u.test(JSON.stringify(item)), `${item.id} uses the new name`);
+    assert.ok(NEW_SANDBOX_SOURCES.includes(item.source) || NEW_OTHER_SOURCES.includes(item.source), `${item.id} source`);
+  }
+  assert.equal(read('docs/evidence/READBACK_20261109.md').includes('2026-11-09'), true);
+  const readback = facts.rows.find((item) => item.id === 'dispute-readback-hash-match');
+  assert.ok(/two of them|For two of them/u.test(readback.proven) && /not compared/u.test(readback.proven), 'read-back row says two matched and one was not compared');
+  assert.ok(!/byte-identical|byte for byte/iu.test(JSON.stringify(newRows)), 'claims the same SHA-256, nothing stronger');
+  const hosted = facts.rows.find((item) => item.id === 'dispute-hosted-readonly-live');
+  assert.ok(/not yet deployed or re-checked live/u.test(hosted.how), 'hosted row states the known gap');
+  assert.ok(/schedule/u.test(facts.rows.find((item) => item.id === 'cross-render-workflow-run').how) && /no nightly claim/u.test(facts.rows.find((item) => item.id === 'cross-render-workflow-run').how), 'workflow row makes no nightly claim');
+}
 
 // 4. Masking and secrets: masked ids exactly as in the receipt, no full PayPal ids, e-mails, tokens or hashes copied.
 const factsText = read('frontend/src/data/proof_facts_v1.json');

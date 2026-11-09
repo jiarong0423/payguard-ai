@@ -33,6 +33,9 @@ HOSTED_READ_BUDGET_CODE = "hosted_read_budget_exceeded"
 # Process-wide cap on every call the hosted demo sends to PayPal (OAuth connect, list, detail), all visitors together.
 HOSTED_READS_PER_MINUTE = 20
 HOSTED_READS_PER_DAY = 500
+# The hosted page never shows a real dispute number: it shows a code (for example PP-R-BNP-XXXX7173). The code -> real
+# number table lives only in server memory and keeps at most this many entries (oldest dropped first).
+HOSTED_ID_MAP_LIMIT = 200
 HOSTED_DEMO_CODE = "hosted_demo_disabled"
 HOSTED_DEMO_MESSAGE = ("This capability is disabled in the hosted demo, which cannot send or change anything at a provider. "
                        "Run TradeGlot locally to use it.")
@@ -106,6 +109,17 @@ def _refuse():
     raise BoundaryError(503, HOSTED_DEMO_CODE)
 
 
+def _replace_everywhere(value, old: str, new: str):
+    """Copy of a provider answer with every string that holds ``old`` rewritten, whatever the nesting."""
+    if isinstance(value, str):
+        return value.replace(old, new)
+    if isinstance(value, dict):
+        return {_replace_everywhere(key, old, new): _replace_everywhere(item, old, new) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_replace_everywhere(item, old, new) for item in value]
+    return value
+
+
 class HostedDemoPaypalStub:
     """Stands in for PaypalAdapter. No transport, no config loader, no credentials.
 
@@ -176,6 +190,28 @@ class HostedReadOnlyPaypalAdapter:
         self._inner = inner
         self._budget = budget if budget is not None else ReadBudget()
         self._connect_lock = asyncio.Lock()
+        self._real_by_code = collections.OrderedDict()
+        self._code_by_real = {}
+
+    def _code_for(self, real: str) -> str:
+        """The public code of a real dispute number: same prefix, the number masked except its last four characters.
+        Stable for one number, unique across numbers (a counter is added on a clash), never equal to a real number."""
+        code = self._code_by_real.get(real)
+        if code is not None:
+            self._real_by_code.move_to_end(code)
+            return code
+        head, separator, tail = real.rpartition("-")
+        base = f"{head}{separator}XXXX{tail[-4:]}"
+        code, counter = base, 1
+        while code in self._real_by_code or code == real:
+            counter += 1
+            code = f"{base}-{counter}"
+        self._real_by_code[code] = real
+        self._code_by_real[real] = code
+        while len(self._real_by_code) > HOSTED_ID_MAP_LIMIT:
+            _old_code, old_real = self._real_by_code.popitem(last=False)
+            del self._code_by_real[old_real]
+        return code
 
     def _token_seconds_left(self) -> float:
         try:
@@ -227,11 +263,20 @@ class HostedReadOnlyPaypalAdapter:
 
     async def list_disputes(self, page_size: int = 10) -> list[dict]:
         self._budget.take()
-        return await self._inner.list_disputes(page_size)
+        rows = await self._inner.list_disputes(page_size)
+        return [dict(row, dispute_id=self._code_for(row["dispute_id"])) for row in rows]
 
     async def get_dispute(self, dispute_id: str) -> dict:
+        # Only a code this process handed out is accepted; a real number (or any other string) is "not found" and
+        # never reaches PayPal or the read budget.
+        real = self._real_by_code.get(dispute_id)
+        if real is None:
+            raise BoundaryError(404, "dispute_not_found")
         self._budget.take()
-        return await self._inner.get_dispute(dispute_id)
+        detail = await self._inner.get_dispute(real)
+        masked = _replace_everywhere(detail, real, self._code_for(real))
+        masked["dispute_id"] = self._code_for(real)
+        return masked
 
     async def create_invoice_draft(self, _payload: dict, _request_id: str) -> dict:
         _refuse()

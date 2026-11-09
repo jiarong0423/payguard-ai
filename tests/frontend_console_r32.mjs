@@ -73,7 +73,7 @@ assert.ok(app.includes("{productRef?.status !== 'OFF' && <ProductReference "), '
 assert.ok(app.includes('Product lookup is off on this console (no Channel3 key), so no product cards are shown. The policy result does not use it.'), 'kept in Limits and safety');
 assert.ok(app.includes("{receipt.reviewer === 'DEMO_OPERATOR_UNAUTHENTICATED' ? 'Demo operator (no sign-in)' : operatorLabel(receipt.reviewer)} ·"), 'plain reviewer words');
 assert.equal(app.includes('identity not authenticated'), false, 'the alarming label is not used by the console');
-assert.ok(app.includes("The local review is recorded for a demo operator. This demo has no sign-in, so the reviewer's identity is not checked."), 'disclosure kept');
+assert.ok(app.includes("Demo only: there is no sign-in, so the reviewer is not identified."), 'disclosure kept');
 
 // ---- J4: toasts never over the form. ----
 assert.match(css, /\.feedback-region \{ position: fixed; right: max\(18px, calc\(\(100vw - 1200px\) \/ 2\)\); top: 164px;/u, 'desktop: top-right under the step bar');

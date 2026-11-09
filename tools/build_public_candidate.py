@@ -103,6 +103,7 @@ EXACT_FILES = (
     "workflows/evidence_integrity/tasks.py",
     "docs/RENDER_WORKFLOWS_NOTES.md",
     "docs/evidence/RENDER_WORKFLOW_RUN_20261109.md",
+    "docs/evidence/HOSTED_READONLY_LIVE_20261109.md",
     # (2026-11-08) Evidence and method files added so every public number can be reproduced or traced.
     "data/eval/checklist_answer_key_v1.json",
     "data/eval/checklist_answer_key_v2_heldout.json",
@@ -139,6 +140,8 @@ EXACT_FILES = (
     "docs/submission/payguard_judge_overview.png",
     "docs/submission/diagrams/architecture_overview.png",
     "docs/submission/diagrams/architecture_simple.png",
+    "docs/submission/diagrams/sponsor_evidence.png",
+    "docs/submission/diagrams/sponsor_evidence.svg",
     "docs/submission/diagrams/evidence_guide_funnel.png",
     "docs/submission/diagrams/paypal_write_guards.png",
     "docs/submission/diagrams/review_zip_verified.png",

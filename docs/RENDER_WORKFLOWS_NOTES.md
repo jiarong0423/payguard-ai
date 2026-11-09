@@ -35,7 +35,7 @@ page, `workflows-limits`, was read later (2026-11-02) and is listed under Read a
 
 ## What the workflow does
 
-`workflows/evidence_integrity/` re-checks, on a schedule, that the evidence files TradeGlot shows to judges and
+`workflows/evidence_integrity/` re-checks, each time it is started (it has no schedule; it ran once by hand on 2026-11-09), that the evidence files TradeGlot shows to judges and
 sellers still match the code that produces them. It needs no secret and makes no network call.
 
 | Task | Runs | Fails when |
@@ -71,7 +71,7 @@ Without Render (the same code the tasks run):
 python -m workflows.evidence_integrity.tasks
 ```
 
-With the Render CLI's local task server (SDK README; this repository has not run it, see below):
+With the Render CLI's local task server (SDK README; these two local lines have not been run here; the deployed workflow ran once on Render, see the status line above):
 
 ```bash
 render workflows dev -- python workflows/evidence_integrity/main.py
@@ -86,7 +86,7 @@ Tests: `tests/test_evidence_integrity_workflow.py` runs every task as a plain fu
 installed or run here: the build environment refused to install and run the external package. Run the
 `render workflows dev` lines above once before the first deploy.
 
-## Deploy (owner, dashboard). UNVERIFIED steps
+## Deploy (done by the owner in the dashboard on 2026-11-09; the steps below are the plan that was followed, with the service and run recorded in `docs/evidence/RENDER_WORKFLOW_RUN_20261109.md`)
 `render.yaml` is unchanged: the Blueprint spec page is UNREAD, so it is not known whether a workflow can be
 declared there. The steps below follow the SDK sources above. The service type, field names and scheduling are
 UNVERIFIED until checked against the Render dashboard or the UNREAD pages.
@@ -107,7 +107,7 @@ UNVERIFIED until checked against the Render dashboard or the UNREAD pages.
    client call. A separate Render cron job therefore starts the task with the SDK client
    (`Render().workflows.start_task("<workflow slug>/evidence_integrity", [])`). That needs `RENDER_API_KEY` as a
    secret on the cron job only; the workflow itself stays secret-free. Workflow runs are billed per second of
-   compute (see the limits row under "Sources"), and the cron job is billed separately. None of this is deployed.
+   compute (see the limits row under "Sources"), and the cron job is billed separately. The workflow service is deployed and ran once by hand; the cron caller is not built.
 
 ## Public package
 `workflows/evidence_integrity/` ships in the public repository. Task 1 (`guide_benchmark`) runs `tools/run_guide_benchmark.py` and `tools/simulate_guide_flow.py`, which the public package leaves out, so `tasks.py` and `main.py` register that task only when `tools/run_guide_benchmark.py` exists. From the public repository the workflow therefore has two checks. A local run of the public build on 2026-11-09 (`python -m workflows.evidence_integrity.tasks`) printed a receipt with `"ok":true` for `dashboard_data` ("no drift") and `channel3_recordings` ("5 recordings, 5 receipts"), `secrets_used:false`, `network_used:false`. `tests/test_evidence_integrity_workflow.py` stays out of the public package because it tests the three-check tree.

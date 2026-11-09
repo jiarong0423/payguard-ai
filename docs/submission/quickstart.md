@@ -89,7 +89,7 @@ Expected boundary: the signal means the synthetic activity exceeded a local demo
 2. Select the case in the case queue.
 3. Select **Prepare evidence draft**.
 4. Inspect the response deadline, readiness and requested items (for example **Proof of fulfillment**, **Requested from seller**) in the primary view. Expand **Evidence fields and ZIP contents** (named **Evidence fields, requested items, and ZIP contents** in earlier builds) to inspect the evidence fields, the original-identifier summary and the seven ZIP files.
-5. Confirm the details say **Original identifiers stay in this demo session** and **No original file content is included, and nothing is submitted externally.**
+5. Confirm the details say **Original details stay in this session** and **Original files are not included. Nothing is sent.**
 6. Select **Download review file** and confirm the provider-submission boundary remains **Not submitted**.
 7. Select **Download review ZIP**. The ZIP list under **Evidence fields and ZIP contents** reads **Seven fixed files · generated locally · not sent to PayPal** (7 entries: 6 listed files and the manifest). The fixed archive contains a README, manifest, response-driven requirements, timeline, public citations, pseudonymized evidence and `product-reference.json` (the seller-confirmed Channel3 product card, or `NOT_CONFIRMED`); it contains no raw case ID, order ID, request ID, identity token, session ID, draft digest, proof value, attachment name or attachment bytes.
 8. Check the human-review box and record the local review.
@@ -131,7 +131,7 @@ The strict API contract still retains:
 - `semantic_entailment=NOT_EVALUATED` until human review;
 - `external_action_authorized=false`.
 
-The UI validates closed model and evidence identity pairs. The default Gemini line uses `gemini-3.8-flash` with `SYNTHETIC_TEST_RESPONSE` or the separately evidenced `OPERATOR_LIVE_RESPONSE` class. Gemini selects each sentence from the stage's closed inventory and fixed code validates the choice. The Gemini brief was run once by the operator against Vertex AI; reproducing it needs your own Vertex project. The explicit local line uses `nvidia-nemotron-3-nano-4b` with `LOCAL_RUNTIME_RESPONSE`. The backend launcher selects one line for the process; the browser cannot select a provider and no automatic fallback calls the other line. Neither identity authorizes a provider or workflow action.
+The UI validates closed model and evidence identity pairs. The default Gemini line uses `gemini-3.8-flash` with `SYNTHETIC_TEST_RESPONSE` or the separately evidenced `OPERATOR_LIVE_RESPONSE` class. Gemini selects each sentence from the stage's closed inventory and fixed code validates the choice. The Gemini brief has run live on Vertex AI (2026-10-06, and once under the current contract on 2026-11-09); reproducing it needs your own Vertex project. The explicit local line uses `nvidia-nemotron-3-nano-4b` with `LOCAL_RUNTIME_RESPONSE`. The backend launcher selects one line for the process; the browser cannot select a provider and no automatic fallback calls the other line. Neither identity authorizes a provider or workflow action.
 
 ## Public references and case caveat
 
@@ -187,8 +187,8 @@ These commands validate the local runtime and source contract. The export manife
 ## Scope of testing
 
 - A production or live account: only a fictitious US Business Sandbox seller was used.
-- A Sandbox dispute through the Disputes calls: the list and one detail were read live on 2026-10-31 for one author-created Sandbox test case, and again before and after each send; on 2026-11-04 one provide-evidence send to another Sandbox test dispute succeeded ([masked receipt](../evidence/RECEIPT_20261104_live.md)); on 2026-11-05 (UTC+8) a second send to a newly filed Sandbox test dispute succeeded ([masked receipt](../evidence/RECEIPT_20261105_live.md)); other rows run against mocked transport and the sample disputes; connect your own Sandbox app to run them live.
+- A Sandbox dispute through the Disputes calls: the list and one detail were read live on 2026-10-31 for one author-created Sandbox test case, and again before and after each send; on 2026-11-04 one provide-evidence send to another Sandbox test dispute succeeded ([masked receipt](../evidence/RECEIPT_20261104_live.md)); on 2026-11-05 (UTC+8) a second send to a newly filed Sandbox test dispute succeeded ([masked receipt](../evidence/RECEIPT_20261105_live.md)); on 2026-11-09 three more sends succeeded, two of them byte-compared with PayPal's stored file ([read-back note](../evidence/READBACK_20261109.md)); other rows run against mocked transport and the sample disputes; connect your own Sandbox app to run them live.
 - Authentic Gemini output on your machine: the brief needs your own Vertex AI project; the guide can use Vertex AI or an AI Studio API key.
-- Hosted operation with provider calls, or multi-user operation: the console is a loopback demo; the optional hosted demo makes only read-only PayPal Sandbox reads, and only its guide can use Gemini when the operator opts in.
+- Hosted operation with provider writes, or multi-user operation (the hosted demo's read-only Sandbox reads were checked once on 2026-11-09): the console is a loopback demo; the optional hosted demo makes only read-only PayPal Sandbox reads, and only its guide can use Gemini when the operator opts in.
 
 See the [current architecture](../decisions/2026Q4/architecture.md), [official source register](../decisions/2026Q4/us_official_source_register.md) and [US mainline contract](../decisions/2026Q4/us_mainline_contract.md).

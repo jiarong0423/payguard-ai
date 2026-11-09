@@ -41,20 +41,19 @@ assert.ok(!app.includes("apiRequest('/paypal/invoices/draft'") || app.includes('
 
 // 4. Polling: 60 s, only while visible, on the disputes stage and connected; any error (a 429 included) pauses with one line.
 const poll = app.slice(app.indexOf('// Hosted read-only Sandbox: refresh'), app.indexOf('const loadProviderDispute'));
-assert.ok(app.includes('const HOSTED_POLL_MS = 60000;'), 'sixty seconds');
-for (const part of ["sandboxReads", "activeStage !== 'disputes'", "sandbox?.status !== 'connected'", 'pollPaused',
-  "document.visibilityState !== 'visible'", "apiRequest('/paypal/disputes'", '.catch(() => { if (mounted.current) setPollPaused(true); })', 'window.clearInterval(timer)']) {
+assert.ok(app.includes('    }, 60000);'), 'sixty seconds');
+for (const part of ["sandboxReads", "activeStage !== 'disputes'", "sandbox?.status !== 'connected'",
+  "document.visibilityState !== 'visible'", "apiRequest('/paypal/disputes'", '.catch(() => { window.clearInterval(timer); if (mounted.current) setNotice(HOSTED_NOTES.paused); })', 'return () => window.clearInterval(timer);']) {
   assert.ok(poll.includes(part), 'poll effect: ' + part);
 }
 assert.ok(!poll.includes("method: 'POST'"), 'polling only reads');
-assert.ok(app.includes('data-testid="hosted-note-paused"') && app.includes('Live refresh paused'), 'one paused line');
+assert.ok(app.includes("paused: 'Refresh paused."), 'one paused notice');
 
 // 5. Copy: without the flag the hosted text is unchanged; with it the pill no longer claims "no PayPal calls".
 assert.equal(hostedCopy(null).pill, 'Hosted demo · no PayPal calls');
 assert.equal(hostedCopy({ chooser_mode: 'keyword', model_requested: false }, false).pill, 'Hosted demo · rules only · no PayPal calls');
 assert.ok(!/no PayPal calls|never calls PayPal/.test(JSON.stringify(hostedCopy({ chooser_mode: 'keyword' }, true))), 'reads copy is honest');
-// 6. The hosted list shows a masked dispute id (display only); local mode shows the id unchanged.
-assert.ok(app.includes('<strong>{sandboxReads ? maskDisputeId(row.dispute_id) : row.dispute_id}</strong>'), 'masked in the list only when sandboxReads');
+// 6. The list shows the dispute id as the API returns it (masked by the server in hosted read-only mode, never masked twice).
+assert.ok(app.includes('<strong>{row.dispute_id}</strong>') && !/sandboxReads \? maskDisputeId/u.test(app), 'the list shows the id the API returned (the server already masks it in hosted read-only mode)');
 assert.ok(app.includes("onClick={() => loadProviderDispute(row.dispute_id)}"), 'the click still sends the real id');
-assert.equal((app.match(/const maskDisputeId = /g) || []).length, 1, 'one shared mask helper (the send replay already uses it)');
 console.log('frontend_hosted_readonly: ok');

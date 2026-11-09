@@ -1,18 +1,18 @@
-import {
-  POLICY_COVERAGE,
-  REFERENCE_CHUNKS as POLICY_CHUNKS,
-  REFERENCE_CHUNK_DIGEST,
-  REFERENCE_COMBINED_DIGEST,
-  REFERENCE_CORPUS_ID,
-  REFERENCE_OUTCOMES,
-  REFERENCE_ROWS,
-  REFERENCE_SOURCES as POLICY_SOURCES,
-  REFERENCE_SOURCE_DIGEST,
-  REFERENCE_STAGES,
-  REFERENCE_TYPES,
-} from './referenceContract.js';
-
-export { REFERENCE_TYPES } from './referenceContract.js';
+// The reference corpus (about 50 kB of data) is loaded only when a reference or policy reply has to be checked, so it
+// stays out of the console's first load. Until it is loaded the checks below fail closed (ref() raises a contract error).
+export const REFERENCE_TYPES = Object.freeze(['official_api_reference', 'official_policy', 'public_court_order_copy']);
+let loadedReference = null;
+export async function loadReferenceContract() {
+  if (loadedReference) return loadedReference;
+  const loaded = await import('./referenceContract.js');
+  loadedReference = {
+    ...loaded, POLICY_CHUNKS: loaded.REFERENCE_CHUNKS, POLICY_SOURCES: loaded.REFERENCE_SOURCES,
+    REFERENCE_SOURCE_IDS: new Set(Object.keys(loaded.REFERENCE_SOURCES)), REFERENCE_CHUNK_IDS: new Set(Object.keys(loaded.REFERENCE_ROWS)),
+    REFERENCE_URLS: new Set(Object.values(loaded.REFERENCE_SOURCES).map((source) => source.url)),
+  };
+  return loadedReference;
+}
+const ref = () => { if (!loadedReference) contractFailure(); return loadedReference; };
 
 // (r25 send guard) Plain sentences for the dispute send refusals, used when a reply carries the code without a message.
 export const SEND_GUARD_MESSAGES = Object.freeze({
@@ -103,9 +103,6 @@ export const waitText = (seconds) => `Try again in ${seconds} second${seconds ==
 export const withoutFixedWait = (message) => String(message || '')
   .replace(/[\s;,.]*(?:and )?try again(?: in (?:\d+ seconds?|a few seconds|about two minutes))?\.?\s*$/i, '.').replace(/^\.$/, '');
 
-const REFERENCE_SOURCE_IDS = new Set(Object.keys(POLICY_SOURCES));
-const REFERENCE_CHUNK_IDS = new Set(Object.keys(REFERENCE_ROWS));
-const REFERENCE_URLS = new Set(Object.values(POLICY_SOURCES).map((source) => source.url));
 
 function contractFailure() {
   throw new ApiError('API contract mismatch. Unverified content is hidden; check the backend version.', 502, 'contract_error');
@@ -118,12 +115,12 @@ function safeReferenceUrl(value) {
     if (url.protocol !== 'https:' || url.username || url.password || url.port || url.hash) return false;
     const rawPath = value.replace(/^https:\/\/[^/]+/, '').split(/[?#]/, 1)[0];
     if (/%2e|%2f|%5c/i.test(rawPath) || rawPath.split('/').some((part) => part === '.' || part === '..')) return false;
-    return REFERENCE_URLS.has(value);
+    return ref().REFERENCE_URLS.has(value);
   } catch { return false; }
 }
 
 function referenceProvenance(row) {
-  const source = POLICY_SOURCES[row.source_id];
+  const source = ref().POLICY_SOURCES[row.source_id];
   return Boolean(source) && row.jurisdiction === 'US' && row.jurisdiction_label === source.jurisdiction
     && row.material_type === source.material_type && row.url === source.url && safeReferenceUrl(row.url);
 }
@@ -141,14 +138,14 @@ export function assertReferences(payload, request) {
   const envelopeKeys = ['schema_version', 'status', 'corpus_id', 'corpus_digest', 'corpus_digests', 'filters_applied', 'results', 'limitations', 'advisory_only', 'operational_authority', 'source'];
   const filterKeys = ['theme', 'jurisdiction', 'case_stage', 'material_types', 'limit', 'require_known_source_date', 'max_source_age_days', 'age_basis', 'as_of'];
   if (!keys(payload, envelopeKeys) || !object(request) || payload.schema_version !== 1 || !['references_found', 'evidence_missing'].includes(payload.status)
-    || payload.source !== 'public_reference' || payload.corpus_id !== REFERENCE_CORPUS_ID || payload.advisory_only !== true
-    || payload.operational_authority !== 'REFERENCE_ONLY_NO_ACTION_AUTHORIZATION' || payload.corpus_digest !== REFERENCE_COMBINED_DIGEST
-    || !keys(payload.corpus_digests, ['sources_sha256', 'chunks_sha256']) || payload.corpus_digests.sources_sha256 !== REFERENCE_SOURCE_DIGEST || payload.corpus_digests.chunks_sha256 !== REFERENCE_CHUNK_DIGEST
+    || payload.source !== 'public_reference' || payload.corpus_id !== ref().REFERENCE_CORPUS_ID || payload.advisory_only !== true
+    || payload.operational_authority !== 'REFERENCE_ONLY_NO_ACTION_AUTHORIZATION' || payload.corpus_digest !== ref().REFERENCE_COMBINED_DIGEST
+    || !keys(payload.corpus_digests, ['sources_sha256', 'chunks_sha256']) || payload.corpus_digests.sources_sha256 !== ref().REFERENCE_SOURCE_DIGEST || payload.corpus_digests.chunks_sha256 !== ref().REFERENCE_CHUNK_DIGEST
     || !keys(payload.filters_applied, filterKeys)) contractFailure();
   const filters = payload.filters_applied;
   const types = [...(request.material_types ?? REFERENCE_TYPES)].sort();
   if (!['source_compliance', 'velocity_guard', 'dispute_mediation'].includes(filters.theme) || filters.jurisdiction !== 'US'
-    || request.jurisdiction !== 'US' || !REFERENCE_STAGES.includes(filters.case_stage)
+    || request.jurisdiction !== 'US' || !ref().REFERENCE_STAGES.includes(filters.case_stage)
     || filters.theme !== request.theme || filters.jurisdiction !== request.jurisdiction || filters.case_stage !== (request.case_stage ?? 'any')
     || !Number.isInteger(filters.limit) || filters.limit < 1 || filters.limit > 10 || filters.limit !== (request.limit ?? 3)
     || typeof filters.require_known_source_date !== 'boolean' || filters.require_known_source_date !== (request.require_known_source_date ?? false)
@@ -160,13 +157,13 @@ export function assertReferences(payload, request) {
     || !Array.isArray(payload.limitations) || !payload.limitations.length || payload.limitations.length > 32 || !payload.limitations.every((value) => text(value, 2000))) contractFailure();
   const ids = new Set();
   for (const row of payload.results) {
-    const expected = REFERENCE_ROWS[row?.chunk_id];
+    const expected = ref().REFERENCE_ROWS[row?.chunk_id];
     if (!keys(row, citationKeys) || !text(row.chunk_id, 128) || !/^[A-Z0-9-]+$/.test(row.chunk_id) || ids.has(row.chunk_id)
-      || !REFERENCE_CHUNK_IDS.has(row.chunk_id) || !REFERENCE_SOURCE_IDS.has(row.source_id) || !expected
+      || !ref().REFERENCE_CHUNK_IDS.has(row.chunk_id) || !ref().REFERENCE_SOURCE_IDS.has(row.source_id) || !expected
       || !['title', 'source_title', 'text', 'locator'].every((key) => text(row[key])) || !text(row.jurisdiction_label, 2000)
       || !safeReferenceUrl(row.url) || !digest(row.text_sha256) || !Number.isInteger(row.relevance_score) || row.relevance_score < 1 || row.relevance_score > 128
       || row.jurisdiction !== filters.jurisdiction || !filters.material_types.includes(row.material_type) || !time(row.retrieved_at)
-      || !REFERENCE_STAGES.slice(1).includes(row.case_stage) || (filters.case_stage !== 'any' && row.case_stage !== filters.case_stage)
+      || !ref().REFERENCE_STAGES.slice(1).includes(row.case_stage) || (filters.case_stage !== 'any' && row.case_stage !== filters.case_stage)
       || !['source_updated_date', 'effective_date', 'decision_date', 'decision_acceptance_deadline'].every((key) => date(row[key]))) contractFailure();
     ids.add(row.chunk_id);
     if (!referenceProvenance(row) || !Object.keys(expected).every((key) => JSON.stringify(row[key]) === JSON.stringify(expected[key]))) contractFailure();
@@ -175,7 +172,7 @@ export function assertReferences(payload, request) {
     }
     if ((filters.require_known_source_date || filters.max_source_age_days !== null) && row.source_updated_date === null) contractFailure();
     if (row.material_type === 'public_court_order_copy') {
-      if (row.case_stage !== 'procedural_order' || row.jurisdiction !== 'US' || !REFERENCE_OUTCOMES.includes(row.case_outcome)) contractFailure();
+      if (row.case_stage !== 'procedural_order' || row.jurisdiction !== 'US' || !ref().REFERENCE_OUTCOMES.includes(row.case_outcome)) contractFailure();
     } else if (row.case_stage !== 'not_applicable' || row.case_outcome !== null) contractFailure();
   }
   return payload;
@@ -320,17 +317,17 @@ function policyContext(actual, request) {
   return pk(actual,['jurisdiction','theme','as_of','observation_max_age_days']) && actual.jurisdiction === 'US' && request?.jurisdiction === 'US' && POLICY_THEMES.includes(actual.theme) && actual.theme === request?.theme && Number.isInteger(actual.observation_max_age_days) && actual.observation_max_age_days >= 0 && actual.observation_max_age_days <= 365000 && actual.observation_max_age_days === request.observation_max_age_days && policyInstant(actual.as_of) !== null && policyInstant(actual.as_of) === policyInstant(request.as_of);
 }
 function policyCommon(p, request, context) {
-  return policyContext(context,request) && p.schema_version === 1 && p.corpus_id === REFERENCE_CORPUS_ID && p.corpus_digest === REFERENCE_COMBINED_DIGEST && pk(p.corpus_digests,['sources_sha256','chunks_sha256']) && p.corpus_digests.sources_sha256 === REFERENCE_SOURCE_DIGEST && p.corpus_digests.chunks_sha256 === REFERENCE_CHUNK_DIGEST && p.advisory_only === true && p.operational_authority === POLICY_AUTHORITY && p.requires_human_review === true && p.current_policy_applicability === 'NOT_ESTABLISHED' && Array.isArray(p.limitations) && p.limitations.length > 0 && p.limitations.length <= 32 && p.limitations.every(pt) && pk(p.coverage,['complete','basis','regional_source_count','selected_source_count','selected_chunk_count','official_policy_source_ids','official_policy_chunk_count_by_theme','missing_official_policy_themes']) && pe(p.coverage,POLICY_COVERAGE[`${context.jurisdiction}|${context.theme}`]);
+  return policyContext(context,request) && p.schema_version === 1 && p.corpus_id === ref().REFERENCE_CORPUS_ID && p.corpus_digest === ref().REFERENCE_COMBINED_DIGEST && pk(p.corpus_digests,['sources_sha256','chunks_sha256']) && p.corpus_digests.sources_sha256 === ref().REFERENCE_SOURCE_DIGEST && p.corpus_digests.chunks_sha256 === ref().REFERENCE_CHUNK_DIGEST && p.advisory_only === true && p.operational_authority === POLICY_AUTHORITY && p.requires_human_review === true && p.current_policy_applicability === 'NOT_ESTABLISHED' && Array.isArray(p.limitations) && p.limitations.length > 0 && p.limitations.length <= 32 && p.limitations.every(pt) && pk(p.coverage,['complete','basis','regional_source_count','selected_source_count','selected_chunk_count','official_policy_source_ids','official_policy_chunk_count_by_theme','missing_official_policy_themes']) && pe(p.coverage,ref().POLICY_COVERAGE[`${context.jurisdiction}|${context.theme}`]);
 }
 export function assertPolicyAssessment(p, request) {
   const fields=['schema_version','version','source','corpus_id','corpus_digest','corpus_digests','filters_applied','status','current_policy_applicability','advisory_only','operational_authority','requires_human_review','coverage','sources','chunks','reason_codes','limitations'];
   if (!pk(p,fields) || !policyCommon(p,request,p.filters_applied) || p.version !== 'payguard.applicability.v1' || p.source !== 'public_reference' || p.status !== 'INCOMPLETE_POLICY_EVIDENCE' || !pl(p.reason_codes,POLICY_REASONS,15,1) || !Array.isArray(p.sources) || p.sources.length !== p.coverage.selected_source_count || !Array.isArray(p.chunks) || p.chunks.length !== p.coverage.selected_chunk_count) contractFailure();
-  const expectedChunks=Object.values(POLICY_CHUNKS).filter(c=>c.jurisdiction===request.jurisdiction && c.theme===request.theme).sort((a,b)=>a.chunk_id.localeCompare(b.chunk_id));
+  const expectedChunks=Object.values(ref().POLICY_CHUNKS).filter(c=>c.jurisdiction===request.jurisdiction && c.theme===request.theme).sort((a,b)=>a.chunk_id.localeCompare(b.chunk_id));
   if (!pe(p.chunks,expectedChunks)) contractFailure();
   const ids=[...new Set(expectedChunks.map(c=>c.source_id))].sort();
   if (!pe(p.sources.map(s=>s?.source_id),ids)) contractFailure();
   for (const s of p.sources) {
-    const fixed=POLICY_SOURCES[s.source_id];
+    const fixed=ref().POLICY_SOURCES[s.source_id];
     const extra=['jurisdiction_normalized','observation_status','observation_age_basis','current_policy_applicability','reason_codes','citation_chunk_ids'];
     if (!fixed || !pk(s,[...Object.keys(fixed),...extra]) || !Object.keys(fixed).every(k=>pe(s[k],fixed[k])) || !safeReferenceUrl(s.url) || s.jurisdiction_normalized!==request.jurisdiction || !['FUTURE_OBSERVATION','STALE_OBSERVATION','WITHIN_OBSERVATION_BUDGET'].includes(s.observation_status) || s.observation_age_basis!=='saved_retrieved_at_exact_elapsed_time' || s.current_policy_applicability!=='NOT_ESTABLISHED' || !pl(s.reason_codes,POLICY_REASONS,15,1) || !pe(s.citation_chunk_ids,expectedChunks.filter(c=>c.source_id===s.source_id).map(c=>c.chunk_id))) contractFailure();
   }
@@ -344,7 +341,7 @@ export function assertAdvisoryEvaluation(p, request) {
   if (!pk(p,fields) || !policyCommon(p,request,p.requested_context) || p.version!=='payguard.advisory_eval.v1' || p.source!=='offline_structured_gate' || !statuses.includes(p.status) || !['semantic_entailment','PII_quality','prompt_injection_quality','natural_language_action_assurance_quality'].every(k=>p[k]==='NOT_EVALUATED') || p.model_generation!=='NOT_RUN' || !Array.isArray(candidate?.claims) || !Number.isInteger(p.claim_count) || p.claim_count<1 || p.claim_count>20 || p.claim_count!==candidate.claims.length || !Array.isArray(p.claim_gates) || p.claim_gates.length!==p.claim_count) contractFailure();
   for (const [i,g] of p.claim_gates.entries()) {
     const c=candidate.claims[i];
-    const trusted=Array.isArray(c?.citation_chunk_ids) ? [...new Set(c.citation_chunk_ids.filter(id=>Object.hasOwn(POLICY_CHUNKS,id)))].sort() : null;
+    const trusted=Array.isArray(c?.citation_chunk_ids) ? [...new Set(c.citation_chunk_ids.filter(id=>Object.hasOwn(ref().POLICY_CHUNKS,id)))].sort() : null;
     if (!pk(g,['claim_index','claim_type','status','trusted_citation_chunk_ids','reason_codes']) || g.claim_index!==i || !POLICY_CLAIM_TYPES.includes(g.claim_type) || g.claim_type!==c?.claim_type || !statuses.includes(g.status) || !pe(g.trusted_citation_chunk_ids,trusted) || !pl(g.reason_codes,CLAIM_REASONS,10) || (g.status==='STRUCTURE_COMPATIBLE' && g.reason_codes.length!==0) || (g.status!=='STRUCTURE_COMPATIBLE' && !g.reason_codes.length)) contractFailure();
   }
   const overall=p.claim_gates.some(g=>g.status==='REJECTED')?'REJECTED':p.claim_gates.some(g=>g.status==='INCOMPLETE_EVIDENCE')?'INCOMPLETE_EVIDENCE':'STRUCTURE_COMPATIBLE';
@@ -807,6 +804,7 @@ export async function apiRequest(path, { method = 'GET', body, session, signal }
         { paypalIssue: payload?.error?.paypal_issue ?? null, paypalDebugId: payload?.error?.paypal_debug_id ?? null });
     }
     if (signal?.aborted) throw new ApiError('Request canceled.', 0, 'request_cancelled');
+    if (['/references/search', '/policy/assess', '/advisory/evaluate'].includes(basePath)) await loadReferenceContract().catch(contractFailure);
     return assertContract(basePath, payload, session, query === undefined ? body : { scenario: query.slice('scenario='.length) });
   } catch (error) {
     if (error instanceof ApiError) throw error;
