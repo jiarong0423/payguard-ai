@@ -1,0 +1,181 @@
+{
+ "schema_version": "payguard.online_sale_rules.v1",
+ "retrieved_at": "2026-11-09",
+ "scope": "Rules about SELLING products online to the public (not about importing or posting them). Kept in a separate file next to paypal_country_rules_v1.json, which is pinned and covers import and export only. Only rules whose official page or document was read in full by the author on 2026-11-09 are listed; everything else is in docs/evidence/ONLINE_SALE_RULES_20261109.md under 'reported but not verified'.",
+ "rules": [
+  {
+   "id": "TW-OS-MD-01",
+   "country": "TW",
+   "kind": "online_sale",
+   "tag": "medical_devices",
+   "tier": "restricted",
+   "rule": "Medical devices may be sold through distance-selling channels (including the internet) only by a registered medical device dealer or a pharmacy, and only class 1 devices and the 19 class 2 item groups listed in the annex; selling any other device this way is fined NT$30,000 to NT$1,000,000.",
+   "statute": "醫療器材管理法 第十八條、第七十條",
+   "statute_en": "Medical Devices Act Articles 18 and 70",
+   "instrument": "衛生福利部 公告 衛授食字第1101601942號 (2021-04-29, effective 2021-05-01)",
+   "url": "https://www.fda.gov.tw/TC/siteContent.aspx?sid=11680",
+   "agency": "Ministry of Health and Welfare, Food and Drug Administration",
+   "page_date": "2021-04-29",
+   "read": "announcement PDF and annex PDF read as images on 2026-11-09",
+   "annex_items": [
+    {
+     "no": 1,
+     "code": "E.2770",
+     "name_zh": "阻抗式體積描記器(體脂計)",
+     "name_en": "body fat analyzer/scale"
+    },
+    {
+     "no": 2,
+     "code": "L.5300",
+     "name_zh": "衛生套(保險套)",
+     "name_en": "condom"
+    },
+    {
+     "no": 3,
+     "code": "L.5310",
+     "name_zh": "含殺精劑的衛生套",
+     "name_en": "condom with spermicide"
+    },
+    {
+     "no": 4,
+     "code": "L.5460",
+     "name_zh": "具香味或除臭的衛生棉塞",
+     "name_en": "scented tampon"
+    },
+    {
+     "no": 5,
+     "code": "L.5470",
+     "name_zh": "無香味的衛生棉塞",
+     "name_en": "unscented tampon"
+    },
+    {
+     "no": 6,
+     "code": "I.4040",
+     "name_zh": "醫療用衣物",
+     "name_en": "surgical clothing: surgical face masks, N95"
+    },
+    {
+     "no": 7,
+     "code": "I.0004",
+     "name_zh": "酒精棉片",
+     "name_en": "alcohol swabs"
+    },
+    {
+     "no": 8,
+     "code": "I.0005",
+     "name_zh": "優碘棉片",
+     "name_en": "povidone-iodine swabs"
+    },
+    {
+     "no": 9,
+     "code": "I.4014",
+     "name_zh": "外部使用非吸收式紗布或海綿球",
+     "name_en": "non-absorbable gauze/sponge for external use"
+    },
+    {
+     "no": 10,
+     "code": "J.5240",
+     "name_zh": "醫療用黏性膠帶及黏性繃帶",
+     "name_en": "medical adhesive tape and bandage"
+    },
+    {
+     "no": 11,
+     "code": "M.5918",
+     "name_zh": "硬式透氣隱形眼鏡保存用產品",
+     "name_en": "rigid gas-permeable contact lens care products"
+    },
+    {
+     "no": 12,
+     "code": "M.5928",
+     "name_zh": "軟式隱形眼鏡保存用產品",
+     "name_en": "soft contact lens care products"
+    },
+    {
+     "no": 13,
+     "code": "",
+     "name_zh": "醫療器材軟體",
+     "name_en": "class 2 medical device software"
+    },
+    {
+     "no": 14,
+     "code": "E.1120",
+     "name_zh": "血壓壓脈帶",
+     "name_en": "blood pressure cuff"
+    },
+    {
+     "no": 15,
+     "code": "L.5400",
+     "name_zh": "月經量杯",
+     "name_en": "menstrual cup"
+    },
+    {
+     "no": 16,
+     "code": "O.3800",
+     "name_zh": "醫療用電動代步器",
+     "name_en": "powered medical mobility scooter"
+    },
+    {
+     "no": 17,
+     "code": "O.3860",
+     "name_zh": "動力式輪椅",
+     "name_en": "powered wheelchair"
+    },
+    {
+     "no": 18,
+     "code": "G.5220",
+     "name_zh": "耳鼻喉佈施藥裝置及其搭配使用之物質",
+     "name_en": "ENT drug delivery device and substances: nasal irrigators, sea-water nasal sprays, nasal wash salt"
+    },
+    {
+     "no": 19,
+     "code": "J.2910",
+     "name_zh": "臨床電子體溫計",
+     "name_en": "clinical electronic thermometer"
+    }
+   ],
+   "note": "Contact lenses themselves are not on the annex (only lens care products). Marketplaces can be stricter than the law: Yahoo Taiwan's auction policy bans all medical devices."
+  },
+  {
+   "id": "MY-OS-MD-01",
+   "country": "MY",
+   "kind": "online_sale",
+   "tag": "medical_devices",
+   "tier": "restricted",
+   "rule": "A medical device registered with the Medical Device Authority may be sold online, but professional-use devices must not be sold to the general public; advertising needs the manufacturer's authorisation and an approval number.",
+   "statute": "Medical Device Authority FAQ (advertisement)",
+   "statute_en": "Medical Device Authority, frequently asked questions",
+   "url": "https://www.mda.gov.my/index.php/faq/advertisement",
+   "agency": "Medical Device Authority (Malaysia)",
+   "page_date": "2026-11-06",
+   "read": "FAQ page read on 2026-11-09",
+   "annex_items": [],
+   "note": "An FAQ answer, not a statute; the page does not say which devices count as professional use."
+  }
+ ],
+ "marketplace_policies": [
+  {
+   "id": "YAHOO-TW-MD",
+   "platform": "Yahoo Taiwan auction item policy",
+   "rule": "All medical devices are prohibited, even for licensed sellers; examples include blood pressure monitors, thermometers, contact lens solutions and cases, body fat meters, canes and walkers, wheelchairs.",
+   "url": "https://tw.bid.yahoo.com/help/new_auc/policy/item/meddevice.html",
+   "read": "2026-11-09",
+   "page_date": null
+  },
+  {
+   "id": "YAHOO-JP-MD",
+   "platform": "Yahoo! Japan Auctions guideline B",
+   "rule": "Highly controlled medical devices, including contact lenses, are prohibited listings.",
+   "url": "https://guide-ec.yahoo.co.jp/notice/rules/auc/detailed_regulations.html",
+   "read": "2026-11-09",
+   "page_date": "2026-10-28 (as summarised by the reader, not verbatim)"
+  },
+  {
+   "id": "EBAY-US-MD",
+   "platform": "eBay medical devices policy",
+   "rule": "Prescription-required devices (for example contact lenses, CPAP, prescription hearing aids, TENS units needing a prescription) are prohibited; over-the-counter devices are allowed with conditions.",
+   "url": "https://www.ebay.com/help/policies/prohibited-restricted-items/medical-devices-policy?id=4322",
+   "read": "2026-11-09",
+   "page_date": null
+  }
+ ]
+}

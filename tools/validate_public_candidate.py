@@ -68,6 +68,9 @@ DISPUTE_ID_PATTERN = re.compile(r"PP-[A-Z]-(?!TST-)[A-Z0-9]{3}-\d{5,}")
 # operator time zone stays forbidden everywhere.
 REGION_TEXT_FILES = frozenset({
     "data/country_rules/paypal_country_rules_v1.json",
+    "data/country_rules/online_sale_rules_20261109.json",
+    "docs/evidence/ONLINE_SALE_RULES_20261109.md",
+    "tests/test_online_sale_rules.py",
     "src/payguard/country_rules.py",
     "tests/test_country_rules.py",
     # (2026-11-08) The source spot-check quotes short fragments of the official pages in their own language (Chinese, Japanese).
