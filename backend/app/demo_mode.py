@@ -31,8 +31,10 @@ PUBLIC_HOST_ENV = "PAYGUARD_PUBLIC_HOST"
 HOSTED_READONLY_ENV = "PAYGUARD_HOSTED_READONLY_SANDBOX"
 HOSTED_READ_BUDGET_CODE = "hosted_read_budget_exceeded"
 # Process-wide cap on every call the hosted demo sends to PayPal (OAuth connect, list, detail), all visitors together.
-HOSTED_READS_PER_MINUTE = 20
-HOSTED_READS_PER_DAY = 500
+# No daily cap. The per-minute guard stays under PayPal's observed Sandbox limit (over 50 requests a minute from one IP
+# is blocked for about five minutes), so a burst of visitors cannot get the hosting address blocked.
+HOSTED_READS_PER_MINUTE = 40
+HOSTED_READS_PER_DAY = None
 # The hosted page never shows a real dispute number: it shows a code (for example PP-R-BNP-XXXX7173). The code -> real
 # number table lives only in server memory and keeps at most this many entries (oldest dropped first).
 HOSTED_ID_MAP_LIMIT = 200
@@ -161,7 +163,7 @@ class HostedDemoPaypalStub:
 class ReadBudget:
     """Rolling per-minute and per-day cap on provider reads, shared by every visitor of the process."""
 
-    def __init__(self, per_minute: int = HOSTED_READS_PER_MINUTE, per_day: int = HOSTED_READS_PER_DAY, clock=time.monotonic):
+    def __init__(self, per_minute: int = HOSTED_READS_PER_MINUTE, per_day: int | None = HOSTED_READS_PER_DAY, clock=time.monotonic):
         self.per_minute, self.per_day, self.clock = per_minute, per_day, clock
         self._stamps = collections.deque()
         self._lock = threading.Lock()
@@ -170,9 +172,10 @@ class ReadBudget:
         """Reserve one read before the call is made; answers 429 when either window is full."""
         with self._lock:
             now = self.clock()
-            while self._stamps and now - self._stamps[0] >= 86400:
+            keep = 86400 if self.per_day is not None else 60
+            while self._stamps and now - self._stamps[0] >= keep:
                 self._stamps.popleft()
-            if len(self._stamps) >= self.per_day:
+            if self.per_day is not None and len(self._stamps) >= self.per_day:
                 raise BoundaryError(429, HOSTED_READ_BUDGET_CODE,
                                     retry_after=max(1, int(86400 - (now - self._stamps[0])) + 1))
             recent = [stamp for stamp in self._stamps if now - stamp < 60]
