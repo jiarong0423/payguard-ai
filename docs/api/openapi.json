@@ -7171,6 +7171,20 @@
     ],
     "type": "object"
    }
+  },
+  "securitySchemes": {
+   "DemoCsrf": {
+    "description": "CSRF token for the same session. Get it from the csrf_token field of the response to POST /api/v1/demo/sessions. Every POST also needs it; without it the API answers 403 csrf_rejected.",
+    "in": "header",
+    "name": "X-CSRF-Token",
+    "type": "apiKey"
+   },
+   "DemoSession": {
+    "description": "Demo session id. Get it from the session_id field of the response to POST /api/v1/demo/sessions (that request needs no header). Without it the API answers 401 session_required.",
+    "in": "header",
+    "name": "X-Demo-Session",
+    "type": "apiKey"
+   }
   }
  },
  "info": {
@@ -7178,7 +7192,7 @@
    "name": "TradeGlot",
    "url": "https://github.com/jiarong0423/payguard-ai"
   },
-  "description": "API of the local TradeGlot console (127.0.0.1:8000). It uses synthetic data, expects the demo session headers the console sets, and the hosted demo answers 503 on every route that would reach PayPal.",
+  "description": "API of the local TradeGlot console (127.0.0.1:8000). It uses synthetic data, expects the demo session headers the console sets, and the hosted demo answers 503 on every route that would reach PayPal. Authentication: create a session with POST /api/v1/demo/sessions, then send X-Demo-Session on every other call and X-CSRF-Token on every POST. POST calls also need an Origin header equal to the console's own origin (browsers add it; scripts must set it), otherwise the API answers 403 origin_required.",
   "license": {
    "identifier": "MIT",
    "name": "MIT"
@@ -7224,6 +7238,16 @@
       },
       "description": "A valid demo session is required (session_required)."
      },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
+     },
      "422": {
       "content": {
        "application/json": {
@@ -7251,6 +7275,12 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "Advisory Evaluate",
     "tags": [
      "other"
@@ -7291,6 +7321,16 @@
        }
       },
       "description": "A valid demo session is required (session_required)."
+     },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
      },
      "422": {
       "content": {
@@ -7335,6 +7375,12 @@
       "description": "Hosted demo only: this route makes no provider call (hosted_demo_disabled)."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "Evidence Brief",
     "tags": [
      "ai"
@@ -7377,6 +7423,11 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoSession": []
+     }
+    ],
     "summary": "Ai Usage",
     "tags": [
      "ai"
@@ -7418,6 +7469,16 @@
       },
       "description": "A valid demo session is required (session_required)."
      },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
+     },
      "422": {
       "content": {
        "application/json": {
@@ -7445,6 +7506,12 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "Acknowledge Aup",
     "tags": [
      "aup"
@@ -7486,6 +7553,16 @@
       },
       "description": "A valid demo session is required (session_required)."
      },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
+     },
      "422": {
       "content": {
        "application/json": {
@@ -7513,6 +7590,12 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "Aup Category Signal",
     "tags": [
      "aup"
@@ -7554,6 +7637,16 @@
       },
       "description": "A valid demo session is required (session_required)."
      },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
+     },
      "422": {
       "content": {
        "application/json": {
@@ -7581,6 +7674,12 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "Aup Product Reference",
     "tags": [
      "aup"
@@ -7622,6 +7721,16 @@
       },
       "description": "A valid demo session is required (session_required)."
      },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
+     },
      "422": {
       "content": {
        "application/json": {
@@ -7649,6 +7758,12 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "Aup Product Confirm",
     "tags": [
      "aup"
@@ -7693,6 +7808,16 @@
       },
       "description": "A valid demo session is required (session_required)."
      },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
+     },
      "422": {
       "content": {
        "application/json": {
@@ -7720,6 +7845,12 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "Aup",
     "tags": [
      "aup"
@@ -7764,6 +7895,16 @@
       },
       "description": "A valid demo session is required (session_required)."
      },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
+     },
      "422": {
       "content": {
        "application/json": {
@@ -7791,6 +7932,12 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "Case Route",
     "tags": [
      "other"
@@ -7837,6 +7984,11 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoSession": []
+     }
+    ],
     "summary": "Connections",
     "tags": [
      "other"
@@ -7885,6 +8037,16 @@
       },
       "description": "A valid demo session is required (session_required)."
      },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
+     },
      "422": {
       "content": {
        "application/json": {
@@ -7912,6 +8074,12 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "Country Rules Check",
     "tags": [
      "other"
@@ -7952,6 +8120,11 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoSession": []
+     }
+    ],
     "summary": "Country Rules Countries",
     "tags": [
      "other"
@@ -7991,6 +8164,16 @@
       },
       "description": "A valid demo session is required (session_required)."
      },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
+     },
      "422": {
       "content": {
        "application/json": {
@@ -8018,6 +8201,12 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "Country Rules Search",
     "tags": [
      "other"
@@ -8062,6 +8251,16 @@
       },
       "description": "A valid demo session is required (session_required)."
      },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
+     },
      "422": {
       "content": {
        "application/json": {
@@ -8089,6 +8288,12 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "Inject",
     "tags": [
      "demo"
@@ -8163,6 +8368,7 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [],
     "summary": "New Session",
     "tags": [
      "demo"
@@ -8205,6 +8411,11 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoSession": []
+     }
+    ],
     "summary": "State",
     "tags": [
      "demo"
@@ -8257,6 +8468,16 @@
       },
       "description": "A valid demo session is required (session_required)."
      },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
+     },
      "422": {
       "content": {
        "application/json": {
@@ -8284,6 +8505,12 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "Approve",
     "tags": [
      "other"
@@ -8336,6 +8563,16 @@
       },
       "description": "A valid demo session is required (session_required)."
      },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
+     },
      "422": {
       "content": {
        "application/json": {
@@ -8363,6 +8600,12 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "Draft",
     "tags": [
      "other"
@@ -8404,6 +8647,16 @@
       },
       "description": "A valid demo session is required (session_required)."
      },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
+     },
      "422": {
       "content": {
        "application/json": {
@@ -8431,6 +8684,12 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "Guide Form",
     "tags": [
      "guide"
@@ -8472,6 +8731,16 @@
       },
       "description": "A valid demo session is required (session_required)."
      },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
+     },
      "422": {
       "content": {
        "application/json": {
@@ -8499,6 +8768,12 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "Guide Review",
     "tags": [
      "guide"
@@ -8540,6 +8815,16 @@
       },
       "description": "A valid demo session is required (session_required)."
      },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
+     },
      "422": {
       "content": {
        "application/json": {
@@ -8567,6 +8852,12 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "Guide Start",
     "tags": [
      "guide"
@@ -8648,6 +8939,11 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoSession": []
+     }
+    ],
     "summary": "Guide State",
     "tags": [
      "guide"
@@ -8689,6 +8985,16 @@
       },
       "description": "A valid demo session is required (session_required)."
      },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
+     },
      "422": {
       "content": {
        "application/json": {
@@ -8716,6 +9022,12 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "Guide Turn",
     "tags": [
      "guide"
@@ -8764,6 +9076,7 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [],
     "summary": "Health",
     "tags": [
      "health"
@@ -8804,6 +9117,16 @@
        }
       },
       "description": "A valid demo session is required (session_required)."
+     },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
      },
      "422": {
       "content": {
@@ -8848,6 +9171,12 @@
       "description": "Hosted demo only: this route makes no provider call (hosted_demo_disabled)."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "Connect",
     "tags": [
      "paypal"
@@ -8916,6 +9245,11 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoSession": []
+     }
+    ],
     "summary": "List Disputes",
     "tags": [
      "paypal"
@@ -8956,6 +9290,16 @@
        }
       },
       "description": "A valid demo session is required (session_required)."
+     },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
      },
      "422": {
       "content": {
@@ -9000,6 +9344,12 @@
       "description": "Hosted demo only: this route makes no provider call (hosted_demo_disabled)."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "Add Tracking",
     "tags": [
      "paypal"
@@ -9046,6 +9396,16 @@
       },
       "description": "A valid demo session is required (session_required)."
      },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
+     },
      "422": {
       "content": {
        "application/json": {
@@ -9089,6 +9449,12 @@
       "description": "Hosted demo only: this route makes no provider call (hosted_demo_disabled)."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "Provide Evidence",
     "tags": [
      "paypal"
@@ -9200,6 +9566,11 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoSession": []
+     }
+    ],
     "summary": "Get Dispute",
     "tags": [
      "paypal"
@@ -9240,6 +9611,16 @@
        }
       },
       "description": "A valid demo session is required (session_required)."
+     },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
      },
      "422": {
       "content": {
@@ -9284,6 +9665,12 @@
       "description": "Hosted demo only: this route makes no provider call (hosted_demo_disabled)."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "Invoice Draft",
     "tags": [
      "paypal"
@@ -9325,6 +9712,16 @@
       },
       "description": "A valid demo session is required (session_required)."
      },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
+     },
      "422": {
       "content": {
        "application/json": {
@@ -9352,6 +9749,12 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "Invoice Review",
     "tags": [
      "paypal"
@@ -9402,6 +9805,11 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoSession": []
+     }
+    ],
     "summary": "Paypal Status",
     "tags": [
      "paypal"
@@ -9433,6 +9841,16 @@
       },
       "description": "A valid demo session is required (session_required)."
      },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
+     },
      "429": {
       "content": {
        "application/json": {
@@ -9460,6 +9878,12 @@
       "description": "Hosted demo only: this route makes no provider call (hosted_demo_disabled)."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "Verify Webhook",
     "tags": [
      "paypal"
@@ -9507,6 +9931,16 @@
       },
       "description": "A valid demo session is required (session_required)."
      },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
+     },
      "422": {
       "content": {
        "application/json": {
@@ -9534,6 +9968,12 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "Policy Assess",
     "tags": [
      "other"
@@ -9575,6 +10015,16 @@
       },
       "description": "A valid demo session is required (session_required)."
      },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
+     },
      "422": {
       "content": {
        "application/json": {
@@ -9602,6 +10052,12 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "References",
     "tags": [
      "references"
@@ -9642,6 +10098,11 @@
       "description": "Too many requests; the body says when to retry."
      }
     },
+    "security": [
+     {
+      "DemoSession": []
+     }
+    ],
     "summary": "Studio Agent Status",
     "tags": [
      "studio"
@@ -9681,6 +10142,16 @@
        }
       },
       "description": "A valid demo session is required (session_required)."
+     },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ErrorBody"
+        }
+       }
+      },
+      "description": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."
      },
      "422": {
       "content": {
@@ -9725,6 +10196,12 @@
       "description": "Hosted demo only: this route makes no provider call (hosted_demo_disabled)."
      }
     },
+    "security": [
+     {
+      "DemoCsrf": [],
+      "DemoSession": []
+     }
+    ],
     "summary": "Studio Agent Turn",
     "tags": [
      "studio"

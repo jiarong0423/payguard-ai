@@ -78,6 +78,23 @@ class ApiDocsTests(unittest.TestCase):
         text = json.dumps(spec) + json.dumps(collection)
         self.assertNotIn("/" + "Users/", text)
 
+    def test_security_schemes_match_the_sessions_the_application_requires(self):
+        spec = load("openapi.json")
+        schemes = spec["components"]["securitySchemes"]
+        self.assertEqual({k: (v["type"], v["in"], v["name"]) for k, v in schemes.items()},
+                         {"DemoSession": ("apiKey", "header", "X-Demo-Session"), "DemoCsrf": ("apiKey", "header", "X-CSRF-Token")})
+        for path, methods in spec["paths"].items():
+            for method, operation in methods.items():
+                if path in ("/api/v1/health", "/api/v1/demo/sessions"):
+                    self.assertEqual(operation["security"], [], (method, path))
+                elif method == "post":
+                    self.assertEqual(operation["security"], [{"DemoSession": [], "DemoCsrf": []}], (method, path))
+                else:
+                    self.assertEqual(operation["security"], [{"DemoSession": []}], (method, path))
+        pre = "\n".join(next(e for e in load("postman_collection.json")["event"] if e["listen"] == "prerequest")["script"]["exec"])
+        for scheme in schemes.values():
+            self.assertIn(scheme["name"], pre)
+
     def test_the_collection_carries_no_credentials(self):
         collection = (ROOT / "docs" / "api" / "postman_collection.json").read_text(encoding="utf-8").lower()
         for word in ("authorization", "bearer", "client_secret", "api_key"):

@@ -17,13 +17,13 @@ The file set is the public candidate: every path in `public_export_manifest.json
 | Claim | Value | Command or rule |
 |---|---|---|
 | Tracked files | 422 | 420 manifest paths + `public_export_manifest.json` + `public_export_manifest.sha256` |
-| Python source lines | 22,609 | all `*.py` outside `tests/` (backend, src, tools, integrations) |
-| Python test lines | 18,481 | all `tests/**/*.py` |
+| Python source lines | 22,649 | all `*.py` outside `tests/` (backend, src, tools, integrations) |
+| Python test lines | 18,498 | all `tests/**/*.py` |
 | Front-end lines | 14,252 | `frontend/src/**/*.{jsx,js,css}`, 75 files; see below |
 | JSX files / pages | 24 / 5 | `frontend/**/*.jsx`; `frontend/*.html` (index, dashboard, evidence, proof, scenarios; `public/offline.html` is the service-worker fallback, not a page) |
 | API routes | 37 | see "Route count" |
 | Node test files / lines | 51 / 7,190 | `tests/frontend_*.mjs` (the two other `.mjs` files are a token-writer and a recorder, not tests) |
-| Python tests | 1,121 (9 skipped) | `unittest` discovery over `tests/`, loaded and counted, not run |
+| Python tests | 1,122 (9 skipped) | `unittest` discovery over `tests/`, loaded and counted, not run |
 | Red-team requests | 1,727 | run-time only, see below |
 | Words in documents | 86,743 (page says about 86,743; the script allows 1% either way) | see below |
 | Evidence files | 36 | files directly in `docs/evidence/` (30 `.md`, 6 `.json`) |

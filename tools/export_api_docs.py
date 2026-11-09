@@ -111,6 +111,45 @@ def describe(spec):
     simplify_schemas(spec["components"])
 
 
+def add_security(spec, app):
+    """Declare the two demo-session headers as apiKey schemes and apply them per operation, read from the app's own dependencies."""
+    def called(dependant):
+        names = set()
+        for sub in dependant.dependencies:
+            names.add(getattr(sub.call, "__name__", ""))
+            names |= called(sub)
+        return names
+    needs = {}
+    for route in app.routes:
+        if hasattr(route, "dependant"):
+            for method in route.methods:
+                needs[(method, route.path)] = called(route.dependant)
+    spec["components"]["securitySchemes"] = {
+        "DemoSession": {"type": "apiKey", "in": "header", "name": "X-Demo-Session",
+                        "description": "Demo session id. Get it from the session_id field of the response to POST /api/v1/demo/sessions "
+                                       "(that request needs no header). Without it the API answers 401 session_required."},
+        "DemoCsrf": {"type": "apiKey", "in": "header", "name": "X-CSRF-Token",
+                     "description": "CSRF token for the same session. Get it from the csrf_token field of the response to POST /api/v1/demo/sessions. "
+                                    "Every POST also needs it; without it the API answers 403 csrf_rejected."}}
+    spec["info"]["description"] += (" Authentication: create a session with POST /api/v1/demo/sessions, then send X-Demo-Session on every other "
+                                    "call and X-CSRF-Token on every POST. POST calls also need an Origin header equal to the console's own origin "
+                                    "(browsers add it; scripts must set it), otherwise the API answers 403 origin_required.")
+    for path, methods in spec["paths"].items():
+        for method, operation in methods.items():
+            deps = needs.get((method.upper(), path), set())
+            if "write_session" in deps:
+                operation["security"] = [{"DemoSession": [], "DemoCsrf": []}]
+                codes = {"403": "Origin missing or not allowed, or the CSRF token is wrong (origin_required, origin_rejected, csrf_rejected)."}
+            elif "read_session" in deps:
+                operation["security"] = [{"DemoSession": []}]
+                codes = {}
+            else:
+                operation["security"] = []
+                codes = {}
+            for code, message in codes.items():
+                operation["responses"].setdefault(code, {"description": message, "content": {JSON: {"schema": {"$ref": "#/components/schemas/ErrorBody"}}}})
+
+
 SESSION_PATH = "/api/v1/demo/sessions"
 
 # Synthetic, privacy-safe examples for the developer portal. Every value is made up: masked codes, no real ids, no emails, no hashes.
@@ -372,6 +411,7 @@ def build():
                                    "session headers the console sets, and the hosted demo answers 503 on every route that would reach PayPal.")
     describe(spec)
     add_examples(spec)
+    add_security(spec, app)
     items = [full_item(path, method, operation) for path in sorted(spec["paths"]) for method, operation in sorted(spec["paths"][path].items())]
     items.sort(key=lambda item: item["name"] != "POST " + SESSION_PATH)  # stable: the session request first, the rest in path order
     usage = ("A collection-level pre-request script adds the Origin header and the X-Demo-Session / X-CSRF-Token headers; the first "
