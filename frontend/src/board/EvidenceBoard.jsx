@@ -183,17 +183,13 @@ function drawTimeRanges(scheduler, ranges) {
     lines.push(line);
   }
   layer.replaceChildren(...lines);
-  // (external review 2026-11-10, "Dec 202") The last month or week cell is often cut by the axis end: a label that does not
-  // fit its cell shows its first word only ("Dec") instead of a clipped "Dec 202".
+  // (external review 2026-11-10, "Dec 202") A header label cut by the axis end is hidden instead of showing "Dec 202".
+  // Only visibility changes: Bryntum reuses header cells while scrolling, so the text itself is never rewritten.
+  const edge = scheduler.timeAxisSubGridElement?.getBoundingClientRect().right ?? Infinity;
   scheduler.element?.querySelectorAll('.b-sch-header-time-axis-cell > .b-sch-header-text').forEach((text) => {
-    const full = text.dataset.fullLabel || text.textContent || '';
-    text.dataset.fullLabel = full;
-    if (text.textContent !== full) text.textContent = full;
-    const edge = scheduler.timeAxisSubGridElement?.getBoundingClientRect().right ?? Infinity;
-    const fits = () => { const box = text.getBoundingClientRect(); return box.right <= Math.min(edge, text.parentElement.getBoundingClientRect().right) - 2; };
     text.style.visibility = '';
-    if (!fits() && full.includes(' ')) text.textContent = full.split(' ')[0];
-    if (!fits()) text.style.visibility = 'hidden';
+    const box = text.getBoundingClientRect();
+    if (box.width && box.right > Math.min(edge, text.parentElement.getBoundingClientRect().right) - 2) text.style.visibility = 'hidden';
   });
 }
 
@@ -212,8 +208,8 @@ function orderedRows(rows, focus, glow) {
   return [...list.filter(isTight).sort((a, b) => due(a) - due(b)), ...list.filter((row) => !isTight(row))];
 }
 
-function BoardList({ rows, plans, unscheduled, onSchedule }) {
-  return <ul className="board-list" data-testid="evidence-board-list">{rows.map((row) => <li key={row.id} className={`board-row board-row-${row.status.toLowerCase()}${row.highlight ? ' board-row-urgent' : ''}${unscheduled.has(row.id) ? ' board-row-unscheduled' : ''}`} data-testid="evidence-board-row" data-status={row.status} data-source={row.source}>
+function BoardList({ rows, plans, unscheduled, onSchedule, listRef }) {
+  return <ul ref={listRef} className="board-list" data-testid="evidence-board-list">{rows.map((row) => <li key={row.id} className={`board-row board-row-${row.status.toLowerCase()}${row.highlight ? ' board-row-urgent' : ''}${unscheduled.has(row.id) ? ' board-row-unscheduled' : ''}`} data-testid="evidence-board-row" data-status={row.status} data-source={row.source}>
     <div className="board-row-head"><strong>{row.caseRef}</strong>{row.source === 'sandbox' && <span className="board-row-source" data-testid="evidence-board-sandbox-tag">PayPal Sandbox</span>}<span className="board-row-status" title={row.statusLabel}>{CARD_STATUS_SHORT[row.status] || row.statusLabel}</span></div>
     <dl><div title={row.reason}><dt>Reason</dt><dd>{gridReasonLabel(row.reason)}</dd></div><div><dt>Due</dt><dd>{row.dueAt ? utcLabel(row.dueAt) : '—'}</dd></div><div title={row.readinessLabel}><dt>Evidence</dt><dd>{gridEvidenceLabel(row)}{row.readiness?.manual ? ` · ${row.readiness.manual} need manual review` : ''}</dd></div><div><dt>Amount</dt><dd>{row.amount ? (row.source === 'sandbox' ? `${row.amount} · Sandbox` : `${row.amount} · synthetic`) : 'Not in case data'}</dd></div>
       <div><dt>Plan</dt><dd data-testid="evidence-board-plan">{plans[row.id] ? `${PLAN_NAME} ${planLabel(plans[row.id])}` : unscheduled.has(row.id) ? <><strong className="board-unscheduled" data-testid="evidence-board-unscheduled">{UNSCHEDULED_LABEL}</strong> <button type="button" className="board-plan-reset" data-testid="evidence-board-schedule" onClick={() => onSchedule(row)}>Schedule a slot</button></> : row.source === 'sandbox' && row.providerStatus && row.providerStatus !== 'WAITING_FOR_SELLER_RESPONSE' ? 'Not waiting for the seller.' : row.dueAt ? PLAN_MESSAGES.NO_WINDOW : '—'}</dd></div></dl>
@@ -391,7 +387,7 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => drawTimeRanges(scheduler, board.timeRanges));
     };
-    const detachScheduler = scheduler.on({ paint: redraw, renderRows: redraw, timelineViewportResize: redraw, timeAxisChange: redraw });
+    const detachScheduler = scheduler.on({ paint: redraw, renderRows: redraw, timelineViewportResize: redraw, timeAxisChange: redraw, horizontalScroll: redraw });
     const detachStore = scheduler.eventStore.on({ change: redraw });
     const keydown = (event) => onPlanKey(scheduler, event);
     scheduler.element?.addEventListener('keydown', keydown, true);
@@ -408,7 +404,8 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
   // earliest plan bar into view once the scheduler is laid out. Display only; nothing in the data or the plan changes.
   useEffect(() => {
     const scheduler = schedulerRef.current?.instance;
-    if (!scheduler || !board || !phone) return undefined;
+    // (click-through 2026-11-10) Tablets too: the two-column timeline opened at the axis start with the bars off to the right.
+    if (!scheduler || !board || !(phone || mid)) return undefined;
     const first = events.filter((event) => event.kind === 'PLAN' && event.startDate).map((event) => event.startDate).sort((x, y) => x - y)[0];
     if (!first) return undefined;
     let frame = 0;
@@ -418,7 +415,7 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
       });
     }, 0);
     return () => { clearTimeout(timer); cancelAnimationFrame(frame); };
-  }, [board, events, phone, schedulerKey]);
+  }, [board, events, phone, mid, schedulerKey]);
 
   // Quick classify and highlight: Bryntum's own event styling (a record's cls); case data and the plan are not touched.
   useEffect(() => {
@@ -432,8 +429,10 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
         // The class names the event was created with, plus the classes this chip state asks for (assigned as one string).
         // A plan bar added after the board was built (Schedule a slot) is not in `events`: it keeps its own class, so a chip
         // never strips the lane and the label from it (red team 2026-11-10 P0).
-        const next = `${baseCls[record.id] ?? (record.get('kind') === 'PLAN' ? 'payguard-board-plan' : '')} ${barClasses(rowById[record.resourceId], { focus, glow })}`.trim();
-        if (lastCls.current[record.id] !== next) { lastCls.current[record.id] = next; record.cls = next; }
+        // (recording 2026-11-10) The timeline now shows only the chip's cases, so nothing is dimmed (a dimmed class stayed
+        // on after Reset); the highlight glow still applies. The class string is assigned every time.
+        const next = `${baseCls[record.id] ?? (record.get('kind') === 'PLAN' ? 'payguard-board-plan' : '')} ${barClasses(rowById[record.resourceId], { focus: 'all', glow })}`.trim();
+        lastCls.current[record.id] = next; record.cls = next;
       });
     }
     return undefined;
@@ -446,6 +445,23 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
     const byId = Object.fromEntries(resources.map((resource) => [resource.id, resource]));
     return listRows.map((row) => byId[row.id]).filter(Boolean);
   }, [resources, listRows]);
+  // (recording 2026-11-10) The timeline keeps one resource store: a chip filters and sorts it with Bryntum's own store
+  // filter and sorter. Swapping the resources prop on every chip left a blank timeline (no bars, rows drawn on top of each
+  // other) after Reset.
+  useEffect(() => {
+    const store = schedulerRef.current?.instance?.resourceStore;
+    if (!store || store.isDestroyed) return;
+    const index = Object.fromEntries(listRows.map((row, i) => [row.id, i]));
+    try {
+      store.clearFilters();
+      if (focus !== 'all') store.filter({ id: 'payguard-focus', filterBy: (record) => record.id in index });
+      store.sort({ fn: (a, b) => (index[a.id] ?? 1e6) - (index[b.id] ?? 1e6) });
+    } catch { /* order is cosmetic; the cards above carry the same filter */ }
+  }, [listRows, focus, schedulerKey, phone, mid]);
+  // The card strip starts at its first card whenever the filter or the order changes (it kept an old scroll offset and
+  // showed the end of the list after Reset).
+  const listRef = useRef(null);
+  useEffect(() => { const list = listRef.current; if (list) list.scrollLeft = 0; }, [focus, glow]);
   if (!board) return <p className="board-empty" data-testid="evidence-board-empty">Load the dispute case to see its evidence and response window.</p>;
   // Missing evidence and "no draft yet" are counted apart, so the summary never says none while a card reads "No draft yet" (r20 UX-2).
   const soon = [board.missingSoon && `${board.missingSoon} due within ${DUE_SOON_DAYS} days with evidence missing`, board.noDraftSoon && `${board.noDraftSoon} due within ${DUE_SOON_DAYS} days with no draft yet`].filter(Boolean);
@@ -455,7 +471,7 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
   return <div className="evidence-board" data-testid="evidence-board">
     <p className="board-triage" data-testid="evidence-board-triage">{TRIAGE_CAPTION}{liveRows ? ` · ${liveRows} from the PayPal Sandbox dispute list` : ' · sample cases'}</p>
     <p className="board-summary" data-testid="evidence-board-summary">{board.rows.length} case{board.rows.length === 1 ? '' : 's'} · {soon.length ? soon.join(' · ') : `none due within ${DUE_SOON_DAYS} days with evidence missing or no draft`}{unscheduled.size ? ` · ${unscheduled.size} with a deadline but no evidence slot scheduled` : ''} · now {utcLabel(board.nowIso)}{board.rows.length > 2 ? ' · scroll the cards sideways for more →' : ''}</p>
-    <BoardList rows={listRows} plans={plans} unscheduled={unscheduled} onSchedule={schedule} />
+    <BoardList listRef={listRef} rows={listRows} plans={plans} unscheduled={unscheduled} onSchedule={schedule} />
     {timeline ? <figure className={`board-timeline${phone ? ' board-timeline-phone' : ''}`} data-testid="evidence-board-timeline">
       <figcaption title="Bars are the seller response window up to the due date. Bryntum Scheduler Community (MIT).">
         Times in UTC · case data read only · bars: response window and your Collect evidence plan · <span className="board-legend-now">now</span> and <span className="board-legend-due">due</span> lines{phone && <span className="board-swipe-hint" data-testid="evidence-board-swipe-hint"> · swipe the timeline sideways →</span>}
@@ -484,7 +500,7 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
           <BryntumScheduler key={`${board.startDate.getTime()}-${board.endDate.getTime()}-${board.viewPreset}`} ref={schedulerRef} {...(phone ? PHONE_SCHEDULER : mid ? MID_SCHEDULER : DESKTOP_SCHEDULER)} autoHeight={phone || timelineResources.length <= VISIBLE_ROWS} height={!phone && timelineResources.length > VISIBLE_ROWS ? VISIBLE_ROWS * ROW_HEIGHT + TIMELINE_HEADER : undefined} rowHeight={phone ? PHONE_ROW_HEIGHT : ROW_HEIGHT} barMargin={phone ? 8 : 3} eventLayout={phone ? 'stack' : 'none'} startDate={board.startDate} endDate={board.endDate} viewPreset={board.viewPreset}
             snap timeResolution={HOUR_RESOLUTION} enableDeleteKey={false}
             detectCSSCompatibilityIssues={false} useInitialAnimation={false} zoomOnMouseWheel={false} zoomOnTimeAxisDoubleClick={false}
-            milestoneLayoutMode="estimate" milestoneTextPosition="outside" resources={timelineResources} events={events}
+            milestoneLayoutMode="estimate" milestoneTextPosition="outside" resources={resources} events={events}
             eventDragFeature={dragFeature} eventResizeFeature={resizeFeature} eventTooltipFeature={tooltipFeature} {...LOCKED_FEATURES}
             onEventDragStart={gestureStart} onEventResizeStart={gestureStart} onAfterEventDrop={onAfterEventDrop} onEventResizeEnd={onEventResizeEnd} />
         </div>
