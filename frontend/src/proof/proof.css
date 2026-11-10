@@ -93,8 +93,12 @@ body { margin: 0; background: var(--pg-color-canvas); color: var(--pg-color-ink)
 .proof-filters h2 { margin: 0; font-size: 18px; }
 .proof-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
 .proof-filter-chip { min-height: 44px; padding: 0 14px; border: 1px solid var(--pg-color-rule); border-radius: 999px; background: var(--pg-color-panel); color: var(--pg-color-ink); font: inherit; font-size: 16px; cursor: pointer; }
-.proof-filter-chip[aria-pressed="true"] { border-color: var(--pg-color-accent-strong); background: var(--pg-color-recede); color: var(--pg-color-accent-strong); font-weight: 650; }
-.proof-filter-chip[aria-pressed="true"]::before { content: "\2713\00a0"; }
+.proof-filter-chip[aria-pressed="true"] { border-color: var(--pg-color-accent-strong); background: var(--pg-color-recede); color: var(--pg-color-accent-strong); text-shadow: 0.45px 0 0 currentColor, -0.45px 0 0 currentColor; }
+/* (fix r1 F10) The check mark sits in a fixed slot of the left padding in both states (hidden until pressed), so
+   pressing a chip changes no width and a label that wraps stays aligned. */
+.proof-filter-chip[aria-pressed] { position: relative; padding-left: 30px; }
+.proof-filter-chip[aria-pressed]::before { content: "\2713"; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); visibility: hidden; }
+.proof-filter-chip[aria-pressed="true"]::before { visibility: visible; }
 .proof-filter-chip:focus-visible { outline: 2px solid var(--pg-color-focus); outline-offset: 2px; }
 .proof-filter-count { margin: 0; color: var(--pg-color-muted); font-size: 16px; }
 .proof-chip-count { margin-left: 4px; padding: 0 6px; border-radius: 999px; background: var(--pg-color-recede); font-size: 14px; }

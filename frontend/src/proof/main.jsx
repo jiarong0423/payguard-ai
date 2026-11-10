@@ -5,7 +5,7 @@ import { StrictMode, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import facts from '../data/proof_facts_v1.json';
 import receipts from '../data/channel3_receipts_v1.json';
-import { HISTORY_CUTOFF, LATEST_ALSO, LATEST_DATE, LATEST_ROWS, METHOD_ORDER, REFUSED_LABEL, channel3Summary, dateLabel, groupProof, methodCounts, refusedCount, splitHistory, PROOF_SPONSORS, PROOF_METHOD_CHIPS, parseProofHash, proofHash, rowMatches } from './proofData.js';
+import { HISTORY_CUTOFF, LATEST_ALSO, LATEST_DATE, LATEST_ROWS, METHOD_ORDER, REFUSED_LABEL, channel3Summary, dateLabel, groupProof, methodCounts, refusedCount, splitHistory, PROOF_SPONSORS, PROOF_METHOD_CHIPS, emptyProofNote, parseProofHash, proofHash, resolveProofFilter, rowMatches } from './proofData.js';
 import './proof.css';
 
 const ICONS = {
@@ -95,17 +95,18 @@ function ProofFilters({ filter, setFilter, shown, total }) {
   // Live counts: each chip says how many rows it would show with the other filter kept.
   const countFor = (next) => facts.rows.filter((row) => rowMatches(row, next)).length;
   const active = filter.method !== 'ALL' || filter.sponsor !== '';
-  const noRow = filter.sponsor && shown === 0;
+  const pick = (change) => resolveProofFilter(facts.rows, filter, change);
+  const note = shown === 0 ? emptyProofNote(facts.rows, filter) : '';
   return <section className="proof-filters" aria-labelledby="proof-filters-title" data-testid="proof-filters">
     <h2 id="proof-filters-title">Filter the rows</h2>
     <div className="proof-chip-row" role="group" aria-label="How it was shown" data-testid="proof-method-chips">
-      {PROOF_METHOD_CHIPS.map(([value, label]) => <button key={value} type="button" className="proof-filter-chip" aria-pressed={filter.method === value} data-testid={`proof-filter-${value}`} onClick={() => setFilter({ ...filter, method: value })}>{label} <span className="proof-chip-count">{countFor({ ...filter, method: value })}</span></button>)}
+      {PROOF_METHOD_CHIPS.map(([value, label]) => <button key={value} type="button" className="proof-filter-chip" aria-pressed={filter.method === value} data-testid={`proof-filter-${value}`} onClick={() => setFilter(pick({ method: value }))}>{label} <span className="proof-chip-count">{countFor(pick({ method: value }))}</span></button>)}
     </div>
     <div className="proof-chip-row" role="group" aria-label="Sponsor tool" data-testid="proof-sponsor-chips">
-      {PROOF_SPONSORS.filter((name) => filter.sponsor === name || facts.rows.some((row) => row.sponsors?.includes(name))).map((name) => <button key={name} type="button" className="proof-filter-chip" aria-pressed={filter.sponsor === name} data-testid={`proof-sponsor-${name.replace(/\s+/gu, '-')}`} onClick={() => setFilter({ ...filter, sponsor: filter.sponsor === name ? '' : name })}>{name} <span className="proof-chip-count">{countFor({ ...filter, sponsor: name })}</span></button>)}
+      {PROOF_SPONSORS.filter((name) => filter.sponsor === name || facts.rows.some((row) => row.sponsors?.includes(name))).map((name) => <button key={name} type="button" className="proof-filter-chip" aria-pressed={filter.sponsor === name} data-testid={`proof-sponsor-${name.replace(/\s+/gu, '-')}`} onClick={() => setFilter(filter.sponsor === name ? { ...filter, sponsor: '' } : pick({ sponsor: name }))}>{name} <span className="proof-chip-count">{countFor(pick({ sponsor: name }))}</span></button>)}
     </div>
     <button type="button" className="proof-filter-chip proof-filter-reset" data-testid="proof-filter-reset" disabled={!active} onClick={() => setFilter({ method: 'ALL', sponsor: '' })}>Reset</button>
-    <p className="proof-filter-count" role="status" aria-live="polite" data-testid="proof-filter-count">Showing {shown} of {total}{noRow ? `. No proof row names ${filter.sponsor}; it is shown in the product itself (see the Sponsor map in the console footer).` : ''}</p>
+    <p className="proof-filter-count" role="status" aria-live="polite" data-testid="proof-filter-count">Showing {shown} of {total}{note ? `. ${note}` : ''}</p>
   </section>;
 }
 

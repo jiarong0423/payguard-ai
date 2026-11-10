@@ -32,7 +32,7 @@
   #disputes .board-timeline > .board-plan-bar { grid-column: 2; grid-row: 1 / span 2; max-width: 500px; justify-content: flex-end; }
   #disputes .board-timeline > .board-chips { grid-column: 1 / -1; grid-row: 3; margin-bottom: 6px; }
   #disputes .board-timeline > .board-scroll { grid-column: 1 / -1; grid-row: 4; }
-  #disputes .board-plan-ics-note { font-size: 13px; text-align: right; }
+  #disputes .board-plan-ics-note { text-align: right; }
   /* Chips and plan buttons at 36px for mouse use in the demo (were 44px). */
   #disputes .board-chips button, #disputes .board-plan-download { min-height: 36px; }
   /* Scheduler left table: text wraps inside the 103px rows instead of ending in "Item n..."; column widths unchanged. */

@@ -14,11 +14,11 @@ const rule = (selector) => {
   return match[1];
 };
 
-// 1. Cards: at least 300px wide (or the full width on a phone); the row wraps to fewer cards.
-const list = rule('.board-list');
-const min = list.match(/minmax\(min\(100%, (\d+)px\), 1fr\)/u);
-assert.ok(min && Number(min[1]) >= 300, 'card minimum width >= 300px');
-assert.match(list, /repeat\(auto-fill,/u, 'auto-fill: extra width does not stretch a lone card');
+// 1. (2026-11-10 redesign, red-team R1) Cards are one horizontal strip of fixed-width cards (330px, or most of a phone's
+// width): the list never cuts a row of cards in half and never squeezes a card.
+assert.match(css, /\.board-list \{ display: flex;[^}]*overflow-x: auto;/u, 'cards are one sideways strip');
+const cardBasis = css.match(/\.board-list > \.board-row \{ flex: 0 0 clamp\((\d+)px, \d+%, \d+px\);/u);
+assert.ok(cardBasis && Number(cardBasis[1]) >= 260, 'card width >= 260px, a part of the next card always shows');
 
 // 2. Facts: the card is a size container; fact columns come from the card width, each at least 130px; label above value.
 assert.match(rule('.board-row'), /container-type: inline-size/u);
@@ -27,6 +27,15 @@ const factMin = facts.match(/repeat\(auto-fill, minmax\((\d+)px, 1fr\)\)/u);
 assert.ok(factMin && Number(factMin[1]) >= 120, 'fact columns >= 120px each');
 assert.match(rule('.board-row dl > div'), /display: block/u, 'label above value, not a squeezed label column');
 assert.match(css, /@container \(max-width: \d+px\) \{\s*\.board-row dl \{ grid-template-columns: minmax\(0, 1fr\); \}/u, 'narrow card: one fact per line');
+
+// 2b. (2026-11-10 redesign) Compact fixed-shape card: one line per fact, a fixed two-line plan area, and the list and
+// the timeline each scroll inside their own box so the board is one tool on the page, not the whole page.
+assert.match(rule('.board-list .board-row dl > div'), /white-space: nowrap;[^}]*text-overflow: ellipsis/u, 'one line per fact');
+assert.match(rule('.board-list .board-row dl > div:nth-child(5)'), /height: \d+px/u, 'plan area has a fixed height in every state');
+assert.match(css, /\.board-plan-message \{ flex: 1 1 0;[^}]*white-space: nowrap;/u, 'plan line keeps one height');
+assert.match(css, /\.board-timeline:not\(\.board-timeline-phone\) \.board-canvas \.b-sch-event-wrap \{ height: \d+px !important; --b-event-size: \d+ !important; \}/u, 'desktop timeline bars share one lane height');
+const boardJsx = readFileSync(join(root, 'frontend/src/board/EvidenceBoard.jsx'), 'utf8');
+assert.ok(boardJsx.includes("eventLayout={phone ? 'stack' : 'none'}") && boardJsx.includes('VISIBLE_ROWS * ROW_HEIGHT + TIMELINE_HEADER'), 'uniform rows; timeline has a fixed height past VISIBLE_ROWS');
 
 // 3. No mid-word break: values wrap at spaces (break-word only for a single over-long token), never "anywhere".
 const value = rule('.board-row dd');
@@ -53,7 +62,7 @@ for (const status of ['WAITING_FOR_SELLER_RESPONSE', 'WAITING_FOR_BUYER_RESPONSE
 assert.equal(gridEvidenceLabel({ source: 'synthetic', readinessLabel: '1/1 present' }), '1/1 present');
 assert.equal(gridReasonLabel('Item or service not received'), 'Not received');
 const board = readFileSync(join(root, 'frontend/src/board/EvidenceBoard.jsx'), 'utf8');
-assert.ok(Number(board.match(/const ROW_HEIGHT = (\d+);/u)[1]) >= 64, 'row height fits a two-line Case cell');
+assert.ok(Number(board.match(/const ROW_HEIGHT = (\d+);/u)[1]) >= 40, 'compact one-line rows (owner 2026-11-10: sized like the order table), two 18px lanes');
 assert.ok(board.includes("field: 'gridEvidence'") && board.includes('class="board-grid-case"') && board.includes("escapeHtml(String(record.get('caseRef')"), 'Case cell: code then reason, escaped');
 assert.ok(board.includes('<span class="ev-label" title="${full}">'), 'every bar label carries its full name as a title');
 assert.ok(board.includes("CLAIM_OPENED: 'Claim'"), 'milestones use a short label');
@@ -68,4 +77,4 @@ assert.match(scroll, /\.main-content \{ width: min\(calc\(100% - 48px\), var\(--
 const index = readFileSync(join(root, 'frontend/src/index.css'), 'utf8');
 assert.ok(index.includes('details:not(.limits-drawer) > summary::after { display: inline-block; }'), 'chevron is a box, not a lone border');
 
-console.log(`frontend_board_card_layout: ok (cards >= ${min[1]}px, facts >= ${factMin[1]}px, no mid-word break)`);
+console.log(`frontend_board_card_layout: ok (cards >= ${cardBasis[1]}px, facts >= ${factMin[1]}px, no mid-word break)`);

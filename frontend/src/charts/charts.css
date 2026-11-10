@@ -31,8 +31,12 @@
 .velocity-mark-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 8px; }
 .velocity-mark-chips button { min-height: 44px; padding: 0 14px; border: 1px solid var(--pg-color-rule, #cbd5e1); border-radius: 999px; background: var(--pg-color-panel, #ffffff); color: var(--pg-color-ink, #0f172a); font: inherit; font-size: 15px; cursor: pointer; }
 .velocity-mark-chips button span { margin-left: 4px; padding: 0 6px; border-radius: 999px; background: var(--pg-color-recede, #f1f5f9); font-size: 14px; }
-.velocity-mark-chips button[aria-pressed="true"] { border-color: var(--pg-color-accent-strong, #4338ca); color: var(--pg-color-accent-strong, #4338ca); font-weight: 700; }
-.velocity-mark-chips button[aria-pressed="true"]::before { content: "\2713\00a0"; }
+.velocity-mark-chips button[aria-pressed="true"] { border-color: var(--pg-color-accent-strong, #4338ca); color: var(--pg-color-accent-strong, #4338ca); text-shadow: 0.45px 0 0 currentColor, -0.45px 0 0 currentColor; }
+/* (fix r1 F10) The check mark sits in a fixed slot of the left padding in both states (hidden until pressed), so
+   pressing a chip changes no width and a label that wraps stays aligned. */
+.velocity-mark-chips button[aria-pressed] { position: relative; padding-left: 30px; }
+.velocity-mark-chips button[aria-pressed]::before { content: "\2713"; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); visibility: hidden; }
+.velocity-mark-chips button[aria-pressed="true"]::before { visibility: visible; }
 .velocity-mark-chips button:disabled { color: var(--pg-color-muted, #64748b); cursor: not-allowed; }
 .velocity-mark-chips button:focus-visible { outline: 2px solid var(--pg-color-focus, #2563eb); outline-offset: 2px; }
 .velocity-mark-note { margin: 0 0 8px; font-size: 15px; color: var(--pg-color-ink, #0f172a); }

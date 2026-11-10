@@ -41,7 +41,7 @@ body { margin: 0; background: var(--pg-canvas); color: var(--pg-ink); font-famil
 .pg-intro h1 { margin: 0 0 4px; font-size: 28px; line-height: 1.2; font-weight: 700; letter-spacing: -0.3px; }
 .pg-intro p { margin: 0; font-size: 15px; line-height: 1.5; color: var(--pg-muted); }
 .pg-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; padding: 0; list-style: none; }
-.pg-delegated { margin: 10px 0 0; padding: 8px 12px; border-radius: 8px; background: var(--pg-panel); box-shadow: inset 0 0 0 1px var(--pg-line); font-size: 14px; overflow-wrap: anywhere; }
+.pg-delegated { scroll-margin-top: 136px; margin: 10px 0 0; padding: 8px 12px; border-radius: 8px; background: var(--pg-panel); box-shadow: inset 0 0 0 1px var(--pg-line); font-size: 14px; overflow-wrap: anywhere; }
 .pg-chips li { padding: 4px 12px; border-radius: var(--pg-radius-pill); background: var(--pg-panel); box-shadow: inset 0 0 0 1px var(--pg-line); font-size: 14px; color: var(--pg-muted); }
 .pg-chips li.is-accent { background: var(--pg-tint); box-shadow: none; color: var(--pg-accent-dark); }
 
@@ -178,8 +178,12 @@ body { margin: 0; background: var(--pg-canvas); color: var(--pg-ink); font-famil
 .pg-replay-note { margin: 0 0 8px; font-size: 16px; }
 .pg-replay-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
 .pg-replay-buttons button { min-height: 44px; padding: 8px 14px; border: 1px solid currentColor; border-radius: 12px; background: transparent; color: inherit; font: inherit; font-size: 16px; text-align: left; cursor: pointer; }
-.pg-replay-buttons button[aria-pressed="true"] { font-weight: 700; }
-.pg-replay-buttons button[aria-pressed="true"]::before { content: "\2713\00a0"; }
+.pg-replay-buttons button[aria-pressed="true"] { text-shadow: 0.45px 0 0 currentColor, -0.45px 0 0 currentColor; }
+/* (fix r1 F10) The check mark sits in a fixed slot of the left padding in both states (hidden until pressed), so
+   pressing a chip changes no width and a label that wraps stays aligned. */
+.pg-replay-buttons button[aria-pressed] { position: relative; padding-left: 30px; }
+.pg-replay-buttons button[aria-pressed]::before { content: "\2713"; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); visibility: hidden; }
+.pg-replay-buttons button[aria-pressed="true"]::before { visibility: visible; }
 .pg-replay-buttons button:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
 .pg-replay-steps { margin: 8px 0; padding-left: 22px; display: grid; gap: 2px; font-size: 16px; }
 .pg-replay-answer, .pg-replay-wait { margin: 4px 0; font-size: 16px; line-height: 1.5; }

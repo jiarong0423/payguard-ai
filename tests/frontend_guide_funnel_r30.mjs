@@ -96,7 +96,9 @@ assert.equal(/<details[^>]*\sopen/u.test(section), false, 'collapsed by default'
 assert.equal(section.includes('Only a form field that passes the rule check counts as filled in'), false, 'old form-only claim gone (r32 J3: the rule layer also fills items)');
 
 // (d) (2026-11-09) No audit numbers on the screen: one muted line under the sources points to the Proof page.
-assert.ok(panel.includes('Rules are paraphrased from official pages; see <a href="/proof.html">Proof</a> for how they were checked.'), 'footnote points to Proof');
+// (fix r1 U9) "Paraphrased from official pages" is said once, in the dated line just above; this line only points to Proof.
+assert.ok(panel.includes('See <a href="/proof.html">Proof</a> for how the rules were checked.'), 'footnote points to Proof');
+assert.equal((panel.match(/araphrased from official pages/gu) || []).length, 1, 'the paraphrase disclosure appears once');
 assert.equal(/ruleAuditText|RULE_AUDIT_SAMPLE|sample of 36|34 consistent|10 wording differs/u.test(panel), false, 'no audit numbers or sample wording in the panel');
 assert.equal(panel.includes('rules checked line by line against their sources'), false, 'no whole-country line-check claim');
 const verdict = panel.slice(panel.indexOf('function Verdict('), panel.indexOf('// Optional amount'));

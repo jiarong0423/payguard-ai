@@ -337,7 +337,10 @@ export function createEvidenceAuditor({ studio, getState, data, delegate = null,
           const recorded = mode === 'replay' ? findRecordedRun(recording, question) : null;
           if (recorded) {
             yield* replayRun(recorded, { studio, getState, toolContext: toolCtx, idPrefix: `${runId}-replay` });
-            onAnswer(recorded.page_id);
+            // (fix r1 F9) A replayed run answers in words, not in an answer widget: the words are also reported outside
+            // the Studio thread, so a phone (where the panel closes to show the page) still has the answer on screen.
+            onDelegated({ question, summary: recorded.reply, ok: true, recorded: true });
+            onAnswer(recorded.page_id, null, { textOnly: true });
             yield* say(messageId, `${recordingLabel(recording)} The data agent's answer then: ${recorded.reply} ${BOUNDARY}`);
             yield { type: 'RUN_FINISHED', threadId, runId, result: { intent: 'replayed' } };
             return;

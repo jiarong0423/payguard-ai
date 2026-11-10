@@ -3,14 +3,14 @@
 .board-summary, .board-empty { margin: 0; font-size: 14px; line-height: 1.5; color: var(--pg-color-muted); }
 /* (2026-11-10) Cards never get narrower than BOARD_CARD_MIN_WIDTH (300px, or the full width on a phone): with ten cards the
    row wraps to fewer cards instead of crushing them. auto-fill keeps a lone card at card width. */
-.board-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+.board-list { list-style: none; margin: 0; padding: 0; }
 .board-row { container-type: inline-size; border: 1px solid var(--pg-color-rule); border-left: 4px solid var(--pg-color-subtle); border-radius: var(--pg-radius-control); background: var(--pg-color-panel); padding: 12px 16px; min-width: 0; }
 .board-row-open { border-left-color: var(--pg-color-accent); }
 .board-row-due_soon { border-left-color: var(--pg-color-watch); }
 /* Urgency is the red left edge and the red status line; the card stays white so the red response-window bar below
    still stands out (owner review 2026-11-04: an all-pink area hid the bars). */
 .board-row-past_due, .board-row-urgent { border-left: 6px solid var(--pg-color-risk); }
-.board-row-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; font-size: var(--type-section-title, 17px); font-weight: 650; color: var(--pg-color-ink); }
+.board-row-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 12px; font-size: var(--type-section-title, 17px); font-weight: 650; color: var(--pg-color-ink); }
 .board-row-status { font-size: 14px; color: var(--pg-color-muted); }
 .board-row-urgent .board-row-status, .board-row-past_due .board-row-status { color: var(--pg-color-risk); font-weight: 600; }
 /* Facts: label above value, as many 130px columns as the card itself fits (a container query, not the viewport), the plan
@@ -65,8 +65,12 @@
 .board-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 8px; }
 .board-chips button { min-height: 44px; padding: 0 14px; border: 1px solid var(--pg-color-rule); border-radius: 999px; background: var(--pg-color-panel); color: var(--pg-color-ink); font: inherit; font-size: 15px; cursor: pointer; }
 .board-chips button span { margin-left: 4px; padding: 0 6px; border-radius: 999px; background: var(--pg-color-recede); font-size: 14px; }
-.board-chips button[aria-pressed="true"] { border-color: var(--pg-color-accent-strong); color: var(--pg-color-accent-strong); font-weight: 700; }
-.board-chips button[aria-pressed="true"]::before { content: "\2713\00a0"; }
+.board-chips button[aria-pressed="true"] { border-color: var(--pg-color-accent-strong); color: var(--pg-color-accent-strong); text-shadow: 0.45px 0 0 currentColor, -0.45px 0 0 currentColor; }
+/* (fix r1 F10) The check mark sits in a fixed slot of the left padding in both states (hidden until pressed), so
+   pressing a chip changes no width and a label that wraps stays aligned. */
+.board-chips button[aria-pressed] { position: relative; padding-left: 30px; }
+.board-chips button[aria-pressed]::before { content: "\2713"; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); visibility: hidden; }
+.board-chips button[aria-pressed="true"]::before { visibility: visible; }
 .board-chips button:disabled { color: var(--pg-color-muted); cursor: not-allowed; }
 .board-chips button:focus-visible { outline: 2px solid var(--pg-color-focus); outline-offset: 2px; }
 .board-canvas .b-sch-event-wrap.payguard-board-glow .b-sch-event, .board-canvas .payguard-board-glow.b-sch-event { box-shadow: 0 0 0 3px var(--pg-color-risk), 0 0 12px 2px var(--pg-color-risk); }
@@ -80,7 +84,57 @@
 .board-grid-case small { font-size: 14px; color: var(--pg-color-muted); }
 /* (2026-11-10) A short "Collect evidence" slot keeps a readable labelled bar at week scale instead of an empty sliver. */
 .board-canvas .b-sch-event-wrap.payguard-board-plan, .board-canvas .b-sch-event-wrap.payguard-board-plan .b-sch-event,
-.board-canvas .payguard-board-plan, .board-canvas .b-sch-event-wrap:has(.payguard-board-plan) { min-width: 190px; }
+.board-canvas .payguard-board-plan, .board-canvas .b-sch-event-wrap:has(.payguard-board-plan) { min-width: 216px; }
 .board-canvas .b-sch-event-wrap.payguard-board-plan .ev-label { color: inherit; }
 /* (2026-11-10) Phone timeline: a masked Sandbox code may wrap after a hyphen instead of ending in "…". */
 .board-timeline-phone .b-grid-sub-grid-locked .b-grid-cell { white-space: normal; overflow-wrap: break-word; line-height: 1.3; }
+
+/* (2026-11-10 redesign) Compact cards with a fixed shape, so a card is the same height in every state (no plan, plan
+   scheduled, no due date) and a row of cards never looks uneven:
+   line 1 code, line 2 source chip + status, then due, evidence and amount (one line each) and a two-line plan area.
+   The reason is the same text as the timeline's Case column, so on the card it is kept for screen readers only. */
+.board-row { display: flex; flex-direction: column; padding: 10px 12px; }
+.board-row-head { font-size: 15px; justify-content: flex-start; gap: 2px 8px; }
+.board-row-head > strong { flex: 1 0 100%; white-space: nowrap; }
+.board-row-source { margin-inline: 0; font-size: 14px; padding: 0 6px; font-weight: 600; white-space: nowrap; }
+.board-row-status { flex: 1 1 0; min-width: 0; min-height: 24px; line-height: 24px; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.board-list .board-row dl { margin-top: 4px; grid-template-columns: minmax(0, 1fr); gap: 1px; align-items: start; }
+.board-list .board-row dl > div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px; line-height: 1.4; }
+.board-list .board-row dt, .board-list .board-row dd { display: inline; font-size: 14px; }
+.board-list .board-row dt::after { content: ": "; }
+.board-list .board-row dl > div:nth-child(1) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.board-list .board-row dl > div:nth-child(5) { white-space: normal; height: 58px; }
+.board-list .board-row dl > div:nth-child(5) dt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.board-list .board-row .board-plan-reset { padding: 0 10px; font-size: 14px; margin-top: 2px; }
+@media (min-width: 641px) { .board-list .board-row .board-plan-reset { min-height: 30px; } }
+.board-row { position: relative; }
+/* (2026-11-10 redesign) Timeline lanes. eventLayout is "none", so every bar starts at the row top; the lanes are set here.
+   Lane 1 (top): milestones and the response window. Lane 2: the Collect evidence plan. Row height is ROW_HEIGHT (44px): compact one-line rows like the order table. */
+.board-timeline:not(.board-timeline-phone) .board-canvas .b-sch-event-wrap { height: 18px !important; --b-event-size: 18 !important; }
+.board-timeline:not(.board-timeline-phone) .board-canvas .b-sch-event-wrap.payguard-board-plan, .board-timeline:not(.board-timeline-phone) .board-canvas .b-sch-event-wrap:has(.payguard-board-plan) { margin-top: 20px; }
+/* A short response window keeps its whole name: the label runs past the bar's end instead of ending in "Resp…". */
+.board-timeline:not(.board-timeline-phone) .board-canvas .b-sch-event-wrap:has(.payguard-board-window), .board-timeline:not(.board-timeline-phone) .board-canvas .payguard-board-window,
+.board-timeline:not(.board-timeline-phone) .board-canvas .payguard-board-window .b-sch-event-content { overflow: visible; }
+/* The Claim milestone sits on the bar's start, so the name begins after it (text-indent, not padding). */
+.board-timeline:not(.board-timeline-phone) .board-canvas .payguard-board-window .ev-label { overflow: visible; text-overflow: clip; text-indent: 30px; flex: 0 0 auto; min-width: max-content; }
+
+/* (2026-11-10 redesign, after red-team R1) The board is one tool, not the whole page. The cards are one horizontal strip
+   (swipe or scroll sideways; the next card peeks in at the edge), never a list cut through the middle of a row; the timeline
+   below has its own fixed height (EvidenceBoard VISIBLE_ROWS). Card width: 330px, or most of the width on a phone. */
+.board-list { display: flex; gap: 10px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; padding: 2px 2px 8px; -webkit-overflow-scrolling: touch; }
+/* (red team R2 N-3) A part of the next card shows at every width, so the strip reads as scrollable. */
+.board-list > .board-row { flex: 0 0 clamp(264px, 44%, 330px); scroll-snap-align: start; }
+@media (max-width: 640px) { .board-list > .board-row { flex-basis: 86%; } }
+.board-plan-help { margin-bottom: 4px; max-width: none; }
+/* The plan line keeps one height in every state: the message is one line (full text in its title). */
+.board-plan-message { flex: 1 1 0; flex-basis: 100%; min-width: 0; min-height: 21px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.board-plan-bar .board-plan-reset { flex: 0 0 auto; white-space: nowrap; }
+.board-plan-ics-note { flex: 0 1 340px; text-align: right; }
+@media (max-width: 900px) { .board-plan-message { white-space: normal; min-height: 42px; } }
+/* 14px everywhere in the board, the bar labels included; amber bars get a darker label (AA contrast). */
+.board-canvas .b-sch-event .b-sch-event-content, .board-canvas .b-sch-event .b-sch-event-text, .board-canvas .b-sch-event .ev-label { font-size: 14px; letter-spacing: 0; }
+.board-canvas .b-color-amber .ev-label, .board-canvas .b-color-orange .ev-label, .board-canvas .b-color-amber .b-sch-event-content, .board-canvas .b-color-orange .b-sch-event-content { color: #5f3a00; }
+/* (red team R2 N-2) The fixed-height timeline lets the wheel go on to the page at its top and bottom. */
+.board-timeline:not(.board-timeline-phone) .board-canvas .b-grid-body-container { overscroll-behavior-y: auto; }
+/* Phones: the drag and keyboard help is for a pointer and a keyboard; it stays for screen readers only. */
+@media (max-width: 640px) { .board-plan-help { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); margin: 0; } }

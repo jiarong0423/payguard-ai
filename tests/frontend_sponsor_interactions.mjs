@@ -62,7 +62,9 @@ for (const entry of SPONSOR_MAP) {
   if (entry.proof) { assert.ok(PROOF_SPONSORS.includes(entry.proof), entry.name); assert.ok(sponsorHref(entry).startsWith('/proof.html#sponsor='), entry.name); }
   else assert.ok(entry.href.startsWith('/'), entry.name);
 }
-assert.equal(sponsorHref(SPONSOR_MAP.find((entry) => entry.name === 'Bryntum')), '/proof.html#sponsor=Bryntum');
+// (fix r1 F7) Bryntum has no proof row, so its link goes to the deadline board; a tool with proof rows keeps the filter link.
+assert.equal(sponsorHref(SPONSOR_MAP.find((entry) => entry.name === 'Bryntum')), '/#evidence-board');
+assert.equal(sponsorHref(SPONSOR_MAP.find((entry) => entry.name === 'PayPal')), '/proof.html#sponsor=PayPal');
 assert.ok(read('frontend/src/App.jsx').includes('data-testid="sponsor-map"'), 'the footer has the Sponsor map');
 
 // Hosted dashboard: one-click replay of the four recorded runs, a visible step list, the recorded badge. Nothing is called.

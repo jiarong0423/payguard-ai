@@ -266,6 +266,7 @@ EXACT_FILES = (
     "tests/frontend_console_r32_followup.mjs",
     "tests/frontend_ui_r33.mjs",
     "tests/frontend_ui_r34.mjs",
+    "tests/frontend_fix_r1.mjs",
     "tests/frontend_auto_renew_20261110.mjs",
     "tests/frontend_scenarios_contract.mjs",
     "tests/frontend_start_here.mjs",

@@ -68,11 +68,6 @@
   #disputes .step-more-body .step-section { margin: 0; }
   #disputes .evidence-board { gap: 8px; }
   /* Card widths and the fact layout live in board/board.css (2026-11-10: a 240px card with three fact columns crushed values to 1-2 letters). */
-  #disputes .board-list { gap: 8px; }
-  #disputes .board-row { padding: 6px 10px; }
-  #disputes .board-row-head { font-size: 15px; gap: 2px 8px; }
-  #disputes .board-row-status, #disputes .board-row dt, #disputes .board-row dd { font-size: 13px; }
-  #disputes .board-row dl { margin-top: 4px; gap: 2px 12px; }
   #disputes .board-plan-bar { margin-bottom: 4px; gap: 6px 12px; }
   #disputes .board-plan-help { margin-bottom: 4px; max-width: none; }
   #disputes .board-plan-reset { min-height: 32px; }

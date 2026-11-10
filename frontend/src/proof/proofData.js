@@ -93,6 +93,23 @@ export function proofHash({ method = 'ALL', sponsor = '' } = {}) {
   if (method && method !== 'ALL') parts.push(`method=${method}`);
   return parts.length ? `#${parts.join('&')}` : '';
 }
+// (fix r1 F8) Pressing a chip never lands on an empty list when that chip has rows of its own: if the new chip and
+// the other group's chip share no row, the other group goes back to its neutral value. The chip counts use the same
+// rule, so a chip's number is what pressing it shows. `change` is { method } or { sponsor }.
+export function resolveProofFilter(rows, filter, change) {
+  const next = { method: filter?.method || 'ALL', sponsor: filter?.sponsor || '', ...change };
+  const count = (state) => (rows || []).filter((row) => rowMatches(row, state)).length;
+  if (count(next) > 0) return next;
+  const alone = 'method' in change ? { method: next.method, sponsor: '' } : { method: 'ALL', sponsor: next.sponsor };
+  return count(alone) > 0 ? alone : next;
+}
+// The line after "Showing 0 of N": names the real reason (no row for that tool at all, or no row for the pair).
+export function emptyProofNote(rows, { method = 'ALL', sponsor = '' } = {}) {
+  if ((rows || []).some((row) => rowMatches(row, { method, sponsor }))) return '';
+  if (sponsor && !(rows || []).some((row) => rowMatches(row, { sponsor }))) return `No proof row names ${sponsor}; it is shown in the product itself (see the Sponsor map in the console footer).`;
+  if (sponsor && method !== 'ALL') return `${sponsor} has proof rows, but none shown this way. Press Reset or another chip.`;
+  return method !== 'ALL' ? 'No proof row was shown this way.' : '';
+}
 export function rowMatches(row, { method = 'ALL', sponsor = '' } = {}) {
   if (method !== 'ALL' && row.method !== method) return false;
   if (sponsor && !(Array.isArray(row.sponsors) && row.sponsors.includes(sponsor))) return false;

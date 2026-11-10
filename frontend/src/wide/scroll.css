@@ -2,13 +2,15 @@
 @media (min-width: 1280px) {
   .guide-live-log { max-height: 300px; min-height: 120px; }
   .step-more[open] > .step-more-body { max-height: 360px; overflow-y: auto; }
-  #disputes .provider-disputes[open] > .provider-disputes-body { max-height: 360px; overflow-y: auto; }
+  /* (red team R2 N-1) The dispute list scrolls; the hint above it and the preview / submit buttons under it stay in view. */
+  #disputes .provider-disputes[open] > .provider-disputes-body { max-height: none; overflow: visible; }
+  #disputes .provider-dispute-list { max-height: clamp(270px, 38vh, 420px); overflow-y: auto; padding: 2px; }
   #disputes .dispute-details[open] > .dispute-detail-content { max-height: 320px; overflow-y: auto; }
   #compliance .country-all-rules[open] > :not(summary) { max-height: 300px; overflow-y: auto; }
 }
 
 /* (2026-11-10, owner: "containers look deformed") One centred content width on wide screens: the top bar's inner row, the
-   title row, the step tabs, the step panels and the footer all start and end on the same two lines (max 1560px). */
+   title row, the step tabs, the step panels and the footer all start and end on the same two lines (max 1560px: compact, the page is not stretched across a wide screen). */
 @media (min-width: 1280px) {
   :root { --pg-content-w: 1560px; }
   .topbar { padding-left: max(24px, calc((100vw - var(--pg-content-w)) / 2)); padding-right: max(24px, calc((100vw - var(--pg-content-w)) / 2)); }
@@ -21,4 +23,26 @@
      no longer shows below the tab's rounded corner. */
   .main-content .journey { overflow: hidden; }
   .main-content .journey-step.is-active { transform: none; }
+}
+
+/* (2026-11-10 redesign) Step 03: the case queue follows the page while the review column is longer, so there is no empty
+   strip under it. */
+@media (min-width: 1280px) {
+  #disputes .dispute-layout { align-items: start; }
+  #disputes .case-list { position: sticky; top: 64px; }
+}
+
+/* (2026-11-10 redesign, all-expanded pass) Opened sections stay compact and nothing is cut off. */
+@media (min-width: 1280px) {
+  /* Step 02: when the side column (guide, More) is taller than the metrics, the extra height goes below the alert bar
+     instead of stretching empty bands around it. */
+  #velocity .stage-body { grid-template-rows: auto auto 1fr; }
+  #velocity .stage-side { grid-row: 1 / span 3; }
+  /* Step 03: the evidence fields and ZIP list show whole (no cut last line). */
+  #disputes .dispute-details[open] > .dispute-detail-content { max-height: none; overflow: visible; }
+}
+/* (2026-11-10, red-team R1 P0-3) Long optional lists scroll inside their box so the other column is not left empty. */
+@media (min-width: 1280px) {
+  #compliance .product-card-list { max-height: 320px; overflow-y: auto; padding-right: 4px; }
+  #velocity .stage-side .step-more[open] > .step-more-body { max-height: 150px; overflow-y: auto; }
 }

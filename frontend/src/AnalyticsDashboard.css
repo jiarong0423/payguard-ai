@@ -803,8 +803,12 @@
 .analytics-grid-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
 .analytics-grid-chips button { min-height: 44px; padding: 0 14px; border: 1px solid #cbd5e1; border-radius: 999px; background: #ffffff; color: #0f172a; font: inherit; font-size: 15px; cursor: pointer; }
 .analytics-grid-chips button span { margin-left: 4px; padding: 0 6px; border-radius: 999px; background: #f1f5f9; font-size: 14px; }
-.analytics-grid-chips button[aria-pressed="true"] { border-color: #1d4ed8; background: #eff6ff; color: #1d4ed8; font-weight: 700; }
-.analytics-grid-chips button[aria-pressed="true"]::before { content: "\2713\00a0"; }
+.analytics-grid-chips button[aria-pressed="true"] { border-color: #1d4ed8; background: #eff6ff; color: #1d4ed8; text-shadow: 0.45px 0 0 currentColor, -0.45px 0 0 currentColor; }
+/* (fix r1 F10) The check mark sits in a fixed slot of the left padding in both states (hidden until pressed), so
+   pressing a chip changes no width and a label that wraps stays aligned. */
+.analytics-grid-chips button[aria-pressed] { position: relative; padding-left: 30px; }
+.analytics-grid-chips button[aria-pressed]::before { content: "\2713"; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); visibility: hidden; }
+.analytics-grid-chips button[aria-pressed="true"]::before { visibility: visible; }
 .analytics-grid-chips button:disabled { color: #64748b; cursor: not-allowed; }
 .analytics-grid-chips button:focus-visible { outline: 3px solid rgb(37 99 235 / 28%); outline-offset: 2px; }
 .analytics-grid-note { margin: 0 0 8px; color: #475569; font-size: 14px; }

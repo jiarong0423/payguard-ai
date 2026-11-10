@@ -342,14 +342,27 @@ function Dashboard({ setup }) {
   // When the auditor answers on the other page, show that page. On a phone the AI panel covers the canvas, so
   // the dashboard goes back to view mode and moves to the answer slot under the headline tiles. The breakpoint is
   // read when the answer comes, not when the harness was made.
-  const onAnswer = (page, technical) => {
+  // (fix r1 F9) `textOnly`: the answer is a sentence with no answer widget (a replayed data-agent run). The phone then
+  // goes to the answer line under the heading instead of looking for a widget that never comes.
+  const delegatedLineRef = useRef(null);
+  const showAnswerLine = (triesLeft = 10) => {
+    const line = delegatedLineRef.current;
+    if (line) {
+      line.focus({ preventScroll: true });
+      line.scrollIntoView({ behavior: 'auto', block: 'start' });
+      // Back (which closes the panel) restores the old scroll position a moment later: look again once it has settled.
+      setTimeout(() => { const top = line.isConnected ? line.getBoundingClientRect().top : 0; if (top < 0 || top > window.innerHeight * 0.6) line.scrollIntoView({ behavior: 'auto', block: 'start' }); }, 700);
+    }
+    else if (triesLeft > 0) setTimeout(() => showAnswerLine(triesLeft - 1), 150);
+  };
+  const onAnswer = (page, technical, { textOnly = false } = {}) => {
     const phone = compactQuery.matches;
     if (technical) setTechnical(technical);
     setTimeout(() => {
       showPage(page);
       if (phone) {
         closeAuditor();
-        setTimeout(() => focusAnswer(), 300);
+        setTimeout(() => (textOnly ? showAnswerLine() : focusAnswer()), 300);
       }
     }, phone ? 900 : 0);
   };
@@ -389,7 +402,7 @@ function Dashboard({ setup }) {
           <li>License: {LICENSE_KEY ? 'key' : 'trial'}</li>
           {/* (r31 J1 J4) No "Changes stay in this tab" chip: the drawer below says it in edit mode ("Edit mode: ..."). */}
         </ul>
-        {delegated && <p className="pg-delegated" role="status" aria-live="polite" data-testid="dashboard-delegated"><strong>Data agent:</strong> {plainSummary(delegated.summary)}</p>}
+        {delegated && <p className="pg-delegated" role="status" aria-live="polite" data-testid="dashboard-delegated" ref={delegatedLineRef} tabIndex={-1}><strong>{delegated.recorded ? 'Recorded data-agent answer (no model call here):' : 'Data agent:'}</strong> {plainSummary(delegated.summary)}</p>}
       </section>
       <details className="pg-drawer">
         <summary>About this data and its limits</summary>

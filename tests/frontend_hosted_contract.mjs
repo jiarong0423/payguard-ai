@@ -19,7 +19,8 @@ assert.ok(app.includes("apiRequest('/connections', { session, signal }).catch(()
 assert.ok(app.includes("setHosted(connections ? connections.mode === 'hosted_demo' : !['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname));"), 'hosted on mode hosted_demo, and off this machine when the mode cannot be read');
 assert.equal((app.match(/setHosted\(/g) || []).length, 1, 'one place sets the hosted flag');
 // attack r23: the console keeps only this tab's session id, CSRF token and the seller's inputs in sessionStorage
-// (resume after Back or reload); never localStorage, and never the hosted flag.
+// (resume after Back or reload); never localStorage, and never the hosted flag. (fix r1 F1) It also keeps the receipt
+// of a send made in this session (the masked response already on screen), tied to the session id; see frontend_fix_r1.
 assert.ok(!/localStorage/.test(app), 'no localStorage in the console');
 assert.equal((app.match(/window\.sessionStorage/g) || []).length, 1, 'one sessionStorage accessor');
 assert.ok(!/writeStored\([^)]*hosted/.test(app) && !/storeSession\([^)]*mode/.test(app), 'the hosted flag is never stored');
@@ -83,7 +84,9 @@ const swaps = [
 // after Confirm Draft Context (attack r22) is the other: it offers Connect or Create Sandbox draft only when not hosted.
 // (r32 J4 P1-2) The phone bar's Dispute step offers the preview after the local review, only when not hosted.
 // (read-only Sandbox) The disputes list adds one more Connect, shown only when sandboxReads is on.
-const extraPlaces = { 'Connect US Sandbox': 3, 'Create Sandbox draft': 1, 'Prepare evidence request (preview)': 1 };
+// (fix r1 U8) One more Connect US Sandbox: the phone bar after a recorded review, only where hosted Sandbox reads are on.
+const extraPlaces = { 'Connect US Sandbox': 4, 'Create Sandbox draft': 1, 'Prepare evidence request (preview)': 1 };
+assert.ok(app.includes(": reviewDone && sandboxReads && sandbox?.status !== 'connected'\n            ? { key: 'connect-disputes', label: 'Connect US Sandbox'"), 'phone bar connect needs the hosted read flag');
 // (2026-11-10, intended) Also on the hosted demo when its evidence send flag (sandboxSend) is on.
 assert.ok(app.includes("receipt && (!hosted || sandboxSend) && providerDisputeDetail && !evidencePreview\n            ? { key: 'evidence-preview', label: 'Prepare evidence request (preview)'"), 'phone bar preview is local only unless the hosted send is on');
 assert.ok(app.includes("? (reviewRecorded && (!hosted || sandboxSend) && evidenceSubmitReady\n") && app.includes(": reviewRecorded && !hosted && trackingSubmitReady\n"), 'phone bar tracking send is local only; evidence send also with the hosted send flag');

@@ -45,7 +45,8 @@ assert.ok(send.includes('data-testid="send-confirm-amount"') && send.includes('d
 assert.match(app, /<SendConfirmDialog kind=\{sendConfirm\} detail=\{providerDisputeDetail\}/u);
 
 // Evidence result: PayPal's Debug-Id is visible, not only inside Technical details.
-assert.match(app, /\{evidencePreview\.paypal_debug_id && <p className="evidence-debug-id" data-testid="evidence-debug-id">PayPal-Debug-Id: \{evidencePreview\.paypal_debug_id\}<\/p>\}/u);
+// (fix r1 U4) Only until the send: after it the SUBMITTED card carries the one Debug-Id line.
+assert.match(app, /\{!evidenceSent && evidencePreview\.paypal_debug_id && <p className="evidence-debug-id" data-testid="evidence-debug-id">PayPal-Debug-Id: \{evidencePreview\.paypal_debug_id\}<\/p>\}/u);
 
 // Colours are the send dialog's (orange then green), already contrast-checked in frontend_send_guard_r25.mjs.
 assert.match(css, /\.button\.button-confirm-continue \{ background: #c2410c;/u);

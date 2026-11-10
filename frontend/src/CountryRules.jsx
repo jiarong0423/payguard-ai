@@ -139,7 +139,7 @@ function findingsBySeverity(unordered) {
 // is on the Proof page, so no audit numbers sit on this screen.
 function LineCheckNote() {
   return <small className="country-footnote country-line-check-note" data-testid="country-verdict-line-check">
-    Rules are paraphrased from official pages; see <a href="/proof.html">Proof</a> for how they were checked.</small>;
+    See <a href="/proof.html">Proof</a> for how the rules were checked.</small>;
 }
 
 // One big line, then the count line (review r1 P0.3; wording per the PayPal-side red teams: the block may come from a

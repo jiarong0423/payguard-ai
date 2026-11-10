@@ -57,7 +57,8 @@ const css = read('frontend/src/index.css');
   assert.ok(app.includes("['Provider submission', sellerEvidence ? SELLER_EVIDENCE_TEXT : operatorLabel(providerDisputeDetail.provider_submission)],"), 'detail row derived from the evidences');
   assert.ok(app.includes("&& !evidenceBlock && !sellerEvidence;"), 'Submit stays locked');
   assert.ok(app.includes("{sendConfirm && !(sendConfirm === 'evidence' && sellerEvidence) && <SendConfirmDialog"), 'the send dialog never opens for it');
-  assert.ok(app.includes('<Button data-testid="evidence-preview" icon="file" disabled={disabled || !draft || !providerDisputeDetail || sellerEvidence}'), 'no preview (and so no pairing) for it');
+  // (fix r1 F2) Also locked once this session's own send for the open dispute is on screen.
+  assert.ok(app.includes('<Button data-testid="evidence-preview" icon="file" disabled={disabled || !draft || !providerDisputeDetail || sellerEvidence || evidenceSent}'), 'no preview (and so no pairing) for it');
   assert.ok(app.includes('if (sellerEvidenceOnFile(providerDisputeDetail)) return;'), 'previewEvidence refuses it too');
 }
 

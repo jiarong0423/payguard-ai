@@ -41,7 +41,7 @@
   #disputes .board-row { padding: 10px 14px; }
   #disputes .board-row-head { font-size: 16px; }
   #disputes .board-plan-bar { margin-bottom: 8px; }
-  #disputes .board-plan-help { margin-bottom: 8px; font-size: 13px; }
+  #disputes .board-plan-help { margin-bottom: 8px; }
   #disputes .board-chips { margin-bottom: 8px; gap: 8px; }
   #disputes .board-timeline figcaption { margin-bottom: 8px; }
   /* Numbers taken from open-source dashboards (shadcn/ui dashboard-01: chart 250px; Tabler / Grafana: panel gap 8-12px). */

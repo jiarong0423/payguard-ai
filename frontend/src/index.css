@@ -291,7 +291,7 @@ textarea:focus, input[type="text"]:focus, input[type="number"]:focus, select:foc
 .metric-top { display: flex; align-items: center; justify-content: space-between; color: var(--pg-color-muted); font-size: var(--type-meta); font-weight: 650; text-transform: uppercase; letter-spacing: 0.04em; }
 .metric-top svg { color: var(--pg-color-subtle); }
 .metric-value { display: flex; align-items: baseline; gap: 8px; margin: 12px 0 8px; font-variant-numeric: tabular-nums; }
-.metric-value strong { color: var(--pg-color-ink); font-size: 30px; font-weight: 700; letter-spacing: -0.5px; overflow-wrap: anywhere; }
+.metric-value strong { color: var(--pg-color-ink); font-size: 30px; font-weight: 700; letter-spacing: -0.5px; white-space: nowrap; }
 .metric-value > span, .metric small { color: var(--pg-color-muted); font-size: var(--type-meta); }
 .metric-alert { background: var(--pg-tint-watch); border-color: var(--pg-color-watch); }
 .metric-alert .metric-value strong, .metric-alert .metric-top svg, .metric-alert small { color: var(--pg-color-watch); font-weight: 700; }
@@ -1166,6 +1166,9 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 /* A first-screen entry for the example (the country card sits far down the page, most of all on a phone). It clicks the card's own button. */
 .hero-example-link { display: inline-flex; align-items: center; min-height: 44px; margin: 8px 12px 0 0; padding: 0 16px; border: 1px solid var(--pg-color-accent-strong); border-radius: var(--pg-radius-control); background: transparent; color: var(--pg-color-accent-strong); font: inherit; font-size: var(--type-meta); font-weight: 650; cursor: pointer; }
 .hero-example-link:hover { background: var(--pg-color-accent-soft, rgba(79, 70, 229, 0.08)); }
+/* (UX round 1) The first action on the page is a solid primary button. */
+.hero-example-link[data-testid="hero-try-example"] { background: var(--pg-color-accent-strong); color: #fff; }
+.hero-example-link[data-testid="hero-try-example"]:hover { background: var(--pg-color-accent); }
 @media (max-width: 640px) { .hero-example-link { width: 100%; justify-content: center; margin-right: 0; } }
 .metric-baseline-note { display: block; margin-top: 4px; }
 
@@ -1311,3 +1314,24 @@ footer { padding: 8px 0 0; }
 summary { caret-color: transparent; cursor: pointer; }
 details:not(.limits-drawer) > summary::after { display: inline-block; }
 .case-more > summary, .evidence-next > summary { display: flex; align-items: center; gap: 8px; }
+
+/* (fix r1 U6) The one cue above the Sandbox dispute list, and the heading of the PayPal read inside Technical details. */
+.provider-disputes-body .provider-dispute-hint { color: var(--pg-color-ink); font-size: var(--type-support); font-weight: 600; }
+.provider-dispute-detail-title { margin: 16px 0 8px; font-size: var(--type-meta); color: var(--pg-color-muted); }
+/* (fix r1 U8) The phone bar keeps one height: a locked action's reason shares the 44px row with a compact, disabled
+   button instead of adding a second row (61px -> 83px before). */
+@media (max-width: 640px) {
+  .phone-action-bar.has-reason { gap: 2px; }
+  .phone-action-bar.has-reason .button { min-height: 24px; height: 24px; padding-top: 0; padding-bottom: 0; font-size: 14px; }
+  .phone-action-bar.has-reason .phone-action-reason { line-height: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+}
+/* (fix r1 F6) AG Grid draws a search icon at the left of a column filter's text box and leaves room for it with a
+   low-specificity rule; the console's own input rule above (12px padding) won, so the icon sat on the first letters. */
+.ag-filter-body input.ag-input-field-input[type="text"], .ag-filter-body input.ag-input-field-input[type="number"] { padding-left: 30px; }
+
+/* (UX round 2) Phones: the metric caption wraps instead of being cut; long hashes wrap inside their card. */
+@media (max-width: 480px) { .metric-value { flex-wrap: wrap; } .metric-value > span { white-space: normal; } }
+.provider-disputes-body small, .provider-disputes-body code { overflow-wrap: anywhere; }
+
+/* Tablet widths: the step status wraps to a second line instead of ending in "…". */
+@media (min-width: 641px) and (max-width: 1279px) { .journey-step .journey-status { white-space: normal; overflow: visible; text-overflow: clip; } }
