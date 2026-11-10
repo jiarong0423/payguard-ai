@@ -13,7 +13,9 @@ const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const srcRoot = join(projectRoot, 'frontend', 'src');
 const distRoot = join(projectRoot, 'frontend', 'dist');
 // Measured 154 kB at the change that made the grid lazy (483 kB before); the margin covers ordinary growth.
-const FIRST_LOAD_BUDGET = 180 * 1024;
+// 182 kB (was 180 kB): the 2026-11-11 round added full-id pairing, one dispute display mapping and the tab-kept receipt check
+// (about 1 kB gzip); GitHub's zlib measures about 0.4 kB more than the local one, which put the old limit 260 bytes under it.
+const FIRST_LOAD_BUDGET = 182 * 1024;
 const GRID_ENTRY = 'grid/agGrid.jsx';
 
 const walk = (dir) => readdirSync(dir).flatMap((name) => {

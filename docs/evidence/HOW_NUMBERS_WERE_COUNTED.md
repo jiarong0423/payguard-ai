@@ -22,7 +22,7 @@ The file set is the public candidate: every path in `public_export_manifest.json
 | Front-end lines | 15,733 | `frontend/src/**/*.{jsx,js,css}`, 90 files; see below |
 | JSX files / pages | 24 / 5 | `frontend/**/*.jsx`; `frontend/*.html` (index, dashboard, evidence, proof, scenarios; `public/offline.html` is the service-worker fallback, not a page) |
 | API routes | 40 (37 in the OpenAPI description) | see "Route count" |
-| Node test files / lines | 58 / 7,981 | `tests/frontend_*.mjs` (the two other `.mjs` files are a token-writer and a recorder, not tests) |
+| Node test files / lines | 58 / 7,983 | `tests/frontend_*.mjs` (the two other `.mjs` files are a token-writer and a recorder, not tests) |
 | Python tests | 1,169 (9 carry a skip marker at load time; how many are skipped when run depends on the environment: 2 in the run recorded in `TEST_RUN_20261109_SKIPPED.md`) | `unittest` discovery over `tests/`, loaded and counted, not run |
 | Red-team requests | 1,727 | run-time only, see below |
 | Words in documents | 91,570 (page says about 91,570; the script allows 1% either way) | see below |

@@ -39,7 +39,7 @@ CLAIMS = {
     "frontend_pages": 5,
     "api_routes": 40,
     "node_test_files": 58,
-    "node_test_lines": 7981,
+    "node_test_lines": 7983,
     "python_tests": 1169,
     "python_tests_skipped": 9,
     "redteam_requests": 1727,
