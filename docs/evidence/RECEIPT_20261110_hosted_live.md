@@ -26,6 +26,7 @@ The screen recording `take_20261110_1346_hosted_live_send.mov` is kept locally b
 ## Limits to state
 - One send, by the author, to an author-created Sandbox test dispute. It is not a real merchant case, and PayPal Sandbox accepting a request is not PayPal accepting the evidence or deciding the case.
 - The read-back status was "Under review", not "Waiting for buyer response" as after the local sends; the reason for the difference is not known.
+- A later read-back from the hosted site on 2026-11-11 showed this dispute as "Waiting for buyer response": PayPal Sandbox moved the case on after the evidence arrived. TradeGlot did not send anything else to it.
 - The file PayPal stores was not downloaded and compared byte for byte for this send.
 - The hosted send caps and the record of sent disputes live in server memory; a restart resets them.
 - Risk: the stock of hosted test disputes was listed as due on 11/30, before the 12/1 to 12/15 judging window; the author plans to open new ones around 11/25 to 11/28.
