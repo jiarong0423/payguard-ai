@@ -29,4 +29,4 @@ The screen recording `take_20261110_1346_hosted_live_send.mov` is kept locally b
 - The file PayPal stores was not downloaded and compared byte for byte for this send.
 - The hosted send caps and the record of sent disputes live in server memory; a restart resets them.
 - Risk: the stock of hosted test disputes was listed as due on 11/30, before the 12/1 to 12/15 judging window; the author plans to open new ones around 11/25 to 11/28.
-- The 2:41 video shows the hosted send of 2026-11-10 (receipt in this file); an earlier cut, since removed, showed a separate local send that has no receipt and is not counted.
+- The 2:32 video shows the hosted send of 2026-11-10 (receipt in this file); an earlier cut, since removed, showed a separate local send that has no receipt and is not counted.

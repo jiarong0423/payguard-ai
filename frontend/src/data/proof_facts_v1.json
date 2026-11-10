@@ -185,7 +185,7 @@
     {
       "id": "dispute-submit-gated",
       "scenario": "dispute",
-      "proven": "Evidence reaches PayPal Sandbox only after one human approval, the evidence send switch and the server's single-use send confirmation; six sends went out this way (from the local console on 2026-11-04 and 2026-11-05, which this receipt and the 2026-11-04 receipt record, and three on 2026-11-09 in the readback row; one from the hosted demo on 2026-11-10 in the hosted send row), and a send confirmed after the local session had expired was refused. The 2:41 video shows the hosted send of 2026-11-10; an earlier cut, since removed, showed a separate local send that has no receipt and is not counted.",
+      "proven": "Evidence reaches PayPal Sandbox only after one human approval, the evidence send switch and the server's single-use send confirmation; six sends went out this way (from the local console on 2026-11-04 and 2026-11-05, which this receipt and the 2026-11-04 receipt record, and three on 2026-11-09 in the readback row; one from the hosted demo on 2026-11-10 in the hosted send row), and a send confirmed after the local session had expired was refused. The 2:32 video shows the hosted send of 2026-11-10; an earlier cut, since removed, showed a separate local send that has no receipt and is not counted.",
       "how": "Each send needed the local review approval, PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled, submit: true and the single-use send confirmation; the first send is in docs/evidence/RECEIPT_20261104_live.md, the second and the refused attempt in this receipt.",
       "method": "REAL_SANDBOX",
       "date": "2026-11-05",

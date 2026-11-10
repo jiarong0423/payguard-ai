@@ -23,7 +23,7 @@ List disputes → read one → one human approval of the reviewed draft plus a t
 5. **PayPal-Debug-Id.** PayPal answers with its own id. Example from 2026-11-09: `ca5782cf8df90`.
 6. **Read-back match.** A fresh read shows `WAITING_FOR_BUYER_RESPONSE`. The file PayPal serves back (2,015 bytes) has the same SHA-256 as the file recorded at send time.
 
-Video (2:41): https://youtu.be/iVTu_fsgzMs · Repository (MIT): https://github.com/jiarong0423/payguard-ai · Proof page: https://payguard-demo-j2b3.onrender.com/proof.html
+Video (2:32): https://youtu.be/upx5eZYOmC0 · Repository (MIT): https://github.com/jiarong0423/payguard-ai · Proof page: https://payguard-demo-j2b3.onrender.com/proof.html
 
 ## What it proved against PayPal Sandbox
 
@@ -86,7 +86,7 @@ Full table: [SPONSOR_TECH_MAP.md](https://github.com/jiarong0423/payguard-ai/blo
 - **Sandbox only.** All PayPal calls are Sandbox. All disputes are author-created test cases between Sandbox test accounts. Orders, cases and evidence files are synthetic.
 - **Acceptance is not a verdict.** "Accepted" means PayPal Sandbox recorded the request and the dispute left waiting for the seller: waiting for the buyer after the local sends, under review after the hosted send. It is not PayPal accepting the evidence or deciding the case.
 - **Byte match covers two of six sends.** The first 2026-11-09 send was made before fingerprints were recorded. The 2026-11-04 send carried a 43-byte placeholder PDF.
-- **The video's send.** The 2:41 video shows the hosted send of 2026-11-10, the sixth of the six, with its read-back and masked receipt (docs/evidence/RECEIPT_20261110_hosted_live.md); an earlier cut, since removed, showed a separate local send that has no receipt and is not counted.
+- **The video's send.** The 2:32 video shows the hosted send of 2026-11-10, the sixth of the six, with its read-back and masked receipt (docs/evidence/RECEIPT_20261110_hosted_live.md); an earlier cut, since removed, showed a separate local send that has no receipt and is not counted.
 - **Account match is declared.** The seller id is set by the operator and compared with the dispute's seller. It is not verified with PayPal.
 - **Country rules are sampled.** 112 of 681 rules were sampled and 92 compared with their pages: 62 consistent, 30 worded differently, 0 contradicted, 20 could not be opened. An AI reader judged them, with no human re-read. The rest are unchecked. Advisory, not legal advice.
 - **Pinned PayPal references are older** than PayPal's current pages (pinned 2022-10-29 and 2026-09-14).
