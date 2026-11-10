@@ -37,9 +37,9 @@ assert.doesNotMatch(rule('.board-row-status'), /text-overflow: ellipsis/u, 'stat
 assert.match(rule('.board-list .board-row dl > div:nth-child(5)'), /min-height: \d+px/u, 'plan area keeps a minimum height in every state');
 assert.doesNotMatch(css, /\.board-plan-message \{[^}]*text-overflow: ellipsis/u, 'plan message not cut');
 assert.match(css, /\.board-plan-message:empty \{ min-height: 0;/u, 'no empty band without a message');
-assert.match(css, /\.board-timeline:not\(\.board-timeline-phone\) \.board-canvas \.b-sch-event-wrap \{ height: \d+px !important; --b-event-size: \d+ !important; \}/u, 'desktop timeline bars share one lane height');
+assert.match(css, /\.board-timeline \.board-canvas \.b-sch-event-wrap \{ height: \d+px !important; --b-event-size: \d+ !important; \}/u, 'desktop timeline bars share one lane height');
 const boardJsx = readFileSync(join(root, 'frontend/src/board/EvidenceBoard.jsx'), 'utf8');
-assert.ok(boardJsx.includes("eventLayout={phone ? 'stack' : 'none'}") && boardJsx.includes('VISIBLE_ROWS * ROW_HEIGHT + TIMELINE_HEADER'), 'uniform rows; timeline has a fixed height past VISIBLE_ROWS');
+assert.ok(boardJsx.includes('eventLayout="none"') && boardJsx.includes('VISIBLE_ROWS * ROW_HEIGHT + TIMELINE_HEADER'), 'uniform rows; timeline has a fixed height past VISIBLE_ROWS');
 
 // 3. No mid-word break: values wrap at spaces (break-word only for a single over-long token), never "anywhere".
 const value = rule('.board-row dd');

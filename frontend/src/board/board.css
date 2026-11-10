@@ -84,12 +84,12 @@
 .board-grid-case small { font-size: 14px; color: var(--pg-color-muted); }
 /* (external review 2026-11-10 #3) The plan bar is drawn at its real length (a minimum width made a one-day slot look like it
    ran past the due line). Lane 2 holds only the plan, so a label longer than its bar runs on to the right of it. */
-.board-timeline:not(.board-timeline-phone) .board-canvas .b-sch-event-wrap:has(.payguard-board-plan), .board-timeline:not(.board-timeline-phone) .board-canvas .b-sch-event-wrap.payguard-board-plan,
-.board-timeline:not(.board-timeline-phone) .board-canvas .payguard-board-plan, .board-timeline:not(.board-timeline-phone) .board-canvas .payguard-board-plan .b-sch-event-content { overflow: visible; }
-.board-timeline:not(.board-timeline-phone) .board-canvas .payguard-board-plan .ev-label { overflow: visible; text-overflow: clip; flex: 0 0 auto; min-width: max-content; color: var(--pg-color-accent-strong, #3730a3); }
+.board-timeline .board-canvas .b-sch-event-wrap:has(.payguard-board-plan), .board-timeline .board-canvas .b-sch-event-wrap.payguard-board-plan,
+.board-timeline .board-canvas .payguard-board-plan, .board-timeline .board-canvas .payguard-board-plan .b-sch-event-content { overflow: visible; }
+.board-timeline .board-canvas .payguard-board-plan .ev-label { overflow: visible; text-overflow: clip; flex: 0 0 auto; min-width: max-content; color: var(--pg-color-accent-strong, #3730a3); }
 .board-canvas .ev-label-milestone { display: none; }
 /* (2026-11-10) Phone timeline: a masked Sandbox code may wrap after a hyphen instead of ending in "…". */
-.board-timeline-phone .b-grid-sub-grid-locked .b-grid-cell { white-space: normal; overflow-wrap: break-word; line-height: 1.3; }
+/* (phone fix 2026-11-10) The phone timeline uses the same one-line rows and two lanes as the desktop; the code fits one line. */
 
 /* (2026-11-10 redesign) Compact cards with a fixed shape, so a card is the same height in every state (no plan, plan
    scheduled, no due date) and a row of cards never looks uneven:
@@ -111,13 +111,13 @@
 .board-row { position: relative; }
 /* (2026-11-10 redesign) Timeline lanes. eventLayout is "none", so every bar starts at the row top; the lanes are set here.
    Lane 1 (top): milestones and the response window. Lane 2: the Collect evidence plan. Row height is ROW_HEIGHT (44px): compact one-line rows like the order table. */
-.board-timeline:not(.board-timeline-phone) .board-canvas .b-sch-event-wrap { height: 18px !important; --b-event-size: 18 !important; }
-.board-timeline:not(.board-timeline-phone) .board-canvas .b-sch-event-wrap.payguard-board-plan, .board-timeline:not(.board-timeline-phone) .board-canvas .b-sch-event-wrap:has(.payguard-board-plan) { margin-top: 20px; }
+.board-timeline .board-canvas .b-sch-event-wrap { height: 18px !important; --b-event-size: 18 !important; }
+.board-timeline .board-canvas .b-sch-event-wrap.payguard-board-plan, .board-timeline .board-canvas .b-sch-event-wrap:has(.payguard-board-plan) { margin-top: 20px; }
 /* A short response window keeps its whole name: the label runs past the bar's end instead of ending in "Resp…". */
-.board-timeline:not(.board-timeline-phone) .board-canvas .b-sch-event-wrap:has(.payguard-board-window), .board-timeline:not(.board-timeline-phone) .board-canvas .payguard-board-window,
-.board-timeline:not(.board-timeline-phone) .board-canvas .payguard-board-window .b-sch-event-content { overflow: visible; }
+.board-timeline .board-canvas .b-sch-event-wrap:has(.payguard-board-window), .board-timeline .board-canvas .payguard-board-window,
+.board-timeline .board-canvas .payguard-board-window .b-sch-event-content { overflow: visible; }
 /* The Claim milestone sits on the bar's start, so the name begins after it (text-indent, not padding). */
-.board-timeline:not(.board-timeline-phone) .board-canvas .payguard-board-window .ev-label { overflow: visible; text-overflow: clip; text-indent: 30px; flex: 0 0 auto; min-width: max-content; }
+.board-timeline .board-canvas .payguard-board-window .ev-label { overflow: visible; text-overflow: clip; text-indent: 30px; flex: 0 0 auto; min-width: max-content; }
 
 /* (2026-11-10 redesign, after red-team R1) The board is one tool, not the whole page. The cards are one horizontal strip
    (swipe or scroll sideways; the next card peeks in at the edge), never a list cut through the middle of a row; the timeline
@@ -138,14 +138,22 @@
 .board-canvas .b-sch-event .b-sch-event-content, .board-canvas .b-sch-event .b-sch-event-text, .board-canvas .b-sch-event .ev-label { font-size: 14px; letter-spacing: 0; }
 .board-canvas .b-color-amber .ev-label, .board-canvas .b-color-orange .ev-label, .board-canvas .b-color-amber .b-sch-event-content, .board-canvas .b-color-orange .b-sch-event-content { color: #5f3a00; }
 /* (red team R2 N-2) The fixed-height timeline lets the wheel go on to the page at its top and bottom. */
-.board-timeline:not(.board-timeline-phone) .board-canvas .b-grid-body-container { overscroll-behavior-y: auto; }
+.board-timeline .board-canvas .b-grid-body-container { overscroll-behavior-y: auto; }
 /* Phones: the drag and keyboard help is for a pointer and a keyboard; it stays for screen readers only. */
 @media (max-width: 640px) { .board-plan-help { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); margin: 0; } }
 /* (external review 2026-11-10 #9) A grid cell never wraps (125.50 USD stayed on two lines at 110px). */
-.board-timeline:not(.board-timeline-phone) .board-canvas .b-grid-sub-grid-locked .b-grid-cell { white-space: nowrap; }
+.board-timeline .board-canvas .b-grid-sub-grid-locked .b-grid-cell { white-space: nowrap; }
 /* (external review 2026-11-10, phone) The plan area grows with its content (no fixed height), so Schedule a slot is never cut. */
 @media (max-width: 640px) { .board-list .board-row .board-plan-reset { margin-top: 4px; } }
 /* (external review 2026-11-10 #1) Tablet: the board fits its box (Case and Due only), so the time axis is in view without
    scrolling the whole board sideways. */
 @media (min-width: 641px) and (max-width: 1100px) { .board-canvas { min-width: 0; } }
 .board-canvas .ev-label-window { display: none; }
+/* (phone fix 2026-11-10) Plan buttons start at the left when there is no message (Reset plans floated alone on the right). */
+@media (max-width: 640px) { .board-plan-bar { justify-content: flex-start; } }
+/* (phone fix 2026-11-10) The plan area keeps room for the label and its Schedule a slot button, so scheduling does not
+   make the card shorter. */
+@media (max-width: 640px) { .board-list .board-row dl > div:nth-child(5) { min-height: 68px; } .board-list .board-row-noplan dl > div:nth-child(5) { min-height: 0; } }
+/* (phone fix 2026-11-10) A phone shows one card at a time: each card is as tall as its own content (stretched to the tallest
+   card, a short card showed a large empty block at larger system text). Its height still does not change when scheduled. */
+@media (max-width: 640px) { .board-list { align-items: flex-start; } }

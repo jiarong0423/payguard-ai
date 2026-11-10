@@ -32,7 +32,6 @@ function subscribeResize(onChange) {
   window.addEventListener('resize', onChange);
   return () => window.removeEventListener('resize', onChange);
 }
-const PHONE_ROW_HEIGHT = 64;
 const TIMELINE_HEADER = 58;
 
 function utcLabel(iso) {
@@ -91,7 +90,9 @@ const isMid = () => Boolean(midMedia()?.matches);
 // Case column. Bryntum scrolls only the time axis sideways and the locked Case column stays in view, instead of the
 // whole board sliding away with the case names.
 // (2026-11-10) Wide enough for a masked Sandbox code (PP-R-XXX-XXXX1234) at the board's 14px text.
-const PHONE_COLUMNS = [{ text: 'Case', field: 'caseRef', width: 190, htmlEncode: true }];
+// (phone fix 2026-11-10) The shared "PP-R-" prefix is dropped on the phone so the code fits one line at larger system
+// text sizes; the full code is the cell's title.
+const PHONE_COLUMNS = [{ text: 'Case', field: 'caseRef', width: 160, htmlEncode: false, renderer: ({ record }) => { const ref = String(record.get('caseRef') ?? ''); return `<span title="${escapeHtml(ref)}">${escapeHtml(ref.replace(/^PP-R-/u, ''))}</span>`; } }];
 const PHONE_QUERY = '(max-width: 640px)';
 const phoneMedia = () => (typeof window !== 'undefined' && typeof window.matchMedia === 'function' ? window.matchMedia(PHONE_QUERY) : null);
 function subscribePhone(onChange) {
@@ -132,9 +133,8 @@ const desktopEventRenderer = ({ eventRecord }) => {
 };
 const DESKTOP_SCHEDULER = { columns: COLUMNS, forceFit: true, eventRenderer: desktopEventRenderer };
 const MID_SCHEDULER = { columns: MID_COLUMNS, forceFit: true, eventRenderer: desktopEventRenderer };
-// (defect D2) A one-hour bar is only a few pixels wide on a phone, so the label there is the case code, not the long name.
-const phoneEventRenderer = ({ eventRecord }) => (eventRecord.get('kind') === 'PLAN' ? escapeHtml(String(eventRecord.resource?.caseRef ?? eventRecord.name ?? '')) : escapeHtml(MILESTONE_SHORT[eventRecord.get('kind')] || String(eventRecord.name ?? '')));
-const PHONE_SCHEDULER = { columns: PHONE_COLUMNS, forceFit: false, tickSize: 72, eventRenderer: phoneEventRenderer };
+// (phone fix 2026-11-10) Same bar labels as the desktop: stacked phone rows were uneven (64 to 229px) and cut every label.
+const PHONE_SCHEDULER = { columns: PHONE_COLUMNS, forceFit: false, tickSize: 72, eventRenderer: desktopEventRenderer };
 
 // Tooltips name the case, its due date and, for the plan bar, the planned window (optimise r24).
 function tooltipHtml(eventRecord, dueAtOf) {
@@ -209,10 +209,10 @@ function orderedRows(rows, focus, glow) {
 }
 
 function BoardList({ rows, plans, unscheduled, onSchedule, listRef }) {
-  return <ul ref={listRef} className="board-list" data-testid="evidence-board-list">{rows.map((row) => <li key={row.id} className={`board-row board-row-${row.status.toLowerCase()}${row.highlight ? ' board-row-urgent' : ''}${unscheduled.has(row.id) ? ' board-row-unscheduled' : ''}`} data-testid="evidence-board-row" data-status={row.status} data-source={row.source}>
+  return <ul ref={listRef} className="board-list" data-testid="evidence-board-list">{rows.map((row) => <li key={row.id} className={`board-row board-row-${row.status.toLowerCase()}${row.highlight ? ' board-row-urgent' : ''}${unscheduled.has(row.id) ? ' board-row-unscheduled' : ''}${!plans[row.id] && !unscheduled.has(row.id) ? ' board-row-noplan' : ''}`} data-testid="evidence-board-row" data-status={row.status} data-source={row.source}>
     <div className="board-row-head"><strong>{row.caseRef}</strong>{row.source === 'sandbox' && <span className="board-row-source" data-testid="evidence-board-sandbox-tag">PayPal Sandbox</span>}<span className="board-row-status" title={row.statusLabel}>{CARD_STATUS_SHORT[row.status] || row.statusLabel}</span></div>
     <dl><div title={row.reason}><dt>Reason</dt><dd>{gridReasonLabel(row.reason)}</dd></div><div><dt>Due</dt><dd>{row.dueAt ? utcLabel(row.dueAt) : '—'}</dd></div><div title={row.readinessLabel}><dt>Evidence</dt><dd>{gridEvidenceLabel(row)}{row.readiness?.manual ? ` · ${row.readiness.manual} need manual review` : ''}</dd></div><div><dt>Amount</dt><dd>{row.amount ? (row.source === 'sandbox' ? `${row.amount} · Sandbox` : `${row.amount} · synthetic`) : 'Not in case data'}</dd></div>
-      <div><dt>Plan</dt><dd data-testid="evidence-board-plan">{plans[row.id] ? `${PLAN_NAME} ${planLabel(plans[row.id])}` : unscheduled.has(row.id) ? <><strong className="board-unscheduled" data-testid="evidence-board-unscheduled">{UNSCHEDULED_LABEL}</strong> <button type="button" className="board-plan-reset" data-testid="evidence-board-schedule" onClick={() => onSchedule(row)}>Schedule a slot</button></> : row.source === 'sandbox' && row.providerStatus && row.providerStatus !== 'WAITING_FOR_SELLER_RESPONSE' ? 'Not waiting for the seller.' : row.dueAt ? PLAN_MESSAGES.NO_WINDOW : '—'}</dd></div></dl>
+      <div><dt>Plan</dt><dd data-testid="evidence-board-plan">{plans[row.id] ? `${PLAN_NAME} ${planLabel(plans[row.id])}` : unscheduled.has(row.id) ? <><strong className="board-unscheduled" data-testid="evidence-board-unscheduled" title={UNSCHEDULED_LABEL}>No evidence slot yet</strong> <button type="button" className="board-plan-reset" data-testid="evidence-board-schedule" onClick={() => onSchedule(row)}>Schedule a slot</button></> : row.source === 'sandbox' && row.providerStatus && row.providerStatus !== 'WAITING_FOR_SELLER_RESPONSE' ? 'Not waiting for the seller.' : row.dueAt ? PLAN_MESSAGES.NO_WINDOW : '—'}</dd></div></dl>
   </li>)}</ul>;
 }
 
@@ -497,7 +497,7 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
           {/* Keyed on the range: when a newly prepared draft widens it, a fresh scheduler takes start and end
               together. Updating the two props one by one let Bryntum keep the old span, so the axis ended
               before the latest response-window bar. */}
-          <BryntumScheduler key={`${board.startDate.getTime()}-${board.endDate.getTime()}-${board.viewPreset}`} ref={schedulerRef} {...(phone ? PHONE_SCHEDULER : mid ? MID_SCHEDULER : DESKTOP_SCHEDULER)} autoHeight={phone || timelineResources.length <= VISIBLE_ROWS} height={!phone && timelineResources.length > VISIBLE_ROWS ? VISIBLE_ROWS * ROW_HEIGHT + TIMELINE_HEADER : undefined} rowHeight={phone ? PHONE_ROW_HEIGHT : ROW_HEIGHT} barMargin={phone ? 8 : 3} eventLayout={phone ? 'stack' : 'none'} startDate={board.startDate} endDate={board.endDate} viewPreset={board.viewPreset}
+          <BryntumScheduler key={`${board.startDate.getTime()}-${board.endDate.getTime()}-${board.viewPreset}`} ref={schedulerRef} {...(phone ? PHONE_SCHEDULER : mid ? MID_SCHEDULER : DESKTOP_SCHEDULER)} autoHeight={timelineResources.length <= VISIBLE_ROWS} height={timelineResources.length > VISIBLE_ROWS ? VISIBLE_ROWS * ROW_HEIGHT + TIMELINE_HEADER : undefined} rowHeight={ROW_HEIGHT} barMargin={3} eventLayout="none" startDate={board.startDate} endDate={board.endDate} viewPreset={board.viewPreset}
             snap timeResolution={HOUR_RESOLUTION} enableDeleteKey={false}
             detectCSSCompatibilityIssues={false} useInitialAnimation={false} zoomOnMouseWheel={false} zoomOnTimeAxisDoubleClick={false}
             milestoneLayoutMode="estimate" milestoneTextPosition="outside" resources={resources} events={events}
