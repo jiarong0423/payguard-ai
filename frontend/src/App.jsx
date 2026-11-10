@@ -266,7 +266,7 @@ const isTextEntry = (element) => element instanceof HTMLTextAreaElement
 // Hosted demo (GET /connections answers mode "hosted_demo"): the controls that would reach PayPal or Gemini are not
 // rendered; each is replaced by one line. The backend still answers 503 hosted_demo_disabled as a second guard.
 const HOSTED_README_URL = 'https://github.com/jiarong0423/payguard-ai#run-locally';
-const HOSTED_VIDEO_URL = 'https://youtu.be/o0A-zj2_1rc';
+const HOSTED_VIDEO_URL = 'https://youtu.be/iVTu_fsgzMs';
 const HOSTED_NOTES = {
   sandbox: 'Sandbox connect is off in the hosted demo. Run locally to connect your own Sandbox app.',
   invoice: 'Sandbox drafts are created only in a local run.',

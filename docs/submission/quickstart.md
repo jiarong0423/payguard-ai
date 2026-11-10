@@ -6,9 +6,9 @@ This walkthrough uses synthetic data, a US official-reference profile for the Ac
 
 The overview shows the policy and ten-country rules check before a draft and the Sandbox send that runs only after one human approval.
 
-The current demo video is the [2:59 cut](https://youtu.be/o0A-zj2_1rc) (2026-11-10); it replaces the earlier [2:50 cut](https://youtu.be/_GORnHWShU4). The [historical demonstration script](video_script.md) is the plan for the earlier 2:02 cut and has no country rules scene.
+The current demo video is the [2:41 cut](https://youtu.be/iVTu_fsgzMs) (2026-11-11); it replaces the earlier [2:59 cut](https://youtu.be/o0A-zj2_1rc) (2026-11-10) and [2:50 cut](https://youtu.be/_GORnHWShU4). The [historical demonstration script](video_script.md) is the plan for the earlier 2:02 cut and has no country rules scene.
 
-The [2:59 demonstration](https://youtu.be/o0A-zj2_1rc) is the final edited video; the script's timestamps belong to the earlier 2:02 cut and are not seek positions in the current video.
+The [2:41 demonstration](https://youtu.be/iVTu_fsgzMs) is the final edited video; the script's timestamps belong to the earlier 2:02 cut and are not seek positions in the current video.
 
 Status: the Devpost project is submitted and the 2:59 video is on YouTube. The complete repository run instructions here are the selected functional-demo path. An optional hosted demo also runs (README, "Hosted demo"); its PayPal calls are Sandbox reads and, with its send opt-in (owner decision 2026-11-10, Sandbox test account only), a capped evidence send to the owner's Sandbox test disputes (once per dispute and per visit, at most 2 sends per address per day, 3 per 10 minutes and 15 a day per server run); only its evidence guide can use Gemini when the operator opts in (at most 5 calls a minute and 20 a day); one hosted evidence send was made live on 2026-11-10 ([RECEIPT_20261110_hosted_live.md](../evidence/RECEIPT_20261110_hosted_live.md)), and a hosted invoice draft or tracking send is unperformed (both answer 503 there). A new local export stays `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` until its exact bytes pass security review, independent acceptance and repository readback; only an accepted same-byte public source release records `PUBLIC_SOURCE_PUBLISHED`. Neither state establishes a public or production-hosted service.
 
