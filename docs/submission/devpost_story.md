@@ -86,7 +86,7 @@ Full table: [SPONSOR_TECH_MAP.md](https://github.com/jiarong0423/payguard-ai/blo
 - **Sandbox only.** All PayPal calls are Sandbox. All disputes are author-created test cases between Sandbox test accounts. Orders, cases and evidence files are synthetic.
 - **Acceptance is not a verdict.** "Accepted" means PayPal Sandbox recorded the request and the dispute left waiting for the seller: waiting for the buyer after the local sends, under review after the hosted send. It is not PayPal accepting the evidence or deciding the case.
 - **Byte match covers two of six sends.** The first 2026-11-09 send was made before fingerprints were recorded. The 2026-11-04 send carried a 43-byte placeholder PDF.
-- **The local send shown in the video** (2026-11-10) is not one of the six. It has no read-back or receipt yet, so it is not counted.
+- **The send shown in the video** is the hosted send of 2026-11-10, the sixth of the six, with its read-back and masked receipt (docs/evidence/RECEIPT_20261110_hosted_live.md).
 - **Account match is declared.** The seller id is set by the operator and compared with the dispute's seller. It is not verified with PayPal.
 - **Country rules are sampled.** 112 of 681 rules were sampled and 92 compared with their pages: 62 consistent, 30 worded differently, 0 contradicted, 20 could not be opened. An AI reader judged them, with no human re-read. The rest are unchecked. Advisory, not legal advice.
 - **Pinned PayPal references are older** than PayPal's current pages (pinned 2022-10-29 and 2026-09-14).
