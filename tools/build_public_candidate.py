@@ -240,6 +240,7 @@ EXACT_FILES = (
     "tests/frontend_hosted_contract.mjs",
     "tests/frontend_hosted_readonly.mjs",
     "tests/frontend_hosted_send.mjs",
+    "tests/frontend_board_card_layout.mjs",
     "tests/frontend_send_receipt_label.mjs",
     "tests/frontend_try_example.mjs",
     "tests/frontend_recorded_replay.mjs",

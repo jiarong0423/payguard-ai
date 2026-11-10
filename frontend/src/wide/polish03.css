@@ -22,13 +22,8 @@
   /* Deadline board heading: "Deadlines on a timeline" sits on the title line instead of a second line. */
   #disputes #evidence-board > .optional-heading .optional-trigger > span:first-child > span { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 12px; }
   #disputes #evidence-board > .optional-heading .optional-trigger small { margin-top: 0; }
-  /* Deadline board cards, 1600px and wider: each fact is one line (label, then value) in two columns; the plan line spans the card
-     (cards were 169px tall). Narrower cards keep the stacked three-column facts, where one-line facts would wrap. */
-  @media (min-width: 1600px) {
-    #disputes .board-row dl { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 16px; }
-    #disputes .board-row dl > div { display: grid; grid-template-columns: 66px minmax(0, 1fr); gap: 8px; align-items: baseline; }
-    #disputes .board-row dl > div:last-child { grid-column: 1 / -1; }
-  }
+  /* Deadline board card facts: laid out by the card's own width in board/board.css (2026-11-10: the viewport-based
+     two-column label/value rule crushed values to 1-2 letters when ten cards shared a row). */
   /* Deadline board controls: Reset plans / Download and the calendar note move to the right of the UTC caption and help text, so
      the urgency chips are the only row between the help text and the scheduler (were four stacked rows). */
   #disputes .board-timeline { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 24px; align-items: start; }

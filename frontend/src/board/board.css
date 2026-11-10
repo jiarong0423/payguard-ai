@@ -1,8 +1,10 @@
 /* Evidence deadline board (step 03). Loaded with the lazy EvidenceBoard chunk only. */
 .evidence-board { display: flex; flex-direction: column; gap: 16px; min-width: 0; max-width: 100%; }
 .board-summary, .board-empty { margin: 0; font-size: 14px; line-height: 1.5; color: var(--pg-color-muted); }
-.board-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 12px; }
-.board-row { border: 1px solid var(--pg-color-rule); border-left: 4px solid var(--pg-color-subtle); border-radius: var(--pg-radius-control); background: var(--pg-color-panel); padding: 12px 16px; min-width: 0; }
+/* (2026-11-10) Cards never get narrower than BOARD_CARD_MIN_WIDTH (300px, or the full width on a phone): with ten cards the
+   row wraps to fewer cards instead of crushing them. auto-fill keeps a lone card at card width. */
+.board-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+.board-row { container-type: inline-size; border: 1px solid var(--pg-color-rule); border-left: 4px solid var(--pg-color-subtle); border-radius: var(--pg-radius-control); background: var(--pg-color-panel); padding: 12px 16px; min-width: 0; }
 .board-row-open { border-left-color: var(--pg-color-accent); }
 .board-row-due_soon { border-left-color: var(--pg-color-watch); }
 /* Urgency is the red left edge and the red status line; the card stays white so the red response-window bar below
@@ -11,9 +13,13 @@
 .board-row-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; font-size: var(--type-section-title, 17px); font-weight: 650; color: var(--pg-color-ink); }
 .board-row-status { font-size: 14px; color: var(--pg-color-muted); }
 .board-row-urgent .board-row-status, .board-row-past_due .board-row-status { color: var(--pg-color-risk); font-weight: 600; }
-.board-row dl { margin: 8px 0 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px 12px; }
+/* Facts: label above value, as many 130px columns as the card itself fits (a container query, not the viewport), the plan
+   line across the card. Words wrap at spaces only; a single token longer than its column may still break (break-word). */
+.board-row dl { margin: 8px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px 12px; }
+.board-row dl > div { display: block; min-width: 0; }
+.board-row dl > div:last-child { grid-column: 1 / -1; }
 .board-row dt { font-size: 14px; color: var(--pg-color-muted); }
-.board-row dd { margin: 0; font-size: 14px; color: var(--pg-color-ink); overflow-wrap: anywhere; }
+.board-row dd { margin: 0; font-size: 14px; color: var(--pg-color-ink); overflow-wrap: break-word; word-break: normal; hyphens: manual; }
 .board-timeline { margin: 0; min-width: 0; }
 .board-timeline figcaption { font-size: 14px; color: var(--pg-color-muted); margin-bottom: 8px; line-height: 1.5; }
 /* The page never scrolls sideways: only this box does. */
@@ -22,7 +28,7 @@
 .board-canvas { min-width: 880px; }
 .board-canvas .b-scheduler { font-size: 14px; }
 .board-canvas .payguard-board-urgent .b-grid-cell:first-child { color: var(--pg-color-risk); font-weight: 600; box-shadow: inset 4px 0 0 var(--pg-color-risk); }
-@media (max-width: 480px) {
+@container (max-width: 280px) {
   .board-row dl { grid-template-columns: minmax(0, 1fr); }
 }
 /* Phones (phone r3 P2 #9): the box no longer scrolls the whole 880px board; Bryntum scrolls only the time axis, so the

@@ -1,11 +1,11 @@
 {
-  "created_at_utc": "2026-11-10T06:27:46Z",
+  "created_at_utc": "2026-11-10T06:40:11Z",
   "dependency_locks": {
     "frontend_npm": "0f98893564efb5556cc0a92710feedcb9da085108f9668fee93f29940b87f09d",
     "gemini_python": "36554331392d6102519a4ead5778704c4ff89e79da6bb9d6648b656f130724bb",
     "root_python": "bd163e5de790527ec4b5486ec884463c40fd8331a00e122d27f65de0938a270a"
   },
-  "file_count": 451,
+  "file_count": 452,
   "files": [
     {
       "bytes": 662,
@@ -514,9 +514,9 @@
     {
       "bytes": 9313,
       "path": "docs/evidence/HOW_NUMBERS_WERE_COUNTED.md",
-      "sha256": "c1b527f068c99cf81ee94d02ccb5599d73c6fd82bd4e37c519e30012d92fd63b",
+      "sha256": "c60514d0c55e0c45db32ebb6a0ef472eaf57b40eebedc3559f39a2fcbd38e7f3",
       "source_path": "docs/evidence/HOW_NUMBERS_WERE_COUNTED.md",
-      "source_sha256": "c1b527f068c99cf81ee94d02ccb5599d73c6fd82bd4e37c519e30012d92fd63b"
+      "source_sha256": "c60514d0c55e0c45db32ebb6a0ef472eaf57b40eebedc3559f39a2fcbd38e7f3"
     },
     {
       "bytes": 1692,
@@ -1296,11 +1296,11 @@
       "source_sha256": "79bff9d8860cd17da6c5d2f09cf92fec18cc665e65a72daa2a0b469a25a0cce6"
     },
     {
-      "bytes": 7074,
+      "bytes": 7736,
       "path": "frontend/src/board/board.css",
-      "sha256": "384c9951c714f19806cc85a47ff3996b9f18162ee1f31d4b380e1b2ad7ca5390",
+      "sha256": "2ac806066fbd29a523ef95b2389b754f86db620318d982ac55e6e854e515bcf2",
       "source_path": "frontend/src/board/board.css",
-      "source_sha256": "384c9951c714f19806cc85a47ff3996b9f18162ee1f31d4b380e1b2ad7ca5390"
+      "source_sha256": "2ac806066fbd29a523ef95b2389b754f86db620318d982ac55e6e854e515bcf2"
     },
     {
       "bytes": 21217,
@@ -1800,11 +1800,11 @@
       "source_sha256": "d047a47d49e2de2e114bc096d48048602753dc160516b1a5e4017d41deb53cff"
     },
     {
-      "bytes": 4653,
+      "bytes": 4283,
       "path": "frontend/src/wide/polish03.css",
-      "sha256": "d9cf01cf1b0790b2edd1731375d655b1a3f296acdce9262d4d5f5c326114d736",
+      "sha256": "b3033b2615df5b5508a107bfe19f1a47260135ef2a927f36402a2be9eeb9dfe7",
       "source_path": "frontend/src/wide/polish03.css",
-      "source_sha256": "d9cf01cf1b0790b2edd1731375d655b1a3f296acdce9262d4d5f5c326114d736"
+      "source_sha256": "b3033b2615df5b5508a107bfe19f1a47260135ef2a927f36402a2be9eeb9dfe7"
     },
     {
       "bytes": 599,
@@ -1814,11 +1814,11 @@
       "source_sha256": "30de9a6fa57e87c28e26af3f4251a40845bc5556ae1ca3aa81cd36d04e0799d5"
     },
     {
-      "bytes": 3763,
+      "bytes": 3665,
       "path": "frontend/src/wide/relax.css",
-      "sha256": "3925f9ad36a2537f3befb65a914df3af4641ad9bc40ca3d3a16662277c715ac9",
+      "sha256": "09ba5344d72de7da646e5071a61f0db58b14c639301c223af8c1e11b88b19f0d",
       "source_path": "frontend/src/wide/relax.css",
-      "source_sha256": "3925f9ad36a2537f3befb65a914df3af4641ad9bc40ca3d3a16662277c715ac9"
+      "source_sha256": "09ba5344d72de7da646e5071a61f0db58b14c639301c223af8c1e11b88b19f0d"
     },
     {
       "bytes": 601,
@@ -1849,11 +1849,11 @@
       "source_sha256": "287751fa20a4ce354b09068be994370c9b99ba798eb53b8859042bafa55cbfbc"
     },
     {
-      "bytes": 6081,
+      "bytes": 6155,
       "path": "frontend/src/wide/step03.css",
-      "sha256": "30c099687610fa62eb435a599ece9c45f0a1e197fc5f722b33c47a1df15fd7f4",
+      "sha256": "d58f64f21591f91dcb0606d668d6b373c0a5878f4d751e29754b587a0f831663",
       "source_path": "frontend/src/wide/step03.css",
-      "source_sha256": "30c099687610fa62eb435a599ece9c45f0a1e197fc5f722b33c47a1df15fd7f4"
+      "source_sha256": "d58f64f21591f91dcb0606d668d6b373c0a5878f4d751e29754b587a0f831663"
     },
     {
       "bytes": 1581,
@@ -2232,6 +2232,13 @@
       "sha256": "dc6ad8879c8c08e5e8b863f89c364e916fbb132de899e8567ea0f5d8aea20ed0",
       "source_path": "tests/frontend_benchmark_chart.mjs",
       "source_sha256": "dc6ad8879c8c08e5e8b863f89c364e916fbb132de899e8567ea0f5d8aea20ed0"
+    },
+    {
+      "bytes": 3109,
+      "path": "tests/frontend_board_card_layout.mjs",
+      "sha256": "847106f06421eb57086bf25af79998d18508023199c91cfdf92792a0fd61badb",
+      "source_path": "tests/frontend_board_card_layout.mjs",
+      "source_sha256": "847106f06421eb57086bf25af79998d18508023199c91cfdf92792a0fd61badb"
     },
     {
       "bytes": 33044,
@@ -3004,11 +3011,11 @@
       "source_sha256": "0d9bc04fee0ad12622326c03a74a116ce14ef80c47c4608c219a7c4c241a2e62"
     },
     {
-      "bytes": 40221,
+      "bytes": 40265,
       "path": "tools/build_public_candidate.py",
-      "sha256": "c3b51e210fb20d04f3f3b06c8294cc1f5f71c7b6a2c1e8c63135aaa35b5fd178",
+      "sha256": "1e92d5879cba5c4398b6e6a0e84793a957802588711801e85a75596717b1b990",
       "source_path": "tools/build_public_candidate.py",
-      "source_sha256": "c3b51e210fb20d04f3f3b06c8294cc1f5f71c7b6a2c1e8c63135aaa35b5fd178"
+      "source_sha256": "1e92d5879cba5c4398b6e6a0e84793a957802588711801e85a75596717b1b990"
     },
     {
       "bytes": 7653,
@@ -3125,9 +3132,9 @@
     {
       "bytes": 14792,
       "path": "tools/verify_public_numbers.py",
-      "sha256": "cccc2efd7e8f3989d0c059b27a432a0fef9f0a2e76fde00809fd5bee56fa5c6f",
+      "sha256": "8610420bc2618dede463b645892393743ffa98e78492a31458a9a0feda4779c5",
       "source_path": "tools/verify_public_numbers.py",
-      "source_sha256": "cccc2efd7e8f3989d0c059b27a432a0fef9f0a2e76fde00809fd5bee56fa5c6f"
+      "source_sha256": "8610420bc2618dede463b645892393743ffa98e78492a31458a9a0feda4779c5"
     },
     {
       "bytes": 87,
@@ -3170,8 +3177,8 @@
     "scope": "RECORDED_OWNER_RIGHTS_AND_ENTRANT_ELIGIBILITY"
   },
   "package_digest_algorithm": "sha256(sorted utf-8 '<file_sha256>  <relative_path>\\n' records; manifest and detached hash excluded)",
-  "package_digest_sha256": "7f43e59425596da492146f47eef506d86daaa0fe3d595652f83af49cfe527c44",
-  "public_artifact_id": "payguard-public-source-7f43e59425596da4",
+  "package_digest_sha256": "70e1a55cdbbee1ed1d364ebbc0f486cfc133a7261c8cf1da69d90b2700be0e1e",
+  "public_artifact_id": "payguard-public-source-70e1a55cdbbee1ed",
   "publication_authorized": false,
   "raw_bounded_prompt_disclosure": {
     "intent": "INTENTIONAL_PUBLIC_EXECUTABLE_PRODUCT_SOURCE",

@@ -50,8 +50,7 @@
   .stage-heading { padding-top: 10px; padding-bottom: 10px; }
   /* Step 03: no text caret blinking after "More views" (a summary is not an input). */
   #disputes .case-more, #disputes .case-more > summary { caret-color: transparent; user-select: none; }
-  /* Deadline board: the three case cards list their facts in three columns instead of two (about 40px shorter). */
-  #disputes .board-row dl { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  /* Deadline board fact columns: set by the card's own width in board/board.css (2026-11-10). */
   /* Gap between the title row and the step bar, a little more of the 1920 width. */
   .page-top { margin-bottom: 8px; }
   .journey { margin-bottom: 12px; }
