@@ -56,6 +56,4 @@
   .journey { margin-bottom: 12px; }
 }
 
-@media (min-width: 1700px) {
-  .main-content { width: min(94%, 1680px); }
-}
+/* (2026-11-10) The 1700px+ width moved to scroll.css: one content width for the top bar, steps, panels and footer. */

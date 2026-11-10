@@ -75,3 +75,12 @@
 .board-row-source { font-size: 14px; padding: 1px 6px; border-radius: 999px; border: 1px solid currentColor; margin-inline: 6px; }
 .board-row-unscheduled { outline: 2px dashed var(--pg-color-watch); outline-offset: -2px; }
 .board-unscheduled { color: var(--pg-color-watch); }
+.board-grid-case { display: flex; flex-direction: column; min-width: 0; line-height: 1.3; }
+.board-grid-case strong, .board-grid-case small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.board-grid-case small { font-size: 14px; color: var(--pg-color-muted); }
+/* (2026-11-10) A short "Collect evidence" slot keeps a readable labelled bar at week scale instead of an empty sliver. */
+.board-canvas .b-sch-event-wrap.payguard-board-plan, .board-canvas .b-sch-event-wrap.payguard-board-plan .b-sch-event,
+.board-canvas .payguard-board-plan, .board-canvas .b-sch-event-wrap:has(.payguard-board-plan) { min-width: 190px; }
+.board-canvas .b-sch-event-wrap.payguard-board-plan .ev-label { color: inherit; }
+/* (2026-11-10) Phone timeline: a masked Sandbox code may wrap after a hyphen instead of ending in "…". */
+.board-timeline-phone .b-grid-sub-grid-locked .b-grid-cell { white-space: normal; overflow-wrap: break-word; line-height: 1.3; }

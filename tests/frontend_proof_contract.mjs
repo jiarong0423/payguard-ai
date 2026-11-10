@@ -6,7 +6,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { HISTORY_CUTOFF, LATEST_ALSO, LATEST_ROWS, METHOD_ORDER, MIN_OPEN, PROOF_SCHEMA, REFUSED_LABEL, channel3Summary, dateLabel, groupProof, methodCounts, refusedCount, splitHistory } from '../frontend/src/proof/proofData.js';
+import { HISTORY_CUTOFF, LATEST_ALSO, LATEST_DATE, LATEST_ROWS, METHOD_ORDER, MIN_OPEN, PROOF_SCHEMA, REFUSED_LABEL, channel3Summary, dateLabel, groupProof, methodCounts, refusedCount, splitHistory } from '../frontend/src/proof/proofData.js';
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (path) => readFileSync(join(projectRoot, path), 'utf8');
@@ -176,6 +176,8 @@ assert.deepEqual(channel3Summary({}), { count: 0, allOk: false, cards: [], minLa
 // 6b. (2026-11-09) History fold: the newest rows open, older rows in a closed per-scenario fold; nothing dropped, reworded or reordered.
 {
   assert.equal(HISTORY_CUTOFF, '2026-11-09');
+  assert.equal(LATEST_DATE, '2026-11-10');
+  assert.equal(LATEST_ROWS[0], 'dispute-hosted-send-live', 'the hosted live send leads the strip');
   let shownOpen = 0, shownHistory = 0;
   for (const section of sections) {
     const { current, history } = splitHistory(section.rows);
@@ -197,7 +199,8 @@ assert.deepEqual(channel3Summary({}), { count: 0, allOk: false, cards: [], minLa
   assert.ok(page.indexOf('<Latest />') > 0 && page.indexOf('<Latest />') < page.indexOf('<Legend />') && page.indexOf('<Legend />') < page.indexOf('<RecordedSend />'), 'latest strip first, recorded send after the legend');
   for (const id of [...LATEST_ROWS, ...LATEST_ALSO.map(([row]) => row)]) {
     const row = facts.rows.find((item) => item.id === id);
-    assert.ok(row && row.date === HISTORY_CUTOFF, `${id} is a 2026-11-09 row`);
+    // (2026-11-10, intended) The hosted send row (2026-11-10) leads the strip; every strip row is on or after the cutoff.
+    assert.ok(row && row.date >= HISTORY_CUTOFF, `${id} is a row from ${HISTORY_CUTOFF} on`);
     assert.ok(sections.some((section) => splitHistory(section.rows).current.includes(row)), `${id} is open, so the strip's link lands on a visible row`);
   }
   assert.ok(page.includes('{byId.get(id).proven}') && page.includes('href={`#row-${id}`}') && page.includes('id={`row-${row.id}`}'), 'the strip quotes each row and links to it');

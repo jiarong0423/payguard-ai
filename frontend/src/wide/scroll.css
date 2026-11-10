@@ -6,3 +6,19 @@
   #disputes .dispute-details[open] > .dispute-detail-content { max-height: 320px; overflow-y: auto; }
   #compliance .country-all-rules[open] > :not(summary) { max-height: 300px; overflow-y: auto; }
 }
+
+/* (2026-11-10, owner: "containers look deformed") One centred content width on wide screens: the top bar's inner row, the
+   title row, the step tabs, the step panels and the footer all start and end on the same two lines (max 1560px). */
+@media (min-width: 1280px) {
+  :root { --pg-content-w: 1560px; }
+  .topbar { padding-left: max(24px, calc((100vw - var(--pg-content-w)) / 2)); padding-right: max(24px, calc((100vw - var(--pg-content-w)) / 2)); }
+  .main-content { width: min(calc(100% - 48px), var(--pg-content-w)); padding-left: 0; padding-right: 0; }
+  /* Step 03: the case queue takes about a fifth of the panel instead of a fixed 260px strip. */
+  #disputes .dispute-layout { grid-template-columns: minmax(260px, 22%) minmax(0, 1fr); }
+}
+@media (min-width: 1280px) {
+  /* (2026-11-10) The active step tab stays inside the step bar: no 2px lift past the bar's edge, and the progress rail's end
+     no longer shows below the tab's rounded corner. */
+  .main-content .journey { overflow: hidden; }
+  .main-content .journey-step.is-active { transform: none; }
+}

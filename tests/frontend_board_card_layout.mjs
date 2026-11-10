@@ -43,4 +43,29 @@ for (const name of readdirSync(wideDir).filter((file) => file.endsWith('.css')))
   assert.doesNotMatch(text, /\.board-row dl > div \{/u, `${name}: no label/value grid override`);
 }
 
+// 5. Timeline grid (2026-11-10, live df4799a): short grid text so no locked cell wraps past its row; two-line Case cell;
+// readable plan bars; milestone labels short with the full name as a title.
+const { gridEvidenceLabel, gridReasonLabel, GRID_TEXT_MAX } = await import('../frontend/src/board/boardData.js');
+for (const status of ['WAITING_FOR_SELLER_RESPONSE', 'WAITING_FOR_BUYER_RESPONSE', 'UNDER_REVIEW']) {
+  const text = gridEvidenceLabel({ source: 'sandbox', providerStatus: status, readinessLabel: 'PayPal: long status words here' });
+  assert.ok(text.length <= GRID_TEXT_MAX, `${status} -> "${text}" fits one grid line`);
+}
+assert.equal(gridEvidenceLabel({ source: 'synthetic', readinessLabel: '1/1 present' }), '1/1 present');
+assert.equal(gridReasonLabel('Item or service not received'), 'Not received');
+const board = readFileSync(join(root, 'frontend/src/board/EvidenceBoard.jsx'), 'utf8');
+assert.ok(Number(board.match(/const ROW_HEIGHT = (\d+);/u)[1]) >= 64, 'row height fits a two-line Case cell');
+assert.ok(board.includes("field: 'gridEvidence'") && board.includes('class="board-grid-case"') && board.includes("escapeHtml(String(record.get('caseRef')"), 'Case cell: code then reason, escaped');
+assert.ok(board.includes('<span class="ev-label" title="${full}">'), 'every bar label carries its full name as a title');
+assert.ok(board.includes("CLAIM_OPENED: 'Claim'"), 'milestones use a short label');
+assert.match(css, /\.board-canvas \.payguard-board-plan[^{]*\{ min-width: (\d+)px; \}/u, 'plan bars keep a visible width');
+assert.match(css, /\.board-grid-case strong, \.board-grid-case small \{[^}]*text-overflow: ellipsis/u);
+
+// 6. Wide screens: one content width for the top bar and the page; summaries have no caret-like chevron bar.
+const scroll = readFileSync(join(root, 'frontend/src/wide/scroll.css'), 'utf8');
+assert.match(scroll, /--pg-content-w: 1560px;/u);
+assert.match(scroll, /\.topbar \{ padding-left: max\(24px, calc\(\(100vw - var\(--pg-content-w\)\) \/ 2\)\);/u);
+assert.match(scroll, /\.main-content \{ width: min\(calc\(100% - 48px\), var\(--pg-content-w\)\);/u);
+const index = readFileSync(join(root, 'frontend/src/index.css'), 'utf8');
+assert.ok(index.includes('details:not(.limits-drawer) > summary::after { display: inline-block; }'), 'chevron is a box, not a lone border');
+
 console.log(`frontend_board_card_layout: ok (cards >= ${min[1]}px, facts >= ${factMin[1]}px, no mid-word break)`);

@@ -33,6 +33,19 @@ export const BOARD_STATUS_LABELS = {
 export const TRIAGE_CAPTION = 'Dispute triage board: disputed amount, response deadline, and evidence readiness per case';
 export const UNSCHEDULED_LABEL = 'Deadline set · no evidence slot scheduled';
 
+// (2026-11-10) Short text for the scheduler's narrow left grid, so a Sandbox row never wraps past its row height
+// ("PayPal: Waiting for seller response" took four lines and was clipped). The cards keep the full wording.
+const GRID_PAYPAL_STATUS = { WAITING_FOR_SELLER_RESPONSE: 'Waiting: seller', WAITING_FOR_BUYER_RESPONSE: 'Waiting: buyer', UNDER_REVIEW: 'Under review' };
+export const GRID_TEXT_MAX = 16;
+const GRID_REASON = { 'Item or service not received': 'Not received', 'Item or service not as described': 'Not as described' };
+export const gridReasonLabel = (reason) => GRID_REASON[reason] || String(reason ?? '');
+export function gridEvidenceLabel(row) {
+  if (row?.source !== 'sandbox') return row?.readinessLabel ?? '';
+  const status = String(row.readinessLabel || '').replace(/^PayPal: /u, '');
+  const raw = Object.entries(GRID_PAYPAL_STATUS).find(([, label]) => operatorLabel(label) === status)?.[1];
+  return GRID_PAYPAL_STATUS[row.providerStatus] || raw || status;
+}
+
 // (2026-11-10) Live PayPal Sandbox disputes as board rows: the list read the console already made (GET /paypal/disputes,
 // source paypal_sandbox; hosted ids are masked codes). Only the projected summary fields are used. Sandbox rows get no
 // automatic plan: a deadline without a scheduled evidence slot is shown as such until the seller adds one.
@@ -163,6 +176,7 @@ export function buildEvidenceBoard({ disputes, drafts = {}, now, sandbox = null 
       readiness,
       readinessLabel: fromSandbox ? `PayPal: ${operatorLabel(dispute.providerStatus)}` : readiness ? (readiness.required ? `${readiness.present}/${readiness.required} present` : 'No tracked items') : 'No draft yet',
       source: fromSandbox ? 'sandbox' : 'synthetic',
+      providerStatus: fromSandbox ? dispute.providerStatus : null,
       autoPlan: !fromSandbox,
       status,
       statusLabel: BOARD_STATUS_LABELS[status],

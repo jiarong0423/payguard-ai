@@ -11,7 +11,7 @@
 <body>
 <main>
 <h1>Start here: judge TradeGlot in about five minutes</h1>
-<p class="lead">TradeGlot checks a sale before you ship, then helps a seller prepare dispute evidence. Rules decide, a person approves, and this page itself sends nothing to PayPal.</p>
+<p class="lead">TradeGlot checks a sale before you ship, then helps a seller prepare dispute evidence and send it to PayPal Sandbox only after a person approves. Verified on 2026-11-10: a send from this hosted site, PayPal-Debug-Id f869050ae2a63 (masked receipt in the repository).</p>
 <p><a class="btn" href="https://payguard-demo-j2b3.onrender.com/">Open the demo and press &ldquo;Run the step 1 example&rdquo;</a></p>
 
 <p class="small">The free server can take up to a minute to wake up on the first visit.</p>
@@ -40,7 +40,7 @@
 <pre><code>H=https://payguard-demo-j2b3.onrender.com
 curl -s -X POST $H/api/v1/demo/sessions -H "Origin: $H" -H 'Content-Type: application/json' -d '{}'   # 201: session_id, csrf_token
 # S=&lt;session_id&gt;  C=&lt;csrf_token&gt; from that answer
-curl -s -X POST $H/api/v1/paypal/connect -H "Origin: $H" -H "X-Demo-Session: $S" -H "X-CSRF-Token: $C" -H 'Content-Type: application/json' -d '{}'   # 200 connected, read-only
+curl -s -X POST $H/api/v1/paypal/connect -H "Origin: $H" -H "X-Demo-Session: $S" -H "X-CSRF-Token: $C" -H 'Content-Type: application/json' -d '{}'   # 200 connected (Sandbox reads; a send also needs the review and the two-step send dialog)
 curl -s $H/api/v1/paypal/disputes -H "X-Demo-Session: $S"   # 200, source paypal_sandbox, masked ids
 curl -s -X POST $H/api/v1/paypal/invoices/draft -H "Origin: $H" -H "X-Demo-Session: $S" -H "X-CSRF-Token: $C" -H 'Content-Type: application/json' -d '{}'   # 503 hosted_demo_disabled</code></pre>
 

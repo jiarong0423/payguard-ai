@@ -49,7 +49,9 @@ export function splitHistory(rows) {
 
 // The "Latest evidence" strip at the top of the page: the two headline rows quoted by their own `proven` sentence, then the other
 // runs of the same day by name. Nothing here is a new fact: each line comes from a row below.
-export const LATEST_ROWS = Object.freeze(['dispute-readback-hash-match', 'dispute-hosted-readonly-live']);
+// (2026-11-10) The hosted live send leads the strip; its title carries that date. Rows from HISTORY_CUTOFF on stay open.
+export const LATEST_DATE = '2026-11-10';
+export const LATEST_ROWS = Object.freeze(['dispute-hosted-send-live', 'dispute-readback-hash-match', 'dispute-hosted-readonly-live']);
 export const LATEST_ALSO = Object.freeze([['cross-render-workflow-run', 'Render Workflow run'], ['cross-postman-newman-run', 'Postman run'], ['policy-channel3-search-round2', 'Channel3 searches'], ['cross-apimatic-run', 'APIMatic validation']]);
 
 // (r48) Real Sandbox rows that are refusals: TradeGlot sent no evidence to that dispute. Counted apart so the real-call

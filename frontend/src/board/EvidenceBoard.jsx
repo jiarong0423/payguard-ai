@@ -12,12 +12,13 @@ import { BryntumScheduler, available } from 'virtual:payguard-optional-timeline'
 import {
   DUE_SOON_DAYS, PLAN_MESSAGES, PLAN_NAME, buildEvidenceBoard, defaultPlan, planEvents, planWindowOf, readStoredPlans,
   restorePlans, shiftPlan, URGENCY_CHIPS, urgencyCounts, barClasses, plansToIcs, PLAN_ICS_NAME, PLAN_ICS_EMPTY_REASON, validatePlan, wallToUtcMs, writeStoredPlans,
-  TRIAGE_CAPTION, UNSCHEDULED_LABEL, unscheduledRows,
+  TRIAGE_CAPTION, UNSCHEDULED_LABEL, unscheduledRows, gridEvidenceLabel, gridReasonLabel,
 } from './boardData.js';
 import { utcWallClock } from '../optional/timelineModel.js';
 import './board.css';
 
-const ROW_HEIGHT = 56;
+// (2026-11-10) Two lines in the Case cell (code, then reason) fit this height at the board's 14px text.
+const ROW_HEIGHT = 64;
 
 function utcLabel(iso) {
   const date = new Date(iso ?? '');
@@ -50,16 +51,18 @@ const LOCKED_FEATURES = {
 const HOUR_RESOLUTION = { unit: 'hour', increment: 1 };
 
 const COLUMNS = [
-  { text: 'Case', field: 'name', width: 190, htmlEncode: true },
+  // Case code on line 1 and the reason on line 2, both escaped here (htmlEncode is off only for this cell's two spans).
+  { text: 'Case', field: 'name', width: 210, htmlEncode: false, renderer: ({ record }) => `<span class="board-grid-case"><strong>${escapeHtml(String(record.get('caseRef') ?? ''))}</strong><small title="${escapeHtml(String(record.get('reasonFull') ?? ''))}">${escapeHtml(String(record.get('reasonText') ?? ''))}</small></span>` },
   { text: 'Due', field: 'dueText', width: 150, htmlEncode: true },
-  { text: 'Evidence', field: 'readinessLabel', width: 120, htmlEncode: true },
+  { text: 'Evidence', field: 'gridEvidence', width: 130, htmlEncode: true },
   { text: 'Amount', field: 'amountText', width: 110, htmlEncode: true },
 ];
 
 // Phones (phone r3 P2 #9): the list above already carries due, evidence and amount, so the timeline keeps one narrow
 // Case column. Bryntum scrolls only the time axis sideways and the locked Case column stays in view, instead of the
 // whole board sliding away with the case names.
-const PHONE_COLUMNS = [{ text: 'Case', field: 'caseRef', width: 112, htmlEncode: true }];
+// (2026-11-10) Wide enough for a masked Sandbox code (PP-R-XXX-XXXX1234) at the board's 14px text.
+const PHONE_COLUMNS = [{ text: 'Case', field: 'caseRef', width: 172, htmlEncode: true }];
 const PHONE_QUERY = '(max-width: 640px)';
 const phoneMedia = () => (typeof window !== 'undefined' && typeof window.matchMedia === 'function' ? window.matchMedia(PHONE_QUERY) : null);
 function subscribePhone(onChange) {
@@ -73,10 +76,28 @@ const isPhone = () => Boolean(phoneMedia()?.matches);
 // Spread before the fixed props; switching between the two remounts the scheduler (board-canvas key).
 // A bar whose width encodes a short time span cannot show a long name: the label is a block that ends in an ellipsis (the
 // full name stays in the tooltip). The bar width itself is never changed.
-const desktopEventRenderer = ({ eventRecord }) => `<span class="ev-label">${escapeHtml(String(eventRecord.name ?? ''))}</span>`;
+// The full name is also the label's title, so a short bar that ends in "…" still shows it on hover.
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+// (2026-11-10) A plan bar names its day ("Collect evidence · Nov 10"): a few-hour slot at week scale is narrow, so the bar
+// has a minimum width in board.css and never shows as an empty box. The dates are wall-clock UTC fields (utcWallClock).
+// Milestones carry a short label inside their diamond (the full name is the title and the tooltip).
+const MILESTONE_SHORT = { CLAIM_OPENED: 'Claim', ORDER_RECORD_CREATED: 'Order', DELIVERY: 'Delivered', PAYMENT: 'Paid', MESSAGE: 'Message' };
+const eventLabel = (eventRecord) => {
+  const name = String(eventRecord.name ?? '');
+  const short = MILESTONE_SHORT[eventRecord.get('kind')];
+  if (short) return short;
+  const start = eventRecord.startDate;
+  return eventRecord.get('kind') === 'PLAN' && start instanceof Date && !Number.isNaN(start.getTime())
+    ? `${name} · ${MONTHS[start.getMonth()]} ${start.getDate()}` : name;
+};
+const desktopEventRenderer = ({ eventRecord }) => {
+  const label = escapeHtml(eventLabel(eventRecord));
+  const full = eventRecord.get('kind') === 'PLAN' ? label : escapeHtml(String(eventRecord.name ?? ''));
+  return `<span class="ev-label" title="${full}">${label}</span>`;
+};
 const DESKTOP_SCHEDULER = { columns: COLUMNS, forceFit: true, eventRenderer: desktopEventRenderer };
 // (defect D2) A one-hour bar is only a few pixels wide on a phone, so the label there is the case code, not the long name.
-const phoneEventRenderer = ({ eventRecord }) => (eventRecord.get('kind') === 'PLAN' ? escapeHtml(String(eventRecord.resource?.caseRef ?? eventRecord.name ?? '')) : escapeHtml(String(eventRecord.name ?? '')));
+const phoneEventRenderer = ({ eventRecord }) => (eventRecord.get('kind') === 'PLAN' ? escapeHtml(String(eventRecord.resource?.caseRef ?? eventRecord.name ?? '')) : escapeHtml(MILESTONE_SHORT[eventRecord.get('kind')] || String(eventRecord.name ?? '')));
 const PHONE_SCHEDULER = { columns: PHONE_COLUMNS, forceFit: false, tickSize: 72, eventRenderer: phoneEventRenderer };
 
 // Tooltips name the case, its due date and, for the plan bar, the planned window (optimise r24).
@@ -163,8 +184,8 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
   const dueAtOf = useCallback((ref) => dueRef.current[ref] ?? null, []);
 
   const resources = useMemo(() => (board?.rows || []).map((row) => ({
-    id: row.id, name: `${row.caseRef} · ${row.reason}`, caseRef: row.caseRef, cls: row.cls,
-    dueText: row.dueAt ? utcLabel(row.dueAt) : 'No due date', readinessLabel: row.readinessLabel, amountText: row.amount ?? '—',
+    id: row.id, name: `${row.caseRef} · ${row.reason}`, caseRef: row.caseRef, reasonText: gridReasonLabel(row.reason), reasonFull: row.reason, cls: row.cls,
+    dueText: row.dueAt ? utcLabel(row.dueAt) : 'No due date', readinessLabel: row.readinessLabel, gridEvidence: gridEvidenceLabel(row), amountText: row.amount ?? '—',
   })), [board]);
   // The events reach Bryntum once per board; later moves live in Bryntum's own store and in `plans`.
   const events = useMemo(() => (board ? [...board.events, ...planEvents(board.rows, restored)] : []), [board, restored]);

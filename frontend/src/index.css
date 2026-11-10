@@ -1304,3 +1304,10 @@ footer { padding: 8px 0 0; }
 .send-receipt-big { display: flex; flex-direction: column; gap: 6px; margin: 12px 0; padding: 16px; border: 2px solid var(--pg-color-ok); border-radius: 12px; font-size: 1.15rem; overflow-wrap: anywhere; }
 .send-receipt-big strong { font-size: 1.5rem; color: var(--pg-color-ok); }
 .send-receipt-big small { font-size: var(--type-meta); color: var(--pg-color-muted); }
+
+/* (2026-11-10) A disclosure summary is a toggle, not text input. Its chevron (::after) was an inline box in a block summary, so
+   only its right border drew: a thin vertical bar after the text that read as a text caret ("More views: ...|"). The chevron is
+   now an inline-block, and the two block summaries in step 03 lay out as flex rows like the others. */
+summary { caret-color: transparent; cursor: pointer; }
+details:not(.limits-drawer) > summary::after { display: inline-block; }
+.case-more > summary, .evidence-next > summary { display: flex; align-items: center; gap: 8px; }

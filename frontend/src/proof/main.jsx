@@ -5,7 +5,7 @@ import { StrictMode, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import facts from '../data/proof_facts_v1.json';
 import receipts from '../data/channel3_receipts_v1.json';
-import { HISTORY_CUTOFF, LATEST_ALSO, LATEST_ROWS, METHOD_ORDER, REFUSED_LABEL, channel3Summary, dateLabel, groupProof, methodCounts, refusedCount, splitHistory, PROOF_SPONSORS, PROOF_METHOD_CHIPS, parseProofHash, proofHash, rowMatches } from './proofData.js';
+import { HISTORY_CUTOFF, LATEST_ALSO, LATEST_DATE, LATEST_ROWS, METHOD_ORDER, REFUSED_LABEL, channel3Summary, dateLabel, groupProof, methodCounts, refusedCount, splitHistory, PROOF_SPONSORS, PROOF_METHOD_CHIPS, parseProofHash, proofHash, rowMatches } from './proofData.js';
 import './proof.css';
 
 const ICONS = {
@@ -55,7 +55,7 @@ function Latest() {
   const byId = new Map(facts.rows.map((row) => [row.id, row]));
   const also = LATEST_ALSO.filter(([id]) => byId.has(id));
   return <section className="proof-latest" aria-labelledby="proof-latest-title" data-testid="proof-latest">
-    <h2 id="proof-latest-title">Latest evidence ({HISTORY_CUTOFF})</h2>
+    <h2 id="proof-latest-title">Latest evidence ({LATEST_DATE})</h2>
     <ul>
       {LATEST_ROWS.filter((id) => byId.has(id)).map((id) => <li key={id}>{byId.get(id).proven} <a href={`#row-${id}`}>See the row</a></li>)}
       <li>Also run on {HISTORY_CUTOFF}: {also.map(([id, label], index) => <span key={id}>{index > 0 && (index === also.length - 1 ? ' and ' : ', ')}<a href={`#row-${id}`}>{label}</a></span>)}.</li>
