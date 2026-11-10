@@ -1,6 +1,6 @@
 # TradeGlot
 
-A small seller's records become reviewed dispute evidence, sent to PayPal Sandbox only after a person approves.
+Before a small seller ships abroad, TradeGlot checks 681 official rules across ten countries; when a buyer disputes, it turns the seller's records into evidence sent to PayPal Sandbox only after a person approves.
 
 **TL;DR**
 - **One seller:** a small online seller who ships across borders.

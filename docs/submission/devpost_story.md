@@ -1,15 +1,15 @@
 # TradeGlot
 
-Tagline: A small seller's records become reviewed dispute evidence, sent to PayPal Sandbox only after a person approves.
+Tagline: Before a small seller ships abroad, TradeGlot checks 681 official rules across ten countries; when a buyer disputes, it turns the seller's records into evidence sent to PayPal Sandbox only after a person approves.
 
 **TL;DR**
 - **One seller:** a small online seller who ships across borders.
-- **One loss:** a buyer says the parcel never arrived. 48.00 USD is at stake.
-- **One PayPal action:** TradeGlot builds the evidence from the seller's own records, and after one human approval of the reviewed draft plus a two-step send confirmation, sends it with PayPal's `provide-evidence` call.
+- **Before the sale:** 681 official export and import rules across ten countries and 140 PayPal clauses, each linked to its source, stop a sale that a country or PayPal would not allow, and show the rule that stopped it. Example: a cannabis product that is legal where the seller lives is a prohibited import in Japan, China and Singapore; TradeGlot's rule set lists each ban with its statute (Japan: Customs Act, Article 69-11).
+- **After the sale:** a buyer says the parcel never arrived; 48.00 USD is at stake. TradeGlot builds the evidence from the seller's own records, and after one human approval of the reviewed draft plus a two-step send confirmation, sends it with PayPal's `provide-evidence` call.
 
 **Verified, with files you can open**
 - **Real sends:** six `provide-evidence` sends to author-created Sandbox test disputes (five local, one from the hosted demo); for two of them the file PayPal serves back has the same SHA-256 as the file recorded at send time.
-- **Sourced rules:** 681 official export and import rules across ten countries and 140 PayPal clauses, each row linked to its source; 112 of the rules were sampled and 92 compared with their pages by an AI reader.
+- **Sourced rules:** each of the 681 rules and 140 clauses links to its official page; 112 of the rules were sampled and 92 compared with their pages by an AI reader.
 - **Tests and attacks:** the last recorded full run (2026-11-09, Run 1 in TEST_RUN_20261109_SKIPPED.md) passed 1,170 tests; the attack request matrix in the suite sends 1,727 hostile requests, with 0 broken in every run recorded in TEST_RUN_20261108.md.
 
 **The PayPal main line**
