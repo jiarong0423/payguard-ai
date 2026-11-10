@@ -8,9 +8,9 @@ Tagline: A small seller's records become reviewed dispute evidence, sent to PayP
 - **One PayPal action:** TradeGlot builds the evidence from the seller's own records, and after one human approval of the reviewed draft plus a two-step send confirmation, sends it with PayPal's `provide-evidence` call.
 
 **Verified, with files you can open**
-- **Real sends with a byte match:** six `provide-evidence` sends to author-created Sandbox test disputes (five local, one from the hosted demo); for two of them the file PayPal serves back has the same SHA-256 as the file recorded at send time.
+- **Real sends:** six `provide-evidence` sends to author-created Sandbox test disputes (five local, one from the hosted demo); for two of them the file PayPal serves back has the same SHA-256 as the file recorded at send time.
 - **Sourced rules:** 681 official export and import rules across ten countries and 140 PayPal clauses, each row linked to its source; 112 of the rules were sampled and checked by an AI reader.
-- **Tests and attacks:** the last recorded full run passed 1,087 tests, and the attack request matrix sent 1,727 hostile requests with 0 broken.
+- **Tests and attacks:** the last recorded full run (2026-11-09, Run 1 in TEST_RUN_20261109_SKIPPED.md) passed 1,170 tests; the attack request matrix in the suite sends 1,727 hostile requests, with 0 broken in every run recorded in TEST_RUN_20261108.md.
 
 **The PayPal main line**
 
@@ -66,13 +66,13 @@ The three stages follow three published UK Financial Ombudsman decisions about P
 
 Rules and code run first. Gemini only maps a seller's sentence to closed form items. Code decides what is complete. In the guide stress test, 0 of 601 scored replies were outside the closed JSON format. No model can send, change a rule or decide a dispute.
 
-A send passes nine checks, from "off by default" to an allow-listed call that keeps the PayPal-Debug-Id. The last recorded full run passed 1,087 tests; the request matrix in it printed 1,727 requests, BROKEN 0. These are tests of the author's own build, not an outside audit.
+A send passes nine checks, from "off by default" to an allow-listed call that keeps the PayPal-Debug-Id. The last recorded full run (2026-11-09, Run 1 in TEST_RUN_20261109_SKIPPED.md) passed 1,170 tests; the attack request matrix in the suite sends 1,727 hostile requests, with 0 broken in every run recorded in TEST_RUN_20261108.md. These are tests of the author's own build, not an outside audit.
 
 ## Sponsor tools
 
 - **PayPal Sandbox API:** OAuth, invoice drafts, dispute list and detail, `provide-evidence`. PayPal's official MCP server ran once, read-only (`disputes.list`, `disputes.get`).
 - **Bryntum Scheduler (Community):** evidence deadline board with a draggable "Collect evidence" bar.
-- **AG Grid, AG Charts, AG Studio:** order grid, hourly chart, evidence dashboard. Studio agents: 3 live runs, 11 tool calls, local console.
+- **AG Grid, AG Charts, AG Studio:** order grid, hourly chart, evidence dashboard. Studio's built-in agents ran live on the local console on 2026-11-04, 2026-11-08 and 2026-11-09 (three runs, 11 tool calls); the hosted dashboard replays the one run recorded on 2026-11-08.
 - **Render:** hosts the demo; a Workflow service ran three times by hand, 4 to 4.2 s each.
 - **Gemini:** closed-option guide, evidence brief, Studio agent turns. The brief and the Studio agents run on the local console only; the hosted dashboard replays one recorded Studio run.
 - **Postman:** 25-request run covering 21 of 37 operations, 82 assertions, 0 failed; the routes that reach PayPal or a model were not run. **APIMatic:** OpenAPI 3.1, 0 errors after fixes (first run 345).

@@ -1201,7 +1201,8 @@ footer { padding: 8px 0 0; }
 .evidence-placeholder { padding: 12px 16px; }
 .evidence-placeholder .placeholder-illustration { width: 120px; height: auto; }
 .evidence-placeholder p { margin: 4px 0 0; line-height: 1.45; }
-@media (min-width: 900px) {
+/* (2026-11-11, 768px review) Three cards on one row from tablet width up: two plus one left an empty half row. */
+@media (min-width: 641px) {
   .metrics-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (max-width: 640px) {

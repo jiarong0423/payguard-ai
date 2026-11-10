@@ -55,7 +55,7 @@ for (const text of [
   '{copy.intro}', '{copy.guides}', '{copy.local}', '<dd data-testid="connections-why-gemini">{copy.gemini}</dd>',
 ]) assert.ok(badge.includes(text), `popover text: ${text}`);
 const off = hostedCopy({ chooser_mode: 'keyword', model_requested: false });
-assert.equal(off.intro, "This public copy runs the same code with no keys. It never calls PayPal or Gemini, so no account or API credit is used.");
+assert.equal(off.intro, "This public copy runs the same code without keys, so right now it makes no PayPal or Gemini calls and uses no account or API credit.");
 assert.equal(off.guides, 'Guides in rules-only mode and recorded replays');
 assert.equal(off.local, 'Gemini evidence brief and Gemini guide');
 assert.equal(off.gemini, 'Off in hosted demo');

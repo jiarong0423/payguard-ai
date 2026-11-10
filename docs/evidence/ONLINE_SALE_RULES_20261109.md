@@ -5,7 +5,7 @@ The ten-country rules in `data/country_rules/paypal_country_rules_v1.json` (681 
 
 ## What is in it
 - **Two rules, each read from the official page or document itself on 2026-11-09:**
-  - Taiwan: medical devices may be sold through distance-selling channels only by registered medical device dealers or pharmacies, and only class 1 devices plus 19 listed class 2 item groups (Ministry of Health and Welfare announcement 衛授食字第1101601942號, 2021-04-29; the annex was read as an image of the official PDF and its 19 items are copied into the file). Contact lenses themselves are not on the annex, only lens care products.
+  - Taiwan: medical devices may be sold through distance-selling channels only by registered medical device dealers or pharmacies, and only class 1 devices plus 19 listed class 2 item groups (Ministry of Health and Welfare announcement No. 1101601942, 2021-04-29, original number 衛授食字第1101601942號; the annex was read as an image of the official PDF and its 19 items are copied into the file). Contact lenses themselves are not on the annex, only lens care products.
   - Malaysia: a registered device may be sold online, but professional-use devices must not be sold to the general public (Medical Device Authority FAQ, page dated 2026-11-06; an FAQ answer, not a statute).
 - **Three marketplace policies** (not law): Yahoo Taiwan bans all medical devices, Yahoo! Japan Auctions bans highly controlled devices including contact lenses, eBay bans prescription-required devices and allows over-the-counter ones with conditions. Platforms can be stricter than the law.
 

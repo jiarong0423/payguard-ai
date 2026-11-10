@@ -5,7 +5,7 @@ PayGuard AI is the earlier name of TradeGlot. This note says what visitor text c
 ## 1. What can reach Gemini on the hosted demo
 
 - **Only the evidence guide, and only if the operator opts in.** The hosted demo uses keyword rules unless the operator sets `PAYGUARD_HOSTED_GUIDE_MODEL=gemini`; otherwise the chooser is `None` and no worker can start (`backend/app/guide_routes.py`, `hosted_guide_service`). The shipped default, with no opt-in, therefore sends nothing to Gemini.
-- **Everything else that would call a model answers 503 on the hosted demo:** `/api/v1/ai/evidence-brief` and `/api/v1/studio/agent-turn` are in `DISABLED_ROUTES` (`backend/app/demo_mode.py`). PayPal Sandbox writes are disabled there too; only the OAuth connect and read routes can open when the read-only switch is on (`READONLY_OPEN_ROUTES`, same file).
+- **Everything else that would call a model answers 503 on the hosted demo:** `/api/v1/ai/evidence-brief` and `/api/v1/studio/agent-turn` are in `DISABLED_ROUTES` (`backend/app/demo_mode.py`). PayPal Sandbox writes are disabled there, except one: with the send opt-in (`PAYGUARD_HOSTED_SANDBOX_SEND=enabled`), `provide-evidence` opens for the owner's Sandbox test disputes under the hosted caps (`SEND_OPEN_ROUTES`, same file). The OAuth connect and read routes open when the read-only switch is on (`READONLY_OPEN_ROUTES`, same file).
 - **Caps when opted in:** 5 model calls a minute and 20 a day shared by all visitors, 10 per session, at least 2 seconds apart; past a cap the keyword chooser answers (`backend/app/guide_routes.py`: `HOSTED_GUIDE_CALLS_PER_MINUTE`, `HOSTED_GUIDE_CALLS_PER_DAY`, `GUIDE_MODEL_CALLS_PER_SESSION`, `GUIDE_MODEL_MIN_SPACING_SECONDS`).
 
 ## 2. What is sent when a model call happens

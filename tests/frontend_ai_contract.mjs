@@ -159,7 +159,7 @@ const quickstartSource = readFileSync(resolve(projectRoot, 'docs/submission/quic
 for (const required of [
   'Generate AI brief',
   'closed values the backend computes from this demo session',
-  'The hosted demo never calls the model.',
+  'On the hosted demo the brief never calls the model.',
   'at most three model attempts per process and one attempt per stage',
   'AI brief generated',
   'aiControllerRef.current?.abort()',

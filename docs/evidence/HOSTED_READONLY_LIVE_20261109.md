@@ -1,5 +1,7 @@
 # Hosted demo, read-only Sandbox reads, live check, 2026-11-09
 
+This check was made before the hosted send switch was turned on (2026-11-10); since then one write, `provide-evidence`, can open (see [RECEIPT_20261110_hosted_live.md](RECEIPT_20261110_hosted_live.md)).
+
 Checked by the author from a browser against the public hosted demo (Render, commit `b017f5d`), with the read-only Sandbox switch on and the author's own PayPal Sandbox test credentials stored as Render secrets (never shown here). Dispute ids are not reproduced in this file.
 
 | Check | Result |

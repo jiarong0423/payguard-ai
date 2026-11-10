@@ -7295,7 +7295,7 @@
    "name": "TradeGlot",
    "url": "https://github.com/jiarong0423/payguard-ai"
   },
-  "description": "API of the local TradeGlot console (127.0.0.1:8000). It uses synthetic data, expects the demo session headers the console sets, and the hosted demo answers 503 on every route that would reach PayPal. Authentication: create a session with POST /api/v1/demo/sessions, then send X-Demo-Session on every other call and X-CSRF-Token on every POST. POST calls also need an Origin header equal to the console's own origin (browsers add it; scripts must set it), otherwise the API answers 403 origin_required.",
+  "description": "API of the local TradeGlot console (127.0.0.1:8000). It uses synthetic data and expects the demo session headers the console sets. On the hosted demo the read switch opens the Sandbox OAuth and dispute reads, the send switch also opens one capped provide-evidence route, and every other route that would reach PayPal answers 503. Authentication: create a session with POST /api/v1/demo/sessions, then send X-Demo-Session on every other call and X-CSRF-Token on every POST. POST calls also need an Origin header equal to the console's own origin (browsers add it; scripts must set it), otherwise the API answers 403 origin_required.",
   "license": {
    "identifier": "MIT",
    "name": "MIT"

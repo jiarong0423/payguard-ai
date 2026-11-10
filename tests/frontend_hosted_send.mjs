@@ -33,7 +33,7 @@ for (const payload of [
 
 // 2. Wording follows the flags: no "never calls PayPal" while the send is on.
 const live = hostedCopy({ chooser_mode: 'gemini' }, true, true);
-assert.equal(live.pill, 'Hosted demo · live Sandbox');
+assert.equal(live.pill, 'Hosted demo · Sandbox reads + capped send');
 assert.ok(live.intro.includes('never a live account') && live.intro.includes('once per dispute and once per visit'));
 assert.ok(!/never calls PayPal|cannot write|no PayPal/u.test(live.intro + live.pill));
 assert.equal(hostedCopy({ chooser_mode: 'gemini' }, true, false).pill, 'Hosted demo · read-only Sandbox', 'read-only wording unchanged');

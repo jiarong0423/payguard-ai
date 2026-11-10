@@ -539,8 +539,8 @@ def build():
         print("ERROR cannot import the application: %s" % type(exc).__name__, file=sys.stderr)
         sys.exit(2)
     spec = copy.deepcopy(app.openapi())  # the application caches its schema; never edit the cached one
-    spec["info"]["description"] = ("API of the local TradeGlot console (127.0.0.1:8000). It uses synthetic data, expects the demo "
-                                   "session headers the console sets, and the hosted demo answers 503 on every route that would reach PayPal.")
+    spec["info"]["description"] = ("API of the local TradeGlot console (127.0.0.1:8000). It uses synthetic data and expects the demo session headers the console sets. "
+                                   "On the hosted demo the read switch opens the Sandbox OAuth and dispute reads, the send switch also opens one capped provide-evidence route, and every other route that would reach PayPal answers 503.")
     describe(spec)
     add_examples(spec)
     add_security(spec, app)

@@ -59,7 +59,9 @@ const isNarrow = (container) => (container?.clientWidth ?? 800) < NARROW_PX;
 const categoryLabel = (container, { stepNumbers = false } = {}) => (isNarrow(container)
   ? { ...AXIS_LABEL, fontSize: 12, autoRotate: false, avoidCollisions: false,
     formatter: ({ value }) => (stepNumbers ? String(value).split(' ')[0] : wrapWords(value, 14)) }
-  : { ...AXIS_LABEL, autoRotate: false });
+  // (2026-11-11, 768px review) A long label ("+ topology, one Save, summary on last round") was cut at the left edge on
+  // tablets too: wider charts wrap labels over 30 characters onto two lines.
+  : { ...AXIS_LABEL, autoRotate: false, formatter: ({ value }) => (String(value).length > 30 ? wrapWords(value, 26) : String(value)) });
 // Titles and subtitles may take two lines at phone width instead of being cut short.
 const captionFit = (container, lines) => (isNarrow(container) ? { wrapping: 'on-space', maxHeight: lines * 22 } : {});
 // Room for the value label outside the longest bar.

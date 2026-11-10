@@ -10,7 +10,7 @@ Scope: the `snippets` array (140 paraphrased PayPal clauses) of `paypal_country_
 - Source pages: opened in the built-in browser as an ordinary reader, page text compared against the stored paraphrase with keyword extraction (not a full line-by-line read of the very long user agreements). Fetch date for every row: 2026-11-08. Tool-level 403 on automated fetch was not retried; the browser was used from the start.
 - Requests: 20 distinct paypal.com URLs, 23 page loads in total. Three pages were loaded twice by mistake (DE acceptable use, AU seller protection, DE user agreement) because a first extraction did not capture the needed text. This breaks the "one fetch per URL" rule by 3 loads; total stayed under the 40 limit.
 - Limits: only the clauses and keywords listed were compared. Pages were read in the language and variant served to this browser session (English for the `c2` pages, local language for DE, JP, TW). Whether a page text differs by visitor region was not tested. "Source fragment" is a short quote, not a full citation. Rows not located on the page are reported as such and are NOT counted as checked.
-- Verdict labels: Consistent = 一致; Wording differs, meaning same = 措辭有差但意思一致; Page newer, content still consistent = 來源頁面日期較新（內容仍一致）; Incomplete = 不完整; Inconsistent = 不一致; Could not open = 無法開啟; Not located = 未核到 (extra label, not counted as checked).
+- Verdict labels: Consistent; Wording differs, meaning same; Page newer, content still consistent; Incomplete; Inconsistent; Could not open; Not located (extra label, not counted as checked).
 
 ## 2. Drawn rows (in draw order)
 
