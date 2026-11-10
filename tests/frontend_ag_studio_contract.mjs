@@ -288,7 +288,7 @@ assert.ok(noSlot.reply.includes('How I built this: 1. Added a table under the he
 // (r31 J1 J4) The dashboard: tool names only under the collapsed "Technical steps" in the drawer; no "Changes stay in
 // this tab" chip (the drawer's "Edit mode:" line keeps that information).
 const dashMain = read('frontend/src/dashboard/main.jsx');
-assert.ok(dashMain.includes('const onAnswer = (page, technical) => {') && dashMain.includes('if (technical) setTechnical(technical);'), 'the dashboard keeps the tool steps of the last answer');
+assert.ok(dashMain.includes('const onAnswer = (page, technical, { textOnly = false } = {}) => {') && dashMain.includes('if (technical) setTechnical(technical);'), 'the dashboard keeps the tool steps of the last answer');
 assert.ok(dashMain.includes('{technical && <details className="pg-technical" data-testid="dashboard-technical-steps">\n            <summary>Technical steps</summary>'), 'collapsed Technical steps');
 assert.equal(/<details className="pg-technical"[^>]*\sopen/u.test(dashMain), false, 'Technical steps collapsed by default');
 const drawerBody = dashMain.slice(dashMain.indexOf('<div className="pg-drawer-body">'), dashMain.indexOf('</details>\n      <main'));
