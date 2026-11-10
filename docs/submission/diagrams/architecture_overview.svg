@@ -10,7 +10,7 @@
 <rect width="1920" height="1080" fill="#fbf7ef"/>
 <text x="50" y="66" font-size="46" fill="#1f1e1b" font-weight="700">TradeGlot: how it works</text>
 <text x="50" y="104" font-size="24" fill="#5b5953">Rules first. The model only matches sentences to fields. Code checks every result. The seller decides.</text>
-<text x="50" y="138" font-size="22" fill="#5b5953">Local console: real PayPal Sandbox and Gemini calls. Hosted demo on Render: rules by default, read-only Sandbox reads.</text>
+<text x="50" y="138" font-size="22" fill="#5b5953">Local console: real PayPal Sandbox and Gemini calls. Hosted demo on Render: rules by default, Sandbox reads and one capped evidence send.</text>
 <text x="50" y="186" font-size="22" fill="#8a877f" font-weight="700" letter-spacing="2">SELLER (BROWSER)</text>
 <text x="480" y="186" font-size="22" fill="#8a877f" font-weight="700" letter-spacing="2">TRADEGLOT SERVER</text>
 <text x="1350" y="186" font-size="22" fill="#8a877f" font-weight="700" letter-spacing="2">SERVICES</text>
