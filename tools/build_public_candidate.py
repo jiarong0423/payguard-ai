@@ -108,6 +108,7 @@ EXACT_FILES = (
     "docs/RENDER_WORKFLOWS_NOTES.md",
     "docs/evidence/RENDER_WORKFLOW_RUN_20261109.md",
     "docs/evidence/HOSTED_READONLY_LIVE_20261109.md",
+    "docs/evidence/RECEIPT_20261110_hosted_live.md",
     "docs/evidence/OFFICIAL_PAYPAL_MCP_RUN_20261109.md",
     "docs/evidence/AG_STUDIO_LIVE_RUNS_20261109.md",
     "docs/evidence/studio_agent_live_runs_20261109.json",

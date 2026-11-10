@@ -28,7 +28,8 @@ assert.match(facts.source_note, /tests\/frontend_proof_contract\.mjs/u, 'source 
 // 2. Rows: unique ids, known scenario and method, ISO dates, a committed source file, quotes found verbatim in it.
 const SANDBOX_RECEIPTS = ['docs/evidence/RECEIPT_20261031_live.md', 'docs/evidence/RECEIPT_20261104_live.md', 'docs/evidence/RECEIPT_20261105_live.md'];
 // (2026-11-09) Evidence files added that day: a read-back, the hosted read-only live check, a second Channel3 round, and three tool runs.
-const NEW_SANDBOX_SOURCES = ['docs/evidence/READBACK_20261109.md', 'docs/evidence/HOSTED_READONLY_LIVE_20261109.md'];
+// (2026-11-10, intended) The hosted live send receipt.
+const NEW_SANDBOX_SOURCES = ['docs/evidence/READBACK_20261109.md', 'docs/evidence/HOSTED_READONLY_LIVE_20261109.md', 'docs/evidence/RECEIPT_20261110_hosted_live.md'];
 const NEW_OTHER_SOURCES = ['docs/evidence/channel3_receipts_20261109.json', 'docs/evidence/POSTMAN_RUN_20261109.md', 'docs/evidence/RENDER_WORKFLOW_RUN_20261109.md', 'docs/evidence/APIMATIC_RUN_20261109.md'];
 const SOURCES = new Set([...SANDBOX_RECEIPTS, ...NEW_SANDBOX_SOURCES, ...NEW_OTHER_SOURCES, 'docs/evidence/channel3_receipts_v1.json', 'docs/evidence/GEMINI_GUIDE_RUNS_20261103.md', 'docs/evidence/RED_TEAM_ROUNDS_20261104.md']);
 const ids = new Set();
@@ -51,10 +52,12 @@ for (const row of facts.rows) {
 }
 for (const scenario of facts.scenarios) assert.ok(facts.rows.filter((row) => row.scenario === scenario.id).length >= 2, `${scenario.id} has rows`);
 // The Sandbox rows come from the three masked live receipts (10-31 reads, 11-04 send, 11-05 recorded send) only; the sales burst is the synthetic one.
-assert.deepEqual(facts.rows.filter((row) => row.method === 'REAL_SANDBOX').map((row) => row.id), ['policy-invoice-draft', 'policy-invoice-draft-recorded', 'dispute-list-read', 'dispute-single-read', 'dispute-evidence-sent', 'dispute-mismatch-refused', 'dispute-unauthorized-refused', 'dispute-evidence-sent-recorded', 'dispute-resend-amount-refused', 'dispute-submit-gated', 'dispute-readback-hash-match', 'dispute-readback-404-fixed', 'dispute-hosted-readonly-live']);
+assert.deepEqual(facts.rows.filter((row) => row.method === 'REAL_SANDBOX').map((row) => row.id), ['policy-invoice-draft', 'policy-invoice-draft-recorded', 'dispute-list-read', 'dispute-single-read', 'dispute-evidence-sent', 'dispute-mismatch-refused', 'dispute-unauthorized-refused', 'dispute-evidence-sent-recorded', 'dispute-resend-amount-refused', 'dispute-submit-gated', 'dispute-readback-hash-match', 'dispute-readback-404-fixed', 'dispute-hosted-readonly-live', 'dispute-hosted-send-live']);
 // (2026-11-05) The gate row states the current fact: two gated Sandbox sends, not the retired 2026-10-31 "mocked-transport tests only" wording.
 assert.ok(!JSON.stringify(facts).includes('mocked-transport tests only'), 'no retired submit wording on /proof.html');
-assert.ok(/two sends/u.test(facts.rows.find((row) => row.id === 'dispute-submit-gated').proven), 'gate row names the two sends');
+// (2026-11-10, intended) The gate row names the current count: five local sends and one hosted send, as in README and SECURITY.md.
+const gateRow = facts.rows.find((row) => row.id === 'dispute-submit-gated').proven;
+assert.ok(/six sends/u.test(gateRow) && /hosted demo on 2026-11-10/u.test(gateRow) && !/two sends/u.test(gateRow), 'gate row names the six sends');
 // (r34) Each send row names the PayPal-Debug-Id from its receipt, and the page footer names every Sandbox receipt.
 assert.ok(facts.rows.find((row) => row.id === 'dispute-evidence-sent').how.includes('PayPal-Debug-Id f908765a01293'), 'send row names the Debug-Id');
 assert.ok(facts.rows.find((row) => row.id === 'dispute-evidence-sent-recorded').how.includes('PayPal-Debug-Id f2088142a6218'), 'recorded send row names the Debug-Id');
@@ -229,10 +232,11 @@ assert.deepEqual(channel3Summary({}), { count: 0, allOk: false, cards: [], minLa
   assert.deepEqual(byId['dispute-readback-hash-match'].sponsors, ['PayPal']);
   for (const row of facts.rows) for (const name of row.sponsors || []) assert.ok(PROOF_SPONSORS.includes(name), `${row.id}: known sponsor ${name}`);
   const count = (filter) => facts.rows.filter((row) => rowMatches(row, filter)).length;
-  assert.equal(count({}), 28, 'no filter shows all 28');
-  assert.equal(count({ method: 'REAL_SANDBOX' }), 13);
+  // (2026-11-10, intended) +1 row: the hosted live send (PayPal, Render).
+  assert.equal(count({}), 29, 'no filter shows all 29');
+  assert.equal(count({ method: 'REAL_SANDBOX' }), 14);
   assert.equal(count({ sponsor: 'Bryntum' }), 0, 'no proof row names Bryntum: the page says so instead of inventing one');
-  assert.ok(count({ sponsor: 'Render' }) === 2 && count({ sponsor: 'PayPal' }) === 13);
+  assert.ok(count({ sponsor: 'Render' }) === 3 && count({ sponsor: 'PayPal' }) === 14);
   assert.deepEqual(parseProofHash('#sponsor=Bryntum'), { method: 'ALL', sponsor: 'Bryntum' });
   assert.deepEqual(parseProofHash('#sponsor=Nope&method=RECORDED'), { method: 'RECORDED', sponsor: '' });
   assert.deepEqual(parseProofHash('#row-dispute-list-read'), { method: 'ALL', sponsor: '' });
