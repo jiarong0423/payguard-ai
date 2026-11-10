@@ -35,7 +35,7 @@ const css = read('frontend/src/index.css');
   assert.ok(guide.includes("const modeBadge = view?.chooser_mode === 'gemini' ? <Badge tone=\"muted\">Rules + Gemini</Badge>"), 'badge reads the same field');
   assert.equal(app.split('onChooser={setGuideChooser}').length - 1, 3, 'all three guides report');
   assert.ok(app.includes('<HostedBadge guideChooser={guideChooser} sandboxReads={sandboxReads} sandboxSend={sandboxSend} />'), 'badge gets the status');
-  assert.ok(app.includes("const HOSTED_DISABLED_NOTICE = 'This needs a local run: the hosted demo cannot write to PayPal and has no AI brief.';"), 'notice no longer says "no Gemini calls"');
+  assert.ok(app.includes("const HOSTED_DISABLED_NOTICE = 'This needs a local run: on the hosted demo, invoice drafts, tracking and the AI brief are off.';"), 'notice no longer says "no Gemini calls" or "cannot write to PayPal" (2026-11-10, intended)');
 }
 
 // ---- #2: PayPal already has seller evidence (SUBMITTED_BY_SELLER row or not waiting for the seller). ----

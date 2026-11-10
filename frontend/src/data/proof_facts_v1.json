@@ -29,7 +29,7 @@
       "id": "policy-invoice-draft-recorded",
       "scenario": "policy",
       "proven": "During the demo video recording on 2026-11-05 (UTC+8), TradeGlot created a third unsent invoice draft in PayPal Sandbox.",
-      "how": "POST /v2/invoicing/invoices through TradeGlot, shown at about 1:08 to 1:12 of the 2:50 video: status DRAFT, not sent, verified from the creation response only. Invoice id INV2-...RG5U (masked); the full id and the response body are not kept.",
+      "how": "POST /v2/invoicing/invoices through TradeGlot, shown at about 1:08 to 1:12 of the earlier 2:50 cut (https://youtu.be/_GORnHWShU4): status DRAFT, not sent, verified from the creation response only. Invoice id INV2-...RG5U (masked); the full id and the response body are not kept.",
       "method": "REAL_SANDBOX",
       "date": "2026-11-05",
       "source": "docs/evidence/RECEIPT_20261105_live.md",
@@ -240,13 +240,13 @@
     {
       "id": "cross-no-live",
       "scenario": "cross",
-      "proven": "No review or attack round called PayPal Live or a real payment; r27 and the later r31 and r32 judge rounds used the owner's Gemini key on the local console.",
+      "proven": "No review or attack round called PayPal Live or a real payment; r27 and the later review rounds r31 and r32 used the owner's Gemini key on the local console.",
       "how": "Backend attacks ran in-process with a mocked PayPal transport; browser and phone attacks ran against an isolated rules-only copy with PayPal not configured.",
       "method": "TEST",
       "date": "2026-11-03",
       "date_end": "2026-11-04",
       "source": "docs/evidence/RED_TEAM_ROUNDS_20261104.md",
-      "quotes": ["Nothing in these rounds called PayPal Live or a real payment; r27 used the owner's Gemini key (a paid model) on the local console, as did the later r31 and r32 judge rounds.", "browser and phone attacks ran against an isolated rules-only copy of the console with PayPal not configured"]
+      "quotes": ["Nothing in these rounds called PayPal Live or a real payment; r27 used the owner's Gemini key (a paid model) on the local console, as did the later review rounds r31 and r32.", "browser and phone attacks ran against an isolated rules-only copy of the console with PayPal not configured"]
     },
     {
       "id": "dispute-readback-hash-match",

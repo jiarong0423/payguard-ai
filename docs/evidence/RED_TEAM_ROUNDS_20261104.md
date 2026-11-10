@@ -2,7 +2,7 @@
 
 This file records the review and attack rounds run against the development branch before the public sync. Each round was run by independent reviewer agents with fixed roles (judge, PayPal developer relations, sponsor panel, security engineer, UI/UX) or by attack agents (backend matrix, desktop browser, real Android phone). Every finding was re-checked by the author before it was counted, and every fix was followed by the full test suite. Earlier review rounds of individual branches are not summarised here.
 
-Nothing in these rounds called PayPal Live or a real payment; r27 used the owner's Gemini key (a paid model) on the local console, as did the later r31 and r32 judge rounds. Backend attacks ran in-process against a clean checkout with a mocked PayPal transport; browser and phone attacks ran against an isolated rules-only copy of the console with PayPal not configured.
+Nothing in these rounds called PayPal Live or a real payment; r27 used the owner's Gemini key (a paid model) on the local console, as did the later review rounds r31 and r32. Backend attacks ran in-process against a clean checkout with a mocked PayPal transport; browser and phone attacks ran against an isolated rules-only copy of the console with PayPal not configured.
 
 ## What each round found and what happened to it
 

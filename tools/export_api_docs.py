@@ -78,7 +78,7 @@ def describe(spec):
     info["contact"] = {"name": "TradeGlot", "url": "https://github.com/jiarong0423/payguard-ai"}
     info["license"] = {"name": "MIT", "identifier": "MIT"}
     spec["servers"] = [{"url": "http://127.0.0.1:8000", "description": "Local console (synthetic data)"},
-                       {"url": "https://payguard-demo-j2b3.onrender.com", "description": "Hosted demo (read-only: every write route answers 503 hosted_demo_disabled; the first request after idle can take about a minute)"}]
+                       {"url": "https://payguard-demo-j2b3.onrender.com", "description": "Hosted demo (Sandbox reads and one capped evidence send when the operator enables them; other write routes answer 503 hosted_demo_disabled; the first request after idle can take about a minute)"}]
     used_tags, seen_ids = set(), set()
     for path in sorted(spec["paths"]):
         parts = [part for part in path.split("/") if part and part not in ("api", "v1")]

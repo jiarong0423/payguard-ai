@@ -605,7 +605,7 @@ class DisputeEnvelope(Contract):
     provider_submission: Literal["NOT_PERFORMED", "PERFORMED"]
     # PayPal-Debug-Id of the Sandbox call behind this answer (PayPal docs r24); always null for the fixture.
     paypal_debug_id: StrictStr | None = Field(default=None, pattern=PAYPAL_DEBUG_ID_PATTERN)
-    # Present only on the fixture answers of the list and detail reads: says why the rows are fixtures (judge round 2 H3).
+    # Present only on the fixture answers of the list and detail reads: says why the rows are fixtures.
     note: StrictStr | None = Field(default=None, max_length=300)
 
     @model_validator(mode="after")

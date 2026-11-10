@@ -102,7 +102,7 @@ assert.equal((replaySource.match(/filter: 'agTextColumnFilter', floatingFilter: 
 assert.ok(replaySource.includes('quickFilterText={quickFilter}'));
 assert.ok(replaySource.includes('exportDataAsCsv('));
 assert.ok(replaySource.includes("exportedRows: 'all'"));
-assert.ok(replaySource.includes('csvFileName={`payguard-replay-${scenario.id}-step-${stepIndex + 1}.csv`}'), 'CSV is per step');
+assert.ok(replaySource.includes('csvFileName={`tradeglot-replay-${scenario.id}-step-${stepIndex + 1}.csv`}'), 'CSV is per step');
 
 // Replay layout: the raw model reply and template sit in a closed disclosure; C6 imports keep working.
 const replayCss = read('frontend/src/GuideReplay.css');

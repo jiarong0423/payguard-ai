@@ -66,7 +66,7 @@ const GAP_COLUMNS = [
     getQuickFilterText: ({ data }) => sourceText(data) },
 ];
 
-export function GapGrid({ items, csvFileName = 'payguard-gap-table.csv', exportLabel = 'Export as CSV', testIdPrefix = 'gap' }) {
+export function GapGrid({ items, csvFileName = 'tradeglot-gap-table.csv', exportLabel = 'Export as CSV', testIdPrefix = 'gap' }) {
   const gridRef = useRef(null);
   const filterId = useId();
   const [quickFilter, setQuickFilter] = useState('');
@@ -161,7 +161,7 @@ export default function GuideReplay() {
           <span className="guide-replay-tag">TradeGlot says (fixed wording)</span>
           <p className="guide-replay-say" data-testid="replay-say" aria-live="polite">{step.assistant_text}</p>
         </div>
-        <GapGrid items={step.items} testIdPrefix="replay" csvFileName={`payguard-replay-${scenario.id}-step-${stepIndex + 1}.csv`}
+        <GapGrid items={step.items} testIdPrefix="replay" csvFileName={`tradeglot-replay-${scenario.id}-step-${stepIndex + 1}.csv`}
           exportLabel={`Export step ${stepIndex + 1} as CSV`} />
         <p className="guide-replay-note">The CSV holds every item of this step, whatever the filters show. It is a demo replay, not a PayPal record. Only a form field that passes the rule check can make an item structurally present. A model reply can mark an item at most as mentioned.</p>
       </div>

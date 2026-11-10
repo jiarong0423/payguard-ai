@@ -11719,7 +11719,7 @@
    "url": "http://127.0.0.1:8000"
   },
   {
-   "description": "Hosted demo (read-only: every write route answers 503 hosted_demo_disabled; the first request after idle can take about a minute)",
+   "description": "Hosted demo (Sandbox reads and one capped evidence send when the operator enables them; other write routes answer 503 hosted_demo_disabled; the first request after idle can take about a minute)",
    "url": "https://payguard-demo-j2b3.onrender.com"
   }
  ],

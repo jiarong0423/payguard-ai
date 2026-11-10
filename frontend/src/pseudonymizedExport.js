@@ -70,7 +70,7 @@ export function downloadPseudonymizedEvidence(documentRedaction) {
   try {
     anchor = document.createElement('a');
     anchor.href = url;
-    anchor.download = 'payguard-pseudonymized-evidence.json';
+    anchor.download = 'tradeglot-pseudonymized-evidence.json';
     document.body.appendChild(anchor);
     anchor.click();
   } finally {

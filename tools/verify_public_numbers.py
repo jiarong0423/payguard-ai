@@ -43,7 +43,7 @@ CLAIMS = {
     "python_tests": 1169,
     "python_tests_skipped": 9,
     "redteam_requests": 1727,
-    "doc_words": 91383,
+    "doc_words": 91570,
     "evidence_files": 43,
     "images": 38,
     "paypal_clauses": 140,

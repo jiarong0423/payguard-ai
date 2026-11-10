@@ -14,7 +14,7 @@ Status: the Devpost project is submitted and the 2:59 video is on YouTube. The c
 
 ## Fastest path: three clicks on the hosted demo
 
-No install, synthetic data plus Sandbox reads (and, with the send opt-in, a capped Sandbox evidence send). The first visit can take about a minute while the free server wakes. Button labels may be reworded before judging.
+No install, synthetic data plus Sandbox reads (and, with the send opt-in, a capped Sandbox evidence send). The first visit can take about a minute while the free server wakes.
 
 1. Open the [start page](https://payguard-demo-j2b3.onrender.com/start.html) and press **Run the step 1 example** in step 01. Expect "A rule may stop this sale.", each row linked to its source.
 2. Open step 03, select a case, press **Prepare evidence draft**, then **Download review ZIP**.
@@ -54,7 +54,7 @@ npm run dev
 
 Open `http://127.0.0.1:5173`. Keep both processes running. (`./tools/run.sh start` instead builds the console and serves it on `http://127.0.0.1:8000`; on a terminal it first asks whether the guide may use Gemini, which calls the paid API, default no.) If the API is unavailable, the UI fails visibly instead of loading a hidden mock.
 
-This loopback walkthrough is the selected functional-demo path and runs locally. The optional hosted demo makes only read-only PayPal Sandbox reads and shows less (README, "Hosted demo").
+This loopback walkthrough is the selected functional-demo path and runs locally. The optional hosted demo reads the author's Sandbox test disputes and, with its send opt-in, allows one capped evidence send per visit; it shows less (README, "Hosted demo").
 
 ## Understand the banner before the demo
 

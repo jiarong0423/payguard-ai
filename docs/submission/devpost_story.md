@@ -77,14 +77,14 @@ A send passes nine checks, from "off by default" to an allow-listed call that ke
 - **Gemini:** closed-option guide, evidence brief, Studio agent turns. The brief and the Studio agents run on the local console only; the hosted dashboard replays one recorded Studio run.
 - **Postman:** 25-request run covering 21 of 37 operations, 82 assertions, 0 failed; the routes that reach PayPal or a model were not run. **APIMatic:** OpenAPI 3.1, 0 errors after fixes (first run 345).
 - **Channel3:** product search for a reference card; 5 searches replayed, 5 more with receipts.
-- **Our own MCP server:** five read-only tools, local only.
+- **TradeGlot's own MCP server:** five read-only tools, local only.
 
 Full table: [SPONSOR_TECH_MAP.md](https://github.com/jiarong0423/payguard-ai/blob/main/docs/SPONSOR_TECH_MAP.md).
 
 ## Honest scope
 
 - **Sandbox only.** All PayPal calls are Sandbox. All disputes are author-created test cases between Sandbox test accounts. Orders, cases and evidence files are synthetic.
-- **Acceptance is not a verdict.** "Accepted" means PayPal Sandbox recorded the request and moved the dispute to waiting for the buyer. It is not PayPal accepting the evidence or deciding the case.
+- **Acceptance is not a verdict.** "Accepted" means PayPal Sandbox recorded the request and the dispute left waiting for the seller: waiting for the buyer after the local sends, under review after the hosted send. It is not PayPal accepting the evidence or deciding the case.
 - **Byte match covers two of six sends.** The first 2026-11-09 send was made before fingerprints were recorded. The 2026-11-04 send carried a 43-byte placeholder PDF.
 - **The local send shown in the video** (2026-11-10) is not one of the six. It has no read-back or receipt yet, so it is not counted.
 - **Account match is declared.** The seller id is set by the operator and compared with the dispute's seller. It is not verified with PayPal.
