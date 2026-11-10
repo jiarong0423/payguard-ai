@@ -14,6 +14,9 @@
   .feedback-region { position: relative; height: 0; min-height: 0; margin: 0; padding: 0; }
   .feedback-region .message { position: fixed; right: 20px; bottom: 20px; z-index: 70; max-width: min(380px, calc(100vw - 40px)); margin: 0; padding: 6px 14px; border-radius: 12px; font-size: 13px; line-height: 1.35; min-height: 0; box-shadow: 0 6px 20px rgba(15, 23, 42, .16); }
   .feedback-region .message + .message { bottom: 64px; }
+  /* (external review 2026-11-10) The note is opaque: a tinted (see-through) background let the page text show through it. */
+  .feedback-region .message-success { background: linear-gradient(var(--pg-tint-ok), var(--pg-tint-ok)), var(--pg-color-panel, #fff); }
+  .feedback-region .message-info { background: linear-gradient(var(--pg-color-accent-tint), var(--pg-color-accent-tint)), var(--pg-color-panel, #fff); }
   /* A success or info note shows for a few seconds and fades away; an error stays until it is dismissed. */
   .feedback-region .message-success, .feedback-region .message-info { animation: toast-away 4.5s ease forwards; }
   @keyframes toast-away { 0%, 70% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateY(6px); pointer-events: none; visibility: hidden; } }

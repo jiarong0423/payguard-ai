@@ -30,9 +30,13 @@ assert.match(css, /@container \(max-width: \d+px\) \{\s*\.board-row dl \{ grid-t
 
 // 2b. (2026-11-10 redesign) Compact fixed-shape card: one line per fact, a fixed two-line plan area, and the list and
 // the timeline each scroll inside their own box so the board is one tool on the page, not the whole page.
-assert.match(rule('.board-list .board-row dl > div'), /white-space: nowrap;[^}]*text-overflow: ellipsis/u, 'one line per fact');
-assert.match(rule('.board-list .board-row dl > div:nth-child(5)'), /height: \d+px/u, 'plan area has a fixed height in every state');
-assert.match(css, /\.board-plan-message \{ flex: 1 1 0;[^}]*white-space: nowrap;/u, 'plan line keeps one height');
+// (external review 2026-11-10) Nothing on a card or the plan line ends in "…": short labels wrap at spaces, and the cards in
+// the strip stretch to the tallest so the row stays even.
+assert.doesNotMatch(rule('.board-list .board-row dl > div'), /text-overflow: ellipsis/u, 'no fact cut with an ellipsis');
+assert.doesNotMatch(rule('.board-row-status'), /text-overflow: ellipsis/u, 'status line not cut');
+assert.match(rule('.board-list .board-row dl > div:nth-child(5)'), /min-height: \d+px/u, 'plan area keeps a minimum height in every state');
+assert.doesNotMatch(css, /\.board-plan-message \{[^}]*text-overflow: ellipsis/u, 'plan message not cut');
+assert.match(css, /\.board-plan-message:empty \{ min-height: 0;/u, 'no empty band without a message');
 assert.match(css, /\.board-timeline:not\(\.board-timeline-phone\) \.board-canvas \.b-sch-event-wrap \{ height: \d+px !important; --b-event-size: \d+ !important; \}/u, 'desktop timeline bars share one lane height');
 const boardJsx = readFileSync(join(root, 'frontend/src/board/EvidenceBoard.jsx'), 'utf8');
 assert.ok(boardJsx.includes("eventLayout={phone ? 'stack' : 'none'}") && boardJsx.includes('VISIBLE_ROWS * ROW_HEIGHT + TIMELINE_HEADER'), 'uniform rows; timeline has a fixed height past VISIBLE_ROWS');
@@ -66,7 +70,11 @@ assert.ok(Number(board.match(/const ROW_HEIGHT = (\d+);/u)[1]) >= 40, 'compact o
 assert.ok(board.includes("field: 'gridEvidence'") && board.includes('class="board-grid-case"') && board.includes("escapeHtml(String(record.get('caseRef')"), 'Case cell: code then reason, escaped');
 assert.ok(board.includes('<span class="ev-label" title="${full}">'), 'every bar label carries its full name as a title');
 assert.ok(board.includes("CLAIM_OPENED: 'Claim'"), 'milestones use a short label');
-assert.match(css, /\.board-canvas \.payguard-board-plan[^{]*\{ min-width: (\d+)px; \}/u, 'plan bars keep a visible width');
+// (external review 2026-11-10 #3) Plan bars are drawn at their real length (no minimum width); the label runs on past a
+// short bar instead, and desktop milestones are diamonds with the name in the title.
+assert.doesNotMatch(css, /\.payguard-board-plan[^{]*\{ min-width: \d+px; \}/u, 'plan bars are not widened past their time');
+assert.match(css, /\.payguard-board-plan \.ev-label \{ overflow: visible;[^}]*min-width: max-content;/u, 'a short plan bar still shows its whole label');
+assert.ok(board.includes('ev-label-milestone') && board.includes('MID_COLUMNS'), 'desktop milestones without text; tablet timeline uses two columns');
 assert.match(css, /\.board-grid-case strong, \.board-grid-case small \{[^}]*text-overflow: ellipsis/u);
 
 // 6. Wide screens: one content width for the top bar and the page; summaries have no caret-like chevron bar.

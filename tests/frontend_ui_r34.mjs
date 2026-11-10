@@ -133,7 +133,8 @@ const grab = (name) => { const match = section.match(new RegExp(`(?:const ${name
 // ---- #15: visible times in the viewer's clock; UTC only in Technical details. ----
 {
   const dateLabel = app.slice(app.indexOf('function dateLabel(value) {'), app.indexOf('function utcLabel(value) {'));
-  assert.equal(/timeZone|UTC/u.test(dateLabel), false, 'dateLabel is local');
+  assert.equal(/timeZone:|UTC/u.test(dateLabel), false, 'dateLabel is local');
+  assert.ok(dateLabel.includes("timeZoneName: 'short'"), 'local time names its zone (external review 2026-11-10: list vs UTC board)');
   assert.ok(app.includes('<ValidFor expiresAt={invoiceReview.expires_at} testId="invoice-valid-for" />'), 'draft context: "valid for m:ss"');
   assert.equal(app.includes('valid until {dateLabel('), false, 'no visible "valid until" UTC time');
   assert.ok(app.includes('· valid until {utcLabel(aup.expires_at)}</p>}'), 'UTC kept in Technical details');

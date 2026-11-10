@@ -82,28 +82,29 @@
 .board-grid-case { display: flex; flex-direction: column; min-width: 0; line-height: 1.3; }
 .board-grid-case strong, .board-grid-case small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .board-grid-case small { font-size: 14px; color: var(--pg-color-muted); }
-/* (2026-11-10) A short "Collect evidence" slot keeps a readable labelled bar at week scale instead of an empty sliver. */
-.board-canvas .b-sch-event-wrap.payguard-board-plan, .board-canvas .b-sch-event-wrap.payguard-board-plan .b-sch-event,
-.board-canvas .payguard-board-plan, .board-canvas .b-sch-event-wrap:has(.payguard-board-plan) { min-width: 216px; }
-.board-canvas .b-sch-event-wrap.payguard-board-plan .ev-label { color: inherit; }
+/* (external review 2026-11-10 #3) The plan bar is drawn at its real length (a minimum width made a one-day slot look like it
+   ran past the due line). Lane 2 holds only the plan, so a label longer than its bar runs on to the right of it. */
+.board-timeline:not(.board-timeline-phone) .board-canvas .b-sch-event-wrap:has(.payguard-board-plan), .board-timeline:not(.board-timeline-phone) .board-canvas .b-sch-event-wrap.payguard-board-plan,
+.board-timeline:not(.board-timeline-phone) .board-canvas .payguard-board-plan, .board-timeline:not(.board-timeline-phone) .board-canvas .payguard-board-plan .b-sch-event-content { overflow: visible; }
+.board-timeline:not(.board-timeline-phone) .board-canvas .payguard-board-plan .ev-label { overflow: visible; text-overflow: clip; flex: 0 0 auto; min-width: max-content; color: var(--pg-color-accent-strong, #3730a3); }
+.board-canvas .ev-label-milestone { display: none; }
 /* (2026-11-10) Phone timeline: a masked Sandbox code may wrap after a hyphen instead of ending in "…". */
 .board-timeline-phone .b-grid-sub-grid-locked .b-grid-cell { white-space: normal; overflow-wrap: break-word; line-height: 1.3; }
 
 /* (2026-11-10 redesign) Compact cards with a fixed shape, so a card is the same height in every state (no plan, plan
    scheduled, no due date) and a row of cards never looks uneven:
-   line 1 code, line 2 source chip + status, then due, evidence and amount (one line each) and a two-line plan area.
-   The reason is the same text as the timeline's Case column, so on the card it is kept for screen readers only. */
+   line 1 code, line 2 source chip + status, then reason, due, evidence and amount (short labels, full text in the title)
+   and the plan area. Cards in the strip stretch to the tallest, so a row of cards stays even. */
 .board-row { display: flex; flex-direction: column; padding: 10px 12px; }
 .board-row-head { font-size: 15px; justify-content: flex-start; gap: 2px 8px; }
 .board-row-head > strong { flex: 1 0 100%; white-space: nowrap; }
 .board-row-source { margin-inline: 0; font-size: 14px; padding: 0 6px; font-weight: 600; white-space: nowrap; }
-.board-row-status { flex: 1 1 0; min-width: 0; min-height: 24px; line-height: 24px; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.board-row-status { flex: 1 1 0; min-width: 0; min-height: 24px; line-height: 20px; padding-top: 2px; font-size: 14px; white-space: normal; }
 .board-list .board-row dl { margin-top: 4px; grid-template-columns: minmax(0, 1fr); gap: 1px; align-items: start; }
-.board-list .board-row dl > div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px; line-height: 1.4; }
+.board-list .board-row dl > div { white-space: normal; overflow-wrap: break-word; font-size: 14px; line-height: 1.4; }
 .board-list .board-row dt, .board-list .board-row dd { display: inline; font-size: 14px; }
 .board-list .board-row dt::after { content: ": "; }
-.board-list .board-row dl > div:nth-child(1) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-.board-list .board-row dl > div:nth-child(5) { white-space: normal; height: 58px; }
+.board-list .board-row dl > div:nth-child(5) { white-space: normal; min-height: 40px; height: auto; }
 .board-list .board-row dl > div:nth-child(5) dt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 .board-list .board-row .board-plan-reset { padding: 0 10px; font-size: 14px; margin-top: 2px; }
 @media (min-width: 641px) { .board-list .board-row .board-plan-reset { min-height: 30px; } }
@@ -127,10 +128,12 @@
 @media (max-width: 640px) { .board-list > .board-row { flex-basis: 86%; } }
 .board-plan-help { margin-bottom: 4px; max-width: none; }
 /* The plan line keeps one height in every state: the message is one line (full text in its title). */
-.board-plan-message { flex: 1 1 0; flex-basis: 100%; min-width: 0; min-height: 21px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.board-plan-message { flex: 1 1 0; flex-basis: 100%; min-width: 0; min-height: 21px; white-space: normal; }
 .board-plan-bar .board-plan-reset { flex: 0 0 auto; white-space: nowrap; }
 .board-plan-ics-note { flex: 0 1 340px; text-align: right; }
-@media (max-width: 900px) { .board-plan-message { white-space: normal; min-height: 42px; } }
+@media (max-width: 900px) { .board-plan-message { white-space: normal; min-height: 21px; } }
+/* (external review 2026-11-10 #10) No message, no empty band between the chips and the plan buttons. */
+.board-plan-message:empty { min-height: 0; flex-basis: 0; }
 /* 14px everywhere in the board, the bar labels included; amber bars get a darker label (AA contrast). */
 .board-canvas .b-sch-event .b-sch-event-content, .board-canvas .b-sch-event .b-sch-event-text, .board-canvas .b-sch-event .ev-label { font-size: 14px; letter-spacing: 0; }
 .board-canvas .b-color-amber .ev-label, .board-canvas .b-color-orange .ev-label, .board-canvas .b-color-amber .b-sch-event-content, .board-canvas .b-color-orange .b-sch-event-content { color: #5f3a00; }
@@ -138,3 +141,11 @@
 .board-timeline:not(.board-timeline-phone) .board-canvas .b-grid-body-container { overscroll-behavior-y: auto; }
 /* Phones: the drag and keyboard help is for a pointer and a keyboard; it stays for screen readers only. */
 @media (max-width: 640px) { .board-plan-help { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); margin: 0; } }
+/* (external review 2026-11-10 #9) A grid cell never wraps (125.50 USD stayed on two lines at 110px). */
+.board-timeline:not(.board-timeline-phone) .board-canvas .b-grid-sub-grid-locked .b-grid-cell { white-space: nowrap; }
+/* (external review 2026-11-10, phone) The plan area grows with its content (no fixed height), so Schedule a slot is never cut. */
+@media (max-width: 640px) { .board-list .board-row .board-plan-reset { margin-top: 4px; } }
+/* (external review 2026-11-10 #1) Tablet: the board fits its box (Case and Due only), so the time axis is in view without
+   scrolling the whole board sideways. */
+@media (min-width: 641px) and (max-width: 1100px) { .board-canvas { min-width: 0; } }
+.board-canvas .ev-label-window { display: none; }
