@@ -17,13 +17,13 @@ The file set is the public candidate: every path in `public_export_manifest.json
 | Claim | Value | Command or rule |
 |---|---|---|
 | Tracked files | 459 | 457 manifest paths + `public_export_manifest.json` + `public_export_manifest.sha256` |
-| Python source lines | 23,089 | all `*.py` outside `tests/` (backend, src, tools, integrations) |
-| Python test lines | 19,347 | all `tests/**/*.py` |
+| Python source lines | 23,096 | all `*.py` outside `tests/` (backend, src, tools, integrations) |
+| Python test lines | 19,360 | all `tests/**/*.py` |
 | Front-end lines | 15,733 | `frontend/src/**/*.{jsx,js,css}`, 90 files; see below |
 | JSX files / pages | 24 / 5 | `frontend/**/*.jsx`; `frontend/*.html` (index, dashboard, evidence, proof, scenarios; `public/offline.html` is the service-worker fallback, not a page) |
 | API routes | 40 (37 in the OpenAPI description) | see "Route count" |
 | Node test files / lines | 58 / 7,983 | `tests/frontend_*.mjs` (the two other `.mjs` files are a token-writer and a recorder, not tests) |
-| Python tests | 1,169 (9 carry a skip marker at load time; how many are skipped when run depends on the environment: 2 in the run recorded in `TEST_RUN_20261109_SKIPPED.md`) | `unittest` discovery over `tests/`, loaded and counted, not run |
+| Python tests | 1,170 (9 carry a skip marker at load time; how many are skipped when run depends on the environment: 2 in the run recorded in `TEST_RUN_20261109_SKIPPED.md`) | `unittest` discovery over `tests/`, loaded and counted, not run |
 | Red-team requests | 1,727 | run-time only, see below |
 | Words in documents | 92,488 (page says about 92,488; the script allows 1% either way) | see below |
 | Evidence files | 44 | files directly in `docs/evidence/` (36 `.md`, 6 `.json`, 1 `.csv`, 1 `.png`) |
@@ -36,9 +36,9 @@ The file set is the public candidate: every path in `public_export_manifest.json
 
 ### Python tests
 
-`unittest.defaultTestLoader.discover("tests")` yields 1,169 test cases with no import failure. Nothing is executed. Skips are counted from `@unittest.skip*` markers visible at load time (9). A skip raised by `self.skipTest()` inside a test body would only appear when the test runs; the full run (`./tools/run.sh test`, final lines `Ran N tests` and `OK (skipped=N)`) is the authority for the skip count; the last recorded full run (2026-11-09, Run 1 in `docs/evidence/TEST_RUN_20261109_SKIPPED.md`, on the working copy) printed `Ran 1170 tests` and `OK (skipped=2)`; the last run on the public build (fifth run in `docs/evidence/TEST_RUN_20261108.md`, also 2026-11-09) printed `Ran 1104 tests` and `OK (skipped=9)`. Earlier documents quoting 1005, 1039, 1048 and 1055 are older counts from earlier states of the tree.
+`unittest.defaultTestLoader.discover("tests")` yields 1,170 test cases with no import failure. Nothing is executed. Skips are counted from `@unittest.skip*` markers visible at load time (9). A skip raised by `self.skipTest()` inside a test body would only appear when the test runs; the full run (`./tools/run.sh test`, final lines `Ran N tests` and `OK (skipped=N)`) is the authority for the skip count; the last recorded full run (2026-11-09, Run 1 in `docs/evidence/TEST_RUN_20261109_SKIPPED.md`, on the working copy) printed `Ran 1170 tests` and `OK (skipped=2)`; the last run on the public build (fifth run in `docs/evidence/TEST_RUN_20261108.md`, also 2026-11-09) printed `Ran 1104 tests` and `OK (skipped=9)`. Earlier documents quoting 1005, 1039, 1048 and 1055 are older counts from earlier states of the tree.
 
-1,170 run vs 1,169 loaded: the README's 1,170 is what Run 1 executed on the working copy on 2026-11-09; 1,169 is what the loader counts in the published file set (the figure `tools/verify_public_numbers.py` checks), so the two come from different trees and differ by one test.
+1,170 run and 1,170 loaded: the README's 1,170 is what Run 1 executed on the working copy on 2026-11-09; 1,170 is also what the loader counts in the published file set (the figure `tools/verify_public_numbers.py` checks) since one test was added on 2026-11-11 (cannabis and CBD keywords). The two figures come from different trees and match by coincidence.
 
 ### Red-team request matrix (1,727)
 

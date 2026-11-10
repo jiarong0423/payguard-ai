@@ -60,9 +60,13 @@ _AUP_CATEGORIES = (
     # (attack r23) Street and prescription names (MDMA, ecstasy pills, LSD, ketamine, oxycodone, Xanax, molly capsules,
     # "coke ... white powder") and common non-English spellings of cocaine (kokain, cocaína -> cocaina, kokaiini).
     # "Heroína" is left out: in Spanish it also means a heroine.
+# (2026-11-11) Cannabis, marijuana, hashish and THC: banned imports in Japan (Customs Act 69-11), China and Singapore in
+# the country rule set. "Hemp" is left out (hemp rope, hemp seed oil and hemp fabric are ordinary goods); CBD is a
+# regulated-activity signal below, not a controlled substance.
     ("controlled_substances", r"\b(?:cocaine|heroin|methamphetamines?|meth|crystal\s+meth|fentanyl|narcotics?|illegal\s+drugs?|"
                               r"drug\s+paraphernalia|mdma|lsd|ketamine|oxycodone|oxycontin|hydrocodone|percocet|xanax|alprazolam|"
                               r"psilocybin|cocaina|kokain[ae]?|kokaiini|metanfetamina|fentanilo|"
+                              r"cannabis|marijuana|marihuana|hashish|thc|tetrahydrocannabinol|"
                               r"ecstasy\s+(?:pills?|tabs?|tablets?|rolls?|caps?|capsules?|powder|crystals?)|"
                               r"molly\s+(?:pills?|caps?|capsules?|crystals?|powder|rocks?)|blotter\s+(?:tabs?|acid|paper))\b"
                               r"|\bcoke\b.{0,40}\b(?:powder|[0-9]+\s*(?:g|grams?)|eight[- ]?ball|8[- ]?ball)\b"
@@ -78,10 +82,11 @@ _AUP_CATEGORIES = (
                           r"prop\s+(?:money|cash|bills|banknotes?|currency)|"
                           r"stolen\s+(?:goods|items|merchandise|property|products?))\b|(?<![0-9:])1\s*:\s*1\s+(?:copy|copies|replicas?|clones?)\b"),
     # (attack r23) Lottery tickets, Juul pods, snus, shisha and chewing tobacco need PayPal pre-approval.
+# (2026-11-11) CBD / cannabidiol products are restricted and need review.
     ("regulated_activity", r"\b(?:gambl(?:e|es|ed|er|ers|ing)|casinos?|betting|wagers?|sportsbooks?|e-?liquids?|vap(?:e|es|ed|er|ers|ing)|"
                            r"vapou?ri[sz]ers?|e-?cigarettes?|cigarettes?(?![ -]lighters?)|tobacco|nicotine|"
                            r"lottery\s+(?:tickets?|entries|entry|syndicates?)|online\s+lotter(?:y|ies)|juul|snus|shisha|"
-                           r"(?:vape|nic|nicotine)\s+pods?)\b"),
+                           r"(?:vape|nic|nicotine)\s+pods?|cbd|cannabidiol)\b"),
 )
 
 # (attack r23) Ordinary retail wording that contains a keyword: compound nouns ("glue gun", "pistol grip shower head",
@@ -116,6 +121,8 @@ _AUP_BENIGN = re.compile(
     r"|\b(?:skull|fossil|skeleton|dinosaur|museum|tooth|teeth|claw|meteorite)\s+replicas?\b"
     r"|\breplicas?\s+(?:of\s+(?:a|an|the)\s+)?(?:fossils?|skulls?|skeletons?|dinosaurs?|teeth|tooth|claws?)\b"
     r"|\bwager[ -]?free\b"
+    # (2026-11-11) INCI name of hemp seed oil in cosmetics ingredient lists.
+    r"|\bcannabis\s+sativa\s+seed\s+oil\b"
 )
 _AUP_PATTERNS = tuple((category, re.compile(pattern)) for category, pattern in _AUP_CATEGORIES)
 

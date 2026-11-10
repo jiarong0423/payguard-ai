@@ -157,6 +157,19 @@ class R23AupBalanceTests(unittest.TestCase):
             best = min(self._seconds(text) for _ in range(3))
             self.assertLess(best, 0.05, text[:12])
 
+    def test_cannabis_and_cbd_raise_a_review_signal_but_hemp_goods_do_not(self):
+        # 2026-11-11: cannabis is a banned import in Japan, China and Singapore in the country rule set.
+        flagged = {"CBD cannabis gummies, 30 count": "controlled_substances", "Marijuana pre-rolls": "controlled_substances",
+                   "THC vape cartridge": "controlled_substances", "hashish": "controlled_substances",
+                   "c a n n a b i s brownies": "controlled_substances", "Cannabidiol oil 1000mg": "regulated_activity"}
+        for text, category in flagged.items():
+            result = check_aup(text)
+            self.assertEqual(result["match_status"], "REVIEW_SIGNAL", text)
+            self.assertIn(category, [item["category"] for item in result["findings"]], text)
+        for text in ("Hemp rope 10 m", "Hemp seed oil for cooking", "Organic hemp t-shirt",
+                     "Face cream with cannabis sativa seed oil"):
+            self.assertEqual(check_aup(text)["match_status"], "NO_MATCH", text)
+
     @staticmethod
     def _seconds(text):
         start = time.perf_counter()
