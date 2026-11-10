@@ -1,4 +1,4 @@
-"""Render Workflows entry point for the TradeGlot evidence-integrity run (started by hand; no schedule, see docs/evidence/RENDER_WORKFLOW_RUN_20261109.md).
+"""Render Workflows entry point for the TradeGlot evidence-integrity run (started on demand from the Render dashboard; no schedule, see docs/evidence/RENDER_WORKFLOW_RUN_20261109.md).
 
 Pattern taken from the Render SDK (github.com/render-oss/sdk, python/example/task/main.py and
 python/render/workflows/app.py; see docs/RENDER_WORKFLOWS_NOTES.md): one ``Workflows`` app, one

@@ -107,6 +107,7 @@ EXACT_FILES = (
     "workflows/evidence_integrity/tasks.py",
     "docs/RENDER_WORKFLOWS_NOTES.md",
     "docs/evidence/RENDER_WORKFLOW_RUN_20261109.md",
+    "docs/evidence/render_workflow_runs_20261111.png",
     "docs/evidence/HOSTED_READONLY_LIVE_20261109.md",
     "docs/evidence/RECEIPT_20261110_hosted_live.md",
     "docs/evidence/OFFICIAL_PAYPAL_MCP_RUN_20261109.md",

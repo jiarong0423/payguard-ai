@@ -317,12 +317,12 @@
     {
       "id": "cross-render-workflow-run",
       "scenario": "cross",
-      "proven": "The TradeGlot evidence_integrity task on a Render Workflow was started by hand three times on 2026-11-09 and succeeded each time (about 4 s); the first run returned a receipt with ok true.",
-      "how": "Created from the public repository (commit e0da94b), started by hand. Receipt body of the first run: ok true, drift false, secrets_used false, network_used false. Two more manual runs followed on the same version and the dashboard lists all three as Succeeded. There is no schedule, so no nightly claim is made. The receipt digest is not a signature.",
+      "proven": "The TradeGlot evidence_integrity task on a Render Workflow was started three times on 2026-11-09 (on demand from the Render dashboard) and succeeded each time (about 4 s); the first run returned a receipt with ok true.",
+      "how": "Created from the public repository (commit e0da94b), started on demand from the dashboard. Receipt body of the first run: ok true, drift false, secrets_used false, network_used false. Two more on-demand runs followed on the same version and the dashboard lists all three as Succeeded. There is no schedule, so no nightly claim is made. The receipt digest is not a signature.",
       "method": "RECORDED",
       "date": "2026-11-09",
       "source": "docs/evidence/RENDER_WORKFLOW_RUN_20261109.md",
-      "quotes": ["Succeeded, 4.2 s (queued 0.5 s, ran 3.7 s)", "`ok: true`, `drift: false`, `secrets_used: false`, `network_used: false`", "No schedule exists, so nothing here supports a \"nightly\" claim.", "The same task was started by hand two more times from the dashboard on the same deployed version (`e0da94b`)"],
+      "quotes": ["Succeeded, 4.2 s (queued 0.5 s, ran 3.7 s)", "`ok: true`, `drift: false`, `secrets_used: false`, `network_used: false`", "No schedule exists, so nothing here supports a \"nightly\" claim.", "The same task was started on demand two more times from the dashboard on the same deployed version (`e0da94b`)"],
       "sponsors": ["Render"]
     },
     {

@@ -73,7 +73,7 @@ A send passes nine checks, from "off by default" to an allow-listed call that ke
 - **PayPal Sandbox API:** OAuth, invoice drafts, dispute list and detail, `provide-evidence`. PayPal's official MCP server ran once, read-only (`disputes.list`, `disputes.get`).
 - **Bryntum Scheduler (Community):** evidence deadline board with a draggable "Collect evidence" bar.
 - **AG Grid, AG Charts, AG Studio:** order grid, hourly chart, evidence dashboard. AG Studio's built-in agents ran live on the local console on 2026-11-04 (several runs, none saved), on 2026-11-08 (one run, recorded) and on 2026-11-09 (three runs, 11 tool calls, recorded); the hosted dashboard replays the recording dated 2026-11-09, with its four questions, and calls no model.
-- **Render:** hosts the demo; a Workflow service ran three times by hand, 4 to 4.2 s each.
+- **Render:** hosts the demo; a Workflow service deployed from this GitHub repository ran three times (started on demand from the Render dashboard, no schedule), 4 to 4.2 s each.
 - **Gemini:** closed-option guide, evidence brief, Studio agent turns. The brief and the Studio agents run on the local console only; the hosted dashboard replays the recording dated 2026-11-09, with its four questions, and calls no model.
 - **Postman:** 25-request run covering 21 of 37 operations, 82 assertions, 0 failed; the routes that reach PayPal or a model were not run. **APIMatic:** OpenAPI 3.1, 0 errors after fixes (first run 345).
 - **Channel3:** product search for a reference card; 5 searches replayed, 5 more with receipts.

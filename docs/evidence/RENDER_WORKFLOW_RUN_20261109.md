@@ -21,9 +21,15 @@ The receipt digest covers the receipt content; it is not a signature, because th
 
 ## What this does and does not show
 - It shows the workflow code in this repository starts on Render, runs its checks, and returns a receipt whose commit matches the deployed commit.
-- It does not show a recurring job: the run was started by hand once. Starting it nightly would need a separate caller (a cron job with an API key), which was not built.
+- It does not show a recurring job: the run was started on demand once. Starting it nightly would need a separate caller (a cron job with an API key), which was not built.
 - Compute is billed per second on the flex plan (Render's workflow pricing page); this run used a few seconds and was covered by the workspace's hackathon credit.
 
 ## Update, later on 2026-11-09: two more manual runs
-The same task was started by hand two more times from the dashboard on the same deployed version (`e0da94b`): run `trn-0b94gdbokgp1avh9s738mmuq0` (succeeded, 4.2 s) and run `trn-0b94gdbokh7jat3og00ck053g` (succeeded, 4 s). The dashboard lists the three runs as Succeeded. The receipt body is recorded above for the first run only. There is still no schedule, so nothing here supports a nightly claim; the three runs show the task starts and finishes repeatably, not that it runs on its own.
+The same task was started on demand two more times from the dashboard on the same deployed version (`e0da94b`): run `trn-0b94gdbokgp1avh9s738mmuq0` (succeeded, 4.2 s) and run `trn-0b94gdbokh7jat3og00ck053g` (succeeded, 4 s). The dashboard lists the three runs as Succeeded. The receipt body is recorded above for the first run only. There is still no schedule, so nothing here supports a nightly claim; the three runs show the task starts and finishes repeatably, not that it runs on its own.
+
+## How the runs were started (checked 2026-11-11)
+- All three runs were started on demand with the dashboard's **Run Task** button on the owner's signed-in dashboard; at least two were pressed through a browser tool the owner ran. Nothing calls the workflow on a schedule.
+- GitHub supplies the code, not the runs: the Workflow service is connected to `jiarong0423/payguard-ai` (branch `main`), and its Events page shows the first deploy of `e0da94b` started 2026-11-09 09:27 and ready at 09:28 (UTC+8).
+- The dashboard on 2026-11-11 lists 3 total runs, Succeeded (3), Failed (0), Canceled (0), all on version `e0da94b`: [render_workflow_runs_20261111.png](render_workflow_runs_20261111.png) (the account e-mail line is cropped out).
+- Separate from the workflow: a keep-awake job on the owner's computer requests the hosted `start.html` every 10 minutes so judges do not wait for a cold start. It does not start the workflow.
 

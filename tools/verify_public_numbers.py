@@ -31,8 +31,8 @@ MANIFEST_SHA = "public_export_manifest.sha256"
 
 # Values claimed on the public pages (README.md, docs/submission/devpost_story.md).
 CLAIMS = {
-    "tracked_files": 458,
-    "python_source_lines": 23088,
+    "tracked_files": 459,
+    "python_source_lines": 23089,
     "python_test_lines": 19347,
     "frontend_lines": 15733,
     "jsx_files": 24,
@@ -43,9 +43,9 @@ CLAIMS = {
     "python_tests": 1169,
     "python_tests_skipped": 9,
     "redteam_requests": 1727,
-    "doc_words": 91570,
-    "evidence_files": 43,
-    "images": 38,
+    "doc_words": 92488,
+    "evidence_files": 44,
+    "images": 39,
     "paypal_clauses": 140,
     "rules_total": 681,
     "rules_export": 313,
