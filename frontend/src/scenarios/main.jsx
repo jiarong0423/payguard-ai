@@ -85,11 +85,11 @@ function ownerLocalText(step) {
 
 function modeText(mode) {
   if (!mode) return { label: 'Reading server mode', tone: STATUS.RUNNING };
-  if (mode.error) return { label: 'Server mode unknown · guide turns need the owner', tone: STATUS.NEEDS_OWNER };
+  if (mode.error) return { label: 'Server mode unknown · guide turns are not run here', tone: STATUS.NEEDS_OWNER };
   if (mode.hosted) return { label: 'Hosted demo · the console makes Sandbox reads and one capped send; invoice drafts and Gemini steps are local only', tone: STATUS.LOCAL_ONLY };
   if (mode.rulesOnly) return { label: 'Local console · guide answers from rules only', tone: STATUS.PASSED };
-  if (mode.rulesOnly === false) return { label: 'Local console · model mode on, guide turns need the owner', tone: STATUS.NEEDS_OWNER };
-  return { label: 'Local console · guide mode unknown, guide turns need the owner', tone: STATUS.NEEDS_OWNER };
+  if (mode.rulesOnly === false) return { label: 'Local console · model mode on, guide turns are left to you', tone: STATUS.NEEDS_OWNER };
+  return { label: 'Local console · guide mode unknown, guide turns are left to you', tone: STATUS.NEEDS_OWNER };
 }
 
 function ScenariosPage() {

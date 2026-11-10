@@ -38,7 +38,7 @@ function MethodChip({ method }) {
 function RecordedSend() {
   const send = facts.recorded_send;
   if (!send) return null;
-  return <details className="proof-history" data-testid="recorded-send-fold"><summary>The 2026-11-05 recorded send, step by step (history)</summary><section className="proof-recorded" aria-labelledby="proof-recorded-title" data-testid="recorded-send">
+  return <details className="proof-history" data-testid="recorded-send-fold"><summary>The recorded send of 2026-11-04 17:16 UTC (2026-11-05 in UTC+8), step by step (history)</summary><section className="proof-recorded" aria-labelledby="proof-recorded-title" data-testid="recorded-send">
     <h2 id="proof-recorded-title">{send.title}</h2>
     <p className="proof-recorded-intro">{send.intro} <span className="proof-chip proof-chip-info" data-testid="recorded-send-label"><Icon name="recorded" size={14} />Recorded, not live</span></p>
     <ol className="proof-recorded-steps">{send.steps.map((step) => <li key={step.at} data-testid="recorded-send-step">

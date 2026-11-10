@@ -9,7 +9,7 @@ Tagline: A small seller's records become reviewed dispute evidence, sent to PayP
 
 **Verified, with files you can open**
 - **Real sends:** six `provide-evidence` sends to author-created Sandbox test disputes (five local, one from the hosted demo); for two of them the file PayPal serves back has the same SHA-256 as the file recorded at send time.
-- **Sourced rules:** 681 official export and import rules across ten countries and 140 PayPal clauses, each row linked to its source; 112 of the rules were sampled and checked by an AI reader.
+- **Sourced rules:** 681 official export and import rules across ten countries and 140 PayPal clauses, each row linked to its source; 112 of the rules were sampled and 92 compared with their pages by an AI reader.
 - **Tests and attacks:** the last recorded full run (2026-11-09, Run 1 in TEST_RUN_20261109_SKIPPED.md) passed 1,170 tests; the attack request matrix in the suite sends 1,727 hostile requests, with 0 broken in every run recorded in TEST_RUN_20261108.md.
 
 **The PayPal main line**
@@ -81,12 +81,12 @@ A send passes nine checks, from "off by default" to an allow-listed call that ke
 
 Full table: [SPONSOR_TECH_MAP.md](https://github.com/jiarong0423/payguard-ai/blob/main/docs/SPONSOR_TECH_MAP.md).
 
-## Honest scope
+## Scope
 
 - **Sandbox only.** All PayPal calls are Sandbox. All disputes are author-created test cases between Sandbox test accounts. Orders, cases and evidence files are synthetic.
 - **Acceptance is not a verdict.** "Accepted" means PayPal Sandbox recorded the request and the dispute left waiting for the seller: waiting for the buyer after the local sends, under review after the hosted send. It is not PayPal accepting the evidence or deciding the case.
 - **Byte match covers two of six sends.** The first 2026-11-09 send was made before fingerprints were recorded. The 2026-11-04 send carried a 43-byte placeholder PDF.
-- **The send shown in the video** is the hosted send of 2026-11-10, the sixth of the six, with its read-back and masked receipt (docs/evidence/RECEIPT_20261110_hosted_live.md).
+- **The video's send.** The 2:41 video shows the hosted send of 2026-11-10, the sixth of the six, with its read-back and masked receipt (docs/evidence/RECEIPT_20261110_hosted_live.md); an earlier cut, since removed, showed a separate local send that has no receipt and is not counted.
 - **Account match is declared.** The seller id is set by the operator and compared with the dispute's seller. It is not verified with PayPal.
 - **Country rules are sampled.** 112 of 681 rules were sampled and 92 compared with their pages: 62 consistent, 30 worded differently, 0 contradicted, 20 could not be opened. An AI reader judged them, with no human re-read. The rest are unchecked. Advisory, not legal advice.
 - **Pinned PayPal references are older** than PayPal's current pages (pinned 2022-10-29 and 2026-09-14).

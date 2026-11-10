@@ -147,10 +147,10 @@ async function runLifecycle(worker, type) {
   assert.equal(await (await offline).text(), 'cached /offline.html');
 }
 
-// 5. Offline page says the console needs the local API and loads nothing from elsewhere.
+// 5. Offline page says the console cannot reach its API, explains the hosted wake-up and the local start, and loads nothing from elsewhere.
 {
   const offlineHtml = readFileSync(resolve(publicDir, 'offline.html'), 'utf8');
-  assert.match(offlineHtml, /needs the local API/);
+  assert.match(offlineHtml, /cannot reach its API/);
   assert.match(offlineHtml, /tools\/run\.sh console/);
   assert.doesNotMatch(offlineHtml, /<script|src="https?:|href="https?:/i);
 }

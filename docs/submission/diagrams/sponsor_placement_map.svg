@@ -206,9 +206,10 @@
 <text x="30" y="4652" font-size="26" fill="#8a877f" font-weight="700" letter-spacing="1.5">HOSTING AND DEVELOPER SIDE</text>
 <rect x="30" y="4670" width="360" height="504" rx="16" fill="#ffffff" stroke="#3b3a36" stroke-width="3"/>
 <text x="50" y="4716" font-size="32" fill="#1f1e1b" font-weight="700">Hosted gateway</text>
-<text x="50" y="4760" font-size="26" fill="#5b5953">Public read-only demo:</text>
-<text x="50" y="4792" font-size="26" fill="#5b5953">synthetic data, every</text>
-<text x="50" y="4824" font-size="26" fill="#5b5953">write route answers 503.</text>
+<text x="50" y="4760" font-size="26" fill="#5b5953">Public demo: synthetic</text>
+<text x="50" y="4792" font-size="26" fill="#5b5953">data, Sandbox reads and</text>
+<text x="50" y="4824" font-size="26" fill="#5b5953">one capped send; other</text>
+<text x="50" y="4856" font-size="26" fill="#5b5953">write routes answer 503.</text>
 <line x1="390" y1="4808.0" x2="440" y2="4808.0" stroke="#c2410c" stroke-width="3"/>
 <rect x="440" y="4670" width="530" height="276" rx="16" fill="#ffffff" stroke="#c2410c" stroke-width="3"/>
 <text x="458" y="4718" font-size="32" fill="#1f1e1b" font-weight="700">Render web service</text>

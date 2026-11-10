@@ -9,7 +9,7 @@ export const SPONSOR_MAP = Object.freeze([
   { name: 'AG Studio', what: 'Evidence dashboard with a custom theme', href: '/dashboard.html' },
   { name: 'Bryntum', what: 'Evidence deadline board, one row per case', href: '/#evidence-board' },
   { name: 'Channel3', what: 'Product search for the seller-confirmed product reference card (goes into the review ZIP)', proof: 'Channel3' },
-  { name: 'PayPal', what: 'OAuth, unsent invoice draft, dispute list and detail', proof: 'PayPal' },
+  { name: 'PayPal', what: 'OAuth, unsent invoice draft, dispute list and detail, and a gated provide-evidence send (six Sandbox sends, one hosted)', proof: 'PayPal' },
   { name: 'Render', what: 'One free Docker web service from a Blueprint', proof: 'Render' },
   { name: 'Gemini', what: 'Closed-option guide chooser, evidence brief, Studio agent turn, each behind code validation and per-session caps', proof: 'Gemini' },
   { name: 'APIMatic', what: "The OpenAPI 3.1 description of the local console API (37 operations) passes APIMatic's validator with 0 errors", proof: 'APIMatic' },

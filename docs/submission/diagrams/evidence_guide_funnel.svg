@@ -83,7 +83,7 @@
 <text x="1308" y="750" class="t" font-size="30">Trial run, 2026-11-03 (UTC+8)</text>
 <text x="1308" y="816" class="t" font-size="48" fill="#4f46e5">36</text>
 <text x="1412" y="796" class="s" font-size="19" fill="#1f1e1b">Gemini API calls, 12 per situation:</text>
-<text x="1412" y="820" class="s" font-size="19" fill="#1f1e1b">0 wrong fills, 0 errors (no 30 s cap)</text>
+<text x="1412" y="820" class="s" font-size="19" fill="#1f1e1b">0 wrong fills, 0 errors; 30 s deadline not applied</text>
 <text x="1308" y="882" class="t" font-size="48" fill="#4f46e5">1.00</text>
 <text x="1412" y="862" class="s" font-size="19" fill="#1f1e1b">precision in all three situations;</text>
 <text x="1412" y="886" class="s" font-size="19" fill="#1f1e1b">0 attack sentences changed an item</text>

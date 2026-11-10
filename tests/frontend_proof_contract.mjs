@@ -195,7 +195,7 @@ assert.deepEqual(channel3Summary({}), { count: 0, allOk: false, cards: [], minLa
   assert.deepEqual(splitHistory(undefined), { current: [], history: [] });
   const page = pageMain();
   // The 2026-11-05 recorded send is history: closed by default, and the top of the page is a three-line latest-evidence strip.
-  assert.ok(page.includes('<details className="proof-history" data-testid="recorded-send-fold"><summary>The 2026-11-05 recorded send, step by step (history)</summary>'), 'recorded send sits in a closed history fold');
+  assert.ok(page.includes('<details className="proof-history" data-testid="recorded-send-fold"><summary>The recorded send of 2026-11-04 17:16 UTC (2026-11-05 in UTC+8), step by step (history)</summary>'), 'recorded send sits in a closed history fold');
   assert.ok(page.indexOf('<Latest />') > 0 && page.indexOf('<Latest />') < page.indexOf('<Legend />') && page.indexOf('<Legend />') < page.indexOf('<RecordedSend />'), 'latest strip first, recorded send after the legend');
   for (const id of [...LATEST_ROWS, ...LATEST_ALSO.map(([row]) => row)]) {
     const row = facts.rows.find((item) => item.id === id);

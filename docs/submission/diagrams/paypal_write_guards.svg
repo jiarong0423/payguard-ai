@@ -27,7 +27,7 @@
 <text x="88" y="268" class="s" font-size="24" font-weight="600" fill="#1f1e1b">1 Off by default</text>
 <text x="88" y="300" class="m" font-size="18" fill="#55534e">evidence send has its own switch</text>
 <text x="88" y="326" class="m" font-size="18" fill="#55534e">PAYGUARD_PAYPAL_DISPUTE_SUBMIT;</text>
-<text x="88" y="352" class="m" font-size="18" fill="#55534e">hosted demo refuses all writes</text>
+<text x="88" y="352" class="m" font-size="18" fill="#55534e">hosted: one capped send, others 503</text>
 <rect x="520" y="192" width="424" height="178" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
 <rect x="520" y="192" width="6" height="178" rx="2" fill="#c2410c"/>
 <rect x="544" y="206" width="87" height="28" rx="2" fill="none" stroke="#c2410c" stroke-width="1.4"/>
@@ -90,7 +90,7 @@
 <text x="96" y="638" class="m" font-size="18" font-weight="500" letter-spacing="1" fill="#3f6b47">PAYPAL</text>
 <text x="189" y="640" class="s" font-size="24" font-weight="600" fill="#1f1e1b">9 The call and its receipt</text>
 <text x="88" y="670" class="m" font-size="18" fill="#55534e">allowed paths only · no redirects · 15 s limit · replies capped at 64 KiB · PayPal's reason in plain English</text>
-<text x="88" y="696" class="m" font-size="18" fill="#55534e">PayPal-Debug-Id kept as the receipt · two real Sandbox sends on 2026-11-04 UTC (the second at 17:16 UTC, 11-05 in UTC+8), each to its own test dispute</text>
+<text x="88" y="696" class="m" font-size="18" fill="#55534e">PayPal-Debug-Id kept as the receipt · six real Sandbox sends (5 local, 1 hosted; 2026-11-04 to 2026-11-10), each to its own test dispute</text>
 <rect x="64" y="728" width="1792" height="168" rx="6" fill="#fbf9f5" stroke="#d9d3c7" stroke-width="1.5"/>
 <text x="88" y="766" class="t" font-size="30">The invoice draft has its own chain</text>
 <text x="88" y="800" class="m" font-size="18" fill="#55534e">country rule stops the sale: draft refused · review token used once, 120 s, bound to the latest check</text>

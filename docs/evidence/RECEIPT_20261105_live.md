@@ -21,7 +21,7 @@ Everything below is PayPal Sandbox test data created by the author with Sandbox 
 - PP-R-OJX-... (item not received, TWD 158.00): refused with "The dispute amount in PayPal (158.00 TWD) differs from the selected case's amount (48.00 USD). Select the case it belongs to. Nothing was sent."
 
 ## Invoice draft recorded during the demo video (POST /v2/invoicing/invoices through PayGuard)
-- Recorded during the demo video recording on 2026-11-05 (UTC+8); the frame at about 1:08 to 1:12 of the 2:50 video is the only record kept.
+- Recorded during the demo video recording on 2026-11-05 (UTC+8); the frame at about 1:08 to 1:12 of the 2:50 cut recorded that day (an earlier cut, not the current 2:41 video) is the only record kept.
 - What the frame shows: the PayPal Sandbox draft card marked Connected, "Connection evidence: Live Sandbox response · Verified from the creation response only", draft amount USD 10.00, the reminder that the draft has no shipping country and that the checked route (US to SG) is in the draft's private memo, and the line "Sandbox invoice draft created · INV2-...RG5U · Draft · not sent · Live Sandbox response · Verified from the creation response only · Not submitted".
 - status: DRAFT, not sent to the buyer. The full invoice id and the response body are not kept.
 

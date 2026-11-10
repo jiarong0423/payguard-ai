@@ -16,7 +16,7 @@ This page lists the kinds of attack the project was tested against, how many aut
 | Transport security header | The hosted app sends `Strict-Transport-Security: max-age=31536000`; local mode does not | `tests/test_hsts_header.py` 4 |
 | Malformed input everywhere | One field at a time replaced by hostile values (huge, negative, NaN, control characters, injection strings), plus whole-request attacks, on every JSON route | `tools/redteam_input_matrix.py`: `round R1: 1727 requests; BROKEN 0, GAP 0, GUARDED 1710, OK 17`; also run as `tests/test_redteam_input_matrix.py` (9 checks) |
 
-Earlier review and attack rounds (r13 to r35, 2026-11-03 to 2026-11-04) are listed in [RED_TEAM_ROUNDS_20261104.md](RED_TEAM_ROUNDS_20261104.md), each with what it found and how it was fixed. Two examples from that file: round r21 found that lookalike characters could slip past the policy pre-screen; round r22 found 44 more evasions and the backend count went from 44 to 0 after the fix.
+Earlier review and attack rounds (r13 to r27, 2026-11-03 to 2026-11-04) are listed in [RED_TEAM_ROUNDS_20261104.md](RED_TEAM_ROUNDS_20261104.md), and r30 to r37 and r48 in [RED_TEAM_ROUNDS_ADDENDUM_20261108.md](RED_TEAM_ROUNDS_ADDENDUM_20261108.md), each with what it found and how it was fixed. Two examples from that file: round r21 found that lookalike characters could slip past the policy pre-screen; round r22 found 44 more evasions and the backend count went from 44 to 0 after the fix.
 
 ## How to reproduce
 

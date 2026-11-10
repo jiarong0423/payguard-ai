@@ -5,7 +5,7 @@
 <rect width="1920" height="1080" fill="#f7f3ec"/>
 <text x="64" y="64" class="m" font-size="16" letter-spacing="2" fill="#6b6862">TRADEGLOT · STEP 03 · DOWNLOADED REVIEW PACK</text>
 <text x="64" y="120" class="t" font-size="56">The review pack, opened and verified</text>
-<text x="64" y="160" class="s" font-size="22" fill="#55534e">7 entries (6 files + manifest.json), 14,028 bytes. Each of the 6 files below was hashed again and compared with manifest.json.</text>
+<text x="64" y="160" class="s" font-size="22" fill="#55534e">Seven files (six content files + manifest.json), 14,028 bytes. Each of the 6 files below was hashed again and compared with manifest.json.</text>
 <rect x="64" y="196" width="1120" height="392" rx="6" fill="#ffffff" stroke="#d9d3c7" stroke-width="1.5"/>
 <text x="84" y="230" class="m" font-size="14" letter-spacing="1.5" fill="#6b6862">FILE</text>
 <text x="484" y="230" class="m" font-size="14" letter-spacing="1.5" fill="#6b6862">MANIFEST SHA256</text>

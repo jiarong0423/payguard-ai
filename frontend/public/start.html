@@ -26,7 +26,9 @@
 <p class="small">Times on screen: a time marked UTC is UTC (as on the AG Studio dashboard, the Evidence deadline board, the Time evidence block and Technical details); every other time in the console, including the PayPal Sandbox dispute list, is shown in your own time zone with its name (for example GMT+8).</p>
 
 <h2>What is real, what is recorded</h2>
-<p>The hosted site reads the author&rsquo;s own Sandbox test disputes (ids shown as masked codes) and, with the send switch on, one capped evidence send per visit to the author&rsquo;s own Sandbox test disputes (at most 2 sends per address per day, 3 per 10 minutes and 15 a day for all visitors); invoice drafts, tracking, webhooks, the AI brief and the Studio agents answer 503. The current test disputes are due 11/30; the author plans to open new ones around 11/25 to 11/28. When none is waiting for the seller, the page opens the recorded replay. Six PayPal Sandbox evidence sends are shown as receipts and notes: five made on the author&rsquo;s computer and one made from this hosted site on 2026-11-10. AG Studio&rsquo;s built-in agents ran live on the local console on 2026-11-04 (several runs, none saved), on 2026-11-08 (one run, recorded) and on 2026-11-09 (three runs, 11 tool calls, recorded); the hosted dashboard replays the recording dated 2026-11-09, with its four questions, and calls no model. Ten Channel3 searches were real too (five of them are replayed here). The data is synthetic and PayPal decides every real dispute.</p>
+<p>The hosted site reads the author&rsquo;s own Sandbox test disputes (ids shown as masked codes) and, with the send switch on, one capped evidence send per visit to the author&rsquo;s own Sandbox test disputes (at most 2 sends per address per day, 3 per 10 minutes and 15 a day for all visitors); invoice drafts, tracking, webhooks, the AI brief and the Studio agents answer 503.</p>
+<p>When none is waiting for the seller, the page opens the recorded replay. Six PayPal Sandbox evidence sends are shown as receipts and notes: five made on the author&rsquo;s computer and one made from this hosted site on 2026-11-10.</p>
+<p>AG Studio&rsquo;s built-in agents ran live on the local console on 2026-11-04 (several runs, none saved), on 2026-11-08 (one run, recorded) and on 2026-11-09 (three runs, 11 tool calls, recorded); the hosted dashboard replays the recording dated 2026-11-09, with its four questions, and calls no model. Ten Channel3 searches were real too (five of them are replayed here). The data is synthetic and PayPal decides every real dispute.</p>
 
 <h2>Three claims, in plain text</h2>
 <noscript><p class="small">This page needs no JavaScript. The same facts are here for text-only readers.</p></noscript>
@@ -59,7 +61,6 @@ curl -s -X POST $H/api/v1/paypal/invoices/draft -H "Origin: $H" -H "X-Demo-Sessi
 <a class="btn small" href="https://github.com/jiarong0423/payguard-ai">Source repository</a>
 <a class="btn small" href="https://youtu.be/iVTu_fsgzMs">Demo video</a>
 </div>
-<p class="small">The first request after a quiet period can take up to a minute while the free Render instance wakes.</p>
 </main>
 </body>
 </html>

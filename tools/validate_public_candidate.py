@@ -375,7 +375,7 @@ def validate_release_docs(root: Path, manifest: dict) -> None:
             reject("PUBLISHED_RELEASE_DOC_INVALID")
         if "complete repository run instructions" not in folded:
             reject("PUBLISHED_RELEASE_DOC_INVALID")
-        if "hosted demo" not in folded or "optional" not in folded or "unperformed" not in folded:
+        if "hosted demo" not in folded or "optional" not in folded or "not performed" not in folded:
             reject("PUBLISHED_RELEASE_DOC_INVALID")
         if "the devpost project is submitted" not in folded:
             reject("PUBLISHED_RELEASE_DOC_INVALID")

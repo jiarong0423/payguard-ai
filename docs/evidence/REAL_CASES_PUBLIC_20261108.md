@@ -9,7 +9,7 @@ Fetched: 2026-11-08. Scope: public web pages only; no login; no account touched.
 - Sources that could not be opened: PayPal Community (paypal-community.com), 6 thread URLs and 1 mirror host (ppl.i.lithium.com) failed with connection errors (ECONNREFUSED / ENOTFOUND). These are marked "could not open" and NOT used. Trustpilot was not attempted (no budget spent after the forum host refused connections). So this file contains FOS cases only: it covers (1) of the three requested source types.
 - Excluded on purpose: FOS decisions already used by the project (DRN-3621543, DRN-5706769, DRN-3526295); FOS decisions fetched but where the complainant was a buyer with no seller-side evidence angle (DRN-5262863, DRN-5066876, DRN-6203486, DRN-4558316, DRN-3265188, DRN-5842790, DRN-3505698); decisions fetched only for metadata triage and not used (DRN-5620623, DRN-3795589).
 - Privacy: no personal names, e-mails, account IDs, order numbers, addresses are recorded. Case IDs are the public FOS decision references. Summaries are paraphrased; at most one short quote (under 15 words) per case, attributed to the decision.
-- "Inference" lines are my own reasoning, not statements in the sources.
+- "Inference" lines are the author's own reasoning, not statements in the sources.
 - Selection bias: FOS only sees complaints after the customer is unhappy with PayPal's own outcome. Outcomes here are not representative of PayPal dispute outcomes in general.
 
 ## Cases
@@ -138,7 +138,7 @@ Result key: "Seller" = seller-side party prevailed; "PayPal" = PayPal's handling
 
 ## Statistics (sample of 15 cases; small and not an incidence rate)
 
-Dispute type (my classification of the primary dispute):
+Dispute type (the author's classification of the primary dispute):
 - Item Not Received: 9 (RC-03, 04, 05, 06, 10, 12, 13, 14, 15)
 - Not as Described: 1 (RC-11)
 - Other (holds, limitations, friends-and-family chargebacks): 5 (RC-01, 02, 07, 08, 09)
@@ -193,6 +193,6 @@ Author inference throughout. Each row compares the evidence gap named in the cas
 
 Of the five None cases, RC-08 is a risk-review case, RC-06 and RC-09 are decided before any dispute exists, RC-10 is a claim-rate and limitation case, and RC-15 needs a courier step TradeGlot does not take.
 
-### Honest statement
+### What this mapping is
 
 This mapping is the author's inference. It is not evidence that TradeGlot would have changed the outcome of any case, and no outcome is predicted. "Has a check" means a field or rule exists in the repo, not that it is sufficient for the case. The sample is 15 cases, taken only from FOS decisions, and it leans toward sellers who lost (seller prevailed 2, mixed 2, the other 11 not). The classification was done by one author and has not been reviewed by a third party. This section adds no market-size, dispute-rate or monetary estimate and none should be read into it.

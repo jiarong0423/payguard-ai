@@ -79,7 +79,7 @@ class PublicExportBuilderTests(unittest.TestCase):
         )
         self.assertLess(
             readme.index("docs/submission/payguard_judge_overview.png"),
-            readme.index("Screens from the 2:50 demo"),
+            readme.index("Screens from an earlier cut (2:50)"),
         )
         screens_order = [
             readme.index("docs/submission/screens/refusals_locked.png"),
@@ -87,7 +87,7 @@ class PublicExportBuilderTests(unittest.TestCase):
             readme.index("docs/submission/screens/evidence_pages.png"),
         ]
         self.assertEqual(screens_order, sorted(screens_order))
-        self.assertLess(readme.index("Screens from the 2:50 demo"), screens_order[0])
+        self.assertLess(readme.index("Screens from an earlier cut (2:50)"), screens_order[0])
         for removed in ("payguard_cover.png", "payguard_cover.svg", "payguard_zip_review_slide.png"):
             self.assertFalse((self.base / "docs/submission" / removed).exists(), removed)
         # the 2026-10 status map is retired: README embeds the current architecture overview instead
@@ -209,7 +209,7 @@ class PublicExportBuilderTests(unittest.TestCase):
             self.assertIn("complete repository run instructions", text)
             self.assertIn("hosted demo", text)
             self.assertIn("optional", text)
-            self.assertIn("unperformed", text)
+            self.assertIn("not performed", text)
             self.assertNotIn("publication is not authorized", text)
             self.assertNotIn("publication remains closed", text)
             self.assertNotIn("public release remains closed", text)

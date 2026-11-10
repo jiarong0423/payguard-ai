@@ -10,11 +10,11 @@
 
 | Verdict | Rules |
 |---|---|
-| Consistent (一致) | 34 |
-| Wording differs, meaning consistent (措辭有差但意思一致) | 10 |
-| Could not open / verify (無法開啟) | 4 |
-| Source changed or not found (來源已變更或找不到) | 0 |
-| Not consistent (不一致) | 0 |
+| Consistent | 34 |
+| Wording differs, meaning consistent | 10 |
+| Could not open / verify | 4 |
+| Source changed or not found | 0 |
+| Not consistent | 0 |
 | **Total sampled** | **48** |
 
 Rules actually compared against source text: 44 of 48. Of these, 2 were compared against headings or a table of contents only (SG-IM-CU-01, AU-EX-FD-03), so full-text comparison covers 42.

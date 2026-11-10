@@ -1,4 +1,4 @@
-// Hosted demo only: lets a reviewer click through the real send as it happened on 2026-11-05, without sending anything.
+// Hosted demo only: lets a reviewer click through the real send as it happened at 2026-11-04 17:16 UTC (2026-11-05 in UTC+8), without sending anything.
 // It shows the same two steps the console asks for (tick, Continue, wait three seconds, Send) and then the receipt of
 // the real Sandbox send, text only, from proof_facts_v1.json. It calls nothing: no fetch, no API, no session, and it
 // never reaches the evidence route, which the hosted demo keeps closed.
@@ -31,7 +31,7 @@ export default function RecordedSendReplay() {
 
   return <section className="recorded-replay" data-testid="recorded-replay" aria-labelledby="recorded-replay-title">
     <h4 id="recorded-replay-title">Try the send: a recorded replay <span className="recorded-replay-chip" data-testid="recorded-replay-chip">Recorded, nothing is sent</span></h4>
-    <p className="recorded-replay-note">Nothing on this page sends anything to PayPal. This walks through the same two steps the local console asks for, then shows what the real Sandbox send of 2026-11-05 recorded. Press the buttons: nothing leaves this page.</p>
+    <p className="recorded-replay-note">Nothing on this page sends anything to PayPal. This walks through the same two steps the local console asks for, then shows what the real Sandbox send recorded at 2026-11-04 17:16 UTC (2026-11-05 in UTC+8). Press the buttons: nothing leaves this page.</p>
     {phase === 'idle' && <button type="button" className="recorded-replay-button" data-testid="recorded-replay-start" onClick={() => setPhase('confirm')}>Start the replay</button>}
     {(phase === 'confirm' || phase === 'waiting' || phase === 'ready') && <div className="recorded-replay-dialog" role="group" aria-label="Replay of the two-step send">
       <label className="recorded-replay-tick"><input type="checkbox" data-testid="recorded-replay-tick" checked={ticked} disabled={phase !== 'confirm'} onChange={(event) => setTicked(event.target.checked)} />

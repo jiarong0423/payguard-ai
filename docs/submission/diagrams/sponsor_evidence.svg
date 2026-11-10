@@ -8,9 +8,9 @@
 <rect x="60" y="128" width="580" height="222" rx="16" fill="#ffffff" stroke="#3b6b4a" stroke-width="3"/>
 <rect x="60" y="128" width="580" height="12" rx="6" fill="#3b6b4a"/>
 <text x="84" y="178" font-size="30" fill="#1f1d1a" font-weight="700">PayPal Sandbox</text>
-<text x="84" y="216" font-size="22" fill="#2c2a26">5 evidence sends, one human approval each</text>
+<text x="84" y="216" font-size="22" fill="#2c2a26">6 sends (5 local, 1 hosted), one approval each</text>
 <text x="84" y="245" font-size="22" fill="#2c2a26">2 byte-compared with PayPal's stored file</text>
-<text x="84" y="274" font-size="22" fill="#2c2a26">Hosted demo: read-only, writes refused</text>
+<text x="84" y="274" font-size="22" fill="#2c2a26">Hosted demo: Sandbox reads and one capped send</text>
 <line x1="84" y1="286" x2="616" y2="286" stroke="#d9d2c4"/>
 <text x="84" y="312" font-size="22" fill="#3b6b4a" font-family="Menlo, Courier New, monospace">READBACK_20261109.md</text>
 <rect x="670" y="128" width="580" height="222" rx="16" fill="#ffffff" stroke="#3b6b4a" stroke-width="3"/>
@@ -88,8 +88,8 @@
 <text x="84" y="1008" font-size="22" fill="#4338ca" font-family="Menlo, Courier New, monospace">GEMINI_GUIDE_RUNS_20261103.md</text>
 <text x="84" y="1033" font-size="22" fill="#4338ca" font-family="Menlo, Courier New, monospace">BRIEF_LIVE_RUN_20261109.md</text>
 <rect x="670" y="824" width="1190" height="222" rx="16" fill="#fff3ea" stroke="#b5481f" stroke-width="3" stroke-dasharray="10,8"/>
-<text x="694" y="874" font-size="30" fill="#b5481f" font-weight="700">What this page does not claim</text>
-<text x="694" y="922" font-size="22" fill="#2c2a26">No benchmark and no production use.</text>
+<text x="694" y="874" font-size="30" fill="#b5481f" font-weight="700">Scope</text>
+<text x="694" y="922" font-size="22" fill="#2c2a26">Sandbox and synthetic data only; no production use.</text>
 <text x="694" y="956" font-size="22" fill="#2c2a26">Official MCP: one run. Workflows: manual only.</text>
 <text x="694" y="990" font-size="22" fill="#2c2a26">The API portal is documentation only. PayPal decides every outcome.</text>
 </svg>
