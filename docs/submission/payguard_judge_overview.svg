@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 760" width="1280" height="760" role="img" aria-labelledby="title description" data-embed-width="640" font-family="Inter, Arial, sans-serif">
   <title id="title">TradeGlot: checks first, one human approval, one Sandbox send</title>
-  <desc id="description">Two swim lanes separate the deterministic code boundary from the bounded AI layer across three stages: a policy check and a ten-country rules check before an unsent PayPal Sandbox invoice draft, sales-spike review on an AG Charts chart with an AG Grid orders table, and dispute evidence with guided gap filling and a local review ZIP that is sent to PayPal Sandbox only after one human approval. Rules come first, nothing is sent automatically, and PayPal or the issuer decides. Sandbox proof covers OAuth, unsent invoice drafts, dispute list and detail reads and two evidence sends to author-created test disputes; sales and dispute scenarios use synthetic records. Designed for a 640 px wide thumbnail: the smallest text, 28 units in a 1280-unit viewBox, renders at 14 px.</desc>
+  <desc id="description">Two swim lanes separate the deterministic code boundary from the bounded AI layer across three stages: a policy check and a ten-country rules check before an unsent PayPal Sandbox invoice draft, sales-spike review on an AG Charts chart with an AG Grid orders table, and dispute evidence with guided gap filling and a local review ZIP that is sent to PayPal Sandbox only after one human approval. Rules come first, nothing is sent automatically, and PayPal or the issuer decides. Sandbox proof covers OAuth, unsent invoice drafts, dispute list and detail reads and six evidence sends (five local, one from the hosted site on 2026-11-10) to author-created test disputes; sales and dispute scenarios use synthetic records. Designed for a 640 px wide thumbnail: the smallest text, 28 units in a 1280-unit viewBox, renders at 14 px.</desc>
   <defs>
     <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4f46e5"/></marker>
     <marker id="arr-ai" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#0f766e"/></marker>
@@ -75,5 +75,5 @@
   </g>
   <path d="M624 622 L639 622 L654 622" stroke="#0f766e" stroke-width="2.5" fill="none" marker-end="url(#arr-ai)"/>
 
-  <text x="24" y="732" fill="#475569" font-size="28">Synthetic records · Sandbox: OAuth, unsent drafts, dispute reads, two evidence sends</text>
+  <text x="24" y="732" fill="#475569" font-size="28">Synthetic records · Sandbox: OAuth, unsent drafts, dispute reads, six evidence sends (1 hosted)</text>
 </svg>

@@ -1,5 +1,5 @@
 {
-  "created_at_utc": "2026-11-10T20:01:22Z",
+  "created_at_utc": "2026-11-10T20:14:07Z",
   "dependency_locks": {
     "frontend_npm": "0f98893564efb5556cc0a92710feedcb9da085108f9668fee93f29940b87f09d",
     "gemini_python": "36554331392d6102519a4ead5778704c4ff89e79da6bb9d6648b656f130724bb",
@@ -43,11 +43,11 @@
       "source_sha256": "62559450a061410394f0cac8c43083a999f045200e5ad5c18c9e15096ab128be"
     },
     {
-      "bytes": 108591,
+      "bytes": 108914,
       "path": "README.md",
-      "sha256": "7545339b2b25eaab2fb6179f4cab70e77ca4a08aecc8eeab37e62560bae984b7",
+      "sha256": "51343ee44cf5f607047d776a9a8314910d8dff07482063642d335b80c4edf8dc",
       "source_path": "README.md",
-      "source_sha256": "7545339b2b25eaab2fb6179f4cab70e77ca4a08aecc8eeab37e62560bae984b7"
+      "source_sha256": "51343ee44cf5f607047d776a9a8314910d8dff07482063642d335b80c4edf8dc"
     },
     {
       "bytes": 14840,
@@ -330,11 +330,11 @@
       "source_sha256": "75521834f76a10e9c8bf86714f088ed0558516d4488c5984f4a89d2d12ca8d48"
     },
     {
-      "bytes": 8528,
+      "bytes": 8474,
       "path": "docs/SPONSOR_TECH_MAP.md",
-      "sha256": "9d45a84b5644adb95bed0532d6ae69dd73003a08bb4db80a15a44e457694b1f5",
+      "sha256": "56588dc3e773d974086813bcf108d538cbf8bf789c23fd7dd48756e53941ed4c",
       "source_path": "docs/SPONSOR_TECH_MAP.md",
-      "source_sha256": "9d45a84b5644adb95bed0532d6ae69dd73003a08bb4db80a15a44e457694b1f5"
+      "source_sha256": "56588dc3e773d974086813bcf108d538cbf8bf789c23fd7dd48756e53941ed4c"
     },
     {
       "bytes": 270827,
@@ -722,25 +722,25 @@
       "source_sha256": "4d19ff9c5f50df52d271913722bb6018e97f483f3cec3730f3771fe21bcd0c79"
     },
     {
-      "bytes": 146897,
+      "bytes": 127898,
       "path": "docs/fallback/img/01_how_it_works.jpg",
-      "sha256": "a2d490ab26fa5972999ceb8478207e27425aad8d0a9f872554d07dfc8a397308",
+      "sha256": "67d294513e55e596d97ae59faa5324f6d85d7cbab296cc05f9cae32891637614",
       "source_path": "docs/fallback/img/01_how_it_works.jpg",
-      "source_sha256": "a2d490ab26fa5972999ceb8478207e27425aad8d0a9f872554d07dfc8a397308"
+      "source_sha256": "67d294513e55e596d97ae59faa5324f6d85d7cbab296cc05f9cae32891637614"
     },
     {
-      "bytes": 119540,
+      "bytes": 141044,
       "path": "docs/fallback/img/02_evidence_guide.jpg",
-      "sha256": "72923cee807853890657065a1da52ca2a728f7bf0256c594e2f39d8bcc8f14ef",
+      "sha256": "0c2ed4a33969876585bfe87f4db55a4e26720ca65d23ba51274c199271eaf1c0",
       "source_path": "docs/fallback/img/02_evidence_guide.jpg",
-      "source_sha256": "72923cee807853890657065a1da52ca2a728f7bf0256c594e2f39d8bcc8f14ef"
+      "source_sha256": "0c2ed4a33969876585bfe87f4db55a4e26720ca65d23ba51274c199271eaf1c0"
     },
     {
-      "bytes": 81897,
+      "bytes": 95658,
       "path": "docs/fallback/img/03_review_zip.jpg",
-      "sha256": "48e4b3f750f4e6728ce84959a3344404be9d4f4f31894fef75a5afdf745b0d4e",
+      "sha256": "ced87102d5862a2f405e66f69a7bf5115ad510f0bf62cfbd727512f5cb81f2e8",
       "source_path": "docs/fallback/img/03_review_zip.jpg",
-      "source_sha256": "48e4b3f750f4e6728ce84959a3344404be9d4f4f31894fef75a5afdf745b0d4e"
+      "source_sha256": "ced87102d5862a2f405e66f69a7bf5115ad510f0bf62cfbd727512f5cb81f2e8"
     },
     {
       "bytes": 97496,
@@ -757,18 +757,18 @@
       "source_sha256": "f4afd4419d1dcb7aa68948e3ad4cfa87176df1d28eded2d91b9f084dcfa54c32"
     },
     {
-      "bytes": 383506,
+      "bytes": 389414,
       "path": "docs/fallback/img/main_flow.gif",
-      "sha256": "b9afc9d35315362bc2e52dbc78ca487dfec72a9c6ae0077c01e294c1af676bc1",
+      "sha256": "165823a7f055ac3e159a18b44921b9e4229ed69be59f569d855aa9c75511b4b1",
       "source_path": "docs/fallback/img/main_flow.gif",
-      "source_sha256": "b9afc9d35315362bc2e52dbc78ca487dfec72a9c6ae0077c01e294c1af676bc1"
+      "source_sha256": "165823a7f055ac3e159a18b44921b9e4229ed69be59f569d855aa9c75511b4b1"
     },
     {
-      "bytes": 5437,
+      "bytes": 5530,
       "path": "docs/fallback/index.html",
-      "sha256": "0750cca5c12b56e25043b71bb5e5db5ba4a7142c7ffe443c9977997c749bf541",
+      "sha256": "7e5142fe77c08949890710de55debaf52f90e8494066f9b03303fc786e3526f6",
       "source_path": "docs/fallback/index.html",
-      "source_sha256": "0750cca5c12b56e25043b71bb5e5db5ba4a7142c7ffe443c9977997c749bf541"
+      "source_sha256": "7e5142fe77c08949890710de55debaf52f90e8494066f9b03303fc786e3526f6"
     },
     {
       "bytes": 12787,
@@ -876,32 +876,32 @@
       "source_sha256": "1ce58bc8dabf5135f56c9da1ba7b45fb57024a603e5b65ffde39a936e433df30"
     },
     {
-      "bytes": 904384,
+      "bytes": 905388,
       "path": "docs/submission/diagrams/sponsor_placement_map.png",
-      "sha256": "1ceda5a9709bac1f5506daeaf016439cb0ca6b211be140543b48f095033cdc24",
+      "sha256": "e9f5b223a8be15d3e59faea216f70500302e425c844520abe4fbe8079a372bd2",
       "source_path": "docs/submission/diagrams/sponsor_placement_map.png",
-      "source_sha256": "1ceda5a9709bac1f5506daeaf016439cb0ca6b211be140543b48f095033cdc24"
+      "source_sha256": "e9f5b223a8be15d3e59faea216f70500302e425c844520abe4fbe8079a372bd2"
     },
     {
-      "bytes": 24972,
+      "bytes": 24978,
       "path": "docs/submission/diagrams/sponsor_placement_map.svg",
-      "sha256": "fb05abed9a6bfe229d8e94a4f295a999d05fe4813f1d95b7c70ce04cc54a2c61",
+      "sha256": "ada0c421d0734e4a01203289dfeca1ff39930a09219ec7de69a5a998cc091bae",
       "source_path": "docs/submission/diagrams/sponsor_placement_map.svg",
-      "source_sha256": "fb05abed9a6bfe229d8e94a4f295a999d05fe4813f1d95b7c70ce04cc54a2c61"
+      "source_sha256": "ada0c421d0734e4a01203289dfeca1ff39930a09219ec7de69a5a998cc091bae"
     },
     {
-      "bytes": 130383,
+      "bytes": 131868,
       "path": "docs/submission/payguard_judge_overview.png",
-      "sha256": "faae71e1e8f3170ce031acc10ae57d9b028b5b7efc5edeae2527e226d1ad488e",
+      "sha256": "19b1d1d9696cbb95931e1e394b87c250cfe22b8503cb384f8435a13b4c26efdf",
       "source_path": "docs/submission/payguard_judge_overview.png",
-      "source_sha256": "faae71e1e8f3170ce031acc10ae57d9b028b5b7efc5edeae2527e226d1ad488e"
+      "source_sha256": "19b1d1d9696cbb95931e1e394b87c250cfe22b8503cb384f8435a13b4c26efdf"
     },
     {
-      "bytes": 6599,
+      "bytes": 6663,
       "path": "docs/submission/payguard_judge_overview.svg",
-      "sha256": "fc050849989c91a756e8ee65c09aff4052e2ef696da39a84e95693c38ad72936",
+      "sha256": "f92722e71aa4bc1c69be1e67c44973f3f7e07dc7f61e3e33dabb5cbf8e3b107f",
       "source_path": "docs/submission/payguard_judge_overview.svg",
-      "source_sha256": "fc050849989c91a756e8ee65c09aff4052e2ef696da39a84e95693c38ad72936"
+      "source_sha256": "f92722e71aa4bc1c69be1e67c44973f3f7e07dc7f61e3e33dabb5cbf8e3b107f"
     },
     {
       "bytes": 22451,
@@ -911,11 +911,11 @@
       "source_sha256": "97fe50114c8a41a241ecac0de781f544c9bc05700242dba314c8d9f81f4ed5e7"
     },
     {
-      "bytes": 418216,
+      "bytes": 176943,
       "path": "docs/submission/screens/ag_studio_trace.png",
-      "sha256": "f352f055d7c5871391d59b61e422463adf0729cea5e4a737f220cb76501f5453",
+      "sha256": "8cd39757be83fc4712832302927dc94438d0b7937f832fac4f9c9e19bf4ec0e4",
       "source_path": "docs/submission/screens/ag_studio_trace.png",
-      "source_sha256": "f352f055d7c5871391d59b61e422463adf0729cea5e4a737f220cb76501f5453"
+      "source_sha256": "8cd39757be83fc4712832302927dc94438d0b7937f832fac4f9c9e19bf4ec0e4"
     },
     {
       "bytes": 44735,
@@ -932,11 +932,11 @@
       "source_sha256": "8ec6f9f35fc9c5c0be9fea6b615939b7037ae8b3f36fc1e0fdce5423c531b7d5"
     },
     {
-      "bytes": 582517,
+      "bytes": 227798,
       "path": "docs/submission/screens/real_send_trace.png",
-      "sha256": "25751bdbb842ac588abd04336b900fdf0ea138226e78e750dd3ff150e3745de6",
+      "sha256": "9732e79c6b744a221bf5b7a3492c1eda2584d2dc6a8a8a7f8c2f1b0ddcf3b041",
       "source_path": "docs/submission/screens/real_send_trace.png",
-      "source_sha256": "25751bdbb842ac588abd04336b900fdf0ea138226e78e750dd3ff150e3745de6"
+      "source_sha256": "9732e79c6b744a221bf5b7a3492c1eda2584d2dc6a8a8a7f8c2f1b0ddcf3b041"
     },
     {
       "bytes": 609489,
@@ -988,11 +988,11 @@
       "source_sha256": "ccd8285d36b0368afc1f3fc98f1a00113aa9b692e27450caad1631827c5d24f1"
     },
     {
-      "bytes": 1300110,
+      "bytes": 232173,
       "path": "docs/submission/sponsor_assets/bryntum_drag.gif",
-      "sha256": "1f4e37078832bc2b3287f474b61ed0e8424568a5e602bf3e0aafe4aa59f85c07",
+      "sha256": "700bee126b94ecd8ec8b81a01ea969744f8dab3427d2acebcdacecc28e64371a",
       "source_path": "docs/submission/sponsor_assets/bryntum_drag.gif",
-      "source_sha256": "1f4e37078832bc2b3287f474b61ed0e8424568a5e602bf3e0aafe4aa59f85c07"
+      "source_sha256": "700bee126b94ecd8ec8b81a01ea969744f8dab3427d2acebcdacecc28e64371a"
     },
     {
       "bytes": 24569,
@@ -1702,11 +1702,11 @@
       "source_sha256": "d92bc4a5d7db9afab6ab3ac1dc44e2e9672454d406754b805cafbc6141ab6e89"
     },
     {
-      "bytes": 2156,
+      "bytes": 2124,
       "path": "frontend/src/sponsorMap.js",
-      "sha256": "cd30abe81093b34abb7d5999e1c34c7a7304dfa0a525e46840c127109a387ee1",
+      "sha256": "ccfb9bda5ce225d09c92651869ec200bd2ec685196d5f59eaa806e91a463c13e",
       "source_path": "frontend/src/sponsorMap.js",
-      "source_sha256": "cd30abe81093b34abb7d5999e1c34c7a7304dfa0a525e46840c127109a387ee1"
+      "source_sha256": "ccfb9bda5ce225d09c92651869ec200bd2ec685196d5f59eaa806e91a463c13e"
     },
     {
       "bytes": 891,
@@ -3205,8 +3205,8 @@
     "scope": "RECORDED_OWNER_RIGHTS_AND_ENTRANT_ELIGIBILITY"
   },
   "package_digest_algorithm": "sha256(sorted utf-8 '<file_sha256>  <relative_path>\\n' records; manifest and detached hash excluded)",
-  "package_digest_sha256": "361f3a8bd4593c72619882d351ab0f0a512146f38d969e3839e183721879ce67",
-  "public_artifact_id": "payguard-public-source-361f3a8bd4593c72",
+  "package_digest_sha256": "4858ff0737b0d0f4da4be15844fc7c2283d238a29a96f33b5b378323f9f2b572",
+  "public_artifact_id": "payguard-public-source-4858ff0737b0d0f4",
   "publication_authorized": false,
   "raw_bounded_prompt_disclosure": {
     "intent": "INTENTIONAL_PUBLIC_EXECUTABLE_PRODUCT_SOURCE",
