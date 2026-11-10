@@ -164,6 +164,12 @@ assert.deepEqual([3, 4].map((n) => result.steps[n].status), [STATUS.LOCAL_ONLY, 
 assert.notEqual(cardStatus(WORK_ORDERS[0], result.steps), STATUS.FAILED);
 result = await runWorkOrder('WO-S5', deps(fakeServer({ hosted: true }), true));
 assert.equal(result.steps[3].status, STATUS.LOCAL_ONLY);
+// (round2 C #2, 2026-11-11, intended) The hosted banner and owner rows match the hosted console: Sandbox reads and one
+// capped send happen there; only invoice drafts and Gemini steps need a local run. The page itself still calls no PayPal route.
+assert.ok(page.includes("'Hosted demo · the console makes Sandbox reads and one capped send; invoice drafts and Gemini steps are local only'"), 'hosted banner');
+assert.ok(!page.includes('PayPal and Gemini steps are local only'), 'old hosted banner gone');
+assert.deepEqual(WORK_ORDERS.flatMap((order) => order.steps.filter((step) => step.console).map((step) => `${order.id}-${step.n}`)), ['WO-S2-5', 'WO-S4-8'], 'console steps: Sandbox connect and the dispute preview');
+assert.ok(page.includes("'Invoice drafts are local only; run TradeGlot locally.'") && page.includes("'In the console'"), 'owner rows name where each step runs');
 
 // 4. Page: test ids, chips, buttons, owner checkboxes never call, header link and footer line.
 for (const testId of ['scenario-card-${order.id}', 'scenario-run-${order.id}', 'scenario-run-all', 'scenario-reset', 'scenario-step-${order.id}-${step.n}', 'scenario-receipt-${order.id}']) {

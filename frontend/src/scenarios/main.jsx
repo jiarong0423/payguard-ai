@@ -75,10 +75,18 @@ function runStorage() {
 // Read once, when the page loads (Back or Forward to it included).
 const RESTORED = restoreRun(runStorage());
 
+// What a Local only owner step says. On the hosted demo a Sandbox read or preview step (console: true) is done in the
+// console, which makes Sandbox reads and one capped send; invoice drafts and Gemini steps need a local run.
+function ownerLocalText(step) {
+  if (step.needs !== 'paypal') return 'Needs Gemini; run TradeGlot locally.';
+  if (step.console) return 'Do this in the console (step 03 on the hosted site): it makes Sandbox reads and one capped send. This page never calls PayPal.';
+  return 'Invoice drafts are local only; run TradeGlot locally.';
+}
+
 function modeText(mode) {
   if (!mode) return { label: 'Reading server mode', tone: STATUS.RUNNING };
   if (mode.error) return { label: 'Server mode unknown · guide turns need the owner', tone: STATUS.NEEDS_OWNER };
-  if (mode.hosted) return { label: 'Hosted demo · PayPal and Gemini steps are local only', tone: STATUS.LOCAL_ONLY };
+  if (mode.hosted) return { label: 'Hosted demo · the console makes Sandbox reads and one capped send; invoice drafts and Gemini steps are local only', tone: STATUS.LOCAL_ONLY };
   if (mode.rulesOnly) return { label: 'Local console · guide answers from rules only', tone: STATUS.PASSED };
   if (mode.rulesOnly === false) return { label: 'Local console · model mode on, guide turns need the owner', tone: STATUS.NEEDS_OWNER };
   return { label: 'Local console · guide mode unknown, guide turns need the owner', tone: STATUS.NEEDS_OWNER };
@@ -185,11 +193,11 @@ function ScenariosPage() {
                       : <strong>{step.label}</strong>}
                     <dl>
                       <div><dt>Expected</dt><dd>{step.expect}</dd></div>
-                      <div><dt>Actual</dt><dd>{manual ? (localOnly ? `Needs ${step.needs === 'paypal' ? 'the PayPal Sandbox' : 'Gemini'}; run TradeGlot locally.` : isTicked ? 'Ticked by the owner' : 'Owner checks this on camera') : (state?.actual || '—')}</dd></div>
+                      <div><dt>Actual</dt><dd>{manual ? (localOnly ? ownerLocalText(step) : isTicked ? 'Ticked by the owner' : 'Owner checks this on camera') : (state?.actual || '—')}</dd></div>
                     </dl>
                     {state?.note && !manual && <small className="scenario-note">{state.note}</small>}
                   </div>
-                  <Chip status={stepStatus} label={manual && isTicked && !localOnly ? 'Owner ticked' : undefined} />
+                  <Chip status={stepStatus} label={manual && isTicked && !localOnly ? 'Owner ticked' : localOnly && step.console ? 'In the console' : undefined} />
                 </li>;
               })}
             </ol>

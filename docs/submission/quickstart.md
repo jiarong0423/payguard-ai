@@ -17,7 +17,7 @@ Status: the Devpost project is submitted and the 2:59 video is on YouTube. The c
 No install, synthetic data plus Sandbox reads (and, with the send opt-in, a capped Sandbox evidence send). The first visit can take about a minute while the free server wakes.
 
 1. Open the [start page](https://payguard-demo-j2b3.onrender.com/start.html) and press **Run the step 1 example** in step 01. Expect "A rule may stop this sale.", each row linked to its source.
-2. Open step 03, select a case, press **Prepare evidence draft**, then **Download review ZIP**.
+2. Select **Dispute evidence** (03) in the top stepper, select a case, press **Prepare evidence draft**, then **Download review ZIP**.
 3. Open **Proof** in the top bar ([proof.html](https://payguard-demo-j2b3.onrender.com/proof.html)): each claim, how it was shown, the date and the source file.
 
 Which sponsor tool is used where, and how far: the "Sponsor tools at a glance" table in the [README](../../README.md) and [SPONSOR_TECH_MAP.md](../SPONSOR_TECH_MAP.md).
@@ -88,7 +88,7 @@ Expected boundary: TradeGlot surfaces a public-policy category and a warning. It
 2. Confirm the backend-calculated ratio (5 times baseline), window sales of 500.00 USD and 50 orders. Open **More: sources, limits, examples** and its **Technical details** tab to see the baseline rate, the **Synthetic baseline** label and the baseline window.
 3. Select **Orders table** (the step opens on **Chart**), then in the AG Grid sort the **AMOUNT** column. The fifty orders carry ten different synthetic amounts between 4.50 and 18.00 USD, so the sort order changes visibly.
 4. Use **Filter orders** to reduce the visible rows to one known order, then clear the filter and confirm all 50 rows return.
-5. Select one transaction and inspect its order reference, amount, currency and captured-at UTC value.
+5. Select one transaction and inspect its order reference, amount, currency and captured-at time (shown in your own time zone with its name).
 6. Confirm the card labels its value as **Stage evidence checklist** and says the stage signal does not classify the selected order as fraud or predict PayPal action.
 
 Expected boundary: the signal means the synthetic activity exceeded a local demonstration baseline. It is not a PayPal threshold, risk score, AML finding, fraud finding or prediction of a hold, limitation, reserve or release. Tracking may be relevant evidence but cannot guarantee release or program eligibility.

@@ -92,7 +92,8 @@ const isMid = () => Boolean(midMedia()?.matches);
 // (2026-11-10) Wide enough for a masked Sandbox code (PP-R-XXX-XXXX1234) at the board's 14px text.
 // (phone fix 2026-11-10) The shared "PP-R-" prefix is dropped on the phone so the code fits one line at larger system
 // text sizes; the full code is the cell's title.
-const PHONE_COLUMNS = [{ text: 'Case', field: 'caseRef', width: 160, htmlEncode: false, renderer: ({ record }) => { const ref = String(record.get('caseRef') ?? ''); return `<span title="${escapeHtml(ref)}">${escapeHtml(ref.replace(/^PP-R-/u, ''))}</span>`; } }];
+// (2026-11-11) caseRef here is the shown code (displayDisputeId for a Sandbox row); the prefix is kept when only "…" would remain.
+const PHONE_COLUMNS = [{ text: 'Case', field: 'caseRef', width: 160, htmlEncode: false, renderer: ({ record }) => { const ref = String(record.get('caseRef') ?? ''); return `<span title="${escapeHtml(ref)}">${escapeHtml(ref.replace(/^PP-R-(?!…)/u, ''))}</span>`; } }];
 const PHONE_QUERY = '(max-width: 640px)';
 const phoneMedia = () => (typeof window !== 'undefined' && typeof window.matchMedia === 'function' ? window.matchMedia(PHONE_QUERY) : null);
 function subscribePhone(onChange) {
@@ -137,11 +138,11 @@ const MID_SCHEDULER = { columns: MID_COLUMNS, forceFit: true, eventRenderer: des
 const PHONE_SCHEDULER = { columns: PHONE_COLUMNS, forceFit: false, tickSize: 72, eventRenderer: desktopEventRenderer };
 
 // Tooltips name the case, its due date and, for the plan bar, the planned window (optimise r24).
-function tooltipHtml(eventRecord, dueAtOf) {
+function tooltipHtml(eventRecord, dueAtOf, shownOf) {
   const kind = eventRecord.get('kind');
   const caseRef = String(eventRecord.resourceId ?? '');
   const due = dueAtOf(caseRef);
-  const lines = [`<strong>${escapeHtml(eventRecord.name)} · ${escapeHtml(caseRef)}</strong>`];
+  const lines = [`<strong>${escapeHtml(eventRecord.name)} · ${escapeHtml(shownOf(caseRef))}</strong>`];
   if (kind === 'PLAN') {
     lines.push(`Due ${escapeHtml(utcLabel(due))}`, `Planned ${escapeHtml(wallLabel(eventRecord.startDate))} → ${escapeHtml(wallLabel(eventRecord.endDate))}`, 'Your plan · this tab only, not sent');
   } else if (kind === 'RESPONSE_WINDOW') {
@@ -210,7 +211,7 @@ function orderedRows(rows, focus, glow) {
 
 function BoardList({ rows, plans, unscheduled, onSchedule, listRef }) {
   return <ul ref={listRef} className="board-list" data-testid="evidence-board-list">{rows.map((row) => <li key={row.id} className={`board-row board-row-${row.status.toLowerCase()}${row.highlight ? ' board-row-urgent' : ''}${unscheduled.has(row.id) ? ' board-row-unscheduled' : ''}${!plans[row.id] && !unscheduled.has(row.id) ? ' board-row-noplan' : ''}`} data-testid="evidence-board-row" data-status={row.status} data-source={row.source}>
-    <div className="board-row-head"><strong>{row.caseRef}</strong>{row.source === 'sandbox' && <span className="board-row-source" data-testid="evidence-board-sandbox-tag">PayPal Sandbox</span>}<span className="board-row-status" title={row.statusLabel}>{CARD_STATUS_SHORT[row.status] || row.statusLabel}</span></div>
+    <div className="board-row-head"><strong>{row.caseRefShown}</strong>{row.source === 'sandbox' && <span className="board-row-source" data-testid="evidence-board-sandbox-tag">PayPal Sandbox</span>}<span className="board-row-status" title={row.statusLabel}>{CARD_STATUS_SHORT[row.status] || row.statusLabel}</span></div>
     <dl><div title={row.reason}><dt>Reason</dt><dd>{gridReasonLabel(row.reason)}</dd></div><div><dt>Due</dt><dd>{row.dueAt ? utcLabel(row.dueAt) : '—'}</dd></div><div title={row.readinessLabel}><dt>Evidence</dt><dd>{gridEvidenceLabel(row)}{row.readiness?.manual ? ` · ${row.readiness.manual} need manual review` : ''}</dd></div><div><dt>Amount</dt><dd>{row.amount ? (row.source === 'sandbox' ? `${row.amount} · Sandbox` : `${row.amount} · synthetic`) : 'Not in case data'}</dd></div>
       <div><dt>Plan</dt><dd data-testid="evidence-board-plan">{plans[row.id] ? `${PLAN_NAME} ${planLabel(plans[row.id])}` : unscheduled.has(row.id) ? <><strong className="board-unscheduled" data-testid="evidence-board-unscheduled" title={UNSCHEDULED_LABEL}>No evidence slot yet</strong> <button type="button" className="board-plan-reset" data-testid="evidence-board-schedule" onClick={() => onSchedule(row)}>Schedule a slot</button></> : row.source === 'sandbox' && row.providerStatus && row.providerStatus !== 'WAITING_FOR_SELLER_RESPONSE' ? 'Not waiting for the seller.' : row.dueAt ? PLAN_MESSAGES.NO_WINDOW : '—'}</dd></div></dl>
   </li>)}</ul>;
@@ -243,9 +244,14 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
   const dueRef = useRef(dueAtById);
   dueRef.current = dueAtById;
   const dueAtOf = useCallback((ref) => dueRef.current[ref] ?? null, []);
+  // (2026-11-11) What a message or tooltip shows for a row id (the shown code); the id itself stays the key.
+  const shownById = useMemo(() => Object.fromEntries((board?.rows || []).map((row) => [row.id, row.caseRefShown])), [board]);
+  const shownRef = useRef(shownById);
+  shownRef.current = shownById;
+  const shownOf = useCallback((ref) => shownRef.current[ref] ?? String(ref), []);
 
   const resources = useMemo(() => (board?.rows || []).map((row) => ({
-    id: row.id, name: `${row.caseRef} · ${row.reason}`, caseRef: row.caseRef, reasonText: gridReasonLabel(row.reason), reasonFull: row.reason, cls: row.cls,
+    id: row.id, name: `${row.caseRefShown} · ${row.reason}`, caseRef: row.caseRefShown, reasonText: gridReasonLabel(row.reason), reasonFull: row.reason, cls: row.cls,
     dueText: row.dueAt ? utcLabel(row.dueAt) : 'No due date', readinessLabel: row.readinessLabel, gridEvidence: gridEvidenceLabel(row), amountText: row.amount ?? '—',
   })), [board]);
   // The events reach Bryntum once per board; later moves live in Bryntum's own store and in `plans`.
@@ -266,8 +272,8 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
     plansRef.current = next;
     setPlans(next);
     const stored = writeStoredPlans(tabStorage(), next);
-    setMessage(`${ref}: ${PLAN_NAME.toLowerCase()} ${planLabel(plan)}${note ? ` ${note}` : ''}. ${stored ? 'Kept in this tab only' : 'Kept in this page only'}, not sent.`);
-  }, []);
+    setMessage(`${shownOf(ref)}: ${PLAN_NAME.toLowerCase()} ${planLabel(plan)}${note ? ` ${note}` : ''}. ${stored ? 'Kept in this tab only' : 'Kept in this page only'}, not sent.`);
+  }, [shownOf]);
 
   // Applies Bryntum's result once more through the same check; anything that slipped through is put back.
   const commit = useCallback((record) => {
@@ -277,21 +283,21 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
     const verdict = judge(record, record.startDate, record.endDate, null);
     if (!verdict.valid) {
       if (previous) record.setStartEndDate(wallOf(previous.startMs), wallOf(previous.endMs));
-      setMessage(`${ref}: moved back. ${verdict.message}`);
+      setMessage(`${shownOf(ref)}: moved back. ${verdict.message}`);
       return;
     }
     const plan = { startMs: wallToUtcMs(record.startDate), endMs: wallToUtcMs(record.endDate) };
     if (previous && previous.startMs === plan.startMs && previous.endMs === plan.endMs) return;
     keep(ref, plan);
-  }, [judge, keep]);
+  }, [judge, keep, shownOf]);
 
   // A refused drop snaps back with the reason from this gesture's last check. The verdict is cleared when a gesture
   // starts, so a click on a handle that changes nothing shows no stale reason.
   const refused = useCallback((record) => {
     if (!record || record.get?.('kind') !== 'PLAN') return;
     const verdict = verdictRef.current;
-    if (verdict && !verdict.valid) setMessage(`${String(record.resourceId)}: moved back. ${verdict.message}`);
-  }, []);
+    if (verdict && !verdict.valid) setMessage(`${shownOf(String(record.resourceId))}: moved back. ${verdict.message}`);
+  }, [shownOf]);
   const gestureStart = useCallback(() => { verdictRef.current = null; }, []);
 
   const dragFeature = useMemo(() => ({
@@ -308,7 +314,7 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
       return verdict.valid ? true : { valid: false, message: verdict.message };
     },
   }), [judge]);
-  const tooltipFeature = useMemo(() => ({ template: ({ eventRecord }) => tooltipHtml(eventRecord, dueAtOf) }), [dueAtOf]);
+  const tooltipFeature = useMemo(() => ({ template: ({ eventRecord }) => tooltipHtml(eventRecord, dueAtOf, shownOf) }), [dueAtOf, shownOf]);
 
   const onAfterEventDrop = useCallback(({ valid, eventRecords }) => {
     if (valid) (eventRecords || []).forEach(commit);
@@ -334,12 +340,12 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
     const proposal = shiftPlan(current, event.key === 'ArrowRight' ? 1 : -1, { resize: event.altKey && !event.shiftKey });
     const verdict = judge(record, wallOf(proposal.startMs), wallOf(proposal.endMs), null);
     if (!verdict.valid) {
-      setMessage(`${ref}: not moved. ${verdict.message}`);
+      setMessage(`${shownOf(ref)}: not moved. ${verdict.message}`);
       return;
     }
     record.setStartEndDate(wallOf(proposal.startMs), wallOf(proposal.endMs));
     keep(ref, proposal);
-  }, [judge, keep]);
+  }, [judge, keep, shownOf]);
 
   // "Download my plan (.ics)": built here from the plans in this tab; no request, no personal data.
   const downloadPlan = useCallback(() => {
@@ -355,7 +361,7 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
   // A Sandbox row's first evidence slot: the default plan, added to Bryntum's store as a movable bar.
   const schedule = useCallback((row) => {
     const plan = defaultPlan(planWindowOf(row, Date.now()));
-    if (!plan) { setMessage(`${row.id}: ${PLAN_MESSAGES.NO_WINDOW}`); return; }
+    if (!plan) { setMessage(`${row.caseRefShown ?? row.id}: ${PLAN_MESSAGES.NO_WINDOW}`); return; }
     const store = schedulerRef.current?.instance?.eventStore;
     if (store && !store.getById(`${row.id}-plan`)) store.add(planEvents([row], { [row.id]: plan }));
     keep(row.id, plan, 'scheduled');

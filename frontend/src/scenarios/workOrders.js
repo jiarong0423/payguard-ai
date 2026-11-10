@@ -27,7 +27,9 @@ export const S4_SENTENCE_TICK = 'The buyer says it never arrived, so just tick t
 export const S4_SENTENCE_SHIPPED = 'I shipped it yesterday and the tracking shows delivered.';
 const AUP_DESCRIPTION = 'Handcrafted ceramic cup';
 
-// Fixed scenario list (no free text). needs: what a manual step needs; on the hosted demo those show Local only.
+// Fixed scenario list (no free text). needs: what a manual step needs; on the hosted demo those show Local only on this
+// page. console: true marks a Sandbox read or preview step the hosted console itself can do (Sandbox reads and one
+// capped send); this page still never calls PayPal, so it only says where to do it.
 export const WORK_ORDERS = Object.freeze([
   {
     id: 'WO-S1', title: 'Policy pre-check: US to Singapore e-cigarettes is stopped', scene: 'Policy pre-check',
@@ -45,7 +47,7 @@ export const WORK_ORDERS = Object.freeze([
       { n: 2, kind: 'auto', label: 'Country check US → GB, no goods tags', expect: '200 · not blocked' },
       { n: 3, kind: 'auto', label: `AUP review "${AUP_DESCRIPTION}"`, expect: '200 · no review signal' },
       { n: 4, kind: 'auto', label: 'Invoice review', expect: '200 · review token issued' },
-      { n: 5, kind: 'manual', needs: 'paypal', label: 'Connect the US Sandbox', expect: 'Sandbox shows Connected' },
+      { n: 5, kind: 'manual', needs: 'paypal', console: true, label: 'Connect the US Sandbox', expect: 'Sandbox shows Connected' },
       { n: 6, kind: 'manual', needs: 'paypal', label: 'Create the Sandbox draft', expect: 'Draft created, not sent' },
       { n: 7, kind: 'manual', needs: 'paypal', label: 'Check the INV2 id and private memo in the PayPal Sandbox dashboard', expect: 'Same id, memo names the checked route' },
     ],
@@ -70,7 +72,7 @@ export const WORK_ORDERS = Object.freeze([
       { n: 5, kind: 'auto', label: `Guide turn: "${S4_SENTENCE_SHIPPED}"`, expect: '200 · ship date and delivery record', guide: true },
       { n: 6, kind: 'auto', label: 'Prepare the evidence draft for case-ref-001', expect: '200 · readiness reported' },
       { n: 7, kind: 'manual', needs: 'gemini', label: 'Thursday sentence with Gemini on', expect: 'Date asked back, never guessed' },
-      { n: 8, kind: 'manual', needs: 'paypal', label: 'Sandbox dispute pairing and provide-evidence preview', expect: 'Preview only, nothing submitted' },
+      { n: 8, kind: 'manual', needs: 'paypal', console: true, label: 'Sandbox dispute pairing and provide-evidence preview', expect: 'Preview only, nothing submitted' },
     ],
   },
   {

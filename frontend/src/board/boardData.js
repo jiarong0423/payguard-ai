@@ -5,6 +5,7 @@
 // draft only adds readiness and its evidence events. No Bryntum import here, so it runs in plain Node.
 import { operatorLabel } from '../operatorLabels.js';
 import { utcWallClock, viewPresetFor } from '../optional/timelineModel.js';
+import { displayDisputeId } from '../disputeDisplay.js';
 
 export const DUE_SOON_DAYS = 3;
 const HOUR = 3600 * 1000;
@@ -167,6 +168,9 @@ export function buildEvidenceBoard({ disputes, drafts = {}, now, sandbox = null 
       id,
       name: id,
       caseRef: id,
+      // (2026-11-11) Display only: a Sandbox row's id is a dispute id and goes through the one display mapping; the row id,
+      // the plan keys and every lookup keep the true value.
+      caseRefShown: fromSandbox ? displayDisputeId(id) : id,
       orderRef: typeof dispute.order_ref === 'string' ? dispute.order_ref : null,
       reason: operatorLabel(dispute.reason),
       caseStatus: operatorLabel(dispute.status),
@@ -197,7 +201,7 @@ export function buildEvidenceBoard({ disputes, drafts = {}, now, sandbox = null 
   const timeRanges = [
     { id: 'now', kind: 'NOW', name: 'Now', resourceId: null, at: new Date(nowMs).toISOString(), startDate: new Date(nowWall) },
     ...rows.filter((row) => instant(row.dueAt) !== null).map((row) => ({
-      id: `${row.id}-due`, kind: 'DUE', name: `${row.caseRef} response due`, resourceId: row.id, at: row.dueAt, startDate: utcWallClock(row.dueAt),
+      id: `${row.id}-due`, kind: 'DUE', name: `${row.caseRefShown} response due`, resourceId: row.id, at: row.dueAt, startDate: utcWallClock(row.dueAt),
     })),
   ];
   const times = [nowWall, ...dueTimes, ...events.flatMap((event) => [event.startDate.getTime(), event.endDate.getTime()])];

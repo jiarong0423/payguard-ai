@@ -12,5 +12,5 @@ Total: 3 runs, 11 Studio tool calls, all finished. The recording file is `docs/e
 
 ## What this does and does not show
 - It shows the built-in agents answer real questions about the dashboard data with Studio's own tools, live, and say so when the data cannot answer.
-- It does not change the hosted demo: the hosted dashboard still replays the one earlier recorded question and calls no model. These three runs are kept as evidence, not replayed.
+- The three runs were added to the dashboard's recording, `frontend/src/data/studio_agent_run_v1.json`, next to the run recorded on 2026-11-08. AG Studio's built-in agents ran live on the local console on 2026-11-04 (several runs, none saved), on 2026-11-08 (one run, recorded) and on 2026-11-09 (three runs, 11 tool calls, recorded); the hosted dashboard replays the recording dated 2026-11-09, with its four questions, and calls no model.
 - Three questions on synthetic data are a demonstration, not a benchmark. The answers were not scored against an answer key; the first and third match the table rows.

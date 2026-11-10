@@ -45,7 +45,7 @@ The first visit can take about a minute while the free Render server wakes.
 
 **Three clicks:**
 1. Open the [start page](https://payguard-demo-j2b3.onrender.com/start.html). Press **Run the step 1 example**. Expect "A rule may stop this sale.", each row linked to its source.
-2. Open step 03. Select a case. Press **Prepare evidence draft**, then **Download review ZIP** (7 entries: 6 files and the manifest).
+2. Select **Dispute evidence** (03) in the top stepper. Select a case. Press **Prepare evidence draft**, then **Download review ZIP** (7 entries: 6 files and the manifest).
 3. Open **Proof**. Each claim shows how it was shown (real Sandbox call, recorded run, automated test or synthetic data), the date and the source file.
 
 Offline copy: [demo package, 11 MB zip](https://github.com/jiarong0423/payguard-ai/releases/download/demo-package-20261109/tradeglot-demo.zip); its SHA-256 starts `442969a14a1b7a7e`.
@@ -72,9 +72,9 @@ A send passes nine checks, from "off by default" to an allow-listed call that ke
 
 - **PayPal Sandbox API:** OAuth, invoice drafts, dispute list and detail, `provide-evidence`. PayPal's official MCP server ran once, read-only (`disputes.list`, `disputes.get`).
 - **Bryntum Scheduler (Community):** evidence deadline board with a draggable "Collect evidence" bar.
-- **AG Grid, AG Charts, AG Studio:** order grid, hourly chart, evidence dashboard. Studio's built-in agents ran live on the local console on 2026-11-04, 2026-11-08 and 2026-11-09 (three runs, 11 tool calls); the hosted dashboard replays the one run recorded on 2026-11-08.
+- **AG Grid, AG Charts, AG Studio:** order grid, hourly chart, evidence dashboard. AG Studio's built-in agents ran live on the local console on 2026-11-04 (several runs, none saved), on 2026-11-08 (one run, recorded) and on 2026-11-09 (three runs, 11 tool calls, recorded); the hosted dashboard replays the recording dated 2026-11-09, with its four questions, and calls no model.
 - **Render:** hosts the demo; a Workflow service ran three times by hand, 4 to 4.2 s each.
-- **Gemini:** closed-option guide, evidence brief, Studio agent turns. The brief and the Studio agents run on the local console only; the hosted dashboard replays one recorded Studio run.
+- **Gemini:** closed-option guide, evidence brief, Studio agent turns. The brief and the Studio agents run on the local console only; the hosted dashboard replays the recording dated 2026-11-09, with its four questions, and calls no model.
 - **Postman:** 25-request run covering 21 of 37 operations, 82 assertions, 0 failed; the routes that reach PayPal or a model were not run. **APIMatic:** OpenAPI 3.1, 0 errors after fixes (first run 345).
 - **Channel3:** product search for a reference card; 5 searches replayed, 5 more with receipts.
 - **TradeGlot's own MCP server:** five read-only tools, local only.

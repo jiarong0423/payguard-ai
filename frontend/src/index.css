@@ -29,7 +29,8 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 74px; }
-body { margin: 0; min-width: 320px; background: var(--pg-color-canvas); color: var(--pg-color-ink); font-size: var(--type-body); line-height: 1.5; scrollbar-gutter: stable; }
+/* (round2 X, C #4) No fixed page minimum: at 268 px the 320 px floor made the whole page scroll sideways (judge C). */
+body { margin: 0; min-width: 0; background: var(--pg-color-canvas); color: var(--pg-color-ink); font-size: var(--type-body); line-height: 1.5; scrollbar-gutter: stable; }
 small { font-size: var(--type-meta); }
 h1 { margin: 0; color: var(--pg-color-ink); font-size: var(--type-display); font-weight: 700; letter-spacing: -0.5px; line-height: 1.2; }
 h1 span { color: var(--pg-color-muted); font-weight: 400; margin-left: 8px; }
@@ -1308,6 +1309,8 @@ footer { padding: 8px 0 0; }
 .send-receipt-big { display: flex; flex-direction: column; gap: 6px; margin: 12px 0; padding: 16px; border: 2px solid var(--pg-color-ok); border-radius: 12px; font-size: 1.15rem; overflow-wrap: anywhere; }
 .send-receipt-big strong { font-size: 1.5rem; color: var(--pg-color-ok); }
 .send-receipt-big small { font-size: var(--type-meta); color: var(--pg-color-muted); }
+/* (round2 X, B 6a/6d) A stored note the read-back did not confirm: plain, amber edge, no green stamp. */
+.send-restored-note { margin: 12px 0; padding: 10px 12px; border-left: 3px solid #b45309; border-radius: 6px; font-size: var(--type-support); overflow-wrap: anywhere; }
 
 /* (2026-11-10) A disclosure summary is a toggle, not text input. Its chevron (::after) was an inline box in a block summary, so
    only its right border drew: a thin vertical bar after the text that read as a text caret ("More views: ...|"). The chevron is

@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
 import { apiRequest, SEND_GUARD_MESSAGES } from '../frontend/src/api.js';
+import { displayDisputeId } from '../frontend/src/disputeDisplay.js';
 
 // (r25 send guard) Safeguards against sending to the wrong dispute: (a) case and dispute side by side, (b) a held send
 // with one plain line, (c) a two-step confirm before a real send, (d) plain messages for the backend's refusal codes,
@@ -14,25 +15,29 @@ assert.equal(/[\u3000-\u9fff\uac00-\ud7af\uff00-\uffef]/u.test(section), false, 
 
 // (b) The hold rule, run on its own source with a stub label function.
 const grab = (name) => section.match(new RegExp(`(?:const ${name} = [^\\n]*\\n|function ${name}\\([\\s\\S]*?\\n\\}\\n)`, 'u'))[0];
-const factory = new Function('operatorLabel', `${grab('maskDisputeId')}${grab('ACCOUNT_LINES').length ? section.match(/const ACCOUNT_LINES = \{[\s\S]*?\n\};\n/u)[0] : ''}${grab('sameMoney')}${grab('sendGuardBlock')}${grab('sendItemText')}return { maskDisputeId, sendGuardBlock, sendItemText };`);
-const { maskDisputeId, sendGuardBlock, sendItemText } = factory((value, fallback = 'Needs review') => value || fallback);
+const factory = new Function('operatorLabel', 'displayDisputeId', `${grab('maskDisputeId')}${grab('ACCOUNT_LINES').length ? section.match(/const ACCOUNT_LINES = \{[\s\S]*?\n\};\n/u)[0] : ''}${grab('sameMoney')}${grab('sendGuardBlock')}${grab('sendItemText')}return { maskDisputeId, sendGuardBlock, sendItemText };`);
+const { maskDisputeId, sendGuardBlock, sendItemText } = factory((value, fallback = 'Needs review') => value || fallback, displayDisputeId);
 assert.equal(maskDisputeId('PP-D-SANDBOX01'), 'PP-D-…01');
 const detail = { dispute_id: 'PP-D-SANDBOX02', reason: 'MERCHANDISE_OR_SERVICE_NOT_RECEIVED', source: 'paypal_sandbox', dispute_amount: { currency_code: 'USD', value: '48.00' } };
 const guard = { case_ref: 'case-ref-001', case_reason: 'MERCHANDISE_OR_SERVICE_NOT_RECEIVED', dispute_masked: 'PP-D-…02', dispute_reason: 'MERCHANDISE_OR_SERVICE_NOT_RECEIVED',
   dispute_amount: { currency_code: 'USD', value: '48.00' }, bound_dispute_masked: 'PP-D-…02', sending_account_masked: 'SY…HANT', dispute_seller_masked: 'SY…HANT',
   account_status: 'MATCH', send_refusal: null };
 const caseItem = { case_ref: 'case-ref-001', reason: 'INR', dispute_amount: { currency_code: 'USD', value: '48.00' } };
-assert.equal(sendGuardBlock(guard, detail, caseItem, null), null, 'matching case and dispute: no hold');
+// (round2 X) Full ids: boundTo / sentTo are dispute ids as the API returned them; the 6th argument is the preview's own id.
+const P = detail.dispute_id;
+assert.equal(sendGuardBlock(guard, detail, caseItem, null, null, P), null, 'matching case and dispute: no hold');
+assert.equal(sendGuardBlock(guard, detail, caseItem, null, null, 'PP-D-SANDBOX92'), 'The preview is for another dispute; prepare it again for this one.', 'a preview for a look-alike (same last 2) is not this dispute');
+assert.equal(sendGuardBlock(guard, detail, caseItem, null, null), 'The preview is for another dispute; prepare it again for this one.', 'no preview id: held');
 // (r34 #3) A pairing from a preview is not a send; "already sent" only after a real send (5th argument).
-assert.equal(sendGuardBlock(guard, detail, caseItem, 'PP-D-…01'), 'Paired with PP-D-…01 (preview only). Reset demo to pair it with another dispute.');
-assert.equal(sendGuardBlock(guard, detail, caseItem, 'PP-D-…01', 'PP-D-…01'), 'This case was already sent to PP-D-…01; it cannot also go to PP-D-…02.');
-assert.match(sendGuardBlock({ ...guard, case_reason: 'MERCHANDISE_OR_SERVICE_NOT_AS_DESCRIBED' }, detail, caseItem, null), /^The case reason .* does not match this dispute/);
-assert.match(sendGuardBlock(guard, { ...detail, dispute_amount: { currency_code: 'USD', value: '49.00' } }, caseItem, null), /^The amount does not match/);
-assert.match(sendGuardBlock(guard, { ...detail, dispute_amount: { currency_code: 'TWD', value: '48.00' } }, caseItem, null), /^The currency does not match/);
-assert.match(sendGuardBlock(guard, { ...detail, source: 'synthetic_fixture' }, { ...caseItem, dispute_amount: { currency_code: 'USD', value: '18.00' } }, null), /amount does not match/, 'a fixture is held to its case amount');
-assert.match(sendGuardBlock({ ...guard, account_status: 'MISMATCH', send_refusal: 'dispute_not_this_account' }, detail, caseItem, null), /different PayPal account/);
-assert.match(sendGuardBlock({ ...guard, account_status: 'UNKNOWN', send_refusal: 'account_identity_unknown' }, detail, caseItem, null), /cannot confirm which PayPal Sandbox account/);
-assert.match(sendGuardBlock(null, detail, caseItem, null), /Prepare the preview/);
+assert.equal(sendGuardBlock(guard, detail, caseItem, 'PP-D-SANDBOX01', null, P), 'Paired with PP-D-…01 (preview only). Reset demo to pair it with another dispute.');
+assert.equal(sendGuardBlock(guard, detail, caseItem, 'PP-D-SANDBOX01', 'PP-D-SANDBOX01', P), 'This case was already sent to PP-D-…01; it cannot also go to PP-D-…02.');
+assert.match(sendGuardBlock({ ...guard, case_reason: 'MERCHANDISE_OR_SERVICE_NOT_AS_DESCRIBED' }, detail, caseItem, null, null, P), /^The case reason .* does not match this dispute/);
+assert.match(sendGuardBlock(guard, { ...detail, dispute_amount: { currency_code: 'USD', value: '49.00' } }, caseItem, null, null, P), /^The amount does not match/);
+assert.match(sendGuardBlock(guard, { ...detail, dispute_amount: { currency_code: 'TWD', value: '48.00' } }, caseItem, null, null, P), /^The currency does not match/);
+assert.match(sendGuardBlock(guard, { ...detail, source: 'synthetic_fixture' }, { ...caseItem, dispute_amount: { currency_code: 'USD', value: '18.00' } }, null, null, P), /amount does not match/, 'a fixture is held to its case amount');
+assert.match(sendGuardBlock({ ...guard, account_status: 'MISMATCH', send_refusal: 'dispute_not_this_account' }, detail, caseItem, null, null, P), /different PayPal account/);
+assert.match(sendGuardBlock({ ...guard, account_status: 'UNKNOWN', send_refusal: 'account_identity_unknown' }, detail, caseItem, null, null, P), /cannot confirm which PayPal Sandbox account/);
+assert.match(sendGuardBlock(null, detail, caseItem, null, null, P), /Prepare the preview/);
 assert.equal(sendItemText('tracking', { body: { trackers: [{ carrier: 'UPS', tracking_number: '****123' }] } }), 'Tracking: UPS ****123');
 assert.match(sendItemText('evidence', { input: { evidences: [{ evidence_type: 'PROOF_OF_FULFILLMENT', evidence_info: { tracking_info: [{}] } }] }, files: [{ filename: 'synthetic-delivery.pdf' }] }),
   /files: synthetic-delivery\.pdf; 1 tracking row \(masked\)/);

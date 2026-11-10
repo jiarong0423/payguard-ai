@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { displayDisputeId } from '../frontend/src/disputeDisplay.js';
 import { hostedCopy, hostedGeminiMode } from '../frontend/src/hostedCopy.js';
 import { SELLER_EVIDENCE_LOCK, SELLER_EVIDENCE_TEXT, sellerEvidenceOnFile, sendLockReason } from '../frontend/src/lockReasons.js';
 
@@ -66,12 +67,12 @@ const css = read('frontend/src/index.css');
 const section = app.slice(app.indexOf('const SEND_HOLD_SECONDS'), app.indexOf('function LockReason'));
 const grab = (name) => { const match = section.match(new RegExp(`(?:const ${name} = [^\\n]*\\n|function ${name}\\([\\s\\S]*?\\n\\}\\n)`, 'u')); return match ? match[0] : ''; };
 {
-  const factory = new Function('operatorLabel', `${grab('maskDisputeId')}${section.match(/const ACCOUNT_LINES = \{[\s\S]*?\n\};\n/u)[0]}${grab('sameMoney')}${grab('sendGuardBlock')}return { sendGuardBlock };`);
-  const { sendGuardBlock } = factory((value, fallback = 'Needs review') => value || fallback);
+  const factory = new Function('operatorLabel', 'displayDisputeId', `${grab('maskDisputeId')}${section.match(/const ACCOUNT_LINES = \{[\s\S]*?\n\};\n/u)[0]}${grab('sameMoney')}${grab('sendGuardBlock')}return { sendGuardBlock };`);
+  const { sendGuardBlock } = factory((value, fallback = 'Needs review') => value || fallback, displayDisputeId);
   const detail = { dispute_id: 'PP-D-0000000002', reason: 'MERCHANDISE_OR_SERVICE_NOT_RECEIVED', dispute_amount: { currency_code: 'USD', value: '48.00' }, source: 'paypal_sandbox' };
-  assert.equal(sendGuardBlock(null, detail, {}, 'PP-D-…81'), 'Paired with PP-D-…81 (preview only). Reset demo to pair it with another dispute.');
-  assert.equal(sendGuardBlock(null, detail, {}, 'PP-D-…81', 'PP-D-…81'), 'This case was already sent to PP-D-…81; it cannot also go to PP-D-…02.');
-  assert.ok(app.includes("if (result?.external_send === 'SUBMITTED') sentByCaseRef.current[result.case_ref] = maskDisputeId(result.dispute_id);"), 'sent only after a real send');
+  assert.equal(sendGuardBlock(null, detail, {}, 'PP-D-0000000081'), 'Paired with PP-D-…81 (preview only). Reset demo to pair it with another dispute.');
+  assert.equal(sendGuardBlock(null, detail, {}, 'PP-D-0000000081', 'PP-D-0000000081'), 'This case was already sent to PP-D-…81; it cannot also go to PP-D-…02.');
+  assert.ok(app.includes("if (result?.external_send === 'SUBMITTED' && typeof result.dispute_id === 'string') sentByCaseRef.current[result.case_ref] = result.dispute_id;"), 'sent only after a real send (full id, round2 X)');
   assert.equal(app.split('boundByCaseRef.current = {}; sentByCaseRef.current = {}; setPreviewRefusal(null);').length - 1, 2, 'Reset demo and a new session forget the pairings');
   assert.equal(sendLockReason({ draft: {}, receipt: {}, refusal: 'This dispute does not match the selected case (reason or amount differ).' }),
     'Locked: This dispute does not match the selected case (reason or amount differ).', 'refusal reason, not "prepare the preview first"');

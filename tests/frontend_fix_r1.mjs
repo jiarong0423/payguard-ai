@@ -13,7 +13,8 @@ const css = read('frontend/src/index.css');
   assert.ok(app.includes("const SENT_STORE_KEY = 'payguard.console.sent.v1';"), 'own storage key');
   assert.ok(app.includes('if (!value || value.session_id !== sessionId || !value.items'), 'a stored receipt counts only for its own session');
   assert.ok(app.includes("row.result.external_send === 'SUBMITTED'\n  && row.result.dispute_id === id"), 'only a SUBMITTED result for that dispute is restored');
-  assert.ok(app.includes('const kept = sentReceipts.current[disputeId] || readStoredReceipts(session.session_id)[disputeId] || null;'), 'looked up when a dispute is opened');
+  // (round2 X, B 6a/6d) This page's own send first; a stored one only after the fresh read-back confirms it.
+  assert.ok(app.includes('const mine = sentReceipts.current[disputeId] || null;\n    const stored = mine ? null : readStoredReceipts(session.session_id)[disputeId] || null;\n    const restored = restoredSendState(stored, result);\n    const kept = mine || (restored?.confirmed ? stored : null);'), 'looked up when a dispute is opened');
   assert.ok(app.includes('setProviderDisputeDetail(result); setEvidencePreview(kept ? kept.result : null); setTrackingPreview(null); setPreviewRefusal(null);'), 'receipt restored, nothing else kept');
   assert.ok(app.includes('    rememberSent(result);\n    rememberReceipt(session, result, null);\n    setEvidencePreview(result);'), 'remembered at the send');
   assert.equal((app.match(/sentReceipts\.current = \{\};/gu) || []).length, 2, 'memory cleared on a new session and on Reset demo');

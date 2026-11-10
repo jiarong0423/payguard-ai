@@ -20,8 +20,10 @@ assert.ok(restoredReviewText('PP-D-XXXX7173').includes('sent to the PayPal Sandb
 assert.ok(!restoredReviewText('PP-D-XXXX7173').includes('Nothing was sent'));
 
 // The receipt and the restored line read the per-case sent record (set only by an external_send SUBMITTED reply).
-assert.ok(app.includes('reviewSubmissionLabel(receipt, sentTo)'), 'receipt uses the sent state');
-assert.ok(app.includes('restoredReviewText(sentTo)'), 'restored line uses the sent state');
+// (round2 X) sentTo is the full dispute id; the label gets its displayed form.
+assert.ok(app.includes('const sentToShown = sentTo ? displayDisputeId(sentTo) : null;'), 'shown form of the sent id');
+assert.ok(app.includes('reviewSubmissionLabel(receipt, sentToShown)'), 'receipt uses the sent state');
+assert.ok(app.includes('restoredReviewText(sentToShown)'), 'restored line uses the sent state');
 assert.ok(!app.includes("operatorLabel(receipt.external_submission || 'FROZEN')"), 'no fixed "Not submitted" left on the receipt');
-assert.ok(/const rememberSent = \(result\) => \{\s*if \(result\?\.external_send === 'SUBMITTED'\) sentByCaseRef\.current\[result\.case_ref\]/u.test(app));
+assert.ok(/const rememberSent = \(result\) => \{\s*if \(result\?\.external_send === 'SUBMITTED' && typeof result\.dispute_id === 'string'\) sentByCaseRef\.current\[result\.case_ref\] = result\.dispute_id;/u.test(app));
 console.log('frontend_send_receipt_label: ok');
