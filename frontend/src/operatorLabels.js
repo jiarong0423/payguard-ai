@@ -165,3 +165,14 @@ export function operatorLabels(values, fallback = 'Needs review') {
 export function sandboxReadbackLabel(separateReadback) {
   return operatorLabel(separateReadback === true ? 'SEPARATE_READBACK_TRUE' : 'SEPARATE_READBACK_FALSE');
 }
+
+// (2026-11-10, video frame MAIN 168 s) The local review receipt said "Not submitted" next to a Status row reading
+// "Submitted to Sandbox". Once this case's evidence was sent (local or hosted), the receipt says so; before, the
+// server's own value (FROZEN -> "Not submitted").
+export function reviewSubmissionLabel(receipt, sentTo) {
+  return sentTo ? `${labels.SUBMITTED} (${sentTo})` : operatorLabel(receipt?.external_submission || 'FROZEN');
+}
+export function restoredReviewText(sentTo) {
+  return sentTo ? `Review recorded earlier in this session. Evidence was sent to the PayPal Sandbox (${sentTo}).`
+    : 'Review recorded earlier in this session. Nothing was sent to PayPal.';
+}

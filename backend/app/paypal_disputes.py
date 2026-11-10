@@ -517,6 +517,10 @@ def submit_refusal(fresh: dict, case_reason, case_amount, evidence_input: dict) 
     """
     if fresh.get("status") != "WAITING_FOR_SELLER_RESPONSE":
         return "dispute_not_awaiting_seller"
+    # (red team 2026-11-10 P2-2) Seller evidence PayPal already lists stops the send at the fresh read too, not only at
+    # the preview: a dispute answered between preview and send (or by another visitor) is never sent to again.
+    if any(type(row) is dict and row.get("source") == "SUBMITTED_BY_SELLER" for row in fresh.get("evidences") or []):
+        return "seller_evidence_already_submitted"
     if fresh.get("provide_evidence_link") is not True:
         return "dispute_evidence_not_offered"
     if fresh.get("reason") != case_reason:

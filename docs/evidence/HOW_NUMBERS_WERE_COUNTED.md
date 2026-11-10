@@ -16,16 +16,16 @@ The file set is the public candidate: every path in `public_export_manifest.json
 
 | Claim | Value | Command or rule |
 |---|---|---|
-| Tracked files | 426 | 424 manifest paths + `public_export_manifest.json` + `public_export_manifest.sha256` |
-| Python source lines | 22,786 | all `*.py` outside `tests/` (backend, src, tools, integrations) |
-| Python test lines | 18,571 | all `tests/**/*.py` |
-| Front-end lines | 15,120 | `frontend/src/**/*.{jsx,js,css}`, 89 files; see below |
+| Tracked files | 452 | 450 manifest paths + `public_export_manifest.json` + `public_export_manifest.sha256` |
+| Python source lines | 23,083 | all `*.py` outside `tests/` (backend, src, tools, integrations) |
+| Python test lines | 19,347 | all `tests/**/*.py` |
+| Front-end lines | 15,224 | `frontend/src/**/*.{jsx,js,css}`, 89 files; see below |
 | JSX files / pages | 24 / 5 | `frontend/**/*.jsx`; `frontend/*.html` (index, dashboard, evidence, proof, scenarios; `public/offline.html` is the service-worker fallback, not a page) |
 | API routes | 40 (37 in the OpenAPI description) | see "Route count" |
-| Node test files / lines | 52 / 7,244 | `tests/frontend_*.mjs` (the two other `.mjs` files are a token-writer and a recorder, not tests) |
-| Python tests | 1,141 (9 carry a skip marker at load time; how many are skipped when run depends on the environment: 2 in the run recorded in `TEST_RUN_20261109_SKIPPED.md`) | `unittest` discovery over `tests/`, loaded and counted, not run |
+| Node test files / lines | 54 / 7,383 | `tests/frontend_*.mjs` (the two other `.mjs` files are a token-writer and a recorder, not tests) |
+| Python tests | 1,169 (9 carry a skip marker at load time; how many are skipped when run depends on the environment: 2 in the run recorded in `TEST_RUN_20261109_SKIPPED.md`) | `unittest` discovery over `tests/`, loaded and counted, not run |
 | Red-team requests | 1,727 | run-time only, see below |
-| Words in documents | 90,211 (page says about 90,211; the script allows 1% either way) | see below |
+| Words in documents | 90,568 (page says about 90,568; the script allows 1% either way) | see below |
 | Evidence files | 42 | files directly in `docs/evidence/` (35 `.md`, 6 `.json`, 1 `.csv`) |
 | Diagrams and images | 38 | every `*.png` and `*.svg` in the file set: 32 under `docs/`, 6 application icons under `frontend/public/icons`; `.mmd` sources are not counted |
 | PayPal clauses | 140 | `len(snippets)` in `data/country_rules/paypal_country_rules_v1.json` |
@@ -36,7 +36,7 @@ The file set is the public candidate: every path in `public_export_manifest.json
 
 ### Python tests
 
-`unittest.defaultTestLoader.discover("tests")` yields 1,104 test cases with no import failure. Nothing is executed. Skips are counted from `@unittest.skip*` markers visible at load time (9). A skip raised by `self.skipTest()` inside a test body would only appear when the test runs; the full run (`./tools/run.sh test`, final lines `Ran N tests` and `OK (skipped=N)`) is the authority for the skip count; the full suite was last run on 2026-11-09 on the public build of this tree and printed `Ran 1104 tests` and `OK (skipped=9)` (see `docs/evidence/TEST_RUN_20261108.md`). Earlier documents quoting 1005, 1039, 1048 and 1055 are older counts from earlier states of the tree.
+`unittest.defaultTestLoader.discover("tests")` yields 1,169 test cases with no import failure. Nothing is executed. Skips are counted from `@unittest.skip*` markers visible at load time (9). A skip raised by `self.skipTest()` inside a test body would only appear when the test runs; the full run (`./tools/run.sh test`, final lines `Ran N tests` and `OK (skipped=N)`) is the authority for the skip count; the full suite was last run on 2026-11-09 on the public build of this tree and printed `Ran 1104 tests` and `OK (skipped=9)` (see `docs/evidence/TEST_RUN_20261108.md`). Earlier documents quoting 1005, 1039, 1048 and 1055 are older counts from earlier states of the tree.
 
 ### Red-team request matrix (1,727)
 
@@ -52,13 +52,13 @@ The backend is FastAPI. Routes are registered inside the factory function `creat
 
 The script counts with the `ast` module (decorated functions whose decorator is `<name>.<get|post|put|delete|patch>(...)`), so it neither runs the app nor depends on the variable name. It also confirms there are no `add_api_route` or `include_router` calls. Each route has exactly one HTTP method, so routes and method-path pairs are both 40. The cross-check by calling `create_app()` and counting `APIRoute` objects gave 40 on 2026-11-09 (37 paths in the OpenAPI description).
 
-### Front-end lines: 15,120
+### Front-end lines: 15,224
 
-15,120 is the physical line count of the 89 files `frontend/src/**/*.jsx`, `*.js` and `*.css`. It excludes the JSON data files (adding them gives 16,893), `.mjs` files, the HTML pages and `frontend/public/` (adding HTML and public gives 14,255). JS and JSX without CSS is 11,018. The earlier public page said 13,463, the count of the published tree before 2026-11-08; the 15 more lines are the CSS added that day (`frontend/src/index.css` grew from 1,143 to 1,158 lines: the hint box before a draft and the toast placement rule). An independent reviewer's count of 13,553 uses the same scope.
+15,224 is the physical line count of the 89 files `frontend/src/**/*.jsx`, `*.js` and `*.css`. It excludes the JSON data files (adding them gives 18,281), `.mjs` files, the HTML pages and `frontend/public/` (adding HTML and public gives 15,592). JS and JSX without CSS is 11,570. The earlier public page said 13,463, the count of the published tree before 2026-11-08; the 15 more lines are the CSS added that day (`frontend/src/index.css` grew from 1,143 to 1,158 lines: the hint box before a draft and the toast placement rule). An independent reviewer's count of 13,553 uses the same scope.
 
-### Document words: 90,211
+### Document words: 90,568
 
-90,211 is the whitespace-token count of all 57 Markdown files in the file set (README, the security and notices files, and everything under `docs/`), with code fences and tables included. Limited to `docs/**` it is 70,164; `docs/**` plus README is 83,811. Earlier pages quoted "about 48,700" (the tree before 2026-11-08, documents only); the count grew because evidence files and a README walkthrough were added that day. The page says "about 86,743"; the script accepts one percent either way because the documents are still being edited. `tools/verify_public_numbers.py` prints the current figure and the variants.
+90,568 is the whitespace-token count of all 57 Markdown files in the file set (README, the security and notices files, and everything under `docs/`), with code fences and tables included. Limited to `docs/**` it is 72,603; `docs/**` plus README is 87,377. Earlier pages quoted "about 48,700" (the tree before 2026-11-08, documents only); the count grew because evidence files and a README walkthrough were added that day. The page says "about 86,743"; the script accepts one percent either way because the documents are still being edited. `tools/verify_public_numbers.py` prints the current figure and the variants.
 
 ### Receipts with a Debug-Id
 

@@ -11,27 +11,27 @@
 <body>
 <main>
 <h1>Start here: judge TradeGlot in about five minutes</h1>
-<p class="lead">TradeGlot checks a sale before you ship, then helps a seller prepare dispute evidence. Rules decide, a person approves, and nothing is sent to PayPal from this page.</p>
+<p class="lead">TradeGlot checks a sale before you ship, then helps a seller prepare dispute evidence. Rules decide, a person approves, and this page itself sends nothing to PayPal.</p>
 <p><a class="btn" href="https://payguard-demo-j2b3.onrender.com/">Open the demo and press &ldquo;Run the step 1 example&rdquo;</a></p>
 
 <p class="small">The free server can take up to a minute to wake up on the first visit.</p>
 <h2>The five-minute path</h2>
 <ol>
 <li><a class="row" href="https://payguard-demo-j2b3.onrender.com/"><span class="n">1</span><span><span class="t">Check a sale <span class="tag">hosted</span></span><span class="d">Press <b>Run the step 1 example</b>. A banned product to Singapore is stopped, with the rule and its official source.</span></span></a></li>
-<li><a class="row" href="https://payguard-demo-j2b3.onrender.com/#disputes"><span class="n">2</span><span><span class="t">Dispute evidence <span class="tag">hosted</span></span><span class="d">Open step 03, pick a case, press <b>Prepare evidence draft</b>. Expect &ldquo;Ready for human review&rdquo; and a review ZIP. Below it, <b>Try the send</b> is a recorded replay; nothing is sent.</span></span></a></li>
+<li><a class="row" href="https://payguard-demo-j2b3.onrender.com/#disputes"><span class="n">2</span><span><span class="t">Dispute evidence <span class="tag">hosted</span></span><span class="d">Open step 03, pick a case, press <b>Prepare evidence draft</b>. Expect &ldquo;Ready for human review&rdquo; and a review ZIP. Below it, the recorded replay sends nothing; when the send switch is on, <b>Connect US Sandbox</b> lets you send that evidence to one of the author&rsquo;s Sandbox test disputes instead.</span></span></a></li>
 <li><a class="row" href="https://payguard-demo-j2b3.onrender.com/dashboard.html"><span class="n">3</span><span><span class="t">AG Studio evidence dashboard <span class="tag">hosted</span> <span class="tag rec">recorded agent run</span></span><span class="d">Ask &ldquo;Which reason code appears most often across the three cases?&rdquo; The answer replays a real Gemini run, labelled as recorded.</span></span></a></li>
 <li><a class="row" href="https://payguard-demo-j2b3.onrender.com/proof.html"><span class="n">4</span><span><span class="t">Proof and receipts <span class="tag rec">recorded</span></span><span class="d">What was shown, how, when, and from which file, including the recorded real send to the PayPal Sandbox.</span></span></a></li>
 <li><a class="row" href="https://payguard-demo-j2b3.onrender.com/scenarios.html"><span class="n">5</span><span><span class="t">Scenario work orders <span class="tag">hosted</span></span><span class="d">Fixed scenarios you can rerun to see the same result.</span></span></a></li>
 </ol>
 
 <h2>What is real, what is recorded</h2>
-<p>On this page the only PayPal calls are read-only Sandbox reads of the author&rsquo;s own test disputes (ids shown as masked codes); every write is refused. Five PayPal Sandbox evidence sends were made earlier on the author&rsquo;s computer and are shown as receipts and notes. One AG Studio agent run and ten Channel3 searches were real too (five of the searches are replayed here). The data is synthetic and PayPal decides every real dispute.</p>
+<p>The hosted site reads the author&rsquo;s own Sandbox test disputes (ids shown as masked codes) and, with the send switch on, one capped evidence send per visit to the author&rsquo;s own Sandbox test disputes (at most 2 sends per address per day, 3 per 10 minutes and 15 a day for all visitors); invoice drafts, tracking, webhooks, the AI brief and the Studio agents answer 503. Five PayPal Sandbox evidence sends were made earlier on the author&rsquo;s computer and are shown as receipts and notes. One AG Studio agent run and ten Channel3 searches were real too (five of the searches are replayed here). The data is synthetic and PayPal decides every real dispute.</p>
 
 <h2>Three claims, in plain text</h2>
 <noscript><p class="small">This page needs no JavaScript. The same facts are here for text-only readers.</p></noscript>
 <ul>
-<li>Rules decide, a person approves: a banned product to Singapore is stopped with the rule and its official source; nothing is sent to PayPal from the hosted site.</li>
-<li>The hosted site is read-only: every write route answers 503 <code>hosted_demo_disabled</code>; its only PayPal calls are read-only Sandbox reads with masked dispute ids.</li>
+<li>Rules decide, a person approves: a banned product to Singapore is stopped with the rule and its official source; the policy check itself sends nothing to PayPal.</li>
+<li>The hosted site uses a PayPal Sandbox test account only: Sandbox reads with masked dispute ids and, with the send switch on, one capped evidence send per visit to the author&rsquo;s own Sandbox test disputes (at most 2 sends per address per day, 3 per 10 minutes and 15 a day for all visitors); every other write route answers 503 <code>hosted_demo_disabled</code>.</li>
 <li>Every claim has a row on the <a href="https://payguard-demo-j2b3.onrender.com/proof.html">proof page</a> (also readable without JavaScript in <a href="https://github.com/jiarong0423/payguard-ai/tree/main/docs/evidence">docs/evidence</a>). Machine-readable: <a href="https://payguard-demo-j2b3.onrender.com/api/v1/openapi.json">/api/v1/openapi.json</a> and <a href="https://payguard-demo-j2b3.onrender.com/llms.txt">/llms.txt</a>.</li>
 </ul>
 

@@ -65,3 +65,7 @@
 .board-chips button:focus-visible { outline: 2px solid var(--pg-color-focus); outline-offset: 2px; }
 .board-canvas .b-sch-event-wrap.payguard-board-glow .b-sch-event, .board-canvas .payguard-board-glow.b-sch-event { box-shadow: 0 0 0 3px var(--pg-color-risk), 0 0 12px 2px var(--pg-color-risk); }
 .board-canvas .b-sch-event-wrap.payguard-board-dim, .board-canvas .payguard-board-dim.b-sch-event { opacity: 0.3; }
+.board-triage { margin: 0 0 4px; font-weight: 600; }
+.board-row-source { font-size: 14px; padding: 1px 6px; border-radius: 999px; border: 1px solid currentColor; margin-inline: 6px; }
+.board-row-unscheduled { outline: 2px dashed var(--pg-color-watch); outline-offset: -2px; }
+.board-unscheduled { color: var(--pg-color-watch); }

@@ -47,8 +47,17 @@ function baseHostedCopy(chooser) {
 
 // `sandboxReads`: GET /connections said sandbox_reads (read-only Sandbox reads on). PayPal is then called for reads only;
 // every write stays off. Without it the text above is returned unchanged.
-export function hostedCopy(chooser, sandboxReads = false) {
+// `sandboxSend`: GET /connections also said sandbox_send (owner decision 2026-11-10): the hosted demo may send dispute
+// evidence to the owner's own Sandbox test disputes, once per dispute and per visit, at most 2 sends per address per day, under a shared cap.
+export function hostedCopy(chooser, sandboxReads = false, sandboxSend = false) {
   const copy = baseHostedCopy(chooser);
+  if (sandboxReads === true && sandboxSend === true) {
+    return {
+      ...copy,
+      pill: 'Hosted demo · live Sandbox',
+      intro: "This public copy uses the owner's PayPal Sandbox test account (never a live account). It reads Sandbox test disputes and, after your review and the send dialog, can send evidence built from the demo's synthetic seller records to one of them: once per dispute and once per visit (at most 2 sends per address per day), under a shared limit. Invoice drafts and tracking stay local-only.",
+    };
+  }
   // Not yet known (null): no claim either way; the pill never says "no PayPal calls" while the flag could still be on.
   if (sandboxReads === null) return { ...copy, pill: 'Hosted demo', intro: 'This public copy runs the same code. Its PayPal Sandbox mode is being checked.' };
   if (sandboxReads !== true) return copy;

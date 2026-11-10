@@ -25,7 +25,25 @@ export const BOARD_STATUS_LABELS = {
   DUE_SOON_NO_DRAFT: `Due within ${DUE_SOON_DAYS} days · no draft yet`,
   DUE_SOON: `Due within ${DUE_SOON_DAYS} days`,
   OPEN: 'Response window open',
+  NOT_AWAITING_SELLER: 'PayPal is not waiting for the seller',
 };
+
+// Bryntum's own wording for this board (its hackathon idea list, quoted in the J4 sponsor review of 2026-11-10):
+// "Dispute triage board (Scheduler)" with "disputed amount, response deadline, and evidence readiness".
+export const TRIAGE_CAPTION = 'Dispute triage board: disputed amount, response deadline, and evidence readiness per case';
+export const UNSCHEDULED_LABEL = 'Deadline set · no evidence slot scheduled';
+
+// (2026-11-10) Live PayPal Sandbox disputes as board rows: the list read the console already made (GET /paypal/disputes,
+// source paypal_sandbox; hosted ids are masked codes). Only the projected summary fields are used. Sandbox rows get no
+// automatic plan: a deadline without a scheduled evidence slot is shown as such until the seller adds one.
+export function sandboxCases(items) {
+  if (!Array.isArray(items)) return [];
+  return items.filter((row) => row && typeof row.dispute_id === 'string').map((row) => ({
+    case_ref: row.dispute_id, reason: row.reason, status: row.status, providerStatus: row.status,
+    dispute_amount: row.dispute_amount, seller_response_due_date: row.seller_response_due_date ?? null,
+    opened_at: row.create_time, source: 'sandbox',
+  }));
+}
 
 function instant(value) {
   if (typeof value !== 'string') return null;
@@ -91,22 +109,27 @@ function evidenceEvents(dispute, draft) {
 }
 
 // One row per dispute case in state.disputes. `drafts` maps case_ref to a draft the console fetched.
-export function buildEvidenceBoard({ disputes, drafts = {}, now }) {
-  if (!Array.isArray(disputes) || disputes.length === 0) return null;
+export function buildEvidenceBoard({ disputes, drafts = {}, now, sandbox = null }) {
+  const live = sandboxCases(sandbox);
+  const cases = [...live, ...(Array.isArray(disputes) ? disputes : [])];
+  if (cases.length === 0) return null;
   const nowMs = now instanceof Date ? now.getTime() : Number(now);
   if (!Number.isFinite(nowMs)) return null;
   const rows = [];
   const events = [];
-  disputes.forEach((dispute) => {
+  cases.forEach((dispute) => {
     if (!dispute || typeof dispute.case_ref !== 'string') return;
+    const fromSandbox = dispute.source === 'sandbox';
     // A draft held for a case the backend lists as not drafted is stale (for example after a reset).
-    const candidate = drafts[dispute.case_ref];
+    const candidate = fromSandbox ? null : drafts[dispute.case_ref];
     const draft = candidate && candidate.case_ref === dispute.case_ref && dispute.status !== 'needs_review' ? candidate : null;
     const readiness = draft ? readinessOf(draft) : null;
     // Case data first: the queue's seller_response_due_date; a draft's routing copy only when the queue has none.
     const dueAt = instant(dispute.seller_response_due_date) !== null ? dispute.seller_response_due_date : (draft?.routing?.seller_response_due_date ?? null);
     const dueMs = instant(dueAt);
-    const status = boardStatus({ dueMs, readiness, nowMs, hasDraft: Boolean(draft) });
+    // A Sandbox dispute has no local draft; its readiness is PayPal's own status (evidence goes only while it waits).
+    const status = fromSandbox && dispute.providerStatus !== 'WAITING_FOR_SELLER_RESPONSE' && dueMs !== null ? 'NOT_AWAITING_SELLER'
+      : boardStatus({ dueMs, readiness, nowMs, hasDraft: fromSandbox || Boolean(draft) });
     const id = dispute.case_ref;
     const caseEvents = evidenceEvents(dispute, draft);
     caseEvents.forEach((event, index) => {
@@ -123,7 +146,7 @@ export function buildEvidenceBoard({ disputes, drafts = {}, now }) {
     if (dueMs !== null && openedMs !== null && dueMs > openedMs) {
       events.push({
         id: `${id}-window`, resourceId: id, name: 'Response window', startDate: utcWallClock(openedAt), endDate: utcWallClock(dueAt),
-        kind: 'RESPONSE_WINDOW', at: dueAt, source: draft ? operatorLabel(draft.routing?.due_state) : 'Case queue · no draft yet', eventColor: WINDOW_COLORS[status] || 'blue', cls: `payguard-board-window payguard-board-window-${status.toLowerCase()}`,
+        kind: 'RESPONSE_WINDOW', at: dueAt, source: fromSandbox ? 'PayPal Sandbox · seller response due date' : draft ? operatorLabel(draft.routing?.due_state) : 'Case queue · no draft yet', eventColor: WINDOW_COLORS[status] || 'blue', cls: `payguard-board-window payguard-board-window-${status.toLowerCase()}`,
         draggable: false, resizable: false,
       });
     }
@@ -138,7 +161,9 @@ export function buildEvidenceBoard({ disputes, drafts = {}, now }) {
       dueAt,
       dueState: draft?.routing?.due_state ?? null,
       readiness,
-      readinessLabel: readiness ? (readiness.required ? `${readiness.present}/${readiness.required} present` : 'No tracked items') : 'No draft yet',
+      readinessLabel: fromSandbox ? `PayPal: ${operatorLabel(dispute.providerStatus)}` : readiness ? (readiness.required ? `${readiness.present}/${readiness.required} present` : 'No tracked items') : 'No draft yet',
+      source: fromSandbox ? 'sandbox' : 'synthetic',
+      autoPlan: !fromSandbox,
       status,
       statusLabel: BOARD_STATUS_LABELS[status],
       highlight: URGENT.has(status),
@@ -254,9 +279,15 @@ export function restorePlans(stored, rows, nowMs) {
     if (!window) continue;
     const kept = stored?.[row.id];
     const candidate = kept && { startMs: Date.parse(kept.start), endMs: Date.parse(kept.end) };
-    plans[row.id] = candidate && validatePlan(candidate, { nowMs, dueMs: window.dueMs }).valid ? candidate : defaultPlan(window);
+    if (candidate && validatePlan(candidate, { nowMs, dueMs: window.dueMs }).valid) plans[row.id] = candidate;
+    else if (row.autoPlan !== false) plans[row.id] = defaultPlan(window);
   }
   return plans;
+}
+
+// Rows with a response deadline and time left but no evidence slot scheduled (Sandbox rows until the seller adds one).
+export function unscheduledRows(rows, plans, nowMs) {
+  return (rows || []).filter((row) => row.status !== 'NOT_AWAITING_SELLER' && !plans?.[row.id] && planWindowOf(row, nowMs));
 }
 
 // The Bryntum events for the plan bars, in the same wall-clock frame as the read-only events.

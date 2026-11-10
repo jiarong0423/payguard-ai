@@ -1,10 +1,15 @@
 # Optional Render Blueprint for the TradeGlot public demo. One free web service.
-# The service runs PAYGUARD_DEMO_MODE=public: synthetic fixtures and committed replays; PayPal Sandbox,
-# the Gemini evidence brief, the AG Studio agents and local-model calls are disabled and answer 503.
-# The one opt-in exception is the evidence guide: with the four optional entries at the end set, its clause
-# chooser may call Gemini on a free-tier key, at most 5 calls a minute and 20 a day (guide_routes.py
-# HOSTED_GUIDE_CALLS_PER_MINUTE / _PER_DAY). Left unset, the guide stays on the keyword chooser.
-# Do not add PayPal or Google Cloud credentials to this service.
+# The service runs PAYGUARD_DEMO_MODE=public: synthetic fixtures and committed replays; the Gemini evidence brief,
+# the AG Studio agents, local-model calls, invoice drafts, tracking and webhook verification answer 503.
+# Opt-ins (all sync: false below; set them in the Render dashboard or leave them unset):
+#  - Evidence guide: its clause chooser may call Gemini on a free-tier key, at most 5 calls a minute and 20 a day
+#    (guide_routes.py HOSTED_GUIDE_CALLS_PER_MINUTE / _PER_DAY). Left unset, the guide stays on the keyword chooser.
+#  - PayPal Sandbox (owner decision 2026-11-10): the PayPal account is a free Sandbox TEST account, so the hosted demo
+#    may hold its Sandbox client id and secret. PAYGUARD_HOSTED_READONLY_SANDBOX=enabled opens Sandbox reads (masked
+#    dispute ids, 20 a minute, 500 a day); PAYGUARD_HOSTED_SANDBOX_SEND=enabled adds the evidence send to the owner's
+#    own Sandbox test disputes (once per dispute, once per visit,
+#    at most 2 sends per address per day, 3 per 10 minutes, 15 a day; counted per server run, a restart resets them; demo_mode.py).
+# Never put live (production) PayPal credentials or any Google Cloud credential on this service.
 services:
   - type: web
     name: payguard-demo
@@ -30,7 +35,7 @@ services:
         value: "3"
       # Optional guide opt-in (owner decision 2026-11-04). sync: false keeps the values out of this file; set them
       # in the Render dashboard, or leave them unset for a keyword-only guide. GEMINI_API_KEY is a free-tier AI
-      # Studio key stored as a Render secret; no other credential belongs here.
+      # Studio key stored as a Render secret; the only other credentials are the PayPal Sandbox ones below.
       - key: PAYGUARD_HOSTED_GUIDE_MODEL
         sync: false
       - key: PAYGUARD_GUIDE_MODEL
@@ -38,4 +43,24 @@ services:
       - key: PAYGUARD_GEMINI_TRANSPORT
         sync: false
       - key: GEMINI_API_KEY
+        sync: false
+      # PayPal Sandbox opt-in (owner decision 2026-11-10). Sandbox test account only; never live credentials.
+      # PAYGUARD_PAYPAL_OUTBOUND=enabled lets the adapter load PAYPAL_CLIENT_ID / PAYPAL_CLIENT_SECRET (Render secrets).
+      - key: PAYGUARD_PAYPAL_OUTBOUND
+        sync: false
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+      # The Sandbox seller test account's PayPal account id; a send is refused unless each dispute's seller matches it.
+      - key: PAYGUARD_PAYPAL_SANDBOX_MERCHANT_ID
+        sync: false
+      # The adapter's own evidence send flag; the hosted send also needs the two hosted switches below.
+      - key: PAYGUARD_PAYPAL_DISPUTE_SUBMIT
+        sync: false
+      # enabled: read-only Sandbox reads (connect, list, detail). Unset or off: no PayPal call. Other values stop startup.
+      - key: PAYGUARD_HOSTED_READONLY_SANDBOX
+        sync: false
+      # enabled (needs the read-only switch): the capped evidence send. Unset or off: no send. Other values stop startup.
+      - key: PAYGUARD_HOSTED_SANDBOX_SEND
         sync: false

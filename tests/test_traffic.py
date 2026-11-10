@@ -58,7 +58,13 @@ class ClientKeyTests(unittest.TestCase):
         item = scope(forwarded="198.51.100.9, 10.0.0.2")
         self.assertEqual(client_key(item, proxied=True, hop=1), "10.0.0.2")
         self.assertEqual(client_key(item, proxied=True, hop=2), "198.51.100.9")
-        self.assertEqual(client_key(item, proxied=True, hop=5), "198.51.100.9", "a short header uses its left-most entry")
+        # (red team 2026-11-10 P2-1, intended change) A header shorter than the trusted hop has no trusted entry: every
+        # such request shares one bucket instead of using the visitor-written left-most entry.
+        self.assertEqual(client_key(item, proxied=True, hop=5), "short-forwarded", "a short header fails closed")
+        self.assertEqual(client_key(scope(forwarded="203.0.113.50, 10.0.0.2"), proxied=True, hop=3), "short-forwarded")
+        self.assertEqual(client_key(scope(forwarded="203.0.113.51"), proxied=True, hop=3), "short-forwarded",
+                         "two forged short headers land in the same bucket")
+        self.assertEqual(client_key(scope(forwarded="203.0.113.7, 10.0.0.2, 10.0.0.3"), proxied=True, hop=3), "203.0.113.7")
         for raw, expected in (("2", 2), ("0", 1), ("9", 1), ("x", 1)):
             with mock.patch.dict("os.environ", {"PAYGUARD_CLIENT_IP_HOP": raw}):
                 self.assertEqual(configured_hop(), expected, raw)

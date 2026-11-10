@@ -251,7 +251,8 @@ const app = read('frontend/src/App.jsx');
 assert.ok(app.includes(['const EvidenceBoard = lazy(() => imp', "ort('./board/EvidenceBoard.jsx'));"].join('')), 'board is a lazy chunk');
 const stepThree = app.slice(app.indexOf('<StageAccordion id="disputes"'), app.indexOf('</StageAccordion>', app.indexOf('<StageAccordion id="disputes"')));
 assert.match(stepThree, /<StepSection id="evidence-board" title="Evidence deadline board"[^>]*open=\{boardOpen\}/u);
-assert.ok(stepThree.includes('<EvidenceBoard disputes={state?.disputes} drafts={boardDraftsForState} />'));
+// (2026-11-10, intended) The board also gets the live Sandbox dispute list when the console holds one.
+assert.ok(stepThree.includes("<EvidenceBoard disputes={state?.disputes} drafts={boardDraftsForState} sandbox={providerDisputes?.source === 'paypal_sandbox' ? providerDisputes.items : null} />"));
 assert.ok(app.includes('const boardOpen = boardExpanded ?? false;'), 'closed by default (UI plan r2 A3), open once toggled');
 const boardSource = read('frontend/src/board/EvidenceBoard.jsx');
 assert.ok(boardSource.includes("from 'virtual:payguard-optional-timeline'"));

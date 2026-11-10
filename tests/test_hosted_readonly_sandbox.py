@@ -293,7 +293,9 @@ class WrapperSurface(unittest.TestCase):
         self.assertEqual(public, {"status", "require_connected", "connect", "list_disputes", "get_dispute",
                                   "dispute_submit_enabled", "tracking_submit_enabled", "account_merchant_id",
                                   "last_debug_id", "open_clients", "create_invoice_draft", "provide_evidence",
-                                  "add_tracking", "verify_webhook"})
+                                  "add_tracking", "verify_webhook", "send_state"})
+        # (2026-11-10) send_state reports counts only and is None while the hosted send switch is off.
+        self.assertIsNone(wrapper.send_state())
         for name in ("transport", "config_loader", "_request", "call_log", "clock"):
             self.assertFalse(hasattr(wrapper, name), name)
 

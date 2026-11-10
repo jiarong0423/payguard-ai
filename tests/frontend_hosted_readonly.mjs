@@ -29,10 +29,13 @@ assert.equal((app.match(/setSandboxReads\(/g) || []).length, 1, 'one place sets 
 assert.ok(!/writeStored\([^)]*sandboxReads/.test(app), 'never stored');
 
 // 3. Write controls are still replaced by hosted notes whatever sandboxReads says (they test `hosted`, not the new flag).
-for (const note of ['hosted-note-invoice', 'hosted-note-evidence']) {
-  assert.ok(new RegExp(`\\{hosted \\? <p className="hosted-note" data-testid="${note}"`).test(app), `${note} still keyed on hosted alone`);
-}
-for (const guarded of ['reviewRecorded && !hosted && evidenceSubmitReady', 'reviewRecorded && !hosted && trackingSubmitReady', 'invoiceReview ? (hosted ? null :']) {
+// (2026-11-10, intended) The evidence send alone also opens with the separate hosted send flag (sandboxSend, from
+// /connections sandbox_send); invoices and tracking stay keyed on hosted alone.
+assert.ok(new RegExp(`\\{hosted \\? <p className="hosted-note" data-testid="hosted-note-invoice"`).test(app), 'hosted-note-invoice still keyed on hosted alone');
+assert.ok(app.includes('{hosted && !sandboxSend ? <p className="hosted-note" data-testid="hosted-note-evidence">'), 'evidence note keyed on hosted without the send flag');
+assert.ok(app.includes("setSandboxSend(connections?.mode === 'hosted_demo' && connections.sandbox_send === true);"), 'send flag from /connections only');
+assert.ok(app.includes('{itemNotReceived && !hosted && <>'), 'tracking controls never on the hosted demo');
+for (const guarded of ['reviewRecorded && (!hosted || sandboxSend) && evidenceSubmitReady', 'reviewRecorded && !hosted && trackingSubmitReady', 'invoiceReview ? (hosted ? null :']) {
   assert.ok(app.includes(guarded), guarded);
 }
 assert.ok(!/sandboxReads[^;]{0,80}(evidence-submit|tracking-submit|invoice-create|provide-evidence|add-tracking)/.test(app), 'no write control reads the new flag');

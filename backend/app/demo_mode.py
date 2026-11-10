@@ -12,10 +12,17 @@ remain. The hosted demo therefore needs no keys and holds none.
 without it. It names one exact hostname
 (no scheme, port, path or wildcard); the matching ``https://`` origin is the only
 origin it adds. With demo mode off neither variable changes anything.
+
+Two opt-in switches widen the hosted demo, each fail-closed (an unrecognised value stops startup):
+``PAYGUARD_HOSTED_READONLY_SANDBOX=enabled`` opens read-only Sandbox calls (OAuth, dispute list and detail) with
+masked dispute ids; ``PAYGUARD_HOSTED_SANDBOX_SEND=enabled`` (owner decision 2026-11-10, Sandbox test account only)
+additionally opens one write, ``POST /api/v1/paypal/disputes/provide-evidence``, behind every local send guard plus
+hosted-only caps: one send per dispute, one per visitor session, and a process-wide window and daily limit.
 """
 
 import asyncio
 import collections
+import contextvars
 import os
 import re
 import threading
@@ -52,6 +59,25 @@ DISABLED_ROUTES = frozenset({
 })
 # With the read-only Sandbox switch on, only the OAuth connect route opens; the other six stay disabled.
 READONLY_OPEN_ROUTES = frozenset({("POST", "/api/v1/paypal/connect")})
+# Opt-in on top of the read-only switch (owner decision 2026-11-10): the hosted page may send dispute evidence to the
+# owner's own Sandbox test disputes. Only this one route opens; invoices, tracking, webhooks, AI brief and Studio stay 503.
+HOSTED_SEND_ENV = "PAYGUARD_HOSTED_SANDBOX_SEND"
+SEND_OPEN_ROUTES = frozenset({("POST", "/api/v1/paypal/disputes/provide-evidence")})
+HOSTED_SEND_BUDGET_CODE = "hosted_send_budget_exceeded"
+HOSTED_SEND_SESSION_CODE = "hosted_send_session_used"
+# Process-wide caps on hosted evidence sends, all visitors together, plus one send per visitor session and per dispute.
+HOSTED_SENDS_PER_WINDOW = 3
+HOSTED_SEND_WINDOW_SECONDS = 600
+HOSTED_SENDS_PER_DAY = 15
+# (red team 2026-11-10 A1) One send per session alone let one address open new sessions and use up the whole Sandbox
+# dispute stock (3 per window, 15 a day) in minutes. Each client key (the TrafficGate address, an IPv6 /64 counted once)
+# may send at most this many in any 24 hours; the shared caps above still apply.
+HOSTED_SENDS_PER_CLIENT_PER_DAY = 2
+HOSTED_SEND_CLIENT_CODE = "hosted_send_client_used"
+# The visitor session making the current send; set by the provide-evidence route only around a submit.
+HOSTED_SEND_SESSION = contextvars.ContextVar("payguard_hosted_send_session", default=None)
+# The client key of that visitor (TrafficGate's address key); set together with HOSTED_SEND_SESSION.
+HOSTED_SEND_CLIENT = contextvars.ContextVar("payguard_hosted_send_client", default=None)
 _LABEL = r"(?!-)[a-z0-9-]{1,63}(?<!-)"
 _PUBLIC_HOST = re.compile(rf"(?=.{{1,253}}\Z){_LABEL}(?:\.{_LABEL})*\.[a-z](?:[a-z0-9-]{{0,61}}[a-z0-9])?\Z")
 
@@ -83,8 +109,28 @@ def hosted_readonly_enabled(environ=None) -> bool:
     raise DemoModeConfigError("PAYGUARD_HOSTED_READONLY_SANDBOX must be unset, 'off' or 'enabled'")
 
 
-def disabled_routes(readonly: bool = False) -> frozenset:
-    return DISABLED_ROUTES - READONLY_OPEN_ROUTES if readonly else DISABLED_ROUTES
+def hosted_send_enabled(environ=None) -> bool:
+    """True only for PAYGUARD_HOSTED_SANDBOX_SEND=enabled while public mode AND the read-only switch are on.
+    Off without public mode. With public mode on, an unrecognised value, or 'enabled' without the read-only switch,
+    fails startup (fail closed): the send is never on by accident or half-configured."""
+    source = os.environ if environ is None else environ
+    if not public_demo_enabled(source):
+        return False
+    value = source.get(HOSTED_SEND_ENV, "")
+    if value in ("", "off"):
+        return False
+    if value != "enabled":
+        raise DemoModeConfigError("PAYGUARD_HOSTED_SANDBOX_SEND must be unset, 'off' or 'enabled'")
+    if not hosted_readonly_enabled(source):
+        raise DemoModeConfigError("PAYGUARD_HOSTED_SANDBOX_SEND=enabled requires PAYGUARD_HOSTED_READONLY_SANDBOX=enabled")
+    return True
+
+
+def disabled_routes(readonly: bool = False, send: bool = False) -> frozenset:
+    if not readonly:
+        return DISABLED_ROUTES
+    routes = DISABLED_ROUTES - READONLY_OPEN_ROUTES
+    return routes - SEND_OPEN_ROUTES if send else routes
 
 
 def public_host(environ=None) -> str | None:
@@ -181,17 +227,70 @@ class ReadBudget:
             self._stamps.append(now)
 
 
+class SendBudget:
+    """Process-wide cap on hosted evidence sends: at most ``per_window`` in any ``window`` seconds and ``per_day`` in
+    any 24 hours, all visitors together. A reserved send stays counted whatever the provider answers."""
+
+    def __init__(self, per_window: int = HOSTED_SENDS_PER_WINDOW, window: int = HOSTED_SEND_WINDOW_SECONDS,
+                 per_day: int = HOSTED_SENDS_PER_DAY, clock=time.monotonic):
+        self.per_window, self.window, self.per_day, self.clock = per_window, window, per_day, clock
+        self._stamps = collections.deque()
+
+    def _prune(self, now):
+        while self._stamps and now - self._stamps[0] >= 86400:
+            self._stamps.popleft()
+
+    def refusal(self):
+        """None when one more send fits now, else the seconds until it would (the caller holds the adapter lock)."""
+        now = self.clock()
+        self._prune(now)
+        if len(self._stamps) >= self.per_day:
+            return max(1, int(86400 - (now - self._stamps[0])) + 1)
+        recent = [stamp for stamp in self._stamps if now - stamp < self.window]
+        if len(recent) >= self.per_window:
+            return max(1, int(self.window - (now - recent[0])) + 1)
+        return None
+
+    def take(self) -> None:
+        wait = self.refusal()
+        if wait is not None:
+            raise BoundaryError(429, HOSTED_SEND_BUDGET_CODE, retry_after=wait)
+        self._stamps.append(self.clock())
+
+    def left(self) -> dict:
+        now = self.clock()
+        self._prune(now)
+        recent = sum(1 for stamp in self._stamps if now - stamp < self.window)
+        return {"window": max(0, self.per_window - recent), "day": max(0, self.per_day - len(self._stamps))}
+
+
 class HostedReadOnlyPaypalAdapter:
     """Hosted demo with real READ-ONLY Sandbox calls. Wraps a real PaypalAdapter but exposes only
     status, require_connected, connect (OAuth token), list_disputes and get_dispute (GET). Every other
-    provider action refuses before any transport is reached. There is deliberately no ``__getattr__``."""
+    provider action refuses before any transport is reached. There is deliberately no ``__getattr__``.
 
-    def __init__(self, inner, budget: ReadBudget | None = None):
+    With ``send_enabled`` (PAYGUARD_HOSTED_SANDBOX_SEND=enabled, owner decision 2026-11-10) one write is added:
+    provide_evidence, to a dispute this process listed under a masked code, at most once per dispute and once per
+    visitor session, within the SendBudget, and only while the inner adapter's own submit flag
+    (PAYGUARD_PAYPAL_DISPUTE_SUBMIT=enabled) and merchant id are set. Every local guard in DisputeReadbackService
+    (two human steps, account check, fresh PayPal read) still runs before this method is reached."""
+
+    def __init__(self, inner, budget: ReadBudget | None = None, *, send_enabled: bool = False,
+                 send_budget: SendBudget | None = None):
         self._inner = inner
         self._budget = budget if budget is not None else ReadBudget()
         self._connect_lock = asyncio.Lock()
         self._real_by_code = collections.OrderedDict()
         self._code_by_real = {}
+        self._send_enabled = send_enabled is True
+        self._send_budget = send_budget if send_budget is not None else SendBudget()
+        self._send_lock = threading.Lock()
+        # Real dispute numbers that already received a hosted send, and visitor sessions that already sent one.
+        # Server memory only; kept for the life of the process (never trimmed, so a dispute is never sent to twice).
+        self._sent_disputes = set()
+        self._sent_sessions = set()
+        # Send times per client key (24-hour window, send budget clock); bounded by the shared daily cap.
+        self._sent_clients = {}
 
     def _code_for(self, real: str) -> str:
         """The public code of a real dispute number: same prefix, the number masked except its last four characters.
@@ -242,13 +341,24 @@ class HostedReadOnlyPaypalAdapter:
         return self._inner.require_connected()
 
     def dispute_submit_enabled(self) -> bool:
-        return False
+        return self._send_enabled and self._inner.dispute_submit_enabled() is True
 
     def tracking_submit_enabled(self) -> bool:
         return False
 
     def account_merchant_id(self):
-        return None
+        # Without the send switch no account id is known, so the local account check refuses every send.
+        return self._inner.account_merchant_id() if self._send_enabled else None
+
+    def send_state(self) -> dict | None:
+        """Hosted send status for the console: None with the send switch off; else what is left of the process caps.
+        Counts only, never an id."""
+        if not self._send_enabled:
+            return None
+        with self._send_lock:
+            left = self._send_budget.left()
+            return {"sends_left_window": left["window"], "sends_left_day": left["day"],
+                    "window_minutes": self._send_budget.window // 60, "disputes_sent": len(self._sent_disputes)}
 
     async def connect(self) -> dict:
         # A repeated Connect neither revokes the shared connection nor spends budget while its token is still good.
@@ -281,8 +391,38 @@ class HostedReadOnlyPaypalAdapter:
     async def create_invoice_draft(self, _payload: dict, _request_id: str) -> dict:
         _refuse()
 
-    async def provide_evidence(self, _dispute_id: str, _parts: dict) -> dict:
-        _refuse()
+    async def provide_evidence(self, dispute_id: str, parts: dict) -> dict:
+        """One hosted evidence send. Refuses (before any transport) with the switch off, outside a visitor send, for a
+        code this process did not hand out, a dispute already sent to, a session that already sent, or a full cap.
+        The dispute and the session are marked used and the cap is spent before the provider call: a failed send
+        is never retried automatically."""
+        session_id = HOSTED_SEND_SESSION.get()
+        client = HOSTED_SEND_CLIENT.get()
+        if (not self._send_enabled or not isinstance(session_id, str) or not session_id
+                or not isinstance(client, str) or not client):
+            _refuse()
+        real = self._real_by_code.get(dispute_id)
+        if real is None:
+            raise BoundaryError(404, "dispute_not_found")
+        with self._send_lock:
+            if real in self._sent_disputes:
+                raise BoundaryError(409, "evidence_already_submitted")
+            if session_id in self._sent_sessions:
+                raise BoundaryError(409, HOSTED_SEND_SESSION_CODE)
+            now = self._send_budget.clock()
+            for key in [key for key, stamps in self._sent_clients.items() if all(now - stamp >= 86400 for stamp in stamps)]:
+                del self._sent_clients[key]
+            mine = [stamp for stamp in self._sent_clients.get(client, []) if now - stamp < 86400]
+            if len(mine) >= HOSTED_SENDS_PER_CLIENT_PER_DAY:
+                raise BoundaryError(409, HOSTED_SEND_CLIENT_CODE)
+            self._send_budget.take()
+            self._sent_disputes.add(real)
+            self._sent_sessions.add(session_id)
+            self._sent_clients[client] = mine + [now]
+        sent = await self._inner.provide_evidence(real, parts)
+        sent = _replace_everywhere(sent if type(sent) is dict else {}, real, self._code_for(real))
+        sent["dispute_id"] = self._code_for(real)
+        return sent
 
     async def add_tracking(self, _tracker: dict) -> dict:
         _refuse()

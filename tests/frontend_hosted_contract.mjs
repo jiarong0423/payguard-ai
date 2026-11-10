@@ -37,13 +37,13 @@ for (const payload of [{ mode: 'public' }, { mode: 'hosted_demo', paypal: { conf
 }
 
 // 3. Top bar: the hosted pill replaces LOCAL DEMO; the Why? popover is fixed text and calls no API.
-assert.ok(app.includes("{hosted ? <HostedBadge guideChooser={guideChooser} sandboxReads={sandboxReads} /> : <Badge tone=\"blue\" dot>LOCAL DEMO</Badge>}"), 'LOCAL DEMO stays the local badge');
-const badge = app.slice(app.indexOf('function HostedBadge({ guideChooser = null, sandboxReads = false })'), app.indexOf('export default function App()'));
+assert.ok(app.includes("{hosted ? <HostedBadge guideChooser={guideChooser} sandboxReads={sandboxReads} sandboxSend={sandboxSend} /> : <Badge tone=\"blue\" dot>LOCAL DEMO</Badge>}"), 'LOCAL DEMO stays the local badge');
+const badge = app.slice(app.indexOf('function HostedBadge({ guideChooser = null, sandboxReads = false, sandboxSend = false })'), app.indexOf('export default function App()'));
 assert.ok(badge.length > 0, 'HostedBadge component present');
 assert.ok(!/apiRequest|fetch\(|connectSandbox|generateAiBrief/.test(badge), 'the popover calls no API');
 assert.ok(badge.includes('data-testid="connections-hosted"') && badge.includes('aria-expanded={open}'), 'pill is the popover toggle');
 // (r34 #1) The pill and the Gemini lines come from hostedCopy(guideChooser), the guide API's chooser status.
-assert.ok(badge.includes('const copy = hostedCopy(guideChooser, sandboxReads);') && badge.includes('<span className="hosted-label-full">{copy.pill}</span>'), 'pill text from the chooser status');
+assert.ok(badge.includes('const copy = hostedCopy(guideChooser, sandboxReads, sandboxSend);') && badge.includes('<span className="hosted-label-full">{copy.pill}</span>'), 'pill text from the chooser status');
 assert.equal(hostedCopy({ chooser_mode: 'keyword', model_requested: false }).pill, 'Hosted demo · rules only · no PayPal calls', 'pill text, rules only');
 assert.ok(badge.includes('<span className="hosted-label-short">Hosted demo</span>'), 'narrow-screen pill text');
 assert.ok(badge.includes('data-testid="connections-why"') && badge.includes('>Why?<'), 'Why? popover');
@@ -76,15 +76,17 @@ const swaps = [
   ['{hosted && !sandboxReads ? <p className="hosted-note" data-testid="hosted-note-sandbox">{HOSTED_NOTES.sandbox}</p> : <Button data-testid="sandbox-connect"', 'Connect US Sandbox'],
   ['{hosted ? <p className="hosted-note" data-testid="hosted-note-invoice">{HOSTED_NOTES.invoice}</p> : <Button data-testid="invoice-create"', 'Create Sandbox draft'],
   ['{hosted ? null : <Button data-testid={`ai-generate-${stage}`}', 'Generate AI brief'],
-  ['{hosted ? <p className="hosted-note" data-testid="hosted-note-evidence">{HOSTED_NOTES.evidence}</p> : <><Button data-testid="evidence-preview"', 'Prepare evidence request (preview)'],
+  // (2026-11-10, intended) The evidence controls also show on the hosted demo with its evidence send flag on.
+  ['{hosted && !sandboxSend ? <p className="hosted-note" data-testid="hosted-note-evidence">{HOSTED_NOTES.evidence}</p> : <><Button data-testid="evidence-preview"', 'Prepare evidence request (preview)'],
 ];
 // The top-bar Sandbox card (owner 2026-11-03) is one other place, and it renders only when not hosted. The phone bar
 // after Confirm Draft Context (attack r22) is the other: it offers Connect or Create Sandbox draft only when not hosted.
 // (r32 J4 P1-2) The phone bar's Dispute step offers the preview after the local review, only when not hosted.
 // (read-only Sandbox) The disputes list adds one more Connect, shown only when sandboxReads is on.
 const extraPlaces = { 'Connect US Sandbox': 3, 'Create Sandbox draft': 1, 'Prepare evidence request (preview)': 1 };
-assert.ok(app.includes("receipt && !hosted && providerDisputeDetail && !evidencePreview\n            ? { key: 'evidence-preview', label: 'Prepare evidence request (preview)'"), 'phone bar preview is local only');
-assert.ok(app.includes("? (reviewRecorded && !hosted && evidenceSubmitReady\n") && app.includes(": reviewRecorded && !hosted && trackingSubmitReady\n"), 'phone bar sends are local only');
+// (2026-11-10, intended) Also on the hosted demo when its evidence send flag (sandboxSend) is on.
+assert.ok(app.includes("receipt && (!hosted || sandboxSend) && providerDisputeDetail && !evidencePreview\n            ? { key: 'evidence-preview', label: 'Prepare evidence request (preview)'"), 'phone bar preview is local only unless the hosted send is on');
+assert.ok(app.includes("? (reviewRecorded && (!hosted || sandboxSend) && evidenceSubmitReady\n") && app.includes(": reviewRecorded && !hosted && trackingSubmitReady\n"), 'phone bar tracking send is local only; evidence send also with the hosted send flag');
 assert.ok(app.includes('{!hosted && <TopbarSandbox '), 'top-bar Sandbox card is local only');
 assert.ok(app.includes(": invoiceReview ? (hosted ? null : sandbox?.status === 'connected'"), 'phone bar draft actions are local only');
 for (const [swap, label] of swaps) {

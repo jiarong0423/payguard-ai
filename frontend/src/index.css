@@ -1300,3 +1300,7 @@ footer { padding: 8px 0 0; }
 
 /* ZIP card: the two notes are separate lines (they ran together as "PayPalOne download"). */
 .zip-contents > small { display: block; }
+/* (2026-11-10) Receipt after a real Sandbox evidence send: SUBMITTED, PayPal-Debug-Id and the read-back in large text. */
+.send-receipt-big { display: flex; flex-direction: column; gap: 6px; margin: 12px 0; padding: 16px; border: 2px solid var(--pg-color-ok); border-radius: 12px; font-size: 1.15rem; overflow-wrap: anywhere; }
+.send-receipt-big strong { font-size: 1.5rem; color: var(--pg-color-ok); }
+.send-receipt-big small { font-size: var(--type-meta); color: var(--pg-color-muted); }

@@ -34,7 +34,7 @@ const css = read('frontend/src/index.css');
   assert.ok(guide.includes("if (view?.chooser_mode) onChooser?.({ chooser_mode: view.chooser_mode, model_requested: view.model_requested === true });"), 'guide reports the chooser status');
   assert.ok(guide.includes("const modeBadge = view?.chooser_mode === 'gemini' ? <Badge tone=\"muted\">Rules + Gemini</Badge>"), 'badge reads the same field');
   assert.equal(app.split('onChooser={setGuideChooser}').length - 1, 3, 'all three guides report');
-  assert.ok(app.includes('<HostedBadge guideChooser={guideChooser} sandboxReads={sandboxReads} />'), 'badge gets the status');
+  assert.ok(app.includes('<HostedBadge guideChooser={guideChooser} sandboxReads={sandboxReads} sandboxSend={sandboxSend} />'), 'badge gets the status');
   assert.ok(app.includes("const HOSTED_DISABLED_NOTICE = 'This needs a local run: the hosted demo cannot write to PayPal and has no AI brief.';"), 'notice no longer says "no Gemini calls"');
 }
 

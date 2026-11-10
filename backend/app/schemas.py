@@ -86,6 +86,20 @@ class ConnectionsResponse(Contract):
     mode: Literal["local", "hosted_demo"]
     # Present (true) only on the hosted demo with PAYGUARD_HOSTED_READONLY_SANDBOX=enabled: real read-only Sandbox calls.
     sandbox_reads: bool | None = None
+    # Present (true) only with PAYGUARD_HOSTED_SANDBOX_SEND=enabled as well: hosted evidence sends to the owner's own
+    # Sandbox test disputes, with what is left of the shared caps (counts only).
+    sandbox_send: bool | None = None
+    send_state: "HostedSendState | None" = None
+
+
+class HostedSendState(Contract):
+    sends_left_window: int = Field(ge=0)
+    sends_left_day: int = Field(ge=0)
+    window_minutes: int = Field(ge=1)
+    disputes_sent: int = Field(ge=0)
+
+
+ConnectionsResponse.model_rebuild()
 
 
 class SessionResponse(Contract):

@@ -12,6 +12,7 @@ import { BryntumScheduler, available } from 'virtual:payguard-optional-timeline'
 import {
   DUE_SOON_DAYS, PLAN_MESSAGES, PLAN_NAME, buildEvidenceBoard, defaultPlan, planEvents, planWindowOf, readStoredPlans,
   restorePlans, shiftPlan, URGENCY_CHIPS, urgencyCounts, barClasses, plansToIcs, PLAN_ICS_NAME, PLAN_ICS_EMPTY_REASON, validatePlan, wallToUtcMs, writeStoredPlans,
+  TRIAGE_CAPTION, UNSCHEDULED_LABEL, unscheduledRows,
 } from './boardData.js';
 import { utcWallClock } from '../optional/timelineModel.js';
 import './board.css';
@@ -127,17 +128,18 @@ function drawTimeRanges(scheduler, ranges) {
   layer.replaceChildren(...lines);
 }
 
-function BoardList({ board, plans }) {
-  return <ul className="board-list" data-testid="evidence-board-list">{board.rows.map((row) => <li key={row.id} className={`board-row board-row-${row.status.toLowerCase()}${row.highlight ? ' board-row-urgent' : ''}`} data-testid="evidence-board-row" data-status={row.status}>
-    <div className="board-row-head"><strong>{row.caseRef}</strong><span className="board-row-status">{row.statusLabel}</span></div>
-    <dl><div><dt>Reason</dt><dd>{row.reason}</dd></div><div><dt>Due</dt><dd>{row.dueAt ? utcLabel(row.dueAt) : '—'}</dd></div><div><dt>Evidence</dt><dd>{row.readinessLabel}{row.readiness?.manual ? ` · ${row.readiness.manual} need manual review` : ''}</dd></div><div><dt>Amount</dt><dd>{row.amount ? `${row.amount} · synthetic` : 'Not in case data'}</dd></div><div><dt>Events</dt><dd>{row.eventCount} on the time axis</dd></div>
-      <div><dt>Plan</dt><dd data-testid="evidence-board-plan">{plans[row.id] ? `${PLAN_NAME} ${planLabel(plans[row.id])}` : row.dueAt ? PLAN_MESSAGES.NO_WINDOW : '—'}</dd></div></dl>
+function BoardList({ board, plans, unscheduled, onSchedule }) {
+  return <ul className="board-list" data-testid="evidence-board-list">{board.rows.map((row) => <li key={row.id} className={`board-row board-row-${row.status.toLowerCase()}${row.highlight ? ' board-row-urgent' : ''}${unscheduled.has(row.id) ? ' board-row-unscheduled' : ''}`} data-testid="evidence-board-row" data-status={row.status} data-source={row.source}>
+    <div className="board-row-head"><strong>{row.caseRef}</strong>{row.source === 'sandbox' && <span className="board-row-source" data-testid="evidence-board-sandbox-tag">PayPal Sandbox</span>}<span className="board-row-status">{row.statusLabel}</span></div>
+    <dl><div><dt>Reason</dt><dd>{row.reason}</dd></div><div><dt>Due</dt><dd>{row.dueAt ? utcLabel(row.dueAt) : '—'}</dd></div><div><dt>Evidence</dt><dd>{row.readinessLabel}{row.readiness?.manual ? ` · ${row.readiness.manual} need manual review` : ''}</dd></div><div><dt>Amount</dt><dd>{row.amount ? (row.source === 'sandbox' ? `${row.amount} · Sandbox` : `${row.amount} · synthetic`) : 'Not in case data'}</dd></div><div><dt>Events</dt><dd>{row.eventCount} on the time axis</dd></div>
+      <div><dt>Plan</dt><dd data-testid="evidence-board-plan">{plans[row.id] ? `${PLAN_NAME} ${planLabel(plans[row.id])}` : unscheduled.has(row.id) ? <><strong className="board-unscheduled" data-testid="evidence-board-unscheduled">{UNSCHEDULED_LABEL}</strong> <button type="button" className="board-plan-reset" data-testid="evidence-board-schedule" onClick={() => onSchedule(row)}>Schedule a slot</button></> : row.dueAt ? PLAN_MESSAGES.NO_WINDOW : '—'}</dd></div></dl>
   </li>)}</ul>;
 }
 
-export default function EvidenceBoard({ disputes, drafts }) {
+export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
   // "Now" is taken when the inputs change; the board does not tick on its own. The plan check uses the live clock.
-  const board = useMemo(() => buildEvidenceBoard({ disputes, drafts, now: Date.now() }), [disputes, drafts]);
+  // `sandbox`: the console's live PayPal Sandbox dispute list (null when it holds sample data only).
+  const board = useMemo(() => buildEvidenceBoard({ disputes, drafts, sandbox, now: Date.now() }), [disputes, drafts, sandbox]);
   const phone = useSyncExternalStore(subscribePhone, isPhone, () => false);
   const schedulerRef = useRef(null);
   // Plans restored for this board: a stored plan that still fits, otherwise the default (optimise r24).
@@ -268,14 +270,24 @@ export default function EvidenceBoard({ disputes, drafts }) {
     window.setTimeout(() => URL.revokeObjectURL(url), 1000);
     setMessage('Plan downloaded as a calendar file. It was made in this page and not sent anywhere.');
   }, []);
+  // A Sandbox row's first evidence slot: the default plan, added to Bryntum's store as a movable bar.
+  const schedule = useCallback((row) => {
+    const plan = defaultPlan(planWindowOf(row, Date.now()));
+    if (!plan) { setMessage(`${row.id}: ${PLAN_MESSAGES.NO_WINDOW}`); return; }
+    const store = schedulerRef.current?.instance?.eventStore;
+    if (store && !store.getById(`${row.id}-plan`)) store.add(planEvents([row], { [row.id]: plan }));
+    keep(row.id, plan, 'scheduled');
+  }, [keep]);
   const resetPlans = useCallback(() => {
     if (!board) return;
     const next = {};
+    const store = schedulerRef.current?.instance?.eventStore;
     for (const row of board.rows) {
+      // Sandbox rows go back to "no evidence slot scheduled"; the sample cases get the default plan again.
+      if (row.autoPlan === false) { const bar = store?.getById(`${row.id}-plan`); if (bar) store.remove(bar); continue; }
       const plan = defaultPlan(planWindowOf(row, Date.now()));
       if (plan) next[row.id] = plan;
     }
-    const store = schedulerRef.current?.instance?.eventStore;
     for (const [ref, plan] of Object.entries(next)) store?.getById(`${ref}-plan`)?.setStartEndDate(wallOf(plan.startMs), wallOf(plan.endMs));
     plansRef.current = next;
     setPlans(next);
@@ -343,9 +355,12 @@ export default function EvidenceBoard({ disputes, drafts }) {
   // Missing evidence and "no draft yet" are counted apart, so the summary never says none while a card reads "No draft yet" (r20 UX-2).
   const soon = [board.missingSoon && `${board.missingSoon} due within ${DUE_SOON_DAYS} days with evidence missing`, board.noDraftSoon && `${board.noDraftSoon} due within ${DUE_SOON_DAYS} days with no draft yet`].filter(Boolean);
   const timeline = available && BryntumScheduler;
+  const unscheduled = new Set(unscheduledRows(board.rows, plans, Date.now()).map((row) => row.id));
+  const liveRows = board.rows.filter((row) => row.source === 'sandbox').length;
   return <div className="evidence-board" data-testid="evidence-board">
-    <p className="board-summary" data-testid="evidence-board-summary">{board.rows.length} case{board.rows.length === 1 ? '' : 's'} · {soon.length ? soon.join(' · ') : `none due within ${DUE_SOON_DAYS} days with evidence missing or no draft`} · now {utcLabel(board.nowIso)}</p>
-    <BoardList board={board} plans={plans} />
+    <p className="board-triage" data-testid="evidence-board-triage">{TRIAGE_CAPTION}{liveRows ? ` · ${liveRows} from the PayPal Sandbox dispute list (seller_response_due_date)` : ' · sample cases'}</p>
+    <p className="board-summary" data-testid="evidence-board-summary">{board.rows.length} case{board.rows.length === 1 ? '' : 's'} · {soon.length ? soon.join(' · ') : `none due within ${DUE_SOON_DAYS} days with evidence missing or no draft`}{unscheduled.size ? ` · ${unscheduled.size} with a deadline but no evidence slot scheduled` : ''} · now {utcLabel(board.nowIso)}</p>
+    <BoardList board={board} plans={plans} unscheduled={unscheduled} onSchedule={schedule} />
     {timeline ? <figure className={`board-timeline${phone ? ' board-timeline-phone' : ''}`} data-testid="evidence-board-timeline">
       <figcaption title="Bars are the seller response window up to the due date. Bryntum Scheduler Community (MIT).">
         Times in UTC · case data read only · <span className="board-legend-now">now</span> and <span className="board-legend-due">due</span> lines{phone && <span className="board-swipe-hint" data-testid="evidence-board-swipe-hint"> · swipe the timeline sideways →</span>}

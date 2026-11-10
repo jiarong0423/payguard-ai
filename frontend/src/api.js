@@ -558,8 +558,14 @@ function assertContract(path, payload, session, body) {
   } else if (path === '/connections') {
     // Deployment mode only: the console never learns whether a key is present.
     // sandbox_reads: true appears only on the hosted demo with read-only Sandbox reads switched on (never a key or a name).
+    // (2026-11-10) sandbox_send: true adds the hosted evidence send, with send_state counts only (never an id).
+    const count = (v) => Number.isInteger(v) && v >= 0 && v <= 100000;
+    const sendState = (v) => pk(v, ['sends_left_window', 'sends_left_day', 'window_minutes', 'disputes_sent'])
+      && count(v.sends_left_window) && count(v.sends_left_day) && count(v.disputes_sent) && count(v.window_minutes) && v.window_minutes >= 1;
     valid = valid && (pk(payload, ['mode']) ? ['local', 'hosted_demo'].includes(payload.mode)
-      : pk(payload, ['mode', 'sandbox_reads']) && payload.mode === 'hosted_demo' && payload.sandbox_reads === true);
+      : pk(payload, ['mode', 'sandbox_reads']) ? payload.mode === 'hosted_demo' && payload.sandbox_reads === true
+      : pk(payload, ['mode', 'sandbox_reads', 'sandbox_send', 'send_state']) && payload.mode === 'hosted_demo' && payload.sandbox_reads === true
+        && payload.sandbox_send === true && sendState(payload.send_state));
   } else if (path === '/paypal/status' || path === '/paypal/connect') {
     valid = valid && pk(payload,['configured','status','environment','last_verified_at','source','evidence_receipt'])
       && payload.source === 'paypal_sandbox' && payload.environment === 'sandbox' && typeof payload.configured === 'boolean'

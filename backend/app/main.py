@@ -34,7 +34,10 @@ from .ai_usage import COST_NOTE, PRICE_TABLE_SOURCE, AiUsageLog, AiUsageResponse
 from .lmstudio_brief import LmStudioConfig, LmStudioEvidenceBriefAdapter
 from .demo_mode import (HOSTED_DEMO_CODE, HOSTED_DEMO_MESSAGE, HostedDemoBriefStub, HostedDemoGuardMiddleware,
                         HostedDemoPaypalStub, HostedReadOnlyPaypalAdapter, HOSTED_READ_BUDGET_CODE,
-                        disabled_routes, hosted_readonly_enabled, public_demo_enabled, require_public_host)
+                        HOSTED_SEND_BUDGET_CODE, HOSTED_SEND_CLIENT, HOSTED_SEND_CLIENT_CODE, HOSTED_SEND_SESSION,
+                        HOSTED_SEND_SESSION_CODE,
+                        disabled_routes, hosted_readonly_enabled, hosted_send_enabled, public_demo_enabled,
+                        require_public_host)
 from .channel3 import build_channel3_adapter
 from .channel3_products import build_channel3_product_adapter, card_digest
 from .case_routing import CaseRouter
@@ -234,6 +237,16 @@ def error_response(status: int, code: str, retry_after: int | None = None, *, ex
     elif code == HOSTED_READ_BUDGET_CODE:
         message = ("The hosted demo's shared Sandbox read limit was reached. Reads resume automatically"
                    + (f" in about {retry_after} seconds." if retry_after else " shortly."))
+    elif code == HOSTED_SEND_BUDGET_CODE:
+        message = ("The hosted demo's shared limit for Sandbox evidence sends was reached, so nothing was sent."
+                   + (f" Sends resume in about {retry_after} seconds." if retry_after else "")
+                   + " The recorded replay shows the same send.")
+    elif code == HOSTED_SEND_SESSION_CODE:
+        message = ("This visit already sent evidence once; the hosted demo allows one send per visit, so nothing was sent. "
+                   "The recorded replay shows the same send.")
+    elif code == HOSTED_SEND_CLIENT_CODE:
+        message = ("Evidence was already sent from this network address today; the hosted demo allows two sends per "
+                   "address a day, so nothing was sent. The recorded replay shows the same send.")
     elif code == INPUT_REFUSED_CODE:
         message = INPUT_REFUSED_MESSAGE
     elif code.startswith("ai_"):
@@ -409,7 +422,7 @@ LLMS_TXT = """# TradeGlot
 
 > TradeGlot is an advisory tool for small cross-border PayPal sellers: it checks a sale against shipping and policy rules before you ship, and helps prepare human-approved dispute evidence. Synthetic data and PayPal Sandbox only; it never decides a dispute.
 
-The hosted demo is read-only: every write route answers 503 hosted_demo_disabled, and its only PayPal calls are read-only Sandbox reads with masked dispute ids.
+The hosted demo uses one PayPal Sandbox test account (never live credentials). When the operator turns them on, it makes read-only Sandbox reads with masked dispute ids and may send dispute evidence to the owner's own Sandbox test disputes after one human approval of the reviewed draft plus a two-step send confirmation (once per dispute, once per visit, at most 2 sends per address per day, capped per 10 minutes and per day); invoices, tracking, webhooks, the AI brief and the Studio agents answer 503 hosted_demo_disabled.
 
 ## Try it
 - [Start here](/start.html): the five-minute path and a curl recipe
@@ -486,14 +499,18 @@ def create_app(*, store=None, paypal=None, reference_loader=None, ai_brief=None,
     demo_public = public_demo_enabled()
     hosted_host = require_public_host() if demo_public else None
     readonly_sandbox = hosted_readonly_enabled() if demo_public else False
+    # (owner 2026-11-10) Hosted evidence send: only with public mode AND the read-only switch; fails startup otherwise.
+    hosted_send = hosted_send_enabled() if demo_public else False
     if demo_public:
         # Read-only Sandbox switch: the wrapper owns the only provider seam; an injected `paypal` is still ignored.
-        paypal = (HostedReadOnlyPaypalAdapter(hosted_sandbox_inner if hosted_sandbox_inner is not None else PaypalAdapter())
+        paypal = (HostedReadOnlyPaypalAdapter(hosted_sandbox_inner if hosted_sandbox_inner is not None else PaypalAdapter(),
+                                              send_enabled=hosted_send)
                   if readonly_sandbox else HostedDemoPaypalStub())
         ai_brief = HostedDemoBriefStub()
     application = FastAPI(title="TradeGlot Local Console", version="0.2.0", docs_url=None, redoc_url=None, openapi_url=None)
     application.state.demo_mode = "public" if demo_public else "off"
     application.state.hosted_readonly = readonly_sandbox
+    application.state.hosted_send = hosted_send
     application.state.store = store or SessionStore(ai_attempt_budget=PROCESS_AI_ATTEMPT_BUDGET)
     application.state.paypal = paypal or PaypalAdapter()
     application.state.paypal_tools = SafePaypalToolGateway(application.state.store, application.state.paypal)
@@ -518,7 +535,7 @@ def create_app(*, store=None, paypal=None, reference_loader=None, ai_brief=None,
     if demo_public:
         # Added first so it runs inside the boundary: Host, Origin and body checks still run before it.
         application.add_middleware(HostedDemoGuardMiddleware, error_response=error_response,
-                                routes=disabled_routes(readonly_sandbox))
+                                routes=disabled_routes(readonly_sandbox, hosted_send))
         # Per-visitor pacing and a bounded in-flight queue, hosted demo only (owner 2026-11-03).
         application.add_middleware(TrafficGate, proxied=True)
         application.state.store.per_client_limits = True
@@ -809,7 +826,11 @@ def create_app(*, store=None, paypal=None, reference_loader=None, ai_brief=None,
         # Read-only deployment mode for the console. It reads the mode fixed at startup, never the environment,
         # so the hosted demo cannot reveal whether any key is present.
         if application.state.hosted_readonly:
-            return {"mode": "hosted_demo", "sandbox_reads": True}
+            reply = {"mode": "hosted_demo", "sandbox_reads": True}
+            if application.state.hosted_send:
+                # Counts only (sends left in the shared window and day); never an id or a key.
+                reply.update(sandbox_send=True, send_state=application.state.paypal.send_state())
+            return reply
         return {"mode": "hosted_demo" if application.state.demo_mode == "public" else "local"}
 
     @application.get("/api/v1/paypal/status", response_model=PaypalStatusResponse)
@@ -870,7 +891,19 @@ def create_app(*, store=None, paypal=None, reference_loader=None, ai_brief=None,
         return await application.state.paypal_disputes.get_dispute(session, dispute_id)
 
     @application.post("/api/v1/paypal/disputes/provide-evidence", response_model=ProvideEvidenceResponse, response_model_exclude_unset=True)
-    async def provide_evidence(body: ProvideEvidenceRequest, session=Depends(write_session)):
+    async def provide_evidence(body: ProvideEvidenceRequest, request: Request, session=Depends(write_session)):
+        if application.state.hosted_send and body.submit is True:
+            # Hosted send: the adapter allows one send per visitor session, so it is told which session is sending.
+            # (red team A1) ... and which address, so one address cannot use up the dispute stock with new sessions.
+            marker = HOSTED_SEND_SESSION.set(session.session_id)
+            # The sending request's own TrafficGate key (the session's creating address only as a fallback).
+            client = request.scope.get("state", {}).get("client_key") or session.client_key
+            client_marker = HOSTED_SEND_CLIENT.set(client if type(client) is str else None)
+            try:
+                return await application.state.paypal_disputes.provide_evidence(session, body.model_dump())
+            finally:
+                HOSTED_SEND_CLIENT.reset(client_marker)
+                HOSTED_SEND_SESSION.reset(marker)
         return await application.state.paypal_disputes.provide_evidence(session, body.model_dump())
 
     @application.post("/api/v1/paypal/disputes/add-tracking", response_model=AddTrackingResponse, response_model_exclude_unset=True)

@@ -67,14 +67,17 @@ def forwarded_hops(scope) -> int:
 
 def client_key(scope, *, proxied: bool, hop: int = 1) -> str:
     """The visitor's address: the loopback peer locally, the forwarded entry `hop` places from the right behind the
-    proxy (the left-most entry when the header is shorter)."""
+    proxy. (red team 2026-11-10 P2-1) A header with fewer entries than `hop` has no trusted entry: its left-most entry
+    is visitor-written, so every such request shares one bucket, "short-forwarded" (fail closed)."""
     if proxied:
         for key, value in scope.get("headers", []):
             if key.lower() == b"x-forwarded-for":
                 hops = [hop_value.strip() for hop_value in value.decode("latin-1").split(",") if hop_value.strip()]
                 if hops:
+                    if len(hops) < hop:
+                        return "short-forwarded"
                     try:
-                        address = ipaddress.ip_address(hops[-min(hop, len(hops))])
+                        address = ipaddress.ip_address(hops[-hop])
                     except ValueError:
                         return "invalid-forwarded"
                     # One IPv6 /64 is one visitor (attack r23: 1000 addresses in one /64 got 1000 separate limits);

@@ -1407,6 +1407,28 @@
        }
       ],
       "description": "Sandbox reads."
+     },
+     "sandbox_send": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Sandbox send."
+     },
+     "send_state": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/HostedSendState"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Send state."
      }
     },
     "required": [
@@ -3840,6 +3862,39 @@
      "mode",
      "version",
      "source"
+    ],
+    "type": "object"
+   },
+   "HostedSendState": {
+    "additionalProperties": false,
+    "description": "HostedSendState.",
+    "properties": {
+     "disputes_sent": {
+      "description": "Disputes sent.",
+      "minimum": 0.0,
+      "type": "integer"
+     },
+     "sends_left_day": {
+      "description": "Sends left day.",
+      "minimum": 0.0,
+      "type": "integer"
+     },
+     "sends_left_window": {
+      "description": "Sends left window.",
+      "minimum": 0.0,
+      "type": "integer"
+     },
+     "window_minutes": {
+      "description": "Window minutes.",
+      "minimum": 1.0,
+      "type": "integer"
+     }
+    },
+    "required": [
+     "sends_left_window",
+     "sends_left_day",
+     "window_minutes",
+     "disputes_sent"
     ],
     "type": "object"
    },
