@@ -23,7 +23,7 @@ List disputes → read one → one human approval of the reviewed draft plus a t
 5. **PayPal-Debug-Id.** PayPal answers with its own id. Example from 2026-11-09: `ca5782cf8df90`.
 6. **Read-back match.** A fresh read shows `WAITING_FOR_BUYER_RESPONSE`. The file PayPal serves back (2,015 bytes) has the same SHA-256 as the file recorded at send time.
 
-Video (2:32): https://youtu.be/upx5eZYOmC0 · Repository (MIT): https://github.com/jiarong0423/payguard-ai · Proof page: https://payguard-demo-j2b3.onrender.com/proof.html
+Video (2:32): https://youtu.be/7gyblKwyaxo · Repository (MIT): https://github.com/jiarong0423/payguard-ai · Proof page: https://payguard-demo-j2b3.onrender.com/proof.html
 
 ## What it proved against PayPal Sandbox
 
