@@ -16,7 +16,6 @@ Execution evidence.
 |  --- |
 | `SYNTHETIC_TEST_RESPONSE` |
 | `OPERATOR_LIVE_RESPONSE` |
-| `LOCAL_RUNTIME_RESPONSE` |
 
 
 # Example

@@ -15,7 +15,6 @@ Model.
 | Name |
 |  --- |
 | `ENUMGEMINI38FLASH` |
-| `NVIDIANEMOTRON3NANO4B` |
 
 
 # Example

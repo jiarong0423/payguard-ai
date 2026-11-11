@@ -9916,7 +9916,6 @@ Execution evidence.
 |  --- |
 | `SYNTHETIC_TEST_RESPONSE` |
 | `OPERATOR_LIVE_RESPONSE` |
-| `LOCAL_RUNTIME_RESPONSE` |
 
 
 # Example
@@ -10513,7 +10512,6 @@ Model.
 | Name |
 |  --- |
 | `ENUM_GEMINI38FLASH` |
-| `NVIDIANEMOTRON3NANO4B` |
 
 
 # Example
