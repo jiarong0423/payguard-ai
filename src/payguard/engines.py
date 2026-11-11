@@ -281,7 +281,7 @@ def check_aup(description: str) -> dict:
         "findings": findings,
         "recommendation": (
             "Review the actual goods or activity against applicable policy. "
-            "Please confirm the actual goods or activity fit the applicable policy."
+            "Rewording the description does not change this result."
             if findings else
             "No configured demo keyword matched. Review the actual goods or activity "
             "against applicable policy; this result does not certify compliance."

@@ -159,7 +159,7 @@ export function studioData({ disputes, benchmark, receipts }) {
       {
         id: 'benchmark', name: 'Guide benchmark', description: benchmark.source, data: benchmarkRows(benchmark),
         fields: [text('flow_id', 'Flow id', { hide: true }), text('flow', 'Flow'), integer('model_calls', 'Model calls'), integer('rounds', 'Rounds'),
-          integer('wrong_honest', 'Wrong (honest seller)'), integer('wrong_careless', 'Wrong (careless seller)')],
+          integer('wrong_honest', 'Wrong (seller checks each value)'), integer('wrong_careless', 'Wrong (seller confirms without reading)')],
       },
       {
         id: 'receipts', name: 'Channel3 receipts', description: 'Recorded Channel3 product searches (docs/evidence/channel3_receipts_v1.json).', data: receiptRows(receipts),

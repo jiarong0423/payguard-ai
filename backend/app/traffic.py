@@ -159,10 +159,10 @@ class TrafficGate:
         scope.setdefault("state", {})["client_key"] = key
         delay = self._pace(key, self.clock())
         if delay is None:
-            return await _busy(429, "rate_limited", "Too many requests from this address; slow down and try again.",
+            return await _busy(429, "rate_limited", "Too many requests from this address; please wait a moment and try again.",
                                60)(scope, receive, send)
         if delay > MAX_PACE_DELAY_SECONDS:
-            return await _busy(429, "rate_limited", "Too many requests from this address; slow down and try again.",
+            return await _busy(429, "rate_limited", "Too many requests from this address; please wait a moment and try again.",
                                delay)(scope, receive, send)
         if delay:
             await self.sleep(delay)

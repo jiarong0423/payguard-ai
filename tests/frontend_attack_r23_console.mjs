@@ -24,7 +24,7 @@ for (const bad of [null, '', '0', '-3', 'soon', '601']) assert.equal(parseRetryA
 assert.equal(waitText(1), 'Try again in 1 second.');
 assert.equal(waitText(37), 'Try again in 37 seconds.');
 for (const [message, expected] of [
-  ['Too many requests from this address; slow down and try again.', 'Too many requests from this address; slow down.'],
+  ['Too many requests from this address; please wait a moment and try again.', 'Too many requests from this address; please wait a moment.'],
   ['The demo is busy right now; try again in a few seconds.', 'The demo is busy right now.'],
   ['Five policy checks are already open in the last two minutes. Try again in 37 seconds.', 'Five policy checks are already open in the last two minutes.'],
   ['Too many new sessions; try again in 12 seconds.', 'Too many new sessions.'],
