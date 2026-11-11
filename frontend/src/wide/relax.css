@@ -12,7 +12,6 @@
   .feedback-region .message { margin-bottom: 12px; padding: 10px 14px; }
 
   /* Step 01 */
-  #compliance .stage-content { row-gap: 16px; column-gap: 16px; }
 
   /* Step 03: case queue, review column, deadline board */
   #disputes .case-list { padding: 10px; }

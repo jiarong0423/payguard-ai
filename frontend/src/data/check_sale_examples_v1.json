@@ -1,0 +1,168 @@
+{
+ "schema_version": "tradeglot.check_sale_examples.v1",
+ "note": "Display data for the Check a sale page; every value is recomputed by tests/test_check_sale_p3_data.py.",
+ "examples": [
+  {
+   "id": "no_match",
+   "stamp": "NO MATCH",
+   "tone": "neutral",
+   "kind": "description",
+   "description": "Handcrafted ceramic coffee cup — set of two",
+   "match_status": "NO_MATCH",
+   "result": "No configured demo keyword matched",
+   "detail": "No configured demo keyword matched. Review the actual goods or activity against applicable policy; this result does not certify compliance.",
+   "source": "src/payguard/engines.py check_aup"
+  },
+  {
+   "id": "review_signal",
+   "stamp": "REVIEW SIGNAL",
+   "tone": "warn",
+   "kind": "description",
+   "description": "Guaranteed 30% ROI investment package",
+   "match_status": "REVIEW_SIGNAL",
+   "category": "unsupported_financial_promise",
+   "result": "Return claim to double-check",
+   "detail": "Review the actual goods or activity against applicable policy. Rewording the description does not change this result.",
+   "source": "src/payguard/engines.py check_aup; label from frontend/src/App.jsx findingLabels"
+  },
+  {
+   "id": "rule_match",
+   "stamp": "RULE MATCH",
+   "tone": "risk",
+   "kind": "route",
+   "seller_country": "US",
+   "buyer_country": "SG",
+   "goods_tags": [
+    "e_cigarettes"
+   ],
+   "description": "E-cigarettes, United States to Singapore",
+   "rule_id": "SG-IM-EC-01",
+   "result": "Tobacco and Vaporisers Control Act s. 16",
+   "detail": "Singapore import, prohibited",
+   "also": {
+    "rule_id": "US-EX-EC-01",
+    "label": "Check first",
+    "statute": "USPS Publication 52 — Hazardous, Restricted, and Perishable Mail",
+    "detail": "United States export, by post only"
+   },
+   "source": "src/payguard/country_rules.py check; data/country_rules/paypal_country_rules_v1.json:3947, data/country_rules/paypal_country_rules_v1.json:9752"
+  }
+ ],
+ "rule_grid": {
+  "source": "data/country_rules/paypal_country_rules_v1.json",
+  "retrieved_at": "2026-11-02",
+  "countries": [
+   {
+    "code": "US",
+    "name": "United States"
+   },
+   {
+    "code": "CA",
+    "name": "Canada"
+   },
+   {
+    "code": "GB",
+    "name": "United Kingdom"
+   },
+   {
+    "code": "DE",
+    "name": "Germany (EU)"
+   },
+   {
+    "code": "AU",
+    "name": "Australia"
+   },
+   {
+    "code": "JP",
+    "name": "Japan"
+   },
+   {
+    "code": "SG",
+    "name": "Singapore"
+   },
+   {
+    "code": "HK",
+    "name": "Hong Kong"
+   },
+   {
+    "code": "TW",
+    "name": "Taiwan"
+   },
+   {
+    "code": "CN",
+    "name": "China mainland"
+   }
+  ],
+  "counts": {
+   "import": {
+    "US": 37,
+    "CA": 42,
+    "GB": 30,
+    "DE": 44,
+    "AU": 32,
+    "JP": 34,
+    "SG": 35,
+    "HK": 32,
+    "TW": 49,
+    "CN": 33
+   },
+   "export": {
+    "US": 38,
+    "CA": 33,
+    "GB": 34,
+    "DE": 23,
+    "AU": 28,
+    "JP": 28,
+    "SG": 23,
+    "HK": 35,
+    "TW": 39,
+    "CN": 32
+   }
+  },
+  "totals": {
+   "import": 368,
+   "export": 313
+  }
+ },
+ "guide_ai": {
+  "model": "gemini-3.8-flash",
+  "date": "2026-11-03",
+  "sentences": 12,
+  "format_invalid": "0/12",
+  "precision": "1.00",
+  "recall": "0.76",
+  "confident_wrong": "0",
+  "attack_touched": "0",
+  "latency": "5.2 s / 26.2 s",
+  "source": "docs/evidence/GEMINI_GUIDE_RUNS_20261103.md",
+  "line": 15
+ },
+ "channel3_tree": {
+  "categories_read": 11861,
+  "notes": "docs/CHANNEL3_NOTES.md",
+  "notes_line": 142,
+  "mapped": 191,
+  "csv": "docs/evidence/channel3_category_aup_hints_20261109.csv",
+  "csv_url": "https://github.com/jiarong0423/payguard-ai/blob/main/docs/evidence/channel3_category_aup_hints_20261109.csv",
+  "examples": [
+   {
+    "line": 19,
+    "path": "Apparel & Accessories > Clothing > Underwear & Socks > Lingerie Accessories > Body Harnesses",
+    "paypal_aup_item": "Approval 10 (mature content)",
+    "agreement": "5 of 5 readers"
+   },
+   {
+    "line": 21,
+    "path": "Baby & Toddler > Nursing & Feeding > Breast Pumps",
+    "paypal_aup_item": "Approval 16 (medical devices)",
+    "agreement": "5 of 5 readers"
+   },
+   {
+    "line": 160,
+    "path": "Arts & Entertainment > Hobbies & Creative Arts > Collectibles > Collectible Coins & Currency > Collectible Coins > Bullion Coins",
+    "paypal_aup_item": "Approval 3 (jewels, precious metals, stones)",
+    "agreement": "5 of 5 readers"
+   }
+  ]
+ }
+}

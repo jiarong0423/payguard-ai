@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 const app = readFileSync('frontend/src/App.jsx', 'utf8');
 const rules = readFileSync('frontend/src/CountryRules.jsx', 'utf8');
-assert.ok(app.includes('<h1 id="page-title">Check a sale before you ship. Prepare your evidence if PayPal asks.</h1>'), 'new hero title');
+assert.ok(app.includes('<h1 id="page-title" className="tg-h1">Check a sale before you ship. Prepare your evidence if PayPal asks.</h1>'), 'new hero title (2026-11-12: .tg-h1 class added for the shared page head)');
 assert.ok(!/<h1[^>]*>[^<]*before PayPal asks/.test(app), 'old hero title gone');
 assert.ok(rules.includes('No cited rule applies to this sale.'), 'verdict kept');
 assert.ok(rules.includes('This is not clearance. Only the listed country and PayPal rules were checked; payment type, address match and carrier limits are not covered.'), 'not-clearance line');

@@ -1,0 +1,115 @@
+/* (P3 2026-11-12) Check a sale page. Loaded with CheckSaleExtras.jsx right after the first paint (the page mounts it).
+   Values are tokens only (theme/tokens.css): no colour, radius, font size or family literal here. Containers (.tg-clip,
+   .tg-ledger, .tg-source, .tg-stamp, .tg-filter, .tg-btn) are styled by theme/components.css; this file only places them
+   and restyles the page's existing parts to the shared rules: one frame, thin rules between blocks, square controls. */
+
+/* ---------- One frame: 3px ink top rule, 1px bottom; inside, blocks are split by 1px rules (no box in a box) ---------- */
+.main-content #compliance.panel.stage-accordion.is-open, #compliance.stage-accordion { border: 0; border-top: var(--pg-layout-rule-heavy) solid var(--pg-color-ink); border-bottom: 1px solid var(--pg-color-rule); border-radius: 0; box-shadow: none; background: transparent; }
+#compliance .stage-heading { background: transparent; }
+/* The rule chain floats over the card edges: no clipping on the frame or the result card. */
+.main-content #compliance.panel.stage-accordion.is-open, #compliance .country-result { overflow: visible; }
+/* Grid children never grow past their column (one-line source rows would otherwise set the column's minimum). */
+#compliance .stage-content > *, #compliance .country-rules, #compliance .country-result, #compliance .country-finding-body, #compliance .country-form > *, #compliance .country-rules > *, #compliance .country-result > * { min-width: 0; }
+#compliance .stage-content > * + * { border-top: 1px solid var(--pg-color-rule-soft); }
+#compliance .invoice-editor, #compliance .aup-result, #compliance .country-rules, #compliance .country-result,
+#compliance .sandbox-details, #compliance .step-more, #compliance .stage-next, #compliance .limits-drawer,
+#compliance .optional-disclosure, #compliance .guide-live-label, #compliance .guide-live-forms, #compliance .guide-live-summary {
+  border: 0; border-radius: 0; box-shadow: none; background: transparent; }
+#compliance .aup-result, #compliance .country-result, #compliance .sandbox-details, #compliance .step-more, #compliance .stage-next,
+#compliance .optional-disclosure { border-top: 1px solid var(--pg-color-rule-soft); }
+#compliance .stage-next { border-top: 1px solid var(--pg-color-rule); }
+#compliance .aup-result.aup-warning { color: var(--pg-color-ink); }
+#compliance .aup-result.aup-warning .result-symbol { color: var(--pg-color-warn); }
+
+/* ---------- Type: body 16/24, titles 20, field names 14, sources 12 on one line ---------- */
+#compliance .country-finding, #compliance .country-verdict-line, #compliance .aup-result p, #compliance .country-rules-head p,
+#compliance .check-three__detail, #compliance .check-grid__rules .tg-clip__quote { font-size: var(--pg-text-3); line-height: 1.5; }
+#compliance .country-rules-head h3, #compliance .aup-result h3, #compliance .description-label { font-size: var(--pg-text-4); line-height: 1.2; }
+#compliance .country-field, #compliance .country-tags legend, #compliance .country-optional > summary { font-size: var(--pg-text-2); line-height: 1.3; }
+#compliance .country-source-line, #compliance .country-footnote, #compliance .country-try-note { display: block; overflow: hidden; font-size: var(--pg-text-1); line-height: 1.5; white-space: nowrap; text-overflow: ellipsis; }
+#compliance .country-finding-body .country-statute { font-size: var(--pg-text-2); }
+
+/* ---------- Square controls; tick boxes as square check boxes, not pills; segmented = 1px ink, selected ink ---------- */
+#compliance button, #compliance select, #compliance input, #compliance textarea, #compliance .country-tag, #compliance .country-link-button,
+#compliance .country-sev { border-radius: 0; }
+#compliance .country-tag { border-color: var(--pg-color-control-line); background: transparent; color: var(--pg-color-ink); }
+#compliance .country-tag.is-on { border-color: var(--pg-color-ink); background: transparent; color: var(--pg-color-ink); box-shadow: inset 0 0 0 1px var(--pg-color-ink); }
+#compliance .country-link-button { border-color: var(--pg-color-ink); background: transparent; color: var(--pg-color-ink); }
+#compliance .segmented { gap: 0; padding: 0; border: 1px solid var(--pg-color-ink); border-radius: 0; background: transparent; box-shadow: none; }
+#compliance .segmented button { border-radius: 0; color: var(--pg-color-ink); }
+#compliance .segmented button + button { border-left: 1px solid var(--pg-color-ink); }
+#compliance .segmented button.is-active { background: var(--pg-color-ink); color: var(--pg-color-on-accent); box-shadow: none; }
+
+/* ---------- Severity labels: red only for a rule match (with its icon); check first is amber text, no tint box ---------- */
+#compliance .sev-warn .country-sev { background: transparent; box-shadow: none; color: var(--pg-color-warn); }
+#compliance .sev-info .country-sev { background: transparent; color: var(--pg-color-muted); }
+#compliance .country-result.is-caution .country-verdict { background: transparent; color: var(--pg-color-warn); border-top: 1px solid var(--pg-color-rule); }
+#compliance .country-result.is-clear .country-verdict { background: transparent; color: var(--pg-color-ok); border-top: 1px solid var(--pg-color-rule); }
+#compliance .country-verdict-big { display: inline-flex; align-items: center; gap: var(--pg-space-2); font-size: var(--pg-text-4); }
+#compliance .country-verdict-big > svg { width: var(--pg-space-5); height: var(--pg-space-5); flex: none; }
+
+/* ---------- Rule chain: the level label opens it on hover or keyboard focus ---------- */
+.country-chain { justify-self: start; }
+.country-chain > .country-sev { border: 0; font: inherit; font-weight: 700; cursor: help; }
+.rule-chain { width: min(26rem, calc(100vw - var(--pg-space-7))); max-width: none; color: var(--pg-color-ink); font-size: var(--pg-text-2); white-space: normal; }
+.rule-chain__title { display: block; margin-bottom: var(--pg-space-2); font-size: var(--pg-text-2); }
+.rule-chain dl { display: grid; gap: var(--pg-space-1); margin: 0; }
+.rule-chain dl > div { display: grid; grid-template-columns: 5rem minmax(0, 1fr); gap: var(--pg-space-2); }
+.rule-chain dt { color: var(--pg-color-muted); }
+.rule-chain dd { margin: 0; overflow-wrap: anywhere; }
+
+/* ---------- Shared bits ---------- */
+.check-ph > svg { display: block; width: 100%; height: 100%; }
+.check-head { display: grid; gap: var(--pg-space-1); margin-bottom: var(--pg-space-4); }
+.check-head p { margin: 0; }
+.check-source { min-width: 0; margin: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; flex-wrap: nowrap; }
+.check-source > span:last-child { overflow: hidden; text-overflow: ellipsis; }
+#compliance .stage-content > .check-three, #compliance .stage-content > .check-grid, #compliance .stage-content > .check-ai, #compliance .stage-content > .check-c3 { padding: var(--pg-space-4); }
+
+/* ---------- B. Three results side by side ---------- */
+.check-three__row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--pg-space-5); }
+.check-three__card { display: grid; align-content: start; gap: var(--pg-space-2); min-width: 0; margin: 0; }
+.check-three__card + .check-three__card { padding-left: var(--pg-space-5); border-left: 1px solid var(--pg-color-rule-soft); }
+.check-three__result { display: flex; align-items: flex-start; gap: var(--pg-space-2); margin: 0; font-size: var(--pg-text-3); font-weight: 650; line-height: 1.5; }
+.check-three__detail, .check-three__also { margin: 0; color: var(--pg-color-muted); }
+.check-three__also { font-size: var(--pg-text-2); line-height: 1.5; }
+.check-three__also-word { display: inline-flex; align-items: center; gap: var(--pg-space-1); }
+.check-three__use { justify-self: start; }
+
+/* ---------- C. 10 countries x import / export ---------- */
+.check-grid__ledger { max-width: 40rem; }
+.check-grid__cell { justify-content: flex-end; min-width: var(--pg-space-8); font-variant-numeric: tabular-nums; }
+.check-grid__list { display: grid; gap: var(--pg-space-3); margin-top: var(--pg-space-4); padding-top: var(--pg-space-4); border-top: 1px solid var(--pg-color-rule); }
+.check-grid__list-head { display: flex; align-items: center; justify-content: space-between; gap: var(--pg-space-3); font-size: var(--pg-text-3); }
+.check-grid__rules { display: grid; gap: var(--pg-space-3); margin: 0; padding: 0; list-style: none; }
+.check-grid__rules > li + li { padding-top: var(--pg-space-3); border-top: 1px solid var(--pg-color-rule-soft); }
+.check-grid__rule { margin: 0; }
+
+/* ---------- Step 01 guide AI card ---------- */
+.check-ai { display: grid; gap: var(--pg-space-3); }
+.check-ai__figures { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--pg-space-3); margin: 0; }
+.check-ai__figures > div { display: grid; gap: var(--pg-space-1); min-width: 0; }
+.check-ai__figures dt { color: var(--pg-color-muted); font-size: var(--pg-text-2); line-height: 1.3; }
+.check-ai__figures dd { margin: 0; font-family: var(--pg-font-serif); font-size: var(--pg-text-5); line-height: 1; }
+.check-ai > .tg-btn { justify-self: start; }
+
+/* ---------- Channel3 tree vs AUP reference block ---------- */
+.check-c3__clip { margin: 0; max-width: 48rem; }
+.check-c3__count { margin: var(--pg-space-2) 0; font-size: var(--pg-text-3); line-height: 1.5; }
+.check-c3__rows { display: grid; gap: var(--pg-space-3); margin: 0 0 var(--pg-space-3); padding: 0; list-style: none; }
+.check-c3__rows > li + li { padding-top: var(--pg-space-3); border-top: 1px solid var(--pg-color-rule-soft); }
+.check-c3__rows .tg-clip__quote { margin: 0 0 var(--pg-space-1); font-size: var(--pg-text-3); }
+.check-c3__rows .tg-small { margin: 0; }
+
+/* ---------- Channel3 category line on a product card ---------- */
+.product-card-ref { display: grid; gap: var(--pg-space-1); margin-top: var(--pg-space-1); padding-top: var(--pg-space-2); border-top: 1px solid var(--pg-color-rule-soft); font-size: var(--pg-text-2); line-height: 1.5; }
+
+@media (max-width: 640px) {
+  .check-three__row { grid-template-columns: minmax(0, 1fr); gap: var(--pg-space-4); }
+  .check-three__card + .check-three__card { padding-left: 0; padding-top: var(--pg-space-4); border-left: 0; border-top: 1px solid var(--pg-color-rule-soft); }
+  .check-ai__figures { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .check-ai__figures dd { font-size: var(--pg-text-4); }
+  .rule-chain { width: calc(100vw - var(--pg-space-8) - var(--pg-space-5)); }
+  .rule-chain dl > div { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  #compliance .stage-content > .check-three, #compliance .stage-content > .check-grid, #compliance .stage-content > .check-ai, #compliance .stage-content > .check-c3 { padding: var(--pg-space-4) 0; }
+}

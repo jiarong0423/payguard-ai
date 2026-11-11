@@ -1,0 +1,88 @@
+{
+  "schema_version": "proof_ledger_v1",
+  "note": "One row per real PayPal Sandbox evidence send, for the console Proof page. Every value is a quote: tests/frontend_proof_page.mjs checks that each {value, line} pair appears on that line of the row's file, and that the PDF in frontend/public/evidence has the recorded SHA-256 and byte count. Dispute ids stay masked in the source files and are not copied here.",
+  "basis": [
+    { "label": "RECORDED", "meaning": "a real run, written down in a committed receipt" },
+    { "label": "RECOUNTED", "meaning": "counted again from a committed data file by a test" },
+    { "label": "SYNTHETIC", "meaning": "demo data the app generates; no real source" },
+    { "label": "HOSTED DEMO", "meaning": "made on the public hosted page, not the local console" }
+  ],
+  "sends": [
+    {
+      "id": "send-20261104",
+      "basis": "RECORDED",
+      "file": "docs/evidence/RECEIPT_20261104_live.md",
+      "label": "First send receipt",
+      "date": { "value": "2026-11-04", "line": 1 },
+      "where": { "value": "local console", "line": 7 },
+      "debug_id": { "value": "f908765a01293", "line": 13 },
+      "readback": { "value": "WAITING_FOR_BUYER_RESPONSE", "line": 14 },
+      "file_check": null
+    },
+    {
+      "id": "send-20261105",
+      "basis": "RECORDED",
+      "file": "docs/evidence/RECEIPT_20261105_live.md",
+      "label": "Video send receipt",
+      "date": { "value": "2026-11-05", "line": 1 },
+      "where": { "value": "local console", "line": 8 },
+      "debug_id": { "value": "f2088142a6218", "line": 14 },
+      "readback": { "value": "WAITING_FOR_BUYER_RESPONSE", "line": 15 },
+      "file_check": null
+    },
+    {
+      "id": "send-20261109-1",
+      "basis": "RECORDED",
+      "file": "docs/evidence/READBACK_20261109.md",
+      "label": "Read-back, send 1",
+      "date": { "value": "2026-11-09", "line": 1 },
+      "where": { "value": "local console", "line": 3 },
+      "debug_id": null,
+      "readback": { "value": "WAITING_FOR_BUYER_RESPONSE", "line": 12 },
+      "file_check": { "state": "not_compared", "value": "not compared", "line": 15 }
+    },
+    {
+      "id": "send-20261109-2",
+      "basis": "RECORDED",
+      "file": "docs/evidence/READBACK_20261109.md",
+      "label": "Read-back, send 2",
+      "date": { "value": "2026-11-09", "line": 1 },
+      "where": { "value": "local console", "line": 3 },
+      "debug_id": { "value": "ca5782cf8df90", "line": 22 },
+      "readback": { "value": "WAITING_FOR_BUYER_RESPONSE", "line": 25 },
+      "file_check": { "state": "match", "value": "match", "line": 29 }
+    },
+    {
+      "id": "send-20261109-3",
+      "basis": "RECORDED",
+      "file": "docs/evidence/READBACK_20261109.md",
+      "label": "Read-back, send 3",
+      "date": { "value": "2026-11-09", "line": 1 },
+      "where": { "value": "local console", "line": 3 },
+      "debug_id": { "value": "f492438834396", "line": 36 },
+      "readback": { "value": "WAITING_FOR_BUYER_RESPONSE", "line": 39 },
+      "file_check": { "state": "match", "value": "match", "line": 42 }
+    },
+    {
+      "id": "send-20261110-hosted",
+      "basis": "HOSTED DEMO",
+      "file": "docs/evidence/RECEIPT_20261110_hosted_live.md",
+      "label": "Hosted receipt",
+      "date": { "value": "2026-11-10", "line": 1 },
+      "where": { "value": "hosted page", "line": 8 },
+      "debug_id": { "value": "f869050ae2a63", "line": 14 },
+      "readback": { "value": "Under review", "line": 15 },
+      "file_check": { "state": "not_compared", "value": "not downloaded and compared", "line": 30 }
+    }
+  ],
+  "verify": {
+    "send_id": "send-20261109-3",
+    "file": "docs/evidence/READBACK_20261109.md",
+    "recorded_sha256": { "value": "2a279b41b5276534cc9f9dc732db6eff7d53e5e952ade82dd857eacffa75d701", "line": 38 },
+    "served_bytes": { "value": "2,015 bytes", "line": 41 },
+    "byte_count": 2015,
+    "pdf": "evidence/send3_paypal_copy.pdf",
+    "pdf_note": "This site keeps the copy PayPal Sandbox served back (synthetic data only).",
+    "tamper_byte": 100
+  }
+}

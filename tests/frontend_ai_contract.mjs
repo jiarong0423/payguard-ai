@@ -420,7 +420,8 @@ for (const [name, source] of [['App', appSource], ['API', apiSource], ['Referenc
     'Demo data · you decide · nothing is sent without your click',
     'label="Sales vs. usual"',
     'label="Orders in last hour"',
-    '<span className="tiny-dot" /> FOR SMALL PAYPAL SELLERS</div>',
+    // 2026-11-12 integration: the hero uses the shared page head (.tg-pagehead eyebrow, sentence case).
+    '<p className="tg-eyebrow">For small PayPal sellers</p>',
   ]) assert.ok(appSource.includes(sellerCopy), sellerCopy);
   assert.equal(appSource.split('status={<RoleBadge />}').length - 1, 2, 'stages 01 and 03 share one role badge');
   for (const retired of ['HUMAN CHECK</Badge>', 'HUMAN REVIEW</Badge>', 'Submit to Sandbox (requires', 'PayPal Disputes API readback', 'Fixed synthetic evidence brief', 'Why this AI call is bounded', 'deterministic advisory', 'label="Velocity ratio"', 'label="Window captures"', 'OPTIONAL SPONSOR EXPERIENCE']) {

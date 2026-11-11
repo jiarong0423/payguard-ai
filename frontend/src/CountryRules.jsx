@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { apiRequest, retrySecondsLeft } from './api.js';
 import { tabKeyDown } from './tabKeys.js';
 import { useWaitClock, waitFailureMessage, WaitLine } from './GuideLive.jsx';
@@ -85,16 +85,25 @@ function SevIcon({ severity }) {
   return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{SEV_ICON[severity]}</svg>;
 }
 
+// (P3 2026-11-12) Rule chain: hovering or focusing a row's level label shows route, rule id, level, law and source
+// (CheckSaleExtras.jsx, loaded on demand with its display copy of the rule pack).
+const RuleChain = lazy(() => import('./CheckSaleExtras.jsx').then((module) => ({ default: module.RuleChain })));
+
 // The link reads "Source" on one line; the statute or source kind sits in its tooltip and accessible name (plan r2 C11).
 // The act and article also show as a small line of their own, so a viewer can read the act the video names (r20 UX-5).
-function Finding({ row, retrievedAt, gloss }) {
+function Finding({ row, retrievedAt, gloss, chain }) {
   const { sentence, scope, statute } = splitRule(row.text);
   const label = statute ? `Source: ${statute}` : sourceLabel(row.source);
+  const tipId = `rule-chain-${chain.key}`;
+  // Linked tags (theme/connect.js): the level label, the law and the source of one row share a key; rows citing the
+  // same law, and the sample card naming it, share it too.
+  const link = { 'data-link': statute ? `law:${statute}` : `row:${chain.key}`, 'data-link-risk': row.severity === 'BLOCK' ? '' : undefined };
   return <li className={`country-finding sev-${row.severity.toLowerCase()}`} data-testid={`country-finding-${row.code}`}>
-    <span className="country-sev"><SevIcon severity={row.severity} />{SEVERITY_TEXT[row.severity]}</span>
+    <span className="tg-tip country-chain"><button type="button" className="country-sev tg-tip__trigger" data-testid="rule-chain-trigger" aria-describedby={tipId} {...link}><SevIcon severity={row.severity} />{SEVERITY_TEXT[row.severity]}</button>
+      <Suspense fallback={null}><RuleChain row={row} tipId={tipId} names={chain.names} result={chain.result} shownAs={SEVERITY_TEXT[row.severity]} sourceKind={sourceLabel(row.source)} /></Suspense></span>
     <span className="country-finding-body"><span>{gloss(sentence)}</span>
-      {statute && <small className="country-statute" data-testid={`country-statute-${row.code}`}>{statute}</small>}
-      <small>{scope && <span>{scope} · </span>}<a href={row.source} target="_blank" rel="noopener noreferrer" title={label}
+      {statute && <small className="country-statute" data-testid={`country-statute-${row.code}`} {...link}>{statute}</small>}
+      <small className="country-source-line" title={`${scope ? `${scope} · ` : ''}${row.source}`}>{scope && <span>{scope} · </span>}<a href={row.source} target="_blank" rel="noopener noreferrer" title={label} {...link}
         aria-label={`${label}${scope ? ` (${scope})` : ''}, opens in a new tab`}>Source ↗</a>
         {retrievedAt && <span data-testid="country-row-source-date"> · source read {retrievedAt}</span>}
       </small></span>
@@ -153,7 +162,7 @@ function Verdict({ result, names, tags, onEdit, onContinue }) {
   const noGoods = tags.length === 0 && <span className="country-verdict-line" data-testid="country-no-goods">No goods ticked: account and shipping rules only.</span>;
   // One next step under the verdict (plan r2 E19): change the goods after a Stop, or go on to the draft.
   if (result.blocked) {
-    return <><strong className="country-verdict-big">A listed rule may apply to this sale.</strong>
+    return <><strong className="country-verdict-big"><SevIcon severity="BLOCK" />A listed rule may apply to this sale.</strong>
       <span className="country-verdict-line">Draft paused: {plural(block.length, 'listed rule')} {block.length === 1 ? 'applies' : 'apply'} to {seller} → {buyer}.</span>{noGoods}
       <span className="country-verdict-next"><button type="button" className="button button-secondary" data-testid="country-edit-item" onClick={() => onEdit(accountStop)}>{accountStop ? 'Change account' : 'Edit item'}</button></span></>;
   }
@@ -182,7 +191,11 @@ const SESSION_EXPIRED_TEXT = 'The demo session expired. Select Reconnect at the 
 // same local rules check as the Check country rules button. No other request kind, no PayPal call, no model call.
 export const EXAMPLE_ROUTE = Object.freeze({ seller_country: 'US', buyer_country: 'SG', goods_tags: Object.freeze(['e_cigarettes']) });
 
-export default function CountryRules({ session, onResult, onContinue, onSessionExpired, onBusy, onExample }) {
+// (P3 2026-11-12, judges' consensus) The page opens on the example's RULE MATCH, like Overview card 01: the first time
+// the Check a sale page is shown in a page load, the existing "Fill from example" runs once (same request, same rules).
+let autoExampleDone = false;
+
+export default function CountryRules({ session, onResult, onContinue, onSessionExpired, onBusy, onExample, autoExample = false }) {
   const [catalog, setCatalog] = useState(null);
   const [unavailable, setUnavailable] = useState(false);
   const [form, setForm] = useState(null);
@@ -206,6 +219,9 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
   const runTokenRef = useRef(0);
   // True when the result being shown came from "Try the example": the page then scrolls the result to the top of the screen.
   const exampleRef = useRef(false);
+  // The automatic example on page entry does not scroll the page; autoRef holds the current tryExample.
+  const quietRef = useRef(false);
+  const autoRef = useRef(null);
   const [amountNote, setAmountNote] = useState('');
   // (optimise r24) The last Stop (route, goods, time) and, once a later check no longer stops the sale, that result:
   // { before, after } drives the before/after card. A new Stop replaces it.
@@ -252,9 +268,16 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
     return () => { live = false; window.clearTimeout(retryTimer); onResult?.(null); };
   }, [session, catalogTry]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    if (!autoExample || !catalog || !form || autoExampleDone) return;
+    autoExampleDone = true;
+    quietRef.current = true;
+    autoRef.current?.();
+  }, [autoExample, catalog, form]);
   // Bring the verdict on screen (above the phone action bar) once it arrives (review r1 P0.3).
   useEffect(() => {
     if (!result) return;
+    if (quietRef.current) { quietRef.current = false; exampleRef.current = false; return; }
     window.requestAnimationFrame(() => {
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const fromExample = exampleRef.current;
@@ -285,6 +308,7 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
     onExample?.();
     runCheck(next);
   };
+  autoRef.current = tryExample;
   async function runCheck(values) {
     // aria-disabled while running: the button keeps keyboard focus (review r1 P0.7). Also while a Retry-After runs.
     if (busy || Date.now() < waitUntil) return;
@@ -416,7 +440,7 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
           {moreTags ? 'Fewer categories' : `More categories (${extraTags.length})`}</button>
       </fieldset>}
     </div>
-    <button type="button" className={`button button-blue${waiting ? ' is-blocked' : ''}`} data-testid="country-check" aria-disabled={busy || waiting || undefined} aria-busy={busy} onClick={run}>{busy ? 'Checking…' : 'Check country rules'}</button>
+    <button type="button" className={`button button-secondary${waiting ? ' is-blocked' : ''}`} data-testid="country-check" aria-disabled={busy || waiting || undefined} aria-busy={busy} onClick={run}>{busy ? 'Checking…' : 'Check country rules'}</button>
     {error && <p className="guide-live-error" role="alert">{error}<WaitLine until={waitUntil} now={now} testId="country-wait" /></p>}
     <div className="country-live" aria-live="polite">
     {result && <div ref={resultRef} tabIndex={-1} className={`country-result ${result.blocked ? 'is-blocked' : result.findings.some(isPostalBan) ? 'is-caution' : 'is-clear'}`} data-testid="country-result">
@@ -424,17 +448,18 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
       {!result.blocked && unlock?.after && <BeforeAfter record={unlock} names={names} />}
       {(() => {
         const seen = new Set();
-        const list = (items) => <ul>{items.map((row) => <Finding key={`${row.code}-${row.text}`} row={row} retrievedAt={result.retrieved_at} gloss={(text) => withGloss(text, seen)} />)}</ul>;
+        const list = (items, where) => <ul>{items.map((row, at) => <Finding key={`${row.code}-${row.text}`} row={row} retrievedAt={result.retrieved_at} gloss={(text) => withGloss(text, seen)}
+          chain={{ key: `${where}-${at}`, names, result }} />)}</ul>;
         return <>
           <div id="country-view-rows" data-testid="country-key-rules">
-            {keyRows.length > 0 ? list(keyRows) : <p className="country-footnote">No rule to check first.</p>}
+            {keyRows.length > 0 ? list(keyRows, 'key') : <p className="country-footnote">No rule to check first.</p>}
           </div>
           {foldViews.length > 0 && <details className="sandbox-details country-all-rules" data-testid="country-all-rules"><summary>See all rules and notes</summary>
             <div className="segmented" role="tablist" aria-label="Which rules to show"
               onKeyDown={(event) => tabKeyDown(event, foldViews.map(([key]) => key), shown, setView, (key) => `country-view-${key}`)}>
               {foldViews.map(([key, label, testId]) => <button key={key} type="button" role="tab" id={`country-view-${key}`} data-testid={testId} aria-selected={shown === key} tabIndex={shown === key ? 0 : -1} aria-controls="country-view-fold" className={shown === key ? 'is-active' : ''} onClick={() => setView(key)}>{label}</button>)}
             </div>
-            <div id="country-view-fold" role="tabpanel" aria-labelledby={`country-view-${shown}`}>{list(foldRows)}</div>
+            <div id="country-view-fold" role="tabpanel" aria-labelledby={`country-view-${shown}`}>{list(foldRows, shown)}</div>
           </details>}
         </>;
       })()}

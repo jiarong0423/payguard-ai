@@ -5,7 +5,8 @@
     "source": "data/country_rules/paypal_country_rules_v1.json",
     "import_rules": 368,
     "export_rules": 313,
-    "countries": 10
+    "countries": 10,
+    "source_plain": "Country rules file"
   },
   "step1_example": {
     "route": "US → SG",
@@ -15,7 +16,8 @@
     "article": "s. 16",
     "tier": "prohibited",
     "source": "data/country_rules/paypal_country_rules_v1.json",
-    "line": 3947
+    "line": 3947,
+    "source_plain": "Country rules file"
   },
   "step3_send": {
     "proof_row": "dispute-hosted-send-live",
@@ -25,7 +27,8 @@
       "value": "48.00"
     },
     "source": "docs/evidence/RECEIPT_20261110_hosted_live.md",
-    "line": 11
+    "line": 11,
+    "source_plain": "PayPal receipt"
   },
   "step2_example": {
     "orders": 50,
@@ -40,7 +43,8 @@
       "amounts": 54,
       "burst_rows": 708
     },
-    "note": "The synthetic burst the Sales spike step loads: 50 rows cycling DEMO_BURST_AMOUNTS in a 1-hour window against DEMO_VELOCITY_BASELINE; ratio = total / hours / baseline (src/payguard/engines.py)."
+    "note": "The synthetic burst the Sales spike step loads: 50 rows cycling DEMO_BURST_AMOUNTS in a 1-hour window against DEMO_VELOCITY_BASELINE; ratio = total / hours / baseline (src/payguard/engines.py).",
+    "source_plain": "Demo generator (synthetic)"
   },
   "receipt_sends": [
     {
@@ -75,5 +79,24 @@
       "line": 31,
       "debug_id": "f492438834396"
     }
-  ]
+  ],
+  "replay": {
+    "date": "2026-11-04",
+    "source": "docs/evidence/RECEIPT_20261104_live.md",
+    "component": "frontend/src/RecordedSendReplay.jsx",
+    "note": "The Overview replay walks through the local send of 2026-11-04; card 03 is the hosted send of 2026-11-10. Two different sends."
+  },
+  "ai": {
+    "guide_source": "docs/evidence/GEMINI_GUIDE_RUNS_20261103.md",
+    "guide_date": "2026-11-03",
+    "studio_source": "docs/evidence/AG_STUDIO_LIVE_RUNS_20261109.md",
+    "studio_date": "2026-11-09",
+    "studio_questions": 4,
+    "claims_from": [
+      "README.md:46",
+      "README.md:131",
+      "README.md:42",
+      "docs/SPONSOR_TECH_MAP.md:19"
+    ]
+  }
 }

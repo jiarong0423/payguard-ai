@@ -1,0 +1,32 @@
+/* (P5 2026-11-12) For judges page layout only. .tg-clip, .tg-source, .tg-legend, .tg-stamp and .tg-btn are styled by
+   theme/components.css; this file places them. Values are tokens from theme/tokens.css only. */
+.jp { display: grid; gap: var(--pg-space-5); margin: var(--pg-space-5) 0 var(--pg-space-6); }
+.jp-icon svg { display: block; width: 100%; height: 100%; }
+.jp-total { display: flex; align-items: center; gap: var(--pg-space-2); margin: 0; font-size: var(--pg-text-3); color: var(--pg-color-ink); }
+
+.jp-route { display: grid; gap: var(--pg-space-5); margin: 0; padding: 0; list-style: none; }
+.jp-step { display: grid; grid-template-columns: var(--pg-space-8) minmax(0, 1fr); gap: var(--pg-space-5); }
+.jp-step__body { display: grid; gap: var(--pg-space-3); min-width: 0; }
+.jp-step__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--pg-space-2) var(--pg-space-4); }
+.jp-step__head .tg-h3 { margin: 0; }
+.jp-step__time { display: inline-flex; align-items: center; gap: var(--pg-space-1); font-size: var(--pg-text-2); color: var(--pg-color-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.jp-step__do { margin: 0; font-size: var(--pg-text-3); line-height: 1.5; color: var(--pg-color-ink); }
+.jp-step__look { display: grid; gap: var(--pg-space-2); margin: 0; }
+.jp-step__n { margin-top: 0; }
+.jp-step__kicker { margin: 0; color: var(--pg-color-muted); }
+.jp-look__marks { display: flex; flex-wrap: wrap; align-items: center; gap: var(--pg-space-2) var(--pg-space-3); }
+.jp-look__see { font-size: var(--pg-text-2); line-height: 1.5; color: var(--pg-color-muted); }
+.jp-figure { font-family: var(--pg-font-serif); font-size: var(--pg-text-6); font-weight: 600; line-height: 1; font-variant-numeric: lining-nums tabular-nums; }
+.jp-mono { font-size: var(--pg-text-3); font-weight: 600; }
+.jp-step__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--pg-space-3); min-width: 0; }
+.jp-step__foot .tg-btn .jp-icon { margin-left: var(--pg-space-1); }
+.jp-look__marks .tg-stamp .jp-icon { margin-right: var(--pg-space-1); }
+
+.jp-step__foot .tg-source { flex: 1 1 0; min-width: 0; }
+
+@media (max-width: 640px) {
+  .jp-step { grid-template-columns: minmax(0, 1fr); gap: var(--pg-space-2); }
+  .jp-step__foot { flex-direction: column; align-items: stretch; }
+  .jp-step__foot .tg-source { flex: none; }
+  .jp-step__foot .tg-btn { width: 100%; }
+}

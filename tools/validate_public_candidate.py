@@ -79,6 +79,10 @@ REGION_TEXT_FILES = frozenset({
     # (2026-11-10) The extended spot-check and its per-item results quote the same kind of short fragments.
     "docs/evidence/RULES_SPOTCHECK_20261110.md",
     "data/country_rules/spotcheck_results_20261110.json",
+    # (2026-11-12) Check a sale ships a lazy-loaded index derived from the rule file above (same quotes) and the
+    # example list that names all ten countries of that file.
+    "frontend/src/data/country_rules_index_v1.json",
+    "frontend/src/data/check_sale_examples_v1.json",
     "data/country_rules/spotcheck_sample_20261110.json",
 })
 MAPPED_SOURCE_PATHS = {"tools/run.sh": "tools/public_run.sh"}

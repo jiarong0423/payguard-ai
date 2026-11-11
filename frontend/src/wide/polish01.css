@@ -8,20 +8,6 @@
      inside the page width (at 1280 the Download button ran past the right edge). */
   .page-top .hero-compact h1 { max-width: 760px; font-size: var(--pg-text-6); line-height: 1.1; } /* P2: Overview headline */
 
-  /* Step 01: the country card on the right is the tallest column after the example, so "More: sources, limits, examples"
-     and the Next bar move into the empty space under the guide bar in the left column (about 90px shorter, no text lost). */
-  #compliance .stage-content { grid-template-rows: auto auto auto auto auto 1fr; }
-  /* The country card spans all left rows; the last 1fr row takes any spare height so the left items stay stacked at the top. */
-  #compliance .stage-content > .stage-block { grid-row: 1 / span 6; }
-  /* "More: sources, limits, examples" sits right under the guide bar in the left column. */
-  #compliance .stage-content > .step-more { grid-column: 1; grid-row: 4; align-self: start; margin: 0 16px; }
-  /* The Next bar sits under it in the left column. */
-  #compliance .stage-content > .stage-next { grid-column: 1; grid-row: 5; align-self: start; margin: 0 16px 12px; }
-  /* When the guide is opened it needs the full width (row 4, compact.css); the fold and the Next bar then go back to full width below it. */
-  #compliance .stage-content:has(> #guide-live-preflight.is-open) > .step-more { grid-column: 1 / -1; grid-row: 5; margin: 0 16px; }
-  #compliance .stage-content:has(> #guide-live-preflight.is-open) > .stage-next { grid-column: 1 / -1; grid-row: 6; margin: 0 16px 12px; }
-  #compliance .stage-content:has(> #guide-live-preflight.is-open) { grid-template-rows: auto auto 1fr auto auto auto; }
-  #compliance .stage-content:has(> #guide-live-preflight.is-open) > .stage-block { grid-row: 1 / span 3; }
   /* Step 01 guide bar on one line like step 03 ("Tell it what happened" beside the title), for the same look in all steps. */
   #compliance #guide-live-preflight > .optional-heading .optional-trigger { min-height: 0; padding-top: 6px; padding-bottom: 6px; }
   #compliance #guide-live-preflight > .optional-heading .optional-trigger > span:first-child > span { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 12px; }

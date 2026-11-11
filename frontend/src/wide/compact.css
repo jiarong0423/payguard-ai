@@ -19,13 +19,6 @@
   #analytics .optional-trigger strong, #activity .optional-trigger strong { display: inline; font-size: 15px; }
   #analytics .optional-trigger small, #activity .optional-trigger small { display: inline; margin: 0; }
 
-  /* Step 01: the guide bar fills the empty space under the Sandbox draft fold on the left; once it is opened it needs the
-     full width (chat, item table and quick questions side by side) and drops below. */
-  #compliance .stage-content > .stage-block { grid-row: 1 / span 3; }
-  #compliance .stage-content { grid-template-rows: auto auto 1fr auto auto; }
-  #compliance .stage-content > #sandbox-draft { grid-row: 2; }
-  #compliance .stage-content > #guide-live-preflight { grid-column: 1; grid-row: 3; align-self: start; }
-  #compliance .stage-content > #guide-live-preflight.is-open { grid-column: 1 / -1; grid-row: 4; }
 
   /* Step 03 view switch: the two buttons sit in the step title bar (between the title and Reset demo) instead of a bar of
      their own. The strip itself takes no height; it is only the carrier of the open/closed flag the CSS rules read. */

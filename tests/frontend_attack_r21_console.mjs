@@ -83,7 +83,7 @@ assert.ok(app.includes("if (errorSourceRef.current === 'aup' && value.trim() && 
 assert.ok(app.includes("if (!firstClick('redacted')) return;") && app.includes("if (!firstClick('zip')) return;") && app.includes('const DOWNLOAD_REPEAT_MS = 1000;'), 'download repeat clicks ignored');
 
 // 401 in the country panel and the guides uses the console's Reconnect flow.
-assert.ok(app.includes('onContinue={continueToDraft} onSessionExpired={panelSessionExpired} onBusy={setCountryBusy} onExample={() => editDescription(EXAMPLE_DESCRIPTION)} />'), 'country panel reports 401 (attack r22: and its busy state)');
+assert.ok(app.includes('onContinue={continueToDraft} onSessionExpired={panelSessionExpired} onBusy={setCountryBusy} onExample={() => editDescription(EXAMPLE_DESCRIPTION)} autoExample={currentPage === \'compliance\'} />'), 'country panel reports 401 (attack r22: and its busy state; P3 2026-11-12: autoExample prop added)');
 assert.equal(app.split('request={guideRequest} onSessionExpired={panelSessionExpired} />').length - 1, 3, 'all three guides report 401');
 assert.ok(panel.includes('onSessionExpired?.(failure, session);') && guide.includes('if (failure.status === 401) onSessionExpired?.(failure, session);'), 'panels call it');
 assert.ok(!guide.includes('Reload the page to start a new one'), 'no reload instruction left');

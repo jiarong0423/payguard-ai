@@ -276,6 +276,10 @@ EXACT_FILES = (
     "tests/frontend_time_evidence_api.mjs",
     "tests/frontend_tokens.mjs",
     "tests/frontend_overview_figures.mjs",
+    "tests/frontend_check_sale_p3.mjs",
+    "tests/frontend_connect.mjs",
+    "tests/frontend_judges_page.mjs",
+    "tests/frontend_proof_page.mjs",
     "tests/frontend_type_scale.mjs",
     "tests/frontend_zip_api_parity.mjs",
     "tests/frontend_zip_contract.mjs",
@@ -309,11 +313,11 @@ TREE_FILES = {
     # The whole frontend/public tree (PWA manifest, service worker, offline page, icons); a test keeps it complete.
     "frontend/public": (
         "icons/apple-touch-icon.png", "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png",
-        "icons/icon-maskable.svg", "icons/icon.svg", "manifest.webmanifest", "offline.html", "start.css", "start.html", "sw.js",
+        "icons/icon-maskable.svg", "icons/icon.svg", "manifest.webmanifest", "offline.html", "start.css", "start.html", "sw.js", "evidence/send3_paypal_copy.pdf",
         "fonts/Newsreader-Italic-latin-var.woff2", "fonts/Newsreader-latin-var.woff2", "fonts/OFL-newsreader.txt", "fonts/OFL-publicsans.txt", "fonts/PublicSans-Italic-latin-var.woff2", "fonts/PublicSans-latin-var.woff2", "fonts/SOURCES.txt",
     ),
     "frontend/src": (
-        "AnalyticsDashboard.css", "AnalyticsDashboard.jsx", "OverviewFlow.css", "OverviewFlow.jsx", "App.jsx", "CountryRules.css", "CountryRules.jsx", "GuideLive.css", "GuideLive.jsx",
+        "AnalyticsDashboard.css", "AnalyticsDashboard.jsx", "CheckSaleExtras.css", "CheckSaleExtras.jsx", "OverviewFlow.css", "OverviewFlow.jsx", "App.jsx", "CountryRules.css", "CountryRules.jsx", "GuideLive.css", "GuideLive.jsx",
         "GuideReplay.css", "GuideReplay.jsx", "RecordedSendReplay.css", "RecordedSendReplay.jsx", "hostedCopy.js", "PolicyPanel.jsx", "ProductReference.css", "ProductReference.jsx", "ReferencePanel.jsx", "api.js", "evidence.jsx", "index.css",
         "lockReasons.js", "main.jsx", "operatorLabels.js", "sponsorMap.js", "productConfirmation.js", "pseudonymizedExport.js", "pwa.css", "pwa.js", "referenceContract.js",
         "resumeNotice.js", "reviewZip.js", "sendConfirm.js", "tabKeys.js", "TimeEvidenceView.jsx", "disputeDisplay.js",
@@ -323,14 +327,15 @@ TREE_FILES = {
     "frontend/src/charts": ("BenchmarkCharts.jsx", "VelocityChart.jsx", "benchmarkChartData.js", "charts.css", "evidence.css", "velocityChartData.js"),
     "frontend/src/dashboard": ("DelegateConfirm.css", "DelegateConfirm.jsx", "RecordedRuns.jsx", "agentRecording.js", "auditor.js", "dashboard.css", "dashboardData.js", "layout.js", "main.jsx", "studioAgentClient.js",
                                "theme.js", "widgets.jsx"),
-    "frontend/src/data": ("blind_trend_v1.json", "overview_figures_v1.json", "channel3_receipts_v1.json", "dashboard_disputes_v1.json", "guide_benchmark_v1.json",
+    "frontend/src/data": ("blind_trend_v1.json", "overview_figures_v1.json", "check_sale_examples_v1.json", "country_rules_index_v1.json", "judges_route_v1.json", "proof_ledger_v1.json", "channel3_receipts_v1.json", "dashboard_disputes_v1.json", "guide_benchmark_v1.json",
                           "guide_replays_v1.json", "proof_facts_v1.json", "stress_test_v1.json", "studio_agent_run_v1.json"),
     "frontend/src/proof": ("main.jsx", "proof.css", "proofData.js"),
     "frontend/src/wide": ("bottom.css", "compact.css", "header.css", "polish01.css", "polish02.css", "index.js", "polish03.css", "polish05.css", "relax.css", "scroll.css", "side.css", "step01.css", "step02.css", "step03.css"),
     "frontend/src/scenarios": ("main.jsx", "scenarios.css", "workOrders.js"),
     "frontend/src/shared": ("asOf.js", "asOfSource.js", "sessionLedger.js"),
-    "frontend/src/theme": ("base.css", "components.css", "chartTheme.js", "format.js", "motion.js", "tokens.css", "tokens.js", "writeTokensCss.mjs"),
-    "frontend/src/theme/icons": ("LICENSE", "arrow-right.svg", "caret-down.svg", "chart-line-up.svg", "check-circle.svg", "clock.svg", "file-text.svg", "files.svg", "fingerprint.svg", "gavel.svg", "globe.svg", "house.svg", "info.svg", "magnifying-glass.svg", "scales.svg", "seal-check.svg", "shield-check.svg", "warning.svg", "x-circle.svg"),
+    "frontend/src/theme": ("base.css", "components.css", "connect.js", "chartTheme.js", "format.js", "motion.js", "tokens.css", "tokens.js", "writeTokensCss.mjs"),
+    "frontend/src/theme/icons": ("sparkle.svg", "LICENSE", "arrow-right.svg", "caret-down.svg", "chart-line-up.svg", "check-circle.svg", "clock.svg", "file-text.svg", "files.svg", "fingerprint.svg", "gavel.svg", "globe.svg", "house.svg", "info.svg", "magnifying-glass.svg", "scales.svg", "seal-check.svg", "shield-check.svg", "warning.svg", "x-circle.svg"),
+    "frontend/src/pages": ("JudgesPage.css", "JudgesPage.jsx", "ProofPage.css", "ProofPage.jsx"),
     "frontend/src/optional": (
         "OptionalTimeline.jsx", "TimeEvidenceWithTimeline.jsx", "timeline.css", "timelineModel.js",
         "vitePlugin.js",
@@ -345,7 +350,7 @@ TREE_FILES = {
     "tests": (
         "test_advisory_eval.py", "test_ai_api.py", "test_ai_brief.py", "test_api.py",
         "test_applicability.py", "test_boundaries.py", "test_case_cards.py", "test_case_routing.py", "test_channel3.py", "test_channel3_products.py",
-        "test_case_intake.py", "test_console_static.py", "test_controlled_fallback.py", "test_country_rules.py", "test_online_sale_rules.py", "test_demo_mode.py",
+        "test_case_intake.py", "test_check_sale_p3_data.py", "test_console_static.py", "test_controlled_fallback.py", "test_country_rules.py", "test_online_sale_rules.py", "test_demo_mode.py",
         "test_demo_mode_integration.py", "test_dispute_evidence.py", "test_document_privacy.py", "test_evidence_pdf.py", "test_export_api_docs.py", "test_mcp_server.py",
         "test_engines.py", "test_evidence_chart_data.py", "test_evidence_guide.py", "test_gemini_worker.py", "test_guide_hybrid.py", "test_guide_live_contract.py", "test_guide_rounds.py", "test_guide_routes.py",
         "test_hosted_claims_consistency.py", "test_hsts_header.py", "test_hosted_readonly_sandbox.py", "test_hosted_sandbox_send.py", "test_hosted_send_redteam.py", "test_sandbox_readback_hash.py", "test_hosted_image_layout.py",
@@ -505,7 +510,9 @@ def _js_import_targets(relative: str, payload: bytes) -> list[tuple[str, tuple[s
             specifier = match.group(1)
             if specifier.endswith("/"):
                 continue
-            joined = os.path.normpath(f"{directory}/{specifier}").replace(os.sep, "/")
+            # Vite asset queries (icons imported as "./x.svg?raw") name the same file on disk.
+            path_part = specifier.split("?", 1)[0]
+            joined = os.path.normpath(f"{directory}/{path_part}").replace(os.sep, "/")
             targets.append((specifier, tuple(joined + suffix for suffix in JS_RESOLVE)))
     return targets
 

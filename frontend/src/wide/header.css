@@ -10,11 +10,7 @@
   .page-top .hero { margin-bottom: 0; }
   .page-top .start-here { margin-bottom: 0; flex-shrink: 0; padding-bottom: 4px; }
   .page-top { margin-bottom: 12px; }
-  /* Step 01: the policy check on the left, the country check on the right; everything else stays full width. */
-  #compliance .stage-content { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
-  #compliance .stage-content > * { grid-column: 1 / -1; }
-  #compliance .stage-content > .compliance-layout { grid-column: 1; grid-row: 1; grid-template-columns: minmax(0, 1fr); }
-  #compliance .stage-content > .stage-block { grid-column: 2; grid-row: 1; }
+  /* Step 01 layout: named areas in step01.css (P3 2026-11-12). */
   /* Tighter title, shorter text box and slimmer metric cards so more of each step fits in the first screen. */
   .page-top h1 { font-size: 28px; }
   .page-top .eyebrow { margin-bottom: 4px; }

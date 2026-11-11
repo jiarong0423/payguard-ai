@@ -1,0 +1,11 @@
+{
+  "schema_version": "judges_route_v1",
+  "note": "The For judges route: four console pages in order, with a time budget per step. Seconds are a reading plan, not a measurement. The values each step asks judges to look for are not stored here: JudgesPage.jsx reads them from overview_figures_v1.json, proof_facts_v1.json and proof_ledger_v1.json, and tests/frontend_judges_page.mjs checks the pages exist in App.jsx and the seconds add up to total_seconds.",
+  "total_seconds": 90,
+  "steps": [
+    { "n": "01", "page": "compliance", "title": "Check a sale", "seconds": 20, "action": "Open the step and check the example sale." },
+    { "n": "02", "page": "velocity", "title": "Sales spike", "seconds": 20, "action": "Open the step and load the sales burst." },
+    { "n": "03", "page": "disputes", "title": "Disputes", "seconds": 25, "action": "Open the step: the case, a person's review, then the Sandbox send." },
+    { "n": "04", "page": "proof", "title": "Proof", "seconds": 25, "action": "Open Proof and press Verify in your browser." }
+  ]
+}

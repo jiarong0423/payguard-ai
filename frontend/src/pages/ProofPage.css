@@ -1,0 +1,35 @@
+/* (P5 2026-11-12) Proof page layout only. Containers (.tg-ledger, .tg-log, .tg-source, .tg-legend, .tg-stamp, .tg-pill)
+   are styled by theme/components.css; this file places them. Values are tokens from theme/tokens.css only. */
+.pp { display: grid; gap: var(--pg-space-6); margin: var(--pg-space-5) 0 var(--pg-space-6); }
+.pp-section { display: grid; gap: var(--pg-space-3); }
+.pp-icon svg { display: block; width: 100%; height: 100%; }
+.tg-btn .pp-icon, .tg-stamp .pp-icon, .tg-link .pp-icon { margin-right: var(--pg-space-1); }
+
+
+.pp-ledger { overflow-x: auto; }
+.pp-nowrap { white-space: nowrap; }
+.pp-caption { margin: 0; padding: var(--pg-space-2) 0; color: var(--pg-color-muted); font-size: var(--pg-text-2); }
+.pp-ledger__src { max-width: 0; width: 30%; }
+
+/* Verify: explanation and buttons on the left, the log on the right; one column on phones. */
+.pp-verify { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--pg-space-6); padding-top: var(--pg-space-5); border-top: 1px solid var(--pg-color-rule); }
+.pp-verify__head { display: grid; align-content: start; gap: var(--pg-space-3); min-width: 0; }
+.pp-verify__head .tg-eyebrow, .pp-verify__head .tg-h3 { margin: 0; }
+.pp-verify__lede { margin: 0; font-size: var(--pg-text-3); line-height: 1.5; color: var(--pg-color-ink); }
+.pp-hash { display: grid; gap: var(--pg-space-1); margin: 0; }
+.pp-hash dt { font-size: var(--pg-text-1); color: var(--pg-color-muted); letter-spacing: .08em; text-transform: uppercase; }
+.pp-hash dd { margin: 0 0 var(--pg-space-2); overflow-wrap: anywhere; }
+.pp-verify__log { display: grid; align-content: start; gap: var(--pg-space-3); min-width: 0; }
+.pp-verify__log .tg-log__ref { overflow-wrap: anywhere; }
+.pp-empty { margin: 0; padding: var(--pg-space-4) 0; border-top: 1px solid var(--pg-color-rule-soft); border-bottom: 1px solid var(--pg-color-rule-soft); }
+.pp-verdict { margin-top: var(--pg-space-2); }
+.pp-diff { background: var(--pg-tint-risk); color: var(--pg-color-risk); font-weight: 700; }
+.pp-diff-note { margin: 0; font-size: var(--pg-text-2); color: var(--pg-color-risk); }
+
+@media (max-width: 900px) {
+  .pp-verify { grid-template-columns: minmax(0, 1fr); gap: var(--pg-space-5); }
+}
+@media (max-width: 640px) {
+  .pp { gap: var(--pg-space-5); margin-top: var(--pg-space-4); }
+  .pp-ledger__src { grid-column: 1 / -1; max-width: none; width: auto; }
+}

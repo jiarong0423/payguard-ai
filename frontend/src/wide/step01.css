@@ -1,10 +1,23 @@
 /* Wide-screen layout rules for step01 (viewport 1280px and wider only). Owned by one agent; add rules inside the media query below. */
 @media (min-width: 1280px) {
-  /* Two columns: policy check top-left, the PayPal Sandbox draft fold under it, the country check spanning both rows on the right. */
-  #compliance .stage-content { column-gap: 12px; row-gap: 12px; padding-top: 0; grid-template-rows: auto 1fr; }
-  #compliance .stage-content > .stage-block { grid-column: 2; grid-row: 1 / span 2; }
-  #compliance .stage-content > .stage-block-details,
-  #compliance .stage-content > #sandbox-draft { grid-column: 1; grid-row: 2; align-self: start; }
+  /* (P3 2026-11-12) Named areas: three sample results across the top; policy check, Sandbox draft, the guide's AI card,
+     the guide and "More" on the left; the country check on the right; the rule grid and the Next bar full width.
+     An opened guide takes the full width under both columns. Unknown children (notes) span both columns. */
+  #compliance .stage-content { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; column-gap: var(--pg-space-5); row-gap: 0; padding-top: 0;
+    grid-template-areas: "three three" "policy country" "draft country" "ai country" "guide country" "more country" "grid grid" "c3 c3" "next next";
+    grid-template-rows: auto auto auto auto auto 1fr auto auto auto; }
+  #compliance .stage-content:has(> #guide-live-preflight.is-open) { grid-template-areas: "three three" "policy country" "draft country" "ai country" "more country" "guide guide" "grid grid" "c3 c3" "next next"; }
+  #compliance .stage-content > * { grid-column: 1 / -1; }
+  #compliance .stage-content > .check-three { grid-area: three; }
+  #compliance .stage-content > .compliance-layout { grid-area: policy; grid-template-columns: minmax(0, 1fr); }
+  #compliance .stage-content > .stage-block { grid-area: country; align-self: stretch; border-left: 1px solid var(--pg-color-rule-soft); }
+  #compliance .stage-content > #sandbox-draft { grid-area: draft; }
+  #compliance .stage-content > .check-ai { grid-area: ai; }
+  #compliance .stage-content > #guide-live-preflight { grid-area: guide; align-self: start; }
+  #compliance .stage-content > .step-more { grid-area: more; align-self: start; margin: 0; }
+  #compliance .stage-content > .check-grid { grid-area: grid; }
+  #compliance .stage-content > .check-c3 { grid-area: c3; }
+  #compliance .stage-content > .stage-next { grid-area: next; margin: 0; }
 
   /* Tighter cards. */
   #compliance .invoice-editor textarea { min-height: 64px; }
@@ -29,13 +42,11 @@
   #compliance .country-optional > summary { min-height: 28px; }
   #compliance .country-rules > .button { min-height: 38px; }
 
-  /* Country result: slim banner (title and line on one row, Edit item beside them), compact rows. */
+  /* Country result: the verdict stacks (title, line, next step); the old three-column banner squeezed the line. */
   #compliance .country-result { gap: 8px; padding-bottom: 8px; }
-  #compliance .country-verdict { grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 4px 16px; padding: 8px 16px; }
-  #compliance .country-verdict > .country-verdict-notclear,
-  #compliance .country-verdict > .country-verdict-big { grid-column: 1; }
-  #compliance .country-verdict > .country-verdict-line { grid-column: 2; }
-  #compliance .country-verdict > .country-verdict-next { grid-column: 3; grid-row: 1; margin-top: 0; }
+  #compliance .country-verdict { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 4px 16px; padding: 8px 16px; }
+  #compliance .country-verdict > * { grid-column: 1; }
+  #compliance .country-verdict > .country-verdict-next { grid-column: 2; grid-row: 1 / span 3; margin-top: 0; }
   #compliance .country-verdict-big { font-size: 18px; line-height: 1.25; }
   #compliance .country-verdict-next .button { min-height: 34px; padding-top: 4px; padding-bottom: 4px; }
   #compliance .country-result ul { gap: 8px; }

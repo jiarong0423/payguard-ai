@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import './ProductReference.css';
+import { lazy, Suspense, useState } from 'react';
+// Styles (ProductReference.css) load with CheckSaleExtras.jsx, which the Check a sale page mounts first (first-load budget).
 import recordedSearches from './data/channel3_receipts_v1.json';
 
 // Channel3 product reference: the seller picks which catalogue product is theirs, or none.
@@ -16,6 +16,9 @@ const STATUS_TEXT = {
 const RECORDED_QUERIES = recordedSearches.receipts.map((receipt) => receipt.query);
 const NOT_RECORDED_TEXT = `This demo replays ${RECORDED_QUERIES.length} recorded Channel3 searches and makes no live search call (card images still load from Channel3's image host). Try one of: ${RECORDED_QUERIES.join(' · ')}.`;
 
+// (P3 2026-11-12, owner decision) Channel3 category reference under each card (CheckSaleExtras.jsx, on demand).
+const CategoryReference = lazy(() => import('./CheckSaleExtras.jsx').then((module) => ({ default: module.CategoryReference })));
+
 function Card({ card, selected, disabled, onPick }) {
   // A catalogue image can expire or fail to load (the hosted demo replays recorded results); show the plain tile then.
   const [imageFailed, setImageFailed] = useState(false);
@@ -29,6 +32,7 @@ function Card({ card, selected, disabled, onPick }) {
         <span className="product-card-meta">{[card.brand, card.category].filter(Boolean).join(' · ') || 'No brand or category listed'}</span>
         {card.key_features.length ? <ul className="product-card-features">{card.key_features.map((f) => <li key={f}>{f}</li>)}</ul> : null}
         {card.materials.length ? <span className="product-card-meta">Materials: {card.materials.join(', ')}</span> : null}
+        <Suspense fallback={null}><CategoryReference category={card.category} /></Suspense>
       </div>
       <button type="button" className="product-card-pick" disabled={disabled} onClick={() => onPick(card.product_id)}
         aria-pressed={selected}>{selected ? 'Confirmed as my product' : 'This is my product'}</button>
