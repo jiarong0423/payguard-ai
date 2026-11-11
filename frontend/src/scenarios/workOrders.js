@@ -44,7 +44,7 @@ export const WORK_ORDERS = Object.freeze([
     id: 'WO-S2', title: 'Policy pre-check: clear route, then a Sandbox draft', scene: 'Policy pre-check',
     steps: [
       { n: 1, kind: 'auto', label: 'Create a demo session', expect: '201 · synthetic session' },
-      { n: 2, kind: 'auto', label: 'Country check US → GB, no goods tags', expect: '200 · not blocked' },
+      { n: 2, kind: 'auto', label: 'Country check US → GB, no goods tags', expect: '200 · no listed rule' },
       { n: 3, kind: 'auto', label: `AUP review "${AUP_DESCRIPTION}"`, expect: '200 · no review signal' },
       { n: 4, kind: 'auto', label: 'Invoice review', expect: '200 · review token issued' },
       { n: 5, kind: 'manual', needs: 'paypal', console: true, label: 'Connect the US Sandbox', expect: 'Sandbox shows Connected' },
@@ -300,6 +300,9 @@ export function openOwnerSteps(order, steps, ticked = {}) {
   return order.steps.filter((step) => step.kind === 'manual' && !ticked[step.n] && (steps[step.n]?.status ?? STATUS.NEEDS_OWNER) !== STATUS.LOCAL_ONLY).length;
 }
 
+// Display names for receipt fields; the receipt JSON keeps the server's own keys.
+const DISPLAY_KEY = { blocked: 'rule match', block_codes: 'rule codes' };
+
 /** The actual result shown on a step: closed fields only. */
 export function describe(row) {
   const parts = [];
@@ -309,7 +312,7 @@ export function describe(row) {
     'chooser', 'settled', 'present', 'readiness', 'requirements', 'licence', 'module', 'skipped']) {
     if (!(key in row) || row[key] === null || row[key] === undefined) continue;
     const value = Array.isArray(row[key]) ? (row[key].length ? row[key].join(', ') : 'none') : String(row[key]);
-    parts.push(`${key.replace(/_/g, ' ')}: ${value}`);
+    parts.push(`${DISPLAY_KEY[key] ?? key.replace(/_/g, ' ')}: ${value}`);
   }
   return parts.join(' · ');
 }

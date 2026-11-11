@@ -1,5 +1,5 @@
 {
- "source": "docs/evidence/guide_benchmark_v1.json (commit 7091011) and docs/evidence/GUIDE_BENCHMARK.md history",
+ "source": "docs/evidence/guide_benchmark_v1.json and docs/evidence/GUIDE_BENCHMARK.md history",
  "cases": 268,
  "form_only_rounds": 721,
  "flows": [
