@@ -16,7 +16,7 @@ from app import main
 from app.demo_mode import (DISABLED_ROUTES, HOSTED_DEMO_CODE, DemoModeConfigError, HostedDemoBriefStub,
                            HostedDemoPaypalStub, public_demo_enabled, public_host,
                            require_public_host)
-from app.main import ALLOWED_HOSTS, ALLOWED_ORIGINS, create_app, create_lmstudio_app
+from app.main import ALLOWED_HOSTS, ALLOWED_ORIGINS, create_app
 from app.paypal import PaypalAdapter, PaypalConfig
 from app.store import SessionStore
 
@@ -181,8 +181,6 @@ class HostedDemoFlowTests(unittest.TestCase):
         self.assertIsInstance(app.state.ai_brief, HostedDemoBriefStub)
         self.run_three_stages(app, client_addr=("127.0.0.1", 50001), base_url="http://127.0.0.1:8000", origin=LOCAL_ORIGIN)
         self.assertEqual(calls, [])
-        with clean_env(**DEMO_ENV):
-            self.assertIsInstance(create_lmstudio_app().state.ai_brief, HostedDemoBriefStub)
 
     def test_disabled_routes_answer_before_session_or_schema_checks(self):
         app = self.make_app()
@@ -255,9 +253,6 @@ class HostAllowlistTests(unittest.TestCase):
                 with self.assertRaises(DemoModeConfigError) as caught:
                     create_app(store=SessionStore())
                 self.assertIn("requires PAYGUARD_PUBLIC_HOST", str(caught.exception))
-            with self.subTest(env=env, factory="lmstudio"), clean_env(**env):
-                with self.assertRaises(DemoModeConfigError):
-                    create_lmstudio_app()
 
     def test_server_process_exits_non_zero_without_or_with_invalid_public_host(self):
         root = Path(__file__).resolve().parents[1]

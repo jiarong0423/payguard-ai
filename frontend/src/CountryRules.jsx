@@ -12,7 +12,7 @@ const TAG_LABELS = {
   live_animals: 'Live animals', plants_seeds: 'Plants or seeds', food: 'Food', cosmetics: 'Cosmetics',
   batteries_hazmat: 'Batteries or hazardous', alcohol: 'Alcohol', tobacco_other: 'Tobacco (not e-cigarettes)',
   prescription: 'Prescription items', crypto: 'Crypto', gambling: 'Gambling', medical_devices: 'Medical devices',
-  jewellery_precious_metals: 'Jewellery or precious metals', weapons: 'Weapons', counterfeit: 'Counterfeit goods',
+  jewellery_precious_metals: 'Jewellery or precious metals', weapons: 'Weapons', counterfeit: 'Possible counterfeit-goods theme',
   narcotics: 'Narcotics', cigarettes: 'Cigarettes', radio_wireless: 'Phones or wireless devices', e_cigarettes: 'E-cigarettes',
   currency: 'Cash or banknotes', cultural_relics: 'Antiques or cultural relics',
 };
@@ -153,8 +153,8 @@ function Verdict({ result, names, tags, onEdit, onContinue }) {
   const noGoods = tags.length === 0 && <span className="country-verdict-line" data-testid="country-no-goods">No goods ticked: account and shipping rules only.</span>;
   // One next step under the verdict (plan r2 E19): change the goods after a Stop, or go on to the draft.
   if (result.blocked) {
-    return <><strong className="country-verdict-big">A rule may stop this sale.</strong>
-      <span className="country-verdict-line">No draft: {plural(block.length, 'rule')} stop{block.length === 1 ? 's' : ''} {seller} → {buyer}.</span>{noGoods}
+    return <><strong className="country-verdict-big">A listed rule may apply to this sale.</strong>
+      <span className="country-verdict-line">No draft yet: {plural(block.length, 'rule')} {block.length === 1 ? 'applies' : 'apply'} to {seller} → {buyer}.</span>{noGoods}
       <span className="country-verdict-next"><button type="button" className="button button-secondary" data-testid="country-edit-item" onClick={() => onEdit(accountStop)}>{accountStop ? 'Change account' : 'Edit item'}</button></span></>;
   }
   if (ban.length) {

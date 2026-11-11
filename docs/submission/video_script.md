@@ -1,4 +1,4 @@
-# PayGuard AI Demonstration Script (historical script for the earlier 2:02 cut; the current video is the 2:32 cut, https://youtu.be/upx5eZYOmC0)
+# TradeGlot (formerly PayGuard AI) Demonstration Script (historical script for the earlier 2:02 cut; the current video is the 2:32 cut, https://youtu.be/upx5eZYOmC0)
 
 **Historical record.** This is the script of an earlier 2:02 cut, later replaced by the [2:50 demonstration](https://youtu.be/_GORnHWShU4) and then by the 2:59 video (since removed from YouTube) and now by the current [2:32 video](https://youtu.be/upx5eZYOmC0), kept as it was used; it does not describe the current console. That cut was recorded before the ten-country rules check, the Channel3 product reference card, the seventh Internal Review ZIP file (`product-reference.json`) and the Sandbox dispute read were added, so its "six ZIP members" and its "Defense Buffer" screen name are not current (the archive now has seven files, and the console has no screen by that name). The README and the [judge quickstart](quickstart.md) describe the current build. The published video is shorter than this plan, so check claims against the video itself.
 
@@ -8,7 +8,7 @@ The wording, timing, visible labels and click order below were fixed before reco
 
 This final-take script selects the default Gemini on Vertex AI backend (`./tools/run.sh api`) and requires the separately authorized PayPal Sandbox and bounded AI paths to be available during recording. It shows one live `gemini-3.8-flash` dispute-stage brief after all three synthetic scenarios. It does not claim a combined three-stage AI result. If either live path is unavailable, stop the final take and repair the demonstration environment. Do not replace live execution with a prior result or operator-attested text.
 
-The default-off `nvidia-nemotron-3-nano-4b` LM Studio route (`./tools/run.sh local-ai-api`) is documented on a separate local-model option slide, outside the timed video. The slide shows only one manually observed synthetic AUP response; it does not prove a three-stage adapter run. Other local models require the same adapter, schema, and closed-output validation before use. It is not Gemini, an automatic fallback, a second call in this take, or a distributed production deployment. The operator selects exactly one backend at process start; the browser cannot change it. This take remains on Gemini on Vertex AI.
+This take remains on Gemini on Vertex AI. The operator selects the backend at process start; the browser cannot change it.
 
 Keep every visible merchant, transaction, and dispute record synthetic. Never show credentials, account identifiers, invoice identifiers, local paths, internal evidence folders, environment variables, or model prompts. Use only the PayGuard interface and the minimum sanitized Sandbox status needed to prove the integration.
 
@@ -30,7 +30,7 @@ Spoken script:
 
 ## 0:25 to 0:55 — Stage 1: AUP correction path
 
-Visual: Stay in **STEP 01 AUP preflight**. Select **High-risk Claim** and **Run Policy Check**. Show the review signal. In **PayPal Sandbox draft (optional)**, check **I reviewed the description and amount and confirm that this action creates a Sandbox draft only.**, then select **Confirm Draft Context**. The warning dialog now opens; show **Return to edit**, **Cancel flow**, and **Acknowledge and continue**. For the filmed branch, select **Return to edit**, choose **Standard Item**, and run the policy check again. Hold on **No demo rule matched**; expand **How this result was checked** only if time permits to show **No decision made** and **Not established**.
+Visual: Stay in **STEP 01 AUP preflight**. Select **Needs-review sample** and **Run Policy Check**. Show the review signal. In **PayPal Sandbox draft (optional)**, check **I reviewed the description and amount and confirm that this action creates a Sandbox draft only.**, then select **Confirm Draft Context**. The warning dialog now opens; show **Return to edit**, **Cancel flow**, and **Acknowledge and continue**. For the filmed branch, select **Return to edit**, choose **Standard Item**, and run the policy check again. Hold on **No demo rule matched**; expand **How this result was checked** only if time permits to show **No decision made** and **Not established**.
 
 Spoken script:
 
@@ -86,7 +86,7 @@ Spoken script:
 
 ## Shot cue sheet for editing
 
-These are target cut points, not measured provider latency. Keep action initiation and its resulting state in the same take. The local-model option slide is outside this timed video.
+These are target cut points, not measured provider latency. Keep action initiation and its resulting state in the same take.
 
 | Time | On-screen material and exact action | Proof to hold |
 | --- | --- | --- |
@@ -94,7 +94,7 @@ These are target cut points, not measured provider latency. Keep action initiati
 | 0:03–0:08 | `payguard_cover.png` (no longer shipped) | Merchant-view concept of three stages and PayPal Sandbox, AG Grid, Gemini on Vertex AI tools |
 | 0:08–0:15 | Working console and stage navigation | Defense Buffer path before the first click |
 | 0:15–0:25 | Expand Sandbox section; select **Connect US Sandbox** | Sanitized live connection status |
-| 0:25–0:36 | **High-risk Claim** → **Run Policy Check** | `REVIEW_SIGNAL`, not a verdict |
+| 0:25–0:36 | **Needs-review sample** → **Run Policy Check** | `REVIEW_SIGNAL`, not a verdict |
 | 0:36–0:45 | Check draft-only confirmation → **Confirm Draft Context** | Three warning-dialog choices visible |
 | 0:45–0:55 | **Return to edit** → **Standard Item** → **Run Policy Check** | No demo rule matched, no decision made |
 | 0:55–1:08 | Recheck confirmation → **Confirm Draft Context** → **Create Sandbox draft** | Draft created, unsent and not submitted |
@@ -134,7 +134,7 @@ The final take must visibly contain all five items:
 8. Select **Next: dispute evidence**, load the dispute case, prepare the draft, download the review ZIP, and record the local human review.
 9. Generate exactly one live dispute-stage Gemini on Vertex AI brief and verify the visible Gemini model and live-response labels.
 10. Open All orders for the final architecture and authority frame; show the second PNG only after this live view.
-11. Cut only idle loading time while retaining the initiation and resulting state from the same take. Stop the take if a credential, identifier, raw prompt, local path, unexpected error, or provider failure appears. Do not switch to Nemotron 4B or automatically retry Gemini during the take.
+11. Cut only idle loading time while retaining the initiation and resulting state from the same take. Stop the take if a credential, identifier, raw prompt, local path, unexpected error, or provider failure appears. Do not automatically retry Gemini during the take.
 
 ## Locked positioning
 

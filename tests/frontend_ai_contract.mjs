@@ -54,17 +54,13 @@ const valid = {
 };
 
 assert.deepEqual(assertAiBrief(clone(valid), request), valid);
-const validLocal = clone(valid);
-validLocal.model = 'nvidia-nemotron-3-nano-4b';
-validLocal.execution_evidence = 'LOCAL_RUNTIME_RESPONSE';
-assert.deepEqual(assertAiBrief(clone(validLocal), request), validLocal);
-
-const invalidGeminiLocalEvidence = clone(valid);
-invalidGeminiLocalEvidence.execution_evidence = 'LOCAL_RUNTIME_RESPONSE';
-assert.throws(() => assertAiBrief(invalidGeminiLocalEvidence, request));
-const invalidLocalCloudEvidence = clone(validLocal);
-invalidLocalCloudEvidence.execution_evidence = 'OPERATOR_LIVE_RESPONSE';
-assert.throws(() => assertAiBrief(invalidLocalCloudEvidence, request));
+// Only the Gemini identity is accepted; any other model name or evidence class fails closed.
+const invalidOtherModel = clone(valid);
+invalidOtherModel.model = 'other-model';
+assert.throws(() => assertAiBrief(invalidOtherModel, request));
+const invalidEvidenceClass = clone(valid);
+invalidEvidenceClass.execution_evidence = 'UNKNOWN_RESPONSE';
+assert.throws(() => assertAiBrief(invalidEvidenceClass, request));
 
 // Local runs: the session-facts variant, and a dispute request naming its case.
 const validSession = clone(valid);

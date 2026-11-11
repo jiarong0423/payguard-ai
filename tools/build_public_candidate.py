@@ -302,7 +302,7 @@ EXACT_FILES = (
 TREE_FILES = {
     "backend/app": (
         "__init__.py", "ai_brief.py", "ai_usage.py", "case_routing.py", "channel3.py", "channel3_products.py", "country_routes.py", "demo_mode.py", "guide_model.py", "guide_routes.py",
-        "lmstudio_brief.py", "main.py", "studio_agent.py", "paypal.py", "paypal_disputes.py", "paypal_tools.py", "schemas.py", "store.py", "traffic.py",
+        "main.py", "studio_agent.py", "paypal.py", "paypal_disputes.py", "paypal_tools.py", "schemas.py", "store.py", "traffic.py",
     ),
     "backend/app/data": ("channel3_recorded_v1.json", "openapi_v1.json"),
     # The whole frontend/public tree (PWA manifest, service worker, offline page, icons); a test keeps it complete.
@@ -345,7 +345,7 @@ TREE_FILES = {
         "test_case_intake.py", "test_console_static.py", "test_controlled_fallback.py", "test_country_rules.py", "test_online_sale_rules.py", "test_demo_mode.py",
         "test_demo_mode_integration.py", "test_dispute_evidence.py", "test_document_privacy.py", "test_evidence_pdf.py", "test_export_api_docs.py", "test_mcp_server.py",
         "test_engines.py", "test_evidence_chart_data.py", "test_evidence_guide.py", "test_gemini_worker.py", "test_guide_hybrid.py", "test_guide_live_contract.py", "test_guide_rounds.py", "test_guide_routes.py",
-        "test_hosted_claims_consistency.py", "test_hsts_header.py", "test_hosted_readonly_sandbox.py", "test_hosted_sandbox_send.py", "test_hosted_send_redteam.py", "test_sandbox_readback_hash.py", "test_hosted_image_layout.py", "test_lmstudio_brief.py",
+        "test_hosted_claims_consistency.py", "test_hsts_header.py", "test_hosted_readonly_sandbox.py", "test_hosted_sandbox_send.py", "test_hosted_send_redteam.py", "test_sandbox_readback_hash.py", "test_hosted_image_layout.py",
         "test_paypal_disputes.py", "test_paypal_r24.py", "test_paypal_tools.py", "test_policy_api.py", "test_policy_gateway_integration.py",
         "test_public_export_builder.py", "test_redteam_input_matrix.py", "test_reference_api.py", "test_reference_policy.py", "test_replays.py",
         "test_retrieval.py", "test_sandbox_receipts.py", "test_studio_agent.py", "test_time_evidence.py", "test_traffic.py", "test_attack_r22.py", "test_attack_r23_aup.py",

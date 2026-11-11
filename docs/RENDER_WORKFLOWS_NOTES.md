@@ -1,6 +1,6 @@
 # Render Workflows: notes for the TradeGlot evidence-integrity workflow
 
-Written 2026-11-01 for round 5 (issue #6), updated 2026-11-02. It says what was read, what the workflow does, how
+Written 2026-11-01 for the Render hackathon submission, updated 2026-11-02. It says what was read, what the workflow does, how
 the owner would deploy it, and what is still unverified.
 
 **Status (2026-11-09): a two-check variant ships in the public repository and ran three times on Render, each started on demand from the dashboard** (first run `trn-0b94gdboi3thavh9s738mmujg`, succeeded in 4.2 s, receipt `ok:true`; see `docs/evidence/RENDER_WORKFLOW_RUN_20261109.md`). It is not scheduled. The public source package leaves out the benchmark tools, so a run from the public repository has two checks (`dashboard_data`, `channel3_recordings`); a run from the full project tree has three. The receipt lists exactly the checks that exist.

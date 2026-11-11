@@ -132,6 +132,7 @@ function ProofPage() {
       <div className="proof-intro">
         <h1>What has been shown, and how</h1>
         <p>Each row says what was proven, whether it came from a real PayPal Sandbox call, a recorded run, an automated test or synthetic data, when, and the committed file it comes from. This page is static: it calls nothing and reads only files in the repository.</p>
+        <p>Short codes such as b017f5d are commits, kept so each claim can be traced. Most open in this repository on GitHub; two older ones (653111a, 7e49835) come from the earlier development history and do not open here.</p>
         <p className="proof-note">Identifiers are masked as in the receipts. Sandbox rows are test data the author created with two Sandbox test accounts, not a real merchant case. TradeGlot was called PayGuard AI until 2026-11-09, so the receipt files and recordings dated before then carry the old name.</p>
       </div>
       <Latest />

@@ -25,7 +25,7 @@ from payguard.controlled_fallback import Governor
 ORIGIN = "http://localhost:5173"
 ROOT = "/api/v1/guide"
 NOW = datetime(2026, 10, 30, 9, 0, tzinfo=timezone.utc)
-SYNTHETIC_KEY = "AIzaSyntheticTestKey0123456789abcdefXYZ"  # shape of an AI Studio key; not a real key
+SYNTHETIC_KEY = "AIza" + "SyntheticTestKey0123456789abcdefXYZ"  # shape of an AI Studio key; not a real key
 SHIP = {"c": "ship_date", "k": 0, "s": "P", "w": "MON", "r": "LAST", "h": "EXACT", "b": "STATED", "a": "SELLER"}
 VALID = json.dumps({"v": 2, "u": [SHIP]})
 

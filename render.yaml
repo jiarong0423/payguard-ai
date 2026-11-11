@@ -1,10 +1,10 @@
 # Optional Render Blueprint for the TradeGlot public demo. One free web service.
 # The service runs PAYGUARD_DEMO_MODE=public: synthetic fixtures and committed replays; the Gemini evidence brief,
-# the AG Studio agents, local-model calls, invoice drafts, tracking and webhook verification answer 503.
+# the AG Studio agents, invoice drafts, tracking and webhook verification answer 503.
 # Opt-ins (all sync: false below; set them in the Render dashboard or leave them unset):
 #  - Evidence guide: its clause chooser may call Gemini on a free-tier key, at most 5 calls a minute and 20 a day
 #    (guide_routes.py HOSTED_GUIDE_CALLS_PER_MINUTE / _PER_DAY). Left unset, the guide stays on the keyword chooser.
-#  - PayPal Sandbox (owner decision 2026-11-10): the PayPal account is a free Sandbox TEST account, so the hosted demo
+#  - PayPal Sandbox (author's choice 2026-11-10): the PayPal account is a free Sandbox TEST account, so the hosted demo
 #    may hold its Sandbox client id and secret. PAYGUARD_HOSTED_READONLY_SANDBOX=enabled opens Sandbox reads (masked
 #    dispute ids, 20 a minute, 500 a day); PAYGUARD_HOSTED_SANDBOX_SEND=enabled adds the evidence send to the owner's
 #    own Sandbox test disputes (once per dispute, once per visit,
@@ -33,7 +33,7 @@ services:
       # Read on 2026-11-04 after deploy: every request logged hops=3, so the visitor is the third entry from the right.
       - key: PAYGUARD_CLIENT_IP_HOP
         value: "3"
-      # Optional guide opt-in (owner decision 2026-11-04). sync: false keeps the values out of this file; set them
+      # Optional guide opt-in (author's choice 2026-11-04). sync: false keeps the values out of this file; set them
       # in the Render dashboard, or leave them unset for a keyword-only guide. GEMINI_API_KEY is a free-tier AI
       # Studio key stored as a Render secret; the only other credentials are the PayPal Sandbox ones below.
       - key: PAYGUARD_HOSTED_GUIDE_MODEL
@@ -44,7 +44,7 @@ services:
         sync: false
       - key: GEMINI_API_KEY
         sync: false
-      # PayPal Sandbox opt-in (owner decision 2026-11-10). Sandbox test account only; never live credentials.
+      # PayPal Sandbox opt-in (author's choice 2026-11-10). Sandbox test account only; never live credentials.
       # PAYGUARD_PAYPAL_OUTBOUND=enabled lets the adapter load PAYPAL_CLIENT_ID / PAYPAL_CLIENT_SECRET (Render secrets).
       - key: PAYGUARD_PAYPAL_OUTBOUND
         sync: false

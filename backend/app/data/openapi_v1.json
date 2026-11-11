@@ -579,8 +579,7 @@
       "description": "Execution evidence.",
       "enum": [
        "SYNTHETIC_TEST_RESPONSE",
-       "OPERATOR_LIVE_RESPONSE",
-       "LOCAL_RUNTIME_RESPONSE"
+       "OPERATOR_LIVE_RESPONSE"
       ],
       "type": "string"
      },
@@ -612,11 +611,8 @@
       "type": "array"
      },
      "model": {
+      "const": "gemini-3.8-flash",
       "description": "Model.",
-      "enum": [
-       "gemini-3.8-flash",
-       "nvidia-nemotron-3-nano-4b"
-      ],
       "type": "string"
      },
      "prompt_contract_digest": {
@@ -7361,7 +7357,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -7377,7 +7373,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -7393,7 +7389,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -7467,7 +7463,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -7483,7 +7479,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -7499,7 +7495,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -7588,7 +7584,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -7658,7 +7654,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -7674,7 +7670,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -7690,7 +7686,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -7775,7 +7771,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -7791,7 +7787,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -7807,7 +7803,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -7904,7 +7900,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -7920,7 +7916,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -7936,7 +7932,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -8012,7 +8008,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -8028,7 +8024,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -8044,7 +8040,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -8118,7 +8114,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -8134,7 +8130,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -8150,7 +8146,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -8248,7 +8244,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -8264,7 +8260,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -8280,7 +8276,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -8344,7 +8340,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -8421,7 +8417,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -8437,7 +8433,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -8453,7 +8449,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -8511,7 +8507,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -8582,7 +8578,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -8598,7 +8594,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -8614,7 +8610,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -8754,7 +8750,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -8770,7 +8766,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -8786,7 +8782,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -8864,7 +8860,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -8880,7 +8876,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -9001,7 +8997,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -9095,7 +9091,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -9111,7 +9107,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -9127,7 +9123,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -9211,7 +9207,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -9227,7 +9223,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -9243,7 +9239,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -9407,7 +9403,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -9423,7 +9419,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -9439,7 +9435,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -9603,7 +9599,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -9619,7 +9615,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -9635,7 +9631,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -9801,7 +9797,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -9817,7 +9813,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -9833,7 +9829,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -10009,7 +10005,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -10025,7 +10021,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -10190,7 +10186,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -10206,7 +10202,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -10222,7 +10218,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -10288,7 +10284,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -10375,7 +10371,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -10391,7 +10387,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -10407,7 +10403,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -10509,7 +10505,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -10583,7 +10579,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -10599,7 +10595,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -10615,7 +10611,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -10707,7 +10703,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -10723,7 +10719,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -10739,7 +10735,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -10868,7 +10864,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -10884,7 +10880,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -10954,7 +10950,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -10970,7 +10966,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -10986,7 +10982,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -11092,7 +11088,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -11108,7 +11104,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -11124,7 +11120,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -11192,7 +11188,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -11264,7 +11260,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -11280,7 +11276,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -11373,7 +11369,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -11389,7 +11385,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -11405,7 +11401,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -11481,7 +11477,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -11497,7 +11493,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -11513,7 +11509,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -11571,7 +11567,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {
@@ -11641,7 +11637,7 @@
         "example": {
          "error": {
           "code": "csrf_rejected",
-          "message": "The request failed a local security boundary."
+          "message": "This request could not be accepted from here."
          }
         },
         "schema": {
@@ -11657,7 +11653,7 @@
         "example": {
          "error": {
           "code": "schema_invalid",
-          "message": "The request does not match the accepted contract."
+          "message": "Some details need to be checked and re-entered."
          }
         },
         "schema": {
@@ -11673,7 +11669,7 @@
         "example": {
          "error": {
           "code": "rate_limited",
-          "message": "The local request or sample limit was reached."
+          "message": "Too many requests; please wait a moment and try again."
          }
         },
         "schema": {

@@ -1311,7 +1311,7 @@ class R21AupCapacityWaitTests(R21ApiBase):
     def test_other_429_messages_unchanged(self):
         from app.main import error_response
         body = error_response(429, "rate_limited").body.decode()
-        self.assertIn("The local request or sample limit was reached.", body)
+        self.assertIn("Too many requests; please wait a moment and try again.", body)
 
 
 class R21CountryAmountTests(R21ApiBase):

@@ -1,7 +1,7 @@
 """Optional public hosted demo: refusing provider stubs and one exact public host.
 
 ``PAYGUARD_DEMO_MODE=public`` is off by default. When it is on, the application
-replaces every provider adapter (PayPal Sandbox, Gemini worker, LM Studio) with
+replaces every provider adapter (PayPal Sandbox, Gemini worker) with
 a stub that owns no HTTP client, no subprocess and no credential, and the routes
 that would reach a provider answer 503 ``hosted_demo_disabled`` before any body
 parsing (requests that fail the earlier host, origin or content-type checks are
@@ -46,7 +46,7 @@ HOSTED_ID_MAP_LIMIT = 200
 HOSTED_DEMO_CODE = "hosted_demo_disabled"
 HOSTED_DEMO_MESSAGE = ("This capability is disabled in the hosted demo, which cannot send or change anything at a provider. "
                        "Run TradeGlot locally to use it.")
-# Routes that would contact PayPal, Gemini or a local model. They answer 503 in public demo mode.
+# Routes that would contact PayPal, Gemini or another provider. They answer 503 in public demo mode.
 DISABLED_ROUTES = frozenset({
     ("POST", "/api/v1/paypal/connect"),
     ("POST", "/api/v1/paypal/invoices/draft"),
@@ -432,7 +432,7 @@ class HostedReadOnlyPaypalAdapter:
 
 
 class HostedDemoBriefStub:
-    """Stands in for the Gemini and LM Studio brief adapters. Never starts a worker or a client."""
+    """Stands in for the Gemini brief adapter. Never starts a worker or a client."""
 
     def validate_attempt_configuration(self) -> None:
         raise AiBriefError(503, HOSTED_DEMO_CODE)

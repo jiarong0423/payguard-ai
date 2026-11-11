@@ -24,7 +24,7 @@ assert.ok(!/\/(guide|gemini|evidence|sandbox|disputes)\b/i.test(targets.join(' '
 assert.ok(panel.includes('if (busy || Date.now() < waitUntil) return;'), 'held while a check runs or a wait is active');
 assert.ok(panel.includes('The example needs the United States and Singapore'), 'missing countries are reported, not ignored');
 // Result stays the existing verdict, and scrolls into view smoothly (instant under reduced motion).
-assert.ok(panel.includes('A rule may stop this sale.'), 'verdict text unchanged');
+assert.ok(panel.includes('A listed rule may apply to this sale.'), 'verdict text unchanged');
 assert.ok(panel.includes("block: fromExample ? 'start' : 'nearest', behavior: reducedMotion ? 'auto' : 'smooth'"), 'result scrolls into view');
 // Phone: the button is not hidden at any width, is 44px high, and fills the width at 640px and below.
 assert.ok(/\.country-try-example\s*\{[^}]*min-height:\s*44px/.test(css), 'touch size 44px');

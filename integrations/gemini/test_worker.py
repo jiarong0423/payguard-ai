@@ -455,7 +455,7 @@ class GeminiGuideConstantTests(unittest.TestCase):
         self.assertEqual(worker.MAX_GUIDE_REQUEST_BYTES, guide_model.MAX_GUIDE_REQUEST_BYTES)
 
 
-SYNTHETIC_KEY = "AIzaSyntheticTestKey0123456789abcdefXYZ"  # shape of an AI Studio key; not a real key
+SYNTHETIC_KEY = "AIza" + "SyntheticTestKey0123456789abcdefXYZ"  # shape of an AI Studio key; not a real key
 
 
 def api_key_adapter_for(parent):

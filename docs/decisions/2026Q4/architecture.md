@@ -29,14 +29,12 @@ flowchart LR
   B --> C["Backend, API and schema consumers<br/>O (Done)"]
   C --> D["English console and current documents<br/>O (Done)"]
   D --> E["Focused and full local validation<br/>O (Done)"]
-  E --> F["Canonical readback and no-op audit<br/>O (Done)"]
+  E --> F["Published files re-read and checked again<br/>O (Done)"]
   F -. historical receipt .-> G["Recorded Sandbox run (2026-10-06)<br/>OAuth + one unsent DRAFT"]
   G --> SB1["Sandbox run (2026-10-31)<br/>second unsent DRAFT + dispute list and detail read"]
   SB1 --> SB2["Sandbox evidence send (2026-11-04)<br/>after one human approval; refusals recorded"]
   SB2 --> SB3["Second Sandbox evidence send (2026-11-05, UTC+8)<br/>new test dispute; fresh readback"]
   F -. historical receipt .-> H["Recorded Gemini run (2026-10-06)<br/>fixed synthetic input, one response"]
-  F --> K["Local 4B loopback adapter and bounded stress<br/>O (Done): candidate runtime"]
-  K --> L["Local-model distribution<br/>not part of this package"]
   F --> N["Current-byte bounded live rehearsal<br/>O (Done): three AI stages + Sandbox DRAFT"]
   N --> I["Public source and anonymous byte readback<br/>O (Done): pre-video release"]
   I --> M["Video publication<br/>O (Done): 2:50 public video"]
@@ -51,6 +49,8 @@ This graph describes the accepted local design and separates historical receipts
 
 ## Eight layers
 
+Module names such as `M-POLICY` are the project's own labels for each layer.
+
 | Layer | Modules | Responsibility | Current safe behavior | Open boundary |
 | --- | --- | --- | --- | --- |
 | L1 — Ingest | `M-INGEST` | Validate event source, request kind, identifiers, timestamps, required fields and deterministic route | Accept bounded synthetic input and an explicit US context; reject unsupported or ambiguous routes | Authentic provider event ingestion and durable replay inbox remain open |
@@ -58,7 +58,7 @@ This graph describes the accepted local design and separates historical receipts
 | L3 — Policy | `M-POLICY` | Load a versioned policy profile, bind source identity and preserve time semantics | Load one pinned US `REFERENCE_ONLY` package; effective interval and account applicability stay unestablished | Full rule lifecycle, promotion, legal review and account-specific applicability remain open |
 | L4 — Engines | `M-ENGINES` | Run deterministic AUP, sales spike, completeness, retrieval and advisory gates | Emit warnings, local anomaly signals, missing evidence and bounded citations; the current-byte rehearsal validated one bounded AI response per fixed stage | Full declarative interpretation, repeatability, semantic quality beyond the fixed samples and real-record behavior remain open |
 | L5 — API and Report | `M-API`, `M-REPORT` | Enforce strict HTTP/I/O contracts and present backend-owned calculations | Loopback session/CSRF/quota controls; in the hosted demo only, one exact public host behind the proxy (`X-Forwarded-For`, `X-Forwarded-Proto: https`) and the per-visitor and store-wide `TrafficGate`; no frontend risk recomputation; fixed sanitized errors | Provider telemetry, separate readback and durable external action records remain open |
-| L6 — Governance | `M-GOVERNANCE` | Bind files, hashes, tests, source provenance, evidence and release state | One registry, one gap queue, isolation-first change, strict audit, no-op verification and historical readback preserved for its own bytes | Every changed release requires a matching manifest, release evidence and exact anonymous public readback; production deployment requires separate acceptance |
+| L6 — Governance | `M-GOVERNANCE` | Bind files, hashes, tests, source provenance, evidence and release state | One file registry, one list of open gaps, changes tried in a scratch copy first, a strict check, a second check that finds nothing left to change, and earlier read-backs kept as they were | Every changed release requires a matching manifest, release evidence and exact anonymous public readback; production deployment requires separate acceptance |
 | L7 — Human Review | `M-REVIEW` | Bind actor choice to case/action/payload digest, nonce and expiry | Short-lived local acknowledgement and draft review; edit/reset/expiry revoke prior approval | Durable authenticated actor, tenant and restart/concurrency semantics remain open |
 | L8 — Presentation | `M-PRESENT`, `M-UI` | Render backend state, references, limitations and operator controls | English console for a US Sandbox seller (the optional ten-country rules check is advisory), AG Grid Community, a lazy-loaded first-party analytics workspace, a four-column backend-supplied transaction stream, single-open mobile evidence accordion and a deterministic local dashboard guide | Repository instructions are the selected demo path; same-version public artifact proof requires manifest binding and exact anonymous readback; the optional hosted demo runs on Render with no PayPal calls (the guide may use Gemini when the operator opts in); hosting with PayPal calls is unperformed |
 
@@ -71,7 +71,7 @@ flowchart LR
   S1 --> H1["Human: edit, cancel, acknowledge"]
   S2 --> H2["Human: inspect capacity and missing evidence"]
   S3 --> H3["Human: review local draft"]
-  G["Evidence guide in each stage<br/>keyword chooser or governed Gemini chooser"] -.-> S1
+  G["Evidence guide in each stage<br/>keyword chooser or Gemini chooser with fixed limits"] -.-> S1
   G -.-> S2
   G -.-> S3
   H1 --> P["PayPal final external authority"]
@@ -150,7 +150,7 @@ The layer table and graphs above predate these parts of the current runtime. Eac
 - **Channel3** (L4, advisory only): a category signal and a product reference card, off by default, replayed from recordings on the hosted demo; case routing (`/api/v1/cases/route`) matches goods text against the recorded catalogue and may make one live product search when a key is set. On the hosted demo the browser loads the recorded card images from `cdn.trychannel3.com`.
 - **Bryntum evidence deadline board** (L8, step 03): planning only, kept in the browser tab.
 - **PayPal shipment tracking** (`POST /v1/shipping/trackers-batch`; PayPal marks this endpoint deprecated (legacy), and Orders v2 tracking, `POST /v2/checkout/orders/{id}/track`, is the current path, not called by TradeGlot) and the **webhook signature check**: both gated, neither run live.
-- **Hosted demo** (L5): `PAYGUARD_DEMO_MODE=public` replaces every PayPal, brief, Studio and local-model adapter with a stub (the guide may use Gemini only when the operator opts in, at most 5 calls a minute and 20 a day), answers 503 on provider routes, accepts the one configured public host behind the proxy and adds the `TrafficGate` limits.
+- **Hosted demo** (L5): `PAYGUARD_DEMO_MODE=public` replaces every PayPal, brief and Studio adapter with a stub (the guide may use Gemini only when the operator opts in, at most 5 calls a minute and 20 a day), answers 503 on provider routes, accepts the one configured public host behind the proxy and adds the `TrafficGate` limits.
 - **Pages** (L8): besides the console, the evidence page, `/scenarios.html` (fixed work orders) and `/proof.html` (static proof page).
 
 The browser never receives credentials or access tokens. Provider records never enter the synthetic pool. AI does not receive real merchant, buyer, payment or dispute data in the current scope.
@@ -210,12 +210,6 @@ The maximum separately reviewed evidence scope is:
 
 The source contract permits one Vertex `v1` invocation of `gemini-3.8-flash` in `global`, no automatic retry and no persisted raw response, credential, project identity or environment. The source package alone does not prove that invocation occurred; the recorded Gemini run establishes one bounded fixed-synthetic execution only for its captured provider run and does not establish current-byte live behavior. The runtime adds a process-local three-attempt budget with one permanent reservation per fixed stage. Deterministic readiness and reservation occur atomically before a provider call; every attempted downstream outcome consumes the reservation. The prompt and its SHA-256 identity are server-owned, caller requests contain only the stage enum, and model output is limited to closed stage-specific sentence enums and fixed citation identities. Tools, function calling, retrieval, streaming and caller overrides are unavailable. This protection does not survive process restart or span multiple workers, so any public distributed deployment remains blocked until a durable shared atomic quota and gateway cost circuit breaker are independently verified.
 
-### Local 4B candidate runtime
-
-The default-off LM Studio adapter is fixed to the locally installed `nvidia-nemotron-3-nano-4b` model at `127.0.0.1:1234`. It uses the same fixed synthetic context, prompt digest, sentence enums and citation identities as the Gemini line. The transport disables environment proxies and redirects, requests structured JSON with `reasoning_effort=none`, exposes no tools, serializes inference and performs no retry or provider fallback.
-
-The public source includes bounded synthetic contract tests for all three stages and repeat-request rejection. These tests do not establish a live local-model execution, replace Gemini, expand the recorded Gemini run or authorize public deployment. Exact model-weight digest, license review, restart and hardware repeatability, public-host quota and independent release acceptance remain open boundaries.
-
 ## Gap ownership
 
 | Gap | Boundary | Current consequence |
@@ -237,7 +231,7 @@ The accepted local baseline (US Sandbox seller; the optional ten-country rules c
 3. official source identities, dates, classes, limitations and hashes validate;
 4. deterministic warning, sales spike and dispute contracts remain unchanged in authority;
 5. AI remains post-validation and advisory;
-6. focused and full tests, frontend build, rendered desktop/mobile/keyboard review, audit publication, second no-op audit and canonical readback pass;
+6. focused and full tests, frontend build, rendered desktop/mobile/keyboard review, audit publication, a second check that finds nothing left to change, and a re-read of the published files;
 7. historical logs, receipts and superseded bytes remain unchanged;
 8. the 2:50 video is public; the Devpost project is submitted; later source revisions need separate evidence-driven release acceptance.
 
@@ -245,4 +239,4 @@ The recorded Sandbox and Gemini runs remain evidence only for their captured exe
 
 Stop if a source digest drifts, a foreign source becomes reachable, an effective date is inferred, a procedural court record is presented as a merits decision, a synthetic receipt is called authentic, or any path enables production or financial mutation.
 
-See the [architecture overview diagram](../../submission/diagrams/architecture_overview.svg), [source register](us_official_source_register.md) and [US mainline contract](us_mainline_contract.md).
+See the [architecture overview diagram](../../submission/diagrams/architecture_overview.svg), [source register](us_official_source_register.md) and [US seller design contract](us_mainline_contract.md).

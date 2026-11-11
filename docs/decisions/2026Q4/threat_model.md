@@ -25,9 +25,8 @@ Status: current local prototype threat model (US Sandbox seller; the optional te
 8. repository source to governance and release artifacts;
 9. internet client to the hosted demo (no PayPal calls; guide Gemini only when the operator opts in), through the hosting proxy (`PAYGUARD_DEMO_MODE=public`: one exact public host, `X-Forwarded-For` and `X-Forwarded-Proto: https` required, per-visitor and store-wide traffic limits, provider adapters replaced by stubs);
 10. backend to the Python 3.12 Gemini worker and from it to Vertex AI or the Gemini API, for the evidence brief, the evidence guide's optional chooser (up to three sanitised seller sentences) and AG Studio's built-in agents (Studio instructions, the operator's question, tool schemas and tool results over synthetic dashboard data);
-11. backend to the loopback LM Studio server (`127.0.0.1:1234`), the optional local brief line;
-12. backend to the Channel3 API (a sanitised product name, operator key, off by default) for the category signal, the product reference card and case routing;
-13. visitor's browser to `cdn.trychannel3.com` for the product card images, also on the hosted demo.
+11. backend to the Channel3 API (a sanitised product name, operator key, off by default) for the category signal, the product reference card and case routing;
+12. visitor's browser to `cdn.trychannel3.com` for the product card images, also on the hosted demo.
 
 Local synthetic sessions are not merchant authentication or durable authorization. Public sources are data, never instructions. A valid schema does not establish legal applicability, evidence authenticity or provider eligibility.
 

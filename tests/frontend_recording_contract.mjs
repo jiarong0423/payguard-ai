@@ -54,7 +54,7 @@ requireText(appSource, 'data-testid={`ai-generate-${stage}`}');
 requireText(appSource, 'data-testid={testId}');
 
 const aupSequence = [
-  '>High-risk Claim<',
+  '>Needs-review sample<',
   '>Return to edit<',
   '>Standard Item<',
   '>Run Policy Check<',
@@ -187,7 +187,6 @@ for (const mappedCopy of [
   'Prepare evidence',
   'Required fields present',
   'Live model response',
-  'Local model response',
   'Reference only · no action authorized',
   'Draft details locked for this review',
   'No external action authorized',
@@ -260,7 +259,6 @@ requireText(scriptSource, '[second image: three-stage workflow map](payguard_jud
 requireText(scriptSource, '2:42–2:44 | `payguard_judge_overview.png`', 'second PNG is in the late recap slot');
 requireText(scriptSource, 'PayPal Sandbox draft, AG Grid evidence review, and one bounded Gemini on Vertex AI brief', 'opening names all three judge proof pillars');
 requireText(scriptSource, 'This take remains on Gemini on Vertex AI.', 'one recording adapter');
-requireText(scriptSource, 'It is not Gemini, an automatic fallback', 'local model cannot be relabeled or used as automatic fallback');
 requireText(scriptSource, 'This is a dispute-stage brief, not a merged conclusion about all three scenarios.', 'no invented cross-stage AI summary');
 for (const recordingInstruction of [
   'select **Return to edit**, choose **Standard Item**, and run the policy check again',
@@ -315,7 +313,7 @@ for (const proofPoint of [
 ]) requireText(scriptSource, proofPoint, `locked proof point ${proofPoint}`);
 
 for (const quickstartLabel of [
-  'High-risk Claim',
+  'Needs-review sample',
   'Return to edit',
   'Standard Item',
   'No demo rule matched',
@@ -352,15 +350,13 @@ for (const rawContractMarker of [
   "'NOT_EVALUATED'",
   "'SYNTHETIC_TEST_RESPONSE'",
   "'OPERATOR_LIVE_RESPONSE'",
-  "'LOCAL_RUNTIME_RESPONSE'",
 ]) requireText(apiSource, rawContractMarker, `raw API contract marker ${rawContractMarker}`);
 for (const preservedRawTest of [
   "compliance_decision: 'NOT_MADE'",
   "current_policy_applicability: 'NOT_ESTABLISHED'",
   "semantic_entailment: 'NOT_EVALUATED'",
   "execution_evidence: 'SYNTHETIC_TEST_RESPONSE'",
-  "validLocal.execution_evidence = 'LOCAL_RUNTIME_RESPONSE'",
-  "invalidLocalCloudEvidence.execution_evidence = 'OPERATOR_LIVE_RESPONSE'",
+  "invalidEvidenceClass.execution_evidence = 'UNKNOWN_RESPONSE'",
   "exportedEvidence.authority.provider_submission, 'NOT_PERFORMED'",
 ]) requireText(aiContractTestSource, preservedRawTest, `preserved raw API or export test ${preservedRawTest}`);
 

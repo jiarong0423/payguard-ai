@@ -36,7 +36,7 @@ class AupTests(unittest.TestCase):
         result = check_aup("Counterfeit luxury bags and firearms")
         self.assertEqual(result["match_status"], "REVIEW_SIGNAL")
         self.assertEqual({item["category"] for item in result["findings"]}, {"weapons", "counterfeit_goods"})
-        self.assertIn("Do not disguise", result["recommendation"])
+        self.assertIn("Please confirm the actual goods or activity", result["recommendation"])
         self.assertTrue(result["advisory_only"])
         self.assertEqual(result["compliance_decision"], "NOT_MADE")
 

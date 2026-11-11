@@ -32,12 +32,12 @@ const AUP_DESCRIPTION = 'Handcrafted ceramic cup';
 // capped send); this page still never calls PayPal, so it only says where to do it.
 export const WORK_ORDERS = Object.freeze([
   {
-    id: 'WO-S1', title: 'Policy pre-check: US to Singapore e-cigarettes is stopped', scene: 'Policy pre-check',
+    id: 'WO-S1', title: 'Policy pre-check: US to Singapore e-cigarettes, a rule applies and no draft is made', scene: 'Policy pre-check',
     steps: [
       { n: 1, kind: 'auto', label: 'Create a demo session', expect: '201 · synthetic session' },
       { n: 2, kind: 'auto', label: `AUP review "${AUP_DESCRIPTION}"`, expect: '200 · no review signal' },
-      { n: 3, kind: 'auto', label: 'Country check US → SG, goods: e-cigarettes', expect: '200 · blocked' },
-      { n: 4, kind: 'auto', label: 'Invoice review for the same item', expect: '409 · country_rules_blocked' },
+      { n: 3, kind: 'auto', label: 'Country check US → SG, goods: e-cigarettes', expect: '200 · a rule applies' },
+      { n: 4, kind: 'auto', label: 'Invoice review for the same item', expect: '409 · draft held by the country check' },
     ],
   },
   {

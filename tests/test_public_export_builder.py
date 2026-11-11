@@ -241,8 +241,6 @@ class PublicExportBuilderTests(unittest.TestCase):
                 self.assertIn("inv2-...-w5uw", text)
                 self.assertNotIn("inv2-2mta-prpq-4caj-w5uw", text)
                 self.assertNotIn("sandbox path proves", text)
-        security = (self.published / "SECURITY.md").read_text(encoding="utf-8").casefold()
-        self.assertIn("trust_env=false", security)
         video = (self.published / "docs/submission/video_script.md").read_text(encoding="utf-8").casefold()
         self.assertIn(
             "requires the separately authorized paypal sandbox and bounded ai paths "

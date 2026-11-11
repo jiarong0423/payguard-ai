@@ -4,11 +4,11 @@ Tagline: Before a small seller ships abroad, TradeGlot checks 681 official rules
 
 **TL;DR**
 - **One seller:** a small online seller who ships across borders.
-- **Before the sale:** 681 official export and import rules across ten countries and 140 PayPal clauses, each linked to its source, stop a sale that a country or PayPal would not allow, and show the rule that stopped it. Example: a cannabis product that is legal where the seller lives is a prohibited import in Japan, China and Singapore; TradeGlot's rule set lists each ban with its statute (Japan: Customs Act, Article 69-11).
+- **Before the sale:** 681 official export and import rules across ten countries and 140 PayPal clauses, each linked to its source, flag a sale for review when a country or PayPal rule may not allow it, and show the rule that matched. Example: a cannabis product that is legal where the seller lives is a prohibited import in Japan, China and Singapore; TradeGlot's rule set lists each ban with its statute (Japan: Customs Act, Article 69-11).
 - **After the sale:** a buyer says the parcel never arrived; 48.00 USD is at stake. TradeGlot builds the evidence from the seller's own records, and after one human approval of the reviewed draft plus a two-step send confirmation, sends it with PayPal's `provide-evidence` call.
 
-**Verified, with files you can open**
-- **Real sends:** six `provide-evidence` sends to author-created Sandbox test disputes (five local, one from the hosted demo); for two of them the file PayPal serves back has the same SHA-256 as the file recorded at send time.
+**Recorded, with files you can open**
+- **Recorded sends:** six `provide-evidence` sends to author-created Sandbox test disputes (five local, one from the hosted demo); for two of them the file PayPal serves back has the same SHA-256 as the file recorded at send time.
 - **Sourced rules:** each of the 681 rules and 140 clauses links to its official page; 112 of the rules were sampled and 92 compared with their pages by an AI reader.
 - **Tests and attacks:** the last recorded full run (2026-11-09, Run 1 in TEST_RUN_20261109_SKIPPED.md) passed 1,170 tests; the attack request matrix in the suite sends 1,727 hostile requests, with 0 broken in every run recorded in TEST_RUN_20261108.md.
 
@@ -44,7 +44,7 @@ The [hosted demo](https://payguard-demo-j2b3.onrender.com) makes live PayPal San
 The first visit can take about a minute while the free Render server wakes.
 
 **Three clicks:**
-1. Open the [start page](https://payguard-demo-j2b3.onrender.com/start.html). Press **Run the step 1 example**. Expect "A rule may stop this sale.", each row linked to its source.
+1. Open the [start page](https://payguard-demo-j2b3.onrender.com/start.html). Press **Run the step 1 example**. Expect "A listed rule may apply to this sale.", each row linked to its source.
 2. Select **Dispute evidence** (03) in the top stepper. Select a case. Press **Prepare evidence draft**, then **Download review ZIP** (7 entries: 6 files and the manifest).
 3. Open **Proof**. Each claim shows how it was shown (real Sandbox call, recorded run, automated test or synthetic data), the date and the source file.
 

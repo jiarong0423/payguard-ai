@@ -10,7 +10,7 @@ Nothing in these rounds called PayPal Live or a real payment; r27 used the owner
 | --- | --- | --- | --- | --- |
 | r13 | Five-role review | First public-sync candidate | Country verdict shown green for a postal ban; rule pack described as PayPal's own; hosted demo session budget exhaustible | Fixed (amber postal-ban verdict, honest pack labels, no Run all on the hosted demo) |
 | r14 | Verification | r13 fixes | Over-broad postal-ban match; public test run missing two corpora | Fixed |
-| r15 | Verification | r14 fixes | No P0 or P1 left in the developer's scope | Closed |
+| r15 | Verification | r14 fixes | No high or medium-severity items left in the developer's scope | Closed |
 | r16 | Five-role review | Whole build | Review before the first country check could still draft; four injection phrasings passed; case deadlines hidden | Fixed |
 | r17 | Re-review | r16 fixes | The new injection patterns refused 6 of 12 ordinary seller sentences | Fixed (patterns anchored to the addressed form; ordinary sentences kept as must-pass tests) |
 | r18 | Judge reading the private repo | README after the first doc update | Country rules below the fold; stale test count | Fixed |

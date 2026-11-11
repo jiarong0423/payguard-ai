@@ -321,7 +321,7 @@ EXAMPLES = {
 def add_examples(spec):
     """Write the EXAMPLES into the media types, add the hosted 503 refusal, and describe the 422 body the application really returns."""
     from app.demo_mode import DISABLED_ROUTES, HOSTED_DEMO_MESSAGE
-    invalid = {"error": {"code": "schema_invalid", "message": "The request does not match the accepted contract."}}
+    invalid = {"error": {"code": "schema_invalid", "message": "Some details need to be checked and re-entered."}}
     refused = {"error": {"code": "hosted_demo_disabled", "message": HOSTED_DEMO_MESSAGE}}
     ref = {"$ref": "#/components/schemas/ErrorBody"}
     for path, methods in spec["paths"].items():

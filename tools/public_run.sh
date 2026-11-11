@@ -29,7 +29,7 @@ require_python() {
 case "$command_name" in
   help)
     reject_arguments "$@"
-    printf '%s\n' 'Usage: tools/run.sh {start|console|test|evaluate|demo|api|local-ai-api|gemini-check|gemini-test|help}'
+    printf '%s\n' 'Usage: tools/run.sh {start|console|test|evaluate|demo|api|gemini-check|gemini-test|help}'
     exit 0
     ;;
   gemini-check|gemini-test)
@@ -38,7 +38,7 @@ case "$command_name" in
     [ "$command_name" = gemini-test ] && profile_command=test
     exec /bin/sh "$project_root/integrations/gemini/run.sh" "$profile_command"
     ;;
-  test|evaluate|api|local-ai-api|console)
+  test|evaluate|api|console)
     reject_arguments "$@"
     ;;
   start)
@@ -116,9 +116,5 @@ case "$command_name" in
   api)
     "$python_bin" -c 'import fastapi, httpx, uvicorn'
     exec "$python_bin" -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --no-access-log --no-proxy-headers
-    ;;
-  local-ai-api)
-    "$python_bin" -c 'import fastapi, httpx, uvicorn'
-    exec "$python_bin" -m uvicorn app.main:create_lmstudio_app --factory --host 127.0.0.1 --port 8000 --no-access-log --no-proxy-headers
     ;;
 esac

@@ -28,7 +28,7 @@ for (const [message, expected] of [
   ['The demo is busy right now; try again in a few seconds.', 'The demo is busy right now.'],
   ['Five policy checks are already open in the last two minutes. Try again in 37 seconds.', 'Five policy checks are already open in the last two minutes.'],
   ['Too many new sessions; try again in 12 seconds.', 'Too many new sessions.'],
-  ['The local request or sample limit was reached.', 'The local request or sample limit was reached.'],
+  ['Too many requests; please wait a moment and try again.', 'Too many requests; please wait a moment.'],
 ]) assert.equal(withoutFixedWait(message), expected, 'the fixed wait gives way to the countdown');
 {
   const realFetch = globalThis.fetch;

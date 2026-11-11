@@ -391,7 +391,6 @@ const AI_FIRST_LIMITATION = {
 };
 const AI_MODEL_EVIDENCE = {
   'gemini-3.8-flash': new Set(['SYNTHETIC_TEST_RESPONSE', 'OPERATOR_LIVE_RESPONSE']),
-  'nvidia-nemotron-3-nano-4b': new Set(['LOCAL_RUNTIME_RESPONSE']),
 };
 
 export function assertAiBrief(payload, request) {
@@ -787,7 +786,7 @@ export async function apiRequest(path, { method = 'GET', body, session, signal }
     // The only query the console sends: which situation's guide state to read.
     const [basePath, query] = path.split('?');
     if (query !== undefined && !(basePath === '/guide/state' && /^scenario=(?:preflight|velocity|dispute)$/.test(query))) {
-      throw new ApiError('Request path is not allowed.', 0, 'request_invalid');
+      throw new ApiError('This request cannot be made from here.', 0, 'request_invalid');
     }
     const response = await fetch(`/api/v1${path}`, {
       method,
@@ -805,7 +804,7 @@ export async function apiRequest(path, { method = 'GET', body, session, signal }
       payload = await response.json();
     } catch {
       if (retryAfter) throw new ApiError(response.status === 429 ? 'Too many requests; slow down.' : 'TradeGlot is busy right now.', response.status, response.status === 429 ? 'rate_limited' : 'server_busy', retryAfter);
-      throw new ApiError('The API returned invalid content; check the backend service.', response.status, 'invalid_response');
+      throw new ApiError('The server sent an unexpected answer. Try again.', response.status, 'invalid_response');
     }
     if (!response.ok) {
       const code = payload?.error?.code || 'request_failed';

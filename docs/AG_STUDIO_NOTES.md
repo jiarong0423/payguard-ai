@@ -24,7 +24,7 @@ Every number on the page comes from one of these files; nothing is typed in by h
 | Table in Studio | File | How the file is made |
 | --- | --- | --- |
 | `cases`, `requirements`, `time_events` | `frontend/src/data/dashboard_disputes_v1.json` | `python3 tools/build_dashboard_data.py`. It reads back the three synthetic cases that "Load dispute case" creates (`backend/app/store.py`), using the real API in process (`POST /api/v1/demo/inject`, `POST /api/v1/disputes/{case_ref}/draft`) at a fixed clock of 2026-11-01 12:00 UTC. It keeps the due date, readiness, requirement states, proof and attachment counts, review reasons and the ordered time evidence. Message digests are left out because they are keyed per session and change on every run. `--check` reports drift. |
-| `benchmark` | `frontend/src/data/guide_benchmark_v1.json` | Already in the repository; its `source` field names `docs/evidence/guide_benchmark_v1.json` (commit 7091011). |
+| `benchmark` | `frontend/src/data/guide_benchmark_v1.json` | Already in the repository; its `source` field names `docs/evidence/guide_benchmark_v1.json`. |
 | `receipts` | `frontend/src/data/channel3_receipts_v1.json` | A byte-for-byte copy of `docs/evidence/channel3_receipts_v1.json`, written by the same tool and drift-tested. |
 | (agent replay) | `frontend/src/data/studio_agent_run_v1.json` | Four recorded questions: one from 2026-11-08 and three from 2026-11-09 (file dated 2026-11-09; see below and `docs/evidence/AG_STUDIO_LIVE_RUNS_20261109.md`); `node tools/record_studio_agent_run.mjs` records more, run by the owner with a Gemini profile. |
 
@@ -56,7 +56,7 @@ Anything outside the set:
 - **Recorded** (hosted demo; one recording file with four questions, see below): if the question matches a recorded run, the auditor replays that run's Studio tool calls with the real Studio tools and labels the answer "Recorded on <date> with Gemini; replayed here, no model call".
 - **Off**: it lists its questions and says the built-in agents are off.
 
-## Built-in agents and the governed Gemini route (owner decision 2026-11-01, local live mode only)
+## Built-in agents and the Gemini route with fixed limits (author's choice 2026-11-01, local live mode only)
 
 When the local console runs with `PAYGUARD_STUDIO_AGENTS=gemini` and a Gemini profile transport (the same one the guide uses: Vertex, or `PAYGUARD_GEMINI_TRANSPORT=api_key` with `GEMINI_API_KEY`), the dashboard creates its harness with the auditor plus Studio's five agents (`lead`, `data`, `page`, `planning`, `widget`), each run by `directLlmRunner` with the dashboard's adapter. The dashboard asks `GET /api/v1/studio/agent-status` before Studio is created; anything but `live` (hosted demo, no backend) means off.
 

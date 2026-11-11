@@ -8,13 +8,13 @@ The overview shows the policy and ten-country rules check before a draft and the
 
 The current demo video is the [2:32 cut](https://youtu.be/upx5eZYOmC0) (2026-11-11); it replaces the earlier 2:59 cut (since removed from YouTube) (2026-11-10) and [2:50 cut](https://youtu.be/_GORnHWShU4). The [historical demonstration script](video_script.md) is the plan for the earlier 2:02 cut and has no country rules scene.
 
-Status: the Devpost project is submitted and the 2:32 video (2026-11-11) is on YouTube. The complete repository run instructions here are the selected functional-demo path. An optional hosted demo also runs (README, "Hosted demo"); its PayPal calls are Sandbox reads and, with its send opt-in (owner decision 2026-11-10, Sandbox test account only), a capped evidence send to the owner's Sandbox test disputes (once per dispute and per visit, at most 2 sends per address per day, 3 per 10 minutes and 15 a day per server run); only its evidence guide can use Gemini when the operator opts in (at most 5 calls a minute and 20 a day); one hosted evidence send was made live on 2026-11-10 ([RECEIPT_20261110_hosted_live.md](../evidence/RECEIPT_20261110_hosted_live.md)), and a hosted invoice draft or tracking send is not performed (both answer 503 there). A new local export stays `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` until its exact bytes pass security review, independent acceptance and repository readback; only an accepted same-byte public source release records `PUBLIC_SOURCE_PUBLISHED`. Neither state establishes a public or production-hosted service.
+Status: the Devpost project is submitted and the 2:32 video (2026-11-11) is on YouTube. The complete repository run instructions here are the selected functional-demo path. An optional hosted demo also runs (README, "Hosted demo"); its PayPal calls are Sandbox reads and, with its send opt-in (author's choice 2026-11-10, Sandbox test account only), a capped evidence send to the owner's Sandbox test disputes (once per dispute and per visit, at most 2 sends per address per day, 3 per 10 minutes and 15 a day per server run); only its evidence guide can use Gemini when the operator opts in (at most 5 calls a minute and 20 a day); one hosted evidence send was made live on 2026-11-10 ([RECEIPT_20261110_hosted_live.md](../evidence/RECEIPT_20261110_hosted_live.md)), and a hosted invoice draft or tracking send is not performed (both answer 503 there). A new local export stays `LOCAL_EXPORT_CANDIDATE_REVIEW_REQUIRED` until its exact bytes pass security review, independent acceptance and repository readback; only an accepted same-byte public source release records `PUBLIC_SOURCE_PUBLISHED`. Neither state establishes a public or production-hosted service.
 
 ## Fastest path: three clicks on the hosted demo
 
 No install, synthetic data plus Sandbox reads (and, with the send opt-in, a capped Sandbox evidence send). The first visit can take about a minute while the free server wakes.
 
-1. Open the [start page](https://payguard-demo-j2b3.onrender.com/start.html) and press **Run the step 1 example** in step 01. Expect "A rule may stop this sale.", each row linked to its source.
+1. Open the [start page](https://payguard-demo-j2b3.onrender.com/start.html) and press **Run the step 1 example** in step 01. Expect "A listed rule may apply to this sale.", each row linked to its source.
 2. Select **Dispute evidence** (03) in the top stepper, select a case, press **Prepare evidence draft**, then **Download review ZIP**.
 3. Open **Proof** in the top bar ([proof.html](https://payguard-demo-j2b3.onrender.com/proof.html)): each claim, how it was shown, the date and the source file.
 
@@ -68,8 +68,8 @@ For a recorded take, start a fresh backend so each stage has its single availabl
 
 In the console this stage is titled **Policy pre-check** (step 01).
 
-1. Open step 01 **Policy pre-check**. Optionally, under **Where are you shipping from and to?**, pick **Ships from** and **Ships to**, tick the goods and select **Check country rules**. A ban shows **A rule may stop this sale.** and the server refuses the draft (HTTP 409); a ban that binds only the post shows **The post will not carry this item.** with **Continue with another carrier**. For the draft in step 8, use a route and goods with no stop.
-2. Select **High-risk Claim**, then **Run Policy Check**. Confirm that the result is `REVIEW_SIGNAL` and the official PayPal US AUP link is visible.
+1. Open step 01 **Policy pre-check**. Optionally, under **Where are you shipping from and to?**, pick **Ships from** and **Ships to**, tick the goods and select **Check country rules**. A ban shows **A listed rule may apply to this sale.** and the server refuses the draft (HTTP 409); a ban that binds only the post shows **The post will not carry this item.** with **Continue with another carrier**. For the draft in step 8, use a route and goods with no stop.
+2. Select **Needs-review sample**, then **Run Policy Check**. Confirm that the result is `REVIEW_SIGNAL` and the official PayPal US AUP link is visible.
 3. In the **PayPal Sandbox draft (optional)** section (it opens once a check result exists), check **I reviewed the description and amount and confirm that this action creates a Sandbox draft only.**, then select **Confirm Draft Context**. The warning dialog now opens.
 4. In the warning dialog, verify the three available choices: **Return to edit**, **Cancel flow**, and **Acknowledge and continue**.
 5. For the recording path, select **Return to edit**. Confirm that the prior result, acknowledgement, draft binding and confirmation checkbox are cleared.
@@ -139,7 +139,7 @@ The strict API contract still retains:
 - `semantic_entailment=NOT_EVALUATED` until human review;
 - `external_action_authorized=false`.
 
-The UI validates closed model and evidence identity pairs. The default Gemini line uses `gemini-3.8-flash` with `SYNTHETIC_TEST_RESPONSE` or the separately evidenced `OPERATOR_LIVE_RESPONSE` class. Gemini selects each sentence from the stage's closed inventory and fixed code validates the choice. The Gemini brief has run live on Vertex AI (2026-10-06, and once under the current contract on 2026-11-09); reproducing it needs your own Vertex project. The explicit local line uses `nvidia-nemotron-3-nano-4b` with `LOCAL_RUNTIME_RESPONSE`. The backend launcher selects one line for the process; the browser cannot select a provider and no automatic fallback calls the other line. Neither identity authorizes a provider or workflow action.
+The UI validates closed model and evidence identity pairs. The default Gemini line uses `gemini-3.8-flash` with `SYNTHETIC_TEST_RESPONSE` or the separately evidenced `OPERATOR_LIVE_RESPONSE` class. Gemini selects each sentence from the stage's closed inventory and fixed code validates the choice. The Gemini brief has run live on Vertex AI (2026-10-06, and once under the current contract on 2026-11-09); reproducing it needs your own Vertex project. The browser cannot select a provider or a model, and no automatic fallback exists. This identity does not authorize a provider or workflow action.
 
 ## Public references and case caveat
 
@@ -199,4 +199,4 @@ These commands validate the local runtime and source contract. The export manife
 - Authentic Gemini output on your machine: the brief needs your own Vertex AI project; the guide can use Vertex AI or an AI Studio API key.
 - Repeated hosted sends, or multi-user operation (the hosted demo's read-only Sandbox reads were checked once on 2026-11-09 and one hosted send was made on 2026-11-10): the console is a loopback demo; the optional hosted demo makes Sandbox reads and, with its send opt-in, the capped evidence send, and only its guide can use Gemini when the operator opts in.
 
-See the [current architecture](../decisions/2026Q4/architecture.md), [official source register](../decisions/2026Q4/us_official_source_register.md) and [US mainline contract](../decisions/2026Q4/us_mainline_contract.md).
+See the [current architecture](../decisions/2026Q4/architecture.md), [official source register](../decisions/2026Q4/us_official_source_register.md) and [US seller design contract](../decisions/2026Q4/us_mainline_contract.md).

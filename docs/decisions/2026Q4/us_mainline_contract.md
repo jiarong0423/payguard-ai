@@ -1,4 +1,4 @@
-# TradeGlot Mainline Contract (US Sandbox seller; the optional ten-country rules check is advisory)
+# TradeGlot US Seller Design Contract (US Sandbox seller; the optional ten-country rules check is advisory)
 
 > Update 2026-11-11: the current video is the 2:32 cut (https://youtu.be/upx5eZYOmC0); the 2:59 cut of 2026-11-10 (since removed from YouTube) is the one before it; "the 2:50 video" below means the earlier cut. Six evidence sends are recorded now: five from the local console and one from the hosted demo on 2026-11-10 (see README "Real vs simulated" and `docs/evidence/RECEIPT_20261110_hosted_live.md`). The rest of this file is the design record as dated.
 

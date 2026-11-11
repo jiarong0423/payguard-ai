@@ -77,7 +77,7 @@ const grab = (name) => { const match = section.match(new RegExp(`(?:const ${name
   assert.equal(sendLockReason({ draft: {}, receipt: {}, refusal: 'This dispute does not match the selected case (reason or amount differ).' }),
     'Locked: This dispute does not match the selected case (reason or amount differ).', 'refusal reason, not "prepare the preview first"');
   assert.ok(app.includes("if (failure?.status !== 409) throw failure;"), 'only a 409 refusal is kept in place; other failures keep the banner');
-  assert.ok(app.includes("setPreviewRefusal({ kind, ...request, message: failure.message || 'The server refused this preview. Nothing was sent.' });"), 'refusal kept with its dispute and case');
+  assert.ok(app.includes("setPreviewRefusal({ kind, ...request, message: failure.message || 'This preview could not be prepared. Nothing was sent.' });"), 'refusal kept with its dispute and case');
   assert.ok(/@media \(max-width: 640px\) \{\n  \/\* \(r34 #7\)[^\n]*\n  \.feedback-region \.message-error \{ max-height: 40vh; max-height: 40dvh; overflow-y: auto; \}/u.test(css), 'phone error never grows over the bar');
   assert.ok(css.includes('.app-shell.has-phone-action .feedback-region .message-error { bottom: calc(56px + 12px + env(safe-area-inset-bottom)); }'), 'and sits above it');
 }

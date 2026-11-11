@@ -317,8 +317,8 @@ class GatewayTests(unittest.IsolatedAsyncioTestCase):
         mutations = (
             lambda value: value.update(model="other-model"),
             lambda value: value.update(
-                model="nvidia-nemotron-3-nano-4b",
-                execution_evidence="LOCAL_RUNTIME_RESPONSE",
+                model="other-model",
+                execution_evidence="UNKNOWN_RESPONSE",
             ),
             lambda value: value.update(prompt_contract_id="caller-prompt"),
             lambda value: value.update(prompt_contract_digest="0" * 64),

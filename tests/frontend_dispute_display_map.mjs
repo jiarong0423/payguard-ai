@@ -20,13 +20,13 @@ for (const code of ['PP-R-VAF-XXXX7877', 'PP-R-EAK-XXXX0123', 'PP-D-XXXX4567', '
   assert.equal(isShownDisputeId(code), true);
 }
 // Raw local ids: the short form (first 5, "…", last 2), the same text maskDisputeId gives today.
-assert.equal(displayDisputeId('PP-R-NHX-10133829'), 'PP-R-…29');
+assert.equal(displayDisputeId('PP-R-TST-00003829'), 'PP-R-…29');
 assert.equal(displayDisputeId('PP-D-SANDBOX01'), 'PP-D-…01');
 assert.equal(displayDisputeId('PP-D-123456789'), 'PP-D-…89');
-assert.equal(isShownDisputeId('PP-R-NHX-10133829'), false);
+assert.equal(isShownDisputeId('PP-R-TST-00003829'), false);
 // The short form itself (server mask_dispute_id, guard.dispute_masked) is shown as is: the mapping is idempotent.
 for (const value of ['PP-R-…29', 'PP-D-…01', '…']) assert.equal(displayDisputeId(value), value, `short form kept: ${value}`);
-for (const raw of ['PP-R-NHX-10133829', 'PP-R-VAF-XXXX7877', 'PP-D-SANDBOX01', '', 'x']) {
+for (const raw of ['PP-R-TST-00003829', 'PP-R-VAF-XXXX7877', 'PP-D-SANDBOX01', '', 'x']) {
   assert.equal(displayDisputeId(displayDisputeId(raw)), displayDisputeId(raw), `idempotent: ${raw}`);
 }
 // Empty, too short, not a string: hidden.
@@ -102,10 +102,10 @@ assert.equal(sendGuardBlock(hostedGuard, hostedDetail, C, hostedDetail.dispute_i
 assert.equal(sendGuardBlock(hostedGuard, hostedDetail, C, 'PP-R-QQQ-XXXX1177', null, hostedDetail.dispute_id), 'Paired with PP-R-QQQ-XXXX1177 (preview only). Reset demo to pair it with another dispute.', 'bound to a look-alike (same short form): held, full code named');
 assert.equal(odd.sendGuardBlock(hostedGuard, hostedDetail, C, hostedDetail.dispute_id, null, hostedDetail.dispute_id), null, 'decision independent of the display format');
 assert.match(odd.sendGuardBlock(hostedGuard, hostedDetail, C, 'PP-R-QQQ-XXXX1177', null, hostedDetail.dispute_id), /^Paired with <<shown>>/u, 'display only names it');
-const localDetail = { ...hostedDetail, dispute_id: 'PP-R-NHX-10133829' };
+const localDetail = { ...hostedDetail, dispute_id: 'PP-R-TST-00003829' };
 const localGuard = { ...hostedGuard, dispute_masked: maskDisputeId(localDetail.dispute_id), bound_dispute_masked: maskDisputeId(localDetail.dispute_id) };
 assert.equal(sendGuardBlock(localGuard, localDetail, C, null, null, localDetail.dispute_id), null, 'raw local id pairs: send not held');
-assert.equal(sendGuardBlock(localGuard, localDetail, C, 'PP-R-NHX-99999929', null, localDetail.dispute_id), 'Paired with PP-R-…29 (preview only). Reset demo to pair it with another dispute.', 'raw look-alike: held');
+assert.equal(sendGuardBlock(localGuard, localDetail, C, 'PP-R-TST-00009929', null, localDetail.dispute_id), 'Paired with PP-R-…29 (preview only). Reset demo to pair it with another dispute.', 'raw look-alike: held');
 assert.notEqual(displayDisputeId(hostedDetail.dispute_id), maskDisputeId(hostedDetail.dispute_id));
 assert.equal(displayDisputeId(localDetail.dispute_id), maskDisputeId(localDetail.dispute_id));
 
@@ -120,15 +120,15 @@ assert.ok(board.includes('<div className="board-row-head"><strong>{row.caseRefSh
 assert.ok(board.includes("store.getById(`${row.id}-plan`)") && board.includes('const ref = String(record.resourceId);'), 'plan lookups keep the row id');
 const now = Date.parse('2026-11-11T00:00:00Z');
 const item = (id) => ({ dispute_id: id, reason: 'MERCHANDISE_OR_SERVICE_NOT_RECEIVED', status: 'WAITING_FOR_SELLER_RESPONSE', dispute_amount: { value: '48.00', currency_code: 'USD' }, create_time: '2026-11-01T00:00:00Z', seller_response_due_date: '2026-11-20T00:00:00Z' });
-const built = buildEvidenceBoard({ disputes: [{ case_ref: 'case-ref-001', reason: 'MERCHANDISE_OR_SERVICE_NOT_RECEIVED', opened_at: '2026-11-01T00:00:00Z', seller_response_due_date: '2026-11-20T00:00:00Z' }], sandbox: [item('PP-R-VAF-XXXX7877'), item('PP-R-NHX-10133829')], now });
+const built = buildEvidenceBoard({ disputes: [{ case_ref: 'case-ref-001', reason: 'MERCHANDISE_OR_SERVICE_NOT_RECEIVED', opened_at: '2026-11-01T00:00:00Z', seller_response_due_date: '2026-11-20T00:00:00Z' }], sandbox: [item('PP-R-VAF-XXXX7877'), item('PP-R-TST-00003829')], now });
 const byId = Object.fromEntries(built.rows.map((row) => [row.id, row]));
-assert.deepEqual(Object.keys(byId).sort(), ['PP-R-NHX-10133829', 'PP-R-VAF-XXXX7877', 'case-ref-001'], 'row ids are the true values');
+assert.deepEqual(Object.keys(byId).sort(), ['PP-R-TST-00003829', 'PP-R-VAF-XXXX7877', 'case-ref-001'], 'row ids are the true values');
 assert.equal(byId['PP-R-VAF-XXXX7877'].caseRefShown, 'PP-R-VAF-XXXX7877');
-assert.equal(byId['PP-R-NHX-10133829'].caseRefShown, 'PP-R-…29');
-assert.equal(byId['PP-R-NHX-10133829'].caseRef, 'PP-R-NHX-10133829', 'caseRef keeps the true value');
+assert.equal(byId['PP-R-TST-00003829'].caseRefShown, 'PP-R-…29');
+assert.equal(byId['PP-R-TST-00003829'].caseRef, 'PP-R-TST-00003829', 'caseRef keeps the true value');
 assert.equal(byId['case-ref-001'].caseRefShown, 'case-ref-001', 'sample case ref shown as is');
 assert.ok(built.events.every((event) => byId[event.resourceId]), 'events point at true row ids');
-const stored = { 'PP-R-NHX-10133829': { start: '2026-11-12T00:00:00.000Z', end: '2026-11-12T05:00:00.000Z' } };
-assert.deepEqual(Object.keys(restorePlans(stored, built.rows, now)).sort(), ['PP-R-NHX-10133829', 'case-ref-001'], 'stored plans are keyed by the true id');
+const stored = { 'PP-R-TST-00003829': { start: '2026-11-12T00:00:00.000Z', end: '2026-11-12T05:00:00.000Z' } };
+assert.deepEqual(Object.keys(restorePlans(stored, built.rows, now)).sort(), ['PP-R-TST-00003829', 'case-ref-001'], 'stored plans are keyed by the true id');
 
 console.log('frontend_dispute_display_map: ok');

@@ -10,14 +10,14 @@
 </head>
 <body>
 <main>
-<h1>Start here: judge TradeGlot in about five minutes</h1>
+<h1>Start here: try TradeGlot in about five minutes</h1>
 <p class="lead">TradeGlot checks a sale before you ship, then helps a seller prepare dispute evidence and send it to PayPal Sandbox only after a person approves. Verified on 2026-11-10: a send from this hosted site, PayPal-Debug-Id f869050ae2a63 (masked receipt in the repository).</p>
 <p><a class="btn" href="https://payguard-demo-j2b3.onrender.com/">Open the demo and press &ldquo;Run the step 1 example&rdquo;</a></p>
 
 <p class="small">The free server can take up to a minute to wake up on the first visit.</p>
 <h2>The five-minute path</h2>
 <ol>
-<li><a class="row" href="https://payguard-demo-j2b3.onrender.com/"><span class="n">1</span><span><span class="t">Check a sale <span class="tag">hosted</span></span><span class="d">Press <b>Run the step 1 example</b>. A banned product to Singapore is stopped, with the rule and its official source.</span></span></a></li>
+<li><a class="row" href="https://payguard-demo-j2b3.onrender.com/"><span class="n">1</span><span><span class="t">Check a sale <span class="tag">hosted</span></span><span class="d">Press <b>Run the step 1 example</b>. A product on a listed ban for Singapore gets a rule match and no draft, with the rule and its official source.</span></span></a></li>
 <li><a class="row" href="https://payguard-demo-j2b3.onrender.com/#disputes"><span class="n">2</span><span><span class="t">Dispute evidence <span class="tag">hosted</span></span><span class="d">Select <b>Dispute evidence</b> (03) in the top stepper, pick a case, press <b>Prepare evidence draft</b>. Expect &ldquo;Ready for human review&rdquo; and a review ZIP. Below it, the recorded replay sends nothing. The <b>PayPal Sandbox disputes</b> block lists the author&rsquo;s Sandbox test disputes; on the hosted site it is usually already connected, and its <b>Connect US Sandbox</b> button shows only when it is not. When the send switch is on, you can send that evidence to one of them instead.</span></span></a></li>
 <li><a class="row" href="https://payguard-demo-j2b3.onrender.com/dashboard.html"><span class="n">3</span><span><span class="t">AG Studio evidence dashboard <span class="tag">hosted</span> <span class="tag rec">recorded agent run</span></span><span class="d">Ask &ldquo;Which reason code appears most often across the three cases?&rdquo; The answer replays a real Gemini run, labelled as recorded.</span></span></a></li>
 <li><a class="row" href="https://payguard-demo-j2b3.onrender.com/proof.html"><span class="n">4</span><span><span class="t">Proof and receipts <span class="tag rec">recorded</span></span><span class="d">What was shown, how, when, and from which file, including the recorded real send to the PayPal Sandbox.</span></span></a></li>
@@ -26,15 +26,15 @@
 <p class="small">Times on screen: a time marked UTC is UTC (as on the AG Studio dashboard, the Evidence deadline board, the Time evidence block and Technical details); every other time in the console, including the PayPal Sandbox dispute list, is shown in your own time zone with its name (for example GMT+8).</p>
 
 <h2>What is real, what is recorded</h2>
-<p>The hosted site reads the author&rsquo;s own Sandbox test disputes (ids shown as masked codes) and, with the send switch on, one capped evidence send per visit to the author&rsquo;s own Sandbox test disputes (at most 2 sends per address per day, 3 per 10 minutes and 15 a day for all visitors); invoice drafts, tracking, webhooks, the AI brief and the Studio agents answer 503.</p>
+<p>The hosted site reads the author&rsquo;s own Sandbox test disputes (ids shown as masked codes) and, with the send switch on, one capped evidence send per visit to the author&rsquo;s own Sandbox test disputes (at most 2 sends per address per day, 3 per 10 minutes and 15 a day for all visitors); invoice drafts, tracking, webhooks, the AI brief and the Studio agents are switched off on the hosted site.</p>
 <p>When none is waiting for the seller, the page opens the recorded replay. Six PayPal Sandbox evidence sends are shown as receipts and notes: five made on the author&rsquo;s computer and one made from this hosted site on 2026-11-10.</p>
 <p>AG Studio&rsquo;s built-in agents ran live on the local console on 2026-11-04 (several runs, none saved), on 2026-11-08 (one run, recorded) and on 2026-11-09 (three runs, 11 tool calls, recorded); the hosted dashboard replays the recording dated 2026-11-09, with its four questions, and calls no model. Ten Channel3 searches were real too (five of them are replayed here). The data is synthetic and PayPal decides every real dispute.</p>
 
 <h2>Three claims, in plain text</h2>
 <noscript><p class="small">This page needs no JavaScript. The same facts are here for text-only readers.</p></noscript>
 <ul>
-<li>Rules decide, a person approves: a banned product to Singapore is stopped with the rule and its official source; the policy check itself sends nothing to PayPal.</li>
-<li>The hosted site uses a PayPal Sandbox test account only: Sandbox reads with masked dispute ids and, with the send switch on, one capped evidence send per visit to the author&rsquo;s own Sandbox test disputes (at most 2 sends per address per day, 3 per 10 minutes and 15 a day for all visitors); every other write route answers 503 <code>hosted_demo_disabled</code>.</li>
+<li>Rules flag, a person approves: a product on a listed ban for Singapore gets a rule match and no draft, with the rule and its official source; the policy check itself sends nothing to PayPal.</li>
+<li>The hosted site uses a PayPal Sandbox test account only: Sandbox reads with masked dispute ids and, with the send switch on, one capped evidence send per visit to the author&rsquo;s own Sandbox test disputes (at most 2 sends per address per day, 3 per 10 minutes and 15 a day for all visitors); every other write route is switched off (code <code>hosted_demo_disabled</code>).</li>
 <li>Every claim has a row on the <a href="https://payguard-demo-j2b3.onrender.com/proof.html">proof page</a> (also readable without JavaScript in <a href="https://github.com/jiarong0423/payguard-ai/tree/main/docs/evidence">docs/evidence</a>). Machine-readable: <a href="https://payguard-demo-j2b3.onrender.com/api/v1/openapi.json">/api/v1/openapi.json</a> and <a href="https://payguard-demo-j2b3.onrender.com/llms.txt">/llms.txt</a>.</li>
 </ul>
 
@@ -48,13 +48,13 @@ curl -s $H/api/v1/paypal/disputes -H "X-Demo-Session: $S"   # 200, source paypal
 curl -s -X POST $H/api/v1/paypal/invoices/draft -H "Origin: $H" -H "X-Demo-Session: $S" -H "X-CSRF-Token: $C" -H 'Content-Type: application/json' -d '{}'   # 503 hosted_demo_disabled</code></pre>
 
 <h2>Prefer your own computer?</h2>
-<p>A click-through package (11 MB zip, public source plus the built console, no keys) runs the same demo locally; the send step is the same recorded replay. It needs Python 3.13 and uv; <code>RUN_FIRST.txt</code> inside has the one command. To check our numbers yourself, run <code>tools/verify_public_numbers.py</code> there: it re-counts the figures on the pages and marks the one run-time-only count (the red-team requests) MANUAL.</p>
+<p>A click-through package (11 MB zip, public source plus the built console, no keys) runs the same demo locally; the send step is the same recorded replay. It needs Python 3.13 and uv; <code>RUN_FIRST.txt</code> inside has the one command. To check our numbers yourself, run <code>tools/verify_public_numbers.py</code> there: it re-counts the figures on the pages and marks the one run-time-only count (the stress-test requests) MANUAL.</p>
 <p><a class="btn small" href="https://github.com/jiarong0423/payguard-ai/releases/download/demo-package-20261109/tradeglot-demo.zip">Download tradeglot-demo.zip</a></p>
 <p class="small">SHA-256 of the zip: <code>442969a14a1b7a7e4df2129a75c0dec0168007c47ac7b40a1c15bb52c09894bf</code></p>
 
 <h2>Check the claims yourself</h2>
 <div class="grid">
-<a class="btn small" href="https://github.com/jiarong0423/payguard-ai/blob/main/README.md">README: how to judge in 5 minutes</a>
+<a class="btn small" href="https://github.com/jiarong0423/payguard-ai/blob/main/README.md">README: how to try it in 5 minutes</a>
 <a class="btn small" href="https://github.com/jiarong0423/payguard-ai/blob/main/docs/SPONSOR_TECH_MAP.md">Sponsor technology map</a>
 <a class="btn small" href="https://github.com/jiarong0423/payguard-ai/blob/main/docs/evidence/REVIEW_ZIP_CONTENTS.md">What is inside the review ZIP</a>
 <a class="btn small" href="https://github.com/jiarong0423/payguard-ai/blob/main/docs/evidence/HOW_NUMBERS_WERE_COUNTED.md">How every number was counted</a>

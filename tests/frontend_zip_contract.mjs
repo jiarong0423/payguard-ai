@@ -574,7 +574,7 @@ for (const required of [
   'Required fields present does not prove authenticity, sufficiency, eligibility, completeness, or outcome.',
   'PayPal or the external issuer keeps final authority, and nothing was submitted.',
   'Internal review ZIP downloaded locally. It is not a PayPal evidence attachment, is not complete official evidence, and was not submitted.',
-  'Internal Review ZIP creation failed. No file was downloaded or submitted to PayPal.',
+  'The review ZIP could not be created. No file was downloaded or submitted to PayPal.',
   "code: 'internal_review_zip_invalid'",
 ]) assert.ok(appSource.includes(required), required);
 

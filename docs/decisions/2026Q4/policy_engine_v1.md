@@ -205,7 +205,7 @@ Any tier change requires:
 5. deterministic positive, negative, boundary and conflict tests;
 6. source-integrity and foreign-before-load tests;
 7. independent review;
-8. isolation apply, module audit publication, second no-op audit and canonical readback;
+8. apply in a scratch copy, publish the module check, a second check that finds nothing left to change, and a re-read of the published files;
 9. unchanged external-action boundary.
 
 The US narrative conversion is not a promotion event.

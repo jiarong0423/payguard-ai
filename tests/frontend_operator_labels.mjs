@@ -24,7 +24,6 @@ const required = {
   'payguard-bounded-advisory-v3': 'Fixed advisory contract',
   SYNTHETIC_TEST_RESPONSE: 'Synthetic test run',
   OPERATOR_LIVE_RESPONSE: 'Live model response',
-  LOCAL_RUNTIME_RESPONSE: 'Local model response',
   PAYLOAD_DIGEST_BOUND: 'Draft details locked for this review',
 };
 

@@ -31,7 +31,6 @@ from .paypal_tools import SafePaypalToolGateway
 from .paypal_disputes import DisputeAmountMismatch, DisputeReadbackService
 from .ai_brief import AiBriefError, AiBriefHttpRequest, AiBriefResponse, EvidenceBriefAdapter
 from .ai_usage import COST_NOTE, PRICE_TABLE_SOURCE, AiUsageLog, AiUsageResponse
-from .lmstudio_brief import LmStudioConfig, LmStudioEvidenceBriefAdapter
 from .demo_mode import (HOSTED_DEMO_CODE, HOSTED_DEMO_MESSAGE, HostedDemoBriefStub, HostedDemoGuardMiddleware,
                         HostedDemoPaypalStub, HostedReadOnlyPaypalAdapter, HOSTED_READ_BUDGET_CODE,
                         HOSTED_SEND_BUDGET_CODE, HOSTED_SEND_CLIENT, HOSTED_SEND_CLIENT_CODE, HOSTED_SEND_SESSION,
@@ -71,13 +70,13 @@ SESSION_QUEUE_SECONDS = 8
 
 _MESSAGES = {
     401: "A valid demo session is required.",
-    403: "The request failed a local security boundary.",
+    403: "This request could not be accepted from here.",
     404: "The requested demo resource was not found.",
     405: "This operation is unavailable.",
     413: "The request exceeds the allowed body size.",
     415: "JSON content is required.",
-    422: "The request does not match the accepted contract.",
-    429: "The local request or sample limit was reached.",
+    422: "Some details need to be checked and re-entered.",
+    429: "Too many requests; please wait a moment and try again.",
     500: "The local service could not complete the request.",
     502: "The Sandbox provider response could not be verified.",
     503: "The requested Sandbox capability is unavailable.",
@@ -166,7 +165,7 @@ def parse_locked_json(text: str):
 DISPUTE_PAIRING_MESSAGES = {
     "dispute_case_mismatch": "This dispute does not match the selected case (reason or amount differ). Select the case it belongs to.",
     "dispute_case_bound": "This dispute is already paired with another case in this session. Evidence is never mixed between cases.",
-    "country_rules_blocked": "TradeGlot won't create the draft: a country rule stops this sale. Change the goods, account or countries and check again.",
+    "country_rules_blocked": "TradeGlot won't create the draft: a listed country rule may apply to this sale. Change the goods, account or countries and check again.",
     "country_check_changed": "The country check changed after this draft was reviewed; review the draft again.",
     # The seller needs the cause, not a generic "changed" (r22: a TWD check then a USD invoice looked unexplained).
     "country_amount_changed": "The country check used a different amount or currency than this invoice. Check country rules again with the invoice amount in USD, or leave the amount empty.",
@@ -931,11 +930,6 @@ def create_app(*, store=None, paypal=None, reference_loader=None, ai_brief=None,
         application.state.static_dir = str(static_dir)
         application.mount("/", ConsoleStatic(str(static_dir), application.router.routes), name="console")
     return application
-
-
-def create_lmstudio_app() -> FastAPI:
-    """Create the explicit local-model API; the default application stays Gemini-bound."""
-    return create_app(ai_brief=LmStudioEvidenceBriefAdapter(config=LmStudioConfig(enabled=True)))
 
 
 app = create_app()

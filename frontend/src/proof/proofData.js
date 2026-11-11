@@ -56,7 +56,7 @@ export const LATEST_ALSO = Object.freeze([['cross-render-workflow-run', 'Render 
 
 // (r48) Real Sandbox rows that are refusals: TradeGlot sent no evidence to that dispute. Counted apart so the real-call
 // count is not read as sends.
-export const REFUSED_LABEL = 'refused before any send call';
+export const REFUSED_LABEL = 'held before any send call';
 export function refusedCount(facts) {
   return (facts?.rows || []).filter((row) => row.refused === true && row.method === 'REAL_SANDBOX').length;
 }

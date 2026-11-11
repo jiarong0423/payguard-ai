@@ -428,13 +428,12 @@ class AiBriefResponse(StrictContract):
     fixture_id: Literal["payguard-fixed-synthetic-brief-v1", "payguard-session-brief-v1"]
     context_digest: StrictStr = Field(pattern=r"^[a-f0-9]{64}$")
     corpus_digest: StrictStr = Field(pattern=r"^[a-f0-9]{64}$")
-    model: Literal["gemini-3.8-flash", "nvidia-nemotron-3-nano-4b"]
+    model: Literal["gemini-3.8-flash"]
     prompt_contract_id: Literal["payguard-bounded-advisory-v3"]
     prompt_contract_digest: StrictStr = Field(pattern=r"^[a-f0-9]{64}$")
     execution_evidence: Literal[
         "SYNTHETIC_TEST_RESPONSE",
         "OPERATOR_LIVE_RESPONSE",
-        "LOCAL_RUNTIME_RESPONSE",
     ]
     brief: GeneratedBrief
     ai_generated: Literal[True]
@@ -472,7 +471,6 @@ class AiBriefResponse(StrictContract):
             raise ValueError("prompt_contract_digest_invalid")
         allowed_evidence = {
             "gemini-3.8-flash": {"SYNTHETIC_TEST_RESPONSE", "OPERATOR_LIVE_RESPONSE"},
-            "nvidia-nemotron-3-nano-4b": {"LOCAL_RUNTIME_RESPONSE"},
         }
         if self.execution_evidence not in allowed_evidence[self.model]:
             raise ValueError("model_evidence_pair_invalid")
