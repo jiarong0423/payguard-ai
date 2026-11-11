@@ -20,8 +20,8 @@ const TAG_LABELS = {
 const COMMON_TAGS = ['e_cigarettes', 'food', 'cosmetics', 'batteries_hazmat', 'alcohol', 'radio_wireless'];
 const SHOWN_TAGS = ['live_animals', 'plants_seeds', 'food', 'cosmetics', 'batteries_hazmat', 'radio_wireless', 'alcohol', 'tobacco_other', 'e_cigarettes',
   'prescription', 'medical_devices', 'jewellery_precious_metals', 'currency', 'cultural_relics', 'weapons', 'counterfeit'];
-// "Stopped", not "Held": PayPal uses "hold" for payment holds (PayPal-side red team r1).
-const SEVERITY_TEXT = { BLOCK: 'Stopped', WARN: 'Check first', INFO: 'Note' };
+// "Rule match" and "paused", never "held": PayPal uses "hold" for payment holds.
+const SEVERITY_TEXT = { BLOCK: 'Rule match', WARN: 'Check first', INFO: 'Note' };
 // Review 2026-11-03: a long list buries the rule that matters; show the first few, keep the rest one click away.
 const SUMMARY_ROWS = 2;
 // Each link says whose rule it is (review r10: government import rules were labelled as PayPal's).
@@ -39,9 +39,9 @@ function withGloss(sentence, seen) {
   }
   return out;
 }
-// (optimise r24) Clock time for the before/after card ("Stopped at 10:02 → No listed rule matched at 10:04"), local 24-hour time.
+// (optimise r24) Clock time for the before/after card ("Paused at 10:02 → No listed rule matched at 10:04"), local 24-hour time.
 const clockTime = (ms) => new Date(ms).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
-const verdictWord = (result) => (result.blocked ? 'Stopped' : result.findings.some(isPostalBan) ? 'Draft allowed (other carrier)' : 'No listed rule matched');
+const verdictWord = (result) => (result.blocked ? 'Draft paused' : result.findings.some(isPostalBan) ? 'Draft allowed (other carrier)' : 'No listed rule matched');
 // A rule row reads "{Country} {side} ({tier}): {rule}. [Statute Article]". The seller reads the plain sentence
 // first; the scope and the statute move to a small second line and the source link (review r1 P0.4).
 function splitRule(text) {
@@ -112,9 +112,9 @@ function BeforeAfter({ record, names }) {
   if (before.tags.join() !== after.tags.join()) changes.push(`goods ${goods(before)} to ${goods(after)}`);
   if (before.account !== after.account) changes.push(`account ${before.account} to ${after.account}`);
   return <div className="country-before-after" data-testid="country-before-after">
-    <strong data-testid="country-before-after-line">Held at {clockTime(before.at)} → {after.word} at {clockTime(after.at)}</strong>
+    <strong data-testid="country-before-after-line">Paused at {clockTime(before.at)} → {after.word} at {clockTime(after.at)}</strong>
     <span className="country-before-after-note" data-testid="country-before-after-note">This compares your declaration only. Changing a declaration does not change what PayPal or a carrier will do.</span>
-    <span>{changes.length ? `Changed: ${changes.join('; ')}.` : 'Same details checked again.'} The draft is no longer held by a country rule.</span>
+    <span>{changes.length ? `Changed: ${changes.join('; ')}.` : 'Same details checked again.'} The draft is no longer paused by a country rule.</span>
   </div>;
 }
 
@@ -154,7 +154,7 @@ function Verdict({ result, names, tags, onEdit, onContinue }) {
   // One next step under the verdict (plan r2 E19): change the goods after a Stop, or go on to the draft.
   if (result.blocked) {
     return <><strong className="country-verdict-big">A listed rule may apply to this sale.</strong>
-      <span className="country-verdict-line">Draft held: {plural(block.length, 'listed rule')} {block.length === 1 ? 'applies' : 'apply'} to {seller} → {buyer}.</span>{noGoods}
+      <span className="country-verdict-line">Draft paused: {plural(block.length, 'listed rule')} {block.length === 1 ? 'applies' : 'apply'} to {seller} → {buyer}.</span>{noGoods}
       <span className="country-verdict-next"><button type="button" className="button button-secondary" data-testid="country-edit-item" onClick={() => onEdit(accountStop)}>{accountStop ? 'Change account' : 'Edit item'}</button></span></>;
   }
   if (ban.length) {

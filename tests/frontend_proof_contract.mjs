@@ -65,7 +65,7 @@ assert.ok(facts.rows.find((row) => row.id === 'dispute-evidence-sent-recorded').
 assert.ok(facts.rows.find((row) => row.id === 'dispute-evidence-sent-recorded').how.includes('ca5554cf42ef6'), 'recorded send row names the readback Debug-Id');
 assert.deepEqual(facts.rows.filter((row) => row.refused).map((row) => row.id), ['dispute-mismatch-refused', 'dispute-unauthorized-refused', 'dispute-resend-amount-refused']);
 assert.equal(refusedCount(facts), 3);
-assert.equal(REFUSED_LABEL, 'held before any send call');
+assert.equal(REFUSED_LABEL, 'declined before any send call');
 assert.ok(pageMain().includes('data-testid="proof-refused">{REFUSED_LABEL}</span>'), 'refusal rows carry their own label');
 for (const receipt of [...SANDBOX_RECEIPTS, ...NEW_SANDBOX_SOURCES, ...NEW_OTHER_SOURCES]) {
   assert.ok(facts.source_note.includes(receipt), `footer source list names ${receipt}`);

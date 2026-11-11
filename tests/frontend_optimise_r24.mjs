@@ -14,7 +14,7 @@ const panelCss = readFileSync(new URL('../frontend/src/CountryRules.css', import
 assert.equal(/RULE_AUDIT_SAMPLE|the r10 audit|country-row-line-check/u.test(panel), false, 'no per-row audit status or sample list on the screen (2026-11-09)');
 assert.ok(panel.includes('data-testid="country-verdict-line-check"'), 'one muted line under the sources points to Proof');
 assert.ok(panel.includes('data-testid="country-row-source-date"> · source read {retrievedAt}'), 'rows show the source date');
-assert.ok(panel.includes('Held at {clockTime(before.at)} → {after.word} at {clockTime(after.at)}'), 'before/after line with both times');
+assert.ok(panel.includes('Paused at {clockTime(before.at)} → {after.word} at {clockTime(after.at)}'), 'before/after line with both times');
 assert.ok(panel.includes('{!result.blocked && unlock?.after && <BeforeAfter record={unlock} names={names} />}'), 'card only after a later non-stop result');
 assert.ok(panel.includes("setUnlock((current) => (payload.blocked ? { before: entry, after: null } : current ? { before: current.before, after: entry } : null));"), 'a Stop starts a new pair');
 assert.ok(panel.includes("const away = [home === 'US' ? 'CA' : 'US', ...codes].find((code) => code !== home && codes.includes(code)) || home;"), 'ships-to default differs');

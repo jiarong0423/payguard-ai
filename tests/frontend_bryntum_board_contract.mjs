@@ -315,7 +315,7 @@ assert.equal(judge(NOW + 60000, NOW + 2 * HOUR).code, 'NOT_ON_HOUR');
 assert.equal(judge(Number.NaN, NOW).code, 'INVALID');
 assert.equal(validatePlan({ startMs: NOW, endMs: NOW + HOUR }, { nowMs: NOW, dueMs: Number.NaN }).code, 'INVALID');
 assert.equal(PLAN_MESSAGES.BEFORE_NOW, 'Cannot start before now.');
-assert.equal(PLAN_MESSAGES.AFTER_DUE, 'Must end by the response due date.');
+assert.equal(PLAN_MESSAGES.AFTER_DUE, 'Needs to end by the response due date.');
 assert.deepEqual(shiftPlan({ startMs: NOW, endMs: NOW + HOUR }, 2), { startMs: NOW + 2 * HOUR, endMs: NOW + 3 * HOUR });
 assert.deepEqual(shiftPlan({ startMs: NOW, endMs: NOW + 3 * HOUR }, -1, { resize: true }), { startMs: NOW, endMs: NOW + 2 * HOUR });
 // Restore: a stored plan that still fits is kept, a broken or late one falls back to the default, unknown cases drop.

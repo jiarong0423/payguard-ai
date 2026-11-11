@@ -1,4 +1,4 @@
-// Scenario work orders (/scenarios.html), linked from the console top bar. Runs the fixed work orders in
+// Scenario runs (/scenarios.html), linked from the console top bar. Runs the fixed work orders in
 // workOrders.js against this server's own local API; owner steps are checkboxes that never call anything.
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -146,7 +146,7 @@ function ScenariosPage() {
   const shownMode = modeText(mode);
 
   return <div className="app-shell scenarios-shell">
-    <a className="skip-link" href="#main">Skip to work orders</a>
+    <a className="skip-link" href="#main">Skip to scenario runs</a>
     <header className="topbar">
       <a className="brand" href="/" aria-label="TradeGlot console"><span className="brand-mark"><Icon name="shield" size={23} /></span><span>TradeGlot<small>MERCHANT EVIDENCE BUFFER</small></span></a>
       <nav aria-label="Additional workspace"><a href="/">Console</a><a href="/dashboard.html" data-testid="topbar-dashboard">Dashboard</a><a href="/scenarios.html" aria-current="page" data-testid="topbar-scenarios">Scenarios</a></nav>
@@ -156,7 +156,7 @@ function ScenariosPage() {
       <section className="scenarios-head">
         <div>
           <span className="meta-label">WORK ORDERS</span>
-          <h1>Scenario work orders</h1>
+          <h1>Scenario runs</h1>
           <p>Each card runs one scene of the demo against this console's own API with synthetic data. Owner steps are ticked by hand; ticking never calls PayPal or a model.</p>
           <p className="scenarios-mode" data-testid="scenario-mode"><Chip status={shownMode.tone} label={shownMode.label} /></p>
         </div>
@@ -214,7 +214,7 @@ function ScenariosPage() {
           </article>;
         })}
       </div>
-      <footer><span><Icon name="shield" size={15} /> TradeGlot <span className="footer-divider">/</span> Scenario work orders</span><span className="footer-independent" data-testid="footer-independent">TradeGlot is an independent hackathon demo. Not affiliated with or endorsed by PayPal.</span><span>Synthetic data · nothing is sent to PayPal from this page</span></footer>
+      <footer><span><Icon name="shield" size={15} /> TradeGlot <span className="footer-divider">/</span> Scenario runs</span><span className="footer-independent" data-testid="footer-independent">TradeGlot is an independent hackathon demo. Not affiliated with or endorsed by PayPal.</span><span>Synthetic data · nothing is sent to PayPal from this page</span></footer>
     </main>
   </div>;
 }

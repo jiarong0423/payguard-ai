@@ -1,5 +1,5 @@
 {
-  "description": "Keyword chooser alone on blind sets written by separate writers, each measured once after the rules were frozen. Rows in the order of the source.",
+  "description": "Keyword chooser alone on blind sets written by separate writers, each measured once after the rules were fixed. Rows in the order of the source.",
   "extracted_by": "tools/extract_evidence_charts.py",
   "red_line_confident_wrong": 0,
   "schema_version": "payguard.blind_trend.v1",

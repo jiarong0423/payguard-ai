@@ -242,7 +242,7 @@ export const PLAN_MESSAGES = {
   NOT_ON_HOUR: 'Plans snap to whole hours.',
   EMPTY: 'Keep at least one hour.',
   BEFORE_NOW: 'Cannot start before now.',
-  AFTER_DUE: 'Must end by the response due date.',
+  AFTER_DUE: 'Needs to end by the response due date.',
   NO_WINDOW: 'No time left before the due date.',
 };
 

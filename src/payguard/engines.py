@@ -452,7 +452,7 @@ def prepare_dispute(case: dict) -> dict:
         "status": "manual_review" if review_reasons else "review_evidence",
         "evidence": evidence,
         "review_reasons": review_reasons,
-        "recommendation": "A human reviewer must verify the evidence and applicable case requirements before taking any action.",
+        "recommendation": "A person needs to check the evidence and the case requirements before taking any action.",
         "limitations": [
             "All evidence is synthetic and has not been verified against a carrier or payment provider.",
             "A delivery event does not establish buyer intent or determine a dispute outcome.",

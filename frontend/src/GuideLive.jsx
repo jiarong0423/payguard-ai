@@ -41,7 +41,7 @@ const MAX_TEXT = 400;
 const FALLBACK_TEXT = {
   budget: 'model budget, rate limit or breaker',
   provider_error: 'model timeout or error',
-  invalid_reply: 'model reply failed the strict check',
+  invalid_reply: 'model reply did not pass the strict check',
   late: 'model reply did not arrive within 30 seconds',
   no_items: 'model found no item in that sentence',
 };

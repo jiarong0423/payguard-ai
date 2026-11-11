@@ -3,7 +3,7 @@
 Two outputs, each recording the sha256 of the Markdown file it was read from:
   frontend/src/data/blind_trend_v1.json
       docs/evidence/KEYWORD_CHOOSER_BASELINE.md: the keyword chooser on each blind set, measured once
-      after the rules were frozen (the "Trend across the three blind sets" table, plus the blind v4
+      after the rules were fixed (the "Trend across the three blind sets" table, plus the blind v4
       sentence of the hybrid section), cross-checked against each blind set's own table.
   frontend/src/data/stress_test_v1.json
       docs/evidence/GUIDE_STRESS_TEST.md: the volume table (rounds, corpora, conditions, scored model
@@ -203,7 +203,7 @@ def extract_stress_test(root: pathlib.Path = ROOT) -> dict:
         "schema_version": "payguard.stress_test.v1",
         "source": source,
         "extracted_by": EXTRACTOR,
-        "description": ("Model replies scored against frozen corpora per round, and drift across all of them. "
+        "description": ("Model replies scored against fixed test sets per round, and drift across all of them. "
                         "outside_format per round is derived from the all-reply total of 0."),
         "rounds": rounds,
         "total": total,

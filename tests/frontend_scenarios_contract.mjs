@@ -175,7 +175,7 @@ assert.ok(page.includes("'Invoice drafts are local only; run TradeGlot locally.'
 for (const testId of ['scenario-card-${order.id}', 'scenario-run-${order.id}', 'scenario-run-all', 'scenario-reset', 'scenario-step-${order.id}-${step.n}', 'scenario-receipt-${order.id}']) {
   assert.ok(page.includes(testId), `test id ${testId}`);
 }
-for (const label of ['Not run', 'Running', 'Passed', 'Failed', 'Needs owner', 'Local only', 'Run auto steps', 'Run all', 'Reset', 'Receipt (JSON)', 'Copy receipt', 'Scenario work orders']) {
+for (const label of ['Not run', 'Running', 'Passed', 'Failed', 'Needs owner', 'Local only', 'Run auto steps', 'Run all', 'Reset', 'Receipt (JSON)', 'Copy receipt', 'Scenario runs']) {
   assert.ok(page.includes(label), `label ${label}`);
 }
 assert.ok(page.includes('type="checkbox"') && /onChange=\{\(event\) => setTicked/.test(page), 'owner steps are checkboxes that only set local state');
@@ -183,7 +183,7 @@ assert.ok(page.includes("import { apiRequest } from '../api.js';"), 'reuses the 
 assert.ok(page.includes('data-testid="footer-independent"') && page.includes('Not affiliated with or endorsed by PayPal.'));
 const app = read('frontend/src/App.jsx');
 assert.ok(app.includes('<a href="/dashboard.html" data-testid="topbar-dashboard">Dashboard</a><a href="/scenarios.html" data-testid="topbar-scenarios">Scenarios</a>'), 'top-bar link next to Dashboard');
-assert.ok(html.includes('<script type="module" src="/src/scenarios/main.jsx"></script>') && html.includes('<title>TradeGlot · Scenario work orders</title>'));
+assert.ok(html.includes('<script type="module" src="/src/scenarios/main.jsx"></script>') && html.includes('<title>TradeGlot · Scenario runs</title>'));
 assert.equal(html.split('<link rel="stylesheet" href="/src/theme/base.css" />').length - 1, 1, 'base.css once');
 assert.ok(read('frontend/vite.config.js').includes("scenarios: fileURLToPath(new URL('scenarios.html', import.meta.url))"), 'Vite entry');
 assert.ok(read('Dockerfile').includes('frontend/scenarios.html'), 'hosted image copies the page');

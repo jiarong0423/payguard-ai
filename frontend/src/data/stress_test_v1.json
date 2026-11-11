@@ -1,5 +1,5 @@
 {
-  "description": "Model replies scored against frozen corpora per round, and drift across all of them. outside_format per round is derived from the all-reply total of 0.",
+  "description": "Model replies scored against fixed test sets per round, and drift across all of them. outside_format per round is derived from the all-reply total of 0.",
   "drift": [
     {
       "count": 0,
@@ -45,7 +45,7 @@
       "items": 20,
       "items_reaching_model": null,
       "outside_format": 0,
-      "round": "Attack pack",
+      "round": "Stress-test pack",
       "scored_replies": 20,
       "source_line": 11,
       "within_format": 20

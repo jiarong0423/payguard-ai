@@ -14,11 +14,11 @@ assert.ok(app.includes('disabled={disabled || countryHeld || !invoiceReview'), '
 // Cross-check 2026-11-03 A1-A3, A6: the redesigned panel and step 01 behaviour stay pinned.
 // A1: editing a field after a Stop keeps the Stop (no open draft block, no green step).
 assert.ok(app.includes('const sandboxReady = Boolean(aup || countryCheck) && !countryHeld;'), 'sandboxReady formula includes the stale Stop');
-assert.ok(app.includes("countryHeld ? { label: 'Draft held: a listed rule applies', tone: 'danger' }"), 'step status stays "No draft" while a Stop is pending');
+assert.ok(app.includes("countryHeld ? { label: 'Draft paused: a listed rule applies', tone: 'danger' }"), 'step status stays "No draft" while a Stop is pending');
 assert.ok(app.includes('setCountryStale(!result && stale);'), 'stale only while no new result exists');
 assert.ok(panel.includes('onResult?.(null, { stale: stopPendingRef.current })'), 'a field edit reports a pending Stop');
 assert.ok(panel.includes('stopPendingRef.current = Boolean(payload.blocked);'), 'each new result resets the pending Stop');
-assert.ok(app.includes("'Draft held: the last country check found a listed rule for this sale. Check again after your change.'"), 'stale Stop explains itself');
+assert.ok(app.includes("'Draft paused: the last country check found a listed rule for this sale. Check again after your change.'"), 'stale Stop explains itself');
 // A2: a new result clears a country 409 banner.
 assert.ok(app.includes("const COUNTRY_ERROR_CODES = ['country_rules_blocked', 'country_check_changed', 'country_amount_changed'];"), 'country error codes listed');
 assert.ok(app.includes('if (result) setError((current) => (COUNTRY_ERROR_CODES.includes(current?.code) ? null : current));'), 'new result clears the country error');
@@ -26,7 +26,7 @@ assert.ok(app.includes('if (result) setError((current) => (COUNTRY_ERROR_CODES.i
 assert.ok(app.includes('setCountryCheck(null); setCountryStale(false); setCountryResetCount((count) => count + 1);'), 'reset clears the country check');
 assert.ok(app.includes('<CountryRules key={`country-${sessionRef.current?.session_id || \'no-session\'}-${countryResetCount}`}'), 'reset remounts the country form');
 // Wording (A5, A8, A9) and severity labels.
-assert.ok(panel.includes("const SEVERITY_TEXT = { BLOCK: 'Stopped', WARN: 'Check first', INFO: 'Note' };"), 'severity words');
+assert.ok(panel.includes("const SEVERITY_TEXT = { BLOCK: 'Rule match', WARN: 'Check first', INFO: 'Note' };"), 'severity words');
 assert.ok(panel.includes('A listed rule may apply to this sale.'), 'verdict is a likelihood, not an order');
 // r20 UX-5: the act and article are on screen, not only in the link tooltip.
 assert.ok(panel.includes('{statute && <small className="country-statute" data-testid={`country-statute-${row.code}`}>{statute}</small>}'), 'statute shown inline');

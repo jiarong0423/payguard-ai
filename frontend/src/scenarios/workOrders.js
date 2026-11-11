@@ -1,4 +1,4 @@
-// Scenario work orders (/scenarios.html): the page version of tools/sandbox_scenarios.py, built from the r8 video
+// Scenario runs (/scenarios.html): the page version of tools/sandbox_scenarios.py, built from the r8 video
 // script scenes. Each work order is a fixed list of steps run against TradeGlot's own local API with the console's
 // session and CSRF headers (api.js). Every step writes one receipt row with closed fields only (http status, error
 // code, blocked flag, counts, closed ids); no free text from a reply, no token and no key is ever recorded.
@@ -37,7 +37,7 @@ export const WORK_ORDERS = Object.freeze([
       { n: 1, kind: 'auto', label: 'Create a demo session', expect: '201 · synthetic session' },
       { n: 2, kind: 'auto', label: `AUP review "${AUP_DESCRIPTION}"`, expect: '200 · no review signal' },
       { n: 3, kind: 'auto', label: 'Country check US → SG, goods: e-cigarettes', expect: '200 · a rule applies' },
-      { n: 4, kind: 'auto', label: 'Invoice review for the same item', expect: '409 · draft held by the country check' },
+      { n: 4, kind: 'auto', label: 'Invoice review for the same item', expect: '409 · draft paused by the country check' },
     ],
   },
   {

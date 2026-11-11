@@ -183,7 +183,7 @@ DISPUTE_PAIRING_MESSAGES = {
     "evidence_type_not_supported": "PayPal asks for an evidence type TradeGlot cannot send yet (only proof of fulfillment with tracking is supported). Respond to this dispute in PayPal directly. Nothing was sent.",
     # (r25 send guard) The fresh read's disputed_transactions[].seller.merchant_id must be the connected account.
     "dispute_not_this_account": "This dispute belongs to a different PayPal account than the connected Sandbox account. Nothing was sent.",
-    "account_identity_unknown": "TradeGlot cannot confirm which PayPal Sandbox account is connected (set PAYGUARD_PAYPAL_SANDBOX_MERCHANT_ID), so it will not send. Nothing was sent.",
+    "account_identity_unknown": "TradeGlot cannot confirm which PayPal Sandbox account is connected (the operator needs to set the connected Sandbox account), so it will not send. Nothing was sent.",
     "dispute_evidence_incomplete": "PayPal asks for evidence this draft does not cover. Add the missing evidence and review the case again. Nothing was sent.",
     "evidence_not_ready": "This case has no evidence PayPal would accept yet (proof of fulfillment needs a tracking number). Nothing was sent.",
     "evidence_file_rejected": "An attachment is not accepted by PayPal: use JPG, GIF, PNG or PDF files under 10 MB each and 50 MB in total.",
@@ -206,7 +206,7 @@ STUDIO_MESSAGES = {
     "studio_agent_limit": "The agent call limit for this session was reached.",
     "studio_agent_unavailable": "The model is paused after repeated failures; try again later.",
     "studio_agent_timeout": "The model did not answer in time.",
-    "studio_agent_reply_refused": "The model answered, but the reply failed the console's checks and was not shown.",
+    "studio_agent_reply_refused": "The model answered, but the reply did not pass the console's checks, so it was not shown.",
 }
 
 
