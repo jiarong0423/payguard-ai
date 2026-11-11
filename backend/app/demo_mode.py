@@ -166,6 +166,14 @@ def _replace_everywhere(value, old: str, new: str):
     return value
 
 
+def mask_transaction_id(value):
+    """Hosted code of a PayPal transaction number: XXXX plus its last four characters (same shape as the dispute code).
+    A value of four characters or fewer is fully masked; a non-string is returned unchanged for the schema to refuse."""
+    if type(value) is not str:
+        return value
+    return "XXXX" + value[-4:] if len(value) > 4 else "XXXX"
+
+
 class HostedDemoPaypalStub:
     """Stands in for PaypalAdapter. No transport, no config loader, no credentials.
 
@@ -386,6 +394,13 @@ class HostedReadOnlyPaypalAdapter:
         detail = await self._inner.get_dispute(real)
         masked = _replace_everywhere(detail, real, self._code_for(real))
         masked["dispute_id"] = self._code_for(real)
+        # (judge rerun 2026-11-12, P1) The PayPal transaction number is masked like the dispute number. The hosted demo
+        # never sends tracking (add_tracking refuses), so no hosted path needs the real transaction number.
+        rows = masked.get("disputed_transactions")
+        if type(rows) is list:
+            masked["disputed_transactions"] = [
+                dict(row, seller_transaction_id=mask_transaction_id(row.get("seller_transaction_id")))
+                if type(row) is dict and "seller_transaction_id" in row else row for row in rows]
         return masked
 
     async def create_invoice_draft(self, _payload: dict, _request_id: str) -> dict:

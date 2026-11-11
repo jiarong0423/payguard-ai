@@ -1,12 +1,14 @@
-// TradeGlot theme for AG Studio: the console's indigo accent and depth layers (docs/design/VISUAL_SPEC_r7.md D2,
-// section 6: L0 canvas #eef1f6, white L1 cards), neutrals from the grey scale AG's own site uses, and a muted
-// four-hue chart palette (one indigo highlight, teal, grey, sky), applied to the shell, grids and charts.
+// TradeGlot theme for AG Studio. (P1 2026-11-12) Colours come from the design tokens (theme/tokens.js, "Editorial
+// Newsprint"): ink does the interactive jobs, newsprint surfaces and rules, the four greys as the chart palette.
+// The indigo hex values that were written here (VISUAL_SPEC_r7 D2) are gone.
 import { studioTheme } from 'ag-studio';
+import { categorical, color } from '../theme/tokens.js';
 
 export const PAYGUARD_ACCENT = Object.freeze({
-  ink: '#0f172a', text: '#0f172a', muted: '#475569', subtle: '#5b6678', accent: '#4f46e5', accentDark: '#4338ca',
-  canvas: '#eceae5', panel: '#ffffff', border: '#dcd7cf', grid: '#f4f2ee', tint: '#ecebf3',
-  series: ['#4f46e5', '#0f766e', '#7c8799', '#0369a1'],
+  ink: color.ink, text: color.ink, muted: color.muted, subtle: color.subtle, accent: color.accent, accentDark: color.accentStrong,
+  canvas: color.canvas, panel: color.panel, border: color.ruleSoft, grid: color.recede, tint: color.hover,
+  selected: color.accentSelected,
+  series: [...categorical],
 });
 
 const C = PAYGUARD_ACCENT;
@@ -44,10 +46,10 @@ export const payguardTheme = studioTheme.withParams({
   studioWidgetTitleTextColor: C.ink,
   studioWidgetSubtitleFontSize: 14,
   studioWidgetSubtitleTextColor: C.subtle,
-  // Selected toggle: indigo tint with dark indigo text (solid accent on accent text hid the label).
-  studioToggleButtonActiveBackgroundColor: '#e0e7ff',
+  // Selected toggle: surface fill, ink rule and ink text (solid accent on accent text hid the label).
+  studioToggleButtonActiveBackgroundColor: C.selected,
   studioToggleButtonActiveBorderColor: C.accent,
-  studioToggleButtonActiveColor: '#3730a3',
+  studioToggleButtonActiveColor: C.ink,
   studioWidgetNoDataOverlayBackgroundColor: C.grid,
   gridHeaderBackgroundColor: C.grid,
   gridHeaderTextColor: C.muted,

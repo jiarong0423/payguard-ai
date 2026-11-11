@@ -1,5 +1,8 @@
 // The shipped report: two pages on Studio's 24-column canvas. Pure data, so a node test can check
 // that every field it maps exists in the data sources and that nothing overlaps.
+// (P1 2026-11-12) Colours from the design tokens; no hex values written here.
+import { color } from '../theme/tokens.js';
+
 export const DEADLINE_WIDGET = 'payguard-deadline';
 export const CHECKLIST_WIDGET = 'payguard-checklist';
 
@@ -14,7 +17,7 @@ const value = (id, aggregation, heading, subtitle, emphasis = false) => ({
   type: 'value',
   dataMapping: { value: [field(id, aggregation)] },
   format: { ...title(heading, subtitle), style: { verticalAlign: 'top', textAlign: 'left',
-    typography: { fontSize: emphasis ? 40 : 28, fontWeight: 'bold' }, color: emphasis ? '#875f30' : '#0f172a' } },
+    typography: { fontSize: emphasis ? 40 : 28, fontWeight: 'bold' }, color: emphasis ? color.watch : color.ink } },
 });
 const grid = (cols, heading, subtitle) => ({ type: 'grid', dataMapping: { cols: cols.map((id) => field(id)) }, format: { ...title(heading, subtitle), crossFilter: 'filter' } });
 const columns = (type, category, measure, aggregation, heading, subtitle) => ({
@@ -49,8 +52,8 @@ const readiness = {
     'kpi-proofs': value('requirements.proof_count', 'sum', 'Proofs on file', 'Records'),
     'case-filter': { type: 'button-filter', dataMapping: { value: [field('cases.case_ref')] }, format: { ...title('Filter by case'),
       style: { dimensions: { height: 44, minWidth: 112 },
-        defaultItem: { typography: { fontSize: 14 }, color: '#0f172a', backgroundColor: '#ffffff', borderEnabled: true, borderWidth: 1, borderColor: '#e3e7ee', borderRadius: 8 },
-        activeItem: { color: '#3730a3', backgroundColor: '#e0e7ff', borderColor: '#4f46e5' } } } },
+        defaultItem: { typography: { fontSize: 14 }, color: color.ink, backgroundColor: color.panel, borderEnabled: true, borderWidth: 1, borderColor: color.controlLine, borderRadius: 8 },
+        activeItem: { color: color.ink, backgroundColor: color.accentSelected, borderColor: color.ink } } } },
     checklist: {
       type: CHECKLIST_WIDGET,
       dataMapping: { fields: [field('requirements.case_ref'), field('requirements.evidence_type'), field('requirements.state'),

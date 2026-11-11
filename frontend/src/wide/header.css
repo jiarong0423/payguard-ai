@@ -1,9 +1,40 @@
 /* Wide-screen layout rules for header (viewport 1280px and wider only). Owned by one agent; add rules inside the media query below. */
+/* (P1 2026-11-12: moved here from index.css, which loads first; this file loads after the first paint, so these
+   rules leave the first-load budget. Values unchanged except the content width.) Wide screens (recording and judging on a large monitor): use the width instead of leaving 200 px gutters, and let a
+   result card be as tall as its content instead of stretching to the height of the input card beside it. */
+@media (min-width: 1280px) {
+  .main-content { width: min(100%, var(--pg-layout-content)); }
+  .aup-result { align-self: start; }
+  /* Title row and the "Start here" links share one line instead of two stacked rows. */
+  .page-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+  .page-top .hero { margin-bottom: 0; }
+  .page-top .start-here { margin-bottom: 0; flex-shrink: 0; padding-bottom: 4px; }
+  .page-top { margin-bottom: 12px; }
+  /* Step 01: the policy check on the left, the country check on the right; everything else stays full width. */
+  #compliance .stage-content { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+  #compliance .stage-content > * { grid-column: 1 / -1; }
+  #compliance .stage-content > .compliance-layout { grid-column: 1; grid-row: 1; grid-template-columns: minmax(0, 1fr); }
+  #compliance .stage-content > .stage-block { grid-column: 2; grid-row: 1; }
+  /* Tighter title, shorter text box and slimmer metric cards so more of each step fits in the first screen. */
+  .page-top h1 { font-size: 28px; }
+  .page-top .eyebrow { margin-bottom: 4px; }
+  .journey { margin-bottom: 12px; }
+  .invoice-editor textarea { min-height: 76px; }
+  .metrics-grid { padding: 12px 16px; }
+  .metric { padding: 12px 16px; }
+  /* Step 03: a slimmer case queue (each case is a short row, not a tall card) and a thinner "Next" bar. */
+  .dispute-layout { grid-template-columns: minmax(220px, 250px) minmax(0, 1fr); }
+  .case-list { padding: 8px; }
+  .case-card { padding: 8px 12px; margin-bottom: 6px; }
+  .case-card > div { gap: 2px 8px; }
+  .case-card > span { margin: 4px 0 2px; }
+  .stage-next { margin: 8px 16px 12px; padding: 8px 16px; }
+}
+
 @media (min-width: 1280px) {
   /* Slim top bar. */
-  .topbar { min-height: 44px; height: 44px; }
+  .topbar { min-height: 64px; height: 64px; } /* P1: masthead keeps its 64px height (external review 2.2) */
   .brand { min-height: 36px; gap: 10px; }
-  .brand-mark { width: 28px; height: 28px; }
   .brand small { margin-top: 0; line-height: 1.1; }
   .topbar nav a { min-height: 36px; }
   .topbar .button, .topbar button { min-height: 32px; padding-top: 4px; padding-bottom: 4px; }
@@ -25,7 +56,6 @@
   .journey { margin-bottom: 8px; border-radius: var(--pg-radius-control); }
   .journey-step { min-height: 40px; padding: 6px 12px; gap: 10px; }
   .journey-step > div { gap: 0; }
-  .journey-icon { width: 28px; height: 28px; }
   .journey-step strong { font-size: 15px; line-height: 1.2; }
   .journey-step .journey-status { line-height: 1.2; }
   .journey-where { margin: 0 2px 8px; }

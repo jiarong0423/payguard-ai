@@ -270,6 +270,32 @@ class MaskedDisputeIds(HostedReadOnlyBase):
         self.assertEqual(detail["dispute_id"], code)
         self.assertIn(code, detail["nested"]["deep"])
 
+    def test_transaction_number_is_masked_in_the_hosted_detail(self):
+        # (judge rerun 2026-11-12, P1) The hosted detail showed seller_transaction_id unmasked.
+        real_txn = "94885341FR605210X"
+
+        class Inner:
+            def status(self):
+                return {"status": "connected"}
+
+            async def get_dispute(self, dispute_id):
+                return {"dispute_id": dispute_id, "paypal_debug_id": "abc",
+                        "disputed_transactions": [{"seller_transaction_id": real_txn, "transaction_status": "HELD"}]}
+
+            async def list_disputes(self, page_size=10):
+                return [{"dispute_id": REAL_IDS[0]}]
+        wrapper = HostedReadOnlyPaypalAdapter(Inner())
+
+        async def run():
+            code = (await wrapper.list_disputes())[0]["dispute_id"]
+            return await wrapper.get_dispute(code)
+        detail = asyncio.run(run())
+        self.assertNotIn(real_txn, repr(detail))
+        self.assertEqual(detail["disputed_transactions"][0]["seller_transaction_id"], "XXXX210X")
+        self.assertEqual(detail["disputed_transactions"][0]["transaction_status"], "HELD")
+        self.assertEqual(demo_mode.mask_transaction_id("ABC"), "XXXX")
+        self.assertIsNone(demo_mode.mask_transaction_id(None))
+
     def test_local_mode_does_not_mask(self):
         recorder = RealIdRecorder()
         with env():

@@ -4,50 +4,61 @@
 // mirrors that block for JS consumers (charts, grids, Studio) and the parity test checks it.
 
 export const color = Object.freeze({
-  canvas: '#eceae5',          // L0 page canvas: Morandi warm grey (2026-11-03 owner: Morandi accents, indigo stays)
-  panel: '#ffffff',           // L1/L2 card surface
-  recede: '#f4f2ee',          // done / inactive surface (no shadow), Morandi warm
-  rule: '#dcd7cf',
-  ink: '#0f172a',
-  muted: '#475569',
-  subtle: '#5b6678',          // minimum contrast for text (5.8:1 on white)
-  accent: '#4f46e5',
-  accentStrong: '#4338ca',
-  accentTint: '#ecebf3',      // active headers (Morandi plan A: warm the cold indigo tint)
-  accentSelected: '#e2e0f0',  // selected rows
-  context: '#7c8799',         // marks only (3.6:1), never text
-  model: '#0f766e',           // D9: model = teal
-  ok: '#4a6a4e',               // Morandi sage (5.0:1 on white)
-  watch: '#875f30',           // Morandi ochre, reserved for watch / due soon (4.7:1 on white)
-  risk: '#93454a',             // Morandi dusty rose, held (5.5:1 on white)
-  info: '#4f46e5',
-  band: '#0b1b33',            // navy KPI band, top of its shade
-  bandShade: '#13284a',       // bottom of the band shade
-  bandText: '#e6edf7',
-  bandMuted: '#9fb0c8',
-  bandAmber: '#fbbf24',
-  bandGreen: '#4ade80',
-  focus: '#4f46e5',
+  // 2026-11-12 P0 round 3: "Editorial Newsprint", red option 2 (owner decision). Names kept; values changed.
+  // Ink does every interactive job; red means risk and nothing else (always with an icon). Round 5 removed the
+  // decorative headline red (`masthead` token) so the rule has no exception.
+  canvas: '#f1ede3',          // L0 newsprint
+  panel: '#f8f5ee',           // inputs and raised paper
+  recede: '#e8e2d5',          // surface, a shade darker than the page
+  rule: '#111111',            // thin black rules (cards, sections, masthead)
+  ruleSoft: '#cfc8b8',        // row separators inside tables and lists
+  controlLine: '#8a857a',     // newsprint grey: control edges and marks (3.1:1 on canvas, WCAG 1.4.11)
+  ink: '#111111',
+  muted: '#5a554c',           // secondary text (6.3:1 on canvas, 5.7:1 on surface)
+  subtle: '#5a554c',
+  accent: '#111111',          // interactive = ink: buttons, links, counts, selected bar, current nav, focus
+  accentStrong: '#000000',
+  accentTint: '#e8e2d5',
+  accentSelected: '#e8e2d5',  // selected rows: surface fill + 3px ink bar
+  context: '#8a857a',         // marks only (3.1:1), never text
+  model: '#5a554c',
+  ok: '#2f6b3a',              // holds / sent (5.5:1 on canvas)
+  watch: '#7a5000',           // check first / due soon (6.0:1 on canvas)
+  warn: '#7a5000',
+  risk: '#c8102e',            // risk ONLY (rule match, missed / <= 1 day deadline), always with an icon (5.0:1 on canvas)
+  info: '#5a554c',
+  band: '#111111',
+  bandShade: '#1c1b19',
+  bandText: '#f1ede3',
+  bandMuted: '#bdb6a6',
+  bandAmber: '#e8b04a',
+  bandGreen: '#8fc79a',
+  focus: '#111111',           // 2px ink ring, :focus-visible only
+  onAccent: '#f8f5ee',        // text on ink fills
+  chip: '#ddd6c6',            // neutral count badge
+  hover: '#ebe6da',           // row / item hover
+  disabledLine: '#cfc8b8',
+  disabledText: '#9a958a',
 });
 
-// Status chips: text colour plus an 8% tint of the same colour as the background.
-export const statusTint = Object.freeze({ ok: '#e8eee6', watch: '#f3eadd', risk: '#f4e5e4', info: 'rgba(79,70,229,.08)' });
+// Status chips: text colour on a light tint of the same hue (all >= 4.5:1).
+export const statusTint = Object.freeze({ ok: '#dfe8da', watch: '#efe2c4', risk: '#f6dfe0', info: '#e8e2d5', accent: '#e8e2d5' });
 
-// D9 categorical meaning: code/rules = indigo, model = teal, then two spare hues.
-export const categorical = Object.freeze(['#4f46e5', '#0f766e', '#a21caf', '#0369a1']);
-export const sequential = Object.freeze(['#e0e7ff', '#a5b4fc', '#6366f1', '#4338ca', '#312e81']);
+// Categorical / sequential: ink and greys only (red is reserved for risk).
+export const categorical = Object.freeze(['#111111', '#5a554c', '#8a857a', '#bdb6a6']);
+export const sequential = Object.freeze(['#e8e2d5', '#cfc8b8', '#8a857a', '#5a554c', '#111111']);
 
-export const space = Object.freeze({ 1: 4, 2: 8, 3: 12, 4: 16, 5: 24, 6: 32, 7: 48, 8: 64 }); // px
+export const space = Object.freeze({ 1: 4, 2: 8, 3: 12, 4: 16, 5: 24, 6: 32, 7: 48, 8: 64 }); // px, 8 steps
 
-export const radius = Object.freeze({ chip: 6, control: 8, card: 12, pill: 999 }); // px
+export const radius = Object.freeze({ chip: 0, control: 0, card: 0, pill: 999 }); // px: square print, round only for status pills
 
-// r7.3 elevation levels. L0 is the canvas itself; done/inactive elements recede to `recede` with no shadow.
+// Flat print: black rules instead of shadows; only floating layers (tooltip, popover, menu) cast a shadow.
 export const elevation = Object.freeze({
   l0: 'none',
-  l1: '0 0 0 1px #dcd7cf, 0 1px 2px rgba(15,23,42,.06)',
-  l2: '0 0 0 1px rgba(79,70,229,.35), 0 8px 24px rgba(15,23,42,.10), 0 2px 6px rgba(15,23,42,.06)',
-  l3: '0 12px 32px rgba(15,23,42,.16)',
-  activeBar: '4px',           // left accent bar on the L2 element
+  l1: '0 0 0 1px #111111',
+  l2: '0 0 0 2px #111111',   // active card: double-weight ink rule
+  l3: '0 8px 24px rgba(17,17,17,.12), 0 1px 2px rgba(17,17,17,.08)',
+  activeBar: '3px',           // left bar on the active card / selected row
 });
 
 export const motion = Object.freeze({
@@ -57,7 +68,8 @@ export const motion = Object.freeze({
 });
 
 export const font = Object.freeze({
-  sans: "'Inter Variable', Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif",
+  sans: "'Public Sans', 'Inter Variable', Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif", // text and UI; Public Sans self-hosted (OFL-1.1), Inter fallback
+  serif: "'Newsreader', 'Iowan Old Style', Georgia, serif", // headings and quotes; self-hosted (OFL-1.1); pairing D chosen 2026-11-12
   mono: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
   numeric: '"tnum" 1',        // font-feature-settings for every number
 });
@@ -68,9 +80,12 @@ export const type = Object.freeze({
   chartTitle: 16, chartAxis: 14, gridCell: 16,
 });
 
+// 7-step type scale for the restyle (px); 12 only for uppercase tracked labels (eyebrow, stamp). The --type-* block in index.css stays as is (pinned by frontend_type_scale.mjs).
+export const scale = Object.freeze({ 1: 12, 2: 14, 3: 16, 4: 20, 5: 28, 6: 40, 7: 56 });
+
 export const layout = Object.freeze({
   maxWidth: 1200, topBar: 56, band: 56, actionBar: 56, gridRow: 40, gridRowPhone: 44, sectionGap: 48, sectionGapPhone: 32,
-  cardPad: 20, cardPadWide: 24, heroPad: 32, cardGap: 24, phone: 640,
+  cardPad: 20, cardPadWide: 24, heroPad: 32, cardGap: 24, phone: 640, content: 1040, focusRing: 2, ruleHeavy: 3,
 });
 
 const kebab = (name) => String(name).replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
@@ -87,6 +102,7 @@ export function cssVariables() {
   for (const [k, v] of Object.entries(elevation)) vars[`--pg-elev-${kebab(k)}`] = v;
   for (const [k, v] of Object.entries(motion)) vars[`--pg-motion-${kebab(k)}`] = typeof v === 'number' ? `${v}ms` : v;
   for (const [k, v] of Object.entries(font)) vars[`--pg-font-${kebab(k)}`] = v;
+  for (const [k, v] of Object.entries(scale)) vars[`--pg-text-${k}`] = `${v}px`;
   for (const [k, v] of Object.entries(layout)) vars[`--pg-layout-${kebab(k)}`] = `${v}px`;
   return vars;
 }

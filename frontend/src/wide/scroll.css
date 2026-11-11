@@ -10,11 +10,12 @@
 }
 
 /* (2026-11-10, owner: "containers look deformed") One centred content width on wide screens: the top bar's inner row, the
-   title row, the step tabs, the step panels and the footer all start and end on the same two lines (max 1560px: compact, the page is not stretched across a wide screen). */
+   title row, the step tabs, the step panels and the footer all start and end on the same two lines (max 1040px since P1: compact, the page is not stretched across a wide screen). */
 @media (min-width: 1280px) {
-  :root { --pg-content-w: 1560px; }
+  :root { --pg-content-w: var(--pg-layout-content); } /* P1: 1040px content width */
   .topbar { padding-left: max(24px, calc((100vw - var(--pg-content-w)) / 2)); padding-right: max(24px, calc((100vw - var(--pg-content-w)) / 2)); }
   .main-content { width: min(calc(100% - 48px), var(--pg-content-w)); padding-left: 0; padding-right: 0; }
+  .console-pages .tg-nav__inner { width: min(calc(100% - 48px), var(--pg-content-w)); padding: 0; }
   /* Step 03: the case queue takes about a fifth of the panel instead of a fixed 260px strip. */
   #disputes .dispute-layout { grid-template-columns: minmax(260px, 22%) minmax(0, 1fr); }
 }

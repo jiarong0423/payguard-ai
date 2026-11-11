@@ -85,7 +85,8 @@ const grab = (name) => { const match = section.match(new RegExp(`(?:const ${name
 // ---- #6: Case amount beside the dispute amount in the send dialog. ----
 {
   const dialog = app.slice(app.indexOf('function SendConfirmDialog('), app.indexOf('function LockReason'));
-  const caseRow = dialog.indexOf('<dt>Case amount</dt><dd data-testid="send-confirm-case-amount">{caseAmount ? `${caseAmount.value} ${caseAmount.currency_code}` : \'—\'}</dd>');
+  // (P1 2026-11-12) Money reads "USD 48.00" (moneyLabel); was `${value} ${currency_code}`.
+  const caseRow = dialog.indexOf('<dt>Case amount</dt><dd data-testid="send-confirm-case-amount">{caseAmount ? moneyLabel(caseAmount.value, caseAmount.currency_code) : \'—\'}</dd>');
   assert.ok(caseRow > 0 && caseRow < dialog.indexOf('<dt>Dispute amount</dt>'), 'case amount, then dispute amount');
   assert.ok(app.includes('caseAmount={caseItem?.dispute_amount}'), 'the selected case supplies it');
 }

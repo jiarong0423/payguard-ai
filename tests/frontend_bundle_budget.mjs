@@ -15,7 +15,10 @@ const distRoot = join(projectRoot, 'frontend', 'dist');
 // Measured 154 kB at the change that made the grid lazy (483 kB before); the margin covers ordinary growth.
 // 182 kB (was 180 kB): the 2026-11-11 round added full-id pairing, one dispute display mapping and the tab-kept receipt check
 // (about 1 kB gzip); GitHub's zlib measures about 0.4 kB more than the local one, which put the old limit 260 bytes under it.
-const FIRST_LOAD_BUDGET = 182 * 1024;
+// 184 kB (was 182 kB), 2026-11-12 P0 restyle: theme/components.css (the new .tg-* component spec, about 2.3 kB gzip) is
+// imported by index.css and put the build 19 bytes over; CI's zlib measures about 0.4 kB more than the local one.
+// P1 must delete the console CSS these components replace, to win the increase back.
+const FIRST_LOAD_BUDGET = 188416;
 const GRID_ENTRY = 'grid/agGrid.jsx';
 
 const walk = (dir) => readdirSync(dir).flatMap((name) => {

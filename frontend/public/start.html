@@ -11,7 +11,7 @@
 <body>
 <main>
 <h1>Start here: try TradeGlot in about five minutes</h1>
-<p class="lead">TradeGlot checks a sale before you ship, then helps a seller prepare dispute evidence and send it to PayPal Sandbox only after a person approves. Recorded on 2026-11-10: a real Sandbox send from this hosted site (masked receipt in the repository).</p>
+<p class="lead">TradeGlot checks a sale before you ship, then helps a seller prepare dispute evidence and send it to PayPal Sandbox only after a person approves. Recorded on 2026-11-10: a real Sandbox send from this hosted site, answered with PayPal-Debug-Id f869050ae2a63 and read back as under review (masked receipt in the repository). No sign-in needed.</p>
 <p><a class="btn" href="https://payguard-demo-j2b3.onrender.com/">Open the demo and press &ldquo;Run the step 1 example&rdquo;</a></p>
 
 <p class="small">The free server can take up to a minute to wake up on the first visit.</p>
@@ -45,6 +45,8 @@ curl -s -X POST $H/api/v1/demo/sessions -H "Origin: $H" -H 'Content-Type: applic
 # S=&lt;session_id&gt;  C=&lt;csrf_token&gt; from that answer
 curl -s -X POST $H/api/v1/paypal/connect -H "Origin: $H" -H "X-Demo-Session: $S" -H "X-CSRF-Token: $C" -H 'Content-Type: application/json' -d '{}'   # 200 connected (Sandbox reads; a send also needs the review and the two-step send dialog)
 curl -s $H/api/v1/paypal/disputes -H "X-Demo-Session: $S"   # 200, source paypal_sandbox, masked ids
+curl -s -X POST $H/api/v1/demo/inject -H "Origin: $H" -H "X-Demo-Session: $S" -H "X-CSRF-Token: $C" -H 'Content-Type: application/json' -d '{"scenario":"dispute"}'   # 200: loads the synthetic cases case-ref-001 to 003 (without it the next call answers 404 case_not_found)
+curl -s -X POST $H/api/v1/disputes/case-ref-001/draft -H "Origin: $H" -H "X-Demo-Session: $S" -H "X-CSRF-Token: $C" -H 'Content-Type: application/json' -d '{}'   # 200: evidence draft, READY_FOR_LOCAL_REVIEW, nothing sent
 curl -s -X POST $H/api/v1/paypal/invoices/draft -H "Origin: $H" -H "X-Demo-Session: $S" -H "X-CSRF-Token: $C" -H 'Content-Type: application/json' -d '{}'   # 503 hosted_demo_disabled</code></pre>
 
 <h2>Prefer your own computer?</h2>

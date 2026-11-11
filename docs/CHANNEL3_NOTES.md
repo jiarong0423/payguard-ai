@@ -145,6 +145,8 @@ How: a Python word filter picked candidate categories, three Claude reviewers wh
 
 What is published: [channel3_category_aup_hints_20261109.csv](evidence/channel3_category_aup_hints_20261109.csv), 191 category paths (1.6% of the 11,861) with the AUP item each one matched or, for 17, the question to ask the seller, plus how many of the five readers agreed. Category names are Channel3's; Channel3 is credited as their source. The author decided to publish this small part on 2026-11-09 before Channel3 had answered the email asking about it (Section 7 of the Publisher Terms, effective November 2, 2026, prohibits caching or redistributing a significant portion of the catalog or Customer Output and does not mention the taxonomy). It will be removed if Channel3 asks. What is not published: the full category tree, the table of the other 11,670 categories and the per-reader votes. No Channel3 data was used to train or fine-tune any model; category names were only sent to models for classification at inference time.
 
+How it is used: as a reviewer reference table, read next to the AUP page; the console's AUP check runs on its own rules.
+
 How to read the CSV: a row is a hint for a person to check, not a ruling. `agreement` shows how many of five readers (three Claude reviewers plus DeepSeek and Qwen) chose the item; "3 of 5 readers (weakest)" rows are the least certain, and "2+ independent sources agree" rows were matched against official lists instead of a vote. Whether a real product falls under the item depends on what it does, so ask the seller when unsure.
 
 Limits: the reviewers read names only, not products; all three of those reviewers are Claude models; and the AUP reference pinned in this repository is older than the page (see the README limits).

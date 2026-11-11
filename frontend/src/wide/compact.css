@@ -2,24 +2,17 @@
    strip, and the two bottom panels. Loaded last. Values only; all text stays. */
 @media (min-width: 1280px) {
   /* Top area: the title and the two buttons share one line; the small tag line is folded away (the title says the same). */
-  .page-top .hero-compact > div:first-child { display: flex; flex-wrap: nowrap; align-items: center; gap: 0 20px; }
+  .page-top .hero-compact > div:first-child { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; }
   .page-top .hero-compact .eyebrow { display: none; }
-  .page-top .hero-compact h1 { order: 1; margin: 0; white-space: nowrap; }
+  .page-top .hero-compact h1 { order: 1; flex: 1 0 100%; margin: 0; }
   .page-top .hero-compact .hero-actions { order: 2; margin: 0; }
   .page-top { align-items: center; margin-bottom: 8px; }
-  /* "Start here" repeats the three-step bar right below it, so on wide screens it is folded away. */
-  .page-top .start-here { display: none; }
   /* The green "Sample sales loaded" strip is one slim line. */
-  /* Messages (the green "Sample sales loaded" strip and the like) float at the bottom right and take no room in the page. */
-  .feedback-region { position: relative; height: 0; min-height: 0; margin: 0; padding: 0; }
-  .feedback-region .message { position: fixed; right: 20px; bottom: 20px; z-index: 70; max-width: min(380px, calc(100vw - 40px)); margin: 0; padding: 6px 14px; border-radius: 12px; font-size: 13px; line-height: 1.35; min-height: 0; box-shadow: 0 6px 20px rgba(15, 23, 42, .16); }
-  .feedback-region .message + .message { bottom: 64px; }
-  /* (external review 2026-11-10) The note is opaque: a tinted (see-through) background let the page text show through it. */
-  .feedback-region .message-success { background: linear-gradient(var(--pg-tint-ok), var(--pg-tint-ok)), var(--pg-color-panel, #fff); }
-  .feedback-region .message-info { background: linear-gradient(var(--pg-color-accent-tint), var(--pg-color-accent-tint)), var(--pg-color-panel, #fff); }
-  /* A success or info note shows for a few seconds and fades away; an error stays until it is dismissed. */
-  .feedback-region .message-success, .feedback-region .message-info { animation: toast-away 4.5s ease forwards; }
-  @keyframes toast-away { 0%, 70% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateY(6px); pointer-events: none; visibility: hidden; } }
+  /* (P1 2026-11-12) Messages sit in the page flow under the step strip, square and slim: a floating note covered the
+     content (external review 2.7). Success and info notes are cleared by their own timers in App.jsx. */
+  .feedback-region .message { margin: 0 0 8px; padding: 6px 14px; border-radius: 0; font-size: 13px; line-height: 1.35; min-height: 0; box-shadow: none; }
+  .feedback-region .message-success { background: var(--pg-tint-ok); }
+  .feedback-region .message-info { background: var(--pg-color-panel); }
   /* Merchant Evidence Buffer and Session activity: one line each, title and note side by side. */
   #analytics .optional-trigger, #activity .optional-trigger { min-height: 40px; padding: 6px 14px; }
   #analytics .optional-trigger span:has(> strong), #activity .optional-trigger span:has(> strong) { display: flex; align-items: baseline; gap: 12px; }
@@ -51,8 +44,8 @@
   .segmented, #disputes .inner-tabs { gap: 2px; padding: 3px; border: 1px solid var(--pg-color-rule); border-radius: 999px; background: var(--pg-color-recede); box-shadow: inset 0 1px 2px rgba(15, 23, 42, .07); }
   .segmented button, #disputes .inner-tab { min-height: 30px; padding: 4px 16px; border: 0; border-radius: 999px; background: transparent; color: var(--pg-color-muted); font-weight: 650; letter-spacing: .1px; transition: background-color .15s ease, color .15s ease, box-shadow .15s ease; }
   .segmented button:hover, #disputes .inner-tab:hover { background: rgba(255, 255, 255, .6); color: var(--pg-color-ink); }
-  .segmented button.is-active, #disputes .inner-tab.is-active { background: var(--pg-color-panel); color: var(--pg-color-accent-strong); box-shadow: 0 1px 3px rgba(15, 23, 42, .18), 0 0 0 1px rgba(79, 70, 229, .14); }
-  #disputes .inner-tabs { top: -52px; left: 500px; }
+  .segmented button.is-active, #disputes .inner-tab.is-active { background: var(--pg-color-panel); color: var(--pg-color-accent-strong); box-shadow: 0 0 0 1px var(--pg-color-ink); }
+  #disputes .inner-tabs { top: -52px; left: 340px; } /* P1: 1040px content width; 500px ran into Reset demo */
   #disputes .inner-tab { margin: 0; }
   #disputes .inner-tab.is-active { margin: 0; border: 0; }
 

@@ -18,7 +18,7 @@ import { fileURLToPath } from 'node:url';
 
 import { createGeminiAdapter, createSessionClient, FORCE_FINISH_AFTER_TURNS, fetchAgentStatus, toStudioResponse, toWireTurn, TURN_PATH } from '../frontend/src/dashboard/studioAgentClient.js';
 import { createRecorder, findRecordedRun, READ_ONLY_TOOLS, RECORDING_SCHEMA, recordingLabel, REPLAYED_TOOLS, replayRun, validateRecording } from '../frontend/src/dashboard/agentRecording.js';
-import { createEvidenceAuditor, DELEGATE_CONFIRM_TEXT, DELEGATE_EXAMPLE, DELEGATE_INSTRUCTIONS_MAX, delegateInstructions, isDelegateConfirmation, NO_SUMMARY, NOT_FINISHED_TEXT, plainSummary, promptStarters, readsAsJudgement, WITHHELD_TEXT } from '../frontend/src/dashboard/auditor.js';
+import { createEvidenceAuditor, DELEGATE_CONFIRM_TEXT, DELEGATE_EXAMPLE, DELEGATE_INSTRUCTIONS_MAX, delegateInstructions, isDelegateConfirmation, NO_SUMMARY, NOT_FINISHED_TEXT, plainSummary, promptStarters, readableTimes, readsAsJudgement, WITHHELD_TEXT } from '../frontend/src/dashboard/auditor.js';
 import { studioData } from '../frontend/src/dashboard/dashboardData.js';
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -223,6 +223,10 @@ for (const [reply, success, shown, ok] of [
 }
 assert.equal(plainSummary('In @table[cases], the reason is "Item not received". Breakdown by @field[cases.case_ref]: - @field[cases.case_ref] `case-ref-001`: @field[cases.reason] = `Item not received`'),
   'In cases, the reason is "Item not received". Breakdown by case_ref · case_ref case-ref-001: reason = Item not received', 'status line shows plain text');
+// (judge rerun 2026-11-12 S1) Recorded replies show readable UTC dates, not raw ISO stamps; invalid dates stay as written.
+assert.equal(plainSummary('@field[cases.due_date]: 2026-11-10T04:04:52.527Z'), 'due_date: Nov 10, 2026, 04:04 UTC', 'ISO stamp becomes a readable UTC date');
+assert.equal(readableTimes('due 2026-02-30T04:04:52Z'), 'due 2026-02-30T04:04:52Z', 'an impossible date is left as written');
+assert.ok(!/\d{4}-\d{2}-\d{2}T/u.test(plainSummary(json('frontend/src/data/studio_agent_run_v1.json').runs.map((run) => run.reply).join(' '))), 'no recorded reply shows a raw ISO stamp');
 for (const text of ['in the seller\'s favour', 'the merchant is at fault', 'a strong case', 'the buyer won']) assert.ok(readsAsJudgement(text), text);
 for (const text of ['Item not received appears 3 times.', 'Two cases have no delivery attachment.', 'refund record missing']) assert.equal(readsAsJudgement(text), false, text);
 assert.equal(liveRun.events.at(-1).result.intent, 'delegated');

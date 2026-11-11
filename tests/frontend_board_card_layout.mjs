@@ -79,7 +79,8 @@ assert.match(css, /\.board-grid-case strong, \.board-grid-case small \{[^}]*text
 
 // 6. Wide screens: one content width for the top bar and the page; summaries have no caret-like chevron bar.
 const scroll = readFileSync(join(root, 'frontend/src/wide/scroll.css'), 'utf8');
-assert.match(scroll, /--pg-content-w: 1560px;/u);
+// (P1 2026-11-12) The content width is the design token --pg-layout-content (1040px), no longer a written 1560px.
+assert.match(scroll, /--pg-content-w: var\(--pg-layout-content\);/u);
 assert.match(scroll, /\.topbar \{ padding-left: max\(24px, calc\(\(100vw - var\(--pg-content-w\)\) \/ 2\)\);/u);
 assert.match(scroll, /\.main-content \{ width: min\(calc\(100% - 48px\), var\(--pg-content-w\)\);/u);
 const index = readFileSync(join(root, 'frontend/src/index.css'), 'utf8');

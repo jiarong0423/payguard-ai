@@ -1,6 +1,7 @@
+@import "./theme/components.css";
 @import "tailwindcss";
 
-@theme { --font-sans: "Inter Variable", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+@theme { --font-sans: "Public Sans", "Inter Variable", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
 
 /* Single consolidated stylesheet driven by --pg-* tokens (theme/tokens.css). */
 :root {
@@ -14,10 +15,6 @@
   --type-meta: 14px;
   --type-kpi: 40px;
   --type-kpi-band: 28px;
-  --pg-selected-glass: rgba(255, 255, 255, .72);
-  --pg-selected-edge: 0 1px 0 #c7d2fe, 0 2px 0 #c7d2fe, 0 3px 0 #a5b4fc, 0 4px 0 #a5b4fc;
-  --pg-selected-lift: 0 10px 24px rgba(79, 70, 229, .18), 0 2px 6px rgba(15, 23, 42, .08);
-  --pg-selected-highlight: inset 0 1px 0 rgba(255, 255, 255, .95), inset 0 0 0 1px rgba(79, 70, 229, .35);
   color: var(--pg-color-ink);
   background: var(--pg-color-canvas);
   font-family: var(--pg-font-sans);
@@ -28,7 +25,7 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 74px; }
+html { scroll-behavior: smooth; scroll-padding-top: 56px; }
 /* (round2 X, C #4) No fixed page minimum: at 268 px the 320 px floor made the whole page scroll sideways (judge C). */
 body { margin: 0; min-width: 0; background: var(--pg-color-canvas); color: var(--pg-color-ink); font-size: var(--type-body); line-height: 1.5; scrollbar-gutter: stable; }
 small { font-size: var(--type-meta); }
@@ -51,30 +48,57 @@ button, input, select, textarea, a, summary { outline-offset: 2px; }
 
 /* Shell and top bar */
 .app-shell { min-height: 100vh; background: var(--pg-color-canvas); }
+/* (P1 2026-11-12) Masthead: the newspaper title on the left, the other pages as small links, the environment on the
+   right; the one heavy rule of the page sits under it (theme/components.css .tg-masthead). */
 .topbar {
-  min-height: 56px; height: 56px;
-  padding: 0 max(24px, calc((100vw - 1200px) / 2));
-  border-bottom: 1px solid var(--pg-color-rule);
-  background: rgba(255, 255, 255, .96);
-  box-shadow: var(--pg-elev-l1);
+  min-height: 64px; height: 64px;
+  padding: 0 max(16px, calc((100vw - var(--pg-layout-content)) / 2));
+  border-bottom: var(--pg-layout-rule-heavy) solid var(--pg-color-ink);
+  background: var(--pg-color-canvas);
   display: flex; align-items: center; justify-content: space-between; gap: 24px;
 }
-.brand { display: inline-flex; align-items: center; min-height: 44px; gap: 12px; color: var(--pg-color-ink); font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }
-.brand-mark { width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-control); background: var(--pg-color-accent-tint); color: var(--pg-color-accent); }
-.brand-ai { color: var(--pg-color-accent); font-weight: 600; }
-.brand small { display: block; margin-top: 2px; color: var(--pg-color-subtle); font-size: var(--type-meta); font-weight: 600; letter-spacing: 0.08em; }
+.brand { display: inline-flex; align-items: center; min-height: 44px; gap: 12px; color: var(--pg-color-ink); font-family: var(--pg-font-serif); font-size: var(--pg-text-5); font-weight: 700; letter-spacing: -.01em; line-height: 1; }
+.brand small { display: block; margin-top: 4px; color: var(--pg-color-muted); font-family: var(--pg-font-sans); font-size: 13px; font-weight: 600; letter-spacing: .12em; }
+.brand-mark { display: none; } /* scenarios page still renders the old shield mark; the masthead has none */
 .topbar nav { display: flex; align-items: center; gap: 24px; color: var(--pg-color-muted); }
-.topbar nav a { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--type-meta); font-weight: 650; }
+.topbar nav a { display: inline-flex; align-items: center; min-height: 44px; font-size: 13px; font-weight: 500; }
+/* Console pages: sticky under the masthead, one thin rule; the current page is ink with a 2px underline. */
+.console-pages { position: sticky; top: 0; z-index: 30; background: var(--pg-color-canvas); }
+.console-pages .tg-nav__inner { gap: 20px; padding: 0 clamp(16px, 2.5vw, 32px); scroll-padding-inline: 12px; }
+@media (max-width: 640px) { .console-pages .tg-nav__inner { gap: 16px; padding: 0 12px; } }
+.console-pages-slot { display: contents; }
+.console-pages-sep { flex: none; align-self: center; width: 1px; height: 20px; background: var(--pg-color-rule-soft); }
+.console-pages-num { margin-right: -2px; color: var(--pg-color-muted); font-weight: 600; }
+/* Underline exactly under the label; the current page thickens with a text shadow, so no label shifts sideways. */
+.console-pages a.tg-nav__item { padding: 0 2px; }
+.console-pages a.tg-nav__item[aria-current="page"] { font-weight: 500; text-shadow: 0 0 .6px currentColor, 0 0 .6px currentColor; }
+/* Masthead "More" menu: the five other pages in one dropdown (links and test ids unchanged). */
+.topbar-more { position: relative; margin-left: auto; }
+.topbar-more > summary { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 12px; border: 1px solid var(--pg-color-control-line); color: var(--pg-color-ink); font-size: 13px; font-weight: 600; cursor: pointer; list-style: none; }
+.topbar .topbar-more > nav { display: none !important; }
+.topbar .topbar-more[open] > nav { position: absolute; top: calc(100% + 6px); right: 0; z-index: 60; display: grid !important; gap: 0; min-width: 220px; padding: 4px 0; border: 1px solid var(--pg-color-ink); background: var(--pg-color-panel); box-shadow: var(--pg-elev-l3); }
+.topbar .topbar-more nav a { display: flex !important; padding: 0 16px; color: var(--pg-color-ink); }
+.topbar .topbar-more nav a:hover { background: var(--pg-color-hover); }
+.topbar .pwa-install-button { border-radius: 0; }
+/* Room under the page tabs: masthead heavy rule + tab rule are the only top rules (external review 2.4). */
+.app-shell .main-content { padding-top: 24px; }
+@media (max-width: 640px) { .app-shell .main-content { padding-top: 16px; } }
+/* Messages stay in the page flow and never cover content (external review 2.7). */
+.main-content > .feedback-region { position: static; width: auto; max-width: none; margin: 0 0 12px; pointer-events: auto; }
+.main-content > .feedback-region .message { border-radius: 0; box-shadow: none; }
+.console-page { margin: 8px 0 32px; }
+.console-page .tg-lede { margin: 12px 0 16px; max-width: 720px; }
+.console-page-links { display: grid; gap: 0; margin: 0 0 16px; padding: 0; list-style: none; }
+.console-page-links a { display: inline-flex; align-items: center; min-height: 44px; }
 .topbar nav a:hover, .topbar nav a[aria-current="page"] { color: var(--pg-color-accent-strong); }
 .environment { display: flex; align-items: center; gap: 16px; }
-.avatar { width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-pill); background: var(--pg-color-recede); color: var(--pg-color-ink); font-size: var(--type-meta); font-weight: 700; }
 
-.main-content { width: min(100%, 1200px); margin: 0 auto; padding: 16px clamp(16px, 2.5vw, 32px) 32px; }
+.main-content { width: min(100%, var(--pg-layout-content)); margin: 0 auto; padding: 16px clamp(16px, 2.5vw, 32px) 32px; }
 
 /* Header and title row */
 .hero { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 12px; }
 .hero-compact p, .hero p { margin: 0; color: var(--pg-color-muted); font-size: var(--type-meta); line-height: 1.5; }
-.eyebrow, .meta-label, .journey-kicker { color: var(--pg-color-accent); font-size: var(--type-meta); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.eyebrow, .meta-label { color: var(--pg-color-accent); font-size: var(--type-meta); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
 .eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
 .text-dim { color: var(--pg-color-subtle); font-size: var(--type-support); line-height: 1.5; }
 .mini-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; color: var(--pg-color-muted); font-size: var(--type-section-title); font-weight: 650; }
@@ -83,15 +107,12 @@ button, input, select, textarea, a, summary { outline-offset: 2px; }
 
 /* Step navigator */
 .journey {
-  position: sticky; top: 0; z-index: 25;
+  position: static; z-index: 25;
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
   margin-bottom: 16px;
-  border: 1px solid var(--pg-color-rule);
-  border-radius: var(--pg-radius-card);
-  background: rgba(255, 255, 255, .78);
-  -webkit-backdrop-filter: blur(14px) saturate(150%);
-  backdrop-filter: blur(14px) saturate(150%);
-  box-shadow: var(--pg-elev-l1);
+  border: 1px solid var(--pg-color-rule-soft);
+  border-radius: 0;
+  background: var(--pg-color-panel);
   overflow: visible;
 }
 .journey-step {
@@ -103,65 +124,33 @@ button, input, select, textarea, a, summary { outline-offset: 2px; }
 .journey-step + .journey-step { border-left: 1px solid var(--pg-color-rule); }
 .journey-step:hover { background: var(--pg-color-recede); }
 .journey-step > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.journey-kicker { line-height: 1.25; }
 .journey-step strong { color: var(--pg-color-ink); font-size: 16px; font-weight: 650; line-height: 1.3; }
 .journey-step small { color: var(--pg-color-muted); font-size: var(--type-meta); }
-.journey-icon {
-  width: 38px; height: 38px; flex-shrink: 0;
-  display: grid; place-items: center;
-  border: 1px solid var(--pg-color-rule);
-  border-radius: var(--pg-radius-control);
-  background: var(--pg-color-accent-tint);
-  color: var(--pg-color-accent);
-}
-.journey-icon-1 { color: var(--pg-color-model); background: var(--pg-tint-ok); }
-.journey-icon-2 { color: var(--pg-color-accent-strong); background: var(--pg-color-accent-tint); }
-.journey-arrow { margin-left: auto; color: var(--pg-color-subtle); flex-shrink: 0; }
+.journey-number { font-family: var(--pg-font-serif); font-weight: 700; }
 .journey-step .journey-status { display: inline-flex; align-items: center; gap: 8px; font-size: var(--type-meta); font-weight: 600; line-height: 1.3; }
 .journey-status::before { content: ""; width: 8px; height: 8px; border-radius: var(--pg-radius-pill); background: currentColor; flex-shrink: 0; }
 .journey-status-green { color: var(--pg-color-ok); }
-.journey-status-amber { color: var(--pg-color-watch); }
-.journey-status-blue { color: var(--pg-color-accent); }
-.journey-status-muted { color: var(--pg-color-subtle); }
+/* (P1) Step strip marks: not started = grey mark, in progress / to act on = ink, done = green, risk = red with an icon. */
+.journey-status-amber, .journey-status-blue { color: var(--pg-color-ink); }
+.journey-status-muted { color: var(--pg-color-muted); }
+.journey-status-muted::before { background: var(--pg-color-context); }
+.journey-status:has(> svg)::before { display: none; }
 .journey-step.is-done { background: var(--pg-color-recede); }
-.journey-step.is-done .journey-icon { background: var(--pg-color-accent-selected); color: var(--pg-color-accent); border-color: transparent; }
 .journey-step.is-done strong { color: var(--pg-color-muted); }
-.journey-step.is-upcoming strong, .journey-step.is-upcoming .journey-kicker { color: var(--pg-color-subtle); }
-.journey-step.is-upcoming .journey-icon { background: transparent; color: var(--pg-color-subtle); border-color: var(--pg-color-rule); }
-.journey-rail {
-  position: absolute; left: 0; bottom: 0; height: 3px;
-  border-radius: 0 0 var(--pg-radius-card) var(--pg-radius-card);
-  width: calc((var(--journey-progress, 0) + 1) * 100% / 3);
-  background: var(--pg-color-accent);
-  transition: width var(--pg-motion-data-max) var(--pg-motion-ease-out);
-}
+.journey-step.is-upcoming strong { color: var(--pg-color-subtle); }
 .journey-where { margin: 4px 2px 12px; color: var(--pg-color-muted); font-size: var(--type-meta); font-weight: 600; }
 
-/* Selected = glass + thickness (owner decision) */
+/* Selected (P1, component spec): surface fill and a 3px ink bar; no glass, no lift. */
 .main-content .journey-step.is-active,
 .main-content #disputes .case-card.case-selected {
   position: relative; z-index: 1;
-  background: var(--pg-selected-glass);
-  -webkit-backdrop-filter: blur(12px) saturate(160%);
-  backdrop-filter: blur(12px) saturate(160%);
-  box-shadow: var(--pg-selected-highlight), var(--pg-selected-edge), var(--pg-selected-lift);
-  transform: translateY(-2px);
-  border-color: transparent;
-  border-radius: var(--pg-radius-card);
+  background: var(--pg-color-accent-selected);
+  box-shadow: inset var(--pg-elev-active-bar) 0 0 var(--pg-color-ink);
+  border-radius: 0;
 }
 .main-content .journey-step.is-active strong { color: var(--pg-color-ink); font-weight: 700; }
-.main-content .journey-step.is-active .journey-icon { background: var(--pg-color-accent); color: #ffffff; border-color: var(--pg-color-accent); }
 .main-content #disputes .case-card.case-selected { margin-bottom: 12px; }
 .main-content .case-card.case-selected strong { color: var(--pg-color-accent-strong); }
-
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .main-content .journey-step.is-active, .main-content .case-card.case-selected, .main-content .journey { background: var(--pg-color-panel); }
-}
-@media (prefers-reduced-transparency: reduce) {
-  .main-content .journey-step.is-active, .main-content .case-card.case-selected, .main-content .journey {
-    background: var(--pg-color-panel); -webkit-backdrop-filter: none; backdrop-filter: none;
-  }
-}
 
 /* Controls, buttons, badges */
 .button {
@@ -259,8 +248,6 @@ textarea:focus, input[type="text"]:focus, input[type="number"]:focus, select:foc
 .aup-result.aup-warning .result-symbol { background: var(--pg-tint-watch); color: var(--pg-color-watch); }
 .aup-result p { margin: 12px 0 8px; color: var(--pg-color-ink); font-size: var(--type-body); line-height: 1.55; }
 .finding-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-.result-details { margin-top: 8px; }
-.result-details > summary { display: flex; align-items: center; gap: 8px; min-height: 44px; color: var(--pg-color-muted); font-size: var(--type-meta); cursor: pointer; }
 .result-footnote { display: block; margin-top: 8px; color: var(--pg-color-muted); font-size: var(--type-meta); line-height: 1.5; }
 .aup-policy-link { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 4px 16px 16px; font-size: var(--type-meta); }
 .aup-policy-link a, .aup-warning-dialog a { color: var(--pg-color-accent-strong); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
@@ -318,8 +305,6 @@ textarea:focus, input[type="text"]:focus, input[type="number"]:focus, select:foc
 .velocity-selected-detail dt { color: var(--pg-color-muted); font-size: var(--type-meta); font-weight: 650; }
 .velocity-selected-detail dd { margin: 4px 0 0; color: var(--pg-color-ink); font-size: var(--type-meta); font-weight: 650; overflow-wrap: anywhere; }
 .velocity-selected-detail p { margin: 12px 0 0; color: var(--pg-color-muted); font-size: var(--type-meta); line-height: 1.5; }
-.panel-foot { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding: 12px 16px; color: var(--pg-color-muted); font-size: var(--type-meta); }
-.panel-foot > span:first-child { display: flex; align-items: center; gap: 8px; }
 .velocity-details { min-width: 220px; }
 .velocity-details > summary { display: flex; align-items: center; gap: 8px; min-height: 44px; color: var(--pg-color-muted); cursor: pointer; }
 .velocity-details > span { display: block; margin-top: 4px; color: var(--pg-color-subtle); }
@@ -363,9 +348,6 @@ textarea:focus, input[type="text"]:focus, input[type="number"]:focus, select:foc
 
 .review-warning { margin: 8px 0 12px; color: var(--pg-color-watch); font-size: var(--type-support); line-height: 1.5; }
 .review-warning-short { margin-bottom: 8px; font-size: var(--type-support); }
-.review-boundary-details { margin-bottom: 12px; color: var(--pg-color-muted); }
-.review-boundary-details > summary { display: flex; align-items: center; min-height: 44px; color: var(--pg-color-muted); font-size: var(--type-meta); cursor: pointer; }
-.review-boundary-details .review-warning { margin: 8px 0 0; padding: 12px 12px; border-left: 3px solid var(--pg-color-watch); border-radius: var(--pg-radius-control); background: var(--pg-tint-watch); }
 
 .human-review { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; padding: 16px 16px; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-card); background: var(--pg-color-accent-tint); }
 .human-review .checkbox-label { max-width: 600px; }
@@ -597,7 +579,7 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 
 @media (max-width: 640px) {
   body { font-size: var(--type-support); }
-  .topbar nav, .brand small, .avatar, .journey-kicker, .journey-step small, .journey-arrow, .journey-icon, .stage-header .stage-trigger-label small { display: none; }
+  .topbar nav, .brand small, .journey-step small, .stage-header .stage-trigger-label small { display: none; }
   .journey-step { min-height: 52px; flex-direction: column; align-items: flex-start; padding: 8px 12px; gap: 4px; }
   .journey-step strong { font-size: var(--type-meta); }
   /* Stage header on a phone: the scenario buttons wrap under the title instead of running past the card edge. */
@@ -648,12 +630,10 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 .hero-compact { margin-bottom: 8px; padding: 0; }
 .hero-compact > div:first-child { display: grid; gap: 2px; }
 .hero-compact .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: var(--type-meta); }
-.hero-compact h1 { font-size: var(--type-display); letter-spacing: -0.3px; }
-.topbar-independent { margin-right: auto; color: var(--pg-color-muted); font-size: var(--type-meta); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.hero-compact h1 { font-family: var(--pg-font-serif); font-size: var(--type-display); letter-spacing: -0.01em; }
 .brand, .topbar nav a { white-space: nowrap; flex-shrink: 0; }
 /* The mode badge may shrink: on a 360px phone a fixed badge widened the page to 404px (phone test 2026-11-03). */
 .environment { white-space: nowrap; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
-@media (max-width: 1180px) { .topbar-independent { display: none; } }
 .footer-independent { color: var(--pg-color-muted); }
 .start-here { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; margin-bottom: 12px; padding: 0; border: 0; background: transparent; }
 .start-here-title { margin: 0; color: var(--pg-color-muted); font-size: var(--type-meta); font-weight: 650; white-space: nowrap; }
@@ -723,8 +703,6 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 .page-top { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 12px; }
 .page-top .hero-compact { margin: 0; }
 .page-top .start-here { justify-content: flex-start; margin: 0; }
-@media (max-width: 1180px) and (min-width: 900px) { .topbar-independent { display: inline; } }
-@media (max-width: 899px) { .topbar-independent { display: none; } }
 .journey-status-danger { color: var(--pg-color-risk); }
 .over-limit { color: var(--pg-color-watch); font-weight: 650; }
 .label-short { display: none; }
@@ -769,12 +747,11 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
   transition: background-color var(--pg-motion-hover) ease;
 }
 :is(.sandbox-details, .step-more, .dispute-details, .scenario-match, .limits-drawer, .reference-panel, .policy-panel) > summary:hover, .optional-trigger:hover { background: var(--pg-color-accent-tint); }
-:is(.country-optional, .technical-details, .ai-brief-details, .guide-replay-details, .result-details, .review-boundary-details, .velocity-details) > summary:hover { color: var(--pg-color-accent-strong); text-decoration: underline; text-underline-offset: 3px; }
+:is(.country-optional, .technical-details, .ai-brief-details, .guide-replay-details, .velocity-details) > summary:hover { color: var(--pg-color-accent-strong); text-decoration: underline; text-underline-offset: 3px; }
 
 /* Header: no sideways scroll between the phone and desktop layouts (about 830px wide). */
 @media (max-width: 960px) {
   .topbar, .topbar nav { gap: var(--pg-space-4); }
-  .avatar { display: none; }
 }
 
 @media (max-width: 640px) {
@@ -829,7 +806,7 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 @media (max-width: 400px) { .topbar .environment { display: none; } }
 
 /* Sandbox connect in the top bar (owner 2026-11-03): visible on every step; local runs only.
-   Two faces in one grid cell: the orange "Connect" face turns edge-on and hides, then the green face turns in.
+   Two faces in one grid cell: the outlined "Connect" face turns edge-on and hides, then the green face turns in.
    Visibility switches at the edge-on midpoint, so no browser has to honour backface-visibility. */
 .topbar .environment .topbar-sandbox { flex-shrink: 0; display: inline-grid; perspective: 600px; }
 .topbar .topbar-sandbox-face { grid-area: 1 / 1; min-height: 36px; }
@@ -837,37 +814,32 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 .topbar .topbar-sandbox-back { transform: rotateY(-90deg); visibility: hidden; transition: transform 280ms ease-out 0s, visibility 0s linear 280ms; }
 .topbar .topbar-sandbox.is-connected .topbar-sandbox-front { transform: rotateY(90deg); visibility: hidden; pointer-events: none; transition: transform 280ms ease-in, visibility 0s linear 280ms; }
 .topbar .topbar-sandbox.is-connected .topbar-sandbox-back { transform: rotateY(0deg); visibility: visible; transition: transform 280ms ease-out 280ms, visibility 0s linear 280ms; }
-/* A clear orange, not the earthy watch tone (owner 2026-11-03: the earthy tone looked bad); it glows in and out while waiting. */
-.topbar .topbar-sandbox-front { background: #e06c1e; border-color: #e06c1e; color: #fff; font-weight: 650; animation: pg-sandbox-glow 1.6s ease-in-out infinite; }
-@keyframes pg-sandbox-glow { 0%, 100% { background: #d4600f; border-color: #d4600f; box-shadow: 0 0 0 0 rgba(240, 130, 50, .85); } 50% { background: #f5893a; border-color: #f5893a; box-shadow: 0 0 6px 6px rgba(245, 137, 58, .35); } }
-.topbar .topbar-sandbox.is-connected .topbar-sandbox-front { animation: none; }
-.topbar .topbar-sandbox-front:hover:not(:disabled) { background: #c95c12; border-color: #c95c12; animation-play-state: paused; }
-/* The glow must not be cut off; a shadow never widens the page, so the local top bar can show it. */
-.topbar .environment:not(.environment-hosted) { overflow: visible; }
+/* (P1 2026-11-12) The Connect face is a secondary button in the component spec (.tg-btn--secondary): ink outline and ink
+   text, no orange and no glow; the signal light stays an ink dot. The connected face stays green (sent / held). */
+.topbar .topbar-sandbox-front { background: transparent; border: 1px solid var(--pg-color-ink); border-radius: var(--pg-radius-control); color: var(--pg-color-ink); font-weight: 600; box-shadow: none; }
+.topbar .topbar-sandbox-front:hover:not(:disabled) { background: var(--pg-color-recede); border-color: var(--pg-color-ink); }
 .topbar .topbar-sandbox-back { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 12px; border-radius: var(--pg-radius-control); background: var(--pg-color-ok); color: #fff; font-size: 14px; font-weight: 650; }
 /* Signal light (owner 2026-11-03: the light must visibly blink): a white dot that clearly blinks on and off on both faces. */
-.topbar-sandbox-breath { width: 10px; height: 10px; flex-shrink: 0; border-radius: var(--pg-radius-pill); background: #fff; box-shadow: 0 0 6px 2px rgba(255, 255, 255, .8); animation: pg-sandbox-breath 1.1s ease-in-out infinite; }
+.topbar-sandbox-breath { width: 8px; height: 8px; flex-shrink: 0; border-radius: var(--pg-radius-pill); background: currentColor; animation: pg-sandbox-breath 1.1s ease-in-out infinite; }
 @keyframes pg-sandbox-breath { 0%, 40% { opacity: 1; } 55%, 85% { opacity: .1; } 100% { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .topbar .topbar-sandbox-face { transition: none; animation: none; } .topbar-sandbox-breath { animation: none; opacity: 1; } }
 .topbar .topbar-sandbox-short { display: none; }
-/* Room for the card: below 1280px the LOCAL DEMO pill gives way (the line under the title says local), below 960px
-   the card uses its short label. */
-@media (max-width: 1280px) { .topbar .environment:not(.environment-hosted) > .badge { display: none; } }
+/* Room for the card: the LOCAL DEMO pill gives way at every width since P1's 1040px masthead (the footer says "Local
+   prototype"); below 960px the card uses its short label. */
+.topbar .environment:not(.environment-hosted) > .badge { display: none; }
 @media (max-width: 960px) { .topbar .topbar-sandbox-full { display: none; } .topbar .topbar-sandbox-short { display: inline; } }
 @media (max-width: 640px) {
-  .topbar .environment > .badge, .topbar .environment .avatar { display: none; }
+  .topbar .environment > .badge { display: none; }
   .topbar .topbar-sandbox-full { display: none; }
   .topbar .topbar-sandbox-short { display: inline; }
 }
 @media (max-width: 400px) {
   .topbar .environment:not(.environment-hosted) { display: flex; }
-  /* 360px phones: the dot plus the short visible label "Sandbox" / "Connected"; an unlabeled orange dot did not say what
+  /* 360px phones: the dot plus the short visible label "Sandbox" / "Connected"; an unlabeled dot did not say what
      it connects (r20 UX-8). Tighter padding and 13px text keep the top bar inside 360px. */
   .topbar { gap: 8px; }
   .topbar .topbar-sandbox-face { min-width: 44px; min-height: 44px; padding: 0 10px; gap: 6px; }
   .topbar .topbar-sandbox-short { display: inline; font-size: 13px; white-space: nowrap; }
-  /* The labelled card needs the room the shield mark took; the hosted top bar drops the mark at this width too. */
-  .topbar:not([data-hosted="true"]) .brand-mark { display: none; }
 }
 
 /* Hosted demo only (GET /connections mode "hosted_demo"). Local runs never carry these classes. */
@@ -895,16 +867,15 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 .hosted-why-status dd { margin: 0; color: var(--pg-color-muted); }
 .hosted-why a { color: var(--pg-color-accent-strong); text-decoration: underline; }
 .hosted-note { margin: 0; color: var(--pg-color-muted); font-size: var(--type-meta); line-height: 1.5; }
-/* Mid widths: the decorative avatar gives its room to the pill so the full text fits beside the nav. */
+/* Mid widths: tighter gaps so the full pill text fits beside the nav. */
 @media (max-width: 1360px) {
   .topbar[data-hosted="true"], .topbar[data-hosted="true"] nav { gap: 12px; }
   .topbar .environment-hosted { gap: 8px; }
-  .topbar .environment-hosted .avatar, .hosted-why-cue { display: none; }
+  .hosted-why-cue { display: none; }
 }
 @media (max-width: 1180px) { .hosted-label-full { display: none; } .hosted-label-short { display: inline; } }
 @media (max-width: 480px) {
   .hosted-why-cue { display: none; }
-  .topbar .environment-hosted .avatar { display: none; }
 }
 /* The narrow-phone rule hides the mode badge; the hosted pill stays (it is the only hosted notice), the install slot
    is hidden as it is for the local badge at this width. */
@@ -913,7 +884,7 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
   .topbar .environment-hosted .pwa-install-slot { display: none; }
   .topbar[data-hosted="true"] { gap: 8px; }
   .topbar[data-hosted="true"] .hosted-badge { padding: 4px 6px; }
-  .topbar[data-hosted="true"] .hosted-badge svg, .topbar[data-hosted="true"] .brand-mark { display: none; }
+  .topbar[data-hosted="true"] .hosted-badge svg { display: none; }
 }
 
 /* ---- r20 review fixes (2026-11-03, phones) ---- */
@@ -947,7 +918,7 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
    returns). The brand tagline goes, the gaps tighten, the Sandbox card takes its short label and the Install app
    button turns into a 44px icon, so the bar always fits; measured in headless Chrome at 660-1600px. */
 @media (min-width: 641px) and (max-width: 1440px) {
-  .topbar { gap: 16px; padding: 0 max(16px, calc((100vw - 1200px) / 2)); }
+  .topbar { gap: 16px; padding: 0 max(16px, calc((100vw - var(--pg-layout-content)) / 2)); }
   .topbar nav { gap: 16px; }
   .topbar .brand small { display: none; }
   .topbar .environment:not(.environment-hosted) { flex-shrink: 0; gap: 12px; }
@@ -1073,11 +1044,11 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 .phone-chart-legend li { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
 .phone-legend-mark { display: inline-block; width: 18px; height: 0; border-top: 2px dashed #94a3b8; }
 .phone-legend-mark.is-spike { width: 10px; height: 12px; border: 0; border-radius: 2px; background: #0f766e; }
-.phone-legend-mark.is-flag { width: 10px; height: 12px; border: 0; border-radius: 2px; background: #b45309; }
+.phone-legend-mark.is-flag { width: 10px; height: 12px; border: 0; border-radius: 2px; background: var(--pg-color-warn); }
 .phone-legend-mark.is-review { border-top-color: #875f30; }
 
 /* (r25 send guard) Case and PayPal dispute side by side, the hold line, and the two-step confirm before a real send.
-   Continue is orange (#c2410c: the topbar's #e06c1e darkened to pass WCAG AA with white text, 5.18:1); Send to PayPal is
+   Continue is orange (#c2410c: the former topbar orange darkened to pass WCAG AA with white text, 5.18:1); Send to PayPal is
    sage green (#4a6a4e, 6.06:1), muted while the 3-second hold counts down. Each pairs its colour with a label and icon. */
 .send-guard { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px 12px; align-items: center; margin: 12px 0; padding: 12px; border: 1px solid #d6dbe4; border-radius: 10px; background: #f8fafc; }
 .send-guard-side { display: grid; gap: 2px; min-width: 0; }
@@ -1166,7 +1137,7 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 
 /* A first-screen entry for the example (the country card sits far down the page, most of all on a phone). It clicks the card's own button. */
 .hero-example-link { display: inline-flex; align-items: center; min-height: 44px; margin: 8px 12px 0 0; padding: 0 16px; border: 1px solid var(--pg-color-accent-strong); border-radius: var(--pg-radius-control); background: transparent; color: var(--pg-color-accent-strong); font: inherit; font-size: var(--type-meta); font-weight: 650; cursor: pointer; }
-.hero-example-link:hover { background: var(--pg-color-accent-soft, rgba(79, 70, 229, 0.08)); }
+.hero-example-link:hover { background: var(--pg-color-hover); }
 /* (UX round 1) The first action on the page is a solid primary button. */
 .hero-example-link[data-testid="hero-try-example"] { background: var(--pg-color-accent-strong); color: #fff; }
 .hero-example-link[data-testid="hero-try-example"]:hover { background: var(--pg-color-accent); }
@@ -1238,7 +1209,7 @@ footer { padding: 8px 0 0; }
   border: 1px solid var(--pg-color-accent-strong); border-radius: var(--pg-radius-control); background: transparent;
   color: var(--pg-color-accent-strong); font-size: var(--type-meta); font-weight: 650; text-decoration: none; box-sizing: border-box;
 }
-.hero-local-link:hover, .footer-download-demo:hover { background: var(--pg-color-accent-soft, rgba(79, 70, 229, 0.08)); }
+.hero-local-link:hover, .footer-download-demo:hover { background: var(--pg-color-hover); }
 .download-icon { flex-shrink: 0; }
 @media (max-width: 640px) {
   .hero-compact > div:first-child > .hero-actions { flex: 1 0 100%; margin-top: 0; }
@@ -1253,37 +1224,6 @@ footer { padding: 8px 0 0; }
 .sponsor-map ul { list-style: none; margin: 0 0 8px; padding: 0; display: grid; gap: 8px; }
 .sponsor-map li { display: grid; gap: 2px; font-size: var(--type-meta); line-height: 1.45; }
 .sponsor-map li a { display: inline-flex; align-items: center; min-height: 44px; color: var(--pg-color-accent-strong); font-weight: 650; width: fit-content; }
-
-/* Wide screens (recording and judging on a large monitor): use the width instead of leaving 200 px gutters, and let a
-   result card be as tall as its content instead of stretching to the height of the input card beside it. */
-@media (min-width: 1280px) {
-  .main-content { width: min(100%, 1560px); }
-  .aup-result { align-self: start; }
-  /* Title row and the "Start here" links share one line instead of two stacked rows. */
-  .page-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
-  .page-top .hero { margin-bottom: 0; }
-  .page-top .start-here { margin-bottom: 0; flex-shrink: 0; padding-bottom: 4px; }
-  .page-top { margin-bottom: 12px; }
-  /* Step 01: the policy check on the left, the country check on the right; everything else stays full width. */
-  #compliance .stage-content { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
-  #compliance .stage-content > * { grid-column: 1 / -1; }
-  #compliance .stage-content > .compliance-layout { grid-column: 1; grid-row: 1; grid-template-columns: minmax(0, 1fr); }
-  #compliance .stage-content > .stage-block { grid-column: 2; grid-row: 1; }
-  /* Tighter title, shorter text box and slimmer metric cards so more of each step fits in the first screen. */
-  .page-top h1 { font-size: 28px; }
-  .page-top .eyebrow { margin-bottom: 4px; }
-  .journey { margin-bottom: 12px; }
-  .invoice-editor textarea { min-height: 76px; }
-  .metrics-grid { padding: 12px 16px; }
-  .metric { padding: 12px 16px; }
-  /* Step 03: a slimmer case queue (each case is a short row, not a tall card) and a thinner "Next" bar. */
-  .dispute-layout { grid-template-columns: minmax(220px, 250px) minmax(0, 1fr); }
-  .case-list { padding: 8px; }
-  .case-card { padding: 8px 12px; margin-bottom: 6px; }
-  .case-card > div { gap: 2px 8px; }
-  .case-card > span { margin: 4px 0 2px; }
-  .stage-next { margin: 8px 16px 12px; padding: 8px 16px; }
-}
 
 /* Step 03 inner tabs: "Case review" and "Deadline board" share the step; only one is shown at a time. The board's own
    open state drives the tab, so every existing way of opening it keeps working. */
@@ -1310,7 +1250,7 @@ footer { padding: 8px 0 0; }
 .send-receipt-big strong { font-size: 1.5rem; color: var(--pg-color-ok); }
 .send-receipt-big small { font-size: var(--type-meta); color: var(--pg-color-muted); }
 /* (round2 X, B 6a/6d) A stored note the read-back did not confirm: plain, amber edge, no green stamp. */
-.send-restored-note { margin: 12px 0; padding: 10px 12px; border-left: 3px solid #b45309; border-radius: 6px; font-size: var(--type-support); overflow-wrap: anywhere; }
+.send-restored-note { margin: 12px 0; padding: 10px 12px; border-left: 3px solid var(--pg-color-warn); border-radius: 6px; font-size: var(--type-support); overflow-wrap: anywhere; }
 
 /* (2026-11-10) A disclosure summary is a toggle, not text input. Its chevron (::after) was an inline box in a block summary, so
    only its right border drew: a thin vertical bar after the text that read as a text caret ("More views: ...|"). The chevron is

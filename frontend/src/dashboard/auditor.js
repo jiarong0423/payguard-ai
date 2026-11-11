@@ -229,9 +229,20 @@ export const NOT_FINISHED_TEXT = 'The data agent did not finish this question wi
 const JUDGEMENT_WORDS = /\b(?:wins?|won|winning|lose[sd]?|losing|lost|prevails?|prevailed|liable|at fault|guilty|in (?:the )?(?:seller|buyer|merchant|customer)'?s? favou?r|(?:likely|chance|probability) (?:to|of) (?:win|succeed|prevail)|should (?:win|lose|be refunded)|(?:strong|weak)(?:er)? case|supports? the (?:seller|buyer|merchant|customer))\b/iu;
 export const WITHHELD_TEXT = 'The answer was withheld: it read as a judgement about the dispute, which this dashboard does not make.';
 export const readsAsJudgement = (text) => typeof text === 'string' && JUDGEMENT_WORDS.test(text);
+// (judge rerun 2026-11-12 S1) Recorded answers carry raw ISO timestamps such as 2026-11-10T04:04:52.527Z. Shown text
+// uses the dashboard's own UTC wording instead ("Nov 10, 2026, 04:04 UTC"); a string that is not a valid date stays as is.
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const ISO_STAMP = /\b(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::\d{2}(?:\.\d{1,9})?)?Z\b/gu;
+export const readableTimes = (text) => String(text ?? '').replace(ISO_STAMP, (stamp, year, month, day, hour, minute) => {
+  const ms = Date.parse(stamp);
+  if (!Number.isFinite(ms)) return stamp;
+  const date = new Date(ms);
+  if (date.getUTCFullYear() !== Number(year) || date.getUTCMonth() + 1 !== Number(month) || date.getUTCDate() !== Number(day)) return stamp;
+  return `${MONTHS[date.getUTCMonth()]} ${date.getUTCDate()}, ${year}, ${hour}:${minute} UTC`;
+});
 // (live run 2026-11-04) Studio writes mentions such as @table[cases] and @field[cases.reason] and markdown; the chat
 // renders them, the status line above the canvas shows plain text.
-export const plainSummary = (text) => String(text ?? '')
+export const plainSummary = (text) => readableTimes(text)
   .replace(/@table\[([^\]]+)\]/gu, '$1')
   .replace(/@field\[(?:[^\].]+\.)?([^\]]+)\]/gu, '$1')
   .replace(/[`*]/gu, '')
@@ -341,7 +352,7 @@ export function createEvidenceAuditor({ studio, getState, data, delegate = null,
             // the Studio thread, so a phone (where the panel closes to show the page) still has the answer on screen.
             onDelegated({ question, summary: recorded.reply, ok: true, recorded: true });
             onAnswer(recorded.page_id, null, { textOnly: true });
-            yield* say(messageId, `${recordingLabel(recording)} The data agent's answer then: ${recorded.reply} ${BOUNDARY}`);
+            yield* say(messageId, `${recordingLabel(recording)} The data agent's answer then: ${readableTimes(recorded.reply)} ${BOUNDARY}`);
             yield { type: 'RUN_FINISHED', threadId, runId, result: { intent: 'replayed' } };
             return;
           }

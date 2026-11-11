@@ -309,6 +309,7 @@ TREE_FILES = {
     "frontend/public": (
         "icons/apple-touch-icon.png", "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png",
         "icons/icon-maskable.svg", "icons/icon.svg", "manifest.webmanifest", "offline.html", "start.css", "start.html", "sw.js",
+        "fonts/Newsreader-Italic-latin-var.woff2", "fonts/Newsreader-latin-var.woff2", "fonts/OFL-newsreader.txt", "fonts/OFL-publicsans.txt", "fonts/PublicSans-Italic-latin-var.woff2", "fonts/PublicSans-latin-var.woff2", "fonts/SOURCES.txt",
     ),
     "frontend/src": (
         "AnalyticsDashboard.css", "AnalyticsDashboard.jsx", "App.jsx", "CountryRules.css", "CountryRules.jsx", "GuideLive.css", "GuideLive.jsx",
@@ -327,7 +328,8 @@ TREE_FILES = {
     "frontend/src/wide": ("bottom.css", "compact.css", "header.css", "polish01.css", "polish02.css", "index.js", "polish03.css", "polish05.css", "relax.css", "scroll.css", "side.css", "step01.css", "step02.css", "step03.css"),
     "frontend/src/scenarios": ("main.jsx", "scenarios.css", "workOrders.js"),
     "frontend/src/shared": ("asOf.js", "asOfSource.js", "sessionLedger.js"),
-    "frontend/src/theme": ("base.css", "chartTheme.js", "format.js", "motion.js", "tokens.css", "tokens.js", "writeTokensCss.mjs"),
+    "frontend/src/theme": ("base.css", "components.css", "chartTheme.js", "format.js", "motion.js", "tokens.css", "tokens.js", "writeTokensCss.mjs"),
+    "frontend/src/theme/icons": ("LICENSE", "arrow-right.svg", "caret-down.svg", "chart-line-up.svg", "check-circle.svg", "clock.svg", "file-text.svg", "files.svg", "fingerprint.svg", "gavel.svg", "globe.svg", "house.svg", "info.svg", "magnifying-glass.svg", "scales.svg", "seal-check.svg", "shield-check.svg", "warning.svg", "x-circle.svg"),
     "frontend/src/optional": (
         "OptionalTimeline.jsx", "TimeEvidenceWithTimeline.jsx", "timeline.css", "timelineModel.js",
         "vitePlugin.js",

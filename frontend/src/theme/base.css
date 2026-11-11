@@ -4,8 +4,16 @@
 @import '@fontsource-variable/inter/index.css';
 @import './tokens.css';
 
+/* Pairing D (owner choice 2026-11-12): Newsreader for headings and quotes, Public Sans for text and UI. Self-hosted
+   from public/fonts (OFL-1.1, Latin subsets, real italics; sources and sha256 in public/fonts/SOURCES.txt). */
+@font-face { font-family: 'Newsreader'; src: url('/fonts/Newsreader-latin-var.woff2') format('woff2'); font-weight: 200 800; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Newsreader'; src: url('/fonts/Newsreader-Italic-latin-var.woff2') format('woff2'); font-weight: 200 800; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Public Sans'; src: url('/fonts/PublicSans-latin-var.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Public Sans'; src: url('/fonts/PublicSans-Italic-latin-var.woff2') format('woff2'); font-weight: 100 900; font-style: italic; font-display: swap; }
+
 :root {
   font-family: var(--pg-font-sans);
+  font-synthesis: none; /* real italics and weights only; never browser-faked */
   /* Tabular figures for every number (spec D11). */
   font-feature-settings: "tnum" 1;
 }

@@ -1,0 +1,32 @@
+Self-hosted fonts, pairing D (owner choice 2026-11-12): Newsreader (headings, quotes) + Public Sans (text, UI).
+Both SIL Open Font License 1.1, no Reserved Font Name declared (OFL-newsreader.txt, OFL-publicsans.txt).
+Source: google/fonts GitHub repository, pinned commit 8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5. Downloaded 2026-11-12 into a quarantine folder,
+checked with fontTools 4.51.0 (parses, only standard OpenType tables), then subset with pyftsubset --flavor=woff2:
+Latin range U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122,
+U+2190-2193, U+2212, U+2215; all layout features; variable axes kept. Browser synthesis is off (font-synthesis: none).
+
+Newsreader-latin-var.woff2 (roman, wght 200-800, opsz 6-72)
+  from https://raw.githubusercontent.com/google/fonts/8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5/ofl/newsreader/Newsreader%5Bopsz%2Cwght%5D.ttf
+    original 451664 bytes  sha256 8a08d13f8a6c0d51be379a60af84f945f65369a67e509ee3c3bdcc421254d7c1
+    shipped  136700 bytes  sha256 344d5d2b3c1f343f6c4e8f348c9727016c327f9664b3b8906f9dc72d6ec6e456
+Newsreader-Italic-latin-var.woff2 (italic, wght 200-800, opsz 6-72)
+  from https://raw.githubusercontent.com/google/fonts/8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5/ofl/newsreader/Newsreader-Italic%5Bopsz%2Cwght%5D.ttf
+    original 495684 bytes  sha256 796668611f80b64d5adf182fde3b6f29ed83b4e7cbec7b96937e84ac01364792
+    shipped  153060 bytes  sha256 e6404648dd76ba80cfa357c4d0ca2e454d5316974c9671e58a0757ea11dc98fe
+PublicSans-latin-var.woff2 (roman, wght 100-900)
+  from https://raw.githubusercontent.com/google/fonts/8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5/ofl/publicsans/PublicSans%5Bwght%5D.ttf
+    original 103316 bytes  sha256 d75a7dc1a27eb9e336d5b33f55489d2ecb5621bf694d5c43b2415bce2ca830a8
+    shipped  25588 bytes  sha256 6bac9ce7df65e20a8d6aca944457e961f9f10480e03c4788ddda3f472c32cad8
+PublicSans-Italic-latin-var.woff2 (italic, wght 100-900)
+  from https://raw.githubusercontent.com/google/fonts/8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5/ofl/publicsans/PublicSans-Italic%5Bwght%5D.ttf
+    original 107940 bytes  sha256 6ce292b05aa8c66bc644bedff834b4d0ddee9af75c55f98dcb28faa32a81056f
+    shipped  27372 bytes  sha256 8798913b11f08c1f088a576bcff3895e123b70268c65fe0889b39519685c6b82
+OFL-newsreader.txt
+  from https://raw.githubusercontent.com/google/fonts/8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5/ofl/newsreader/OFL.txt
+    4394 bytes  sha256 fdfad38143ec470553cae82a1e45320bdd1b9ec70415d37bd0171051d8a4ded8  (shipped byte-identical: True)
+OFL-publicsans.txt
+  from https://raw.githubusercontent.com/google/fonts/8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5/ofl/publicsans/OFL.txt
+    4390 bytes  sha256 157a9e77f7580246e97c769490e2e977ae94399f9d30f4556015c41fe8c28bac  (shipped byte-identical: True)
+
+Compared and not chosen (moved out of the repo, kept in scratchpad/fonts_quarantine): Fraunces, Source Serif 4,
+Source Sans 3, Instrument Serif, Instrument Sans. Inter 5.3.0 stays an npm dependency as the fallback in the sans stack.

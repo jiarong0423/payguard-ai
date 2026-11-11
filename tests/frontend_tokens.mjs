@@ -2,6 +2,7 @@
 // tokens.js <-> tokens.css parity, type mirror of the index.css block, Inter self-hosted and pinned exactly,
 // and the behaviour of format.js, motion.js, shared/asOf.js, shared/sessionLedger.js and chartTheme.js.
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -23,16 +24,26 @@ const declared = Object.fromEntries([...tokensCss.matchAll(/^\s*(--pg-[a-z0-9-]+
 assert.deepEqual(declared, tokens.cssVariables(), 'every CSS variable mirrors its JS token');
 
 // Spec values that other sessions build on.
-assert.equal(tokens.color.accent, '#4f46e5');
-assert.equal(tokens.color.canvas, '#eceae5', 'L0 canvas: Morandi warm grey (owner 2026-11-03; indigo accent unchanged)');
-assert.equal(tokens.color.band, '#0b1b33');
-assert.equal(tokens.color.bandShade, '#13284a');
-assert.equal(tokens.color.context, '#7c8799');
+// 2026-11-12 P0 restyle, round 3 ("Editorial Newsprint", red option 2; owner decision, ui_mock/red_compare.html):
+// colour, radius and elevation values changed on purpose; names are unchanged. Previous pins: accent #4f46e5,
+// canvas #eceae5, band #0b1b33/#13284a, context #7c8799, radius {6,8,12,999}, elevation l1-l3 indigo/slate shadows.
+assert.equal(tokens.color.accent, '#111111', 'interactive elements are ink');
+assert.equal(tokens.color.canvas, '#f1ede3', 'L0 canvas: newsprint');
+assert.equal(tokens.color.recede, '#e8e2d5');
+assert.equal(tokens.color.ink, '#111111');
+assert.equal(tokens.color.risk, '#c8102e', 'red means rule match / risk only');
+assert.equal(tokens.color.masthead, undefined, 'round 5: no decorative red token; red means risk only');
+assert.equal(tokens.color.focus, '#111111', 'focus ring in ink');
+assert.equal(tokens.color.band, '#111111');
+assert.equal(tokens.color.bandShade, '#1c1b19');
+assert.equal(tokens.color.context, '#8a857a');
+assert.ok(!Object.entries(tokens.color).some(([k, v]) => v === tokens.color.risk && !['risk'].includes(k)), 'no other token reuses the risk red');
 assert.deepEqual(Object.values(tokens.space), [4, 8, 12, 16, 24, 32, 48, 64]);
-assert.deepEqual({ ...tokens.radius }, { chip: 6, control: 8, card: 12, pill: 999 });
-assert.equal(tokens.elevation.l1, '0 0 0 1px #dcd7cf, 0 1px 2px rgba(15,23,42,.06)');
-assert.equal(tokens.elevation.l2, '0 0 0 1px rgba(79,70,229,.35), 0 8px 24px rgba(15,23,42,.10), 0 2px 6px rgba(15,23,42,.06)');
-assert.equal(tokens.elevation.l3, '0 12px 32px rgba(15,23,42,.16)');
+assert.deepEqual(Object.values(tokens.scale), [12, 14, 16, 20, 28, 40, 56], 'seven-step type scale (P0 round 2)');
+assert.deepEqual({ ...tokens.radius }, { chip: 0, control: 0, card: 0, pill: 999 }, 'square print; pills stay round');
+assert.equal(tokens.elevation.l1, '0 0 0 1px #111111', 'cards: thin black rule, no shadow');
+assert.equal(tokens.elevation.l2, '0 0 0 2px #111111');
+assert.equal(tokens.elevation.l3, '0 8px 24px rgba(17,17,17,.12), 0 1px 2px rgba(17,17,17,.08)', 'only floating layers cast a shadow');
 assert.ok(tokens.motion.max <= 500 && tokens.motion.revealMax <= 2500);
 assert.equal(tokens.layout.maxWidth, 1200);
 
@@ -42,10 +53,16 @@ const luminance = (hex) => {
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 };
 const contrast = (a, b = '#ffffff') => { const [x, y] = [luminance(a), luminance(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
-for (const name of ['ink', 'muted', 'subtle', 'accent', 'accentStrong', 'ok', 'watch', 'risk']) {
+for (const name of ['ink', 'muted', 'subtle', 'accent', 'accentStrong', 'ok', 'watch', 'warn', 'risk']) {
+  for (const bg of [tokens.color.canvas, tokens.color.recede, tokens.color.panel]) assert.ok(contrast(tokens.color[name], bg) >= 4.5, `${name} reaches 4.5:1 on ${bg}`);
   assert.ok(contrast(tokens.color[name]) >= 4.5, `${name} ${tokens.color[name]} must reach 4.5:1 on white (got ${contrast(tokens.color[name]).toFixed(2)})`);
 }
 assert.ok(contrast(tokens.color.context) < 4.5, 'context grey stays a mark colour');
+assert.ok(contrast(tokens.color.controlLine, tokens.color.canvas) >= 3, 'control edges reach 3:1 (WCAG 1.4.11)');
+for (const [hue, tint] of [['ok', 'ok'], ['watch', 'watch'], ['risk', 'risk'], ['info', 'info'], ['accent', 'accent']]) {
+  assert.ok(contrast(tokens.color[hue], tokens.statusTint[tint]) >= 4.5, `${hue} text reads on its tint`);
+}
+assert.ok(contrast(tokens.color.onAccent, tokens.color.accent) >= 4.5, 'button text on accent');
 for (const name of ['bandText', 'bandMuted', 'bandAmber', 'bandGreen']) {
   assert.ok(contrast(tokens.color[name], tokens.color.bandShade) >= 4.5, `${name} reads on the navy band`);
 }
@@ -86,7 +103,22 @@ for (const path of frontendFiles) {
   const text = readFileSync(path, 'utf8');
   assert.equal(/fonts\.(googleapis|gstatic)\.com|JetBrains Mono/i.test(text), false, `${path}: no font CDN or JetBrains Mono`);
 }
-assert.match(read('frontend/src/index.css'), /--font-sans: "Inter Variable"/, 'the Tailwind sans stack starts with the self-hosted family');
+assert.match(read('frontend/src/index.css'), /--font-sans: "Public Sans", "Inter Variable"/, 'the Tailwind sans stack starts with the self-hosted families');
+// Pairing D (owner choice 2026-11-12): Newsreader + Public Sans, self-hosted with real italics; Inter stays the pinned fallback.
+assert.ok(tokens.font.sans.startsWith("'Public Sans', 'Inter Variable'"), 'body/UI font: Public Sans, then Inter');
+assert.ok(tokens.font.serif.startsWith("'Newsreader'"), 'heading font: Newsreader');
+assert.match(base, /font-synthesis: none;/, 'no synthesised italics or bold');
+for (const [file, sha] of Object.entries({
+  'Newsreader-latin-var.woff2': '344d5d2b3c1f343f6c4e8f348c9727016c327f9664b3b8906f9dc72d6ec6e456',
+  'Newsreader-Italic-latin-var.woff2': 'e6404648dd76ba80cfa357c4d0ca2e454d5316974c9671e58a0757ea11dc98fe',
+  'PublicSans-latin-var.woff2': '6bac9ce7df65e20a8d6aca944457e961f9f10480e03c4788ddda3f472c32cad8',
+  'PublicSans-Italic-latin-var.woff2': '8798913b11f08c1f088a576bcff3895e123b70268c65fe0889b39519685c6b82',
+})) {
+  assert.equal(createHash('sha256').update(readFileSync(join(root, 'frontend/public/fonts', file))).digest('hex'), sha, `${file} is the recorded build`);
+  assert.ok(base.includes(`url('/fonts/${file}')`), `base.css declares ${file}`);
+  assert.ok(read('frontend/public/fonts/SOURCES.txt').includes(sha), `SOURCES.txt records ${file}`);
+}
+for (const ofl of ['OFL-newsreader.txt', 'OFL-publicsans.txt']) assert.match(read(`frontend/public/fonts/${ofl}`), /SIL OPEN FONT LICENSE Version 1\.1/, `${ofl} ships`);
 
 // 4. format.js
 assert.equal(format.money(500), '500.00 USD');
@@ -138,7 +170,7 @@ assert.ok(sizes.every((s) => s >= 14), `chart text >= 14 px (${sizes})`);
 assert.equal(theme.overrides.common.background.visible, false, 'no hard-coded chart background');
 assert.equal(gridParams().rowHeight, 40);
 assert.equal(gridParams({ phone: true }).rowHeight, 44);
-assert.equal(gridParams().accentColor, '#4f46e5');
+assert.equal(gridParams().accentColor, '#111111');
 assert.ok(gridParams().fontSize >= 14 && gridParams().headerFontSize >= 14);
 
 // 7. shared/asOf.js: the dashboard file is the only source; ?asof= only in public demo mode.
