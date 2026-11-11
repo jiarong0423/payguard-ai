@@ -834,18 +834,18 @@
       "source_sha256": "529e82dd388f11aecb9fe4d6f5cc1623079338e642ed0b29559fdc34f5ab6be5"
     },
     {
-      "bytes": 270284,
+      "bytes": 270583,
       "path": "docs/submission/diagrams/paypal_write_guards.png",
-      "sha256": "311485e7c135d784a7cbd20e0c5682c624b33f2d6c008ac9034634eb4673266b",
+      "sha256": "126029972527b0ba0485cf298a48121bb893c157179e3865447c24ec8be451dd",
       "source_path": "docs/submission/diagrams/paypal_write_guards.png",
-      "source_sha256": "311485e7c135d784a7cbd20e0c5682c624b33f2d6c008ac9034634eb4673266b"
+      "source_sha256": "126029972527b0ba0485cf298a48121bb893c157179e3865447c24ec8be451dd"
     },
     {
-      "bytes": 12252,
+      "bytes": 12259,
       "path": "docs/submission/diagrams/paypal_write_guards.svg",
-      "sha256": "a8b6624a568fddd2f6842d6147ce3a0f0f42a2518b7ba0b12d66940cdaa784a8",
+      "sha256": "3f561f31e42602e1f69c6b89dfd2012774781ae7ce7ceae29ce11f3405b4ce6b",
       "source_path": "docs/submission/diagrams/paypal_write_guards.svg",
-      "source_sha256": "a8b6624a568fddd2f6842d6147ce3a0f0f42a2518b7ba0b12d66940cdaa784a8"
+      "source_sha256": "3f561f31e42602e1f69c6b89dfd2012774781ae7ce7ceae29ce11f3405b4ce6b"
     },
     {
       "bytes": 237285,
@@ -3198,8 +3198,8 @@
     "scope": "RECORDED_OWNER_RIGHTS_AND_ENTRANT_ELIGIBILITY"
   },
   "package_digest_algorithm": "sha256(sorted utf-8 '<file_sha256>  <relative_path>\\n' records; manifest and detached hash excluded)",
-  "package_digest_sha256": "a313ce24989c4228e5a902dc4915104f990cd2182992ba67a0322bfc5e9b3a95",
-  "public_artifact_id": "payguard-public-source-a313ce24989c4228",
+  "package_digest_sha256": "73f9a86b89a3a9e24f6a88e755c3d21eed6daa945d83bbffe032b51cc2674052",
+  "public_artifact_id": "payguard-public-source-73f9a86b89a3a9e2",
   "publication_authorized": false,
   "raw_bounded_prompt_disclosure": {
     "intent": "INTENTIONAL_PUBLIC_EXECUTABLE_PRODUCT_SOURCE",

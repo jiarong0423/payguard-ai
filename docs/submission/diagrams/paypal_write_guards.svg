@@ -93,7 +93,7 @@
 <text x="88" y="696" class="m" font-size="18" fill="#55534e">PayPal-Debug-Id kept as the receipt · six real Sandbox sends (5 local, 1 hosted; 2026-11-04 to 2026-11-10), each to its own test dispute</text>
 <rect x="64" y="728" width="1792" height="168" rx="6" fill="#fbf9f5" stroke="#d9d3c7" stroke-width="1.5"/>
 <text x="88" y="766" class="t" font-size="30">The invoice draft has its own chain</text>
-<text x="88" y="800" class="m" font-size="18" fill="#55534e">country rule stops the sale: draft refused · review token used once, 120 s, bound to the latest check</text>
+<text x="88" y="800" class="m" font-size="18" fill="#55534e">a listed rule may apply to the sale: draft paused · review token used once, 120 s, bound to the latest check</text>
 <text x="88" y="830" class="m" font-size="18" fill="#55534e">two-step confirm: tick, Continue, 3 s, Create draft · status must come back DRAFT · never sent to the buyer</text>
 <text x="88" y="860" class="m" font-size="18" fill="#55534e">every refusal names a plain reason: wrong account, case sent elsewhere, amount or reason changed</text>
 <line x1="64" y1="944" x2="1856" y2="944" stroke="#d9d3c7" stroke-width="1"/>
