@@ -1233,11 +1233,11 @@
       "source_sha256": "2c7676f638a61b7924f98852bccc02ac0c798ae0d68b33a5eb965226f22f8182"
     },
     {
-      "bytes": 234468,
+      "bytes": 234880,
       "path": "frontend/src/App.jsx",
-      "sha256": "f32c5974990a548a7d550757579e2ae8fbfc496e334586d48facf21f5349a5ca",
+      "sha256": "b4fe4e125ce216388b9402b9e9017a705d8835f0afe131ef2ceb5dc4d4ef70d4",
       "source_path": "frontend/src/App.jsx",
-      "source_sha256": "f32c5974990a548a7d550757579e2ae8fbfc496e334586d48facf21f5349a5ca"
+      "source_sha256": "b4fe4e125ce216388b9402b9e9017a705d8835f0afe131ef2ceb5dc4d4ef70d4"
     },
     {
       "bytes": 8879,
@@ -1280,6 +1280,20 @@
       "sha256": "ccd92b4821997f3922f5093f7df92f813fb5b0bd37809635f08dcb018d7f2e3b",
       "source_path": "frontend/src/GuideReplay.jsx",
       "source_sha256": "ccd92b4821997f3922f5093f7df92f813fb5b0bd37809635f08dcb018d7f2e3b"
+    },
+    {
+      "bytes": 3167,
+      "path": "frontend/src/OverviewFlow.css",
+      "sha256": "241ea2bbe46634ccd4f5e4d30bf51337f67db0a8e83a11042f9b2065db258df7",
+      "source_path": "frontend/src/OverviewFlow.css",
+      "source_sha256": "241ea2bbe46634ccd4f5e4d30bf51337f67db0a8e83a11042f9b2065db258df7"
+    },
+    {
+      "bytes": 7072,
+      "path": "frontend/src/OverviewFlow.jsx",
+      "sha256": "e4fde8660350a4f69a6bfacd95a20aa72c3ead1d3456cdf0b80bfe6c1ad2f1f1",
+      "source_path": "frontend/src/OverviewFlow.jsx",
+      "source_sha256": "e4fde8660350a4f69a6bfacd95a20aa72c3ead1d3456cdf0b80bfe6c1ad2f1f1"
     },
     {
       "bytes": 13562,
@@ -1518,6 +1532,13 @@
       "sha256": "324052c3ef118b5a0c5e419f9ed151e6e52e4a4a2dae130505324f828eed4370",
       "source_path": "frontend/src/data/guide_replays_v1.json",
       "source_sha256": "324052c3ef118b5a0c5e419f9ed151e6e52e4a4a2dae130505324f828eed4370"
+    },
+    {
+      "bytes": 2234,
+      "path": "frontend/src/data/overview_figures_v1.json",
+      "sha256": "e71848c9f182a2988b9853d3a5f7dfbabca77d3d86028307d29ca3e0f24a5df9",
+      "source_path": "frontend/src/data/overview_figures_v1.json",
+      "source_sha256": "e71848c9f182a2988b9853d3a5f7dfbabca77d3d86028307d29ca3e0f24a5df9"
     },
     {
       "bytes": 32688,
@@ -1968,11 +1989,11 @@
       "source_sha256": "64c75d28bfa1adf29d0d386aaea06cd4ab4268a2d558fc13243be5f1ba61771b"
     },
     {
-      "bytes": 4213,
+      "bytes": 4244,
       "path": "frontend/src/wide/header.css",
-      "sha256": "72bef614e1a9cc773375ac2f2dae87bf4a73276baa76f07ab1cb135d889da7e9",
+      "sha256": "38dfac3d0c467a8dacb139bdba9cb6d3479fbdb9d290565ce6dba80b8f019dd2",
       "source_path": "frontend/src/wide/header.css",
-      "source_sha256": "72bef614e1a9cc773375ac2f2dae87bf4a73276baa76f07ab1cb135d889da7e9"
+      "source_sha256": "38dfac3d0c467a8dacb139bdba9cb6d3479fbdb9d290565ce6dba80b8f019dd2"
     },
     {
       "bytes": 498,
@@ -1982,11 +2003,11 @@
       "source_sha256": "61a69a77fc58415bdf6ac1e68e8e313d7a8962b600f776400ab1a764b965bc76"
     },
     {
-      "bytes": 3240,
+      "bytes": 3304,
       "path": "frontend/src/wide/polish01.css",
-      "sha256": "22e9ae506fbe06fb744451067162e577c18f7599a3f22172de972112b14d0d65",
+      "sha256": "426cb34c0abd4a905353dca418236bf85a91f3e0816805995e4a244a7b4ca00b",
       "source_path": "frontend/src/wide/polish01.css",
-      "source_sha256": "22e9ae506fbe06fb744451067162e577c18f7599a3f22172de972112b14d0d65"
+      "source_sha256": "426cb34c0abd4a905353dca418236bf85a91f3e0816805995e4a244a7b4ca00b"
     },
     {
       "bytes": 2437,
@@ -2589,6 +2610,13 @@
       "sha256": "7d80d0d3511f9f8e2b73e79de97f879fc76015f2826dd96c2b2e80a9f6d8d0e3",
       "source_path": "tests/frontend_optional_timeline.mjs",
       "source_sha256": "7d80d0d3511f9f8e2b73e79de97f879fc76015f2826dd96c2b2e80a9f6d8d0e3"
+    },
+    {
+      "bytes": 6256,
+      "path": "tests/frontend_overview_figures.mjs",
+      "sha256": "9e3113ffbe03201a308af34a0879c79b24acf5606375c8a5105704b79f66fd20",
+      "source_path": "tests/frontend_overview_figures.mjs",
+      "source_sha256": "9e3113ffbe03201a308af34a0879c79b24acf5606375c8a5105704b79f66fd20"
     },
     {
       "bytes": 7412,
@@ -3221,11 +3249,11 @@
       "source_sha256": "0d9bc04fee0ad12622326c03a74a116ce14ef80c47c4608c219a7c4c241a2e62"
     },
     {
-      "bytes": 41022,
+      "bytes": 41133,
       "path": "tools/build_public_candidate.py",
-      "sha256": "814fbf694da16d73a970a64539e1642f660f1a5a6ddd54737f0069e7f052e505",
+      "sha256": "fb490a1e4b87644195daf967367c813ae8824cd5147a110ce79d81162ae64a2f",
       "source_path": "tools/build_public_candidate.py",
-      "source_sha256": "814fbf694da16d73a970a64539e1642f660f1a5a6ddd54737f0069e7f052e505"
+      "source_sha256": "fb490a1e4b87644195daf967367c813ae8824cd5147a110ce79d81162ae64a2f"
     },
     {
       "bytes": 7653,
@@ -3387,8 +3415,8 @@
     "scope": "RECORDED_OWNER_RIGHTS_AND_ENTRANT_ELIGIBILITY"
   },
   "package_digest_algorithm": "sha256(sorted utf-8 '<file_sha256>  <relative_path>\\n' records; manifest and detached hash excluded)",
-  "package_digest_sha256": "fe3d65dabcdc60a990f7913b36507aac2454d9cd4f3ce2475ca88f301249ddac",
-  "public_artifact_id": "payguard-public-source-fe3d65dabcdc60a9",
+  "package_digest_sha256": "6a0ca333c84fb5d171b71940146963aaef90037136f7ea4075ed63f08f47abd6",
+  "public_artifact_id": "payguard-public-source-6a0ca333c84fb5d1",
   "publication_authorized": false,
   "raw_bounded_prompt_disclosure": {
     "intent": "INTENTIONAL_PUBLIC_EXECUTABLE_PRODUCT_SOURCE",

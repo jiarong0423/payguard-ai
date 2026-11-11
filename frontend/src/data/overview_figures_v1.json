@@ -1,0 +1,79 @@
+{
+  "schema_version": "overview_figures_v1",
+  "note": "Values recounted from committed files for the Overview page; tests/frontend_overview_figures.mjs recounts each one from its source and fails on any drift. Nothing here is typed in by hand without a source.",
+  "country_rules": {
+    "source": "data/country_rules/paypal_country_rules_v1.json",
+    "import_rules": 368,
+    "export_rules": 313,
+    "countries": 10
+  },
+  "step1_example": {
+    "route": "US → SG",
+    "goods": "e-cigarettes",
+    "rule_id": "SG-IM-EC-01",
+    "statute": "Tobacco and Vaporisers Control Act",
+    "article": "s. 16",
+    "tier": "prohibited",
+    "source": "data/country_rules/paypal_country_rules_v1.json",
+    "line": 3947
+  },
+  "step3_send": {
+    "proof_row": "dispute-hosted-send-live",
+    "case_ref": "case-ref-001",
+    "amount": {
+      "currency": "USD",
+      "value": "48.00"
+    },
+    "source": "docs/evidence/RECEIPT_20261110_hosted_live.md",
+    "line": 11
+  },
+  "step2_example": {
+    "orders": 50,
+    "currency": "USD",
+    "total": "500.00",
+    "baseline_per_hour": "100.00",
+    "window_hours": 1,
+    "ratio": "5.0",
+    "source": "backend/app/store.py",
+    "lines": {
+      "baseline": 48,
+      "amounts": 54,
+      "burst_rows": 708
+    },
+    "note": "The synthetic burst the Sales spike step loads: 50 rows cycling DEMO_BURST_AMOUNTS in a 1-hour window against DEMO_VELOCITY_BASELINE; ratio = total / hours / baseline (src/payguard/engines.py)."
+  },
+  "receipt_sends": [
+    {
+      "file": "docs/evidence/RECEIPT_20261104_live.md",
+      "line": 13,
+      "debug_id": "f908765a01293"
+    },
+    {
+      "file": "docs/evidence/RECEIPT_20261105_live.md",
+      "line": 14,
+      "debug_id": "f2088142a6218"
+    },
+    {
+      "file": "docs/evidence/RECEIPT_20261110_hosted_live.md",
+      "line": 14,
+      "debug_id": "f869050ae2a63"
+    }
+  ],
+  "readback_sends": [
+    {
+      "file": "docs/evidence/READBACK_20261109.md",
+      "line": 7,
+      "debug_id": null
+    },
+    {
+      "file": "docs/evidence/READBACK_20261109.md",
+      "line": 17,
+      "debug_id": "ca5782cf8df90"
+    },
+    {
+      "file": "docs/evidence/READBACK_20261109.md",
+      "line": 31,
+      "debug_id": "f492438834396"
+    }
+  ]
+}

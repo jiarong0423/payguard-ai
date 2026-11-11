@@ -6,7 +6,7 @@
   .journey-step { min-height: 44px; padding-top: 6px; padding-bottom: 6px; }
   /* Title: 24px from about 1360px up, easing to 22px at 1280 so the title and the two buttons (one line, nowrap) stay
      inside the page width (at 1280 the Download button ran past the right edge). */
-  .page-top .hero-compact h1 { font-size: var(--pg-text-5); }
+  .page-top .hero-compact h1 { max-width: 760px; font-size: var(--pg-text-6); line-height: 1.1; } /* P2: Overview headline */
 
   /* Step 01: the country card on the right is the tallest column after the example, so "More: sources, limits, examples"
      and the Next bar move into the empty space under the guide bar in the left column (about 90px shorter, no text lost). */

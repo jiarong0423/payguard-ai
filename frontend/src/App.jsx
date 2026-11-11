@@ -22,6 +22,8 @@ import { displayDisputeId } from './disputeDisplay.js';
 const AnalyticsDashboard = lazy(() => import('./AnalyticsDashboard.jsx'));
 const GuideReplay = lazy(() => import('./GuideReplay.jsx'));
 const RecordedSendReplay = lazy(() => import('./RecordedSendReplay.jsx'));
+// (P2) The Overview flow cards, figures and recorded send load on demand (first-load budget).
+const OverviewFlow = lazy(() => import('./OverviewFlow.jsx'));
 const VelocityChart = lazy(() => import('./charts/VelocityChart.jsx'));
 const EvidenceBoard = lazy(() => import('./board/EvidenceBoard.jsx'));
 // AG Grid and the time-evidence table load on demand (spec D13): the entry chunk carries no AG Grid code.
@@ -1854,7 +1856,9 @@ export default function App() {
       <header className="hero hero-compact" aria-labelledby="page-title">
         <div><div className="eyebrow"><span className="tiny-dot" /> FOR SMALL PAYPAL SELLERS</div><h1 id="page-title">Check a sale before you ship. Prepare your evidence if PayPal asks.</h1><div className="hero-actions"><button type="button" className="hero-example-link" data-testid="hero-try-example" onClick={() => { openStage('compliance', { updateHash: true }); document.querySelector('[data-testid="country-try-example"]')?.click(); }}>Run the step 1 example</button><a className="hero-proof-link" href="/proof.html" data-testid="hero-proof-link">Proof and receipts</a><a className="hero-local-link" href="https://github.com/jiarong0423/payguard-ai/releases/download/demo-package-20261109/tradeglot-demo.zip" target="_blank" rel="noopener noreferrer" title="Same demo, one command, no keys." aria-label="Download the demo (11 MB). Same demo, one command, no keys." data-testid="hero-download-demo"><svg className="download-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 4v10.5" /><path d="m7.5 10.5 4.5 4.5 4.5-4.5" /><path d="M5 19.25h14" /></svg><span>Download the demo (11 MB)</span></a></div></div>
       </header>
-
+      </div>
+      {view === 'overview' && <Suspense fallback={<p className="tg-small" role="status">Loading the overview</p>}><OverviewFlow onOpen={openPage} /></Suspense>}
+      <div className="overview-start" hidden={view !== 'overview' || undefined}>
       <section className="start-here" data-testid="start-here" aria-labelledby="start-here-title">
         <h2 id="start-here-title" className="start-here-title">Start here:</h2>
         <div className="start-here-actions">{START_HERE.map(([scenario, icon, label]) => <a key={scenario} className="start-here-link" href={`#guide-${scenario}`} data-testid={`start-here-${scenario}`} onClick={(event) => { event.preventDefault(); window.history.pushState(null, '', `#guide-${scenario}`); setActiveStage(GUIDE_STAGE[scenario]); setView('stage'); window.scrollTo({ top: 0, behavior: 'auto' }); askGuide(scenario); }}><Icon name={icon} size={16} /><Label text={label} /></a>)}</div>

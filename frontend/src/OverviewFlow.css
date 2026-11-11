@@ -1,0 +1,31 @@
+/* (P2 2026-11-12) Overview flow: three step cards joined by arrows, the figure row and the recorded-send card.
+   Values from theme/tokens.css; component classes from theme/components.css. Loaded with OverviewFlow.jsx only. */
+.ov { display: grid; gap: var(--pg-space-6); margin: var(--pg-space-5) 0 var(--pg-space-6); }
+.ov-flow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin: 0; padding: 0; list-style: none; counter-reset: none; }
+.ov-step { position: relative; display: flex; }
+.ov-step + .ov-step::before { content: "→"; position: absolute; left: -26px; top: 50%; transform: translateY(-50%); color: var(--pg-color-ink); font-size: var(--pg-text-4); line-height: 1; }
+.ov-step__link { display: grid; align-content: start; gap: var(--pg-space-2); width: 100%; padding: var(--pg-space-5); border: 1px solid var(--pg-color-ink); border-top-width: 4px; background: var(--pg-color-panel); color: var(--pg-color-ink); text-decoration: none; }
+.ov-step__link:hover { background: var(--pg-color-hover); }
+.ov-step__link:focus-visible { outline: var(--pg-layout-focus-ring) solid var(--pg-color-focus); outline-offset: 3px; }
+.ov-step__n { font-family: var(--pg-font-serif); font-size: 48px; font-weight: 700; line-height: 1; font-variant-numeric: lining-nums tabular-nums; }
+.ov-step__name { font-size: 18px; font-weight: 700; }
+.ov-step__what { color: var(--pg-color-muted); font-size: var(--pg-text-2); line-height: 1.45; }
+.ov-step__stamp, .ov-step__badge { justify-self: start; margin-top: var(--pg-space-2); }
+.ov-step__badge { padding: 5px 8px; background: var(--pg-color-ink); color: var(--pg-color-on-accent); font-size: var(--pg-text-1); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.ov-step__figure { margin-top: var(--pg-space-2); font-family: var(--pg-font-serif); font-size: 40px; font-weight: 600; line-height: 1; font-variant-numeric: lining-nums tabular-nums; }
+.ov-step__result { font-size: var(--pg-text-2); font-weight: 600; line-height: 1.45; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.ov-step__open { display: inline-flex; align-items: center; gap: 6px; margin-top: auto; padding-top: var(--pg-space-3); font-size: var(--pg-text-2); font-weight: 650; text-decoration: underline; text-underline-offset: 4px; }
+.ov-source, .ov-figures .tg-figure__source { display: flex; flex-wrap: wrap; gap: 2px 6px; color: var(--pg-color-muted); font-size: var(--pg-text-1); line-height: 1.45; overflow-wrap: anywhere; }
+.ov-source b { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--pg-color-ink); }
+.ov-figures .tg-figure { grid-template-rows: auto auto 1fr; }
+.ov-replay .tg-eyebrow { margin: 0 0 var(--pg-space-3); }
+.ov-replay .recorded-replay { margin: 0; }
+@media (max-width: 900px) {
+  .ov-flow { grid-template-columns: 1fr; gap: 28px; }
+  .ov-step + .ov-step::before { content: "↓"; left: 50%; top: -24px; transform: translateX(-50%); }
+}
+@media (max-width: 640px) {
+  .ov { gap: var(--pg-space-5); margin-top: var(--pg-space-4); }
+  .ov-step__link { padding: var(--pg-space-4); }
+  .ov-step__n { font-size: 40px; }
+}
