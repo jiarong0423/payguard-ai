@@ -1,12 +1,12 @@
 {
   "schema_version": "overview_figures_v1",
-  "note": "Values recounted from committed files for the Overview page; tests/frontend_overview_figures.mjs recounts each one from its source and fails on any drift. Nothing here is typed in by hand without a source.",
+  "note": "Values recounted from committed files for the Overview page; tests/frontend_overview_figures.mjs recounts each one from its source and fails on any drift. Nothing here is typed in by hand without a source. source_key names the source line in source_labels_v1.json.",
   "country_rules": {
     "source": "data/country_rules/paypal_country_rules_v1.json",
     "import_rules": 368,
     "export_rules": 313,
     "countries": 10,
-    "source_plain": "Country rules file"
+    "source_key": "country_rules"
   },
   "step1_example": {
     "route": "US → SG",
@@ -17,7 +17,7 @@
     "tier": "prohibited",
     "source": "data/country_rules/paypal_country_rules_v1.json",
     "line": 3947,
-    "source_plain": "Country rules file"
+    "source_key": "country_rules_sg_ecig"
   },
   "step3_send": {
     "proof_row": "dispute-hosted-send-live",
@@ -28,7 +28,7 @@
     },
     "source": "docs/evidence/RECEIPT_20261110_hosted_live.md",
     "line": 11,
-    "source_plain": "PayPal receipt"
+    "source_key": "hosted_receipt"
   },
   "step2_example": {
     "orders": 50,
@@ -44,7 +44,7 @@
       "burst_rows": 708
     },
     "note": "The synthetic burst the Sales spike step loads: 50 rows cycling DEMO_BURST_AMOUNTS in a 1-hour window against DEMO_VELOCITY_BASELINE; ratio = total / hours / baseline (src/payguard/engines.py).",
-    "source_plain": "Demo generator (synthetic)"
+    "source_key": "demo_burst"
   },
   "receipt_sends": [
     {

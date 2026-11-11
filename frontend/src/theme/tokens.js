@@ -39,7 +39,22 @@ export const color = Object.freeze({
   hover: '#ebe6da',           // row / item hover
   disabledLine: '#cfc8b8',
   disabledText: '#9a958a',
+  // v2 (2026-11-12, design-system pass): added only; nothing above changed. Contrast in tests/frontend_design_system_v2.mjs.
+  line: '#cfc6b4',            // hairline: card / fold / tag frames. Decorative (1.45:1); control edges stay controlLine
+  rowHover: '#efe9dd',        // row / item hover (`hover` above keeps its value for existing pages)
+  sel: '#e2dac8',             // THE selection tint: selected row, active step, queue card, linked row (+3px ink bar)
+  surface2: '#ebe5d7',        // sunk surface: folds, summary ledgers
+  riskTint: '#f7e4e4',        // note / stamp backgrounds; text on them stays its own hue (risk 4.8, ok 5.3, warn 5.8)
+  okTint: '#e4ece0',
+  warnTint: '#f2e8d0',
+  ink3: '#8a8478',            // disabled text and non-text meta marks only (3.2:1 on canvas): never running text
 });
+
+// Data viz (v2): no teal, no orange, no white. Above the review line = check first (amber), not risk (red).
+export const viz = Object.freeze({ base: '#bdb6a6', line: '#5a554c', alert: '#7a5000', bg: '#e8e2d5' });
+
+// Composition (v2): 1040 content, 12 columns of 64 with 24 gutters (12*64 + 11*24 = 1032 + 8 slack), 68ch measure.
+export const grid = Object.freeze({ columns: 12, measure: '68ch' });
 
 // Status chips: text colour on a light tint of the same hue (all >= 4.5:1).
 export const statusTint = Object.freeze({ ok: '#dfe8da', watch: '#efe2c4', risk: '#f6dfe0', info: '#e8e2d5', accent: '#e8e2d5' });
@@ -50,7 +65,7 @@ export const sequential = Object.freeze(['#e8e2d5', '#cfc8b8', '#8a857a', '#5a55
 
 export const space = Object.freeze({ 1: 4, 2: 8, 3: 12, 4: 16, 5: 24, 6: 32, 7: 48, 8: 64 }); // px, 8 steps
 
-export const radius = Object.freeze({ chip: 0, control: 0, card: 0, pill: 999 }); // px: square print, round only for status pills
+export const radius = Object.freeze({ chip: 0, control: 0, card: 0, pill: 999, status: 2 }); // px: square print; v2 status labels 2px (pill kept for old pages)
 
 // Flat print: black rules instead of shadows; only floating layers (tooltip, popover, menu) cast a shadow.
 export const elevation = Object.freeze({
@@ -86,6 +101,7 @@ export const scale = Object.freeze({ 1: 12, 2: 14, 3: 16, 4: 20, 5: 28, 6: 40, 7
 export const layout = Object.freeze({
   maxWidth: 1200, topBar: 56, band: 56, actionBar: 56, gridRow: 40, gridRowPhone: 44, sectionGap: 48, sectionGapPhone: 32,
   cardPad: 20, cardPadWide: 24, heroPad: 32, cardGap: 24, phone: 640, content: 1040, focusRing: 2, ruleHeavy: 3,
+  gridCol: 64, gridGutter: 24, stepHead: 72, // v2
 });
 
 const kebab = (name) => String(name).replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
@@ -104,6 +120,8 @@ export function cssVariables() {
   for (const [k, v] of Object.entries(font)) vars[`--pg-font-${kebab(k)}`] = v;
   for (const [k, v] of Object.entries(scale)) vars[`--pg-text-${k}`] = `${v}px`;
   for (const [k, v] of Object.entries(layout)) vars[`--pg-layout-${kebab(k)}`] = `${v}px`;
+  for (const [k, v] of Object.entries(viz)) vars[`--pg-viz-${k}`] = v;
+  for (const [k, v] of Object.entries(grid)) vars[`--pg-grid-${k}`] = String(v);
   return vars;
 }
 

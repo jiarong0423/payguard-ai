@@ -95,18 +95,21 @@ for (const broken of [{ sending_account_masked: 'SYNTHETICMERCHANT' }, { account
   await assert.rejects(apiRequest('/paypal/disputes/add-tracking', { method: 'POST', body: trackingBody, session }), /contract mismatch/, JSON.stringify(broken));
 }
 
-// Colours: orange Continue and sage-green Send, both at least 4.5:1 with white text (pinned ratios).
+// Colours: ink Continue and sage-green Send, both at least 4.5:1 with white text (pinned ratios).
 const luminance = (hex) => {
   const [r, g, b] = [1, 3, 5].map((index) => parseInt(hex.slice(index, index + 2), 16) / 255).map((c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 };
 const contrast = (hex) => 1.05 / (luminance(hex) + 0.05);
 const background = (selector) => css.match(new RegExp(`${selector.replace(/\./g, '\\.')} \\{ background: (#[0-9a-f]{6});[^}]*color: #fff;`, 'u'))[1];
-const orange = background('.button.button-confirm-continue');
+// (P4 2026-11-12) Continue moved off the off-palette orange onto the ink primary token with the on-ink text token;
+// the contrast is pinned from the token values in theme/tokens.js (ink #111111 under on-accent #f8f5ee).
+assert.match(css, /\.button\.button-confirm-continue \{ background: var\(--pg-color-ink\); border-color: var\(--pg-color-ink\); color: var\(--pg-color-on-accent\); \}/u, 'Continue = ink primary');
+const { color: tokenColor } = await import('../frontend/src/theme/tokens.js');
+const pair = (fg, bg) => { const [a, b] = [luminance(fg), luminance(bg)].sort((x, y) => y - x); return (a + 0.05) / (b + 0.05); };
+assert.ok(pair(tokenColor.onAccent, tokenColor.ink) >= 4.5, 'Continue text passes AA on ink');
 const green = background('.button.button-confirm-send');
-assert.equal(orange, '#c2410c', 'orange token darkened from #e06c1e for AA');
 assert.equal(green, '#4a6a4e', 'sage green');
-assert.equal(Number(contrast(orange).toFixed(2)), 5.18);
 assert.equal(Number(contrast(green).toFixed(2)), 6.06);
 assert.ok(contrast('#e06c1e') < 4.5, 'the original orange would fail AA, hence the darker shade');
 assert.ok(css.includes('.button.button-confirm-send.is-holding, .button.button-confirm-send:disabled { background: #cbd5d0;'), 'muted during the hold');

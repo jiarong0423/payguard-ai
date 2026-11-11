@@ -32,6 +32,14 @@
   --pg-color-hover: #ebe6da;
   --pg-color-disabled-line: #cfc8b8;
   --pg-color-disabled-text: #9a958a;
+  --pg-color-line: #cfc6b4;
+  --pg-color-row-hover: #efe9dd;
+  --pg-color-sel: #e2dac8;
+  --pg-color-surface2: #ebe5d7;
+  --pg-color-risk-tint: #f7e4e4;
+  --pg-color-ok-tint: #e4ece0;
+  --pg-color-warn-tint: #f2e8d0;
+  --pg-color-ink3: #8a8478;
   --pg-tint-ok: #dfe8da;
   --pg-tint-watch: #efe2c4;
   --pg-tint-risk: #f6dfe0;
@@ -58,6 +66,7 @@
   --pg-radius-control: 0px;
   --pg-radius-card: 0px;
   --pg-radius-pill: 999px;
+  --pg-radius-status: 2px;
   --pg-elev-l0: none;
   --pg-elev-l1: 0 0 0 1px #111111;
   --pg-elev-l2: 0 0 0 2px #111111;
@@ -98,4 +107,13 @@
   --pg-layout-content: 1040px;
   --pg-layout-focus-ring: 2px;
   --pg-layout-rule-heavy: 3px;
+  --pg-layout-grid-col: 64px;
+  --pg-layout-grid-gutter: 24px;
+  --pg-layout-step-head: 72px;
+  --pg-viz-base: #bdb6a6;
+  --pg-viz-line: #5a554c;
+  --pg-viz-alert: #7a5000;
+  --pg-viz-bg: #e8e2d5;
+  --pg-grid-columns: 12;
+  --pg-grid-measure: 68ch;
 }

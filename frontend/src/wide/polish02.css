@@ -1,9 +1,7 @@
 /* polish02: owned by one UI agent. Rules only inside the media query (viewport 1280px and wider). */
 @media (min-width: 1280px) {
   /* KPI row: the middle card holds the longest text, so it gets a wider column (its note fits on one line at 1920). */
-  #velocity .velocity-metrics { grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr) minmax(0, 1fr); }
   /* KPI row: the three cards share one height so the middle card no longer sticks out below its neighbours. */
-  #velocity .velocity-metrics { align-items: stretch; }
 
   /* Chart: canvas 280px -> 260px (#velocity beats the lazily loaded charts.css), so the chart box ends near the records card;
      260 is the lowest value where the y-axis title "USD per hour" stays on one line. */

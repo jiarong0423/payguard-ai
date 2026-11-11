@@ -3,12 +3,17 @@
 // Every value comes from frontend/src/data/check_sale_examples_v1.json (engines rerun by tests/test_check_sale_p3_data.py)
 // or frontend/src/data/country_rules_index_v1.json (a display copy of the rule pack, recounted by
 // tests/frontend_check_sale_p3.mjs). Nothing here sends a request or changes a result. Loaded on demand.
+// (F 2026-11-12) Source lines from theme/sources.js (same key, same words as Overview, Proof and For judges); they wrap,
+// never cut. Dates through theme/format.js. Card buttons sit on one baseline at the foot of each card.
 import { useEffect, useState } from 'react';
 import data from './data/check_sale_examples_v1.json';
+import { CHANNEL3_READERS, SourceLine } from './theme/sources.js';
+import { dateLabel } from './theme/format.js';
 import warningSvg from './theme/icons/warning.svg?raw';
 import xCircleSvg from './theme/icons/x-circle.svg?raw';
 import infoSvg from './theme/icons/info.svg?raw';
 import arrowSvg from './theme/icons/arrow-right.svg?raw';
+import fileSvg from './theme/icons/file-text.svg?raw';
 import './ProductReference.css';
 import './CheckSaleExtras.css';
 
@@ -18,10 +23,6 @@ function PhIcon({ svg }) {
 }
 const STAMP_ICON = { risk: xCircleSvg, warn: warningSvg, neutral: infoSvg };
 
-// One source line everywhere: LABEL · plain words; the full path sits in the title.
-function Source({ label, title, children, testId }) {
-  return <p className="tg-source check-source" title={title} data-testid={testId}><span className="tg-source__label">{label}</span><span>· {children}</span></p>;
-}
 
 // The rule pack copy is loaded once, on first use (a result row's chain or a grid cell).
 let indexPromise = null;
@@ -70,7 +71,7 @@ export function RuleChain({ row, tipId, names, result, shownAs, sourceKind }) {
     ['Rule id', rule ? rule.id : failed ? 'Rule details could not be loaded' : index ? `${row.code} (PayPal or account rule, not in the country pack)` : 'Loading…'],
     ['Level', `${level}${rule && shownAs !== TIER_SHOWN[rule.tier] ? ` · shown as ${shownAs}` : ''}`],
     ['Law', rule ? lawOf(rule) || 'Not named on the source page' : sourceKind],
-    ['Source', `${rule?.agency ? `${rule.agency} · ` : ''}${hostOf(row.source)} · read ${rule?.retrieved_at || result.retrieved_at}`],
+    ['Source', `${rule?.agency ? `${rule.agency} · ` : ''}${hostOf(row.source)} · read ${dateLabel(rule?.retrieved_at || result.retrieved_at)}`],
   ];
   return <span className="tg-tip__body rule-chain" role="tooltip" id={tipId} data-testid="rule-chain" data-rule-id={rule?.id || ''}>
     <b className="rule-chain__title">Why this row</b>
@@ -85,20 +86,22 @@ function pick(example) {
   document.querySelector(`#compliance ${PICK[example.id]}`)?.click();
   if (example.kind === 'description') window.requestAnimationFrame(() => document.getElementById('description')?.focus());
 }
+// The detail line never repeats the result line word for word (the NO MATCH card's first sentence).
+const restOf = (detail, result) => (detail.startsWith(result) ? detail.slice(result.length).replace(/^[.\s]+/u, '') : detail);
 export function ThreeResults() {
   return <section className="check-three tg-section" data-testid="three-results" aria-labelledby="three-results-title">
     <div className="check-head"><h3 id="three-results-title" className="tg-h3">Three items, three results</h3>
       <p className="tg-small">The same checks on three sample items. Use a card to put its example in the form below.</p></div>
     <div className="check-three__row">
-      {data.examples.map((example) => <figure key={example.id} className={`tg-clip tg-clip--fact check-three__card is-${example.tone}`} data-testid={`three-results-${example.id}`}>
+      {data.examples.map((example) => <figure key={example.id} className={`tg-clip tg-clip--fact tg-card--cta check-three__card is-${example.tone}`} data-testid={`three-results-${example.id}`}>
         <figcaption className="tg-clip__kicker"><span className={`tg-stamp tg-stamp--${example.tone}`}><PhIcon svg={STAMP_ICON[example.tone]} />{example.stamp}</span></figcaption>
         <blockquote className="tg-clip__quote">{example.description}</blockquote>
         <p className={example.tone === 'risk' ? 'tg-risk check-three__result' : 'check-three__result'} data-link={example.kind === 'route' ? `law:${example.result}` : undefined} data-link-risk={example.tone === 'risk' ? '' : undefined}>{example.tone === 'risk' && <PhIcon svg={xCircleSvg} />}<span>{example.result}</span></p>
-        <p className="check-three__detail">{example.detail}</p>
+        <p className="check-three__detail">{restOf(example.detail, example.result)}</p>
         {example.also && <p className="check-three__also"><span className="tg-deadline--soon check-three__also-word"><PhIcon svg={warningSvg} />{example.also.label}</span> {example.also.statute} · {example.also.detail}</p>}
-        <Source label="RECOUNTED" title={example.source}>{example.kind === 'route' ? 'country rules check, rerun in tests' : 'policy check, rerun in tests'}</Source>
+        <div className="tg-cta check-three__foot"><SourceLine kind="RECOUNTED" source={example.kind === 'route' ? 'country_rules_sg_ecig' : 'policy_check'} />
         <button type="button" className="tg-btn tg-btn--secondary tg-btn--sm check-three__use" data-testid={`three-results-card-${example.id}`} onClick={() => pick(example)}>
-          {example.kind === 'route' ? 'Fill the country form' : 'Put in the description'}<PhIcon svg={arrowSvg} /></button>
+          {example.kind === 'route' ? 'Fill the country form' : 'Put in the description'}<PhIcon svg={arrowSvg} /></button></div>
       </figure>)}
     </div>
   </section>;
@@ -117,7 +120,6 @@ export function RuleGrid() {
   const rows = cell && index ? index.rules.filter((rule) => rule.country === cell.code && rule.side === cell.side) : [];
   const shown = tier === 'all' ? rows : rows.filter((rule) => rule.tier === tier);
   const visible = all ? shown : shown.slice(0, SHOW_FIRST);
-  const file = grid.source.split('/').pop();
   return <section className="check-grid tg-section" data-testid="rule-grid" aria-labelledby="rule-grid-title">
     <div className="check-head"><h3 id="rule-grid-title" className="tg-h3">Rules in the pack: 10 countries, import and export</h3>
       <p className="tg-small">Select a number to list that country's rules for that side.</p></div>
@@ -133,7 +135,7 @@ export function RuleGrid() {
         <tfoot><tr className="tg-ledger__total"><th scope="row" className="tg-ledger__ref">All 10 countries</th>
           <td className="tg-ledger__amt" data-testid="rule-grid-total-import">{grid.totals.import}</td><td className="tg-ledger__amt" data-testid="rule-grid-total-export">{grid.totals.export}</td></tr></tfoot>
       </table>
-      <Source label="RECOUNTED" title={`${grid.source} (recounted by tests/frontend_check_sale_p3.mjs)`} testId="rule-grid-source">{file}, official pages read {grid.retrieved_at}</Source>
+      <SourceLine kind="RECOUNTED" source="country_rules" testId="rule-grid-source">official pages read {dateLabel(grid.retrieved_at)}</SourceLine>
     </div>
     {cell && <div className="check-grid__list" data-testid="rule-grid-list" aria-live="polite">
       <div className="check-grid__list-head"><strong>{NAMES[cell.code]} {cell.side} · {grid.counts[cell.side][cell.code]} rules</strong>
@@ -145,8 +147,8 @@ export function RuleGrid() {
         </div>
         <ul className="check-grid__rules">{visible.map((rule) => <li key={rule.id}><figure className="tg-clip check-grid__rule">
           <figcaption className="tg-clip__kicker"><span className="tg-mono">{rule.id}</span> · {TIER_WORD[rule.tier]}{rule.channel ? ` ${CHANNEL_WORDS[rule.channel] || rule.channel.replace(/_/gu, ' ')} only` : ''} · {placeName(rule.route.split('->')[0])} → {placeName(rule.route.split('->')[1])}</figcaption>
-          <blockquote className="tg-clip__quote">{rule.rule}</blockquote>
-          <p className="tg-clip__source" title={`${rule.url} · ${grid.source}:${rule.line}`} data-link={lawOf(rule) ? `law:${lawOf(rule)}` : undefined}>{lawOf(rule) ? `${lawOf(rule)} · ` : ''}<a className="tg-link" href={rule.url} target="_blank" rel="noopener noreferrer">{rule.agency || hostOf(rule.url)}</a> · read {rule.retrieved_at}</p>
+          <blockquote className="tg-clip__quote tg-clip__quote--ruled">{rule.rule}</blockquote>
+          <p className="tg-clip__source" title={`${rule.url} · ${grid.source}:${rule.line}`} data-link={lawOf(rule) ? `law:${lawOf(rule)}` : undefined}>{lawOf(rule) ? `${lawOf(rule)} · ` : ''}<a className="tg-link" href={rule.url} target="_blank" rel="noopener noreferrer">{rule.agency || hostOf(rule.url)}</a> · read {dateLabel(rule.retrieved_at)}</p>
         </figure></li>)}</ul>
         {shown.length > SHOW_FIRST && <button type="button" className="tg-btn tg-btn--secondary tg-btn--sm" data-testid="rule-grid-more" aria-expanded={all} onClick={() => setAll((open) => !open)}>{all ? `Show the first ${SHOW_FIRST}` : `Show all ${shown.length}`}</button>}
       </>}
@@ -167,12 +169,12 @@ export function GuideAiCard() {
     <h3 id="guide-ai-title" className="tg-h3">Gemini maps a seller sentence to a form item; fixed rules then validate it and code decides what counts.</h3>
     <dl className="check-ai__figures">
       <div><dt>Seller sentences sent</dt><dd className="tg-num">{ai.sentences}</dd></div>
-      <div><dt>Replies refused for format</dt><dd className="tg-num">{ai.format_invalid}</dd></div>
+      <div><dt>Format-invalid replies</dt><dd className="tg-num">{ai.format_invalid}</dd></div>
       <div><dt>Filled fields that were right</dt><dd className="tg-num">{ai.precision}</dd></div>
       <div><dt>Recall</dt><dd className="tg-num">{ai.recall}</dd></div>
       <div><dt>Confident wrong</dt><dd className="tg-num">{ai.confident_wrong}</dd></div>
     </dl>
-    <Source label="RECORDED" title={`${ai.source}:${ai.line}`} testId="guide-ai-source">Gemini API run {ai.date}, {ai.model}, policy pre-check</Source>
+    <SourceLine kind="RECORDED" source="gemini_guide_runs" testId="guide-ai-source">{ai.model}, policy pre-check</SourceLine>
     <button type="button" className="tg-btn tg-btn--text" data-testid="guide-ai-open" onClick={openGuide}>Open the Step 01 guide</button>
   </section>;
 }
@@ -187,18 +189,18 @@ export function CategoryReference({ category }) {
 // Channel3 category tree vs PayPal AUP: counts from docs/CHANNEL3_NOTES.md and the published CSV, three CSV rows verbatim.
 export function Channel3Reference() {
   const tree = data.channel3_tree;
-  const file = tree.csv.split('/').pop();
   return <section className="check-c3 tg-section" data-testid="channel3-reference" aria-labelledby="channel3-reference-title">
     <figure className="tg-clip check-c3__clip">
       <figcaption className="tg-clip__kicker">Reference, does not change the result</figcaption>
       <h3 id="channel3-reference-title" className="tg-h3">Channel3 category tree vs PayPal AUP</h3>
       <p className="check-c3__count" data-testid="channel3-reference-count"><span className="tg-num">{tree.categories_read.toLocaleString('en-US')}</span> Channel3 categories read once; <span className="tg-num">{tree.mapped}</span> mapped to a PayPal AUP item or a question for the seller.</p>
       <ul className="check-c3__rows">{tree.examples.map((row) => <li key={row.line} data-testid="channel3-reference-row">
-        <blockquote className="tg-clip__quote">{row.path}</blockquote>
+        <blockquote className="tg-clip__quote tg-clip__quote--ruled">{row.path}</blockquote>
         <p className="tg-small">{row.paypal_aup_item} · {row.agreement.replace(/^(\d) of 5 readers$/u, '$1 of 5 readers agreed')} · <span title={`${tree.csv}:${row.line}`}>CSV line {row.line}</span></p>
       </li>)}</ul>
-      <Source label="RECORDED" title={`${tree.notes}:${tree.notes_line}; ${tree.csv}`} testId="channel3-reference-source">Channel3 category tree, read once; mapping in {file}</Source>
-      <p className="tg-clip__source"><a className="tg-link" href={tree.csv_url} target="_blank" rel="noopener noreferrer" data-testid="channel3-reference-csv">Open the {tree.mapped}-row table (CSV)</a></p>
+      <p className="check-c3__readers" title={CHANNEL3_READERS.title} data-testid="channel3-readers">{CHANNEL3_READERS.text}</p>
+      <SourceLine kind="RECORDED" source="channel3_table" testId="channel3-reference-source" />
+      <p className="tg-clip__source check-c3__csv"><a className="tg-btn tg-btn--secondary tg-btn--sm" href={tree.csv_url} target="_blank" rel="noopener noreferrer" data-testid="channel3-reference-csv"><PhIcon svg={fileSvg} />Open the {tree.mapped}-row table (CSV)<PhIcon svg={arrowSvg} /></a></p>
     </figure>
   </section>;
 }

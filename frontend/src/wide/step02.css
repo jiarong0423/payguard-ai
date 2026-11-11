@@ -1,20 +1,7 @@
 /* Wide-screen layout rules for step02 (viewport 1280px and wider only). Owned by one agent; add rules inside the media query below. */
 @media (min-width: 1280px) {
-  /* Metric cards: only as tall as their content (no stretch to the tallest card), smaller number, tight spacing. */
-  #velocity .velocity-metrics { align-items: start; gap: 12px; padding: 10px 16px; }
-  #velocity .velocity-metrics .metric { padding: 8px 14px 10px; }
-  #velocity .velocity-metrics .metric-value { margin: 2px 0 2px; }
-  #velocity .velocity-metrics .metric-value strong { font-size: 26px; line-height: 1.15; }
-  #velocity .velocity-metrics .metric small { line-height: 1.35; }
-  #velocity .velocity-metrics .metric-baseline-note { margin-top: 2px; }
-
-  /* Alert strip: one line, the hint takes the free space, button and time stay at the right. */
-  /* (P1) 1040px content: the strip wraps instead of squeezing the hint into a one-word column. */
-  #velocity .velocity-summary { flex-wrap: wrap; gap: 8px 16px; padding: 6px 16px; }
-  #velocity .velocity-summary > div { flex: 0 1 auto; white-space: nowrap; }
-  #velocity .velocity-summary > small { flex: 1 1 220px; min-width: 0; text-align: right; }
-  #velocity .velocity-metrics .metric-top span { white-space: normal; }
-  #velocity .velocity-summary .velocity-inspect { min-height: 36px; padding-top: 4px; padding-bottom: 4px; flex-shrink: 0; }
+  /* (P4) The hero figure sits beside the guide column; the chart and the orders below use the full width. */
+  #velocity .stage-main > .vs-hero { grid-column: 1; grid-row: 1 / span 2; }
 
   /* Fold: slim summary, tabs and period switch tight, chart and table sized to fit one screen when open. */
   #velocity .stage-fold > summary { min-height: 40px; padding: 8px 16px; }
@@ -26,7 +13,6 @@
   #velocity .velocity-chart { margin-bottom: 0; }
   #velocity .spike-records { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 24px; margin-top: 8px; padding: 8px 16px; }
   #velocity .spike-records-case { grid-column: 1 / -1; }
-  #velocity .grid-caption { padding: 8px 16px 4px; }
   #velocity .velocity-grid-tools { padding: 0 16px 8px; }
   #velocity .transaction-grid { height: clamp(300px, 36vh, 400px); }
   #velocity .velocity-selected-detail { margin-top: 8px; padding: 10px 16px; }
@@ -37,6 +23,4 @@
   #velocity .stage-side > .step-section, #velocity .stage-side > .step-more { margin: 0; }
   #velocity .stage-side > .step-section .optional-trigger { padding-top: 6px; padding-bottom: 6px; min-height: 0; }
   #velocity .step-more > summary { min-height: 40px; padding: 4px 16px; }
-  #velocity .stage-next { margin: 8px 16px 10px; padding: 4px 8px 4px 16px; }
-  #velocity .stage-next .button { min-height: 36px; padding-top: 4px; padding-bottom: 4px; }
 }

@@ -16,11 +16,7 @@
   .page-top .eyebrow { margin-bottom: 4px; }
   .journey { margin-bottom: 12px; }
   .invoice-editor textarea { min-height: 76px; }
-  .metrics-grid { padding: 12px 16px; }
-  .metric { padding: 12px 16px; }
   /* Step 03: a slimmer case queue (each case is a short row, not a tall card) and a thinner "Next" bar. */
-  .dispute-layout { grid-template-columns: minmax(220px, 250px) minmax(0, 1fr); }
-  .case-list { padding: 8px; }
   .case-card { padding: 8px 12px; margin-bottom: 6px; }
   .case-card > div { gap: 2px 8px; }
   .case-card > span { margin: 4px 0 2px; }

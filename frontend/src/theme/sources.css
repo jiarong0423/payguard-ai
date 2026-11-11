@@ -1,0 +1,9 @@
+/* (F 2026-11-12) Source line and quote rule for theme/sources.js. Tokens only (theme/tokens.css).
+   A source line wraps to a second line on phones instead of an ellipsis: in proof, a cut-off source reads as hiding
+   something. The full path stays in the title. Candidates to move into components.css (.tg-source, .tg-clip__quote). */
+.tg-source.tg-source--wrap { display: block; overflow: visible; white-space: normal; text-overflow: clip; overflow-wrap: anywhere; line-height: 1.5; }
+.tg-source.tg-source--wrap .tg-source__label { white-space: nowrap; }
+
+/* Quote without a lone opening quote mark: a 2px ink rule on the left. */
+.tg-clip__quote.tg-clip__quote--ruled { padding-left: var(--pg-space-3); text-indent: 0; border-left: 2px solid var(--pg-color-ink); }
+.tg-clip__quote.tg-clip__quote--ruled::before { content: none; }

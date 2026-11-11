@@ -76,7 +76,8 @@ for (const [name, testId] of [['SendConfirmDialog', 'send-confirm-backdrop'], ['
 // ---- C2: one orange for both warnings, stronger than the Disputes body's muted paragraph rule. ----
 assert.ok(block('SendConfirmDialog').includes('<p className="send-confirm-warning" data-testid="send-confirm-warning">'));
 assert.ok(block('DraftConfirmDialog').includes('<p className="send-confirm-warning" data-testid="draft-confirm-warning">'));
-assert.match(css, /\.send-confirm \.send-confirm-warning \{[^}]*color: #9a3412;/u);
+// (P4 2026-11-12) Both warnings use the amber "check first" token instead of the off-palette orange #9a3412.
+assert.match(css, /\.send-confirm \.send-confirm-warning \{[^}]*color: var\(--pg-color-warn\);/u);
 assert.equal(/(^|\n)\.send-confirm-warning \{/u.test(css), false, 'no weaker single-class rule left');
 assert.ok(css.includes('.provider-disputes-body > p, .provider-disputes-body p {'), 'the rule that greyed it (specificity 0,1,1 < 0,2,0)');
 

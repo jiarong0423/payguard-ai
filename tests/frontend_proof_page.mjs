@@ -11,6 +11,7 @@ import { readFileSync } from 'node:fs';
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 const ledger = JSON.parse(read('frontend/src/data/proof_ledger_v1.json'));
 const figures = JSON.parse(read('frontend/src/data/overview_figures_v1.json'));
+const sourceLabels = JSON.parse(read('frontend/src/data/source_labels_v1.json'));
 let checks = 0;
 const ok = (value, message) => { assert.ok(value, message); checks += 1; };
 
@@ -28,7 +29,9 @@ ok(ledger.sends.some((send) => send.id === verify.send_id && send.file === verif
 const quoteFields = ['date', 'where', 'debug_id', 'readback', 'file_check'];
 const lineOf = (file, line) => read(file).split('\n')[line - 1] ?? '';
 for (const send of ledger.sends) {
-  ok(ledger.basis.some((item) => item.label === send.basis), `${send.id} basis in the legend`);
+  // (F 2026-11-12) The four labels moved to source_labels_v1.json (one copy for the site); each row names its source key.
+  ok(sourceLabels.labels.some((item) => item.kind === send.basis), `${send.id} basis in the legend`);
+  ok(sourceLabels.sources[send.source_key]?.path === send.file, `${send.id} source key names its file`);
   for (const field of quoteFields) {
     const quote = send[field];
     if (!quote) continue;
@@ -40,8 +43,9 @@ for (const field of ['recorded_sha256', 'served_bytes']) {
   ok(lineOf(verify.file, verify[field].line).includes(verify[field].value), `verify.${field} on ${verify.file}:${verify[field].line}`);
 }
 ok(/SHA-256 recorded at send time/u.test(lineOf(verify.file, verify.recorded_sha256.line)), 'the cited line is the send-time fingerprint');
-ok(new Set(ledger.basis.map((item) => item.label)).size === 4
-  && ['RECORDED', 'RECOUNTED', 'SYNTHETIC', 'HOSTED DEMO'].every((label) => ledger.basis.some((item) => item.label === label)), 'four basis labels');
+ok(new Set(sourceLabels.labels.map((item) => item.kind)).size === 4
+  && ['RECORDED', 'RECOUNTED', 'SYNTHETIC', 'HOSTED DEMO'].every((label) => sourceLabels.labels.some((item) => item.kind === label)), 'four basis labels');
+ok(!('basis' in ledger), 'no second copy of the label definitions in the ledger');
 
 // 3. Same Debug-Ids as the Overview's send list (same file and line).
 const overviewSends = [...figures.receipt_sends, ...figures.readback_sends];

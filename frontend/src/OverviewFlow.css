@@ -13,16 +13,21 @@
 .ov-step__link { display: flex; width: 100%; color: inherit; text-decoration: none; transition: background-color var(--pg-motion-hover); }
 .ov-step__link:hover { background: var(--pg-color-hover); }
 .ov-step__link:focus-visible { outline: var(--pg-layout-focus-ring) solid var(--pg-color-focus); outline-offset: var(--pg-space-1); }
-.ov-step__link > .tg-clip { display: flex; flex-direction: column; gap: var(--pg-space-2); width: 100%; min-width: 0; padding-inline: var(--pg-space-1); }
+.ov-step__link > .tg-clip { display: flex; flex-direction: column; gap: var(--pg-space-2); width: 100%; min-width: 0; } /* (F) inner padding from .tg-pad (components.css v2) */
 .ov-step__link .tg-clip__quote { margin: 0; line-height: 1.5; font-weight: 600; font-variant-numeric: tabular-nums; }
 .ov-step__name { margin: 0; font-size: var(--pg-text-4); font-weight: 700; line-height: 1.2; }
 .ov-step__what, .ov-step__line { margin: 0; font-size: var(--pg-text-2); line-height: 1.43; color: var(--pg-color-muted); }
-.ov-step__line.tg-done { color: var(--pg-color-ok); }
+.ov-step__wait { display: inline-flex; align-items: center; gap: var(--pg-space-1); } /* (F) read-back still under review: neutral clock, green is kept for sent */
 .ov-step__line .tg-mono { color: var(--pg-color-ink); }
 .ov-step__stamp { align-self: flex-start; margin-block: var(--pg-space-1); }
 .ov-step__figure { font-family: var(--pg-font-serif); font-size: var(--pg-text-6); font-weight: 600; line-height: 1; font-variant-numeric: lining-nums tabular-nums; }
 .ov-step__open { display: inline-flex; align-items: center; gap: var(--pg-space-2); margin-top: auto; padding-top: var(--pg-space-3); font-size: var(--pg-text-2); font-weight: 600; text-decoration: underline; text-underline-offset: var(--pg-space-1); }
 .ov-step__link .tg-source { max-width: 100%; }
+
+/* (F) Card 03, the real hosted send, is the one to see second: recessed surface and a heavier name. */
+.ov-step--send .ov-step__link > .tg-clip { background: var(--pg-color-recede); }
+.ov-step--send .ov-step__name { font-size: var(--pg-text-5); }
+.ov-step--send .ov-step__link:hover > .tg-clip { background: var(--pg-color-hover); }
 
 /* Figures: four equal columns. */
 .ov-facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--pg-space-5); }

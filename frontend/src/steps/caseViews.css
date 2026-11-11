@@ -1,0 +1,74 @@
+/* (P4 2026-11-12) Step 03 containers: queue ledger, case head, day book, AI step, hosted send. Loaded with steps/CaseViews.jsx.
+   Tokens only; type on the 12 / 14 / 16 / 20 / 28 / 40 / 56 scale. Token names from review_FULL.md s3a that the design
+   review will add later: design system v2 classes (.tg-seg, .tg-fold, .tg-tag--neutral, .tg-is-sel) replace the local ones. */
+.ds-layout { padding: var(--pg-space-4); }
+.ds-head__num.is-soon { color: var(--pg-color-warn); }
+.ds-hosted { display: grid; gap: var(--pg-space-2); margin: var(--pg-space-4); padding-top: var(--pg-space-2); border-top: 2px solid var(--pg-color-ink); scroll-margin-top: 80px; }
+.ds-hosted > p { margin: 0; }
+.ds-queue-col, .ds-case { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--pg-space-4); align-content: start; min-width: 0; }
+.ds-queue__cap { display: grid; gap: 2px; margin: 0; padding: var(--pg-space-2) 0; border-bottom: 1px solid var(--pg-color-ink); font-size: var(--pg-text-1); }
+.ds-queue__cap b { letter-spacing: .1em; text-transform: uppercase; }
+.ds-queue__cap span, .ds-queue__head { color: var(--pg-color-muted); }
+.ds-queue__head { display: flex; justify-content: space-between; margin: 0; padding: 6px 8px; border-bottom: 1px solid var(--pg-color-rule-soft); font-size: var(--pg-text-1); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.ds-queue__list { margin: 0; padding: 0; list-style: none; }
+.ds-queue__list > li { border-bottom: 1px solid var(--pg-color-rule-soft); }
+.ds-queue__list > li:nth-child(5n) { border-bottom-color: var(--pg-color-ink); }
+.ds-queue__row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px var(--pg-space-3); width: 100%; padding: 10px 8px; border: 0; background: transparent; color: var(--pg-color-ink); font: 400 var(--pg-text-2)/1.35 var(--pg-font-sans); text-align: left; cursor: pointer; }
+.ds-queue__row:hover { background: var(--pg-color-hover); }
+.ds-queue__row:focus-visible { outline: var(--pg-layout-focus-ring) solid var(--pg-color-focus); outline-offset: -2px; }
+.ds-queue__ref { font-size: var(--pg-text-3); font-weight: 700; }
+.ds-queue__amt, .ds-queue__due { text-align: right; white-space: nowrap; }
+.ds-queue__amt { font-weight: 650; }
+.ds-queue__reason { min-width: 0; color: var(--pg-color-muted); }
+.ds-queue__total { margin: 0; padding: 8px; border-top: 3px double var(--pg-color-ink); font-size: var(--pg-text-2); font-weight: 700; }
+.ds-head { display: grid; gap: var(--pg-space-3); padding-bottom: var(--pg-space-4); border-bottom: 1px solid var(--pg-color-ink); }
+.ds-head__kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 0; color: var(--pg-color-muted); font-size: var(--pg-text-2); }
+.ds-head__title { margin: 0; font-family: var(--pg-font-serif); font-size: var(--pg-text-5); font-weight: 650; line-height: 1.1; }
+.ds-head__figs { display: flex; flex-wrap: wrap; gap: var(--pg-space-3) var(--pg-space-7); }
+.ds-head__figs > div { display: grid; gap: 4px; align-content: start; }
+.ds-head__label { color: var(--pg-color-muted); font-size: var(--pg-text-1); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.ds-head__num { display: inline-flex; align-items: center; gap: 8px; font-family: var(--pg-font-serif); font-size: var(--pg-text-6); font-weight: 700; line-height: 1; white-space: nowrap; }
+.ds-head__num.is-due { color: var(--pg-color-risk); }
+.ds-head__tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; }
+.ds-head .tg-source, .ds-ai .tg-source { white-space: normal; }
+.ds-case .evidence-toolbar { margin: 0; padding-top: var(--pg-space-3); border-top: 1px solid var(--pg-color-rule-soft); }
+.ds-case .evidence-toolbar h3 { margin: 2px 0 0; font-size: var(--pg-text-3); }
+.ds-case .evidence-placeholder { padding: var(--pg-space-4) 0; border-top: 1px solid var(--pg-color-ink); }
+.ds-case .evidence-placeholder h3 { margin: 0 0 4px; font-family: var(--pg-font-serif); font-size: var(--pg-text-4); }
+.ds-case .evidence-placeholder p { margin: 0; color: var(--pg-color-muted); }
+#disputes .ds-case :is(.dispute-route, .restricted-summary, .privacy-strip, .human-review), #disputes .requirement-list > div { margin-bottom: 0; padding-left: 0; padding-right: 0; border: 0; border-top: 1px solid var(--pg-color-rule-soft); border-radius: var(--pg-radius-control); background: transparent; }
+.ds-ai__flow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--pg-space-3); margin: var(--pg-space-2) 0 var(--pg-space-3); padding: 0; list-style: none; counter-reset: ai; }
+.ds-ai__flow li { display: grid; gap: 2px; padding-top: var(--pg-space-2); border-top: 1px solid var(--pg-color-ink); font-size: var(--pg-text-2); counter-increment: ai; }
+.ds-ai__flow b::before { content: counter(ai) ". "; }
+.ds-ai__flow span { color: var(--pg-color-muted); }
+.ds-ai__state { margin: 0 0 var(--pg-space-2); font-size: var(--pg-text-2); }
+.ds-ai__state .tg-source__label { margin-right: 6px; }
+
+/* Step 02 hero, fold and orders ledger. */
+/* Step 02: hero figure (the same x5.0 as Overview card 02), a sentence, the facts and one primary button. */
+.vs-hero { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--pg-space-3) var(--pg-space-6); align-items: start; margin: var(--pg-space-3) var(--pg-space-4) 0; padding: var(--pg-space-4) 0; border-top: var(--pg-layout-rule-heavy) solid var(--pg-color-ink); border-bottom: 1px solid var(--pg-color-ink); }
+.vs-hero__text { display: grid; gap: var(--pg-space-2); min-width: 0; }
+.vs-hero__line { max-width: 60ch; margin: 0; color: var(--pg-color-ink); font-family: var(--pg-font-serif); font-size: var(--pg-text-4); line-height: 1.35; }
+.vs-hero__facts { display: flex; flex-wrap: wrap; gap: var(--pg-space-2) var(--pg-space-6); padding: var(--pg-space-2) 0; border-top: 1px solid var(--pg-color-rule-soft); border-bottom: 1px solid var(--pg-color-rule-soft); }
+.vs-hero .tg-small { margin: 0; }
+.vs-hero__act { grid-column: 2; display: flex; flex-wrap: wrap; align-items: center; gap: var(--pg-space-2) var(--pg-space-4); }
+.vs-fig { display: grid; gap: 2px; min-width: 0; }
+.vs-fig__label { color: var(--pg-color-muted); font-size: var(--pg-text-1); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+.vs-fig__value { color: var(--pg-color-ink); font-size: var(--pg-text-3); font-weight: 650; white-space: nowrap; }
+.vs-fig--hero .vs-fig__value { font-family: var(--pg-font-serif); font-size: var(--pg-text-7); font-weight: 700; line-height: 1; letter-spacing: -.02em; }
+#velocity .spike-records, #velocity .velocity-selected-detail { margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; border: 0; border-top: 1px solid var(--pg-color-rule-soft); border-radius: var(--pg-radius-control); background: transparent; }
+.vs-orders { margin-top: var(--pg-space-3); }
+.vs-orders__cap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; margin: 0; padding: var(--pg-space-2) 0; font-size: var(--pg-text-2); }
+.vs-orders__cap b { font-size: var(--pg-text-1); letter-spacing: .1em; text-transform: uppercase; }
+.vs-orders__cap span { color: var(--pg-color-muted); }
+#velocity .vs-orders .velocity-grid-tools { padding: 0 0 var(--pg-space-2); }
+#velocity .transaction-grid .ag-row.is-fifth { border-bottom-color: var(--pg-color-ink); }
+@media (max-width: 640px) {
+  .vs-hero { grid-template-columns: minmax(0, 1fr); margin: var(--pg-space-3) var(--pg-space-3) 0; }
+  .vs-hero__act { grid-column: 1; }
+  .vs-hero__act .button { width: 100%; }
+  #velocity .stage-fold { margin: var(--pg-space-3) var(--pg-space-3) 0; }
+  .ds-head__figs { gap: var(--pg-space-3) var(--pg-space-5); }
+  .ds-head__num { font-size: var(--pg-text-5); }
+  .ds-ai__flow { grid-template-columns: minmax(0, 1fr); }
+}

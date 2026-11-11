@@ -17,7 +17,6 @@
   .main-content { width: min(calc(100% - 48px), var(--pg-content-w)); padding-left: 0; padding-right: 0; }
   .console-pages .tg-nav__inner { width: min(calc(100% - 48px), var(--pg-content-w)); padding: 0; }
   /* Step 03: the case queue takes about a fifth of the panel instead of a fixed 260px strip. */
-  #disputes .dispute-layout { grid-template-columns: minmax(260px, 22%) minmax(0, 1fr); }
 }
 @media (min-width: 1280px) {
   /* (2026-11-10) The active step tab stays inside the step bar: no 2px lift past the bar's edge, and the progress rail's end
@@ -29,8 +28,6 @@
 /* (2026-11-10 redesign) Step 03: the case queue follows the page while the review column is longer, so there is no empty
    strip under it. */
 @media (min-width: 1280px) {
-  #disputes .dispute-layout { align-items: start; }
-  #disputes .case-list { position: sticky; top: 64px; }
 }
 
 /* (2026-11-10 redesign, all-expanded pass) Opened sections stay compact and nothing is cut off. */

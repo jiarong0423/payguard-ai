@@ -20,12 +20,6 @@
   #analytics .optional-trigger small, #activity .optional-trigger small { display: inline; margin: 0; }
 
 
-  /* Step 03 view switch: the two buttons sit in the step title bar (between the title and Reset demo) instead of a bar of
-     their own. The strip itself takes no height; it is only the carrier of the open/closed flag the CSS rules read. */
-  #disputes .stage-content { position: relative; }
-  #disputes .inner-tabs { position: absolute; top: -56px; left: 500px; z-index: 3; align-items: center; padding: 0; border: 0; background: transparent; gap: 8px; overflow: visible; }
-  #disputes .inner-tab { margin: 0; padding: 6px 16px; border: 1px solid var(--pg-color-rule); border-radius: 999px; background: var(--pg-color-panel); box-shadow: none; }
-  #disputes .inner-tab.is-active { border-color: var(--pg-color-accent); background: var(--pg-color-accent-tint); color: var(--pg-color-accent-strong); margin: 0; }
 
   /* Step 02: the records card (signal, missing, related case) sits beside the chart instead of under it. */
   #velocity .velocity-pane { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, 440px); gap: 8px 12px; align-items: start; }
@@ -33,14 +27,6 @@
   #velocity .velocity-pane > .velocity-chart { grid-column: 1; grid-row: 2; }
   #velocity .velocity-pane > .spike-records { grid-column: 2; grid-row: 2; margin: 0; }
 
-  /* Switch buttons: a recessed track with a raised thumb for the selected item. */
-  .segmented, #disputes .inner-tabs { gap: 2px; padding: 3px; border: 1px solid var(--pg-color-rule); border-radius: 999px; background: var(--pg-color-recede); box-shadow: inset 0 1px 2px rgba(15, 23, 42, .07); }
-  .segmented button, #disputes .inner-tab { min-height: 30px; padding: 4px 16px; border: 0; border-radius: 999px; background: transparent; color: var(--pg-color-muted); font-weight: 650; letter-spacing: .1px; transition: background-color .15s ease, color .15s ease, box-shadow .15s ease; }
-  .segmented button:hover, #disputes .inner-tab:hover { background: rgba(255, 255, 255, .6); color: var(--pg-color-ink); }
-  .segmented button.is-active, #disputes .inner-tab.is-active { background: var(--pg-color-panel); color: var(--pg-color-accent-strong); box-shadow: 0 0 0 1px var(--pg-color-ink); }
-  #disputes .inner-tabs { top: -52px; left: 340px; } /* P1: 1040px content width; 500px ran into Reset demo */
-  #disputes .inner-tab { margin: 0; }
-  #disputes .inner-tab.is-active { margin: 0; border: 0; }
 
   /* Step 02: one row for both switches (Chart / Orders table, then Hourly / Monthly), and the records card in one column. */
   #velocity .velocity-pane { position: relative; }

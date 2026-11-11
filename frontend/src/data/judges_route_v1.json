@@ -5,7 +5,7 @@
   "steps": [
     { "n": "01", "page": "compliance", "title": "Check a sale", "seconds": 20, "action": "Open the step and check the example sale." },
     { "n": "02", "page": "velocity", "title": "Sales spike", "seconds": 20, "action": "Open the step and load the sales burst." },
-    { "n": "03", "page": "disputes", "title": "Disputes", "seconds": 25, "action": "Open the step: the case, a person's review, then the Sandbox send." },
-    { "n": "04", "page": "proof", "title": "Proof", "seconds": 25, "action": "Open Proof and press Verify in your browser." }
+    { "n": "03", "page": "disputes", "title": "Disputes", "seconds": 25, "action": "Open the step: the case, a person's review, then the Sandbox send.", "anchor": "hosted-send" },
+    { "n": "04", "page": "proof", "title": "Proof", "seconds": 25, "action": "Open Proof and press Verify in your browser.", "anchor": "verify" }
   ]
 }

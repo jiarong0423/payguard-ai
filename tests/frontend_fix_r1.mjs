@@ -33,7 +33,7 @@ const css = read('frontend/src/index.css');
 
 // F3 / F4 / F5: the time column filters on the text it shows; one marked row.
 {
-  assert.ok(app.includes("{ field: 'occurred_at', headerName: 'CAPTURED AT', minWidth: 180, flex: 1.2, cellDataType: 'text', filter: 'agTextColumnFilter', valueFormatter: ({ value }) => dateLabel(value),"), 'text column with a text filter');
+  assert.ok(app.includes("{ field: 'occurred_at', headerName: 'TIME', minWidth: 180, flex: 1.2, cellDataType: 'text', filter: 'agTextColumnFilter', valueFormatter: ({ value }) => dateLabel(value),"), 'text column with a text filter');
   assert.ok(app.includes('filterValueGetter: ({ data }) => dateLabel(data?.occurred_at)'), 'column filter matches the displayed time');
   assert.ok(app.includes("getQuickFilterText: ({ value }) => `${dateLabel(value)} ${value || ''}`"), 'quick filter matches the displayed time and the raw value');
   assert.ok(read('frontend/src/grid/agGrid.jsx').includes('TextFilterModule'), 'text filter module registered');

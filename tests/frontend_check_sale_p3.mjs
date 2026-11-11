@@ -67,8 +67,11 @@ const app = read('frontend/src/App.jsx');
 assert.ok(!/apiRequest|\bfetch\s*\(|XMLHttpRequest|sendBeacon/u.test(extras), 'the extras make no request');
 assert.ok(extras.includes("const sideOf = (code) => (code.startsWith('import') ? 'import' : 'export');"), 'chain matches the row side');
 assert.ok(extras.includes("'by post'") && extras.includes('only, other channels may differ'), 'a post-only rule reads "by post only, other channels may differ"');
-assert.ok(extras.includes('<span className="tg-source__label">{label}</span>'), 'one source line format');
-for (const label of extras.matchAll(/<Source label="([A-Z ]+)"/gu)) assert.ok(['RECORDED', 'RECOUNTED', 'SYNTHETIC', 'HOSTED DEMO'].includes(label[1]), label[1]);
+// (F 2026-11-12) One source line format: the shared <SourceLine> from theme/sources.js (was a local <Source>).
+assert.ok(extras.includes("import { CHANNEL3_READERS, SourceLine } from './theme/sources.js';") && !/function Source\b/u.test(extras), 'one source line format');
+const extraKinds = [...extras.matchAll(/<SourceLine kind="([A-Z ]+)"/gu)].map((match) => match[1]);
+assert.ok(extraKinds.length >= 4, 'source lines present');
+for (const label of extraKinds) assert.ok(['RECORDED', 'RECOUNTED', 'SYNTHETIC', 'HOSTED DEMO'].includes(label), label);
 // The cards use the page's own controls: the Quick tests texts are the two descriptions.
 const presets = [...app.matchAll(/onClick=\{\(\) => editDescription\('([^']+)'\)\}>/gu)].map((match) => match[1]);
 assert.deepEqual(presets.slice(0, 2), examples.examples.filter((item) => item.kind === 'description').map((item) => item.description), 'Quick tests buttons hold the card texts in order');

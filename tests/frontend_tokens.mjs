@@ -40,7 +40,7 @@ assert.equal(tokens.color.context, '#8a857a');
 assert.ok(!Object.entries(tokens.color).some(([k, v]) => v === tokens.color.risk && !['risk'].includes(k)), 'no other token reuses the risk red');
 assert.deepEqual(Object.values(tokens.space), [4, 8, 12, 16, 24, 32, 48, 64]);
 assert.deepEqual(Object.values(tokens.scale), [12, 14, 16, 20, 28, 40, 56], 'seven-step type scale (P0 round 2)');
-assert.deepEqual({ ...tokens.radius }, { chip: 0, control: 0, card: 0, pill: 999 }, 'square print; pills stay round');
+assert.deepEqual({ ...tokens.radius }, { chip: 0, control: 0, card: 0, pill: 999, status: 2 }, 'square print; v2 status labels 2px (pill kept for old pages); v2 pins in frontend_design_system_v2.mjs');
 assert.equal(tokens.elevation.l1, '0 0 0 1px #111111', 'cards: thin black rule, no shadow');
 assert.equal(tokens.elevation.l2, '0 0 0 2px #111111');
 assert.equal(tokens.elevation.l3, '0 8px 24px rgba(17,17,17,.12), 0 1px 2px rgba(17,17,17,.08)', 'only floating layers cast a shadow');
@@ -121,9 +121,10 @@ for (const [file, sha] of Object.entries({
 for (const ofl of ['OFL-newsreader.txt', 'OFL-publicsans.txt']) assert.match(read(`frontend/public/fonts/${ofl}`), /SIL OPEN FONT LICENSE Version 1\.1/, `${ofl} ships`);
 
 // 4. format.js
-assert.equal(format.money(500), '500.00 USD');
-assert.equal(format.money('1234.5', 'usd'), '1,234.50 USD');
-assert.deepEqual(format.moneyParts(48, 'USD'), { amount: '48.00', code: 'USD' });
+// (F 2026-11-12) Currency code first, site-wide ("USD 48.00", components.css rule 5); was "500.00 USD".
+assert.equal(format.money(500), 'USD 500.00');
+assert.equal(format.money('1234.5', 'usd'), 'USD 1,234.50');
+assert.deepEqual(format.moneyParts(48, 'USD'), { code: 'USD', amount: '48.00' });
 assert.equal(format.money(null), '—');
 assert.equal(format.ratio(5), '5.0×');
 assert.equal(format.ratio('3.456', 2), '3.46×');

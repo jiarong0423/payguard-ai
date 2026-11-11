@@ -167,7 +167,8 @@ assert.notEqual(monthlyOptions.series[1].stroke, velocityChartOptions(handRows, 
 assert.equal(monthlyOptions.axes.y.min, 0, 'monthly axis starts at zero');
 
 const options = velocityChartOptions(handRows, null);
-assert.deepEqual(options.series.map((series) => [series.type, series.yKey]), [['line', 'baseline'], ['bar', 'spike']]);
+// (P4 2026-11-12, review_FULL s3a) Every past hour is a thin bar at the usual rate (was one flat dashed line).
+assert.deepEqual(options.series.map((series) => [series.type, series.yKey]), [['bar', 'baseline'], ['bar', 'spike']]);
 assert.equal(options.legend.enabled, true, 'desktop keeps the chart legend');
 assert.equal(velocityChartOptions(handRows, null, { compact: true }).legend.enabled, false, 'phones hide the paging chart legend (the page lists it once)');
 assert.equal(options.series[1].label.formatter({ value: 300 }), '×3.0', 'spike bar shows its multiple of the baseline');

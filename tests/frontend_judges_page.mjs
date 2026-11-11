@@ -50,6 +50,8 @@ ok(!/\d{4}-\d{2}-\d{2}/u.test(jsx), 'no ISO date typed');
 ok(!/\b\d{2,}\b/u.test(jsx), 'no two-digit number typed');
 ok(!jsx.includes(figures.step1_example.rule_id) && !jsx.includes(figures.step1_example.statute), 'example rule not typed');
 ok(jsx.includes('href={`#${step.page}`}'), 'deep links are hashes from the route');
+// (F 2026-11-12) The Proof stop lands on the check itself (ProofPage.jsx id="verify").
+ok(route.steps.find((step) => step.page === 'proof')?.anchor === 'verify' && read('frontend/src/pages/ProofPage.jsx').includes('id="verify"') && jsx.includes('onClick={open(step.page, step.anchor)}'), 'Open Proof anchors #verify');
 ok(jsx.includes("index === 0 ? 'tg-btn--primary' : 'tg-btn--secondary'"), 'one primary button: the first step');
 ok(jsx.includes('tg-clip tg-clip--step') && jsx.includes('tg-clip__quote') && jsx.includes('tg-clip__source'), 'steps are shared clip containers');
 for (const label of ['RECOUNTED', 'SYNTHETIC', 'HOSTED DEMO']) ok(jsx.includes(`'${label}'`), `source label ${label}`);

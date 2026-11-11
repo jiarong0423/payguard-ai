@@ -21,12 +21,13 @@
 #compliance .aup-result.aup-warning { color: var(--pg-color-ink); }
 #compliance .aup-result.aup-warning .result-symbol { color: var(--pg-color-warn); }
 
-/* ---------- Type: body 16/24, titles 20, field names 14, sources 12 on one line ---------- */
+/* ---------- Type: body 16/24, titles 20, field names 14, sources 12 (wrapping) ---------- */
 #compliance .country-finding, #compliance .country-verdict-line, #compliance .aup-result p, #compliance .country-rules-head p,
 #compliance .check-three__detail, #compliance .check-grid__rules .tg-clip__quote { font-size: var(--pg-text-3); line-height: 1.5; }
 #compliance .country-rules-head h3, #compliance .aup-result h3, #compliance .description-label { font-size: var(--pg-text-4); line-height: 1.2; }
 #compliance .country-field, #compliance .country-tags legend, #compliance .country-optional > summary { font-size: var(--pg-text-2); line-height: 1.3; }
-#compliance .country-source-line, #compliance .country-footnote, #compliance .country-try-note { display: block; overflow: hidden; font-size: var(--pg-text-1); line-height: 1.5; white-space: nowrap; text-overflow: ellipsis; }
+/* (F 2026-11-12) Sources wrap to a second line instead of an ellipsis; the full path stays in the title. */
+#compliance .country-source-line, #compliance .country-footnote, #compliance .country-try-note { display: block; overflow: visible; font-size: var(--pg-text-1); line-height: 1.5; white-space: normal; overflow-wrap: anywhere; }
 #compliance .country-finding-body .country-statute { font-size: var(--pg-text-2); }
 
 /* ---------- Square controls; tick boxes as square check boxes, not pills; segmented = 1px ink, selected ink ---------- */
@@ -62,19 +63,19 @@
 .check-ph > svg { display: block; width: 100%; height: 100%; }
 .check-head { display: grid; gap: var(--pg-space-1); margin-bottom: var(--pg-space-4); }
 .check-head p { margin: 0; }
-.check-source { min-width: 0; margin: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; flex-wrap: nowrap; }
-.check-source > span:last-child { overflow: hidden; text-overflow: ellipsis; }
 #compliance .stage-content > .check-three, #compliance .stage-content > .check-grid, #compliance .stage-content > .check-ai, #compliance .stage-content > .check-c3 { padding: var(--pg-space-4); }
 
 /* ---------- B. Three results side by side ---------- */
 .check-three__row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--pg-space-5); }
-.check-three__card { display: grid; align-content: start; gap: var(--pg-space-2); min-width: 0; margin: 0; }
+/* .tg-card--cta + .tg-cta (components.css v2) put the source and button on each card's floor: one button baseline. */
+.check-three__card { gap: var(--pg-space-2); min-width: 0; margin: 0; }
+.check-three__card > :not(.tg-cta) { margin: 0; }
+.check-three__foot { display: grid; justify-items: start; gap: var(--pg-space-2); }
 .check-three__card + .check-three__card { padding-left: var(--pg-space-5); border-left: 1px solid var(--pg-color-rule-soft); }
 .check-three__result { display: flex; align-items: flex-start; gap: var(--pg-space-2); margin: 0; font-size: var(--pg-text-3); font-weight: 650; line-height: 1.5; }
 .check-three__detail, .check-three__also { margin: 0; color: var(--pg-color-muted); }
 .check-three__also { font-size: var(--pg-text-2); line-height: 1.5; }
 .check-three__also-word { display: inline-flex; align-items: center; gap: var(--pg-space-1); }
-.check-three__use { justify-self: start; }
 
 /* ---------- C. 10 countries x import / export ---------- */
 .check-grid__ledger { max-width: 40rem; }
@@ -100,6 +101,9 @@
 .check-c3__rows > li + li { padding-top: var(--pg-space-3); border-top: 1px solid var(--pg-color-rule-soft); }
 .check-c3__rows .tg-clip__quote { margin: 0 0 var(--pg-space-1); font-size: var(--pg-text-3); }
 .check-c3__rows .tg-small { margin: 0; }
+.check-c3__readers { margin: 0 0 var(--pg-space-2); font-size: var(--pg-text-2); line-height: 1.5; color: var(--pg-color-ink); }
+.check-c3__csv { margin-top: var(--pg-space-3); }
+.check-c3__csv .check-ph { margin-inline: 0; }
 
 /* ---------- Channel3 category line on a product card ---------- */
 .product-card-ref { display: grid; gap: var(--pg-space-1); margin-top: var(--pg-space-1); padding-top: var(--pg-space-2); border-top: 1px solid var(--pg-color-rule-soft); font-size: var(--pg-text-2); line-height: 1.5; }

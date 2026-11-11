@@ -1,0 +1,32 @@
+{
+  "schema_version": "source_labels_v1",
+  "note": "The one copy of the four source labels and of every source line the console pages show (Overview, Check a sale, Proof, For judges). A page names a source by key; theme/sources.js builds the visible line (text, then line N or the date) and the title (full path and cited lines). tests/frontend_source_labels.mjs checks every cited line against its file and that the pages use keys, not typed strings.",
+  "labels": [
+    { "kind": "RECORDED", "meaning": "A real run, written down in a committed receipt." },
+    { "kind": "RECOUNTED", "meaning": "Counted again from a committed data file by a test." },
+    { "kind": "SYNTHETIC", "meaning": "Demo data the app generates; no real source." },
+    { "kind": "HOSTED DEMO", "meaning": "Made on the public hosted page with a PayPal Sandbox test account, not the local console." }
+  ],
+  "sources": {
+    "country_rules": { "text": "Country rules file", "path": "data/country_rules/paypal_country_rules_v1.json", "lines": [] },
+    "country_rules_sg_ecig": { "text": "Country rules file", "path": "data/country_rules/paypal_country_rules_v1.json", "lines": [3947, 9752], "show": "line", "detail": "SG-IM-EC-01 at line 3947; the US export check-first rule US-EX-EC-01 at line 9752" },
+    "policy_check": { "text": "Policy check, rerun by a test", "path": "src/payguard/engines.py", "lines": [], "detail": "check_aup; values recomputed by tests/test_check_sale_p3_data.py" },
+    "demo_burst": { "text": "Demo order generator", "path": "backend/app/store.py", "lines": [708, 48, 54], "show": "line", "detail": "burst rows at line 708, baseline at line 48, amounts at line 54" },
+    "hosted_receipt": { "text": "Hosted send receipt", "path": "docs/evidence/RECEIPT_20261110_hosted_live.md", "lines": [11, 14, 15, 30], "show": "date", "date": "2026-11-10", "detail": "case and amount at line 11, PayPal-Debug-Id at line 14, read-back at line 15" },
+    "receipt_20261104": { "text": "First send receipt", "path": "docs/evidence/RECEIPT_20261104_live.md", "lines": [13, 14], "show": "date", "date": "2026-11-04" },
+    "receipt_20261105": { "text": "Video send receipt", "path": "docs/evidence/RECEIPT_20261105_live.md", "lines": [14, 15], "show": "date", "date": "2026-11-05" },
+    "readback_send1": { "text": "Read-back record, send 1", "path": "docs/evidence/READBACK_20261109.md", "lines": [7, 12, 15], "show": "date", "date": "2026-11-09" },
+    "readback_send2": { "text": "Read-back record, send 2", "path": "docs/evidence/READBACK_20261109.md", "lines": [17, 22, 25, 29], "show": "date", "date": "2026-11-09" },
+    "readback_send3": { "text": "Read-back record, send 3", "path": "docs/evidence/READBACK_20261109.md", "lines": [31, 36, 38, 39, 41, 42], "show": "date", "date": "2026-11-09", "detail": "SHA-256 recorded at send time at line 38" },
+    "gemini_guide_runs": { "text": "Gemini guide runs", "path": "docs/evidence/GEMINI_GUIDE_RUNS_20261103.md", "lines": [15], "show": "date", "date": "2026-11-03", "detail": "gemini-3.8-flash, policy pre-check row at line 15" },
+    "ag_studio_runs": { "text": "AG Studio agent runs", "path": "docs/evidence/AG_STUDIO_LIVE_RUNS_20261109.md", "lines": [], "show": "date", "date": "2026-11-09", "detail": "replayed on the dashboard" },
+    "proof_table": { "text": "Proof table", "path": "frontend/src/data/proof_facts_v1.json", "lines": [] },
+    "channel3_table": { "text": "Channel3 category table (CSV)", "path": "docs/evidence/channel3_category_aup_hints_20261109.csv", "lines": [], "detail": "counts from docs/CHANNEL3_NOTES.md:142" }
+  },
+  "channel3_readers": {
+    "text": "Readers: three Claude reviewers, who did not see each other's answers, and two other-vendor models (DeepSeek, Qwen).",
+    "quote": "three Claude reviewers who did not see each other's answers and two other-vendor models (DeepSeek, Qwen)",
+    "path": "docs/CHANNEL3_NOTES.md",
+    "line": 144
+  }
+}

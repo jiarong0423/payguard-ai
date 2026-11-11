@@ -59,8 +59,10 @@ assert.ok(app.includes('data-testid={`phone-action-${phoneAction.key}`}'), 'phon
 assert.ok(app.includes('id="sandbox-draft"') && app.includes('<span>PayPal Sandbox draft (optional)</span>'), 'Sandbox draft block');
 assert.ok(app.includes("document.querySelector('#sandbox-draft summary')?.focus({ preventScroll: true });"), 'Continue to draft moves focus to the draft block');
 assert.ok(app.includes('data-testid="footer-independent"'), 'independence footer');
-assert.ok(app.includes('data-testid="case-summary"'), 'case summary');
-assert.ok(app.includes("['Seller Protection', 'PayPal decides if it applies']"), 'case summary names Seller Protection without inventing a flag');
+// (P4 2026-11-12) The case summary is the case head in steps/CaseViews.jsx (loaded with the step).
+const caseViews = readFileSync(resolve(root, 'frontend/src/steps/CaseViews.jsx'), 'utf8');
+assert.ok(caseViews.includes('data-testid="case-summary"'), 'case summary');
+assert.ok(caseViews.includes('Seller Protection: PayPal decides if it applies'), 'case summary names Seller Protection without inventing a flag');
 assert.ok(app.includes("['Seller Protection', sellerProtectionLabel(providerDisputeDetail)]"), 'dispute detail shows the Seller Protection line');
 assert.ok(app.includes("if (detail?.source !== 'paypal_sandbox') return 'PayPal decides if it applies';"), 'sample cases show no invented flag');
 assert.ok(guide.includes('id={`guide-live-text-${scenario}`}') && guide.includes('htmlFor={`guide-live-text-${scenario}`}'), 'one guide input id per step');

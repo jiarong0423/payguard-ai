@@ -76,10 +76,20 @@ assert.equal(allSends.length, 6, 'six sends on file');
 assert.equal(allSends.filter((item) => item.debug_id).length, 5, 'five with a PayPal-Debug-Id');
 
 // (C 2026-11-12) Plain source lines, the replay date, the AI line and the legend.
-assert.equal(figures.step1_example.source_plain, 'Country rules file');
-assert.equal(figures.country_rules.source_plain, 'Country rules file');
-assert.equal(figures.step2_example.source_plain, 'Demo generator (synthetic)');
-assert.equal(figures.step3_send.source_plain, 'PayPal receipt');
+// (F 2026-11-12) The plain words moved to data/source_labels_v1.json (one string per source on every page); the
+// figures name a key. tests/frontend_source_labels.mjs checks each key's file and lines.
+const sourceTable = JSON.parse(read('frontend/src/data/source_labels_v1.json')).sources;
+assert.equal(figures.step1_example.source_key, 'country_rules_sg_ecig');
+assert.equal(figures.country_rules.source_key, 'country_rules');
+assert.equal(figures.step2_example.source_key, 'demo_burst');
+assert.equal(figures.step3_send.source_key, 'hosted_receipt');
+assert.equal(sourceTable.country_rules_sg_ecig.path, example.source);
+assert.equal(sourceTable.country_rules_sg_ecig.lines[0], example.line, 'the step 01 source cites the rule line');
+assert.equal(sourceTable.country_rules.path, figures.country_rules.source);
+assert.equal(sourceTable.demo_burst.path, figures.step2_example.source);
+assert.equal(sourceTable.demo_burst.lines[0], figures.step2_example.lines.burst_rows, 'the step 02 source cites the burst rows');
+assert.equal(sourceTable.hosted_receipt.path, send.source);
+assert.ok(sourceTable.hosted_receipt.lines.includes(send.line) && sourceTable.hosted_receipt.date === row.date, 'the step 03 source cites the case line and the send date');
 assert.equal(row.date, '2026-11-10', 'card 03 is the hosted send of 2026-11-10');
 assert.ok(read(send.source).includes('2026-11-10'), 'the hosted receipt is dated 2026-11-10');
 const replay = figures.replay;
@@ -102,13 +112,19 @@ assert.ok(!/\b(681|368|313|48\.00|f869050ae2a63|f908765a01293|f2088142a6218|ca57
 assert.ok(!/fetch\(|apiRequest/u.test(page), 'the page makes no request');
 // Display contract: one-line plain sources with the full path in the title, at most one source per clip, the legend's
 // four labels, Phosphor icons copied from theme/icons, tokens only in OverviewFlow.css.
-for (const label of ['Recorded', 'Recounted', 'Synthetic', 'Hosted demo']) assert.ok(page.includes(`['${label}', '`), `legend: ${label}`);
+// (F 2026-11-12) The legend is the shared <SourceLegend> (theme/sources.js), not a local list.
+assert.ok(page.includes('<SourceLegend testId="overview-legend" />') && !page.includes('SOURCE_LEGEND'), 'legend: the shared one');
+for (const kind of page.matchAll(/<SourceLine kind="([A-Z ]+)"/gu)) assert.ok(['RECORDED', 'RECOUNTED', 'SYNTHETIC', 'HOSTED DEMO'].includes(kind[1]), kind[1]);
 const clips = page.split('<figure className="tg-clip').slice(1).map((part) => part.split('</figure>')[0]);
 assert.equal(clips.length, 8, 'AI clip, three step clips, four figure clips');
-for (const clip of clips) assert.equal((clip.match(/<Source |className="tg-source"/gu) || []).length, 1, 'exactly one source per clip');
+for (const clip of clips) assert.equal((clip.match(/<SourceLine |className="tg-source"/gu) || []).length, 1, 'exactly one source per clip');
 assert.ok(!/RECEIPT_|docs\/evidence\/|\.json[^']/u.test(page.replace(/^import .*$/gmu, '').replace(/title=(\{`[^`]*`\}|\{[\w.]+\}|"[^"]*")/gu, '').replace(/^\s*\/\/.*$/gmu, '').replace(/\{\/\*[\s\S]*?\*\/\}/gu, '')), 'no file path in visible text');
-assert.ok(page.includes('{shortDate(sendRow?.date)} hosted send') && page.includes('{shortDate(replay.date)} local send: recorded replay (nothing is sent now)'), 'card 03 and the replay name their dates (2026-11-12: replay summary reworded on request)');
-for (const name of ['warning', 'check-circle', 'arrow-right']) {
+// (F 2026-11-12) Dates through format.js dateLabel ("10 Nov 2026"), the site-wide date format; was "Nov 10".
+assert.ok(page.includes('{dateLabel(sendRow?.date)} hosted send') && page.includes('{dateLabel(replay.date)} local send: recorded replay (nothing is sent now)'), 'card 03 and the replay name their dates (2026-11-12: replay summary reworded on request)');
+// (F 2026-11-12) Card 03 says "Sandbox send" next to its HOSTED DEMO label (review_INTEG section 4 item 11), not "Real".
+assert.ok(page.includes('Sandbox send · {send.case_ref}') && !page.includes('Real Sandbox send'), 'card 03 wording');
+// (F 2026-11-12) Card 03's read-back is still under review: neutral clock, not the green check (review_FULL #32).
+for (const name of ['warning', 'clock', 'arrow-right']) {
   const d = read(`frontend/src/theme/icons/${name}.svg`).match(/ d="([^"]+)"/u)[1];
   assert.ok(page.includes(`icon('${d}')`), `Phosphor ${name} path copied verbatim`);
 }

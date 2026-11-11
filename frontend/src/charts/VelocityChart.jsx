@@ -61,7 +61,7 @@ export default function VelocityChart({ velocity, transactions, compact = false 
     if (next === 'monthly') window.requestAnimationFrame(() => monthlyChartRef.current?.resize?.());
   };
   return (<>
-    {monthly.rows.length > 0 && <div className="segmented velocity-period" role="tablist" aria-label="Chart period" data-testid="velocity-monthly-details">
+    {monthly.rows.length > 0 && <div className="segmented tg-seg velocity-period" role="tablist" aria-label="Chart period" data-testid="velocity-monthly-details">
       {[['hourly', 'Hourly'], ['monthly', 'Monthly']].map(([key, label]) => <button key={key} type="button" role="tab" id={`velocity-period-${key}`} aria-selected={view === key} aria-controls={`velocity-period-pane-${key}`} className={view === key ? 'is-active' : ''} onClick={() => choose(key)}>{label}</button>)}
     </div>}
     <figure id="velocity-period-pane-hourly" role="tabpanel" aria-labelledby="velocity-period-hourly" hidden={view !== 'hourly'} className="velocity-chart" data-testid="velocity-chart" aria-label="Hourly amount chart, baseline window versus spike window">

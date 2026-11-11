@@ -406,7 +406,8 @@ for (const [name, source] of [['App', appSource], ['API', apiSource], ['Referenc
     '>Submit to PayPal Sandbox (test)</Button>',
     'Test submission. No real dispute is affected.',
     '<summary>Technical details</summary>',
-    'You review</span>',
+    // (P4 2026-11-12, review_INTEG s4 #10) The review state is a status line, not a chip: "Your review: pending / done".
+    'Your review:</span>',
     "'Category check: not available'",
     "'Sample sales loaded.'",
     'const NOTICE_DISMISS_MS = 4000;',
@@ -423,7 +424,7 @@ for (const [name, source] of [['App', appSource], ['API', apiSource], ['Referenc
     // 2026-11-12 integration: the hero uses the shared page head (.tg-pagehead eyebrow, sentence case).
     '<p className="tg-eyebrow">For small PayPal sellers</p>',
   ]) assert.ok(appSource.includes(sellerCopy), sellerCopy);
-  assert.equal(appSource.split('status={<RoleBadge />}').length - 1, 2, 'stages 01 and 03 share one role badge');
+  assert.equal(appSource.split('status={<ReviewStatus done=').length - 1, 3, 'steps 01, 02 and 03 share one review status');
   for (const retired of ['HUMAN CHECK</Badge>', 'HUMAN REVIEW</Badge>', 'Submit to Sandbox (requires', 'PayPal Disputes API readback', 'Fixed synthetic evidence brief', 'Why this AI call is bounded', 'deterministic advisory', 'label="Velocity ratio"', 'label="Window captures"', 'OPTIONAL SPONSOR EXPERIENCE']) {
     assert.equal(appSource.includes(retired), false, retired);
   }

@@ -97,7 +97,7 @@ button, input, select, textarea, a, summary { outline-offset: 2px; }
 
 /* Header and title row */
 .hero { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 12px; }
-.hero-compact p, .hero p { margin: 0; color: var(--pg-color-muted); font-size: var(--type-meta); line-height: 1.5; }
+.hero p { margin: 0; color: var(--pg-color-muted); font-size: var(--type-meta); line-height: 1.5; }
 .eyebrow, .meta-label { color: var(--pg-color-accent); font-size: var(--type-meta); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
 .eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
 .text-dim { color: var(--pg-color-subtle); font-size: var(--type-support); line-height: 1.5; }
@@ -180,9 +180,7 @@ button, input, select, textarea, a, summary { outline-offset: 2px; }
 .badge-green { color: var(--pg-color-ok); background: var(--pg-tint-ok); border-color: var(--pg-color-rule); }
 .badge-amber { color: var(--pg-color-watch); background: var(--pg-tint-watch); border-color: var(--pg-color-watch); }
 .badge-danger { color: var(--pg-color-risk); background: var(--pg-tint-risk); border-color: var(--pg-color-risk); }
-.badge.badge-role { color: var(--pg-color-accent-strong); background: var(--pg-color-accent-tint); border-color: var(--pg-color-rule); font-size: var(--type-meta); font-weight: 700; letter-spacing: 0; text-transform: none; }
-.badge.badge-role svg { flex-shrink: 0; }
-.status-dot, .tiny-dot { display: inline-block; width: 6px; height: 6px; border-radius: var(--pg-radius-pill); background: currentColor; flex-shrink: 0; }
+.status-dot { display: inline-block; width: 6px; height: 6px; border-radius: var(--pg-radius-pill); background: currentColor; flex-shrink: 0; }
 
 /* Scenario actions and stage headers */
 .demo-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
@@ -191,19 +189,14 @@ button, input, select, textarea, a, summary { outline-offset: 2px; }
 .stage-accordion.is-open { margin-bottom: 16px; scroll-margin-top: 78px; }
 /* Guides are jump targets (#guide-<situation>): keep their heading clear of the sticky step bar. */
 [id^="guide-live-"] { scroll-margin-top: 96px; }
-.main-content #compliance.panel.stage-accordion.is-open,
-.main-content #velocity.panel.stage-accordion.is-open,
-.main-content #disputes.panel.stage-accordion.is-open {
+.main-content #compliance.panel.stage-accordion.is-open {
   background: var(--pg-color-panel);
   box-shadow: var(--pg-elev-l2);
   border-left: var(--pg-elev-active-bar) solid var(--pg-color-accent);
 }
-/* (P3 2026-11-12) Step heads use the shared page head (.tg-pagehead: eyebrow, serif title, lede); actions sit to the right. */
-.stage-heading { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: var(--pg-space-3) var(--pg-space-4); padding: var(--pg-space-5) var(--pg-space-4) var(--pg-space-4); background: transparent; }
 .stage-pagehead-text { min-width: 0; }
 .stage-trigger { display: block; margin: 0; min-width: 0; border: 0; background: transparent; text-align: left; cursor: default; }
-.stage-trigger-meta { display: flex; align-items: center; }
-.stage-trigger-meta { flex-shrink: 0; flex-wrap: wrap; gap: 12px; color: var(--pg-color-muted); font-size: var(--type-meta); font-weight: 600; }
+.stage-trigger-meta { flex-shrink: 0; color: var(--pg-color-muted); font-size: var(--type-meta); font-weight: 600; }
 .stage-content { border-top: 1px solid var(--pg-color-rule); background: var(--pg-color-panel); }
 .stage-content[hidden], .optional-content[hidden] { display: none; }
 .button[hidden] { display: none; }
@@ -259,23 +252,7 @@ textarea:focus, input[type="text"]:focus, input[type="number"]:focus, select:foc
 
 
 /* Stage 02: Velocity metrics and AG Grid */
-.metrics-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; padding: 16px 16px; background: var(--pg-color-recede); border-bottom: 1px solid var(--pg-color-rule); }
-.metric { min-width: 0; padding: 16px; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-card); background: var(--pg-color-panel); }
-.metric-top { display: flex; align-items: center; justify-content: space-between; color: var(--pg-color-muted); font-size: var(--type-meta); font-weight: 650; text-transform: uppercase; letter-spacing: 0.04em; }
-.metric-top svg { color: var(--pg-color-subtle); }
-.metric-value { display: flex; align-items: baseline; gap: 8px; margin: 12px 0 8px; font-variant-numeric: tabular-nums; }
-.metric-value strong { color: var(--pg-color-ink); font-size: 30px; font-weight: 700; letter-spacing: -0.5px; white-space: nowrap; }
-.metric-value > span, .metric small { color: var(--pg-color-muted); font-size: var(--type-meta); }
-.metric-alert { background: var(--pg-tint-watch); border-color: var(--pg-color-watch); }
-.metric-alert .metric-value strong, .metric-alert .metric-top svg, .metric-alert small { color: var(--pg-color-watch); font-weight: 700; }
 
-.velocity-summary { padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid var(--pg-color-rule); background: var(--pg-color-recede); color: var(--pg-color-ink); font-size: var(--type-meta); }
-.velocity-summary > div { display: flex; align-items: center; gap: 8px; }
-.velocity-summary.velocity-alert { background: var(--pg-tint-watch); border-color: var(--pg-color-watch); color: var(--pg-color-watch); }
-.velocity-window { display: flex; align-items: center; gap: 8px; color: var(--pg-color-muted); font-size: var(--type-meta); white-space: nowrap; }
-.grid-caption { display: flex; align-items: center; justify-content: space-between; padding: 16px 16px 12px; color: var(--pg-color-muted); font-size: var(--type-meta); font-weight: 700; letter-spacing: 0.06em; }
-.grid-caption > span { display: flex; align-items: center; gap: 8px; }
-.grid-caption .tiny-dot, .grid-order .tiny-dot { color: var(--pg-color-model); background: var(--pg-color-model); }
 .velocity-grid-tools { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 16px 12px; }
 .velocity-grid-tools label { color: var(--pg-color-ink); font-size: var(--type-control); font-weight: 650; }
 .velocity-grid-tools input { width: min(420px, 100%); }
@@ -295,8 +272,6 @@ textarea:focus, input[type="text"]:focus, input[type="number"]:focus, select:foc
 .velocity-details > span { display: block; margin-top: 4px; color: var(--pg-color-subtle); }
 
 /* Stage 03: Dispute workspace */
-.dispute-layout { display: grid; grid-template-columns: minmax(240px, 280px) minmax(0, 1fr); }
-.case-list { padding: 16px; border-right: 1px solid var(--pg-color-rule); background: var(--pg-color-recede); }
 .case-card { width: 100%; padding: 16px; margin-bottom: 12px; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-card); background: var(--pg-color-panel); color: var(--pg-color-ink); text-align: left; }
 .case-card > div { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 8px 8px; align-items: center; }
 .case-card > div > svg { grid-column: 1; grid-row: 1; color: var(--pg-color-accent); flex-shrink: 0; }
@@ -304,7 +279,6 @@ textarea:focus, input[type="text"]:focus, input[type="number"]:focus, select:foc
 .case-card .badge { grid-column: 2; justify-self: start; }
 .case-card > span { display: block; margin: 12px 0 4px; color: var(--pg-color-ink); font-size: var(--type-meta); }
 .case-card small { color: var(--pg-color-muted); font-size: var(--type-meta); }
-.case-card .case-due { display: block; color: var(--pg-color-watch); font-weight: 650; }
 .empty-state { padding: 24px 12px; display: flex; flex-direction: column; align-items: center; text-align: center; color: var(--pg-color-subtle); }
 .empty-state strong { margin-top: 12px; color: var(--pg-color-ink); font-size: var(--type-section-title); }
 .empty-state p { margin: 8px 0 0; color: var(--pg-color-muted); font-size: var(--type-meta); }
@@ -315,11 +289,7 @@ textarea:focus, input[type="text"]:focus, input[type="number"]:focus, select:foc
 .dashboard-cta:hover { background: var(--pg-color-accent-tint); }
 .proof-cta { margin-top: 8px; }
 
-.evidence-workspace { padding: 16px; background: var(--pg-color-panel); }
 .evidence-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
-.evidence-placeholder { min-height: 180px; padding: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; border: 1px dashed var(--pg-color-rule); border-radius: var(--pg-radius-card); background: var(--pg-color-recede); }
-.placeholder-illustration { display: block; margin-bottom: 12px; }
-.evidence-placeholder p { margin: 8px 0 0; color: var(--pg-color-muted); font-size: var(--type-meta); line-height: 1.6; }
 
 .dispute-route, .restricted-summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 16px; margin-bottom: 12px; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-card); background: var(--pg-color-recede); }
 .dispute-route > div, .restricted-summary > div { display: grid; gap: 3px; min-width: 0; }
@@ -555,23 +525,22 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 @media (max-width: 850px) {
   .topbar { padding: 0 16px; }
   .main-content { padding: 16px 16px 24px; }
-  .compliance-layout, .dispute-layout { grid-template-columns: minmax(0, 1fr); }
-  .case-list { border-right: 0; border-bottom: 1px solid var(--pg-color-rule); }
-  .metrics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .compliance-layout { grid-template-columns: minmax(0, 1fr); }
   .velocity-selected-detail dl, .provider-dispute-detail { grid-template-columns: 1fr; }
   .human-review, .stage-next, .analytics-launch-card { align-items: stretch; flex-direction: column; }
+  .human-review { flex-wrap: nowrap; } /* (P4) a column that wraps put the 100%-basis lock line in a second column, 970px wide */
 }
 
 @media (max-width: 640px) {
   body { font-size: var(--type-support); }
-  .topbar nav, .brand small, .journey-step small, .stage-header .stage-trigger-label small { display: none; }
+  .topbar nav, .brand small, .journey-step small { display: none; }
   .journey-step { min-height: 52px; flex-direction: column; align-items: flex-start; padding: 8px 12px; gap: 4px; }
   .journey-step strong { font-size: var(--type-meta); }
   /* Stage header on a phone: the scenario buttons wrap under the title instead of running past the card edge. */
   .stage-trigger { flex-wrap: wrap; }
   .stage-trigger-meta { flex-shrink: 1; min-width: 0; max-width: 100%; }
   .stage-trigger-meta .demo-actions { flex-wrap: wrap; min-width: 0; }
-  .metrics-grid, .evidence-grid, .time-gaps, .ai-brief-columns, .reference-form, .reference-date-controls, .reference-type-options, .reference-dates, .reference-provenance dl { grid-template-columns: 1fr; }
+  .evidence-grid, .time-gaps, .ai-brief-columns, .reference-form, .reference-date-controls, .reference-type-options, .reference-dates, .reference-provenance dl { grid-template-columns: 1fr; }
   .time-event { grid-template-columns: 1fr; }
   .time-event span, .time-event em { grid-column: 1; grid-row: auto; }
   .velocity-grid-tools { flex-direction: column; align-items: stretch; }
@@ -609,13 +578,9 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 .button-secondary { min-height: 40px; }
 .button-ghost { min-height: 36px; padding: 8px 12px; }
 .button[aria-disabled="true"] { cursor: progress; }
-.badge, .journey-status, .stage-number, .country-sev, .gap-chip { white-space: nowrap; }
+.badge, .journey-status, .country-sev, .gap-chip { white-space: nowrap; }
 
 /* Header and the one-line Start here row: page top at or under 220px. */
-.hero-compact { margin-bottom: 8px; padding: 0; }
-.hero-compact > div:first-child { display: grid; gap: 2px; }
-.hero-compact .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: var(--type-meta); }
-.hero-compact h1 { font-family: var(--pg-font-serif); font-size: var(--type-display); letter-spacing: -0.01em; }
 .brand, .topbar nav a { white-space: nowrap; flex-shrink: 0; }
 /* The mode badge may shrink: on a 360px phone a fixed badge widened the page to 404px (phone test 2026-11-03). */
 .environment { white-space: nowrap; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
@@ -630,7 +595,7 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 .journey-step > div { min-width: 0; }
 .journey-step strong, .journey-step .journey-status { min-width: 0; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .journey-step .journey-status { display: inline-flex; }
-.stage-title, .stage-trigger-label small { min-width: 0; }
+.stage-title { min-width: 0; }
 .stage-title { white-space: nowrap; }
 
 /* Step 01: product | review signal on top (7/5), then country rules, Sandbox and the guide at full width. */
@@ -652,8 +617,6 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 .step-more-body .optional-trigger small { white-space: normal; }
 
 /* Step 02 */
-.metric-top span, .metric-value span { white-space: nowrap; }
-.velocity-window { white-space: nowrap; }
 
 /* Step 03: case cards and badges keep their labels on one line. */
 .evidence-toolbar h3 { min-width: 0; }
@@ -686,7 +649,6 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
   .button, .button-secondary, .button-ghost, .start-here-link, .step-more > summary, .country-more > summary, .country-optional > summary { min-height: 44px; }
 }
 .page-top { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 12px; }
-.page-top .hero-compact { margin: 0; }
 .page-top .start-here { justify-content: flex-start; margin: 0; }
 .journey-status-danger { color: var(--pg-color-risk); }
 .over-limit { color: var(--pg-color-watch); font-weight: 650; }
@@ -706,23 +668,14 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 /* ---- UI plan r2 (2026-11-03): one view at a time, one disclosure style, 4/8/12/16/24/32 spacing ---- */
 /* Segmented control (country rules, sales chart or orders, hourly or monthly). Phones scroll it sideways. */
 .segmented-row { padding: var(--pg-space-3) var(--pg-space-4) 0; }
-.segmented { display: inline-flex; max-width: 100%; gap: 4px; padding: 4px; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-control); background: var(--pg-color-recede); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
-.segmented::-webkit-scrollbar { display: none; }
-.segmented button { flex: none; min-height: 36px; padding: 4px 12px; border: 0; border-radius: var(--pg-radius-chip); background: transparent; color: var(--pg-color-muted); font-size: var(--type-meta); font-weight: 650; white-space: nowrap; scroll-snap-align: start; cursor: pointer; }
-.segmented button:hover { background: var(--pg-color-accent-tint); color: var(--pg-color-ink); }
-.segmented button.is-active { background: var(--pg-color-panel); color: var(--pg-color-accent-strong); box-shadow: 0 0 0 1px var(--pg-color-rule), 0 1px 2px rgba(15, 23, 42, .06); }
+/* (P4 2026-11-12) The look of a view switch is .tg-seg (components.css v2); .segmented keeps scrolling only. */
+.segmented { display: inline-flex; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
 @media (pointer: coarse) { .segmented button { min-height: 44px; } }
 .velocity-pane[hidden], .velocity-chart[hidden] { display: none; }
-#velocity-pane-chart { padding: var(--pg-space-3) var(--pg-space-4) 0; }
+#velocity-pane-chart { padding: var(--pg-space-3) 0 0; }
 .velocity-period { margin-bottom: var(--pg-space-2); }
 
 /* Step 03: a compact summary of the selected case replaces the empty placeholder. */
-.case-summary { padding: var(--pg-space-4); border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-card); background: var(--pg-color-recede); }
-.case-summary dl { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--pg-space-3); margin: 0; }
-.case-summary dt { color: var(--pg-color-muted); font-size: var(--type-meta); font-weight: 650; }
-.case-summary dd { margin: 4px 0 0; color: var(--pg-color-ink); font-size: var(--type-body); font-weight: 650; overflow-wrap: anywhere; }
-.case-summary p { margin: var(--pg-space-3) 0 0; color: var(--pg-color-muted); font-size: var(--type-meta); }
-.evidence-placeholder { min-height: 0; }
 .requirement-list { margin: 0 0 var(--pg-space-3); }
 .sandbox-details.provider-disputes { margin: var(--pg-space-4) var(--pg-space-4) 0; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-card); overflow: clip; }
 
@@ -769,8 +722,6 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
   .secondary-tabs { flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
   .secondary-tab { flex: none; scroll-snap-align: start; }
   .segmented-row { padding: var(--pg-space-3) var(--pg-space-3) 0; }
-  #velocity-pane-chart { padding: var(--pg-space-3) var(--pg-space-3) 0; }
-  .case-summary dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .sandbox-details.provider-disputes { margin-left: var(--pg-space-3); margin-right: var(--pg-space-3); }
 }
 
@@ -1027,20 +978,22 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 /* (optimise r24) Phones: one unpaginated legend line under the spike chart (colours from charts/velocityChartData.js). */
 .phone-chart-legend { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 8px 0 0; padding: 0; list-style: none; color: var(--pg-color-ink); font-size: var(--type-meta); }
 .phone-chart-legend li { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
-.phone-legend-mark { display: inline-block; width: 18px; height: 0; border-top: 2px dashed #94a3b8; }
-.phone-legend-mark.is-spike { width: 10px; height: 12px; border: 0; border-radius: 2px; background: #0f766e; }
-.phone-legend-mark.is-flag { width: 10px; height: 12px; border: 0; border-radius: 2px; background: var(--pg-color-warn); }
-.phone-legend-mark.is-review { border-top-color: #875f30; }
+/* (P4) Legend marks use the chart colours (charts/velocityChartData.js): usual hours = band-muted bars (--viz-base), spike under
+   the line = context grey, above the line = amber (--viz-alert), review threshold = 1px amber dashed (--check). */
+.phone-legend-mark { display: inline-block; width: 6px; height: 12px; background: var(--pg-viz-base); }
+.phone-legend-mark.is-spike { width: 10px; height: 12px; border: 0; background: var(--pg-color-context); }
+.phone-legend-mark.is-flag { width: 10px; height: 12px; border: 0; background: var(--pg-viz-alert); }
+.phone-legend-mark.is-review { width: 18px; height: 0; background: none; border-top: 1px dashed var(--pg-color-warn); }
 
 /* (r25 send guard) Case and PayPal dispute side by side, the hold line, and the two-step confirm before a real send.
-   Continue is orange (#c2410c: the former topbar orange darkened to pass WCAG AA with white text, 5.18:1); Send to PayPal is
+   (P4 2026-11-12) Continue is the ink primary (tokens, 17.4:1 with the on-ink text); the warnings are the amber "check first" token. Send to PayPal is
    sage green (#4a6a4e, 6.06:1), muted while the 3-second hold counts down. Each pairs its colour with a label and icon. */
 .send-guard { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px 12px; align-items: center; margin: 12px 0; padding: 12px; border: 1px solid #d6dbe4; border-radius: 10px; background: #f8fafc; }
 .send-guard-side { display: grid; gap: 2px; min-width: 0; }
 .send-guard-side strong { overflow-wrap: anywhere; }
 .send-guard-label { font-size: var(--type-meta); color: #475569; }
 .send-guard-bound, .send-guard-account, .send-guard-block { grid-column: 1 / -1; margin: 0; font-size: var(--type-support); }
-.send-guard-block { display: flex; gap: 6px; align-items: flex-start; color: #9a3412; font-weight: 600; }
+.send-guard-block { display: flex; gap: 6px; align-items: flex-start; color: var(--pg-color-warn); font-weight: 600; }
 .send-confirm-backdrop { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; padding: 16px; background: rgba(15, 23, 42, .45); }
 .send-confirm { width: min(520px, 100%); max-height: calc(100vh - 32px); overflow: auto; padding: 20px; border-radius: 12px; background: #fff; color: #0f172a; box-shadow: 0 20px 48px rgba(15, 23, 42, .28); }
 .send-confirm h3 { margin: 0 0 12px; font-size: var(--type-section-title); }
@@ -1050,15 +1003,15 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 .send-confirm-summary dd { margin: 0; overflow-wrap: anywhere; }
 .send-confirm-check { display: flex; gap: 8px; align-items: center; margin: 0 0 16px; font-weight: 600; }
 /* (r32 J4 P2-2) Both dialog warnings in the same orange; the dialog's own class wins over any page paragraph rule. */
-.send-confirm .send-confirm-warning { display: flex; gap: 8px; align-items: center; margin: 0 0 8px; font-weight: 650; color: #9a3412; }
+.send-confirm .send-confirm-warning { display: flex; gap: 8px; align-items: center; margin: 0 0 8px; font-weight: 650; color: var(--pg-color-warn); }
 .send-confirm-countdown { margin: 0 0 16px; color: #334155; }
 .send-confirm-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
-.button.button-confirm-continue { background: #c2410c; border-color: #c2410c; color: #fff; }
+.button.button-confirm-continue { background: var(--pg-color-ink); border-color: var(--pg-color-ink); color: var(--pg-color-on-accent); }
 .button.button-confirm-send { background: #4a6a4e; border-color: #4a6a4e; color: #fff; }
 .button.button-confirm-send.is-holding, .button.button-confirm-send:disabled { background: #cbd5d0; border-color: #cbd5d0; color: #334155; cursor: not-allowed; }
-.button.button-confirm-continue:disabled { background: #e2c4b5; border-color: #e2c4b5; color: #431407; cursor: not-allowed; }
+.button.button-confirm-continue:disabled { background: transparent; border-color: var(--pg-color-disabled-line); color: var(--pg-color-disabled-text); cursor: not-allowed; }
 @media (max-width: 560px) { .send-guard { grid-template-columns: 1fr; } .send-confirm-summary div { grid-template-columns: 1fr; } }
-.button.button-confirm-continue:hover:not(:disabled) { background: #9a3412; border-color: #9a3412; color: #fff; }
+.button.button-confirm-continue:hover:not(:disabled) { background: var(--pg-color-accent-strong); border-color: var(--pg-color-accent-strong); color: var(--pg-color-on-accent); }
 .button.button-confirm-send:hover:not(:disabled):not(.is-holding) { background: #3b5640; border-color: #3b5640; color: #fff; }
 
 /* (phone test 2026-11-04, 360 CSS px) The draft amount field and long badges stayed on one line and ran past the card edge. */
@@ -1075,7 +1028,7 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 .lock-reason > span { min-width: 0; overflow-wrap: anywhere; }
 .provider-dispute-actions > .lock-reason, .human-review > .lock-reason { margin-top: -4px; }
 /* (r31 J4 P1-2 A3a) The draft dialog's expiry line replaces its steps; the same orange as the dialog's warning. */
-.send-confirm-expired { display: flex; gap: 8px; align-items: flex-start; margin: 0 0 16px; font-weight: 650; color: #9a3412; line-height: 1.5; }
+.send-confirm-expired { display: flex; gap: 8px; align-items: flex-start; margin: 0 0 16px; font-weight: 650; color: var(--pg-color-warn); line-height: 1.5; }
 .send-confirm-expired > svg { flex-shrink: 0; margin-top: 3px; }
 /* (r31 J4 P1-1 A2) "Session resumed" can be closed: that one info toast takes taps, with a 44 px close target. */
 .feedback-region .message-info[data-testid="console-info"] { pointer-events: auto; }
@@ -1102,7 +1055,7 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 }
 
 /* Before the draft exists the right column says what will appear, so it does not read as an empty page. */
-.evidence-next { margin-top: 14px; padding: 14px 16px; border: 1px dashed var(--pg-color-rule); border-radius: var(--pg-radius-control); color: var(--pg-color-muted); font-size: var(--type-meta); line-height: 1.6; }
+.evidence-next { margin-top: 12px; padding: 12px 0 0; border-top: 1px solid var(--pg-color-rule-soft); color: var(--pg-color-muted); font-size: var(--pg-text-2); line-height: 1.6; }
 .evidence-next strong { display: block; margin-bottom: 6px; }
 .evidence-next ul { margin: 0; padding-left: 18px; list-style: disc; }
 
@@ -1121,13 +1074,7 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 @media (max-width: 640px) { .hero-proof-link { display: inline-flex; align-items: center; min-height: 44px; margin-top: 4px; color: var(--pg-color-accent-strong); font-size: var(--type-meta); font-weight: 650; } }
 
 /* A first-screen entry for the example (the country card sits far down the page, most of all on a phone). It clicks the card's own button. */
-.hero-example-link { display: inline-flex; align-items: center; min-height: 44px; margin: 8px 12px 0 0; padding: 0 16px; border: 1px solid var(--pg-color-accent-strong); border-radius: var(--pg-radius-control); background: transparent; color: var(--pg-color-accent-strong); font: inherit; font-size: var(--type-meta); font-weight: 650; cursor: pointer; }
-.hero-example-link:hover { background: var(--pg-color-hover); }
 /* (UX round 1) The first action on the page is a solid primary button. */
-.hero-example-link[data-testid="hero-try-example"] { background: var(--pg-color-accent-strong); color: #fff; }
-.hero-example-link[data-testid="hero-try-example"]:hover { background: var(--pg-color-accent); }
-@media (max-width: 640px) { .hero-example-link { width: 100%; justify-content: center; margin-right: 0; } }
-.metric-baseline-note { display: block; margin-top: 4px; }
 
 /* Phones: folds and links the page offers are 44px tall (the whole summary line is the tap target). */
 @media (max-width: 640px) {
@@ -1144,9 +1091,6 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 .page-top { margin-bottom: 8px; }
 .journey { margin-bottom: 12px; }
 .compliance-layout { padding: 12px; gap: 12px; }
-.metrics-grid { padding: 12px; gap: 8px; }
-.metric { padding: 12px; }
-.case-list, .evidence-workspace { padding: 12px; }
 .secondary-tabs { padding-bottom: 8px; }
 .step-section, .step-more { margin: 12px 12px 0; }
 .stage-next { margin: 12px; padding: 8px 12px; }
@@ -1155,26 +1099,15 @@ footer { padding: 8px 0 0; }
 .empty-state svg { width: 20px; height: 20px; flex-shrink: 0; }
 .empty-state strong { margin: 0; }
 .empty-state p { margin: 0; }
-.evidence-placeholder { padding: 12px 16px; }
-.evidence-placeholder .placeholder-illustration { width: 120px; height: auto; }
-.evidence-placeholder p { margin: 4px 0 0; line-height: 1.45; }
 /* (2026-11-11, 768px review) Three cards on one row from tablet width up: two plus one left an empty half row. */
 @media (min-width: 641px) {
-  .metrics-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (max-width: 640px) {
   .step-section, .step-more { margin: 8px 12px 0; }
   .main-content { padding: 12px 12px 16px; }
-  .metrics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .metrics-grid > :nth-child(3n) { grid-column: 1 / -1; }
-  .evidence-placeholder .placeholder-illustration { display: none; }
 }
 @media (max-width: 640px) {
   /* Hero on a phone: the example button and the Proof link share one row instead of two tall ones. */
-  .hero-compact > div:first-child { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; }
-  .hero-compact > div:first-child > .eyebrow, .hero-compact > div:first-child > h1 { flex: 1 0 100%; }
-  .hero-compact .hero-example-link { flex: 1 1 auto; width: auto; margin: 4px 0 0; }
-  .hero-compact .hero-proof-link { flex: 0 0 auto; margin: 4px 0 0; }
   textarea { min-height: 88px; }
 }
 .case-card { padding: 10px 12px; margin-bottom: 8px; }
@@ -1182,23 +1115,20 @@ footer { padding: 8px 0 0; }
 .main-content #disputes .case-card.case-selected { margin-bottom: 8px; }
 
 /* Download-the-demo link: a quiet secondary link in the hero on desktop, in the footer on phones. */
-.hero-local-link { display: inline-flex; align-items: center; min-height: 44px; margin: 8px 0 0 12px; padding: 0 12px; color: var(--pg-color-accent-strong); font-size: var(--type-meta); font-weight: 650; text-decoration: underline; text-underline-offset: 3px; }
 .footer-download-demo { display: none; align-items: center; min-height: 44px; color: var(--pg-color-accent-strong); font-weight: 650; text-decoration: underline; text-underline-offset: 3px; }
-@media (max-width: 640px) { .hero-local-link { display: none; } .footer-download-demo { display: inline-flex; } }
+@media (max-width: 640px) { .footer-download-demo { display: inline-flex; } }
 
 /* Download button: a real outlined secondary button, same height and radius as "Run the step 1 example". */
 .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 8px; }
-.hero-actions .hero-example-link, .hero-actions .hero-proof-link { margin: 0; }
-.hero-local-link, .footer-download-demo {
+.hero-actions .hero-proof-link { margin: 0; }
+.footer-download-demo {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; margin: 0; padding: 0 16px;
   border: 1px solid var(--pg-color-accent-strong); border-radius: var(--pg-radius-control); background: transparent;
   color: var(--pg-color-accent-strong); font-size: var(--type-meta); font-weight: 650; text-decoration: none; box-sizing: border-box;
 }
-.hero-local-link:hover, .footer-download-demo:hover { background: var(--pg-color-hover); }
+.footer-download-demo:hover { background: var(--pg-color-hover); }
 .download-icon { flex-shrink: 0; }
 @media (max-width: 640px) {
-  .hero-compact > div:first-child > .hero-actions { flex: 1 0 100%; margin-top: 0; }
-  .hero-local-link { display: none; }
   .footer-download-demo { display: inline-flex; width: 100%; margin-top: 4px; }
 }
 @media (min-width: 641px) { .footer-download-demo { display: none; } }
@@ -1212,14 +1142,6 @@ footer { padding: 8px 0 0; }
 
 /* Step 03 inner tabs: "Case review" and "Deadline board" share the step; only one is shown at a time. The board's own
    open state drives the tab, so every existing way of opening it keeps working. */
-.inner-tabs { display: flex; gap: 4px; padding: 8px 16px 0; border-bottom: 1px solid var(--pg-color-rule); background: var(--pg-color-panel); }
-.inner-tab { padding: 8px 18px; border: 1px solid transparent; border-bottom: 0; border-radius: 8px 8px 0 0; background: transparent; color: var(--pg-color-muted); font: inherit; font-weight: 650; cursor: pointer; }
-.inner-tab:hover { color: var(--pg-color-ink); background: var(--pg-color-recede); }
-.inner-tab.is-active { margin-bottom: -1px; background: var(--pg-color-panel); border-color: var(--pg-color-rule); color: var(--pg-color-accent-strong); }
-#disputes .inner-tabs[data-board-open="true"] ~ .dispute-layout,
-#disputes .inner-tabs[data-board-open="true"] ~ [data-testid="replay-fold"],
-#disputes .inner-tabs[data-board-open="true"] ~ .provider-disputes,
-#disputes .inner-tabs[data-board-open="false"] ~ #evidence-board { display: none; }
 
 /* Bryntum bars: let the "Collect evidence" label fit its bar (the bar width encodes time, so the text shrinks, not the bar). */
 .b-sch-event .b-sch-event-content, .b-sch-event .b-sch-event-text { padding-inline: 3px; font-size: 13px; letter-spacing: -0.3px; }
@@ -1258,9 +1180,42 @@ details:not(.limits-drawer) > summary::after { display: inline-block; }
    low-specificity rule; the console's own input rule above (12px padding) won, so the icon sat on the first letters. */
 .ag-filter-body input.ag-input-field-input[type="text"], .ag-filter-body input.ag-input-field-input[type="number"] { padding-left: 30px; }
 
-/* (UX round 2) Phones: the metric caption wraps instead of being cut; long hashes wrap inside their card. */
-@media (max-width: 480px) { .metric-value { flex-wrap: wrap; } .metric-value > span { white-space: normal; } }
 .provider-disputes-body small, .provider-disputes-body code { overflow-wrap: anywhere; }
 
 /* Tablet widths: the step status wraps to a second line instead of ending in "…". */
 @media (min-width: 641px) and (max-width: 1279px) { .journey-step .journey-status { white-space: normal; overflow: visible; text-overflow: clip; } }
+
+/* ---- (P4 2026-11-12) Step 02 Sales spike and Step 03 Disputes in the shared containers (ui_mock/CONTAINER_SPEC.md):
+   one hero figure, a ledger for orders and cases, a day book for the case timeline, a clipping for the AI step.
+   Tokens only; type on the 12 / 14 / 16 / 20 / 28 / 40 / 56 scale. ---- */
+.review-status { display: inline-flex; align-items: center; gap: 6px; margin: 0; color: var(--pg-color-muted); font-size: var(--pg-text-2); white-space: nowrap; }
+.review-status b { color: var(--pg-color-warn); font-weight: 700; }
+.review-status.is-done b, .review-status.is-done svg { color: var(--pg-color-ok); }
+.topbar .topbar-sandbox-state { grid-area: 1 / 2; align-self: center; margin-left: 8px; color: var(--pg-color-muted); font-size: var(--pg-text-1); font-weight: 600; white-space: nowrap; }
+.topbar .topbar-sandbox.is-connected .topbar-sandbox-state { color: var(--pg-color-ok); }
+/* Phones: the faces already say it in words ("Sandbox" button vs "Connected"), so the extra line is dropped to keep 375px. */
+@media (max-width: 640px) { .topbar .topbar-sandbox-state { display: none; } }
+.stage-next.stage-next--link { justify-content: flex-start; margin: var(--pg-space-3) var(--pg-space-4); padding: 0; border: 0; background: transparent; }
+.stage-next--link .tg-link { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; }
+
+
+/* One side column holds the case queue, the guide and More (coordinator P4 #5); under 1280px it stacks, queue first. */
+#disputes .stage-body { display: flex; flex-direction: column; }
+#disputes .stage-main { min-width: 0; }
+#disputes .ds-side { display: contents; }
+#disputes .ds-side > .ds-queue-col { order: -1; padding: var(--pg-space-4) var(--pg-space-4) 0; }
+/* Inner page frame removed on steps 02 and 03 (2px ink frame): sections are separated by 1px rules. */
+#velocity.panel, #disputes.panel { border: 0; box-shadow: none; background: transparent; overflow: visible; }
+#velocity .stage-content, #disputes .stage-content { background: transparent; }
+/* The in-page step bar repeats the console nav, so it is one line of small status text (step-status-* test ids kept). */
+.main-content .journey { display: flex; flex-wrap: wrap; gap: 4px 20px; margin-bottom: 8px; border: 0; background: transparent; }
+.main-content .journey .journey-step, .main-content .journey .journey-step.is-active, .main-content .journey .journey-step.is-done { min-height: 0; padding: 0; border: 0; background: transparent; box-shadow: none; }
+.main-content .journey .journey-step > div { flex-direction: row; align-items: baseline; gap: 6px; }
+.main-content .journey .journey-step strong { font-size: var(--pg-text-1); font-weight: 600; color: var(--pg-color-muted); }
+.main-content .journey .journey-step.is-active strong { color: var(--pg-color-ink); text-decoration: underline; text-underline-offset: 3px; }
+.main-content .journey .journey-status { font-size: var(--pg-text-1); }
+@media (max-width: 640px) {
+  .ds-layout { padding: var(--pg-space-3); }
+  #disputes .ds-side > .ds-queue-col { padding: var(--pg-space-3) var(--pg-space-3) 0; }
+  #disputes .inner-tabs { margin: var(--pg-space-3) var(--pg-space-3) 0; }
+}

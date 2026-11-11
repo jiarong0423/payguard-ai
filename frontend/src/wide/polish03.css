@@ -1,11 +1,7 @@
 /* polish03: owned by one UI agent. Rules only inside the media query (viewport 1280px and wider). */
 @media (min-width: 1280px) {
-  /* Case queue: reason badge at 13px, the owner's minimum text size (was 12px). */
-  #disputes .case-card .badge { font-size: 13px; }
   /* Case review: the "Response window open" badge moves to the top-right corner of the routing card, beside the two short title lines,
      instead of taking a line of its own under the text (about 36px shorter). */
-  #disputes .evidence-workspace > .dispute-route { position: relative; }
-  #disputes .evidence-workspace > .dispute-route > .badge { position: absolute; top: 8px; right: 12px; }
   /* Case review: download strip text spans the strip; both download buttons share one row under it where they fit (was text + one button, then the ZIP button alone). */
   #disputes .privacy-strip > div { flex: 1 1 calc(100% - 40px); }
   /* Case review, 1600px and wider: the lock note sits on the confirm row, just left of the Confirm button, instead of a row of its own

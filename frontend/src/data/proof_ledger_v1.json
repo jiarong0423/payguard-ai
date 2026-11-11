@@ -1,15 +1,10 @@
 {
   "schema_version": "proof_ledger_v1",
-  "note": "One row per real PayPal Sandbox evidence send, for the console Proof page. Every value is a quote: tests/frontend_proof_page.mjs checks that each {value, line} pair appears on that line of the row's file, and that the PDF in frontend/public/evidence has the recorded SHA-256 and byte count. Dispute ids stay masked in the source files and are not copied here.",
-  "basis": [
-    { "label": "RECORDED", "meaning": "a real run, written down in a committed receipt" },
-    { "label": "RECOUNTED", "meaning": "counted again from a committed data file by a test" },
-    { "label": "SYNTHETIC", "meaning": "demo data the app generates; no real source" },
-    { "label": "HOSTED DEMO", "meaning": "made on the public hosted page, not the local console" }
-  ],
+  "note": "One row per real PayPal Sandbox evidence send, for the console Proof page. Every value is a quote: tests/frontend_proof_page.mjs checks that each {value, line} pair appears on that line of the row's file, and that the PDF in frontend/public/evidence has the recorded SHA-256 and byte count. Dispute ids stay masked in the source files and are not copied here. The four source labels and the source line of each row (source_key) are in source_labels_v1.json.",
   "sends": [
     {
       "id": "send-20261104",
+      "source_key": "receipt_20261104",
       "basis": "RECORDED",
       "file": "docs/evidence/RECEIPT_20261104_live.md",
       "label": "First send receipt",
@@ -21,6 +16,7 @@
     },
     {
       "id": "send-20261105",
+      "source_key": "receipt_20261105",
       "basis": "RECORDED",
       "file": "docs/evidence/RECEIPT_20261105_live.md",
       "label": "Video send receipt",
@@ -32,6 +28,7 @@
     },
     {
       "id": "send-20261109-1",
+      "source_key": "readback_send1",
       "basis": "RECORDED",
       "file": "docs/evidence/READBACK_20261109.md",
       "label": "Read-back, send 1",
@@ -43,6 +40,7 @@
     },
     {
       "id": "send-20261109-2",
+      "source_key": "readback_send2",
       "basis": "RECORDED",
       "file": "docs/evidence/READBACK_20261109.md",
       "label": "Read-back, send 2",
@@ -54,6 +52,7 @@
     },
     {
       "id": "send-20261109-3",
+      "source_key": "readback_send3",
       "basis": "RECORDED",
       "file": "docs/evidence/READBACK_20261109.md",
       "label": "Read-back, send 3",
@@ -65,6 +64,7 @@
     },
     {
       "id": "send-20261110-hosted",
+      "source_key": "hosted_receipt",
       "basis": "HOSTED DEMO",
       "file": "docs/evidence/RECEIPT_20261110_hosted_live.md",
       "label": "Hosted receipt",
