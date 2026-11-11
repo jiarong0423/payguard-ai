@@ -51,7 +51,7 @@
     {
       "id": "policy-gemini-api",
       "scenario": "policy",
-      "proven": "On 12 held-out pre-check requests Gemini filled every field correctly: precision 1.00, recall 0.76, 0 format-invalid replies, 0 test inputs followed as instructions.",
+      "proven": "On 12 held-out pre-check requests none of the fields Gemini filled were wrong: precision 1.00, recall 0.76, 0 format-invalid replies, 0 test inputs followed as instructions.",
       "how": "API round with gemini-3.8-flash, 12 calls, scored by tools/score_replies.py --funnel. Precision is the share of filled fields that were right, not accuracy; fields not filled are asked again.",
       "method": "RECORDED",
       "date": "2026-11-03",
@@ -83,7 +83,7 @@
     {
       "id": "velocity-gemini-api",
       "scenario": "velocity",
-      "proven": "On 12 held-out sales-spike requests Gemini filled every field correctly: precision 1.00, recall 0.95, 0 confidently incorrect fields.",
+      "proven": "On 12 held-out sales-spike requests none of the fields Gemini filled were wrong: precision 1.00, recall 0.95, 0 confidently incorrect fields.",
       "how": "API round with gemini-3.8-flash and the revised sales-spike prompt, 12 calls, same scoring as above.",
       "method": "RECORDED",
       "date": "2026-11-03",
@@ -196,7 +196,7 @@
     {
       "id": "dispute-gemini-api",
       "scenario": "dispute",
-      "proven": "On 12 held-out dispute-evidence requests Gemini filled every field correctly: precision 1.00, recall 0.83, weekdays right in 7 of 8.",
+      "proven": "On 12 held-out dispute-evidence requests none of the fields Gemini filled were wrong: precision 1.00, recall 0.83, weekdays right in 7 of 8.",
       "how": "API round with gemini-3.8-flash, 12 calls, same scoring as above.",
       "method": "RECORDED",
       "date": "2026-11-03",

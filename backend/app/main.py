@@ -165,7 +165,7 @@ def parse_locked_json(text: str):
 DISPUTE_PAIRING_MESSAGES = {
     "dispute_case_mismatch": "This dispute does not match the selected case (reason or amount differ). Select the case it belongs to.",
     "dispute_case_bound": "This dispute is already paired with another case in this session. Evidence is never mixed between cases.",
-    "country_rules_blocked": "TradeGlot won't create the draft: a listed country rule may apply to this sale. Change the goods, account or countries and check again.",
+    "country_rules_blocked": "TradeGlot won't create the draft: a listed country rule applies to this sale. Change the goods, account or countries and check again.",
     "country_check_changed": "The country check changed after this draft was reviewed; review the draft again.",
     # The seller needs the cause, not a generic "changed" (r22: a TWD check then a USD invoice looked unexplained).
     "country_amount_changed": "The country check used a different amount or currency than this invoice. Check country rules again with the invoice amount in USD, or leave the amount empty.",

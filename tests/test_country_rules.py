@@ -291,7 +291,7 @@ class InvoiceGateTests(RouteTests):
         held = self.client.post("/api/v1/paypal/invoices/review", json=body, headers=self.headers)
         self.assertEqual(held.status_code, 409)
         message = held.json()["error"]["message"]
-        self.assertIn("won't create the draft: a listed country rule may apply to this sale", message)
+        self.assertIn("won't create the draft: a listed country rule applies to this sale", message)
         self.assertNotIn("hold", message.lower())
         self.assertEqual(self.client.post("/api/v1/demo/inject", json={"scenario": "reset"}, headers=self.headers).status_code, 200)
         aup = self.client.post("/api/v1/aup/review", json={"description": "Handcrafted ceramic cup"}, headers=self.headers).json()

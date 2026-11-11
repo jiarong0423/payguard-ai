@@ -12,7 +12,7 @@ const TAG_LABELS = {
   live_animals: 'Live animals', plants_seeds: 'Plants or seeds', food: 'Food', cosmetics: 'Cosmetics',
   batteries_hazmat: 'Batteries or hazardous', alcohol: 'Alcohol', tobacco_other: 'Tobacco (not e-cigarettes)',
   prescription: 'Prescription items', crypto: 'Crypto', gambling: 'Gambling', medical_devices: 'Medical devices',
-  jewellery_precious_metals: 'Jewellery or precious metals', weapons: 'Weapons', counterfeit: 'Possible counterfeit-goods theme',
+  jewellery_precious_metals: 'Jewellery or precious metals', weapons: 'Weapons', counterfeit: 'Possible counterfeit-goods signal',
   narcotics: 'Narcotics', cigarettes: 'Cigarettes', radio_wireless: 'Phones or wireless devices', e_cigarettes: 'E-cigarettes',
   currency: 'Cash or banknotes', cultural_relics: 'Antiques or cultural relics',
 };
@@ -154,7 +154,7 @@ function Verdict({ result, names, tags, onEdit, onContinue }) {
   // One next step under the verdict (plan r2 E19): change the goods after a Stop, or go on to the draft.
   if (result.blocked) {
     return <><strong className="country-verdict-big">A listed rule may apply to this sale.</strong>
-      <span className="country-verdict-line">No draft yet: {plural(block.length, 'rule')} {block.length === 1 ? 'applies' : 'apply'} to {seller} → {buyer}.</span>{noGoods}
+      <span className="country-verdict-line">Draft held: {plural(block.length, 'listed rule')} {block.length === 1 ? 'applies' : 'apply'} to {seller} → {buyer}.</span>{noGoods}
       <span className="country-verdict-next"><button type="button" className="button button-secondary" data-testid="country-edit-item" onClick={() => onEdit(accountStop)}>{accountStop ? 'Change account' : 'Edit item'}</button></span></>;
   }
   if (ban.length) {
@@ -162,7 +162,7 @@ function Verdict({ result, names, tags, onEdit, onContinue }) {
       <span className="country-verdict-line">{plural(ban.length, 'postal rule')} ban{ban.length === 1 ? 's' : ''} it {seller} → {buyer}; another carrier may differ{warn.length > ban.length ? ` · ${warn.length - ban.length} more to check` : ''}. Not a legal clearance.</span>{noGoods}
       <span className="country-verdict-next"><button type="button" className="button button-secondary" data-testid="country-continue-draft" onClick={onContinue}>Continue with another carrier</button></span></>;
   }
-  return <><strong className="country-verdict-big">No cited rule stops this sale.</strong>
+  return <><strong className="country-verdict-big">No cited rule applies to this sale.</strong>
     <span className="country-verdict-notclear" data-testid="country-not-clearance">This is not clearance. Only the listed country and PayPal rules were checked; payment type, address match and carrier limits are not covered.</span>
     <span className="country-verdict-line">{result.cross_border ? 'Cross-border' : 'Domestic'}, {seller} → {buyer}{warn.length ? ` · ${warn.length} to check first` : ''}. Not a legal clearance; PayPal's Acceptable Use Policy still applies.</span>{noGoods}
     <span className="country-verdict-next"><button type="button" className="button button-secondary" data-testid="country-continue-draft" onClick={onContinue}>Continue to draft</button></span></>;

@@ -804,7 +804,7 @@ export async function apiRequest(path, { method = 'GET', body, session, signal }
       payload = await response.json();
     } catch {
       if (retryAfter) throw new ApiError(response.status === 429 ? 'Too many requests; please wait a moment.' : 'TradeGlot is busy right now.', response.status, response.status === 429 ? 'rate_limited' : 'server_busy', retryAfter);
-      throw new ApiError('The server sent an unexpected answer. Try again.', response.status, 'invalid_response');
+      throw new ApiError('The server returned an unexpected response. Please try again.', response.status, 'invalid_response');
     }
     if (!response.ok) {
       const code = payload?.error?.code || 'request_failed';
