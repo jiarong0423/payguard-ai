@@ -112,9 +112,9 @@ function BeforeAfter({ record, names }) {
   if (before.tags.join() !== after.tags.join()) changes.push(`goods ${goods(before)} to ${goods(after)}`);
   if (before.account !== after.account) changes.push(`account ${before.account} to ${after.account}`);
   return <div className="country-before-after" data-testid="country-before-after">
-    <strong data-testid="country-before-after-line">Stopped at {clockTime(before.at)} → {after.word} at {clockTime(after.at)}</strong>
+    <strong data-testid="country-before-after-line">Held at {clockTime(before.at)} → {after.word} at {clockTime(after.at)}</strong>
     <span className="country-before-after-note" data-testid="country-before-after-note">This compares your declaration only. Changing a declaration does not change what PayPal or a carrier will do.</span>
-    <span>{changes.length ? `Changed: ${changes.join('; ')}.` : 'Same details checked again.'} The draft is no longer stopped by a country rule.</span>
+    <span>{changes.length ? `Changed: ${changes.join('; ')}.` : 'Same details checked again.'} The draft is no longer held by a country rule.</span>
   </div>;
 }
 

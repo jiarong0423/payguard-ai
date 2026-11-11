@@ -43,11 +43,11 @@
       "source_sha256": "62559450a061410394f0cac8c43083a999f045200e5ad5c18c9e15096ab128be"
     },
     {
-      "bytes": 108297,
+      "bytes": 108294,
       "path": "README.md",
-      "sha256": "296a997481ed37df301de6c3144b4cb10f93df1ec5e1bff162c1ec9ba24626ce",
+      "sha256": "ceb4f48215d918b0bed801a9d627782126663cc22feb83759d540aab345e9989",
       "source_path": "README.md",
-      "source_sha256": "296a997481ed37df301de6c3144b4cb10f93df1ec5e1bff162c1ec9ba24626ce"
+      "source_sha256": "ceb4f48215d918b0bed801a9d627782126663cc22feb83759d540aab345e9989"
     },
     {
       "bytes": 14218,
@@ -1184,11 +1184,11 @@
       "source_sha256": "2c7676f638a61b7924f98852bccc02ac0c798ae0d68b33a5eb965226f22f8182"
     },
     {
-      "bytes": 228765,
+      "bytes": 228779,
       "path": "frontend/src/App.jsx",
-      "sha256": "d88fefc81f9d744af6a8b52d421f4a9dcb3f541d837efe9c61a5cae1bc81debe",
+      "sha256": "a7c5289b2c7d0625391efc28f8753952caf27e97e78503aa9cd607e700de7baf",
       "source_path": "frontend/src/App.jsx",
-      "source_sha256": "d88fefc81f9d744af6a8b52d421f4a9dcb3f541d837efe9c61a5cae1bc81debe"
+      "source_sha256": "a7c5289b2c7d0625391efc28f8753952caf27e97e78503aa9cd607e700de7baf"
     },
     {
       "bytes": 8879,
@@ -1198,11 +1198,11 @@
       "source_sha256": "2ff3df5a88ccbb717f5a95eaae8f3b36a25758066ef4bb3a9eafb6cd7e61a50f"
     },
     {
-      "bytes": 32852,
+      "bytes": 32846,
       "path": "frontend/src/CountryRules.jsx",
-      "sha256": "cdf474112f84f1e684c588c15d9490a75e6c1f510d212ddc00ffd03a7579921a",
+      "sha256": "508d55985638c8eb66851191e21bcf1d4fb032f8ddcf7b9695dac10736730bcb",
       "source_path": "frontend/src/CountryRules.jsx",
-      "source_sha256": "cdf474112f84f1e684c588c15d9490a75e6c1f510d212ddc00ffd03a7579921a"
+      "source_sha256": "508d55985638c8eb66851191e21bcf1d4fb032f8ddcf7b9695dac10736730bcb"
     },
     {
       "bytes": 10823,
@@ -1233,11 +1233,11 @@
       "source_sha256": "ccd92b4821997f3922f5093f7df92f813fb5b0bd37809635f08dcb018d7f2e3b"
     },
     {
-      "bytes": 13567,
+      "bytes": 13562,
       "path": "frontend/src/PolicyPanel.jsx",
-      "sha256": "554836cf060570f91c490c54cccd8d7be73f786fe140d40e92e1c9dbb4391a10",
+      "sha256": "af1192e28b307767c3b61ce3dc618f061e65ca9d7f1dd103ed05491299479e6d",
       "source_path": "frontend/src/PolicyPanel.jsx",
-      "source_sha256": "554836cf060570f91c490c54cccd8d7be73f786fe140d40e92e1c9dbb4391a10"
+      "source_sha256": "af1192e28b307767c3b61ce3dc618f061e65ca9d7f1dd103ed05491299479e6d"
     },
     {
       "bytes": 2889,
@@ -2388,11 +2388,11 @@
       "source_sha256": "478f6090ae6d9a4ee6af3b775af7161651de5553fda6d3c5707df3eea27bb098"
     },
     {
-      "bytes": 9837,
+      "bytes": 9834,
       "path": "tests/frontend_optimise_r24.mjs",
-      "sha256": "cf5a73f8aa6970775029f7bc1f70f232becbe0ce4f12b0d2c7f584e86da5af1d",
+      "sha256": "890e7370d3871186b8267d9413356f0bf1bdf50a0e23378c509b48eeb8534d92",
       "source_path": "tests/frontend_optimise_r24.mjs",
-      "source_sha256": "cf5a73f8aa6970775029f7bc1f70f232becbe0ce4f12b0d2c7f584e86da5af1d"
+      "source_sha256": "890e7370d3871186b8267d9413356f0bf1bdf50a0e23378c509b48eeb8534d92"
     },
     {
       "bytes": 7871,
@@ -3198,8 +3198,8 @@
     "scope": "RECORDED_OWNER_RIGHTS_AND_ENTRANT_ELIGIBILITY"
   },
   "package_digest_algorithm": "sha256(sorted utf-8 '<file_sha256>  <relative_path>\\n' records; manifest and detached hash excluded)",
-  "package_digest_sha256": "68cca233ced956541ed01880c273a818c038b7e5c9eb71ac3507e7de6edc284c",
-  "public_artifact_id": "payguard-public-source-68cca233ced95654",
+  "package_digest_sha256": "38858ebe88de1924c8e0df52bade7cf55cb904c26c7dba3978293c5c66e4b55b",
+  "public_artifact_id": "payguard-public-source-38858ebe88de1924",
   "publication_authorized": false,
   "raw_bounded_prompt_disclosure": {
     "intent": "INTENTIONAL_PUBLIC_EXECUTABLE_PRODUCT_SOURCE",
