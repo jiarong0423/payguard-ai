@@ -42,6 +42,9 @@ COPY src ./src
 COPY backend ./backend
 COPY data ./data
 COPY policies ./policies
+# The guide builds its Gemini prompt from this file at run time (backend/app/guide_model.py _load_prompt_pack);
+# without it every hosted guide call failed before reaching Google (fixed 2026-11-13).
+COPY tools/make_prompt_pack.py ./tools/make_prompt_pack.py
 COPY --from=frontend /build/frontend/dist ./frontend/dist
 # The 3.12 interpreter the worker venv points at (versioned names, so nothing of the 3.13 runtime is replaced).
 COPY --from=gemini /usr/local/bin/python3.12 /usr/local/bin/python3.12

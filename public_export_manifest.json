@@ -1,5 +1,5 @@
 {
-  "created_at_utc": "2026-11-12T18:30:30Z",
+  "created_at_utc": "2026-11-12T18:44:45Z",
   "dependency_locks": {
     "frontend_npm": "0f98893564efb5556cc0a92710feedcb9da085108f9668fee93f29940b87f09d",
     "gemini_python": "36554331392d6102519a4ead5778704c4ff89e79da6bb9d6648b656f130724bb",
@@ -8,11 +8,11 @@
   "file_count": 550,
   "files": [
     {
-      "bytes": 662,
+      "bytes": 757,
       "path": ".dockerignore",
-      "sha256": "0eef98a54f7eeee058027d26aa8573884efa2c30387078b0d3d155aab3d8d320",
+      "sha256": "fb884383a75ef155959a106779f8e74d5decd84e57edf702a927693124a6f996",
       "source_path": ".dockerignore",
-      "source_sha256": "0eef98a54f7eeee058027d26aa8573884efa2c30387078b0d3d155aab3d8d320"
+      "source_sha256": "fb884383a75ef155959a106779f8e74d5decd84e57edf702a927693124a6f996"
     },
     {
       "bytes": 2094,
@@ -29,11 +29,11 @@
       "source_sha256": "6bea0a27eff47f656e89320e83ac2b7fd3a21c325bb8536aadf6654ad873d1ee"
     },
     {
-      "bytes": 3746,
+      "bytes": 4004,
       "path": "Dockerfile",
-      "sha256": "913c6a519bf4cee34ec7b81497e78254cc5d50dd05983521ba57627cc8aaaa53",
+      "sha256": "333c2f1d4dda81e2e9b1fafbcaf22a187396dc9915f770773f5eddc4f92404e4",
       "source_path": "Dockerfile",
-      "source_sha256": "913c6a519bf4cee34ec7b81497e78254cc5d50dd05983521ba57627cc8aaaa53"
+      "source_sha256": "333c2f1d4dda81e2e9b1fafbcaf22a187396dc9915f770773f5eddc4f92404e4"
     },
     {
       "bytes": 1102,
@@ -3863,8 +3863,8 @@
     "scope": "RECORDED_OWNER_RIGHTS_AND_ENTRANT_ELIGIBILITY"
   },
   "package_digest_algorithm": "sha256(sorted utf-8 '<file_sha256>  <relative_path>\\n' records; manifest and detached hash excluded)",
-  "package_digest_sha256": "7765c651672f46c6bee1d7b9bf816ff19932879e532dfc51226c8274bb174b26",
-  "public_artifact_id": "payguard-public-source-7765c651672f46c6",
+  "package_digest_sha256": "a9a036f54a44541956d38c1320b5872c1ddd0d9d52344b69213ecde2a72e71c2",
+  "public_artifact_id": "payguard-public-source-a9a036f54a445419",
   "publication_authorized": false,
   "raw_bounded_prompt_disclosure": {
     "intent": "INTENTIONAL_PUBLIC_EXECUTABLE_PRODUCT_SOURCE",

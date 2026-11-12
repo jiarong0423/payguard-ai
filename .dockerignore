@@ -22,6 +22,8 @@
 !integrations/gemini/pyproject.toml
 !integrations/gemini/requirements.lock
 !integrations/gemini/run.sh
+# (2026-11-13) The guide prompt pack the backend loads at run time.
+!tools/make_prompt_pack.py
 **/__pycache__
 **/*.py[cod]
 **/.env
