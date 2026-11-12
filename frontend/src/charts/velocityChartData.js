@@ -1,7 +1,11 @@
 // Pure helpers for the stage 02 hourly chart. No network, no clock: everything is
 // derived from the backend `velocity` block and the synthetic `transactions` list.
 
-import { color, viz } from '../theme/tokens.js';
+import { axisText, chartColor, noGrid, valueGrid } from './chartTheme.js';
+import { money } from '../theme/format.js';
+
+// (vteam viz) Amounts use the site format from theme/format.js: "USD 500.00" (code first), never "500.00 USD".
+export { money };
 
 const HOUR_MS = 3600 * 1000;
 const MAX_BASELINE_BUCKETS = 48;
@@ -91,23 +95,21 @@ export function buildVelocityHourlyRows(velocity, transactions) {
 }
 
 // (P4 2026-11-12, review_FULL s3a) Token colours only, and each legend swatch is its bars' colour: every past hour is a
-// thin bar at the usual rate (--viz-base, bandMuted for now), a spike hour above the review line is amber (--viz-alert,
-// warn: "check first", not risk red), a spike hour under it is grey (context), the review threshold is a 1px amber
-// dashed line (--check), the plot sits on --pg-viz-bg, never white. No teal, orange or indigo.
-const BASELINE_FILL = viz.base;
-const SPIKE_FILL = color.context;
-const REVIEW_STROKE = color.warn;
-const FLAG_FILL = viz.alert;
-const AVERAGE_STROKE = color.muted;
-const MONTH_STROKE = color.ink;
+// thin bar at the usual rate (viz.base, 3.7:1 on the paper), a spike hour above the review line is amber (viz.alert,
+// warn: "check first", not risk red) and is also marked with a ▲ and its multiple, a spike hour under it is grey
+// (context), the review threshold is a 1px amber dashed line. (vteam viz) Colours come from chartTheme.js; the plot sits
+// on the page paper with faint horizontal ledger lines. No teal, orange or indigo.
+const BASELINE_FILL = chartColor.usual;
+const SPIKE_FILL = chartColor.under;
+const REVIEW_STROKE = chartColor.reviewLine;
+const FLAG_FILL = chartColor.over;
+const AVERAGE_STROKE = chartColor.muted;
+const MONTH_STROKE = chartColor.ink;
 
 // (r32 J5 P3-3) Chart titles and subtitles wrap onto up to three lines instead of being cut with an ellipsis at
 // phone width.
 const CAPTION_WRAP = Object.freeze({ wrapping: 'on-space', maxHeight: 60 });
 
-export function money(value) {
-  return Number(value).toFixed(2);
-}
 
 function rangeLabel(datum) {
   const fmt = (iso) => new Date(iso).toISOString().slice(11, 16);
@@ -125,24 +127,26 @@ export function hoursAbove(rows, reviewLine) {
 }
 
 // `mark`: '' (none), 'peak' (outline the largest hour, soften the rest) or 'over' (outline the hours above the review line).
-export function velocityChartOptions({ rows, reviewLine, currency }, container, { compact = false, mark = '' } = {}) {
+// `onPick`: called with the clicked hour's row (vteam viz: the frosted hour detail), or omitted.
+export function velocityChartOptions({ rows, reviewLine, currency }, container, { compact = false, mark = '', onPick = null } = {}) {
   const peak = mark === 'peak' ? peakHourOf(rows) : null;
   const picked = (datum) => (mark === 'peak' ? Boolean(peak) && datum.key === peak.key : mark === 'over' ? reviewLine !== null && datum.spike > reviewLine : true);
   const baselineRate = rows.find((row) => row.window === 'baseline')?.baseline || null;
   return {
     container,
     data: rows,
-    title: { text: 'Hourly amount: baseline vs spike', fontSize: 14, fontWeight: 600, color: color.ink, ...CAPTION_WRAP },
-    subtitle: { text: 'Sample data · amber = above the review line', fontSize: 12, color: color.muted, ...CAPTION_WRAP },
-    background: { fill: viz.bg },
+    title: { text: 'Hourly amount: baseline vs spike', fontSize: 14, fontWeight: 600, color: chartColor.ink, ...CAPTION_WRAP },
+    subtitle: { text: 'Sample data · hours in UTC · amber ▲ = above the review line · click an hour for its detail', fontSize: 12, color: chartColor.muted, ...CAPTION_WRAP },
+    background: { fill: chartColor.plot },
     // (UI r5) left 8 -> 20: the rotated y-axis title ('USD per hour') lost its first letter at the canvas edge.
     padding: { top: 12, right: 16, bottom: 8, left: 20 },
     series: [
       {
         // (P4) Every past hour as a thin bar at the declared synthetic rate, so the spike reads against a row of usual hours.
-        type: 'bar', xKey: 'label', yKey: 'baseline', yName: 'Usual hours', fill: BASELINE_FILL, stacked: true, cornerRadius: 0,
-        tooltip: { renderer: ({ datum }) => ({ heading: 'Baseline window', title: rangeLabel(datum),
-          data: [{ label: 'Synthetic baseline rate', value: `${money(datum.baseline)} ${currency}/h` }] }) },
+        type: 'bar', xKey: 'label', yKey: 'baseline', yName: 'Usual hours', fill: BASELINE_FILL, stacked: true, cornerRadius: 0, strokeWidth: 0,
+        // (vteam viz) With the clicked-hour panel (onPick) the default white tooltip is off: one detail layer, not two.
+        tooltip: { enabled: !onPick, renderer: ({ datum }) => ({ heading: 'Baseline window', title: rangeLabel(datum),
+          data: [{ label: 'Synthetic baseline rate', value: `${money(datum.baseline, currency)}/h` }] }) },
       },
       {
         type: 'bar', xKey: 'label', yKey: 'spike', yName: 'Spike hour above the review line', fill: FLAG_FILL, stacked: true,
@@ -150,30 +154,33 @@ export function velocityChartOptions({ rows, reviewLine, currency }, container, 
         itemStyler: ({ datum }) => {
           const base = reviewLine !== null && datum && datum.spike > reviewLine ? {} : { fill: SPIKE_FILL };
           if (!mark || !datum) return base;
-          return picked(datum) ? { ...base, stroke: color.rule, strokeWidth: 3 } : { ...base, fillOpacity: 0.3 };
+          return picked(datum) ? { ...base, stroke: chartColor.outline, strokeWidth: 3 } : { ...base, fillOpacity: 0.3 };
         },
-        label: { enabled: true, placement: 'outside-end', fontSize: 16, fontWeight: 700, color: color.ink,
-          formatter: ({ value }) => (value && baselineRate > 0 ? `×${(value / baselineRate).toFixed(1)}` : '') },
-        tooltip: { renderer: ({ datum }) => ({ heading: 'Spike window', title: rangeLabel(datum),
-          data: [{ label: 'Captured amount', value: `${money(datum.spike)} ${currency}` }, { label: 'Orders', value: String(datum.captures ?? 0) }] }) },
+        // Direct label: the multiple of the usual rate; an hour above the review line also gets the ▲ (shape, not colour).
+        label: { enabled: true, placement: 'outside-end', fontSize: 16, fontWeight: 700, color: chartColor.ink,
+          formatter: ({ value }) => (value && baselineRate > 0 ? `${reviewLine !== null && value > reviewLine ? '▲ ' : ''}×${(value / baselineRate).toFixed(1)}` : '') },
+        tooltip: { enabled: !onPick, renderer: ({ datum }) => ({ heading: 'Spike window', title: rangeLabel(datum),
+          data: [{ label: 'Captured amount', value: money(datum.spike, currency) }, { label: 'Orders', value: String(datum.captures ?? 0) }] }) },
       },
     ],
     axes: {
-      // The hour labels are UTC; the axis says so (the rest of the page shows the viewer's own zone).
-      x: { type: 'category', position: 'bottom', title: { text: 'Hour (UTC)', fontSize: 12, color: color.muted }, label: { fontSize: 12, color: color.muted } },
+      // The hour labels are UTC; the subtitle says so (the rest of the page shows the viewer's own zone).
+      // (vteam viz) The axis title 'Hour (UTC)' moved into the subtitle: 20px more plot height for the bars.
+      x: { type: 'category', position: 'bottom', label: { ...axisText, autoRotate: false }, gridLine: noGrid },
       y: {
         type: 'number', position: 'left', min: 0, nice: true,
-        title: { text: `${currency} per hour`, fontSize: 12, color: color.muted },
-        label: { fontSize: 12, color: color.muted },
+        title: { text: `${currency} per hour`, ...axisText },
+        label: axisText, gridLine: valueGrid,
         crossLines: reviewLine === null ? [] : [{
           type: 'line', value: reviewLine, stroke: REVIEW_STROKE, strokeWidth: 1, lineDash: [4, 3],
           // (r32 J1 J4) On a phone the long label ran under the spike bar and its "USD/h" was hidden; the short one
           // ends before the bars, and the page legend below still names the line "Review threshold".
-          label: { text: `${compact ? 'Review' : 'Review threshold'} ${money(reviewLine)} ${currency}/h`, position: 'top-left', color: color.warn, fontSize: 12 },
+          label: { text: `${compact ? 'Review' : 'Review threshold'} ${money(reviewLine, currency)}/h`, position: 'top-left', color: chartColor.reviewLine, fontSize: 12 },
         }],
       },
     },
-    legend: { enabled: !compact, position: 'bottom', item: { label: { fontSize: 12, color: color.ink } } },
+    legend: { enabled: !compact, position: 'bottom', item: { label: { fontSize: 12, color: chartColor.ink } } },
+    ...(onPick ? { listeners: { seriesNodeClick: ({ datum }) => onPick(datum || null) } } : {}),
   };
 }
 
@@ -221,36 +228,36 @@ export function percent(change) {
 export function monthlyChartOptions({ rows, currency }, container) {
   const tooltip = { renderer: ({ datum }) => ({ heading: datum.current ? 'Current month (includes the spike window)' : 'Month',
     title: datum.label, data: [
-      { label: 'Captured amount', value: `${money(datum.amount)} ${currency}` },
-      { label: '3-month average', value: datum.ma3 === null ? '—' : `${money(datum.ma3)} ${currency}` },
+      { label: 'Captured amount', value: money(datum.amount, currency) },
+      { label: '3-month average', value: datum.ma3 === null ? '—' : money(datum.ma3, currency) },
       { label: 'Change vs previous month', value: percent(datum.change) },
     ] }) };
   return {
     container,
     data: rows,
-    title: { text: 'Monthly amount and 3-month average', fontSize: 14, fontWeight: 600, color: color.ink, ...CAPTION_WRAP },
-    subtitle: { text: 'Illustrative demo data · not used by the review signal', fontSize: 12, color: color.muted, ...CAPTION_WRAP },
-    background: { fill: viz.bg },
+    title: { text: 'Monthly amount and 3-month average', fontSize: 14, fontWeight: 600, color: chartColor.ink, ...CAPTION_WRAP },
+    subtitle: { text: 'Illustrative demo data · not used by the review signal', fontSize: 12, color: chartColor.muted, ...CAPTION_WRAP },
+    background: { fill: chartColor.plot },
     padding: { top: 12, right: 44, bottom: 8, left: 20 },
     series: [
       {
         type: 'line', xKey: 'label', yKey: 'amount', yName: 'Month', stroke: MONTH_STROKE, strokeWidth: 2.5,
-        marker: { enabled: true, size: 7, fill: MONTH_STROKE, stroke: color.panel, strokeWidth: 1.5 },
+        marker: { enabled: true, size: 7, fill: MONTH_STROKE, stroke: chartColor.panel, strokeWidth: 1.5 },
         tooltip,
       },
       {
-        // Indigo, not the review-threshold orange: one colour, one meaning across both charts (review r8).
+        // Muted dashed, not the review-threshold amber: one colour, one meaning across both charts (review r8).
         type: 'line', xKey: 'label', yKey: 'ma3', yName: '3-mo average', stroke: AVERAGE_STROKE, strokeWidth: 1.5,
         lineDash: [6, 4], marker: { enabled: false }, tooltip,
       },
     ],
     axes: {
-      x: { type: 'category', position: 'bottom', label: { fontSize: 12, color: color.muted } },
-      y: { type: 'number', position: 'left', min: 0, nice: true, title: { text: `${currency} per month`, fontSize: 13, color: color.muted },
-        label: { fontSize: 12, color: color.muted, formatter: ({ value }) => `${Math.round(value / 1000)}k` } },
+      x: { type: 'category', position: 'bottom', label: axisText, gridLine: noGrid },
+      y: { type: 'number', position: 'left', min: 0, nice: true, title: { text: `${currency} per month`, ...axisText }, gridLine: valueGrid,
+        label: { ...axisText, formatter: ({ value }) => `${Math.round(value / 1000)}k` } },
     },
     // AG Charts 14.2 has no legend.item.paddingX (it logged "Unknown option" on every load); item.padding with left and
     // right gives the same horizontal gap (attack r21).
-    legend: { position: 'bottom', spacing: 12, item: { padding: { left: 5, right: 5 }, marker: { size: 10 }, label: { fontSize: 12, color: color.ink } } },
+    legend: { position: 'bottom', spacing: 12, item: { padding: { left: 5, right: 5 }, marker: { size: 10 }, label: { fontSize: 12, color: chartColor.ink } } },
   };
 }

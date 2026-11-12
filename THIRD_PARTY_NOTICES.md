@@ -53,7 +53,7 @@ The seven `@bryntum/*-community` packages are the Bryntum Scheduler Community ti
 ### Vendored assets (not npm; files in the repository)
 
 - OFL-1.1: Newsreader and Public Sans variable fonts (roman and italic), from the google/fonts repository at commit `8b0a1d0f5983c89bc2b93f1b5fb55f9e252744b5`, subset to Latin woff2 and self-hosted in `frontend/public/fonts/` with their licences (`OFL-newsreader.txt`, `OFL-publicsans.txt`); source URLs and sha256 of each original and shipped file are in `frontend/public/fonts/SOURCES.txt`.
-- MIT: 18 Phosphor Icons SVGs (Copyright (c) 2023 Phosphor Icons) in `frontend/src/theme/icons/`, licence in `frontend/src/theme/icons/LICENSE`.
+- MIT: 42 Phosphor Icons SVGs, Regular weight (Copyright (c) 2023 Phosphor Icons), from the phosphor-icons/core repository at commit `2b75f3ad12b420c9504ef05df8d2564a28f8500e`, in `frontend/src/theme/icons/`, plus `sprite.svg` generated from them by `build-sprite.mjs`; licence in `frontend/src/theme/icons/LICENSE`.
 
 ### Commercial (AG Studio, loaded only by /dashboard.html)
 

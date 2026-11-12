@@ -89,3 +89,68 @@
   .ds-ai__flow { grid-template-columns: minmax(0, 1fr); }
 }
 
+
+/* (R6) S29 queue note; S30 recorded AI answer; S34 one fold style in step 03; S36 phone head order. */
+.ds-queue__note { display: block; margin-top: 2px; color: var(--pg-color-muted); font-size: var(--pg-text-1); }
+.ds-ai__out { display: grid; gap: 4px; margin: 0 0 var(--pg-space-3); padding: var(--pg-space-2) var(--pg-space-3); border-left: 2px solid var(--pg-color-ink); background: var(--pg-color-canvas); }
+.ds-ai__out p { margin: 0; }
+.ds-ai__q { color: var(--pg-color-muted); font-size: var(--pg-text-2); }
+.ds-ai__a { font-family: var(--pg-font-serif); font-size: var(--pg-text-4); }
+.ds-ai__rows { margin: 0; padding: 0; list-style: none; font-size: var(--pg-text-2); }
+#disputes details.tg-fold, #disputes section.tg-fold { margin-left: 0; margin-right: 0; border: 1px solid var(--pg-color-line); border-radius: 0; background: var(--pg-color-panel); box-shadow: none; }
+#disputes section.tg-fold--guide { border-color: var(--pg-color-ink); }
+@media (max-width: 640px) {
+  .ds-head__kicker { order: 3; }
+  .ds-head__tags { order: 4; }
+}
+.ds-nowrap { white-space: nowrap; }
+
+/* (vteam r2) Disputes focus: the case head band. "1 day" is the page's one key figure; the amount and the case id step
+   down so nothing else reaches 40px. Sales spike focus: x5.0 and the chart in one band. */
+.ds-head.tg-focus { margin-block: 0 var(--pg-space-5); }
+.ds-head.tg-focus .ds-head__title { font-size: var(--pg-text-3); }
+.ds-head__num--sub { font-size: var(--pg-text-4); font-weight: 600; }
+.vs-focus > .vs-hero { margin: 0; border-top: 0; }
+.vs-focus > .vs-chart { margin-bottom: 0; }
+/* Wide screens: the spike focus (x5.0 and the chart) takes the first row across the full width; the guide rail moves
+   to the second row beside the orders fold. */
+@media (min-width: 1280px) {
+  #velocity .stage-main > .vs-focus { grid-column: 1 / -1; grid-row: 1; }
+  #velocity .stage-body > .stage-side { grid-row: 2 / span 2; }
+  #velocity .stage-main > .stage-fold { grid-column: 1; }
+}
+/* Phones: x5.0, then the chart, then the sentence and facts, so the figure and the top of the chart share the first screen. */
+@media (max-width: 640px) {
+  .vs-focus { display: flex; flex-direction: column; gap: var(--pg-space-3); }
+  .vs-focus > .vs-hero { display: contents; }
+  .vs-focus .vs-fig--hero { order: 1; }
+  .vs-focus > .vs-chart { order: 2; margin: 0; }
+  .vs-focus .vs-hero__text { order: 3; }
+  .vs-focus .vs-hero__act { order: 4; }
+}
+
+/* (a11y phase 2, 2c/4d) A deadline never by colour alone: due (<= 1 day) = warning-octagon + solid left bar + bold;
+   soon (2 days) = clock + dashed underline. On phones the case deadline keeps its 40px key figure. */
+.tg-deadline--soon { text-decoration: underline dashed; text-underline-offset: 3px; }
+.ds-head__num.is-due { padding-left: var(--pg-space-2); border-left: 4px solid currentColor; }
+.ds-head__num.is-soon { text-decoration: underline dashed; text-decoration-thickness: 2px; text-underline-offset: 6px; }
+/* (a11y 4b re-measure 3) "1 day" is the 56px key figure at every width; the amount (20px) and the case id (16px) step down. */
+.ds-head__num.tg-keyfig { font-size: var(--pg-text-7); }
+@media (max-width: 640px) { .ds-head__num.tg-keyfig { font-size: var(--pg-text-7); } }
+@container (max-width: 360px) { .ds-head__num.tg-keyfig { font-size: var(--pg-text-7); } }
+.ds-queue__total { font-weight: 600; }
+
+/* (a11y 4b re-measure 2) Disputes only: the step title is 20px at every width, and the Case review / Deadline board
+   switch is a quiet tab row (no frame, no fill; the current view has a 2px underline), so "1 day" is the first thing
+   seen. Overrides .tg-seg inside #disputes only; the system style is unchanged elsewhere. */
+#disputes .tg-stephead__title { font-size: var(--pg-text-4); }
+#disputes .inner-tabs.tg-seg { border: 0; border-bottom: 1px solid var(--pg-color-line); }
+#disputes .inner-tabs.tg-seg > button { background: transparent; border: 0; color: var(--pg-color-muted); font-weight: 500; box-shadow: none; }
+#disputes .inner-tabs.tg-seg > button:hover { color: var(--pg-color-ink); }
+#disputes .inner-tabs.tg-seg > button.is-active { background: transparent; color: var(--pg-color-ink); font-weight: 600; box-shadow: inset 0 -2px 0 var(--pg-color-accent); }
+
+/* (phone r5 #3) A due deadline is red text with its octagon wherever it sits (the draft route's muted small text included). */
+#disputes .tg-deadline--due, #disputes small .tg-deadline--due { color: var(--pg-color-risk); }
+/* (a11y 4b re-measure 4) Wide screens: the AI step and the next-step line step back so "1 day" leads. */
+#disputes .ds-ai.tg-clip { border-top: 1px solid var(--pg-color-rule); box-shadow: none; }
+#disputes .ds-case .evidence-toolbar h3 { font-weight: 500; }

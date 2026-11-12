@@ -4,9 +4,9 @@
      the guide and "More" on the left; the country check on the right; the rule grid and the Next bar full width.
      An opened guide takes the full width under both columns. Unknown children (notes) span both columns. */
   #compliance .stage-content { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; column-gap: var(--pg-space-5); row-gap: 0; padding-top: 0;
-    grid-template-areas: "three three" "verdict verdict" "policy country" "draft country" "ai country" "guide country" "more country" "grid grid" "c3 c3" "next next";
-    grid-template-rows: auto auto auto auto auto auto 1fr auto auto auto; }
-  #compliance .stage-content:has(> #guide-live-preflight.is-open) { grid-template-areas: "three three" "verdict verdict" "policy country" "draft country" "ai country" "more country" "guide guide" "grid grid" "c3 c3" "next next"; }
+    grid-template-areas: "three three" "verdict verdict" "policy country" "draft country" "ai country" "guide country" "more country" "grid grid" "next next";
+    grid-template-rows: auto auto auto auto auto auto 1fr auto auto; }
+  #compliance .stage-content:has(> #guide-live-preflight.is-open) { grid-template-areas: "three three" "verdict verdict" "policy country" "draft country" "ai country" "more country" "guide guide" "grid grid" "next next"; }
   #compliance .stage-content > * { grid-column: 1 / -1; }
   #compliance .stage-content > .check-three { grid-area: three; }
   #compliance .stage-content > .country-verdict-slot { grid-area: verdict; }
@@ -16,8 +16,8 @@
   #compliance .stage-content > .check-ai { grid-area: ai; }
   #compliance .stage-content > #guide-live-preflight { grid-area: guide; align-self: start; }
   #compliance .stage-content > .step-more { grid-area: more; align-self: start; margin: 0; }
-  #compliance .stage-content > .check-grid { grid-area: grid; }
-  #compliance .stage-content > .check-c3 { grid-area: c3; }
+  /* (S31) The rule pack and the Channel3 reference share one fold (.check-ref) in the grid row. */
+  #compliance .stage-content > .check-ref { grid-area: grid; }
   #compliance .stage-content > .stage-next { grid-area: next; margin: 0; }
 
   /* Tighter cards. */
@@ -51,9 +51,10 @@
   #compliance .country-verdict-big { font-size: 18px; line-height: 1.25; }
   #compliance .country-verdict-next .button { min-height: 34px; padding-top: 4px; padding-bottom: 4px; }
   #compliance .country-result ul { gap: 8px; }
-  #compliance .country-finding { line-height: 1.4; gap: 12px; grid-template-columns: 108px minmax(0, 1fr); }
+  /* (S32) The level stamp sits above the rule; the sentence, the law and the source read as three short paragraphs. */
+  #compliance .country-finding { line-height: 1.5; gap: var(--pg-space-2); grid-template-columns: minmax(0, 1fr); }
   #compliance .country-finding + .country-finding { padding-top: 8px; }
-  #compliance .country-finding-body { gap: 0; }
+  #compliance .country-finding-body { gap: var(--pg-space-2); }
   #compliance .country-all-rules > summary { min-height: 34px; }
 
   /* Sandbox draft fold: compact when open. */

@@ -2,6 +2,9 @@
 // Definitions and source strings live in data/source_labels_v1.json; a page names a source by key, so one source reads
 // the same on every page. The visible line wraps (never an ellipsis); the full path and cited lines sit in the title.
 // Plain createElement (no JSX) so tests/frontend_source_labels.mjs can import this file in Node.
+// (R6 2026-11-12, S33) Softer source lines: the label shows in sentence case (Recorded, Recounted, Synthetic, Hosted demo),
+// then the plain source and its date. File names and line numbers stay in the title; only the Proof page asks for the line
+// number on the visible line (exact). The keys (RECORDED, ...) are unchanged.
 import { createElement as h } from 'react';
 import table from '../data/source_labels_v1.json';
 import { dateLabel } from './format.js';
@@ -10,19 +13,21 @@ import './sources.css';
 export const SOURCE_KINDS = Object.freeze(table.labels.map((item) => item.kind));
 // RECORDED, RECOUNTED, SYNTHETIC, HOSTED DEMO: one sentence each.
 export const SOURCE_LABELS = Object.freeze(Object.fromEntries(table.labels.map((item) => [item.kind, item.meaning])));
+// RECORDED -> "Recorded": the shown name of each label.
+export const SOURCE_NAMES = Object.freeze(Object.fromEntries(table.labels.map((item) => [item.kind, item.name])));
 export const SOURCES = table.sources;
 export const CHANNEL3_READERS = Object.freeze({ ...table.channel3_readers, title: `${table.channel3_readers.path}:${table.channel3_readers.line}` });
 
-// "Country rules file · line 3947", "Hosted send receipt · 10 Nov 2026"; title "path:3947, 9752 (detail)".
+// "Country rules file" (exact: "Country rules file · line 3947"), "Hosted send receipt · 10 Nov 2026"; title "path:3947, 9752 (detail)".
 // An unknown key never breaks the page: it shows the key itself and logs an error (tests/frontend_source_labels.mjs
 // checks every key used in frontend/src exists).
-export function sourceCitation(key) {
+export function sourceCitation(key, { exact = false } = {}) {
   const entry = SOURCES[key];
   if (!entry) {
     console.error(`ERROR unknown source key: ${key}`);
     return { text: String(key), title: '', unknown: true };
   }
-  const where = entry.show === 'line' ? `line ${entry.lines[0]}` : entry.show === 'date' ? dateLabel(entry.date) : '';
+  const where = entry.show === 'line' ? (exact ? `line ${entry.lines[0]}` : '') : entry.show === 'date' ? dateLabel(entry.date) : '';
   const lines = entry.lines.length ? `:${entry.lines.join(', ')}` : '';
   return {
     text: where ? `${entry.text} · ${where}` : entry.text,
@@ -32,18 +37,18 @@ export function sourceCitation(key) {
 
 // <SourceLine kind="RECOUNTED" source="country_rules_sg_ecig" />, or kind + text + title for a line that is not a file
 // (for example a count with a link as children). Several keys join with "; " in one line.
-export function SourceLine({ kind, source, text, title, children, as = 'p', className = '', testId }) {
+export function SourceLine({ kind, source, text, title, children, as = 'p', className = '', testId, exact = false }) {
   if (!SOURCE_LABELS[kind]) console.error(`ERROR unknown source label: ${kind}`);
-  const cites = source ? [].concat(source).map(sourceCitation) : [];
+  const cites = source ? [].concat(source).map((key) => sourceCitation(key, { exact })) : [];
   const shown = cites.length ? cites.map((cite) => cite.text).join('; ') : text;
   const full = cites.length ? cites.map((cite) => cite.title).join('; ') : title;
   return h(as, { className: `tg-source tg-source--wrap${className ? ` ${className}` : ''}`, title: full, 'data-testid': testId, 'data-source': source ? [].concat(source).join(' ') : undefined },
-    h('span', { className: 'tg-source__label' }, kind),
+    h('span', { className: 'tg-source__label' }, SOURCE_NAMES[kind] || kind),
     h('span', null, '· ', shown, children ? ' · ' : null, children || null));
 }
 
 // The four labels, in one list. Only this legend is used on the site.
 export function SourceLegend({ testId, className = '' }) {
   return h('ul', { className: `tg-legend${className ? ` ${className}` : ''}`, 'data-testid': testId, 'aria-label': 'What the source labels mean' },
-    table.labels.map((item) => h('li', { key: item.kind }, h('b', null, item.kind), h('span', null, item.meaning))));
+    table.labels.map((item) => h('li', { key: item.kind }, h('b', null, item.name), h('span', null, item.meaning))));
 }

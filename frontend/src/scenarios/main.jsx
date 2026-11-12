@@ -6,21 +6,11 @@ import { apiRequest } from '../api.js';
 import { STATUS, WORK_ORDERS, cardStatus, clearRun, detectMode, openOwnerSteps, receiptLines, restoreRun, runWorkOrder, saveRun } from './workOrders.js';
 import '../index.css';
 import './scenarios.css';
+import { LEGACY, SpriteIcon } from '../theme/iconMap.js';
 
-const ICONS = {
-  shield: <><path d="M12 3.25 4.75 6.25v5.5c0 4.85 3.1 7.95 7.25 9 4.15-1.05 7.25-4.15 7.25-9v-5.5L12 3.25Z" /><path d="m9 12.25 2.1 2.1 4.15-4.35" /></>,
-  check: <path d="m5.25 12.5 4.25 4.25 9.25-9.5" />,
-  cross: <><path d="m7 7 10 10" /><path d="M17 7 7 17" /></>,
-  clock: <><circle cx="12" cy="12" r="8.5" /><path d="M12 7.5v4.75l3.25 2" /></>,
-  user: <><circle cx="12" cy="8.5" r="3.5" /><path d="M5 19.5c1.2-3.3 3.8-5 7-5s5.8 1.7 7 5" /></>,
-  lock: <><rect x="5.5" y="10.5" width="13" height="9" rx="2" /><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" /></>,
-  dot: <circle cx="12" cy="12" r="3.5" />,
-  play: <path d="M8 5.5v13l10-6.5-10-6.5Z" />,
-  refresh: <><path d="M19.25 12a7.25 7.25 0 1 1-2.12-5.13" /><path d="M19.25 4.75v4.5h-4.5" /></>,
-  copy: <><rect x="8.5" y="8.5" width="11" height="11" rx="2" /><path d="M15.5 8.5v-2a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2" /></>,
-};
+// (vteam icon 2026-11-12) Phosphor Regular from the shared sprite (theme/iconMap.js); old names map through LEGACY.
 function Icon({ name, size = 18 }) {
-  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{ICONS[name]}</svg>;
+  return <SpriteIcon name={LEGACY[name] || name} size={size} />;
 }
 
 const CHIP = {

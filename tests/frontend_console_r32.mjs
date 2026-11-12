@@ -78,7 +78,8 @@ assert.ok(app.includes("Demo only: there is no sign-in, so the reviewer is not i
 // ---- J4: toasts never over the form. ----
 assert.match(css, /\.feedback-region \{ position: fixed; right: max\(18px, calc\(\(100vw - 1200px\) \/ 2\)\); top: 164px;/u, 'desktop: top-right under the step bar');
 assert.ok(css.includes('  .feedback-region { position: static; width: auto; margin: 0 16px; }'), 'phone: inline');
-assert.ok(app.includes('{info.text}<button type="button" className="icon-button" aria-label="Dismiss message" data-testid="console-info-dismiss"'), 'every info message dismissible');
+// (a11y phase 2) The text sits in .info-text so phones can keep it to one line; the close button still follows it.
+assert.ok(app.includes('{info.text}</span><button type="button" className="icon-button" aria-label="Dismiss message" data-testid="console-info-dismiss"'), 'every info message dismissible');
 
 // ---- J4 a11y: lock lines described-by; focus back to the opener. ----
 assert.ok(block('LockReason').includes('<p className="lock-reason" id={testId} data-testid={testId}>'));

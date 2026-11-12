@@ -3,28 +3,24 @@
 // proof_facts_v1.json), each recounted from its source by tests/frontend_overview_figures.mjs; nothing is requested.
 // Loaded on demand, so the console's first-load budget does not carry it.
 // (C 2026-11-12) Site-wide containers: step cards and figures are .tg-clip (--step / --fact).
-// (F 2026-11-12) Sources and the legend come from theme/sources.js (one copy in data/source_labels_v1.json); a source
-// line wraps instead of being cut, the full path in its title. Dates and money through theme/format.js.
-// (R5 2026-11-12, P0 designer) Each step card now shows a small piece of the product ("what you will see"): the rule
-// result, the hour against a usual hour, the send ticket. All three cards share one size and one surface; the source line
-// and the Open link sit together at the foot of every card. Review: ext_review/review_UI5.md section 1, review_FULL.md.
+// (F 2026-11-12) Sources and the legend come from theme/sources.js (one copy in data/source_labels_v1.json).
+// (R5 2026-11-12, P0 designer) Each step card shows a small piece of the product; one size and one surface for all three.
+// (vteam 2026-11-12, ui_mock/vteam/CONSENSUS.md sections 1 and 8) Layout: one focus area per page. The 10 Nov hosted
+// Sandbox send is the focus (.tg-focus.tg-focus--bleed, the page's one .tg-keyfig) in the right 5 of a 7/5 .tg-split;
+// the three step cards sit below in .tg-cards3 (rows shared across cards); the four figures sit on .tg-grid-paper.
+// Icons come from the sprite (theme/iconMap.js). (a11y 4a) The send ticket carries the page's one focus-size icon, a 56px key
+// figure and a heavier ink rule on top, so it, not the headline, is the first thing a squinting eye finds.
+// SendTicket is also exported so App.jsx can place it beside the hero (render <OverviewFlow ticket={false} /> then).
 import { lazy, Suspense } from 'react';
 import figures from './data/overview_figures_v1.json';
 import facts from './data/proof_facts_v1.json';
 import checkSale from './data/check_sale_examples_v1.json';
 import { SourceLegend, SourceLine } from './theme/sources.js';
 import { dateLabel, money } from './theme/format.js';
+import { ACTION, FOCUS, ROLE, STATUS, SpriteIcon } from './theme/iconMap.js';
 import './OverviewFlow.css';
 
 const RecordedSendReplay = lazy(() => import('./RecordedSendReplay.jsx'));
-
-// Phosphor regular icons, path data copied from theme/icons/*.svg (MIT, theme/icons/LICENSE).
-const icon = (d) => <svg className="tg-icon" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d={d} /></svg>;
-const WARNING = icon('M236.8,188.09,149.35,36.22h0a24.76,24.76,0,0,0-42.7,0L19.2,188.09a23.51,23.51,0,0,0,0,23.72A24.35,24.35,0,0,0,40.55,224h174.9a24.35,24.35,0,0,0,21.33-12.19A23.51,23.51,0,0,0,236.8,188.09ZM222.93,203.8a8.5,8.5,0,0,1-7.48,4.2H40.55a8.5,8.5,0,0,1-7.48-4.2,7.59,7.59,0,0,1,0-7.72L120.52,44.21a8.75,8.75,0,0,1,15,0l87.45,151.87A7.59,7.59,0,0,1,222.93,203.8ZM120,144V104a8,8,0,0,1,16,0v40a8,8,0,0,1-16,0Zm20,36a12,12,0,1,1-12-12A12,12,0,0,1,140,180Z');
-const CLOCK = icon('M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z');
-const CHECK = icon('M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z');
-const ARROW = icon('M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z');
-
 
 const row = (id) => facts.rows.find((item) => item.id === id);
 // Values quoted in the proof row itself: the send's Debug-Id and the read-back status.
@@ -36,13 +32,27 @@ const quoted = (item, pattern) => {
   return null;
 };
 
-export default function OverviewFlow({ onOpen }) {
-  const rules = figures.country_rules;
-  const example = figures.step1_example;
+// The 10 Nov hosted Sandbox send, read from the proof row and the Overview figures: the page's focus.
+export function SendTicket({ onOpen }) {
   const send = figures.step3_send;
   const sendRow = row(send.proof_row);
   const debugId = quoted(sendRow, /PayPal-Debug-Id of the send: (\w+)/u);
   const readBack = quoted(sendRow, /read-back right after showed the status ([A-Za-z ]+?) with/u);
+  return <section className="tg-focus tg-focus--bleed ov-ticket" aria-labelledby="ov-ticket-title" data-testid="overview-send-ticket">
+    <p className="tg-eyebrow ov-ticket__head" data-testid="overview-send-stamp"><SpriteIcon name={FOCUS.overview} size="focus" />{dateLabel(sendRow?.date)} hosted send</p>
+    <h2 className="tg-h3 ov-ticket__title" id="ov-ticket-title">Sandbox send · {send.case_ref}</h2>
+    <span className="tg-keyfig tg-keyfig--xl">{money(send.amount.value, send.amount.currency)}</span>
+    <p className="ov-ticket__row"><span className="tg-stamp tg-stamp--ok"><SpriteIcon name={STATUS.ok} size="sm" />Submitted</span>{readBack && <span className="ov-ticket__wait"><SpriteIcon name={STATUS.warn} size="sm" />Read-back: {readBack}</span>}</p>
+    {debugId && <p className="ov-ticket__ref" title="PayPal-Debug-Id, the reference PayPal returned for the send">PayPal reference <span className="tg-mono">{debugId}</span></p>}
+    <SourceLine kind="HOSTED DEMO" source={send.source_key} />
+    {onOpen && <a className="tg-link ov-ticket__open" href="#proof" data-testid="overview-ticket-proof" onClick={(event) => { event.preventDefault(); onOpen('proof'); }}>See every send in Proof <SpriteIcon name={ACTION.open} size="sm" /></a>}
+  </section>;
+}
+
+export default function OverviewFlow({ onOpen, ticket = true }) {
+  const rules = figures.country_rules;
+  const example = figures.step1_example;
+  const send = figures.step3_send;
   const sends = [...figures.receipt_sends, ...figures.readback_sends];
   const sendsWithId = sends.filter((item) => item.debug_id).length;
   const sendPaths = sends.map((item) => `${item.file}:${item.line}`).join(', ');
@@ -52,71 +62,15 @@ export default function OverviewFlow({ onOpen }) {
   const usualWidth = `${Math.max(4, Math.round((Number(spike.baseline_per_hour) / perHour) * 100))}%`;
   const replay = figures.replay;
   const guide = checkSale.guide_ai;
+  // (R6 S35) Card 01 also shows the export side of the same example (check first, by post only), from the Check a sale data.
+  const also = checkSale.examples.find((item) => item.rule_id === example.rule_id)?.also;
+  // Keep the statute's last word with its article ("Act s. 16") on one line.
+  const statuteWords = example.statute.split(' ');
+  const statuteEnd = statuteWords.pop();
   const open = (page) => (event) => { event.preventDefault(); onOpen(page); };
 
-  return <div className="ov" data-testid="overview-flow">
-
-    <ol className="ov-flow" aria-label="The seller flow, step by step">
-      <li className="ov-step">
-        <a className="ov-step__link" href="#compliance" data-testid="overview-step-compliance" onClick={open('compliance')}>
-          <figure className="tg-clip tg-clip--step tg-pad">
-            <figcaption className="tg-clip__kicker">Before you ship<span className="tg-clip__num">01</span></figcaption>
-            <p className="ov-step__name">Check a sale</p>
-            <p className="ov-step__what">See whether a sale can ship before you take the money.</p>
-            <div className="ov-screen" aria-label="What step 1 shows">
-              <p className="ov-screen__row"><span>{example.route}</span><span className="ov-nowrap">{example.goods}</span></p>
-              <span className="tg-stamp tg-stamp--risk ov-step__stamp">{WARNING}Rule match</span>
-              <blockquote className="tg-clip__quote">{example.statute} {example.article} · {example.tier}</blockquote>
-            </div>
-            <div className="ov-step__foot">
-              <SourceLine kind="RECOUNTED" source={example.source_key} />
-              <span className="ov-step__open">Open step {ARROW}</span>
-            </div>
-          </figure>
-        </a>
-      </li>
-      <li className="ov-step">
-        <a className="ov-step__link" href="#velocity" data-testid="overview-step-velocity" onClick={open('velocity')}>
-          <figure className="tg-clip tg-clip--step tg-pad">
-            <figcaption className="tg-clip__kicker">When orders jump<span className="tg-clip__num">02</span></figcaption>
-            <p className="ov-step__name">Sales spike</p>
-            <p className="ov-step__what">Spot the hour that needs proof of delivery.</p>
-            <div className="ov-screen" aria-label="What step 2 shows">
-              <p className="ov-screen__row"><span>{spike.orders} orders in {spike.window_hours} h</span><span className="ov-step__figure">×{spike.ratio}</span></p>
-              <div className="ov-bars" role="img" aria-label={`Usual hour ${money(spike.baseline_per_hour, spike.currency)}, this hour ${money(spike.total, spike.currency)}`}>
-                <span className="ov-bar ov-bar--usual" style={{ '--ov-w': usualWidth }}><span className="ov-nowrap">Usual hour · {money(spike.baseline_per_hour, spike.currency)}</span></span>
-                <span className="ov-bar ov-bar--now"><span className="ov-nowrap">This hour · {money(spike.total, spike.currency)}</span></span>
-              </div>
-            </div>
-            <div className="ov-step__foot">
-              <SourceLine kind="SYNTHETIC" source={spike.source_key} />
-              <span className="ov-step__open">Open step {ARROW}</span>
-            </div>
-          </figure>
-        </a>
-      </li>
-      <li className="ov-step">
-        <a className="ov-step__link" href="#disputes" data-testid="overview-step-disputes" onClick={open('disputes')}>
-          <figure className="tg-clip tg-clip--step tg-pad">
-            <figcaption className="tg-clip__kicker">When a buyer disputes<span className="tg-clip__num">03</span></figcaption>
-            <p className="ov-step__name">Disputes</p>
-            <p className="ov-step__what">Evidence, a person's review, then the send.</p>
-            <div className="ov-screen ov-ticket" aria-label="What step 3 shows">
-              <p className="ov-ticket__head" data-testid="overview-send-stamp">{dateLabel(sendRow?.date)} hosted send</p>
-              <p className="ov-screen__row"><span>Sandbox send · {send.case_ref}</span><span className="ov-nowrap">{money(send.amount.value, send.amount.currency)}</span></p>
-              {debugId && <p className="ov-step__line" title="PayPal-Debug-Id, the reference PayPal returned for the send">PayPal reference <span className="tg-mono">{debugId}</span></p>}
-              <p className="ov-screen__row ov-screen__row--stamp"><span className="tg-stamp tg-stamp--ok">{CHECK}Submitted</span>{readBack && <span className="ov-step__line ov-step__wait">{CLOCK}Read-back: {readBack}</span>}</p>
-            </div>
-            <div className="ov-step__foot">
-              <SourceLine kind="HOSTED DEMO" source={send.source_key} />
-              <span className="ov-step__open">Open step {ARROW}</span>
-            </div>
-          </figure>
-        </a>
-      </li>
-    </ol>
-
-    <div className="ov-facts" role="list" aria-label="Figures, each with its source">
+  const factsRow = <>
+    <div className="ov-facts tg-grid-paper" role="list" aria-label="Figures, each with its source">
       <figure className="tg-clip tg-clip--fact" role="listitem">
         <figcaption className="tg-clip__kicker">Rules check<span className="tg-clip__num">{rules.import_rules + rules.export_rules}</span></figcaption>
         <blockquote className="tg-clip__quote">official import and export rules ({rules.import_rules} import, {rules.export_rules} export)</blockquote>
@@ -140,6 +94,73 @@ export default function OverviewFlow({ onOpen }) {
     </div>
 
     <SourceLegend testId="overview-legend" />
+  </>;
+  return <div className="ov" data-testid="overview-flow">
+    {ticket
+      ? <div className="tg-split ov-top"><div className="ov-top__facts">{factsRow}</div><SendTicket onOpen={onOpen} /></div>
+      : null}
+
+    <ol className="ov-flow tg-cards3" aria-label="The seller flow, step by step">
+      <li className="ov-step">
+        <a className="ov-step__link" href="#compliance" data-testid="overview-step-compliance" onClick={open('compliance')}>
+          <figure className="tg-clip tg-clip--step tg-pad">
+            <figcaption className="tg-clip__kicker">Before you ship<span className="tg-clip__num">01</span></figcaption>
+            <p className="ov-step__name">Check a sale</p>
+            <p className="ov-step__what">See whether a sale can ship before you take the money.</p>
+            <div className="ov-screen" aria-label="What step 1 shows">
+              <p className="ov-screen__row"><span>{example.route}</span><span className="ov-nowrap">{example.goods}</span></p>
+              <p className="tg-risk ov-result"><SpriteIcon name={STATUS.risk} size="lg" />Rule match</p>
+              <blockquote className="tg-clip__quote">{statuteWords.join(' ')} <span className="ov-nowrap">{statuteEnd} {example.article}</span> · {example.tier}</blockquote>
+              {also && <p className="ov-screen__row ov-screen__row--stamp"><span className="tg-pill tg-pill--warn"><SpriteIcon name={STATUS.warn} size="sm" />{also.label}</span><span className="ov-step__line">{also.detail}</span></p>}
+            </div>
+            <div className="ov-step__foot">
+              <SourceLine kind="RECOUNTED" source={example.source_key} />
+              <span className="ov-step__open">Open step <SpriteIcon name={ACTION.open} size="sm" /></span>
+            </div>
+          </figure>
+        </a>
+      </li>
+      <li className="ov-step">
+        <a className="ov-step__link" href="#velocity" data-testid="overview-step-velocity" onClick={open('velocity')}>
+          <figure className="tg-clip tg-clip--step tg-pad">
+            <figcaption className="tg-clip__kicker">When orders jump<span className="tg-clip__num">02</span></figcaption>
+            <p className="ov-step__name">Sales spike</p>
+            <p className="ov-step__what">Spot the hour that needs proof of delivery.</p>
+            <div className="ov-screen" aria-label="What step 2 shows">
+              <p className="ov-screen__row"><span>{spike.orders} orders in {spike.window_hours} h</span><span className="ov-step__figure">×{spike.ratio}</span></p>
+              <div className="ov-bars" role="img" aria-label={`Usual hour ${money(spike.baseline_per_hour, spike.currency)}, this hour ${money(spike.total, spike.currency)}`}>
+                <span className="ov-bar ov-bar--usual" style={{ '--ov-w': usualWidth }}><span className="ov-nowrap">Usual hour · {money(spike.baseline_per_hour, spike.currency)}</span></span>
+                <span className="ov-bar ov-bar--now"><span className="ov-nowrap">This hour · {money(spike.total, spike.currency)}</span></span>
+              </div>
+            </div>
+            <div className="ov-step__foot">
+              <SourceLine kind="SYNTHETIC" source={spike.source_key} />
+              <span className="ov-step__open">Open step <SpriteIcon name={ACTION.open} size="sm" /></span>
+            </div>
+          </figure>
+        </a>
+      </li>
+      <li className="ov-step">
+        <a className="ov-step__link" href="#disputes" data-testid="overview-step-disputes" onClick={open('disputes')}>
+          <figure className="tg-clip tg-clip--step tg-pad">
+            <figcaption className="tg-clip__kicker">When a buyer disputes<span className="tg-clip__num">03</span></figcaption>
+            <p className="ov-step__name">Disputes</p>
+            <p className="ov-step__what">Evidence, a person's review, then the send.</p>
+            <ol className="ov-screen ov-steps3" aria-label="What step 3 shows">
+              <li><SpriteIcon name={ACTION.draft} size="sm" />Evidence drafted from your records</li>
+              <li><SpriteIcon name={ROLE.reviewer} size="sm" />You review it, then confirm</li>
+              <li><SpriteIcon name={ACTION.send} size="sm" />Sent to PayPal Sandbox, read back</li>
+            </ol>
+            <div className="ov-step__foot">
+              <SourceLine kind="HOSTED DEMO" source={send.source_key} />
+              <span className="ov-step__open">Open step <SpriteIcon name={ACTION.open} size="sm" /></span>
+            </div>
+          </figure>
+        </a>
+      </li>
+    </ol>
+    {!ticket && <div className="ov-facts-row">{factsRow}</div>}
+
 
     {/* Where AI works (4th look, under the figures). Numbers from check_sale_examples_v1.json guide_ai, recomputed from
         docs/evidence/GEMINI_GUIDE_RUNS_20261103.md:15 (policy pre-check row) by tests/test_check_sale_p3_data.py; the

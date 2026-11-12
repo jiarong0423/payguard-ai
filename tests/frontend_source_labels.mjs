@@ -109,18 +109,23 @@ ok(table.sources.readback_send3.lines.includes(ledger.verify.recorded_sha256.lin
 // 3. Rendering: a key reads the same wherever it is used.
 const expected = {
   country_rules: 'Country rules file',
-  country_rules_sg_ecig: 'Country rules file · line 3947',
-  demo_burst: 'Demo order generator · line 708',
+  // (R6 2026-11-12, S33) Line numbers only in the title, or on the visible line where exact is asked (Proof).
+  country_rules_sg_ecig: 'Country rules file',
+  demo_burst: 'Demo order generator',
   hosted_receipt: 'Hosted send receipt · 10 Nov 2026',
   readback_send3: 'Read-back record, send 3 · 9 Nov 2026',
   gemini_guide_runs: 'Gemini guide runs · 3 Nov 2026',
 };
 for (const [key, text] of Object.entries(expected)) eq(sources.sourceCitation(key).text, text, `${key} reads "${text}"`);
+eq(sources.sourceCitation('country_rules_sg_ecig', { exact: true }).text, 'Country rules file · line 3947', 'exact: the line number shows');
+eq(sources.sourceCitation('demo_burst', { exact: true }).text, 'Demo order generator · line 708', 'exact: the burst line');
+ok(sources.sourceCitation('country_rules_sg_ecig').title.includes(':3947'), 'the line stays in the title');
+assert.deepEqual(Object.values(sources.SOURCE_NAMES), ['Recorded', 'Recounted', 'Synthetic', 'Hosted demo']); checks += 1;
 for (const key of Object.keys(table.sources)) {
   const cite = sources.sourceCitation(key);
   ok(cite.title.startsWith(table.sources[key].path), `${key}: full path in the title`);
   const html = renderToStaticMarkup(createElement(sources.SourceLine, { kind: 'RECORDED', source: key }));
-  ok(html.includes('class="tg-source tg-source--wrap"') && html.includes(`>${'RECORDED'}</span>`) && html.includes(cite.text.replace(/'/gu, '&#x27;')), `${key}: rendered line`);
+  ok(html.includes('class="tg-source tg-source--wrap"') && html.includes('>Recorded</span>') && html.includes(cite.text.replace(/'/gu, '&#x27;')), `${key}: rendered line, label in sentence case`);
 }
 ok(renderToStaticMarkup(createElement(sources.SourceLine, { kind: 'RECORDED', source: ['gemini_guide_runs', 'proof_table'] })).includes('Gemini guide runs · 3 Nov 2026; Proof table'), 'two keys on one line');
 {
@@ -135,7 +140,7 @@ ok(renderToStaticMarkup(createElement(sources.SourceLine, { kind: 'RECORDED', so
   ok(logged.length === 2 && logged.every((line) => line.startsWith('ERROR ')), 'both logged as ERROR');
 }
 const legend = renderToStaticMarkup(createElement(sources.SourceLegend, { testId: 'x' }));
-ok(KINDS.every((kind) => legend.includes(`<b>${kind}</b>`)) && table.labels.every((item) => legend.includes(item.meaning)), 'legend: four labels with their sentence');
+ok(table.labels.every((item) => legend.includes(`<b>${item.name}</b>`) && legend.includes(item.meaning)) && !legend.includes('<b>RECORDED</b>'), 'legend: four sentence-case labels with their sentence');
 const sourcesCss = read('frontend/src/theme/sources.css').replace(/\/\*[\s\S]*?\*\//gu, '');
 // (R5 2026-11-12) The wrap rule moved from sources.css into components.css (.tg-source); check it there.
 const sourceRule = (read('frontend/src/theme/components.css').match(/^\.tg-source \{[^}]*\}/mu) || [''])[0];

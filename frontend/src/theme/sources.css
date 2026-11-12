@@ -1,4 +1,6 @@
 /* (F 2026-11-12) Source line and quote rule for theme/sources.js.
-   (R5 2026-11-12) Both rules moved into theme/components.css by the design system owner: .tg-source now wraps by default
-   (never an ellipsis; the full path stays in the title) and .tg-clip__quote carries the 2px ink rule itself. This file is
-   kept so theme/sources.js keeps one stable import; it holds no rules. */
+   (R5 2026-11-12) The wrap rule and the quote rule moved into theme/components.css (.tg-source, .tg-clip__quote).
+   (R6 2026-11-12, S33) Softer labels: sources.js now writes them in sentence case ("Recorded"), so the label is shown as
+   written, at the line's own size, not as tracked capitals. Candidate to move into components.css (.tg-source__label,
+   .tg-legend b) for the design system owner. */
+.tg-source .tg-source__label, .tg-legend b { font: inherit; font-weight: 600; letter-spacing: normal; text-transform: none; color: var(--pg-color-ink); }

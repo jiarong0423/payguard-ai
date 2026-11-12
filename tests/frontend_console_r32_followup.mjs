@@ -66,7 +66,8 @@ assert.ok(recheck.slice(at, recheck.indexOf('return false;', at)).includes('setS
 assert.ok(app.includes("import { createSendConfirmTokens, MISSING_CONFIRM_NOTICE, readyWithoutToken } from './sendConfirm.js';"));
 
 // ---- C5: both confirm dialogs are portalled to document.body. ----
-assert.ok(app.includes("import { createPortal } from 'react-dom';"));
+// (vteam r2) flushSync joins the import for the View Transition helper; createPortal is unchanged.
+assert.ok(app.includes("import { createPortal, flushSync } from 'react-dom';"));
 for (const [name, testId] of [['SendConfirmDialog', 'send-confirm-backdrop'], ['DraftConfirmDialog', 'draft-confirm-backdrop']]) {
   const dialog = block(name);
   assert.ok(dialog.includes(`return createPortal(<div className="send-confirm-backdrop" data-testid="${testId}">`), `${name} portalled`);
@@ -90,7 +91,8 @@ for (const options of [velocityChartOptions({ rows, reviewLine: 350, currency: '
     assert.ok(caption.maxHeight >= 54, `${caption.text} has room for three lines`);
   }
 }
-assert.equal(velocityChartOptions({ rows, reviewLine: 350, currency: 'USD' }, null).axes.y.crossLines[0].label.text, 'Review threshold 350.00 USD/h');
-assert.equal(velocityChartOptions({ rows, reviewLine: 350, currency: 'USD' }, null, { compact: true }).axes.y.crossLines[0].label.text, 'Review 350.00 USD/h');
+// (vteam viz 2026-11-12) Site-wide money format, currency code first (theme/format.js money(), components.css rule 5).
+assert.equal(velocityChartOptions({ rows, reviewLine: 350, currency: 'USD' }, null).axes.y.crossLines[0].label.text, 'Review threshold USD 350.00/h');
+assert.equal(velocityChartOptions({ rows, reviewLine: 350, currency: 'USD' }, null, { compact: true }).axes.y.crossLines[0].label.text, 'Review USD 350.00/h');
 
 console.log(JSON.stringify({ status: 'PASS', checks: [`readyWithoutToken ${combos} combos`, 'missing token fails the re-check', 'dialogs on document.body', 'one orange warning', 'chart captions wrap', 'phone threshold label'] }));

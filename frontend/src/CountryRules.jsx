@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { SpriteIcon, STATUS } from './theme/iconMap.js';
 import { apiRequest, retrySecondsLeft } from './api.js';
 import { tabKeyDown } from './tabKeys.js';
 import { useWaitClock, waitFailureMessage, WaitLine } from './GuideLive.jsx';
@@ -42,6 +43,9 @@ function withGloss(sentence, seen) {
 }
 // (optimise r24) Clock time for the before/after card ("Paused at 10:02 → No listed rule matched at 10:04"), local 24-hour time.
 const clockTime = (ms) => new Date(ms).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+// (vteam r6) The verdict is Check a sale's focus area: one 28px status icon by verdict (theme/iconMap.js STATUS); the
+// shape carries the meaning as well as the colour (risk double frame + bar, warn dashed, ok double frame).
+const VerdictIcon = ({ tone }) => <SpriteIcon name={STATUS[tone]} size="focus" className="country-verdict-icon" />;
 const verdictState = (result) => (result.blocked ? 'is-blocked' : result.findings.some(isPostalBan) ? 'is-caution' : 'is-clear');
 const verdictWord = (result) => (result.blocked ? 'Draft paused' : result.findings.some(isPostalBan) ? 'Draft allowed (other carrier)' : 'No listed rule matched');
 // A rule row reads "{Country} {side} ({tier}): {rule}. [Statute Article]". The seller reads the plain sentence
@@ -164,16 +168,16 @@ function Verdict({ result, names, tags, onEdit, onContinue }) {
   const noGoods = tags.length === 0 && <span className="country-verdict-line" data-testid="country-no-goods">No goods ticked: account and shipping rules only.</span>;
   // One next step under the verdict (plan r2 E19): change the goods after a Stop, or go on to the draft.
   if (result.blocked) {
-    return <><strong className="country-verdict-big"><SevIcon severity="BLOCK" />A listed rule may apply to this sale.</strong>
+    return <><strong className="country-verdict-big"><VerdictIcon tone="risk" />A listed rule may apply to this sale.</strong>
       <span className="country-verdict-line">Draft paused: {plural(block.length, 'listed rule')} {block.length === 1 ? 'applies' : 'apply'} to {seller} → {buyer}.</span>{noGoods}
       <span className="country-verdict-next"><button type="button" className="button button-secondary" data-testid="country-edit-item" onClick={() => onEdit(accountStop)}>{accountStop ? 'Change account' : 'Edit item'}</button></span></>;
   }
   if (ban.length) {
-    return <><strong className="country-verdict-big">The post will not carry this item.</strong>
+    return <><strong className="country-verdict-big"><VerdictIcon tone="warn" />The post will not carry this item.</strong>
       <span className="country-verdict-line">{plural(ban.length, 'postal rule')} ban{ban.length === 1 ? 's' : ''} it {seller} → {buyer}; another carrier may differ{warn.length > ban.length ? ` · ${warn.length - ban.length} more to check` : ''}. Not a legal clearance.</span>{noGoods}
       <span className="country-verdict-next"><button type="button" className="button button-secondary" data-testid="country-continue-draft" onClick={onContinue}>Continue with another carrier</button></span></>;
   }
-  return <><strong className="country-verdict-big">No cited rule applies to this sale.</strong>
+  return <><strong className="country-verdict-big"><VerdictIcon tone="ok" />No cited rule applies to this sale.</strong>
     <span className="country-verdict-notclear" data-testid="country-not-clearance">This is not clearance. Only the listed country and PayPal rules were checked; payment type, address match and carrier limits are not covered.</span>
     <span className="country-verdict-line">{result.cross_border ? 'Cross-border' : 'Domestic'}, {seller} → {buyer}{warn.length ? ` · ${warn.length} to check first` : ''}. Not a legal clearance; PayPal's Acceptable Use Policy still applies.</span>{noGoods}
     <span className="country-verdict-next"><button type="button" className="button button-secondary" data-testid="country-continue-draft" onClick={onContinue}>Continue to draft</button></span></>;
@@ -462,7 +466,7 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
         // (R5 2026-11-12) With a slot from the page (under the three sample cards) the verdict is drawn there; the
         // wrapper repeats the state class so the same .country-result.is-* colours apply. Same Verdict, same test ids.
         const verdict = <div className="country-verdict" data-testid="country-verdict"><Verdict result={result} names={names} tags={result.checked_tags} onEdit={editItem} onContinue={onContinue} /></div>;
-        return verdictTarget ? createPortal(<div className={`country-result country-result--portal ${verdictState(result)}`}>{verdict}</div>, verdictTarget) : verdict;
+        return verdictTarget ? createPortal(<div className={`country-result country-result--portal tg-focus ${verdictState(result)}`} data-testid="country-verdict-focus">{verdict}</div>, verdictTarget) : verdict;
       })()}
       {!result.blocked && unlock?.after && <BeforeAfter record={unlock} names={names} />}
       {(() => {

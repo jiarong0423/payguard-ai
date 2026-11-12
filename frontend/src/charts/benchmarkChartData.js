@@ -1,12 +1,17 @@
 // Pure helpers for the guide benchmark charts. The numbers come only from data/guide_benchmark_v1.json,
 // which is generated from docs/evidence/guide_benchmark_v1.json (tools/run_guide_benchmark.py).
 
-// One hue that deepens with each design step; the comparison (every sentence to the AI, a plain form) in warm grey.
-const STEP_FILLS = ['#a5b4fc', '#818cf8', '#6366f1', '#4338ca'];
-const COMPARE_FILL = '#e7a98f';
-const BASE_FILL = '#d6d3d1';
-const DROPPED_FILL = '#d6d3d1';
-const KEPT_FILL = '#6366f1';
+import { axisText, chartColor, noGrid, valueGrid, valueLabel } from './chartTheme.js';
+
+// (vteam viz 2026-11-12) Was indigo on white. Now the design steps run through the categorical layers toward charcoal
+// (olive, chestnut, charcoal = the current flow); every comparison (every sentence to the AI, a plain form, a dropped
+// step) is the usual-value grey (viz.base, 3.7:1 on the paper). All colours come from chartTheme.js (tokens).
+const [CAT_CHARCOAL, CAT_OLIVE, CAT_CHESTNUT] = chartColor.series;
+const STEP_FILLS = [chartColor.usual, CAT_OLIVE, CAT_CHESTNUT, CAT_CHARCOAL];
+const COMPARE_FILL = chartColor.usual;
+const BASE_FILL = chartColor.usual;
+const DROPPED_FILL = chartColor.usual;
+const KEPT_FILL = CAT_CHARCOAL;
 
 // The every-sentence row is the case count (one call for each one-sentence case); the flows in
 // docs/evidence/GUIDE_BENCHMARK.md count calls in the flow simulation. The headline compares two simulated flows (Q7)
@@ -42,7 +47,7 @@ export function wrongValuesTotal(benchmark) {
     .reduce((sum, flow) => sum + flow.wrong_honest + flow.wrong_careless, 0);
 }
 
-const AXIS_LABEL = { fontSize: 13, color: '#475569' };
+const AXIS_LABEL = { ...axisText, fontSize: 13 };
 // Phone width (a 375 px screen gives a chart about 330 px): AG Charts clipped long category labels at the left
 // edge and cut titles short, so below NARROW_PX labels and titles get explicit line breaks at word boundaries.
 export const NARROW_PX = 520;
@@ -66,22 +71,26 @@ const categoryLabel = (container, { stepNumbers = false } = {}) => (isNarrow(con
 const captionFit = (container, lines) => (isNarrow(container) ? { wrapping: 'on-space', maxHeight: lines * 22 } : {});
 // Room for the value label outside the longest bar.
 export const headroom = (values) => Math.ceil((Math.max(...values) * 1.12) / 100) * 100;
-const TITLE = (text, container) => ({ text, fontSize: 16, fontWeight: 700, color: '#1e1b4b', ...captionFit(container, 2) });
+const TITLE = (text, container) => ({ text, fontSize: 16, fontWeight: 700, color: chartColor.ink, ...captionFit(container, 2) });
+const SUBTITLE = { fontSize: 13, color: chartColor.muted };
 
 export function callChartOptions(benchmark, container) {
   return {
     container,
     data: callRows(benchmark),
     title: TITLE('Model calls for the same 268 seller sentences', container),
-    subtitle: { text: 'Lower is cheaper · rules and Python settle what they can before any model call', fontSize: 13, color: '#64748b', ...captionFit(container, 3) },
-    background: { fill: '#ffffff' },
+    subtitle: { text: 'Lower is cheaper · grey: the comparison · rules and Python settle what they can before any model call', ...SUBTITLE, ...captionFit(container, 3) },
+    background: { fill: chartColor.plot },
     series: [{
-      type: 'bar', direction: 'horizontal', xKey: 'label', yKey: 'calls', yName: 'Model calls', cornerRadius: 6,
-      label: { enabled: true, color: '#1e1b4b', fontSize: 13, fontWeight: 600, placement: 'outside-end' },
-      itemStyler: ({ datum }) => ({ fill: datum.label === benchmark.flows[0].label ? COMPARE_FILL : STEP_FILLS[benchmark.flows.findIndex((flow) => flow.label === datum.label)] }),
+      type: 'bar', direction: 'horizontal', xKey: 'label', yKey: 'calls', yName: 'Model calls', cornerRadius: 0,
+      label: { enabled: true, ...valueLabel, placement: 'outside-end' },
+      // (vteam viz) The every-sentence row is labelled "... (1 per case)", so an exact label match missed it and the bar
+      // fell back to AG Charts' default blue. Match the flow by its label prefix; the first flow is the comparison.
+      itemStyler: ({ datum }) => { const index = benchmark.flows.findIndex((flow) => String(datum.label).startsWith(flow.label));
+        return { fill: index <= 0 ? COMPARE_FILL : STEP_FILLS[index] }; },
     }],
-    axes: { x: { type: 'category', position: 'left', label: categoryLabel(container) },
-      y: { type: 'number', position: 'bottom', min: 0, max: headroom(callRows(benchmark).map((row) => row.calls)), label: AXIS_LABEL } },
+    axes: { x: { type: 'category', position: 'left', label: categoryLabel(container), gridLine: noGrid },
+      y: { type: 'number', position: 'bottom', min: 0, max: headroom(callRows(benchmark).map((row) => row.calls)), label: AXIS_LABEL, gridLine: valueGrid } },
     legend: { enabled: false },
   };
 }
@@ -91,15 +100,15 @@ export function roundChartOptions(benchmark, container) {
     container,
     data: roundRows(benchmark),
     title: TITLE('Guide rounds to finish, 268 cases', container),
-    subtitle: { text: 'Grey bar: the same items as a plain fixed-input form', fontSize: 13, color: '#64748b', ...captionFit(container, 3) },
-    background: { fill: '#ffffff' },
+    subtitle: { text: 'Grey bar: the same items as a plain fixed-input form', ...SUBTITLE, ...captionFit(container, 3) },
+    background: { fill: chartColor.plot },
     series: [{
-      type: 'bar', direction: 'horizontal', xKey: 'label', yKey: 'rounds', yName: 'Rounds', cornerRadius: 6,
-      label: { enabled: true, color: '#1e1b4b', fontSize: 13, fontWeight: 600, placement: 'outside-end' },
+      type: 'bar', direction: 'horizontal', xKey: 'label', yKey: 'rounds', yName: 'Rounds', cornerRadius: 0,
+      label: { enabled: true, ...valueLabel, placement: 'outside-end' },
       itemStyler: ({ datum }) => ({ fill: datum.kind === 'base' ? BASE_FILL : STEP_FILLS[benchmark.flows.findIndex((flow) => flow.label === datum.label)] }),
     }],
-    axes: { x: { type: 'category', position: 'left', label: categoryLabel(container) },
-      y: { type: 'number', position: 'bottom', min: 0, max: headroom(roundRows(benchmark).map((row) => row.rounds)), label: AXIS_LABEL } },
+    axes: { x: { type: 'category', position: 'left', label: categoryLabel(container), gridLine: noGrid },
+      y: { type: 'number', position: 'bottom', min: 0, max: headroom(roundRows(benchmark).map((row) => row.rounds)), label: AXIS_LABEL, gridLine: valueGrid } },
     legend: { enabled: false },
   };
 }
@@ -109,20 +118,21 @@ export function historyChartOptions(benchmark, container) {
     container,
     data: historyRows(benchmark),
     title: TITLE('Each design step on the clean blind set (40 cases)', container),
-    subtitle: { text: `Indigo: kept · grey: tried and dropped · dashed line: plain form (${benchmark.history_form_only_rounds})${isNarrow(container) ? ` · steps: ${historyRows(benchmark).map((row) => row.label).join(' · ')}` : ''}`,
-      fontSize: 13, color: '#64748b', ...captionFit(container, isNarrow(container) ? 5 : 3) },
-    background: { fill: '#ffffff' },
+    subtitle: { text: `Charcoal: kept · grey: tried and dropped · dashed line: plain form (${benchmark.history_form_only_rounds})${isNarrow(container) ? ` · steps: ${historyRows(benchmark).map((row) => row.label).join(' · ')}` : ''}`,
+      ...SUBTITLE, ...captionFit(container, isNarrow(container) ? 5 : 3) },
+    background: { fill: chartColor.plot },
     series: [{
-      type: 'bar', xKey: 'label', yKey: 'rounds', yName: 'Rounds', cornerRadius: 6,
-      label: { enabled: true, color: '#1e1b4b', fontSize: 13, fontWeight: 600, placement: 'outside-end' },
+      type: 'bar', xKey: 'label', yKey: 'rounds', yName: 'Rounds', cornerRadius: 0,
+      label: { enabled: true, ...valueLabel, placement: 'outside-end' },
       itemStyler: ({ datum }) => ({ fill: datum.kept ? KEPT_FILL : DROPPED_FILL }),
     }],
     axes: {
-      x: { type: 'category', position: 'bottom', label: categoryLabel(container, { stepNumbers: true }) },
+      x: { type: 'category', position: 'bottom', label: categoryLabel(container, { stepNumbers: true }), gridLine: noGrid },
       y: {
-        type: 'number', position: 'left', min: 0, label: AXIS_LABEL,
-        crossLines: [{ type: 'line', value: benchmark.history_form_only_rounds, stroke: '#c2410c', strokeWidth: 1.5, lineDash: [6, 4],
-          label: { text: 'Plain form', position: 'inside-bottom-right', color: '#9a3412', fontSize: 13 } }],
+        type: 'number', position: 'left', min: 0, label: AXIS_LABEL, gridLine: valueGrid,
+        crossLines: [{ type: 'line', value: benchmark.history_form_only_rounds, stroke: chartColor.muted, strokeWidth: 1.5, lineDash: [6, 4],
+          // (vteam viz) Phone: the label collided with the value labels of bars 4 and 5; the subtitle already names the line.
+          label: { enabled: !isNarrow(container), text: 'Plain form', position: 'top-right', color: chartColor.muted, fontSize: 13 } }],
       },
     },
     legend: { enabled: false },

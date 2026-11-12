@@ -9,6 +9,8 @@
 // order; the result is a seal on paper (MATCH in green, MISMATCH in red), never small coloured text on the dark panel.
 // Hashes show in groups of eight; each ledger row can open the recorded lines it quotes. Reviews: ext_review/review_STYLEREF.md
 // sections 2-3, review_FULL.md (Proof).
+// (vteam 2026-11-12, ui_mock/vteam/CONSENSUS.md sections 1 and 8) The whole check is the page's one focus area and the
+// site's one dark surface (.tg-focus.tg-focus--bleed.tg-vault, full width); the ledger sits on .tg-grid-paper.
 import { useRef, useState } from 'react';
 import ledger from '../data/proof_ledger_v1.json';
 import { SourceLegend, SourceLine } from '../theme/sources.js';
@@ -58,7 +60,7 @@ function Ledger() {
   const sends = ledger.sends;
   const withId = sends.filter((send) => send.debug_id).length;
   const matched = sends.filter((send) => send.file_check?.state === 'match').length;
-  return <div className="tg-ledger pp-ledger" data-testid="proof-ledger">
+  return <div className="tg-ledger pp-ledger tg-grid-paper" data-testid="proof-ledger">
     <p className="pp-caption" id="pp-ledger-caption">Every real PayPal Sandbox evidence send on file, one row each</p>
     <table className="tg-ledger__table" aria-describedby="pp-ledger-caption">
       <thead><tr><th scope="col">Date</th><th scope="col" className="pp-nowrap">Sent from</th><th scope="col" className="pp-nowrap" title="PayPal-Debug-Id, the reference PayPal returned for each send">PayPal reference</th><th scope="col">Read-back</th><th scope="col">File check</th><th scope="col">Evidence file</th></tr></thead>
@@ -68,7 +70,7 @@ function Ledger() {
         <td className="tg-ledger__ref">{send.debug_id ? <span className="tg-mono">{send.debug_id.value}</span> : <span className="tg-small" title="This send predates the recorded Debug-Id">—</span>}</td>
         <td className="tg-ledger__status pp-nowrap">{plainStatus(send.readback.value)}</td>
         <td><FileCheck check={send.file_check} /></td>
-        <td className="pp-ledger__src"><SourceLine kind={send.basis} source={send.source_key} /><RecordedLines send={send} /></td>
+        <td className="pp-ledger__src"><SourceLine kind={send.basis} source={send.source_key} exact /><RecordedLines send={send} /></td>
       </tr>)}</tbody>
       <tfoot><tr className="tg-ledger__total"><td colSpan={6}>{sends.length} sends · {withId} with a PayPal reference · {matched} with the served file matched byte for byte · highlighted: the send checked above</td></tr></tfoot>
     </table>
@@ -122,7 +124,7 @@ function Verify() {
     }
   };
 
-  return <section className="pp-verify" id="verify" aria-labelledby="pp-verify-title" data-testid="proof-verify">
+  return <section className="pp-verify tg-focus tg-focus--bleed tg-vault" id="verify" aria-labelledby="pp-verify-title" data-testid="proof-verify">
     <div className="pp-verify__head">
       <p className="tg-eyebrow">Check it yourself</p>
       <h3 id="pp-verify-title" className="tg-h3">Is the file PayPal holds the file TradeGlot sent?</h3>
@@ -136,12 +138,12 @@ function Verify() {
         {result && <button type="button" className="tg-btn tg-btn--secondary" data-testid="proof-verify-tamper" disabled={busy} onClick={() => run(!result.tamper)}>{result.tamper ? 'Check the original again' : 'Change one byte'}</button>}
       </div>
       {!result && <p className="pp-hint" data-testid="proof-tamper-hint">Verify first. You may then change one byte of the fetched copy, in memory only, and check again.</p>}
-      <SourceLine kind={row.basis} source={row.source_key} />
+      <SourceLine kind={row.basis} source={row.source_key} exact />
     </div>
-    <div className={`pp-verify__log tg-vault pp-vault${entries.length ? ' is-run' : ''}`} aria-live="polite">
+    <div className={`pp-verify__log pp-vault${entries.length ? ' is-run' : ''}`} aria-live="polite">
       <p className="pp-vault__head">{entries.length ? (result?.ok ? 'Checked. The file PayPal holds is the file that was sent.' : result ? 'Checked. This copy is not the file that was sent.' : 'Checking…') : 'Not checked yet. Nothing runs until you press Verify.'}</p>
       <ol className="tg-log" data-testid="proof-verify-log">{[...entries, ...PLAN.filter((plan) => !entries.some((entry) => entry.step === plan.step)).map((plan) => ({ ...plan, state: 'is-pending', pending: true }))].map((entry, index) => <li key={`${entry.step}-${index}-${entries.length}`} className={`tg-log__entry ${entry.state}`} data-step={entry.step} style={{ '--pp-i': index }}>
-          {entry.pending ? <span className="tg-log__when" aria-label="Not run yet">—</span> : <time className="tg-log__when">{entry.at}</time>}
+          {entry.pending ? <span className="tg-log__when pp-step-n" aria-label={`Step ${index + 1}, not run yet`}>Step {index + 1}</span> : <time className="tg-log__when">{entry.at}</time>}
           <div className="tg-log__body">
             <p className="tg-log__title">{entry.title}</p>
             <p className="tg-log__note">{entry.note}</p>

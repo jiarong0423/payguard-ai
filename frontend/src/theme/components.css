@@ -18,34 +18,35 @@
 .tg-mono { font-family: var(--pg-font-mono); font-size: .9em; color: var(--pg-color-ink); } /* hashes, Debug-Id, file names: always ink */
 .tg-num, .tg-deadline, .tg-ts { font-variant-numeric: lining-nums tabular-nums; }
 .tg-small { font-size: var(--pg-text-2); color: var(--pg-color-muted); }
-.tg-eyebrow { font-size: var(--pg-text-1); font-weight: 600; letter-spacing: var(--pg-label-tracking); text-transform: uppercase; color: var(--pg-color-ink); }
-.tg-h1, .tg-h2, .tg-h3 { font-family: var(--pg-font-serif); color: var(--pg-color-ink); margin: 0; }
-.tg-h1 { font-size: var(--pg-text-7); font-weight: 700; line-height: 1; letter-spacing: -.02em; font-variation-settings: "opsz" 72; }
-.tg-h2 { font-size: var(--pg-text-5); font-weight: 650; line-height: 1.08; letter-spacing: -.01em; font-variation-settings: "opsz" 36; }
-.tg-h3 { font-size: var(--pg-text-4); font-weight: 600; line-height: 1.2; font-variation-settings: "opsz" 24; }
+/* vteam r6: labels use --pg-label-tracking (colour director sets .12em; .16em read cold); the stamp alone keeps .14em. */
+.tg-eyebrow { font-size: var(--pg-text-1); font-weight: 600; letter-spacing: var(--pg-label-tracking); text-transform: uppercase; color: var(--pg-color-chestnut); }
+/* Section bar: 16x2 chestnut before a section eyebrow; never next to a status element. */
+.tg-section > .tg-eyebrow::before { content: ""; display: inline-block; width: 16px; height: 2px; margin-right: 8px; vertical-align: .3em; background: var(--pg-color-chestnut); }
+.tg-h1, .tg-h3 { font-family: var(--pg-font-serif); color: var(--pg-color-ink); margin: 0; }
+.tg-h1 { font-size: var(--pg-text-7); font-weight: 650; line-height: 1; letter-spacing: -.015em; font-variation-settings: "opsz" 72; }
+.tg-h3 { font-size: var(--pg-text-4); font-weight: 550; line-height: 1.2; font-variation-settings: "opsz" 24; }
 .tg-lede { font-family: var(--pg-font-serif); font-size: var(--pg-text-4); line-height: 1.45; color: var(--pg-color-ink); margin: 0; }
 .tg-icon { width: 18px; height: 18px; flex: none; display: inline-block; vertical-align: -.2em; }
 
 /* ---------- Focus ring: 2px ink, keyboard only ---------- */
-.tg-nav a:focus-visible, .tg-btn:focus-visible, .tg-filter:focus-visible, .tg-card--link:focus-visible,
+.tg-nav a:focus-visible, .tg-btn:focus-visible, .tg-filter:focus-visible,
 .tg-tip__trigger:focus-visible, .tg-link:focus-visible, .tg-tag:focus-visible,
 .tg-seg > button:focus-visible, .tg-fold > summary:focus-visible { outline: var(--pg-layout-focus-ring) solid var(--pg-color-focus); outline-offset: 3px; } /* r5: a 3px gap between control and ring */
 
-.tg-nav__item, .tg-btn, .tg-filter, .tg-card--link, .tg-seg > button, .tg-ledger__table tr { transition: background-color var(--pg-motion-quick), border-color var(--pg-motion-quick), color var(--pg-motion-quick); }
+.tg-nav__item, .tg-btn, .tg-filter, .tg-seg > button, .tg-ledger__table tr { transition: background-color var(--pg-motion-quick), border-color var(--pg-motion-quick), color var(--pg-motion-quick); }
 
 /* ---------- Masthead: heavy rule, then issue / title / date in small caps ---------- */
-.tg-masthead { border-bottom: var(--pg-layout-rule-heavy) solid var(--pg-color-rule); } /* the only heavy rule: under the top row */
+/* Rules in three steps: 3px structure under the masthead only; 2px structure on block heads; 1px warm rule elsewhere. */
+.tg-masthead { border-bottom: var(--pg-layout-rule-heavy) solid var(--pg-color-structure); }
 
 /* ---------- Navigation: current page = ink text + 2px ink underline ---------- */
 .tg-nav { border-bottom: 1px solid var(--pg-color-rule-soft); }
 /* Section head: thin ink rule above the title. */
-.tg-section { border-top: 1px solid var(--pg-color-rule); padding-top: var(--pg-space-5); }
+.tg-section { border-top: var(--pg-rule-head); padding-top: var(--pg-space-5); }
 .tg-nav__inner { display: flex; align-items: center; gap: var(--pg-space-1); max-width: var(--pg-layout-content); margin: 0 auto; padding: 0 var(--pg-space-5); min-height: 44px; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; }
-.tg-nav__inner::-webkit-scrollbar { display: none; }
 .tg-nav a.tg-nav__item { display: inline-flex; align-items: center; gap: var(--pg-space-2); flex: none; min-height: 44px; padding: 0 10px; color: var(--pg-color-muted); font-size: var(--pg-text-2); font-weight: 500; white-space: nowrap; text-decoration: none; scroll-snap-align: start; }
 .tg-nav a.tg-nav__item:hover { color: var(--pg-color-ink); }
 .tg-nav a.tg-nav__item[aria-current="page"] { color: var(--pg-color-ink); font-weight: 650; box-shadow: inset 0 -2px 0 var(--pg-color-rule); }
-.tg-nav__spacer { flex: 1; }
 
 /* ---------- Count badge: neutral; solid ink only when the user must act ---------- */
 
@@ -54,10 +55,8 @@
 .tg-pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 .tg-pill:has(> svg)::before { display: none; }
 .tg-pill > svg, .tg-stamp > svg, .tg-source > svg { width: 14px; height: 14px; flex: none; }
-.tg-pill--ok { --tg-tone: var(--pg-color-ok); --tg-tint: var(--pg-tint-ok); }
-.tg-pill--warn { --tg-tone: var(--pg-color-warn); --tg-tint: var(--pg-tint-watch); }
-.tg-pill--risk { --tg-tone: var(--pg-color-risk); --tg-tint: var(--pg-tint-risk); } /* always with a warning / x-circle icon */
-.tg-pill--act { background: transparent; color: var(--pg-color-ink); box-shadow: inset 0 0 0 1.5px var(--pg-color-rule); } /* "Your move": outlined, never solid (solid ink reads as a button) */
+/* Shape, not colour alone (risk/warn dE 9 under deuteranopia): warn pill = dashed frame. Risk is never a pill: it is .tg-stamp--risk (seal + left bar). */
+.tg-pill--warn { --tg-tone: var(--pg-color-warn); --tg-tint: var(--pg-tint-watch); box-shadow: none; outline: 1px dashed; outline-offset: -1px; }
 
 /* ---------- Buttons: square; primary = solid ink, secondary = ink outline, text = underlined ink ---------- */
 .tg-btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--pg-space-2); height: 40px; padding: 0 18px; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-control); background: transparent; color: var(--pg-color-ink); font: 600 var(--pg-text-2)/1 var(--pg-font-sans); letter-spacing: .02em; white-space: nowrap; text-decoration: none; cursor: pointer; }
@@ -69,13 +68,13 @@
 .tg-btn--sm { height: 30px; padding: 0 12px; font-size: 13px; }
 .tg-btn:disabled, .tg-btn[aria-disabled="true"] { cursor: not-allowed; background: transparent; border: 1px dashed var(--pg-color-line); color: var(--pg-color-ink3); } /* v2: ink-3 + dashed hairline (was #9a958a, 1.5:1) */
 .tg-link { color: var(--pg-color-ink); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.tg-link:hover { text-decoration-thickness: 2px; }
 
-/* ---------- Stamp (outcome): printed, square, not tilted; ink by default ---------- */
-.tg-stamp { --tg-tone: var(--pg-color-rule); display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border: 1px solid var(--tg-tone); box-shadow: inset 0 0 0 2px var(--pg-color-canvas), inset 0 0 0 3px var(--tg-tone); background: var(--pg-color-canvas); color: var(--tg-tone); cursor: default; font-size: var(--pg-text-1); font-weight: 700; letter-spacing: var(--pg-label-tracking); line-height: 1; text-transform: uppercase; white-space: nowrap; }
+/* ---------- Stamp (outcome): printed, square, double-ruled seal; warn = dashed single, risk = seal + left bar ---------- */
+.tg-stamp { --tg-tone: var(--pg-color-rule); display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border: 1px solid var(--tg-tone); box-shadow: inset 0 0 0 2px var(--pg-color-canvas), inset 0 0 0 3px var(--tg-tone); background: var(--pg-color-canvas); color: var(--tg-tone); cursor: default; font-size: var(--pg-text-1); font-weight: 700; letter-spacing: .14em; line-height: 1; text-transform: uppercase; white-space: nowrap; }
 .tg-stamp--ok { --tg-tone: var(--pg-color-ok); }
-.tg-stamp--warn { --tg-tone: var(--pg-color-warn); }
-.tg-stamp--risk { --tg-tone: var(--pg-color-risk); }
-.tg-stamp--neutral { --tg-tone: var(--pg-color-muted); }
+.tg-stamp--warn { --tg-tone: var(--pg-color-warn); border-style: dashed; box-shadow: none; }
+.tg-stamp--risk { --tg-tone: var(--pg-color-risk); box-shadow: inset 3px 0 0 var(--tg-tone), inset 0 0 0 2px var(--pg-color-canvas), inset 0 0 0 3px var(--tg-tone); }
 
 /* ---------- Filter chips: a view, not an action; pressed = ink ---------- */
 .tg-filters { display: flex; flex-wrap: wrap; gap: var(--pg-space-2); }
@@ -104,25 +103,17 @@
 .tg-tip__trigger { border: 0; background: none; padding: 0; color: inherit; font: inherit; cursor: help; text-decoration: underline dotted 1px; text-underline-offset: 3px; }
 .tg-tip__body { position: absolute; left: 0; top: calc(100% + 8px); z-index: 40; width: max-content; max-width: 320px; padding: 12px 14px; border: 1px solid var(--pg-color-rule); background: var(--pg-color-panel); box-shadow: var(--pg-elev-l3); font-size: 13px; line-height: 1.5; opacity: 0; visibility: hidden; transition: opacity .12s, visibility 0s linear .12s; pointer-events: none; }
 .tg-tip:hover .tg-tip__body, .tg-tip:focus-within .tg-tip__body, .tg-tip__body.is-open { opacity: 1; visibility: visible; transition-delay: 0s; }
-.tg-tip__body::before { content: ""; position: absolute; left: 14px; top: -5px; width: 8px; height: 8px; background: var(--pg-color-panel); border-left: 1px solid var(--pg-color-rule); border-top: 1px solid var(--pg-color-rule); transform: rotate(45deg); }
 
 /* ---------- Card: thin black rule, no shadow ---------- */
 .tg-card { background: var(--pg-color-panel); border: 1px solid var(--pg-color-rule-soft); padding: var(--pg-space-5); }
-/* Feature card (one per page, e.g. the real Sandbox send): surface + ink rule as the focal object. */
-.tg-card--feature { background: var(--pg-color-recede); border-color: var(--pg-color-rule); } /* one per page; text stays ink / muted, >= 13px */
-.tg-card--feature .tg-eyebrow, .tg-card--feature .tg-source { font-size: 13px; }
-.tg-card--link { display: block; color: inherit; text-decoration: none; }
-.tg-card--link:hover { border-color: var(--pg-color-rule); }
-.tg-card--active { border-color: var(--pg-color-rule); box-shadow: var(--pg-elev-l1); }
-.tg-card__head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--pg-space-4); }
+/* vteam r6: .tg-card--feature / --link / --active were unused; the page focal object is .tg-focus (end of file). */
 
 /* ---------- Source line and legend (mark first, then the plain-language origin) ---------- */
 /* Source line: one line, ellipsis when it runs out; LABEL first (RECORDED / RECOUNTED / HOSTED DEMO), then plain-language origin. */
 .tg-source { display: block; overflow-wrap: anywhere; line-height: 1.5; font-size: var(--pg-text-1); color: var(--pg-color-muted); } /* r5: wraps; never an ellipsis (a cut-off source reads as hiding something) */
-.tg-source__label { white-space: nowrap; }
 .tg-source > svg { vertical-align: -2px; margin-right: 6px; }
-.tg-legend b { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--pg-color-ink); white-space: nowrap; }
-.tg-source__label { margin-right: 6px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--pg-color-ink); }
+.tg-legend b { font-size: var(--pg-text-1); font-weight: 700; letter-spacing: var(--pg-label-tracking); text-transform: uppercase; color: var(--pg-color-ink); white-space: nowrap; }
+.tg-source__label { margin-right: 6px; white-space: nowrap; font-weight: 600; letter-spacing: var(--pg-label-tracking); text-transform: uppercase; color: var(--pg-color-olive); }
 .tg-legend { display: flex; flex-wrap: wrap; gap: var(--pg-space-2) var(--pg-space-5); margin: 0; padding: var(--pg-space-3) 0 0; list-style: none; font-size: var(--pg-text-1); color: var(--pg-color-muted); }
 .tg-legend li { display: inline-flex; align-items: baseline; gap: var(--pg-space-2); }
 
@@ -137,19 +128,18 @@
 
 /* ---------- Ledger (Proof sends, orders, rule grid, case queue): date | case | amount | status | PayPal reference ---------- */
 /* 3px ink head rule with a 1px second line, hairline rows, an ink rule every 5 rows (no zebra), ruled money column, 3px double total. */
-.tg-ledger { border-top: var(--pg-layout-rule-block) solid var(--pg-color-rule); }
+.tg-ledger { border-top: var(--pg-rule-head); }
 .tg-ledger__table { width: 100%; border-collapse: collapse; border-top: 1px solid var(--pg-color-rule); margin-top: 2px; font-size: var(--pg-text-2); font-variant-numeric: lining-nums tabular-nums; }
-.tg-ledger__table th { height: 32px; padding: 0 12px; border-bottom: 1px solid var(--pg-color-rule); text-align: left; font-size: var(--pg-text-1); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.tg-ledger__table th { height: 32px; padding: 0 12px; border-bottom: 1px solid var(--pg-color-rule); text-align: left; font-size: var(--pg-text-1); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .tg-ledger__table td { height: 44px; padding: 0 12px; border-bottom: 1px solid var(--pg-color-rule-soft); }
 .tg-ledger__date { width: 112px; white-space: nowrap; color: var(--pg-color-muted); }
-.tg-ledger__ref { font-family: var(--pg-font-mono); font-size: 13px; }
+.tg-ledger__ref { font-family: var(--pg-font-mono); font-size: .9em; color: var(--pg-color-muted); }
 .tg-ledger__amt { width: 1%; text-align: right; white-space: nowrap; border-left: 1px solid var(--pg-color-rule); }
 .tg-ledger__table tbody tr:nth-child(5n) td { border-bottom-color: var(--pg-color-control-line); }
-.tg-ledger__ref { color: var(--pg-color-muted); }
 .tg-ledger__table tbody tr:hover { background: var(--pg-color-row-hover); } /* v2: paint the row, not each cell */
 .tg-ledger__table tbody tr.is-selected, .tg-is-sel { background: var(--pg-color-sel); }
 .tg-ledger__table tr.is-selected td:first-child { box-shadow: inset var(--pg-elev-active-bar) 0 0 var(--pg-color-rule); }
-.tg-ledger__table tr.is-dim { opacity: .45; }
+.tg-ledger__table:has(tr.is-selected) tbody tr:not(.is-selected) { color: var(--pg-color-muted); } /* recede by colour, never opacity (keeps 4.5:1) */
 .tg-ledger__total td { border-top: 3px double var(--pg-color-rule); border-bottom: 0; font-weight: 700; }
 
 /* ---------- Log: day-book timeline (dispute timeline, session activity, send steps) ---------- */
@@ -163,7 +153,7 @@
 .tg-log__entry.is-done::before { background: var(--pg-color-ok); }
 .tg-log__entry.is-pending::before { background: var(--pg-color-canvas); box-shadow: inset 0 0 0 1.5px var(--pg-color-rule); }
 .tg-log__entry.is-risk::before { background: var(--pg-color-risk); }
-.tg-log__dateline { display: block; margin-bottom: 2px; font-size: var(--pg-text-1); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.tg-log__dateline { display: block; margin-bottom: 2px; font-size: var(--pg-text-1); font-weight: 700; letter-spacing: var(--pg-label-tracking); text-transform: uppercase; }
 .tg-log__who { margin-right: 6px; font-weight: 700; }
 .tg-log__title { margin: 0; font-weight: 600; }
 .tg-log__next { margin: 4px 0 0; font-size: var(--pg-text-2); }
@@ -173,9 +163,9 @@
 .tg-log__ref { display: block; margin-top: 4px; font-family: var(--pg-font-mono); font-size: 13px; overflow-wrap: anywhere; }
 
 /* ---------- Clipping: quote or single fact (law quotes, process cards, judge steps) ---------- */
-.tg-clip { margin: 0; padding: var(--pg-space-4) var(--pg-space-4) var(--pg-space-3); background: var(--pg-color-panel); border-top: var(--pg-layout-rule-block) solid var(--pg-color-rule); border-bottom: 1px solid var(--pg-color-rule); box-shadow: inset 0 2px 0 var(--pg-color-panel), inset 0 3px 0 var(--pg-color-rule); } /* one frame only: 3px + 1px rules on top, 1px below, no sides */
+.tg-clip { margin: 0; padding: var(--pg-space-4) var(--pg-space-4) var(--pg-space-3); background: var(--pg-color-panel); border-top: var(--pg-rule-head); border-bottom: 1px solid var(--pg-color-rule); box-shadow: inset 0 2px 0 var(--pg-color-panel), inset 0 3px 0 var(--pg-color-rule); } /* one frame only: 3px + 1px rules on top, 1px below, no sides */
 .tg-clip.is-linked { outline: 0; background: var(--pg-color-panel); box-shadow: inset 0 2px 0 var(--pg-color-panel), inset 0 3px 0 var(--pg-color-rule), inset 0 -1px 0 var(--pg-color-rule); }
-.tg-clip__kicker { font-size: var(--pg-text-1); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.tg-clip__kicker { font-size: var(--pg-text-1); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 .tg-clip__quote { margin: var(--pg-space-2) 0 var(--pg-space-3); padding-left: var(--pg-space-3); border-left: 2px solid var(--pg-color-rule); font-family: var(--pg-font-serif); font-size: var(--pg-text-4); font-style: italic; line-height: 1.4; }
 .tg-clip__source { margin: 0; font-size: var(--pg-text-1); color: var(--pg-color-muted); }
 .tg-clip--fact .tg-clip__quote, .tg-clip--step .tg-clip__quote { padding-left: 0; border-left: 0; font-style: normal; font-size: var(--pg-text-3); font-family: var(--pg-font-sans); }
@@ -183,15 +173,14 @@
 .tg-clip--step .tg-clip__num { font-size: var(--pg-text-5); }
 
 /* Wire strip: a PayPal call as it came over the wire. */
-.tg-wire { display: flex; flex-wrap: wrap; gap: 2px 12px; padding: 8px 0; border-top: 2px solid var(--pg-color-rule); border-bottom: 1px dashed var(--pg-color-rule); font-size: var(--pg-text-2); }
-.tg-wire__head { font-size: var(--pg-text-1); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
-.tg-wire .tg-mono { overflow-wrap: anywhere; }
+.tg-wire__head { font-size: var(--pg-text-1); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 
 /* Proof note: margin note for check first (amber) or rule match (risk, with icon). */
 /* v2: tinted strip + 4px bar. --check = check first (amber), --risk = rule match (red, with icon). */
 .tg-note { margin: 0; padding: 10px 12px 10px 16px; border-left: 4px solid var(--pg-color-rule); background: var(--pg-color-surface2); font-size: var(--pg-text-2); }
 .tg-note--check { border-left-color: var(--pg-color-warn); background: var(--pg-color-warn-tint); }
 .tg-note--check b { color: var(--pg-color-warn); }
+.tg-note--check { border-left-style: dashed; }
 .tg-note--risk { border-left-color: var(--pg-color-risk); background: var(--pg-color-risk-tint); }
 .tg-note b { display: inline-flex; align-items: center; gap: 4px; }
 .tg-note--risk b { color: var(--pg-color-risk); }
@@ -227,9 +216,8 @@
   .tg-log__when { padding-right: 8px; letter-spacing: .04em; }
   .tg-log__body { padding-left: 16px; }
   /* Nav scrolls sideways; the right edge fades to show there is more. */
-  .tg-nav__inner { padding: 0 var(--pg-space-4); -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent); }
+  .tg-nav__inner { padding: 0 var(--pg-space-4); mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent); }
   .tg-h1 { font-size: var(--pg-text-6); }
-  .tg-h2 { font-size: 24px; }
   .tg-filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
   .tg-filter { min-height: 44px; }
   .tg-actions > .tg-btn { width: 100%; min-height: 48px; }
@@ -244,7 +232,7 @@
 .tg-span-3 { grid-column: span 3; } .tg-span-4 { grid-column: span 4; } .tg-span-5 { grid-column: span 5; } .tg-span-6 { grid-column: span 6; }
 .tg-span-7 { grid-column: span 7; } .tg-span-8 { grid-column: span 8; } .tg-span-12 { grid-column: 1 / -1; }
 /* Vertical rhythm (multiples of 8): 48 between sections, 24 between cards, 16 head-to-content. */
-.tg-stack-48 > * + * { margin-top: var(--pg-space-7); } .tg-stack-48 > :nth-child(odd):not(:first-child) { margin-top: var(--pg-space-6); } /* r5: 48 / 32 alternate, not one equal gap */ .tg-stack-24 > * + * { margin-top: var(--pg-space-5); }
+.tg-stack-48 > * + * { margin-top: var(--pg-space-7); } .tg-stack-48 > :nth-child(odd):not(:first-child) { margin-top: var(--pg-space-6); } /* r5: 48 / 32 alternate, not one equal gap */
 .tg-measure { max-width: var(--pg-grid-measure); }
 .tg-pad { padding: var(--pg-layout-card-pad); } /* the one inner padding for framed containers: text at x + 20 */
 .tg-card--cta { display: flex; flex-direction: column; } .tg-card--cta > .tg-cta { margin-top: auto; padding-top: var(--pg-space-4); } /* CTA sits on the card floor */
@@ -270,7 +258,7 @@ details.tg-fold:not(.limits-drawer)[open] > summary::after { transform: translat
 .tg-tag--neutral { height: 28px; padding: 0 7px; border-color: var(--pg-color-line); border-radius: var(--pg-radius-status); letter-spacing: .04em; text-transform: none; cursor: default; }
 
 /* Step page head: 72px row, 28px title (the 7-step scale has no 32), actions on the same line, right. */
-.tg-stephead { display: flex; align-items: center; justify-content: space-between; gap: var(--pg-space-4); min-height: var(--pg-layout-step-head); padding: var(--pg-space-3) 0; border-top: 1px solid var(--pg-color-rule); border-bottom: 1px solid var(--pg-color-line); }
+.tg-stephead { display: flex; align-items: center; justify-content: space-between; gap: var(--pg-space-4); min-height: var(--pg-layout-step-head); padding: var(--pg-space-3) 0; border-top: var(--pg-rule-head); border-bottom: 1px solid var(--pg-color-line); }
 .tg-stephead__title { margin: 2px 0 0; font: 650 var(--pg-text-5)/1.1 var(--pg-font-serif); letter-spacing: -.01em; }
 .tg-stephead__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--pg-space-2); justify-content: flex-end; }
 
@@ -304,7 +292,7 @@ details.tg-fold:not(.limits-drawer)[open] > summary::after { transform: translat
 .tg-toast .paypal-issue-line, .tg-toast .paypal-issue-debug { display: block; overflow-wrap: anywhere; }
 
 /* Step progress dot: idle = hollow, review = amber, done = ink. */
-.tg-dot { display: inline-block; width: 8px; height: 8px; border-radius: var(--pg-radius-pill); border: 1.5px solid var(--pg-color-control-line); background: transparent; vertical-align: 1px; transition: background-color var(--pg-motion-quick), border-color var(--pg-motion-quick); }
+.tg-dot { display: inline-block; width: 8px; height: 8px; border-radius: var(--pg-radius-pill); border: 1.5px solid var(--pg-color-control-line); background: transparent; vertical-align: 1px; }
 .tg-dot[data-state="review"] { border-color: var(--pg-color-warn); background: var(--pg-color-warn); }
 .tg-dot[data-state="done"] { border-color: var(--pg-color-rule); background: var(--pg-color-accent); }
 
@@ -318,10 +306,8 @@ details.tg-fold:not(.limits-drawer)[open] > summary::after { transform: translat
 
 /* Seal settles (stamp, MATCH / SUBMITTED): a short fade-and-settle, no overshoot. Add .is-new when it first appears. */
 .tg-stamp.is-new { animation: tg-settle var(--pg-motion-settle) var(--pg-motion-precise); }
-@keyframes tg-settle { from { opacity: 0; transform: scale(1.04); } }
-/* The current nav underline draws in (0 -> 2px), no overshoot. */
-.tg-nav a.tg-nav__item[aria-current="page"] { animation: tg-sweep var(--pg-motion-sweep) var(--pg-motion-precise); }
-@keyframes tg-sweep { from { box-shadow: inset 0 0 0 var(--pg-color-rule); } }
+@keyframes tg-settle { from { opacity: 0; transform: translateY(-3px) scale(1.04); } } /* the one playful detail: the stamp drops in */
+/* vteam r6: the nav underline sweep was removed; the stamp drop is the site's one motion detail. */
 
 /* Vault: the ONE dark panel (Proof verify). Status sits on its own light hues (>= 7.5:1); the vault never means risk. */
 .tg-vault { padding: var(--pg-space-5); border-top: 3px double var(--pg-color-vault-ink); background: var(--pg-color-vault); color: var(--pg-color-vault-ink); }
@@ -336,12 +322,50 @@ details.tg-fold:not(.limits-drawer)[open] > summary::after { transform: translat
 .tg-vault :focus-visible { outline-color: var(--pg-color-vault-ink); }
 
 @media (prefers-reduced-motion: reduce) {
-  .tg-stamp.is-new, .tg-nav a.tg-nav__item[aria-current="page"] { animation: none; }
-  .tg-dot { transition: none; }
+  .tg-stamp.is-new { animation: none; }
 }
 @media (max-width: 640px) {
   /* Phones: above the action bar, never taller than 40% of the screen; Try again on its own row (attack r21 #12, r34 #7). */
   .tg-toast { grid-template-columns: auto minmax(0, 1fr) auto; bottom: var(--pg-space-3); max-height: 40dvh; overflow-y: auto; }
   .app-shell.has-phone-action .tg-toast { bottom: calc(56px + 12px + env(safe-area-inset-bottom)); }
   .tg-toast > .button { grid-column: 1 / -1; order: 3; justify-self: stretch; }
+}
+
+/* ================= vteam r6 (2026-11-12): focus area, key figure, glass, paper grid, three-card subgrid =================
+   One .tg-focus per page (ui_mock/vteam/CONSENSUS.md section 1): it carries the page's one .tg-keyfig (>= 40px). */
+/* Panel (lighter than canvas), not recede: risk text in sunlight fell to 2.48 on recede (a11y phase 2, item 9). Charcoal rule,
+   never chestnut: a focus area carries status. The vault keeps its own surface and eyebrow. */
+.tg-focus { margin-block: var(--pg-space-7); padding: var(--pg-space-6); border-top: 2px solid var(--pg-color-rule); view-transition-name: tg-focus; }
+.tg-focus:not(.tg-vault) { background: var(--pg-color-panel); }
+.tg-focus:not(.tg-vault) .tg-eyebrow { color: var(--pg-color-muted); }
+/* Due (<= 1 day): solid red left bar beside the warning-octagon icon; due soon keeps the clock and no bar. */
+.tg-due { padding-left: var(--pg-space-3); box-shadow: inset 4px 0 0 var(--pg-color-risk); }
+.tg-focus--bleed { margin-right: calc(-1 * var(--pg-space-5)); } /* runs to the content edge */
+.tg-split { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--pg-space-7); align-items: start; }
+.tg-keyfig { display: block; font: 600 var(--pg-text-6)/1 var(--pg-font-serif); font-variant-numeric: lining-nums tabular-nums; }
+.tg-keyfig small { font-size: .55em; font-weight: 500; color: var(--pg-color-muted); }
+.tg-keyfig--xl { font-size: var(--pg-text-7); }
+/* Paper grid: decoration only, in three places (Sales spike chart, Overview figures, Proof ledger). */
+.tg-grid-paper { --tg-grid: var(--pg-color-paper-grid); background: linear-gradient(var(--tg-grid) 1px, transparent 1px) 0 0 / 24px 24px, linear-gradient(90deg, var(--tg-grid) 1px, transparent 1px) 0 0 / 24px 24px var(--pg-color-canvas); } /* on canvas, never on recede (1.0:1 there) */
+/* Glass: the sticky page tabs, the phone action bar, the chart hour popover. Solid paper without support or with reduced transparency. */
+html .tg-glass { background: var(--pg-color-canvas); }
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  html .tg-glass { background: color-mix(in srgb, var(--pg-color-canvas) 92%, transparent); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+}
+/* Three cards: inner rows line up across cards (eyebrow, title, text, box, source). */
+.tg-cards3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--pg-layout-card-gap); }
+.tg-cards3 > * { display: grid; grid-row: span var(--tg-rows, 5); grid-template-rows: subgrid; row-gap: var(--pg-space-2); }
+/* Container queries sit on a leaf row (.tg-cq), never on the card: container-type implies layout containment, which turns subgrid off. */
+.tg-cq { container-type: inline-size; }
+@container (max-width: 360px) { .tg-keyfig { font-size: var(--pg-text-5); } }
+::view-transition-old(tg-focus), ::view-transition-new(tg-focus) { animation-duration: var(--pg-motion-settle); animation-timing-function: var(--pg-motion-precise); }
+@media (prefers-reduced-transparency: reduce) { html .tg-glass { background: var(--pg-color-canvas); -webkit-backdrop-filter: none; backdrop-filter: none; } }
+@media (prefers-reduced-motion: reduce) { ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none; } }
+@media (max-width: 640px) {
+  .tg-h1 { font-weight: 700; }
+  .tg-focus { margin-block: var(--pg-space-6); padding: var(--pg-space-5) var(--pg-space-4); }
+  .tg-focus--bleed { margin-inline: 0; } /* no bleed on phones: page gutters differ, never scroll sideways */
+  .tg-split, .tg-cards3 { grid-template-columns: minmax(0, 1fr); gap: var(--pg-space-5); }
+  .tg-cards3 > * { grid-row: auto; grid-template-rows: none; }
+  .tg-grid-paper { --tg-grid: var(--pg-color-paper-grid-soft); }
 }

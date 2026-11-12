@@ -77,11 +77,15 @@ export default function JudgesPage({ onOpen }) {
     event.preventDefault();
     onOpen(page);
     if (!anchor) return;
-    const until = Date.now() + 2e3; // give the lazy page up to two seconds
+    const until = Date.now() + 3e3; // give the lazy page up to three seconds
+    // (phone r5) Wait until the target is on screen (its page is shown, not just in the DOM), then scroll once more
+    // after the lazy parts above it have drawn, so it does not land short of the anchor.
     const seek = () => {
       const target = document.getElementById(anchor);
-      if (target) target.scrollIntoView({ block: 'start' });
-      else if (Date.now() < until) window.requestAnimationFrame(seek);
+      if (target && target.offsetParent !== null) {
+        target.scrollIntoView({ block: 'start' });
+        window.setTimeout(() => target.scrollIntoView({ block: 'start' }), 7e2);
+      } else if (Date.now() < until) window.requestAnimationFrame(seek);
     };
     window.requestAnimationFrame(seek);
   };

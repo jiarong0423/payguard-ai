@@ -8,34 +8,55 @@
 .ov-ai { max-width: var(--pg-layout-content); }
 .ov .ov-ai .ov-ai__text { font-family: var(--pg-font-sans); font-style: normal; font-size: var(--pg-text-2); line-height: 1.5; }
 
-/* The three steps: equal columns, top edges and source lines aligned. */
-.ov-flow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--pg-space-6); margin: 0; padding: 0; list-style: none; }
-.ov-step { display: flex; min-width: 0; }
-.ov-step__link { display: flex; width: 100%; color: inherit; text-decoration: none; transition: background-color var(--pg-motion-hover); }
+/* (vteam) Top: the four figures on paper grid (left 7) and the hosted send as the page's one focus (right 5, .tg-split). */
+.ov-top { margin-block: 0; align-items: start; }
+.ov-top__facts { display: grid; align-content: start; gap: var(--pg-space-3); min-width: 0; }
+.ov-top .ov-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: var(--pg-space-3); }
+.ov-top .tg-focus { margin-block: 0; }
+.ov-ticket { display: grid; align-content: start; gap: var(--pg-space-3); }
+/* (a11y 4a) The focus outweighs the headline: ink top rule, focus-size icon in the head, 56px key figure. */
+.ov-ticket.tg-focus { border-top: var(--pg-layout-rule-block) solid var(--pg-color-ink); background: var(--pg-color-recede); }
+.ov-ticket .tg-keyfig { font-weight: 700; }
+.ov-ticket__head { display: flex; align-items: center; gap: var(--pg-space-2); }
+.ov-ticket__head svg { color: var(--pg-color-ok); }
+.ov-ticket__head, .ov-ticket__title { margin: 0; }
+.ov-ticket__row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--pg-space-2) var(--pg-space-4); margin: 0; }
+.ov-ticket__wait { display: inline-flex; align-items: center; gap: var(--pg-space-1); font-size: var(--pg-text-2); color: var(--pg-color-muted); }
+.ov-ticket__ref { margin: 0; font-size: var(--pg-text-2); color: var(--pg-color-muted); }
+.ov-ticket__ref .tg-mono { color: var(--pg-color-ink); }
+.ov-ticket__open { display: inline-flex; align-items: center; gap: var(--pg-space-1); justify-self: start; }
+
+/* The three steps: .tg-cards3 (components.css) shares five rows across the cards; the link and the clip pass them on. */
+.ov-flow { --tg-rows: 5; margin: 0; padding: 0; list-style: none; }
+.ov-step { min-width: 0; }
+.ov-step__link { display: grid; grid-row: span 5; grid-template-rows: subgrid; width: 100%; color: inherit; text-decoration: none; transition: background-color var(--pg-motion-hover); }
 .ov-step__link:hover { background: var(--pg-color-hover); }
 .ov-step__link:focus-visible { outline: var(--pg-layout-focus-ring) solid var(--pg-color-focus); outline-offset: var(--pg-space-1); }
-.ov-step__link > .tg-clip { display: flex; flex-direction: column; gap: var(--pg-space-2); width: 100%; min-width: 0; } /* (F) inner padding from .tg-pad (components.css v2) */
+.ov-step__link > .tg-clip { display: grid; grid-row: span 5; grid-template-rows: subgrid; row-gap: var(--pg-space-2); width: 100%; min-width: 0; margin: 0; } /* (F) inner padding from .tg-pad (components.css v2) */
 .ov-step__link .tg-clip__quote { margin: 0; font-size: var(--pg-text-2); line-height: 1.5; font-weight: 600; font-variant-numeric: tabular-nums; }
 .ov-step__name { margin: 0; font-size: var(--pg-text-4); font-weight: 700; line-height: 1.2; }
 .ov-step__what, .ov-step__line { margin: 0; font-size: var(--pg-text-2); line-height: 1.43; color: var(--pg-color-muted); }
 .ov-step__wait { display: inline-flex; align-items: center; gap: var(--pg-space-1); } /* (F) read-back still under review: neutral clock, green is kept for sent */
 .ov-step__line .tg-mono { color: var(--pg-color-ink); }
-.ov-step__stamp { align-self: flex-start; margin-block: var(--pg-space-1); }
+.ov-result { display: flex; align-items: center; gap: var(--pg-space-2); margin: 0; font-size: var(--pg-text-3); letter-spacing: .08em; text-transform: uppercase; }
 .ov-step__figure { font-family: var(--pg-font-serif); font-size: var(--pg-text-5); font-weight: 600; line-height: 1; font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; }
 .ov-step__open { display: inline-flex; align-items: center; gap: var(--pg-space-2); font-size: var(--pg-text-2); font-weight: 600; text-decoration: underline; text-underline-offset: var(--pg-space-1); }
 .ov-step__link .tg-source { max-width: 100%; }
 
 /* (R5) One card spec for all three: same surface, same name size, same order (kicker, name, one line, product view, then
    the source and the Open link together at the foot). No card is weighted over the others (review_UI5 section 1). */
-.ov-step__what { min-height: calc(2 * 1.43em); }
-.ov-step__foot { display: grid; gap: var(--pg-space-3); padding-top: var(--pg-space-2); }
+.ov-step__what { align-self: start; }
+.ov-step__foot { display: grid; align-content: end; gap: var(--pg-space-3); padding-top: var(--pg-space-2); }
 .ov-nowrap { white-space: nowrap; }
 
 /* The product view inside each card: a small framed screen, the same height in all three. */
-.ov-screen { flex: 1 1 auto; display: grid; align-content: start; gap: var(--pg-space-2); min-height: calc(var(--pg-space-8) + var(--pg-space-7)); padding: var(--pg-space-3); border: thin solid var(--pg-color-rule-soft); background: var(--pg-color-canvas); }
+.ov-screen { display: grid; align-content: start; gap: var(--pg-space-2); min-height: calc(var(--pg-space-8) + var(--pg-space-7)); padding: var(--pg-space-3); border: thin solid var(--pg-color-rule-soft); background: var(--pg-color-canvas); }
 .ov-screen__row { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--pg-space-1) var(--pg-space-3); margin: 0; font-size: var(--pg-text-2); font-weight: 600; font-variant-numeric: tabular-nums; }
 .ov-screen__row--stamp { align-items: center; justify-content: flex-start; }
-.ov-screen .ov-step__stamp { margin-block: 0; }
+/* Step 3: what happens, three short lines (the send itself is the focus above). */
+.ov-steps3 { margin: 0; list-style: none; }
+.ov-steps3 li { display: flex; align-items: center; gap: var(--pg-space-2); font-size: var(--pg-text-2); font-weight: 600; }
+.ov-steps3 svg { color: var(--pg-color-muted); }
 
 /* Step 2: the usual hour against this hour, as two bars drawn from the data file. */
 .ov-bars { display: grid; gap: var(--pg-space-1); }
@@ -43,15 +64,13 @@
 .ov-bar::after { content: ""; display: block; width: var(--ov-w, 100%); height: var(--pg-space-2); background: var(--pg-color-ink); }
 .ov-bar--usual::after { background: var(--pg-color-control-line); }
 
-/* Step 3: the send ticket: a block rule on top, the date as its head, the reference in mono. */
-.ov-ticket { border-top: var(--pg-layout-rule-block) solid var(--pg-color-rule); } /* 2px block rule; 3px is kept for the masthead only */
-.ov-ticket__head { margin: 0; font-size: var(--pg-text-1); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
-
-/* Figures: four equal columns. */
-.ov-facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--pg-space-5); }
+/* Figures: on paper grid; two by two beside the focus, four in a row when App.jsx places the focus by the hero. The page's
+   one 40px figure is the focus amount, so these numbers sit one size down (28). */
+.ov-facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--pg-space-3); }
+.ov-facts .tg-clip__num { font-size: var(--pg-text-5); }
 .ov-facts > .tg-clip { min-width: 0; }
 .ov-facts .tg-clip__quote { margin: var(--pg-space-2) 0 var(--pg-space-3); font-size: var(--pg-text-2); line-height: 1.43; color: var(--pg-color-muted); }
-.ov-facts + .tg-legend { margin-top: calc(-1 * var(--pg-space-4)); padding-top: 0; }
+.ov-facts + .tg-legend { padding-top: 0; }
 
 /* The recorded replay of the 2026-11-04 local send: one frame only (the card), square corners, amber as text only. */
 .ov-replay .tg-eyebrow { margin: 0 0 var(--pg-space-3); }
@@ -66,18 +85,21 @@
 .ov-replay .recorded-replay-button:hover:not(:disabled) { background: var(--pg-color-hover); }
 
 @media (max-width: 900px) {
-  .ov-flow { grid-template-columns: 1fr; gap: var(--pg-space-5); }
-  .ov-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--pg-space-4); }
+  .ov-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 640px) {
+  /* (R6 S36) The Overview hero H1 (App.jsx) at most four lines on a phone: one size down, 28 instead of 40. */
+  .hero-pagehead .tg-h1 { font-size: var(--pg-text-5); font-weight: 500; }
   .ov { gap: var(--pg-space-5); margin-top: var(--pg-space-4); }
   .ov-step__link .tg-clip__quote { font-size: var(--pg-text-2); }
-  .ov-facts + .tg-legend { margin-top: calc(-1 * var(--pg-space-3)); }
+  /* Phones: the focus first, so the hosted send is on the first screen; cards drop their shared rows (components.css). */
+  .ov-top .tg-focus { order: -1; }
+  .ov-step__link, .ov-step__link > .tg-clip { grid-row: auto; grid-template-rows: none; }
 }
 
 /* (S09 2026-11-12) Overview hero spacing, carried in this lazy file because the first-load budget is full. The hero lives in
    App.jsx (header.tg-pagehead.hero-pagehead, div.hero-actions); this file loads with the Overview, the only page with the hero.
    28px under the H1 (24 + 4), a balanced two-line H1, 8px x 24px between the hero actions, 1px link underline. */
-.hero-pagehead .tg-h1 { margin-bottom: calc(var(--pg-space-5) + var(--pg-space-1)); text-wrap: balance; }
+.hero-pagehead .tg-h1 { margin-bottom: calc(var(--pg-space-5) + var(--pg-space-1)); text-wrap: balance; font-size: var(--pg-text-5); font-weight: 500; } /* (a11y 4a, recheck) one step down (40 -> 28) and lighter, so the focus outweighs it */
 .hero-pagehead .hero-actions { gap: var(--pg-space-2) var(--pg-space-5); }
 .hero-pagehead .hero-actions .tg-link { text-decoration-thickness: calc(var(--pg-space-1) / 4); } /* 1px */

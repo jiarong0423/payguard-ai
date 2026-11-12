@@ -23,6 +23,7 @@ export default function VelocityChart({ velocity, transactions, compact = false 
   const monthlyChartRef = useRef(null);
   const [view, setView] = useState('hourly');
   const [mark, setMark] = useState('');
+  const [hour, setHour] = useState(null); // (vteam viz) the clicked hour, shown in the frosted detail
   const model = useMemo(() => buildVelocityHourlyRows(velocity, transactions), [velocity, transactions]);
   const monthly = useMemo(() => buildMonthlyHistory(velocity), [velocity]);
   const currentMonth = monthly.rows[monthly.rows.length - 1];
@@ -33,7 +34,7 @@ export default function VelocityChart({ velocity, transactions, compact = false 
 
   useEffect(() => {
     if (!containerRef.current || model.rows.length === 0) return undefined;
-    const options = velocityChartOptions(model, containerRef.current, { compact, mark });
+    const options = velocityChartOptions(model, containerRef.current, { compact, mark, onPick: setHour });
     if (chartRef.current) chartRef.current.update(options);
     else chartRef.current = AgCharts.create(options);
     return undefined;
@@ -61,19 +62,19 @@ export default function VelocityChart({ velocity, transactions, compact = false 
     if (next === 'monthly') window.requestAnimationFrame(() => monthlyChartRef.current?.resize?.());
   };
   return (<>
-    {monthly.rows.length > 0 && <div className="segmented tg-seg velocity-period" role="tablist" aria-label="Chart period" data-testid="velocity-monthly-details">
-      {[['hourly', 'Hourly'], ['monthly', 'Monthly']].map(([key, label]) => <button key={key} type="button" role="tab" id={`velocity-period-${key}`} aria-selected={view === key} aria-controls={`velocity-period-pane-${key}`} className={view === key ? 'is-active' : ''} onClick={() => choose(key)}>{label}</button>)}
-    </div>}
     <figure id="velocity-period-pane-hourly" role="tabpanel" aria-labelledby="velocity-period-hourly" hidden={view !== 'hourly'} className="velocity-chart" data-testid="velocity-chart" aria-label="Hourly amount chart, baseline window versus spike window">
+      <div className="velocity-chart-plot">
+        <div ref={containerRef} className="velocity-chart-canvas" />
+        {hour && <HourDetail row={hour} model={model} onClose={() => setHour(null)} />}
+      </div>
       <div className="velocity-mark-chips" role="group" aria-label="Highlight on the chart" data-testid="velocity-mark-chips">
         <button type="button" aria-pressed={mark === 'peak'} disabled={!peak} data-testid="velocity-mark-peak" onClick={() => setMark(mark === 'peak' ? '' : 'peak')}>Highlight peak hour <span>{peak ? 1 : 0}</span></button>
         <button type="button" aria-pressed={mark === 'over'} disabled={!overCount} data-testid="velocity-mark-over" onClick={() => setMark(mark === 'over' ? '' : 'over')}>Highlight hours above the line <span>{overCount}</span></button>
         <button type="button" disabled={!mark} data-testid="velocity-mark-reset" onClick={() => setMark('')}>Reset</button>
       </div>
-      {mark === 'peak' && peak && <p className="velocity-mark-note" role="status" aria-live="polite" data-testid="velocity-mark-note">Peak hour {peak.label.replace(' ▲', '')} UTC: {money(peak.spike)} {model.currency}.</p>}
-      <div ref={containerRef} className="velocity-chart-canvas" />
+      {mark === 'peak' && peak && <p className="velocity-mark-note" role="status" aria-live="polite" data-testid="velocity-mark-note">Peak hour {peak.label.replace(' ▲', '')} UTC: {money(peak.spike, model.currency)}.</p>}
       <figcaption data-testid="velocity-chart-summary">
-        Spike {money(spikeTotal)} {model.currency} vs usual {baselineRow ? `${money(baselineRow.baseline)} ${model.currency}/h` : '—'}. No PayPal action predicted.
+        Spike {money(spikeTotal, model.currency)} vs usual {baselineRow ? `${money(baselineRow.baseline, model.currency)}/h` : '—'}. No PayPal action predicted.
       </figcaption>
     </figure>
     {monthly.rows.length > 0 && <figure id="velocity-period-pane-monthly" role="tabpanel" aria-labelledby="velocity-period-monthly" hidden={view !== 'monthly'} className="velocity-chart" data-testid="velocity-monthly-chart" aria-label="Monthly amount with a three-month average and the change versus the previous month">
@@ -82,5 +83,28 @@ export default function VelocityChart({ velocity, transactions, compact = false 
         The month barely moves ({percent(currentMonth.change)} vs last month) because the spike is a few hours. That is why the review compares hours. Illustrative demo history.
       </figcaption>
     </figure>}
+    {/* (vteam viz, a11y phase 2 item 8) DOM order = visual order at every width: plot first, then its highlight
+        buttons, then the Hourly / Monthly switch. No CSS reordering. */}
+    {monthly.rows.length > 0 && <div className="segmented tg-seg velocity-period" role="tablist" aria-label="Chart period" data-testid="velocity-monthly-details">
+      {[['hourly', 'Hourly'], ['monthly', 'Monthly']].map(([key, label]) => <button key={key} type="button" role="tab" id={`velocity-period-${key}`} aria-selected={view === key} aria-controls={`velocity-period-pane-${key}`} className={view === key ? 'is-active' : ''} onClick={() => choose(key)}>{label}</button>)}
+    </div>}
   </>);
+}
+
+// (vteam viz 2026-11-12, CONSENSUS s4c) The clicked hour, on a frosted panel over the plot's top-right corner: the one
+// chart place that uses the frosted surface (.tg-glass, components.css): opacity .92, blur 8px; without backdrop-filter or
+// with reduced transparency it is the plain panel colour. Text is ink / muted only; the state word carries a ▲.
+const utc = (iso) => new Date(iso).toISOString().slice(11, 16);
+function HourDetail({ row, model, onClose }) {
+  const isSpike = row.window === 'spike';
+  const value = isSpike ? row.spike : row.baseline;
+  const over = isSpike && model.reviewLine !== null && row.spike > model.reviewLine;
+  return (
+    <aside className="velocity-hour-pop tg-glass" role="status" aria-live="polite" aria-label="Selected hour" data-testid="velocity-hour-detail">
+      <p className="velocity-hour-pop__when">{isSpike ? 'Spike window' : 'Usual hour'} · {utc(row.start)}–{utc(row.end)} UTC</p>
+      <button type="button" className="velocity-hour-pop__close" onClick={onClose} data-testid="velocity-hour-close">Close</button>
+      <p className="velocity-hour-pop__value">{money(value, model.currency)}{isSpike ? '' : '/h'}
+        <span className="velocity-hour-pop__meta">{isSpike ? <>{row.captures ?? 0} orders · {over ? <strong>▲ above the review line</strong> : 'under the review line'}</> : 'synthetic baseline rate'}</span></p>
+    </aside>
+  );
 }

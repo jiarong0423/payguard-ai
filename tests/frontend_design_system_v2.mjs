@@ -13,20 +13,21 @@ const { color, viz, grid, layout, radius, scale } = tokens;
 
 // 1. Pre-v2 tokens keep their values (the pages finished before v2 build on them).
 const before = {
-  canvas: '#f1ede3', panel: '#f8f5ee', recede: '#e8e2d5', rule: '#2b2d30', ruleSoft: '#cfc8b8', controlLine: '#8a857a',
-  ink: '#111111', muted: '#5a554c', accent: '#2b2d30', accentSelected: '#e8e2d5', ok: '#2f6b3a', warn: '#7a5000',
+  canvas: '#f1ebdf', panel: '#f9f6ef', recede: '#e8e2d5', rule: '#34302b', ruleSoft: '#cfc8b8', controlLine: '#8a857a',
+  ink: '#111111', muted: '#5a554c', accent: '#34302b', accentSelected: '#e8e2d5', ok: '#226a63', warn: '#7a5000',
   risk: '#c8102e', hover: '#ebe6da', disabledLine: '#cfc8b8', disabledText: '#9a958a',
 };
-// (round 5) rule and accent moved #111111 -> charcoal #2b2d30 on purpose (owner: all black is too heavy); ink text did not.
+// (round 5) rule and accent moved #111111 -> charcoal; (round 6) -> warm charcoal #34302b, canvas -> oat #f1ebdf, panel -> #f9f6ef,
+// ok -> #226a63 (semantic adjustment: deuteranopia dE to olive 1.0 -> 24.0). Ink text unchanged. Section 9 pins round 6.
 for (const [k, v] of Object.entries(before)) assert.equal(color[k], v, `pre-v2 token ${k} as pinned`);
 assert.equal(radius.pill, 999, 'pill radius kept for old pages');
 
 // 2. The v2 values (coordinator decision 2026-11-12).
 assert.deepEqual(
   Object.fromEntries(['line', 'rowHover', 'sel', 'surface2', 'riskTint', 'okTint', 'warnTint', 'ink3'].map((k) => [k, color[k]])),
-  { line: '#cfc6b4', rowHover: '#efe9dd', sel: '#e2dac8', surface2: '#ebe5d7', riskTint: '#f7e4e4', okTint: '#e4ece0', warnTint: '#f2e8d0', ink3: '#8a8478' },
+  { line: '#cfc6b4', rowHover: '#efe9dd', sel: '#e2dac8', surface2: '#ebe5d7', riskTint: '#f7e4e4', okTint: '#deebe8', warnTint: '#f2e8d0', ink3: '#8a8478' },
 );
-assert.deepEqual({ ...viz }, { base: '#bdb6a6', line: '#5a554c', alert: color.warn, bg: color.recede }, 'viz: alert = check first amber, bg = surface');
+assert.deepEqual({ ...viz }, { base: '#7d786d', line: '#5a554c', alert: color.warn, bg: color.canvas }, 'viz: alert = check first amber; plot on canvas so the paper grid shows (round 6)');
 assert.notEqual(viz.alert, color.risk, 'above the review line is check first, not risk');
 assert.equal(radius.status, 2);
 assert.deepEqual({ ...grid }, { columns: 12, measure: '68ch' });
@@ -129,8 +130,8 @@ for (const m of v2.matchAll(/font(?:-size)?:[^;]*?(\d+)px/g)) assert.fail(`liter
 
 // 7. UI round 5: style-reference tokens and classes (review_STYLEREF, coordinator decision 2026-11-12).
 const { rule: ruleTokens, label, motion } = tokens;
-assert.deepEqual({ ...ruleTokens }, { fine: '1px solid #2b2d30', double: '3px double #2b2d30' });
-assert.equal(label.tracking, '.16em');
+assert.deepEqual({ ...ruleTokens }, { fine: '1px solid #34302b', double: '3px double #34302b', head: '2px solid #4e3a2c' });
+assert.equal(label.tracking, '.12em', 'round 6: .16em read cold');
 for (const k of ['quick', 'sweep', 'settle']) assert.ok(motion[k] >= 160 && motion[k] <= 240, `${k} within 160-240 ms`);
 assert.equal(motion.precise, 'cubic-bezier(.2,0,0,1)', 'no overshoot (no control value above 1)');
 assert.deepEqual(['vault', 'vaultInk', 'vaultMuted'].map((k) => color[k]), ['#16181b', '#f1ede3', '#b9b3a6']);
@@ -151,7 +152,7 @@ assert.match(rule('.tg-clip__quote'), /border-left: 2px solid var\(--pg-color-ru
 assert.equal(/\.tg-clip__quote::before/.test(css), false);
 assert.match(css, /\.tg-seg > button \{ height: 36px;[^}]*white-space: nowrap;/, 'one control height, labels never wrap');
 for (const k of ['vault', 'vault-ink', 'vault-muted', 'vault-ok', 'vault-warn', 'vault-risk']) assert.match(tokensCss, new RegExp(`--pg-color-${k}:`));
-assert.match(tokensCss, /--pg-rule-double: 3px double #2b2d30;/);
+assert.match(tokensCss, /--pg-rule-double: 3px double #34302b;/);
 
 // 8. Round 5 weight: charcoal controls and rules, 3px only in the masthead, finer seals, stitched day-book line.
 for (const bg of ['canvas', 'recede', 'sel']) assert.ok(cr(color.accent, color[bg]) >= 3, `charcoal control edge on ${bg}`);
@@ -163,4 +164,36 @@ assert.match(rule('.tg-stamp'), /border: 1px solid var\(--tg-tone\); box-shadow:
 assert.match(css, /\.tg-log__entry \+ \.tg-log__entry \{ background: linear-gradient\(90deg, var\(--pg-color-control-line\) 2px, transparent 0\) 0 0 \/ 5px 1px repeat-x; \}/, 'stitched line across the whole log row');
 assert.equal(/[a-z-]+: [^;{}]*var\(--pg-color-ink\)/.test(css.replace(/(^|[;{\s])color: var\(--pg-color-ink\)/g, '')), false, 'ink is for text only; lines and controls are charcoal');
 
-console.log(JSON.stringify({ status: 'PASS', v2_tokens: 17, r5_tokens: 15, classes: classes.length + 9, ratios }));
+// 9. Round 6 colour (consensus ui_mock/vteam/CONSENSUS.md s3): 60 / 30 / 10, contrast and colour-blind separation.
+const sim = (hex, m) => { // Machado et al. 2009, severity 1.0, applied in linear RGB
+  const lin = (c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4); const gam = (c) => (c <= 0.0031308 ? 12.92 * c : 1.055 * c ** (1 / 2.4) - 0.055);
+  const v = [1, 3, 5].map((i) => lin(parseInt(hex.slice(i, i + 2), 16) / 255));
+  return '#' + m.map((r) => Math.round(Math.min(1, Math.max(0, gam(r[0] * v[0] + r[1] * v[1] + r[2] * v[2]))) * 255).toString(16).padStart(2, '0')).join('');
+};
+const DEU = [[0.367322, 0.860646, -0.227968], [0.280085, 0.672501, 0.047413], [-0.011820, 0.042940, 0.968881]];
+const PRO = [[0.152286, 1.052583, -0.204868], [0.114503, 0.786281, 0.099216], [-0.003882, -0.048116, 1.051998]];
+const lab = (hex) => { const lin = (c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4); const [r, g, b] = [1, 3, 5].map((i) => lin(parseInt(hex.slice(i, i + 2), 16) / 255));
+  const f = (t) => (t > 0.008856 ? Math.cbrt(t) : 7.787 * t + 16 / 116); const X = f((r * 0.4124 + g * 0.3576 + b * 0.1805) / 0.95047), Y = f(r * 0.2126 + g * 0.7152 + b * 0.0722), Z = f((r * 0.0193 + g * 0.1192 + b * 0.9505) / 1.08883);
+  return [116 * Y - 16, 500 * (X - Y), 200 * (Y - Z)]; };
+const dE = (a, b) => { const p = lab(a), q = lab(b); return Math.hypot(p[0] - q[0], p[1] - q[1], p[2] - q[2]); };
+assert.deepEqual(['canvas', 'panel', 'accent', 'rule', 'structure', 'chestnut', 'olive', 'khaki', 'khakiTint', 'paperGrid', 'paperGridSoft', 'surfaceFocus', 'ok'].map((k) => color[k]),
+  ['#f1ebdf', '#f9f6ef', '#34302b', '#34302b', '#4e3a2c', '#6b4a35', '#5e5c3b', '#a8977a', '#ece4d6', '#e4dccb', '#e9e2d4', '#e8e2d5', '#226a63']);
+assert.deepEqual([...tokens.categorical], ['#34302b', '#5e5c3b', '#6b4a35', '#a8977a'], 'chart series: charcoal, olive, chestnut, khaki (no semantic hue)');
+assert.deepEqual({ ...tokens.glass }, { alpha: '0.92', blur: '8px' });
+for (const fg of ['ink', 'muted', 'risk', 'warn', 'ok', 'structure', 'chestnut', 'olive']) for (const bg of ['canvas', 'panel', 'surfaceFocus', 'khakiTint']) {
+  const r = cr(color[fg], color[bg]); ratios[`${fg}/${bg}`] = +r.toFixed(2); assert.ok(r >= 4.5, `${fg} text on ${bg}: ${r.toFixed(2)}`);
+}
+for (const fg of ['accent', 'controlLine']) for (const bg of ['canvas', 'panel']) assert.ok(cr(color[fg], color[bg]) >= 3, `${fg} control edge on ${bg}`);
+assert.ok(cr(color.onAccent, color.accent) >= 4.5 && cr(color.onAccent, color.accentStrong) >= 4.5, 'paper text on warm charcoal and its hover');
+assert.ok(cr(viz.base, viz.bg) >= 3 && cr(viz.alert, viz.bg) >= 3 && cr(viz.line, viz.bg) >= 3, 'chart marks reach 3:1 on the plot');
+assert.ok(cr(color.khaki, color.canvas) < 3 && cr(color.paperGrid, color.canvas) < 1.2 && cr(color.paperGridSoft, color.canvas) < cr(color.paperGrid, color.canvas), 'khaki and grid stay decorative');
+const dEs = {};
+for (const [name, m] of [['normal', null], ['deuteranopia', DEU], ['protanopia', PRO]]) {
+  const t = (h) => (m ? sim(h, m) : h);
+  for (const [a, b] of [['ok', 'olive'], ['ok', 'chestnut'], ['ok', 'warn'], ['ok', 'risk'], ['risk', 'warn'], ['risk', 'chestnut'], ['warn', 'chestnut'], ['warn', 'olive']]) dEs[`${name} ${a}/${b}`] = +dE(t(color[a]), t(color[b])).toFixed(1);
+}
+for (const k of ['deuteranopia ok/olive', 'deuteranopia ok/chestnut', 'deuteranopia ok/warn', 'deuteranopia ok/risk', 'protanopia ok/olive', 'protanopia ok/warn']) assert.ok(dEs[k] >= 20, `${k} dE ${dEs[k]} >= 20`);
+// risk/warn and risk/chestnut stay close for colour-blind readers (consensus s3, P0): states never rely on hue alone.
+assert.ok(dEs['deuteranopia risk/warn'] < 20, 'documented: risk vs warn needs shape + icon, not colour only');
+
+console.log(JSON.stringify({ status: 'PASS', v2_tokens: 17, r5_tokens: 15, classes: classes.length + 9, ratios, dEs }));

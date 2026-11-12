@@ -151,7 +151,8 @@ for (const [path, selector] of [
     ': reviewDone ? null',
   ]) assert.ok(bar.includes(text), text);
   assert.ok(bar.indexOf(': reviewDone ? null') < bar.indexOf("{ key: 'approve'"), 'the approve entry is reached only before the review is recorded');
-  assert.ok(app.includes("<div className={`phone-action-bar${phoneReason ? ' has-reason' : ''}`}"), 'reason state marked on the bar');
+  // (vteam r2) The bar's surface is the shared .tg-glass; the reason state class is unchanged.
+  assert.ok(app.includes("<div className={`phone-action-bar tg-glass${phoneReason ? ' has-reason' : ''}`}"), 'reason state marked on the bar');
   assert.match(css, /\.phone-action-bar\.has-reason \.button \{ min-height: 24px; height: 24px;/u, 'compact button when a reason shows');
   assert.match(css, /\.phone-action-bar\.has-reason \.phone-action-reason \{ line-height: 18px; white-space: nowrap;/u, 'one-line reason: 24 + 2 + 18 = the 44px row');
 }

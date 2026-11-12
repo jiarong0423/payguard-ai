@@ -4,9 +4,8 @@
 @media (min-width: 1280px) {
   /* Top of the page */
   .main-content { padding-top: 12px; }
-  .page-top { margin-bottom: 14px; }
-  .page-top .hero-compact h1 { margin: 8px 0 0; }
-  .journey { margin-bottom: 16px; }
+  .page-top { }
+  .journey { }
   .journey-step { min-height: 48px; padding: 8px 14px; }
   .journey-step strong { font-size: 16px; }
   .feedback-region .message { margin-bottom: 12px; padding: 10px 14px; }
@@ -33,7 +32,6 @@
   #disputes .board-timeline figcaption { margin-bottom: 8px; }
   /* Numbers taken from open-source dashboards (shadcn/ui dashboard-01: chart 250px; Tabler / Grafana: panel gap 8-12px). */
   .velocity-chart-canvas { height: 230px; }
-  .page-top .hero-compact h1 { font-size: 24px; margin: 4px 0 0; }
   /* Step 03: no text caret blinking after "More views" (a summary is not an input). */
   /* Deadline board fact columns: set by the card's own width in board/board.css (2026-11-10). */
   /* Gap between the title row and the step bar, a little more of the 1920 width. */

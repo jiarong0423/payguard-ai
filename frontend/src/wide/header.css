@@ -5,14 +5,14 @@
 @media (min-width: 1280px) {
   .main-content { width: min(100%, var(--pg-layout-content)); }
   .aup-result { align-self: start; }
-  .page-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+  .page-top { display: flex; justify-content: space-between; }
   .page-top .hero { margin-bottom: 0; }
-  .page-top { margin-bottom: 12px; }
+  .page-top { }
   /* Step 01 layout: named areas in step01.css (P3 2026-11-12). */
   /* Tighter title, shorter text box and slimmer metric cards so more of each step fits in the first screen. */
   .page-top h1 { font-size: 28px; }
   .page-top .eyebrow { margin-bottom: 4px; }
-  .journey { margin-bottom: 12px; }
+  .journey { }
   .invoice-editor textarea { min-height: 76px; }
   /* Step 03: a slimmer case queue (each case is a short row, not a tall card) and a thinner "Next" bar. */
   .case-card { padding: 8px 12px; margin-bottom: 6px; }
@@ -35,11 +35,6 @@
 
   /* Title row: eyebrow and the two hero buttons share one line, the h1 sits under them. */
   .page-top { align-items: flex-end; gap: 8px 24px; margin-bottom: 8px; }
-  .page-top .hero-compact > div:first-child { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 0 16px; }
-  .page-top .hero-compact .eyebrow { grid-column: 1; grid-row: 1; margin: 0; }
-  .page-top .hero-compact .hero-actions { grid-column: 2; grid-row: 1; display: flex; flex-wrap: nowrap; align-items: center; gap: 8px; margin: 0; }
-  .page-top .hero-compact .hero-actions > * { min-height: 44px; padding-top: 2px; padding-bottom: 2px; font-size: var(--type-meta); white-space: nowrap; } /* P2: 44px calls to action */
-  .page-top .hero-compact h1 { grid-column: 1 / -1; grid-row: 2; margin: 2px 0 0; line-height: 1.2; }
 
   /* Compact segmented step bar. */
   .journey { margin-bottom: 8px; border-radius: var(--pg-radius-control); }

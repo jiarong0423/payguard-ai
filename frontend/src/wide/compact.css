@@ -2,10 +2,6 @@
    strip, and the two bottom panels. Loaded last. Values only; all text stays. */
 @media (min-width: 1280px) {
   /* Top area: the title and the two buttons share one line; the small tag line is folded away (the title says the same). */
-  .page-top .hero-compact > div:first-child { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; }
-  .page-top .hero-compact .eyebrow { display: none; }
-  .page-top .hero-compact h1 { order: 1; flex: 1 0 100%; margin: 0; }
-  .page-top .hero-compact .hero-actions { order: 2; margin: 0; }
   .page-top { align-items: center; margin-bottom: 8px; }
   /* The green "Sample sales loaded" strip is one slim line. */
   /* (P1 2026-11-12) Messages sit in the page flow under the step strip, square and slim: a floating note covered the
@@ -21,16 +17,12 @@
 
 
 
-  /* Step 02: the records card (signal, missing, related case) sits beside the chart instead of under it. */
-  #velocity .velocity-pane { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, 440px); gap: 8px 12px; align-items: start; }
-  #velocity .velocity-pane > .velocity-period { grid-column: 1 / -1; }
-  #velocity .velocity-pane > .velocity-chart { grid-column: 1; grid-row: 2; }
-  #velocity .velocity-pane > .spike-records { grid-column: 2; grid-row: 2; margin: 0; }
+  /* Step 02: the chart now lives in the focus band above the fold (vteam r2), so the records card runs the full pane. */
+  #velocity .velocity-pane { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px 12px; align-items: start; }
 
 
   /* Step 02: one row for both switches (Chart / Orders table, then Hourly / Monthly), and the records card in one column. */
   #velocity .velocity-pane { position: relative; }
-  #velocity .velocity-pane > .velocity-period { position: absolute; top: -46px; left: 250px; margin: 0; }
   #velocity .spike-records { grid-template-columns: minmax(0, 1fr); gap: 4px; }
   #velocity .spike-records-row { grid-template-columns: 92px minmax(0, 1fr); gap: 2px 10px; }
 }

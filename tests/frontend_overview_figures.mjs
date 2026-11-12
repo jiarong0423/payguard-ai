@@ -124,10 +124,16 @@ assert.ok(page.includes('{dateLabel(sendRow?.date)} hosted send') && page.includ
 // (F 2026-11-12) Card 03 says "Sandbox send" next to its HOSTED DEMO label (review_INTEG section 4 item 11), not "Real".
 assert.ok(page.includes('Sandbox send · {send.case_ref}') && !page.includes('Real Sandbox send'), 'card 03 wording');
 // (F 2026-11-12) Card 03's read-back is still under review: neutral clock, not the green check (review_FULL #32).
-for (const name of ['warning', 'clock', 'arrow-right']) {
-  const d = read(`frontend/src/theme/icons/${name}.svg`).match(/ d="([^"]+)"/u)[1];
-  assert.ok(page.includes(`icon('${d}')`), `Phosphor ${name} path copied verbatim`);
-}
+// (vteam 2026-11-12) Icons from the one sprite (theme/iconMap.js), no copied path data; the page's one focus-size icon,
+// one focus area and one key figure (ui_mock/vteam/CONSENSUS.md section 1).
+assert.ok(page.includes("from './theme/iconMap.js'") && !page.includes("icon('M"), 'icons from the sprite map');
+assert.equal((page.match(/size="focus"/gu) || []).length, 1, 'one focus-size icon');
+// (a11y 4a 2026-11-12) The one focus-size icon sits in the focus area (the send ticket), not on card 01.
+assert.ok(/className="tg-eyebrow ov-ticket__head"[^\n]*<SpriteIcon name=\{FOCUS\.overview\} size="focus" \/>/u.test(page), 'the focus icon is in the send ticket');
+assert.ok(page.includes('tg-keyfig tg-keyfig--xl'), 'the focus amount at 56px');
+assert.equal((page.match(/className="tg-focus /gu) || []).length, 1, 'one .tg-focus');
+assert.equal((page.match(/className="tg-keyfig/gu) || []).length, 1, 'one .tg-keyfig');
+assert.ok(page.includes('tg-cards3') && page.includes('tg-grid-paper') && page.includes('tg-split'), 'cards3, paper grid, 7/5 split');
 const css = read('frontend/src/OverviewFlow.css').replace(/\/\*[\s\S]*?\*\//gu, '');
 assert.ok(!/#[0-9a-f]{3,8}\b/iu.test(css), 'no hex colour');
 for (const m of css.matchAll(/(font-size|border-radius|font-family)\s*:\s*([^;}]+)/gu)) assert.match(m[2].trim(), /^var\(--pg-/u, `${m[1]} from tokens only`);

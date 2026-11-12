@@ -13,12 +13,20 @@
 .pp-ledger__src { width: 30%; min-width: 12rem; }
 
 /* Verify: explanation and buttons on the left, the log on the right; one column on phones. */
-.pp-verify { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--pg-space-6); padding-top: var(--pg-space-4); border-top: 1px solid var(--pg-color-rule); align-items: start; scroll-margin-top: var(--pg-space-7); }
+/* (vteam) The check is the focus area and the one dark surface: .tg-focus spacing, .tg-vault colours (components.css).
+   .tg-focus is declared after .tg-vault there, so the vault surface is restated here. */
+.pp-verify { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--pg-space-6); align-items: start; scroll-margin-top: var(--pg-space-7); }
+.pp-verify.tg-vault { margin-block: 0; background: var(--pg-color-vault); color: var(--pg-color-vault-ink); border-top: var(--pg-layout-rule-block) solid var(--pg-color-vault-ink); }
+.pp-verify .tg-h3, .pp-verify .pp-verify__lede, .pp-verify .tg-source__label { color: var(--pg-color-vault-ink); }
+.pp-verify .pp-hash dt, .pp-verify .pp-hint, .pp-verify .tg-source, .pp-verify .tg-small { color: var(--pg-color-vault-muted); }
+.pp-verify .tg-btn--primary { background: var(--pg-color-vault-ink); border-color: var(--pg-color-vault-ink); color: var(--pg-color-vault); }
+.pp-verify .tg-btn--secondary { background: transparent; border-color: var(--pg-color-vault-ink); color: var(--pg-color-vault-ink); }
+.pp-verify .tg-btn:disabled { opacity: .6; }
 .pp-check .pp-icon { margin-right: var(--pg-space-1); }
 .pp-muted { color: var(--pg-color-muted); }
 .pp-verify__head { display: grid; align-content: start; gap: var(--pg-space-3); min-width: 0; }
 .pp-verify__head .tg-eyebrow, .pp-verify__head .tg-h3 { margin: 0; }
-.pp-verify__lede { margin: 0; font-size: var(--pg-text-2); line-height: 1.5; color: var(--pg-color-ink); }
+.pp-verify__lede { margin: 0; font-size: var(--pg-text-2); line-height: 1.5; }
 .pp-hash { display: grid; gap: var(--pg-space-1); margin: 0; }
 .pp-hash dt { font-size: var(--pg-text-1); color: var(--pg-color-muted); letter-spacing: .08em; text-transform: uppercase; }
 .pp-hash dd { margin: 0 0 var(--pg-space-2); overflow-wrap: anywhere; }
@@ -26,7 +34,7 @@
 .pp-verify__log .tg-log__ref { overflow-wrap: anywhere; }
 /* (R5) The check runs in the vault (theme/components.css .tg-vault, the one dark panel on the site). Light text only;
    status hues come from the vault's own light tokens; a risk title uses the vault's light red, never #c8102e on dark. */
-.pp-vault { gap: var(--pg-space-4); }
+.pp-vault { gap: var(--pg-space-4); padding-left: var(--pg-space-6); border-left: 1px solid var(--pg-color-vault-rule); }
 .pp-vault__head { margin: 0; font-family: var(--pg-font-serif); font-size: var(--pg-text-4); line-height: 1.3; }
 .pp-vault .is-risk .tg-log__title { color: var(--pg-color-vault-risk); }
 .pp-vault .is-pending::before { background: var(--pg-color-vault); box-shadow: inset 0 0 0 1px var(--pg-color-vault-muted); }
@@ -60,14 +68,20 @@
 
 @media (max-width: 900px) {
   .pp-verify { grid-template-columns: minmax(0, 1fr); gap: var(--pg-space-5); }
+  .pp-vault { padding: var(--pg-space-5) 0 0; border-left: 0; border-top: 1px solid var(--pg-color-vault-rule); }
 }
 @media (max-width: 640px) {
   .pp { gap: var(--pg-space-5); margin-top: var(--pg-space-4); }
   .pp-ledger__src { grid-column: 1 / -1; min-width: 0; width: auto; }
+  /* (a11y 3e) The Verify button on the first screen: question, then the buttons, then the explanation and the hash. */
+  .pp-verify__head .tg-actions { order: 1; }
+  .pp-verify__head .pp-hint { order: 2; }
+  .pp-verify__head .pp-verify__lede, .pp-verify__head .pp-hash { order: 3; }
+  .pp-verify__head .tg-source { order: 4; }
   /* The time stamp sits above each line in the vault on phones, so it is never clipped. */
   .pp-vault .tg-log__entry { grid-template-columns: minmax(0, 1fr); }
   .pp-vault .tg-log__entry::before { content: none; }
   .pp-vault .tg-log__when { padding: var(--pg-space-3) 0 0; text-align: left; letter-spacing: 0; }
   .pp-vault .tg-log__body { padding-left: 0; border-left: 0; }
-  .pp-vault { padding: var(--pg-space-4); }
+  .pp-vault { padding-left: 0; border-left: 0; }
 }

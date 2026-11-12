@@ -7,13 +7,8 @@ import facts from '../data/proof_facts_v1.json';
 import receipts from '../data/channel3_receipts_v1.json';
 import { HISTORY_CUTOFF, LATEST_ALSO, LATEST_DATE, LATEST_ROWS, METHOD_ORDER, REFUSED_LABEL, channel3Summary, dateLabel, groupProof, methodCounts, refusedCount, splitHistory, PROOF_SPONSORS, PROOF_METHOD_CHIPS, emptyProofNote, parseProofHash, proofHash, resolveProofFilter, rowMatches } from './proofData.js';
 import './proof.css';
+import { LEGACY, SpriteIcon } from '../theme/iconMap.js';
 
-const ICONS = {
-  sandbox: <><path d="M12 3.25 4.75 6.25v5.5c0 4.85 3.1 7.95 7.25 9 4.15-1.05 7.25-4.15 7.25-9v-5.5L12 3.25Z" /><path d="m9 12.25 2.1 2.1 4.15-4.35" /></>,
-  recorded: <><rect x="4.75" y="4.75" width="14.5" height="14.5" rx="2" /><path d="M8.5 9h7M8.5 12h7M8.5 15h4" /></>,
-  test: <><path d="M9.5 4.75v5.5L5 18a1.5 1.5 0 0 0 1.3 2.25h11.4A1.5 1.5 0 0 0 19 18l-4.5-7.75v-5.5" /><path d="M8.5 4.75h7" /></>,
-  synthetic: <><circle cx="12" cy="12" r="7.25" strokeDasharray="3 3" /><path d="M12 8.5v7M8.5 12h7" /></>,
-};
 const METHOD_STYLE = {
   REAL_SANDBOX: { icon: 'sandbox', tone: 'ok' },
   RECORDED: { icon: 'recorded', tone: 'info' },
@@ -21,8 +16,9 @@ const METHOD_STYLE = {
   SYNTHETIC: { icon: 'synthetic', tone: 'muted' },
 };
 
+// (vteam icon 2026-11-12) Phosphor Regular from the shared sprite (theme/iconMap.js); old names map through LEGACY.
 function Icon({ name, size = 16 }) {
-  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{ICONS[name]}</svg>;
+  return <SpriteIcon name={LEGACY[name] || name} size={size} />;
 }
 
 function MethodChip({ method }) {

@@ -7,19 +7,21 @@ import './charts/charts.css';
 // its render check), and AG Grid needs the filter, quick-filter and tooltip modules wherever the grid appears.
 // Registering the same Community modules twice is a no-op.
 
+// (vteam viz 2026-11-12) Light paper table on the site tokens (CSS variables, so no token module is pulled into this
+// chunk); the earlier navy dark table broke the "no navy" rule.
 const timeGridTheme = themeQuartz.withParams({
-  accentColor: '#74b5ff',
-  backgroundColor: '#0f1b2b',
-  borderColor: '#2a3b55',
-  browserColorScheme: 'dark',
-  foregroundColor: '#dbe7f6',
-  headerBackgroundColor: '#14243a',
-  headerTextColor: '#9fb6d3',
-  oddRowBackgroundColor: '#122135',
-  rowHoverColor: '#1a2d47',
-  fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+  accentColor: 'var(--pg-color-accent)',
+  backgroundColor: 'var(--pg-color-panel)',
+  borderColor: 'var(--pg-color-line)',
+  browserColorScheme: 'light',
+  foregroundColor: 'var(--pg-color-ink)',
+  headerBackgroundColor: 'var(--pg-color-khaki-tint)',
+  headerTextColor: 'var(--pg-color-muted)',
+  oddRowBackgroundColor: 'var(--pg-color-canvas)',
+  rowHoverColor: 'var(--pg-color-sel)',
+  fontFamily: 'var(--pg-font-sans)',
   fontSize: 14,
-  wrapperBorderRadius: 8,
+  wrapperBorderRadius: 0,
 });
 
 const GAP_NAMES = [

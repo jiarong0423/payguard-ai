@@ -66,10 +66,14 @@
 .check-ph > svg { display: block; width: 100%; height: 100%; }
 .check-head { display: grid; gap: var(--pg-space-1); margin-bottom: var(--pg-space-4); }
 .check-head p { margin: 0; }
-#compliance .stage-content > .check-three, #compliance .stage-content > .check-grid, #compliance .stage-content > .check-ai, #compliance .stage-content > .check-c3 { padding: var(--pg-space-4); }
+#compliance .stage-content > .check-three { padding: var(--pg-space-4); }
 
 /* ---------- B. Three results side by side ---------- */
-.check-three__row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--pg-space-5); }
+/* (vteam r6) .tg-cards3 (components.css) lays the three cards out and lines their rows up (subgrid): stamp, item,
+   result, detail, second rule, source and button. */
+.check-three__row.tg-cards3 { --tg-rows: 6; gap: var(--pg-space-5); }
+/* No chestnut rule on a card that carries a status stamp: the cards' top rule is the neutral charcoal. */
+.check-three__card.tg-clip { border-top-color: var(--pg-color-rule); }
 /* .tg-card--cta + .tg-cta (components.css v2) put the source and button on each card's floor: one button baseline. */
 .check-three__card { gap: var(--pg-space-2); min-width: 0; margin: 0; }
 .check-three__card > :not(.tg-cta) { margin: 0; }
@@ -83,7 +87,7 @@
 .check-three__card .tg-source { font-size: var(--pg-text-1); }
 /* (R5 seller, review_UI5 s2 #4) "Check first" sits on the same baseline as the statute after it: inline text, icon nudged. */
 .check-three__also-word { display: inline; font-weight: 650; white-space: nowrap; }
-.check-three__also-word > .check-ph { display: inline-block; width: var(--pg-text-3); height: var(--pg-text-3); margin-right: var(--pg-space-1); vertical-align: -2px; }
+.check-three__also-word > svg { display: inline-block; width: var(--pg-text-3); height: var(--pg-text-3); margin-right: var(--pg-space-1); vertical-align: -2px; }
 /* (R5 seller) Confirmation after a card is used; the slot keeps its height so the form below does not jump. */
 .check-three__picked { min-height: var(--pg-space-7); margin: var(--pg-space-3) 0 0; }
 .check-three__picked:empty { min-height: 0; margin: 0; }
@@ -106,7 +110,7 @@
 
 /* ---------- Step 01 guide AI card ---------- */
 /* (R5 seller, review_UI5 s3 #3/#7) Closed by default (.tg-fold); labels on one row, numbers on one baseline below them. */
-#compliance .stage-content > .check-ai.tg-fold { padding: 0; border: 0; border-top: 1px solid var(--pg-color-rule-soft); background: transparent; }
+#compliance .stage-content > .check-ai.tg-fold, #compliance .stage-content > .check-ref.tg-fold { padding: 0; border: 0; border-top: 1px solid var(--pg-color-rule-soft); background: transparent; }
 .check-ai__summary { display: grid; gap: var(--pg-space-1); }
 .check-ai__summary .tg-small { font-weight: 400; }
 .check-ai__body { display: grid; gap: var(--pg-space-3); }
@@ -132,13 +136,31 @@
 .product-card-ref { display: grid; gap: var(--pg-space-1); margin-top: var(--pg-space-1); padding-top: var(--pg-space-2); border-top: 1px solid var(--pg-color-rule-soft); font-size: var(--pg-text-2); line-height: 1.5; }
 
 @media (max-width: 640px) {
-  .check-three__row { grid-template-columns: minmax(0, 1fr); gap: var(--pg-space-4); }
-  .check-three__card + .check-three__card { padding-left: 0; padding-top: var(--pg-space-4); border-left: 0; border-top: 1px solid var(--pg-color-rule-soft); }
+  .check-three__row.tg-cards3 { gap: var(--pg-space-4); }
+  /* (vteam r6) Phones read the RULE MATCH card first; every card after the first shown one gets the thin separator. */
+  .check-three__card.is-risk { order: -1; }
+  .check-three__card + .check-three__card { padding-left: 0; border-left: 0; }
+  .check-three__card:not(.is-risk) { padding-top: var(--pg-space-4); border-top: 1px solid var(--pg-color-rule-soft); }
+  .check-three__also:empty { display: none; }
   .check-ai__figures { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: none; grid-auto-flow: row; row-gap: var(--pg-space-3); }
   .check-ai__figures > div { display: grid; gap: var(--pg-space-1); align-content: end; }
   #compliance .description-presets button, .check-three__use { min-height: 44px; }
   .check-ai__figures dd { font-size: var(--pg-text-4); }
   .rule-chain { width: calc(100vw - var(--pg-space-8) - var(--pg-space-5)); }
   .rule-chain dl > div { grid-template-columns: minmax(0, 1fr); gap: 0; }
-  #compliance .stage-content > .check-three, #compliance .stage-content > .check-grid, #compliance .stage-content > .check-ai, #compliance .stage-content > .check-c3 { padding: var(--pg-space-4) 0; }
+  #compliance .stage-content > .check-three { padding: var(--pg-space-4) 0; }
 }
+
+/* ---------- (S31 round 6) Rule pack + Channel3 reference: one fold, closed by default ---------- */
+.check-ref__body { display: grid; gap: var(--pg-space-5); }
+.check-ref__body > .check-c3 { padding-top: var(--pg-space-4); border-top: 1px solid var(--pg-color-rule-soft); }
+/* (S32) Country names in sentence case, Public Sans; counts in tabular figures. */
+.check-grid .tg-ledger__table tbody .tg-ledger__ref, .check-grid .tg-ledger__table tfoot .tg-ledger__ref { height: 44px; font-family: var(--pg-font-sans); font-size: var(--pg-text-2); font-weight: 600; letter-spacing: 0; text-transform: none; color: var(--pg-color-ink); }
+.check-grid .tg-ledger__table, .check-grid__cell, .check-grid .tg-ledger__total td { font-variant-numeric: tabular-nums lining-nums; }
+/* (S32) "Rule match" is an outlined stamp like the rest of the site (no solid red block); the icon keeps the meaning. */
+#compliance .sev-block .country-sev { background: transparent; color: var(--pg-color-risk); box-shadow: inset 0 0 0 1px var(--pg-color-risk); }
+#compliance .sev-warn .country-sev { box-shadow: inset 0 0 0 1px var(--pg-color-warn); }
+#compliance .country-chain > .country-sev { padding: var(--pg-space-1) var(--pg-space-2); letter-spacing: .04em; }
+#compliance .country-finding-body > span:first-child { display: block; font-size: var(--pg-text-3); line-height: 1.5; }
+#compliance .country-finding-body .country-statute { display: block; }
+#compliance .country-finding-body .country-source-line { display: block; }

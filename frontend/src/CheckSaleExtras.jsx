@@ -5,15 +5,14 @@
 // tests/frontend_check_sale_p3.mjs). Nothing here sends a request or changes a result. Loaded on demand.
 // (F 2026-11-12) Source lines from theme/sources.js (same key, same words as Overview, Proof and For judges); they wrap,
 // never cut. Dates through theme/format.js. Card buttons sit on one baseline at the foot of each card.
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import data from './data/check_sale_examples_v1.json';
 import { CHANNEL3_READERS, SourceLine } from './theme/sources.js';
 import { dateLabel } from './theme/format.js';
-import warningSvg from './theme/icons/warning.svg?raw';
 import xCircleSvg from './theme/icons/x-circle.svg?raw';
-import infoSvg from './theme/icons/info.svg?raw';
 import arrowSvg from './theme/icons/arrow-right.svg?raw';
 import fileSvg from './theme/icons/file-text.svg?raw';
+import { SpriteIcon, STATUS } from './theme/iconMap.js';
 import './ProductReference.css';
 import './CheckSaleExtras.css';
 
@@ -21,7 +20,8 @@ import './CheckSaleExtras.css';
 function PhIcon({ svg }) {
   return <span className="tg-icon check-ph" aria-hidden="true" dangerouslySetInnerHTML={{ __html: svg }} />;
 }
-const STAMP_ICON = { risk: xCircleSvg, warn: warningSvg, neutral: infoSvg };
+// (vteam r6) Status icons from theme/iconMap.js STATUS: risk x-circle on a rule row, check first / review the clock, note the info mark.
+const STAMP_ICON = { risk: STATUS.riskNo, warn: STATUS.warn, neutral: STATUS.info };
 
 
 // The rule pack copy is loaded once, on first use (a result row's chain or a grid cell).
@@ -112,13 +112,14 @@ export function ThreeResults() {
   return <section className="check-three tg-section" data-testid="three-results" aria-labelledby="three-results-title">
     <div className="check-head"><h3 id="three-results-title" className="tg-h3">Three sample sales, three answers</h3>
       <p className="tg-small">The same checks on three sample items. Pick one to try it in the form below.</p></div>
-    <div className="check-three__row">
+    <div className="check-three__row tg-cards3">
       {data.examples.map((example) => <figure key={example.id} className={`tg-clip tg-clip--fact tg-card--cta check-three__card is-${example.tone}`} data-testid={`three-results-${example.id}`}>
-        <figcaption className="tg-clip__kicker"><span className={`tg-stamp tg-stamp--${example.tone}`}><PhIcon svg={STAMP_ICON[example.tone]} />{example.stamp}</span></figcaption>
+        <figcaption className="tg-clip__kicker"><span className={`tg-stamp tg-stamp--${example.tone}`}><SpriteIcon name={STAMP_ICON[example.tone]} size="sm" />{example.stamp}</span></figcaption>
         <blockquote className="tg-clip__quote">{example.description}</blockquote>
         <p className={example.tone === 'risk' ? 'tg-risk check-three__result' : 'check-three__result'} data-link={example.kind === 'route' ? `law:${example.result}` : undefined} data-link-risk={example.tone === 'risk' ? '' : undefined}>{example.tone === 'risk' && <PhIcon svg={xCircleSvg} />}<span>{PLAIN_RESULT[example.id] || example.result}</span></p>
         <p className="check-three__detail">{detailOf(example)}</p>
-        {example.also && <p className="check-three__also"><span className="tg-deadline--soon check-three__also-word"><PhIcon svg={warningSvg} />{example.also.label}</span> {example.also.statute} · {example.also.detail}</p>}
+        {/* tg-cards3 rows line up across cards: a card without a second rule keeps an empty row. */}
+        {example.also ? <p className="check-three__also"><span className="tg-deadline--soon check-three__also-word"><SpriteIcon name={STATUS.warn} size="sm" />{example.also.label}</span> {example.also.statute} · {example.also.detail}</p> : <span className="check-three__also" aria-hidden="true" />}
         <div className="tg-cta check-three__foot"><SourceLine kind="RECOUNTED" source={example.kind === 'route' ? 'country_rules_sg_ecig' : 'policy_check'} />
         <button type="button" className="tg-btn tg-btn--secondary check-three__use" data-testid={`three-results-card-${example.id}`} onClick={() => use(example)}>
           {example.kind === 'route' ? 'Try this route' : 'Try this item'}<PhIcon svg={arrowSvg} /></button></div>
@@ -133,7 +134,7 @@ export function ThreeResults() {
 // C. Ten countries x import / export: each cell is a filter for that country's rules on that side.
 const TIERS = ['prohibited', 'restricted', 'general'];
 const SHOW_FIRST = 6;
-export function RuleGrid() {
+function RuleGridBody() {
   const grid = data.rule_grid;
   const [cell, setCell] = useState(null);
   const [tier, setTier] = useState('all');
@@ -214,7 +215,7 @@ export function CategoryReference({ category }) {
 }
 
 // Channel3 category tree vs PayPal AUP: counts from docs/CHANNEL3_NOTES.md and the published CSV, three CSV rows verbatim.
-export function Channel3Reference() {
+function Channel3Body() {
   const tree = data.channel3_tree;
   return <section className="check-c3 tg-section" data-testid="channel3-reference" aria-labelledby="channel3-reference-title">
     <figure className="tg-clip check-c3__clip">
@@ -230,4 +231,30 @@ export function Channel3Reference() {
       <p className="tg-clip__source check-c3__csv"><a className="tg-btn tg-btn--secondary tg-btn--sm" href={tree.csv_url} target="_blank" rel="noopener noreferrer" data-testid="channel3-reference-csv"><PhIcon svg={fileSvg} />Open the {tree.mapped}-row table (CSV)<PhIcon svg={arrowSvg} /></a></p>
     </figure>
   </section>;
+}
+
+// (S31 round 6, 2026-11-12) The rule pack table and the Channel3 reference are judge material, not part of the seller's
+// form: one fold, closed by default, under the form. It opens itself when the address names it (#rule-pack), so a
+// For judges stop or a shared link can point at it. App.jsx still mounts <Channel3Reference />; that slot now draws
+// nothing because the reference lives inside this fold (same test ids, same values).
+const REF_HASH = '#rule-pack';
+export function RuleGrid() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const openIfNamed = () => {
+      if (window.location.hash.split('?')[0] !== REF_HASH || !ref.current) return;
+      ref.current.open = true;
+      ref.current.scrollIntoView({ block: 'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    };
+    openIfNamed();
+    window.addEventListener('hashchange', openIfNamed);
+    return () => window.removeEventListener('hashchange', openIfNamed);
+  }, []);
+  return <details ref={ref} id="rule-pack" className="check-ref tg-fold" data-testid="rule-pack-fold">
+    <summary><span className="check-ai__summary">Behind the check: the rule pack and the Channel3 reference<small className="tg-small">{data.rule_grid.totals.import + data.rule_grid.totals.export} official rules by country and side, and how Channel3 categories map to PayPal's policy</small></span></summary>
+    <div className="tg-fold__body check-ref__body"><RuleGridBody /><Channel3Body /></div>
+  </details>;
+}
+export function Channel3Reference() {
+  return null;
 }

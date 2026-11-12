@@ -7,24 +7,27 @@ export const color = Object.freeze({
   // 2026-11-12 P0 round 3: "Editorial Newsprint", red option 2 (owner decision). Names kept; values changed.
   // Ink does every interactive job; red means risk and nothing else (always with an icon). Round 5 removed the
   // decorative headline red (`masthead` token) so the rule has no exception.
-  canvas: '#f1ede3',          // L0 newsprint
-  panel: '#f8f5ee',           // inputs and raised paper
+  // Round 6 (colour director, 2026-11-12): 60 / 30 / 10. 60 = oat paper layers; 30 = warm charcoal + deep chestnut;
+  // 10 = chestnut, olive and khaki in small places. Old values in tests/frontend_design_system_v2.mjs section 9.
+  canvas: '#f1ebdf',          // 60: L0 oat paper (was #f1ede3)
+  panel: '#f9f6ef',           // 60: raised paper, cards and inputs (was #f8f5ee)
   recede: '#e8e2d5',          // surface, a shade darker than the page
   // Round 5 (owner: "all black is too heavy"; style reference: charcoal, not black): rules and every interactive job
   // move to charcoal #2b2d30; running text stays ink #111111. Paper on charcoal 12.7:1, charcoal on canvas 11.8:1.
-  rule: '#2b2d30',            // rules (cards, sections, masthead): charcoal
+  rule: '#34302b',            // 30: rules (cards, sections): warm charcoal (was #2b2d30)
   ruleSoft: '#cfc8b8',        // row separators inside tables and lists
   controlLine: '#8a857a',     // newsprint grey: control edges and marks (3.1:1 on canvas, WCAG 1.4.11)
   ink: '#111111',
   muted: '#5a554c',           // secondary text (6.3:1 on canvas, 5.7:1 on surface)
   subtle: '#5a554c',
-  accent: '#2b2d30',          // interactive = charcoal: buttons, segment frames, current nav, focus
-  accentStrong: '#1f2124',    // primary hover, one step darker (14.8:1 under paper)
+  accent: '#34302b',          // 30: interactive = warm charcoal: buttons, segment frames, focus (was #2b2d30)
+  accentStrong: '#24211d',    // primary hover, one step darker (was #1f2124)
   accentTint: '#e8e2d5',
   accentSelected: '#e8e2d5',  // selected rows: surface fill + 3px ink bar
   context: '#8a857a',         // marks only (3.1:1), never text
   model: '#5a554c',
-  ok: '#2f6b3a',              // holds / sent (5.5:1 on canvas)
+  ok: '#226a63',              // held / sent: teal green (was #2f6b3a). Moved off olive / chestnut: under deuteranopia
+                              // #2f6b3a and olive were 1.0 dE apart; #226a63 is 24 from olive, 51 from warn, 47 from risk
   watch: '#7a5000',           // check first / due soon (6.0:1 on canvas)
   warn: '#7a5000',
   risk: '#c8102e',            // risk ONLY (rule match, missed / <= 1 day deadline), always with an icon (5.0:1 on canvas)
@@ -35,7 +38,7 @@ export const color = Object.freeze({
   bandMuted: '#bdb6a6',
   bandAmber: '#e8b04a',
   bandGreen: '#8fc79a',
-  focus: '#2b2d30',           // 2px charcoal ring with a 3px gap, :focus-visible only
+  focus: '#34302b',           // 2px warm-charcoal ring with a 3px gap, :focus-visible only (was #2b2d30)
   onAccent: '#f8f5ee',        // text on ink fills
   chip: '#ddd6c6',            // neutral count badge
   hover: '#ebe6da',           // row / item hover
@@ -47,7 +50,7 @@ export const color = Object.freeze({
   sel: '#e2dac8',             // THE selection tint: selected row, active step, queue card, linked row (+3px ink bar)
   surface2: '#ebe5d7',        // sunk surface: folds, summary ledgers
   riskTint: '#f7e4e4',        // note / stamp backgrounds; text on them stays its own hue (risk 4.8, ok 5.3, warn 5.8)
-  okTint: '#e4ece0',
+  okTint: '#deebe8',          // (was #e4ece0)
   warnTint: '#f2e8d0',
   ink3: '#8a8478',            // disabled text and non-text meta marks only (3.2:1 on canvas): never running text
   // UI round 5 (style reference, review_STYLEREF s2): ONE dark surface, the Proof verify panel ("vault"). Status hues on it
@@ -60,25 +63,39 @@ export const color = Object.freeze({
   vaultOk: '#8fc79a',
   vaultWarn: '#e8b04a',
   vaultRisk: '#f28b8b',
+  // Round 6 additions (names fixed; other roles reference these, never literals).
+  structure: '#4e3a2c',       // 30 (second step): deep chestnut for block heads: masthead line, ledger / clip / step-head top rules (9.0:1 on canvas)
+  chestnut: '#6b4a35',        // 10: eyebrow text, current tab underline, neutral stamp outline, section-title bar (6.7:1 on canvas)
+  olive: '#5e5c3b',           // 10: section icons, provenance labels, chart series 2 (5.8:1 on canvas). Never next to an ok state.
+  khaki: '#a8977a',           // 10, marks only (2.4:1, never text): decorative hairlines, chart series 4, grid emphasis lines
+  khakiTint: '#ece4d6',       // khaki layer: warm hover and sunk panels (ink 15.0, muted 5.9, risk 4.7 on it)
+  paperGrid: '#e4dccb',       // faint ledger grid line, about 4% darker than canvas (1.15:1, decorative only)
+  paperGridSoft: '#e9e2d4',   // the same grid at 375 px and below, fainter
+  surfaceFocus: '#e8e2d5',    // the one focus zone per page: one step deeper than canvas (ink 14.2, risk 4.56, ok 4.92 on it)
 });
 
+// Frosted glass (consensus s4): sticky tab bar, phone action bar, chart hour detail only. Opaque fallback = panel.
+export const glass = Object.freeze({ alpha: '0.92', blur: '8px' });
+
 // Rules (round 5): fine hairline between rows, double rule to open a block. Ink only.
-export const rule = Object.freeze({ fine: '1px solid #2b2d30', double: '3px double #2b2d30' });
+export const rule = Object.freeze({ fine: '1px solid #34302b', double: '3px double #34302b', head: '2px solid #4e3a2c' });
 
 // Tracked small caps (round 5): eyebrow, stamp and tag only; never body text or IDs.
-export const label = Object.freeze({ tracking: '.16em' }); // round 5: wider, tailored small caps
+export const label = Object.freeze({ tracking: '.12em' }); // round 6 (consensus s2): .16em read cold; .12em
 
 // Data viz (v2): no teal, no orange, no white. Above the review line = check first (amber), not risk (red).
-export const viz = Object.freeze({ base: '#bdb6a6', line: '#5a554c', alert: '#7a5000', bg: '#e8e2d5' });
+// Round 6 (consensus s2): the plot sits on canvas so the paper grid shows; base #bdb6a6 -> #7d786d (1.6 -> 3.7:1 on it).
+export const viz = Object.freeze({ base: '#7d786d', line: '#5a554c', alert: '#7a5000', bg: '#f1ebdf' });
 
 // Composition (v2): 1040 content, 12 columns of 64 with 24 gutters (12*64 + 11*24 = 1032 + 8 slack), 68ch measure.
 export const grid = Object.freeze({ columns: 12, measure: '68ch' });
 
 // Status chips: text colour on a light tint of the same hue (all >= 4.5:1).
-export const statusTint = Object.freeze({ ok: '#dfe8da', watch: '#efe2c4', risk: '#f6dfe0', info: '#e8e2d5', accent: '#e8e2d5' });
+export const statusTint = Object.freeze({ ok: '#dbe9e6', watch: '#efe2c4', risk: '#f6dfe0', info: '#e8e2d5', accent: '#e8e2d5' });
 
 // Categorical / sequential: ink and greys only (red is reserved for risk).
-export const categorical = Object.freeze(['#111111', '#5a554c', '#8a857a', '#bdb6a6']);
+// Round 6: non-semantic chart series from the 30 / 10 layers (no red, green or amber): charcoal, olive, chestnut, khaki.
+export const categorical = Object.freeze(['#34302b', '#5e5c3b', '#6b4a35', '#a8977a']);
 export const sequential = Object.freeze(['#e8e2d5', '#cfc8b8', '#8a857a', '#5a554c', '#111111']);
 
 export const space = Object.freeze({ 1: 4, 2: 8, 3: 12, 4: 16, 5: 24, 6: 32, 7: 48, 8: 64 }); // px, 8 steps
@@ -145,6 +162,7 @@ export function cssVariables() {
   for (const [k, v] of Object.entries(grid)) vars[`--pg-grid-${k}`] = String(v);
   for (const [k, v] of Object.entries(rule)) vars[`--pg-rule-${k}`] = v;
   for (const [k, v] of Object.entries(label)) vars[`--pg-label-${k}`] = v;
+  for (const [k, v] of Object.entries(glass)) vars[`--pg-glass-${k}`] = v;
   return vars;
 }
 

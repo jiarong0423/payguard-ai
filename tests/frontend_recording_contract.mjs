@@ -166,7 +166,8 @@ requireText(appSource, 'This signal does not prove fraud, check delivery or pred
 requireText(
   appSource,
   // (P4 2026-11-12) The queue rows moved into steps/CaseViews.jsx (CaseQueue calls onPick(item)); the handler is unchanged.
-  'onPick={(item) => { if (caseItem?.case_ref === item.case_ref) return; invalidateAi(); setSelectedCase(item.case_ref); setDraft(null); setReceipt(null); setReviewChecked(false); }}',
+  // (vteam r2) Same clears, now inside viewSwap so the case head moves with a View Transition.
+  'onPick={(item) => { if (caseItem?.case_ref === item.case_ref) return; invalidateAi(); viewSwap(() => { setSelectedCase(item.case_ref); setDraft(null); setReceipt(null); setReviewChecked(false); }); }}',
   'reselecting the reviewed case preserves its draft and receipt while a case change clears prior context',
 );
 

@@ -30,7 +30,8 @@ assert.equal(resumedNotice({ transactions: [{}], disputes: [{ status: 'draft_rea
 assert.equal(/samples and dispute drafts are back/u.test(app), false, 'the old fixed text is gone');
 assert.ok(app.includes("const resumed = resumedNotice(nextState, drafts);\n        if (resumed) setInfo({ kind: 'resumed', text: resumed });"), 'shown only when something came back');
 // (r32 J4) Every lasting info message (resumed, already checked, expired) can be dismissed.
-assert.ok(app.includes("{info.text}<button type=\"button\" className=\"icon-button\" aria-label=\"Dismiss message\" data-testid=\"console-info-dismiss\" onClick={() => setInfo(null)}>"), 'dismissible');
+// (a11y phase 2) Text wrapped in .info-text for the one-line phone note; the close button is unchanged.
+assert.ok(app.includes("{info.text}</span><button type=\"button\" className=\"icon-button\" aria-label=\"Dismiss message\" data-testid=\"console-info-dismiss\" onClick={() => setInfo(null)}>"), 'dismissible');
 assert.ok(css.includes('.feedback-region .message-info[data-testid="console-info"] { pointer-events: auto; }'), 'the close button takes taps');
 assert.match(css, /\.message-info \.icon-button \{ min-width: 44px; min-height: 44px;/u, '44 px target');
 

@@ -1,34 +1,58 @@
 /* Styles for AG Charts Community and the AG Grid views added in C1. Kept out of index.css. */
-.velocity-chart { margin: 0 0 16px; padding: 12px; background: var(--pg-viz-bg); } /* (P4) no white plot, no box */
-.velocity-chart-canvas { width: 100%; height: 280px; }
+.velocity-chart { margin: 0 0 16px; padding: 12px; background: var(--pg-viz-bg); } /* (P4) no white plot, no box; (vteam viz) viz-bg = page paper, so the ledger grid shows */
+.velocity-chart-plot { position: relative; }
+.velocity-chart-canvas { width: 100%; height: 320px; } /* (vteam viz) 280 -> 320: the plot itself gets about 200px */
+/* (vteam viz) wide/polish02.css (260) and relax.css (230) shrank the canvas on wide screens, leaving a 65px plot where the
+   ×5.0 bar could not read as five times the usual hour. Kept here, in the lazy chart CSS (first load unchanged), with
+   one more class so it wins: the plot itself is about 220px. */
+@media (min-width: 1280px) { #velocity .velocity-chart .velocity-chart-canvas { height: 360px; } }
+/* (vteam viz, CONSENSUS s1) Focus area once App.jsx moves the chart out of the fold into section.vs-chart (handoff
+   vteam/viz/HANDOFF_viz_App.md): full content width under the hero, 48px of air below it. Inert until then. */
+#velocity .vs-chart { grid-column: 1 / -1; margin: 0 0 var(--pg-space-7); }
+#velocity .vs-chart > .velocity-chart, #velocity .vs-chart > figure.velocity-chart { margin: 0; padding: 16px 0 0; border-top: 2px solid var(--pg-color-structure); }
+
+/* (vteam viz, CONSENSUS s4c) Clicked-hour detail on the shared frosted panel .tg-glass (components.css). */
+/* Sits low and left, over the usual hours (they blur behind it), never over the spike bar, its ×5.0 or the review line:
+   two lines, about 64px tall. */
+.velocity-hour-pop { position: absolute; left: 64px; bottom: 56px; z-index: 2; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 2px 16px; width: min(440px, calc(100% - 120px)); margin: 0; padding: 8px 16px; border: 1px solid var(--pg-color-rule); color: var(--pg-color-ink); }
+.velocity-hour-pop p { margin: 0; }
+.velocity-hour-pop__when { font-size: var(--pg-text-1); color: var(--pg-color-muted); font-variant-numeric: tabular-nums; }
+.velocity-hour-pop__value { grid-column: 1 / -1; font: 600 var(--pg-text-4)/1.3 var(--pg-font-sans); font-variant-numeric: tabular-nums; }
+.velocity-hour-pop__meta { margin-left: 12px; font-size: var(--pg-text-2); font-weight: 400; }
+.velocity-hour-pop__meta strong { color: var(--pg-color-warn); font-weight: 600; }
+.velocity-hour-pop__close { min-height: 24px; padding: 0; border: 0; background: none; color: var(--pg-color-ink); font: inherit; font-size: var(--pg-text-2); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.velocity-hour-pop__close:focus-visible { outline: 2px solid var(--pg-color-focus); outline-offset: 2px; }
 .velocity-chart figcaption { margin-top: 8px; color: var(--pg-color-muted); font-size: var(--pg-text-2); line-height: 1.5; }
 
-.time-evidence-views { display: inline-flex; gap: 4px; margin: 4px 0 12px; padding: 3px; border: 1px solid #2a3b55; border-radius: var(--pg-radius-card); background: #0b1624; }
-.time-evidence-views button { padding: 4px 16px; border: 0; border-radius: var(--pg-radius-control); background: transparent; color: #9fb6d3; font: inherit; font-size: 14px; cursor: pointer; }
-.time-evidence-views button.is-active { background: #1c2f49; color: #e6f0ff; }
+.time-evidence-views { display: inline-flex; gap: 0; margin: 4px 0 12px; padding: 0; border: 1px solid var(--pg-color-control-line); border-radius: var(--pg-radius-control); background: transparent; }
+.time-evidence-views button { padding: 4px 16px; border: 0; border-radius: var(--pg-radius-control); background: transparent; color: var(--pg-color-ink); font: inherit; font-size: var(--pg-text-2); cursor: pointer; }
+.time-evidence-views button.is-active { background: var(--pg-color-sel); color: var(--pg-color-ink); box-shadow: inset 0 -2px 0 var(--pg-color-accent); }
+.time-evidence-views button:focus-visible { outline: 2px solid var(--pg-color-focus); outline-offset: 2px; }
 .time-evidence-grid { min-width: 0; }
-.time-evidence-grid-caption { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 8px; color: #8ea6c4; font-size: 14px; }
+.time-evidence-grid-caption { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 8px; color: var(--pg-color-muted); font-size: var(--pg-text-2); }
 .te-kind { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
 .te-kind > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.te-kind-dot { width: 9px; height: 9px; border-radius: var(--pg-radius-pill); background: #94a3b8; flex: none; }
-.te-kind-payment .te-kind-dot { background: #60a5fa; }
-.te-kind-order_record_created .te-kind-dot { background: #a78bfa; }
-.te-kind-delivery .te-kind-dot { background: #2dd4bf; }
-.te-kind-claim_opened .te-kind-dot { background: #f87171; }
-.te-kind-message .te-kind-dot { background: #fbbf24; }
-.te-kind small { color: #8ea6c4; font-size: 14px; }
+/* (vteam viz) Event kinds: non-semantic categorical layers (was blue / violet / teal / red / yellow). The panel-colour
+   ring keeps each mark readable on a light or a dark grid. Only an opened claim is red, and it is a square, not a dot. */
+.te-kind-dot { width: 9px; height: 9px; border-radius: var(--pg-radius-pill); background: var(--pg-color-context); box-shadow: 0 0 0 1px var(--pg-color-panel); flex: none; }
+.te-kind-payment .te-kind-dot { background: var(--pg-cat-1); }
+.te-kind-order_record_created .te-kind-dot { background: var(--pg-cat-2); }
+.te-kind-delivery .te-kind-dot { background: var(--pg-cat-3); }
+.te-kind-claim_opened .te-kind-dot { border-radius: 0; background: var(--pg-color-risk); }
+.te-kind-message .te-kind-dot { background: var(--pg-viz-base); }
+.te-kind small { color: var(--pg-color-muted); font-size: var(--pg-text-2); }
 .te-time { font-variant-numeric: tabular-nums; }
-.te-source { display: inline-block; padding: 2px 12px; border-radius: var(--pg-radius-pill); background: #1c2f49; color: #cfe0f5; font-size: 14px; line-height: 1.5; }
+.te-source { display: inline-block; padding: 2px 12px; border-radius: var(--pg-radius-status); background: var(--pg-color-recede); color: var(--pg-color-ink); font-size: var(--pg-text-2); line-height: 1.5; }
 .te-gap { font-variant-numeric: tabular-nums; }
-.te-gap-first { color: #6985a9; }
-.te-gap-negative { color: #fcd34d; font-weight: 600; }
+.te-gap-first { color: var(--pg-color-muted); }
+.te-gap-negative { color: var(--pg-color-warn); font-weight: 600; }
 .benchmark-charts { display: grid; gap: 16px; }
-.benchmark-facts { display: grid; gap: 8px; margin: 0; padding: 16px 16px 16px 32px; border-radius: var(--pg-radius-card); background: #eef2ff; font-size: 15px; line-height: 1.5; color: #1e1b4b; }
-.benchmark-chart-canvas { width: 100%; min-height: 240px; border: 1px solid #e0e7ff; border-radius: var(--pg-radius-card); overflow: hidden; background: #ffffff; box-shadow: 0 1px 2px rgba(30, 27, 75, 0.06); }
-.benchmark-note { margin: 0; font-size: 14px; color: #64748b; }
+.benchmark-facts { display: grid; gap: 8px; margin: 0; padding: 16px 16px 16px 32px; border-top: 2px solid var(--pg-color-structure); background: var(--pg-color-panel); font-size: var(--pg-text-3); line-height: 1.5; color: var(--pg-color-ink); }
+.benchmark-chart-canvas { width: 100%; min-height: 240px; border-top: 1px solid var(--pg-color-rule); overflow: hidden; background: var(--pg-viz-bg); }
+.benchmark-note { margin: 0; font-size: var(--pg-text-2); color: var(--pg-color-muted); }
 
 /* Chart highlight chips: square filter chips (.tg-filter look), one row, 44px; pressed = ink inset and a check mark. */
-.velocity-mark-chips { display: flex; flex-wrap: nowrap; gap: 8px; margin: 0 0 8px; overflow-x: auto; scrollbar-width: none; }
+.velocity-mark-chips { display: flex; flex-wrap: nowrap; gap: 8px; margin: 8px 0; /* (a11y item 8) below the plot */ overflow-x: auto; scrollbar-width: none; }
 .velocity-mark-chips button { flex: none; min-height: 44px; padding: 0 12px; border: 1px solid var(--pg-color-control-line); border-radius: var(--pg-radius-control); background: transparent; color: var(--pg-color-ink); font: 500 var(--pg-text-2)/1 var(--pg-font-sans); white-space: nowrap; cursor: pointer; }
 /* (UI r5) The count reads as a count: a small ink square, not "| 1". */
 .velocity-mark-chips button span { display: inline-grid; place-items: center; min-width: 20px; height: 20px; margin-left: 8px; padding: 0 4px; box-shadow: inset 0 0 0 1px currentColor; color: var(--pg-color-ink); font: 600 var(--pg-text-1)/1 var(--pg-font-sans); font-variant-numeric: tabular-nums; }
@@ -48,6 +72,8 @@
 /* (UI r5, review_UI5 s7) Phones: highlight buttons stack instead of running off the right edge; the records list and the
    legend share the chart's 12px inner edge. Scoped to #velocity, loaded with the chart. */
 @media (max-width: 640px) {
+  #velocity .velocity-hour-pop { left: 8px; right: 8px; bottom: 40px; width: auto; padding: 8px 12px; }
+  #velocity .velocity-hour-pop__meta { display: block; margin-left: 0; }
   #velocity .velocity-mark-chips { display: grid; grid-template-columns: minmax(0, 1fr); overflow: visible; }
   #velocity .velocity-mark-chips button:last-child { justify-self: start; margin-left: 0; }
   #velocity .velocity-pane > .spike-records, #velocity .velocity-pane > .phone-chart-legend { padding-inline: 12px; }

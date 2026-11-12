@@ -177,7 +177,8 @@ assert.equal(options.axes.y.type, 'number');
 assert.equal(options.axes.y.crossLines[0].value, 350);
 const tip = options.series[1].tooltip.renderer({ datum: handSpike });
 assert.equal(tip.heading, 'Spike window');
-assert.deepEqual(tip.data, [{ label: 'Captured amount', value: '30.00 USD' }, { label: 'Orders', value: '2' }]);
+// (vteam viz 2026-11-12) Site-wide money format, currency code first (theme/format.js money(), components.css rule 5).
+assert.deepEqual(tip.data, [{ label: 'Captured amount', value: 'USD 30.00' }, { label: 'Orders', value: '2' }]);
 
 // 4. Parity with the real backend: the spike bars add up to the backend's window total.
 const python = process.env.PAYGUARD_PYTHON_BIN || resolve(projectRoot, '.venv/bin/python3');
