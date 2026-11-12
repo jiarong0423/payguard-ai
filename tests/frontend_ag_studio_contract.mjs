@@ -83,7 +83,7 @@ assert.ok(mainSource.includes('loadThemeGoogleFonts={false}'), 'no font download
 assert.ok(dashboardSources['theme.js'].includes('studioTheme.withParams('), 'custom Studio theme');
 // Round 6: the same accent as the seller console's buttons. (P1 2026-11-12) The accent now comes from the design tokens
 // (ink, "Editorial Newsprint") instead of the written indigo '#4f46e5'; the check follows the token, not a hex value.
-assert.ok(dashboardSources['theme.js'].includes("import { categorical, color } from '../theme/tokens.js';") && dashboardSources['theme.js'].includes('accent: color.accent'), 'console accent from the design tokens');
+assert.ok(dashboardSources['theme.js'].includes("import { categorical, color, font, radius } from '../theme/tokens.js';") && !dashboardSources['theme.js'].includes("'Inter,") && dashboardSources['theme.js'].includes('accent: color.accent'), 'console accent from the design tokens');
 assert.equal(/#[0-9a-f]{6}/iu.test(dashboardSources['theme.js']), false, 'no written hex colours in the Studio theme');
 assert.ok(read('frontend/src/index.css').includes('.button-blue { background: #2563eb;'), 'console button accent');
 

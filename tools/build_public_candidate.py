@@ -329,7 +329,7 @@ TREE_FILES = {
         "resumeNotice.js", "reviewZip.js", "sendConfirm.js", "tabKeys.js", "TimeEvidenceView.jsx", "disputeDisplay.js", "dueDays.js",
     ),
     "frontend/src/board": ("EvidenceBoard.jsx", "board.css", "boardData.js"),
-    "frontend/src/grid": ("agGrid.jsx",),
+    "frontend/src/grid": ("agGrid.css", "agGrid.jsx"),
     "frontend/src/charts": ("BenchmarkCharts.jsx", "VelocityChart.jsx", "benchmarkChartData.js", "charts.css", "evidence.css", "velocityChartData.js", "chartTheme.js"),
     "frontend/src/dashboard": ("DelegateConfirm.css", "DelegateConfirm.jsx", "RecordedRuns.jsx", "agentRecording.js", "auditor.js", "dashboard.css", "dashboardData.js", "layout.js", "main.jsx", "studioAgentClient.js",
                                "theme.js", "widgets.jsx"),

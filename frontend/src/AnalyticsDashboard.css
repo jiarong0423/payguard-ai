@@ -812,7 +812,7 @@
 .analytics-grid-chips button:disabled { color: #64748b; cursor: not-allowed; }
 .analytics-grid-chips button:focus-visible { outline: 3px solid rgb(37 99 235 / 28%); outline-offset: 2px; }
 .analytics-grid-note { margin: 0 0 8px; color: #475569; font-size: 14px; }
-.analytics-row-large { background-color: #fef3c7 !important; font-weight: 700; box-shadow: inset 4px 0 0 #d97706; }
+.analytics-row-large { background-color: var(--pg-tint-watch); font-weight: 700; box-shadow: inset var(--pg-elev-active-bar) 0 0 var(--pg-color-warn); } /* (F2) tokens; the grid CSS sits in @layer grid, so no !important */
 
 /* Wide screens (1280px+), video round 2: the opened Merchant Evidence Buffer as one compact, full-width workspace.
    Only spacing and placement change here; every text, control and disclaimer stays visible. */

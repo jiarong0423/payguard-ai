@@ -2,6 +2,9 @@
 @media (min-width: 1280px) {
   .guide-live-log { max-height: 300px; min-height: 120px; }
   .step-more[open] > .step-more-body { max-height: 360px; overflow-y: auto; }
+  /* (F1 D-P1) The deadline board is not cut into the 360px box (scrollHeight 1317 in 360): it shows whole; it scrolls
+     sideways inside its own frame (board.css), never the page. */
+  .step-more[open] > .step-more-body:has(.evidence-board) { max-height: none; overflow: visible; }
   /* (red team R2 N-1) The dispute list scrolls; the hint above it and the preview / submit buttons under it stay in view. */
   #disputes .provider-disputes[open] > .provider-disputes-body { max-height: none; overflow: visible; }
   #disputes .provider-dispute-list { max-height: clamp(270px, 38vh, 420px); overflow-y: auto; padding: 2px; }

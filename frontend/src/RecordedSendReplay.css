@@ -1,20 +1,24 @@
-.recorded-replay { margin-top: 14px; padding: 14px 16px; border: 1px solid var(--pg-color-rule, #e3e7ee); border-radius: 12px; background: var(--pg-color-panel, #fff); display: grid; gap: 10px; }
-.recorded-replay h4 { margin: 0; font-size: 16px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-.recorded-replay-chip { font-size: 12px; font-weight: 650; padding: 2px 9px; border-radius: 999px; border: 1px solid #b45309; color: #92400e; background: #fffbeb; }
-.recorded-replay-note { margin: 0; color: var(--pg-color-muted, #475569); font-size: 14px; }
-.recorded-replay-dialog { display: grid; gap: 10px; padding: 12px; border-radius: 10px; background: var(--pg-color-recede, #f4f5f8); }
-.recorded-replay-tick { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; min-height: 44px; }
-.recorded-replay-tick input { width: 22px; height: 22px; flex: none; }
-.recorded-replay-button, .recorded-replay-send { min-height: 44px; border-radius: 10px; border: 0; padding: 10px 16px; font-weight: 650; font-size: 15px; cursor: pointer; background: var(--pg-color-accent, #4338ca); color: #fff; }
-.recorded-replay-send { background: #166534; }
+/* (F1 D-P2 / D-C12 2026-11-12) Tokens only, square corners. The result is a neutral record (it lists a decline too), so it
+   uses the panel surface and a 1px rule, never the ok tint; long receipt names wrap instead of widening the page. */
+.recorded-replay { min-width: 0; max-width: 100%; margin-top: var(--pg-space-3); padding: var(--pg-layout-card-pad); border: 1px solid var(--pg-color-rule-soft); border-radius: 0; background: var(--pg-color-panel); display: grid; gap: var(--pg-space-3); overflow-wrap: anywhere; }
+.recorded-replay > * { min-width: 0; }
+.recorded-replay h4 { margin: 0; font-size: var(--pg-text-3); display: flex; flex-wrap: wrap; gap: var(--pg-space-2); align-items: center; }
+.recorded-replay-chip { font-size: var(--pg-text-1); font-weight: 650; padding: 2px var(--pg-space-2); border-radius: var(--pg-radius-status); border: 1px dashed var(--pg-color-warn); color: var(--pg-color-warn); background: var(--pg-color-warn-tint); }
+.recorded-replay-note { margin: 0; color: var(--pg-color-muted); font-size: var(--pg-text-2); }
+.recorded-replay-dialog { display: grid; gap: var(--pg-space-3); padding: var(--pg-space-3); border-radius: 0; background: var(--pg-color-recede); }
+.recorded-replay-tick { display: flex; gap: var(--pg-space-3); align-items: flex-start; font-size: var(--pg-text-2); min-height: 44px; }
+.recorded-replay-tick input { width: 22px; height: 22px; flex: none; accent-color: var(--pg-color-ink); }
+.recorded-replay-button, .recorded-replay-send { min-height: 44px; border-radius: 0; border: 0; padding: var(--pg-space-2) var(--pg-space-4); font-weight: 650; font-size: var(--pg-text-2); cursor: pointer; background: var(--pg-color-accent); color: var(--pg-color-on-accent); }
+.recorded-replay-send:hover, .recorded-replay-button:hover:not(:disabled) { background: var(--pg-color-accent-strong); }
 .recorded-replay-button:disabled { opacity: .55; cursor: not-allowed; }
-.recorded-replay-link { background: none; border: 0; color: var(--pg-color-accent, #4338ca); text-decoration: underline; cursor: pointer; min-height: 44px; font-size: 14px; justify-self: start; }
-.recorded-replay button:focus-visible, .recorded-replay input:focus-visible { outline: 3px solid var(--pg-color-accent, #4338ca); outline-offset: 2px; }
-.recorded-replay-result { display: grid; gap: 8px; padding: 12px; border-radius: 10px; background: #f0fdf4; border: 1px solid #86efac; font-size: 14px; }
+.recorded-replay-link { background: none; border: 0; color: var(--pg-color-ink); text-decoration: underline; cursor: pointer; min-height: 44px; font-size: var(--pg-text-2); justify-self: start; }
+.recorded-replay button:focus-visible, .recorded-replay input:focus-visible { outline: var(--pg-layout-focus-ring) solid var(--pg-color-focus); outline-offset: 2px; }
+.recorded-replay-result { display: grid; gap: var(--pg-space-2); min-width: 0; padding: var(--pg-space-3); border-radius: 0; background: var(--pg-color-canvas); border: 1px solid var(--pg-color-rule-soft); border-left: var(--pg-elev-active-bar) solid var(--pg-color-rule); font-size: var(--pg-text-2); }
 .recorded-replay-result p { margin: 0; }
-.recorded-replay-stamp { font-size: 15px; }
-.recorded-replay-steps { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
-.recorded-replay-steps li { display: grid; gap: 2px; }
-.recorded-replay-at { font-weight: 650; font-size: 13px; color: #166534; }
-.recorded-replay-source { color: var(--pg-color-muted, #475569); font-size: 13px; }
+.recorded-replay-result code { overflow-wrap: anywhere; word-break: break-all; }
+.recorded-replay-stamp { font-size: var(--pg-text-2); }
+.recorded-replay-steps { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--pg-space-2); }
+.recorded-replay-steps li { display: grid; gap: 2px; min-width: 0; }
+.recorded-replay-at { font-weight: 650; font-size: var(--pg-text-1); color: var(--pg-color-ink); font-family: var(--pg-font-mono); }
+.recorded-replay-source { color: var(--pg-color-muted); font-size: var(--pg-text-1); }
 @media (prefers-reduced-motion: reduce) { .recorded-replay * { transition: none !important; } }

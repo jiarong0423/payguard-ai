@@ -1,0 +1,8 @@
+/* (F2 2026-11-12) Console grid rules that the theme params cannot express. Loaded with the lazy grid chunk only.
+   OFFICIAL_FIX_GUIDE s1: the selected row is a rowClassRules class (AG Grid "row-styles"); sel fill + 3px left bar,
+   the same look as the ledger table's selected row (theme/components.css .tg-ledger__table tr.is-selected). */
+.ag-row.is-selected { background-color: var(--pg-color-sel); box-shadow: inset var(--pg-elev-active-bar) 0 0 var(--pg-color-rule); }
+/* Numbers line up in every grid (no theme param for tabular figures). */
+.ag-cell.tg-num, .ag-cell.grid-amount { font-variant-numeric: tabular-nums; }
+/* Narrow orders grid (App.jsx velocity grid under 640px): wrapped cells break long values instead of clipping them. */
+.transaction-grid .ag-cell-wrap-text { line-height: 1.35; padding-top: 6px; padding-bottom: 6px; overflow-wrap: anywhere; }

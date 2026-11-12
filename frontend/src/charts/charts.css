@@ -15,7 +15,10 @@
 /* (vteam viz) wide/polish02.css (260) and relax.css (230) shrank the canvas on wide screens, leaving a 65px plot where the
    ×5.0 bar could not read as five times the usual hour. Kept here, in the lazy chart CSS (first load unchanged), with
    one more class so it wins: the plot itself is about 220px. */
-@media (min-width: 1280px) { #velocity .velocity-chart .velocity-chart-canvas { height: 360px; } }
+/* (fix F3 D-P8) AG Charts gives extra container height to the series area (layout docs), and the title, subtitle, legend
+   and axis take about 194px here: 400 leaves a plot of at least 200 at every width from 641px (360 left 166). One id and
+   two classes, so wide/polish02.css (260) and relax.css (230) cannot shrink it. */
+#velocity .velocity-chart .velocity-chart-canvas { height: 400px; }
 /* (vteam viz, CONSENSUS s1) Focus area once App.jsx moves the chart out of the fold into section.vs-chart (handoff
    vteam/viz/HANDOFF_viz_App.md): full content width under the hero, 48px of air below it. Inert until then. */
 /* (r7 T5) No bottom margin: the focus panel's own padding ends it (was 48px here + the panel padding, about 80px empty). */
@@ -24,9 +27,9 @@
 #velocity .vs-chart .velocity-chart { margin: 0; padding: 16px 0 0; }
 
 /* (vteam viz, CONSENSUS s4c) Clicked-hour detail on the shared frosted panel .tg-glass (components.css). */
-/* Sits low and left, over the usual hours (they blur behind it), never over the spike bar, its ×5.0 or the review line:
-   two lines, about 64px tall. */
-.velocity-hour-pop { position: absolute; left: 64px; bottom: 56px; z-index: 2; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 2px 16px; width: min(440px, calc(100% - 120px)); margin: 0; padding: 8px 16px; border: 1px solid var(--pg-color-rule); color: var(--pg-color-ink); }
+/* (fix F3 D-P17) In the flow under the plot, never over it: over the bars it hid the chart and took the clicks meant for
+   the other hours (phone: one hour could be opened, then the panel covered the rest). */
+.velocity-hour-pop { position: static; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 2px 16px; width: auto; margin: 8px 0 0; padding: 8px 16px; border: 1px solid var(--pg-color-rule); color: var(--pg-color-ink); }
 .velocity-hour-pop p { margin: 0; }
 .velocity-hour-pop__when { font-size: var(--pg-text-1); color: var(--pg-color-muted); font-variant-numeric: tabular-nums; }
 .velocity-hour-pop__value { grid-column: 1 / -1; font: 600 var(--pg-text-4)/1.3 var(--pg-font-sans); font-variant-numeric: tabular-nums; }
@@ -84,10 +87,11 @@
 /* (UI r5, review_UI5 s7) Phones: highlight buttons stack instead of running off the right edge; the records list and the
    legend share the chart's 12px inner edge. Scoped to #velocity, loaded with the chart. */
 @media (max-width: 640px) {
-  #velocity .velocity-chart-canvas { height: 300px; } /* (r7 T5) the period switch row now sits above the chart */
+  /* (fix F3 D-P8) Phone: about 150px of title, subtitle and axis, so 360 leaves a plot of at least 200 (300 left 149). */
+  #velocity .velocity-chart .velocity-chart-canvas { height: 360px; }
   .velocity-chart-wrap > .velocity-period { width: auto; margin: 0 0 4px; }
   .velocity-chart-wrap > .velocity-period > button { flex: 1; min-height: 44px; }
-  #velocity .velocity-hour-pop { left: 8px; right: 8px; bottom: 40px; width: auto; padding: 8px 12px; }
+  #velocity .velocity-hour-pop { padding: 8px 12px; }
   #velocity .velocity-hour-pop__meta { display: block; margin-left: 0; }
   #velocity .velocity-mark-chips { display: grid; grid-template-columns: minmax(0, 1fr); overflow: visible; }
   #velocity .velocity-mark-chips button:last-child { justify-self: start; margin-left: 0; }

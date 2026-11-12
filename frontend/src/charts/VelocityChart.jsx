@@ -73,8 +73,9 @@ export default function VelocityChart({ velocity, transactions, compact = false 
     <figure id="velocity-period-pane-hourly" role="tabpanel" aria-labelledby="velocity-period-hourly" hidden={view !== 'hourly'} className="velocity-chart" data-testid="velocity-chart" aria-label="Hourly amount chart, baseline window versus spike window">
       <div className="velocity-chart-plot">
         <div ref={containerRef} className="velocity-chart-canvas" />
-        {hour && <HourDetail row={hour} model={model} onClose={() => setHour(null)} />}
       </div>
+      {/* (fix F3 D-P17) The hour detail sits under the plot, so every bar stays visible and clickable while it is open. */}
+      {hour && <HourDetail row={hour} model={model} onClose={() => setHour(null)} />}
       <div className="velocity-mark-chips" role="group" aria-label="Highlight on the chart" data-testid="velocity-mark-chips">
         <button type="button" aria-pressed={mark === 'peak'} disabled={!peak} data-testid="velocity-mark-peak" onClick={() => setMark(mark === 'peak' ? '' : 'peak')}>Highlight peak hour <span>{peak ? 1 : 0}</span></button>
         <button type="button" aria-pressed={mark === 'over'} disabled={!overCount} data-testid="velocity-mark-over" onClick={() => setMark(mark === 'over' ? '' : 'over')}>Highlight hours above the line <span>{overCount}</span></button>
@@ -94,7 +95,7 @@ export default function VelocityChart({ velocity, transactions, compact = false 
   </div>);
 }
 
-// (vteam viz 2026-11-12, CONSENSUS s4c) The clicked hour, on a frosted panel over the plot's top-right corner: the one
+// (vteam viz 2026-11-12, CONSENSUS s4c) The clicked hour, on a frosted panel directly under the plot (fix F3 D-P17): the one
 // chart place that uses the frosted surface (.tg-glass, components.css): opacity .92, blur 8px; without backdrop-filter or
 // with reduced transparency it is the plain panel colour. Text is ink / muted only; the state word carries a ▲.
 function HourDetail({ row, model, onClose }) {

@@ -176,6 +176,12 @@ assert.equal(gridParams().rowHeight, 40);
 assert.equal(gridParams({ phone: true }).rowHeight, 44);
 assert.equal(gridParams().accentColor, '#34302b', 'grid accent follows the warm-charcoal accent (round 6)');
 assert.ok(gridParams().fontSize >= 14 && gridParams().headerFontSize >= 14);
+// (F2 2026-11-12, D-C3) One square ledger theme: receded 600 header, no zebra, hairline rows, 44px grid inputs.
+assert.equal(gridParams().wrapperBorderRadius, 0); assert.equal(gridParams().borderRadius, 0);
+assert.equal(gridParams().headerFontWeight, 600); assert.equal(gridParams().headerBackgroundColor, tokens.color.recede);
+assert.equal(gridParams().oddRowBackgroundColor, gridParams().backgroundColor); assert.equal(gridParams().rowBorder.color, tokens.color.ruleSoft);
+assert.equal(gridParams().selectedRowBackgroundColor, tokens.color.sel); assert.equal(gridParams().fontFamily, tokens.font.sans);
+assert.equal(gridParams().inputHeight, 44);
 
 // 7. shared/asOf.js: the dashboard file is the only source; ?asof= only in public demo mode.
 const fileAsOf = JSON.parse(read('frontend/src/data/dashboard_disputes_v1.json')).as_of;

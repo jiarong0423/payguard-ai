@@ -1,20 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { AgGridReact, themeQuartz } from './grid/agGrid.jsx';
+import { AgGridReact } from './grid/agGrid.jsx';
 import './AnalyticsDashboard.css';
 
-const analyticsGridTheme = themeQuartz.withParams({
-  accentColor: '#2563eb',
-  backgroundColor: '#ffffff',
-  borderColor: '#dbe3ec',
-  browserColorScheme: 'light',
-  foregroundColor: '#1e293b',
-  headerBackgroundColor: '#f1f5f9',
-  headerTextColor: '#334155',
-  oddRowBackgroundColor: '#f8fafc',
-  rowHoverColor: '#eff6ff',
-  fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-  fontSize: 15,
-});
+// (F2 2026-11-12, OFFICIAL_FIX_GUIDE s1) The order grid uses the console grid theme from grid/agGrid.jsx (no theme prop).
 
 // Quick classify and highlight for the order grid. Bands and the 12.00 line are fixed demo thresholds, not risk scores:
 // they only sort the same synthetic rows by amount. Uses AG Grid's own number filter (setFilterModel) and getRowClass.
@@ -229,7 +217,7 @@ export default function AnalyticsDashboard({ aup, state }) {
   const rowData = useMemo(() => transactions, [transactions]);
   const columnDefs = useMemo(() => [
     { field: 'order_id', headerName: 'Order', minWidth: 150, flex: 1.3 },
-    { field: 'amount', headerName: 'Amount', minWidth: 110, filter: 'agNumberColumnFilter', valueGetter: ({ data }) => Number(data.amount), valueFormatter: ({ value }) => Number(value).toFixed(2) },
+    { field: 'amount', headerName: 'Amount', minWidth: 110, cellClass: 'tg-num', filter: 'agNumberColumnFilter', valueGetter: ({ data }) => Number(data.amount), valueFormatter: ({ value }) => Number(value).toFixed(2) },
     { field: 'currency', headerName: 'Currency', minWidth: 100 },
     { field: 'occurred_at', headerName: 'Captured at', minWidth: 220, flex: 1.2, valueFormatter: ({ value }) => utcDateTime(value) },
   ], []);
@@ -291,13 +279,10 @@ export default function AnalyticsDashboard({ aup, state }) {
         </div>
         <div className="analytics-grid-frame" aria-label="AG Grid Community synthetic transaction analytics">
           <AgGridReact
-            theme={analyticsGridTheme}
             rowData={rowData}
             columnDefs={columnDefs}
             defaultColDef={{ filter: true, resizable: true, sortable: true }}
             getRowId={({ data }) => data.order_id}
-            headerHeight={38}
-            rowHeight={36}
             quickFilterText={quickFilter}
             onGridReady={(event) => { gridApi.current = event.api; }}
             getRowClass={({ data }) => (highlight && Number(data?.amount) >= HIGHLIGHT_FROM ? 'analytics-row-large' : undefined)}

@@ -1,35 +1,43 @@
-import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { apiRequest, retrySecondsLeft, waitText, withoutFixedWait } from './api.js';
 import './GuideLive.css';
 
 // Local stand-in with the props of C1's shared GapGrid ({ items, testIdPrefix }), built from the current GuideReplay pieces.
-const PHONE_QUERY = '(max-width: 640px)';
-const usePhone = () => {
-  const [phone, setPhone] = useState(() => typeof window !== 'undefined' && window.matchMedia?.(PHONE_QUERY).matches);
-  useEffect(() => {
-    const query = window.matchMedia?.(PHONE_QUERY);
-    if (!query) return undefined;
-    const update = () => setPhone(query.matches);
-    query.addEventListener('change', update);
-    return () => query.removeEventListener('change', update);
-  }, []);
-  return phone;
+// (F2 2026-11-12) Cards follow the CONTAINER width, not the viewport: the Step 02 guide sits in a 306px side column at
+// 1440 / 1280, where the three columns (170 + 220 + 150 = 540) scrolled sideways and pushed Status and Source out.
+const CARDS_BELOW = 560;
+const useNarrowBox = (ref) => {
+  const [narrow, setNarrow] = useState(() => typeof window !== 'undefined' && window.innerWidth < CARDS_BELOW);
+  useLayoutEffect(() => {
+    const box = ref.current;
+    if (!box) return undefined;
+    const update = () => { const width = box.clientWidth; if (width > 0) setNarrow(width < CARDS_BELOW); };
+    update();
+    if (typeof ResizeObserver === 'undefined') return undefined;
+    const observer = new ResizeObserver(update);
+    observer.observe(box);
+    return () => observer.disconnect();
+  }, [ref]);
+  return narrow;
 };
 
 function LiveGapGrid({ grid, Grid, items, testIdPrefix }) {
   const { gapGridTheme, StatusChip, SourceChip } = grid;
-  const phone = usePhone();
+  const boxRef = useRef(null);
+  const narrow = useNarrowBox(boxRef);
+  // Status chips never wrap (D-P3): 220 fits "Mentioned, not confirmed".
   const columns = useMemo(() => [
-    { field: 'label', headerName: 'Item', flex: 1.4, minWidth: 170, sortable: true },
-    { field: 'status', headerName: 'Status', flex: 1.6, minWidth: 220, cellRenderer: ({ value }) => <StatusChip value={value} />, sortable: true },
+    { field: 'label', headerName: 'Item', flex: 1.4, minWidth: 170, wrapText: true, autoHeight: true, sortable: true },
+    { field: 'status', headerName: 'Status', flex: 1.6, minWidth: 224, cellRenderer: ({ value }) => <StatusChip value={value} />, sortable: true },
     { field: 'source', headerName: 'Source', flex: 1, minWidth: 150, cellRenderer: ({ data }) => <SourceChip data={data} />, sortable: true },
   ], [StatusChip, SourceChip]);
-  // Phones get stacked cards: three 150px+ columns do not fit 343px (review r1 P0.5).
-  if (phone) return <ul className="guide-live-cards" data-testid={`${testIdPrefix}-grid-body`}>
-    {items.map((item) => <li key={item.id} className="guide-live-card"><strong>{item.label}</strong><span><StatusChip value={item.status} /><SourceChip data={item} /></span></li>)}
-  </ul>;
-  return <div data-testid={`${testIdPrefix}-grid-body`}><Grid theme={gapGridTheme} rowData={items} columnDefs={columns} getRowId={({ data }) => data.id}
-    domLayout="autoHeight" rowHeight={46} headerHeight={46} suppressCellFocus /></div>;
+  // Narrow containers get stacked cards: three 150px+ columns do not fit 343px (review r1 P0.5) or the 306px side column.
+  return <div ref={boxRef} data-testid={`${testIdPrefix}-grid-body`}>
+    {narrow ? <ul className="guide-live-cards">
+      {items.map((item) => <li key={item.id} className="guide-live-card"><strong>{item.label}</strong><span><StatusChip value={item.status} /><SourceChip data={item} /></span></li>)}
+    </ul> : <Grid theme={gapGridTheme} rowData={items} columnDefs={columns} getRowId={({ data }) => data.id}
+      domLayout="autoHeight" suppressCellFocus />}
+  </div>;
 }
 
 // The grid (grid/agGrid.jsx: module registration + AgGridReact) arrives with this lazy chunk, so AG Grid stays out of the entry chunk.

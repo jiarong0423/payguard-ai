@@ -3,7 +3,7 @@
    review will add later: design system v2 classes (.tg-seg, .tg-fold, .tg-tag--neutral, .tg-is-sel) replace the local ones. */
 .ds-layout { padding: var(--pg-space-4); }
 .ds-head__num.is-soon { color: var(--pg-color-warn); }
-.ds-hosted { display: grid; gap: var(--pg-space-2); margin: var(--pg-space-4); padding-top: var(--pg-space-2); border-top: 3px double var(--pg-color-ink); scroll-margin-top: 80px; }
+.ds-hosted { display: grid; gap: var(--pg-space-2); margin: var(--pg-space-4); padding-top: var(--pg-space-2); border-top: var(--pg-layout-rule-block) solid var(--pg-color-ink); scroll-margin-top: 80px; } /* (F1 D-P13) block head 2px, was 3px double */
 .ds-hosted > p { margin: 0; }
 .ds-queue-col, .ds-case { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--pg-space-4); align-content: start; min-width: 0; }
 .ds-queue__cap { display: grid; gap: 2px; margin: 0; padding: var(--pg-space-2) 0; border-bottom: 1px solid var(--pg-color-ink); font-size: var(--pg-text-1); }
@@ -15,16 +15,17 @@
 .ds-queue__list > li:nth-child(5n) { border-bottom-color: var(--pg-color-ink); }
 .ds-queue__row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px var(--pg-space-3); width: 100%; padding: 10px 8px; border: 0; background: transparent; color: var(--pg-color-ink); font: 400 var(--pg-text-2)/1.35 var(--pg-font-sans); text-align: left; cursor: pointer; }
 .ds-queue__row:hover { background: var(--pg-color-hover); }
+.ds-queue__row.tg-is-sel { background: var(--pg-color-sel); } /* (F1 D-C4) selected = sel tint + the 3px bar (the transparent row background hid the tint) */
 .ds-queue__row:focus-visible { outline: var(--pg-layout-focus-ring) solid var(--pg-color-focus); outline-offset: -2px; }
 .ds-queue__ref { font-size: var(--pg-text-3); font-weight: 700; }
 .ds-queue__amt, .ds-queue__due { text-align: right; white-space: nowrap; }
 .ds-queue__amt { font-weight: 650; }
 .ds-queue__reason { min-width: 0; color: var(--pg-color-muted); }
-.ds-queue__total { margin: 0; padding: 8px; border-top: 3px double var(--pg-color-ink); font-size: var(--pg-text-2); font-weight: 700; }
-.ds-head { display: grid; gap: var(--pg-space-3); padding-bottom: var(--pg-space-4); border-bottom: 1px solid var(--pg-color-ink); }
+.ds-queue__total { margin: 0; padding: 8px; border-top: 1px solid var(--pg-color-ink); font-size: var(--pg-text-2); font-weight: 700; }
+.ds-head { display: grid; gap: var(--pg-space-3); border-bottom: 1px solid var(--pg-color-ink); } /* (F1 D-P5/D-P24) padding comes from .tg-focus: 32 on all sides (bottom was 16), 20 on phones */
 .ds-head__kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 0; color: var(--pg-color-muted); font-size: var(--pg-text-2); }
 .ds-head__title { margin: 0; font-family: var(--pg-font-serif); font-size: var(--pg-text-5); font-weight: 650; line-height: 1.1; }
-.ds-head__figs { display: flex; flex-wrap: wrap; gap: var(--pg-space-3) var(--pg-space-7); }
+.ds-head__figs { display: flex; flex-wrap: wrap; gap: var(--pg-space-3) var(--pg-space-5); } /* (F1 D-P7) 24 between "1 day" and the amount (was 48) */
 .ds-head__figs > div { display: grid; gap: 4px; align-content: start; }
 .ds-head__label { color: var(--pg-color-muted); font-size: var(--pg-text-1); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 .ds-head__num { display: inline-flex; align-items: center; gap: 8px; font-family: var(--pg-font-serif); font-size: var(--pg-text-6); font-weight: 700; line-height: 1; white-space: nowrap; }
@@ -132,7 +133,7 @@
 /* (a11y phase 2, 2c/4d) A deadline never by colour alone: due (<= 1 day) = warning-octagon + solid left bar + bold;
    soon (2 days) = clock + dashed underline. On phones the case deadline keeps its 40px key figure. */
 .tg-deadline--soon { text-decoration: underline dashed; text-underline-offset: 3px; }
-.ds-head__num.is-due { padding-left: var(--pg-space-2); border-left: 4px solid currentColor; }
+.ds-head__num.is-due { padding-left: var(--pg-space-2); border-left: var(--pg-elev-active-bar) solid currentColor; } /* (F1 D-P13) 3px, was 4 */
 .ds-head__num.is-soon { text-decoration: underline dashed; text-decoration-thickness: 2px; text-underline-offset: 6px; }
 /* (a11y 4b re-measure 3) "1 day" is the 56px key figure at every width; the amount (20px) and the case id (16px) step down. */
 .ds-head__num.tg-keyfig { font-size: var(--pg-text-7); }
@@ -157,7 +158,8 @@
 
 /* (R7) T6 the AI step can be tried here; T4 the hosted send sits in the rail under the queue. */
 .ds-ai__try { display: grid; gap: 6px; margin: 0 0 var(--pg-space-3); }
-.ds-ai__tryrow { display: flex; gap: var(--pg-space-2); }
+.ds-ai__tryrow { display: flex; gap: var(--pg-space-2); min-width: 0; }
+.ds-ai__tryrow > button { flex: none; max-width: 40%; } /* (F1 D-P18) the Check button stays inside the form */
 .ds-ai__tryrow input { flex: 1; min-width: 0; height: 36px; padding: 0 10px; border: 1px solid var(--pg-color-control-line); background: var(--pg-color-panel); color: var(--pg-color-ink); font: inherit; }
 .ds-ai__result { margin: 0; padding: var(--pg-space-2) var(--pg-space-3); border-left: 2px solid var(--pg-color-ink); background: var(--pg-color-canvas); }
 #disputes .stage-main > .ds-hosted { margin-left: 0; margin-right: 0; }
@@ -169,3 +171,12 @@
 /* (a11y r8) The rail's links are one quiet line: muted, 400, thin underline, no wrap. */
 #disputes .ds-links { white-space: nowrap; font-size: var(--pg-text-1); }
 #disputes .ds-links a { color: var(--pg-color-muted); font-weight: 400; text-decoration-thickness: 1px; }
+
+/* (F1 D-P6 2026-11-12) Wide screens: the id tags sit on the figures' row, right-aligned, instead of leaving about 280px
+   empty to the right of "1 day" and the amount. */
+@media (min-width: 1280px) {
+  .ds-head.tg-focus { grid-template-columns: auto minmax(0, 1fr); column-gap: var(--pg-space-6); }
+  .ds-head.tg-focus > * { grid-column: 1 / -1; }
+  .ds-head.tg-focus > .ds-head__figs { grid-column: 1; }
+  .ds-head.tg-focus > .ds-head__tags { grid-column: 2; align-self: end; justify-content: flex-end; }
+}

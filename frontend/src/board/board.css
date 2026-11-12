@@ -27,6 +27,33 @@
 .board-scroll:focus-visible { outline: 2px solid var(--pg-color-focus); outline-offset: 2px; }
 .board-canvas { min-width: 880px; }
 .board-canvas .b-scheduler { font-size: 14px; }
+/* (fix F3 D-C5, OFFICIAL_FIX_GUIDE s5) Bryntum 8.0.0 theme variables (scheduler.css, stockholm-light.css) mapped to the console
+   tokens, scoped to this board only: recede header with 600 ink text, rule-soft cell and row lines, panel cells, square
+   bars and buttons. Was the stockholm default: header #f7f7f7, cell lines #d9d9d9, rounded bars. */
+.board-canvas .b-scheduler {
+  --b-grid-header-background: var(--pg-color-recede);
+  --b-grid-header-color: var(--pg-color-ink);
+  --b-grid-header-font-weight: 600;
+  --b-grid-header-border-color: var(--pg-color-rule-soft);
+  --b-grid-cell-border-color: var(--pg-color-rule-soft);
+  --b-grid-row-border-color: var(--pg-color-rule-soft);
+  --b-grid-cell-background: var(--pg-color-panel);
+  --b-grid-cell-hover-background: var(--pg-color-row-hover);
+  --b-primary: var(--pg-color-accent);
+  --b-button-border-radius: var(--pg-radius-control);
+}
+/* Bar colours: each eventColor class (boardData.js) gets a token; the tonal style's variables live on the bar wrap, so the
+   overrides sit there too. Red = risk window, amber / orange = watch (claim opened), blue / indigo = neutral accent
+   (open window, the seller's plan); the case milestones are non-semantic categorical layers. */
+.board-canvas .b-sch-event-wrap { --b-sch-event-border-radius: var(--pg-radius-control); }
+.board-canvas .b-sch-event-wrap.b-color-red { --b-primary: var(--pg-color-risk); --b-sch-event-background: var(--pg-tint-risk); --b-sch-event-hover-background: var(--pg-tint-risk); --b-sch-event-border-color: var(--pg-color-risk); --b-sch-event-color: var(--pg-color-ink); }
+.board-canvas .b-sch-event-wrap.b-color-amber, .board-canvas .b-sch-event-wrap.b-color-orange { --b-primary: var(--pg-color-warn); --b-sch-event-background: var(--pg-tint-watch); --b-sch-event-hover-background: var(--pg-tint-watch); --b-sch-event-border-color: var(--pg-color-warn); --b-sch-event-color: var(--pg-color-warn); }
+.board-canvas .b-sch-event-wrap.b-color-blue, .board-canvas .b-sch-event-wrap.b-color-indigo { --b-primary: var(--pg-color-accent); --b-sch-event-background: var(--pg-color-sel); --b-sch-event-hover-background: var(--pg-color-sel); --b-sch-event-border-color: var(--pg-color-accent); --b-sch-event-color: var(--pg-color-ink); }
+.board-canvas .b-sch-event-wrap.b-color-teal { --b-primary: var(--pg-cat-1); }
+.board-canvas .b-sch-event-wrap.b-color-green { --b-primary: var(--pg-cat-2); }
+.board-canvas .b-sch-event-wrap.b-color-gray { --b-primary: var(--pg-color-context); }
+/* Fitted layout (box under DESKTOP_MIN_BOX, EvidenceBoard.jsx): the canvas takes the box width, the time axis fills the rest. */
+.board-timeline-fit .board-canvas { min-width: 0; }
 .board-canvas .payguard-board-urgent .b-grid-cell:first-child { color: var(--pg-color-risk); font-weight: 600; box-shadow: inset 4px 0 0 var(--pg-color-risk); }
 @container (max-width: 280px) {
   .board-row dl { grid-template-columns: minmax(0, 1fr); }
@@ -51,8 +78,9 @@
 .board-canvas .b-timeline-sub-grid .b-sch-foreground-canvas { z-index: 2; }
 /* 2px backgrounds with token fallbacks, so the lines still show where the token sheet is absent (test harnesses). */
 .board-canvas .b-timeline-sub-grid .payguard-board-line { position: absolute; top: 0; width: 2px; height: 100%; margin-left: -1px; }
-.board-canvas .b-timeline-sub-grid .payguard-board-line-now { background: var(--pg-color-accent, #4f46e5); }
-.board-canvas .b-timeline-sub-grid .payguard-board-line-due { background: repeating-linear-gradient(to bottom, var(--pg-color-risk, #93454a) 0 6px, transparent 6px 10px); }
+/* (fix F3 D-C5) Token only: the old indigo / rose fallbacks are gone (OFFICIAL_FIX_GUIDE s5). */
+.board-canvas .b-timeline-sub-grid .payguard-board-line-now { background: var(--pg-color-accent); }
+.board-canvas .b-timeline-sub-grid .payguard-board-line-due { background: repeating-linear-gradient(to bottom, var(--pg-color-risk) 0 6px, transparent 6px 10px); }
 .board-canvas .payguard-board-plan { cursor: grab; }
 .board-canvas .payguard-board-plan.b-active { outline: 2px solid var(--pg-color-focus); outline-offset: 1px; }
 
@@ -63,8 +91,9 @@
 
 /* Urgency chips and the Bryntum bar styling they switch (event cls). */
 .board-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 8px; }
-.board-chips button { min-height: 44px; padding: 0 14px; border: 1px solid var(--pg-color-rule); border-radius: 999px; background: var(--pg-color-panel); color: var(--pg-color-ink); font: inherit; font-size: 15px; cursor: pointer; }
-.board-chips button span { margin-left: 4px; padding: 0 6px; border-radius: 999px; background: var(--pg-color-recede); font-size: 14px; }
+/* (fix F3 D-C5) Square chips like the chart's highlight chips (was a 999px capsule). */
+.board-chips button { min-height: 44px; padding: 0 14px; border: 1px solid var(--pg-color-control-line); border-radius: var(--pg-radius-control); background: var(--pg-color-panel); color: var(--pg-color-ink); font: inherit; font-size: 14px; cursor: pointer; }
+.board-chips button span { margin-left: 4px; padding: 0 6px; border-radius: var(--pg-radius-control); background: var(--pg-color-recede); font-size: 14px; }
 .board-chips button[aria-pressed="true"] { border-color: var(--pg-color-accent-strong); color: var(--pg-color-accent-strong); text-shadow: 0.45px 0 0 currentColor, -0.45px 0 0 currentColor; }
 /* (fix r1 F10) The check mark sits in a fixed slot of the left padding in both states (hidden until pressed), so
    pressing a chip changes no width and a label that wraps stays aligned. */
@@ -73,10 +102,11 @@
 .board-chips button[aria-pressed="true"]::before { visibility: visible; }
 .board-chips button:disabled { color: var(--pg-color-muted); cursor: not-allowed; }
 .board-chips button:focus-visible { outline: 2px solid var(--pg-color-focus); outline-offset: 2px; }
-.board-canvas .b-sch-event-wrap.payguard-board-glow .b-sch-event, .board-canvas .payguard-board-glow.b-sch-event { box-shadow: 0 0 0 3px var(--pg-color-risk), 0 0 12px 2px var(--pg-color-risk); }
+/* (fix F3 D-C5) A tight case gets a flat 2px risk ring, no blur glow. */
+.board-canvas .b-sch-event-wrap.payguard-board-glow .b-sch-event, .board-canvas .payguard-board-glow.b-sch-event { box-shadow: 0 0 0 2px var(--pg-color-risk); }
 .board-canvas .b-sch-event-wrap.payguard-board-dim, .board-canvas .payguard-board-dim.b-sch-event { opacity: 0.3; }
 .board-triage { margin: 0 0 4px; font-weight: 600; }
-.board-row-source { font-size: 14px; padding: 1px 6px; border-radius: 999px; border: 1px solid currentColor; margin-inline: 6px; }
+.board-row-source { font-size: 14px; padding: 1px 6px; border-radius: var(--pg-radius-status); border: 1px solid currentColor; margin-inline: 6px; }
 .board-row-unscheduled { outline: 2px dashed var(--pg-color-watch); outline-offset: -2px; }
 .board-unscheduled { color: var(--pg-color-watch); }
 .board-grid-case { display: flex; flex-direction: column; min-width: 0; line-height: 1.3; }
@@ -86,7 +116,7 @@
    ran past the due line). Lane 2 holds only the plan, so a label longer than its bar runs on to the right of it. */
 .board-timeline .board-canvas .b-sch-event-wrap:has(.payguard-board-plan), .board-timeline .board-canvas .b-sch-event-wrap.payguard-board-plan,
 .board-timeline .board-canvas .payguard-board-plan, .board-timeline .board-canvas .payguard-board-plan .b-sch-event-content { overflow: visible; }
-.board-timeline .board-canvas .payguard-board-plan .ev-label { overflow: visible; text-overflow: clip; flex: 0 0 auto; min-width: max-content; color: var(--pg-color-accent-strong, #3730a3); }
+.board-timeline .board-canvas .payguard-board-plan .ev-label { overflow: visible; text-overflow: clip; flex: 0 0 auto; min-width: max-content; color: var(--pg-color-accent-strong); }
 .board-canvas .ev-label-milestone { display: none; }
 /* (2026-11-10) Phone timeline: a masked Sandbox code may wrap after a hyphen instead of ending in "…". */
 /* (phone fix 2026-11-10) The phone timeline uses the same one-line rows and two lanes as the desktop; the code fits one line. */
@@ -136,13 +166,16 @@
 .board-plan-message:empty { min-height: 0; flex-basis: 0; }
 /* 14px everywhere in the board, the bar labels included; amber bars get a darker label (AA contrast). */
 .board-canvas .b-sch-event .b-sch-event-content, .board-canvas .b-sch-event .b-sch-event-text, .board-canvas .b-sch-event .ev-label { font-size: 14px; letter-spacing: 0; }
-.board-canvas .b-color-amber .ev-label, .board-canvas .b-color-orange .ev-label, .board-canvas .b-color-amber .b-sch-event-content, .board-canvas .b-color-orange .b-sch-event-content { color: #5f3a00; }
+.board-canvas .b-color-amber .ev-label, .board-canvas .b-color-orange .ev-label, .board-canvas .b-color-amber .b-sch-event-content, .board-canvas .b-color-orange .b-sch-event-content { color: var(--pg-color-warn); }
 /* (red team R2 N-2) The fixed-height timeline lets the wheel go on to the page at its top and bottom. */
 .board-timeline .board-canvas .b-grid-body-container { overscroll-behavior-y: auto; }
 /* Phones: the drag and keyboard help is for a pointer and a keyboard; it stays for screen readers only. */
 @media (max-width: 640px) { .board-plan-help { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); margin: 0; } }
 /* (external review 2026-11-10 #9) A grid cell never wraps (125.50 USD stayed on two lines at 110px). */
 .board-timeline .board-canvas .b-grid-sub-grid-locked .b-grid-cell { white-space: nowrap; }
+/* (fix F3, coordinator ruling) Narrow phone Case column (112px): the code wraps at its hyphens onto a second line inside the
+   44px row instead of being cut; no ellipsis. */
+.board-timeline .board-canvas .b-grid-sub-grid-locked .b-grid-cell.board-case-wrap { white-space: normal; overflow-wrap: break-word; text-overflow: clip; line-height: 1.25; padding-block: 2px; }
 /* (external review 2026-11-10, phone) The plan area grows with its content (no fixed height), so Schedule a slot is never cut. */
 @media (max-width: 640px) { .board-list .board-row .board-plan-reset { margin-top: 4px; } }
 /* (external review 2026-11-10 #1) Tablet: the board fits its box (Case and Due only), so the time axis is in view without

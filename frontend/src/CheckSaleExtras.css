@@ -71,7 +71,7 @@
 /* ---------- B. Three results side by side ---------- */
 /* (T3 round 7) Cards keep their natural content height inside the row; the grid row stretches them to the tallest
    card and .tg-card--cta puts the source and button on each card's floor, so buttons still line up. No subgrid rows. */
-.check-three__row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--pg-space-5); align-items: stretch; }
+.check-three__row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--pg-space-5); align-items: start; } /* (F1 D-P6) each card keeps its own height: the stretched cards left 80px blank above the foot (a shared-row subgrid moved it to 112px) */
 /* No chestnut rule on a card that carries a status stamp: the cards' top rule is the neutral charcoal. */
 .check-three__card.tg-clip { border-top-color: var(--pg-color-rule); }
 /* .tg-card--cta + .tg-cta (components.css v2) put the source and button on each card's floor: one button baseline. */

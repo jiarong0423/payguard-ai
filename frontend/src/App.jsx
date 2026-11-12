@@ -16,7 +16,6 @@ import { SPONSOR_MAP, sponsorHref } from './sponsorMap.js';
 import GuideLive, { useWaitClock, waitFailureMessage, WaitLine } from './GuideLive.jsx';
 import CountryRules, { hasPostalBan } from './CountryRules.jsx';
 import ProductReference from './ProductReference.jsx';
-import { color as tokenColor, font as tokenFont } from './theme/tokens.js';
 import { dateTimeLabel as fmtDateTime, money as fmtMoney, zoneLabel } from './theme/format.js';
 import { tabKeyDown } from './tabKeys.js';
 import { displayDisputeId } from './disputeDisplay.js';
@@ -53,15 +52,10 @@ const VelocitySource = caseView('VelocitySource');
 
 // (P4) Ledger rhythm on the orders grid: an ink rule under every fifth row (CONTAINER_SPEC: no zebra).
 const LEDGER_ROW_RULES = { 'is-fifth': ({ node }) => (node.rowIndex + 1) % 5 === 0 };
-// Plain Quartz params; grid/agGrid.jsx turns them into the theme when the grid loads.
-// Colours come from the design tokens (review r1 P1.14), not a separate slate/teal set.
-const gridTheme = ({
-  backgroundColor: tokenColor.panel, foregroundColor: tokenColor.ink, borderColor: tokenColor.rule,
-  headerBackgroundColor: tokenColor.recede, headerTextColor: tokenColor.muted, accentColor: tokenColor.accent,
-  fontFamily: tokenFont.sans, fontSize: 14, headerFontSize: 12,
-  // (P4 2026-11-12) Ledger look: square, panel header, hairline rows (an ink line every 5 rows comes from rowClassRules).
-  wrapperBorderRadius: 0, borderRadius: 0, rowHoverColor: tokenColor.hover, cellHorizontalPadding: 12,
-});
+// (F2 2026-11-12) The orders grid takes the console grid theme from grid/agGrid.jsx (theme/chartTheme.js gridParams()).
+// Below this grid width AMOUNT is hidden and TIME / ORDER / STATUS wrap (AG Grid grid-size: onGridSizeChanged), D-P3.
+const VELOCITY_GRID_NARROW = 600;
+// `compact`: cells at the meta size (14, as before); at 16 the TIME label (207px) ends in "…" in its 185px column at 1440.
 
 // (vteam icon 2026-11-12) Phosphor Regular from the shared sprite; the old names map through LEGACY.
 function Icon({ name, size = 18, ...props }) {
@@ -1477,19 +1471,22 @@ export default function App() {
   const velocityGridApi = useRef(null);
   const selectedOrderId = selectedVelocityTransaction?.order_id || '';
   useEffect(() => { try { velocityGridApi.current?.redrawRows(); } catch { /* grid already gone */ } }, [selectedOrderId]);
+  // (F2 2026-11-12, OFFICIAL_FIX_GUIDE s1) Selected row through rowClassRules (sel fill + 3px bar, grid/agGrid.css).
+  const velocityRowRules = useMemo(() => ({ ...LEDGER_ROW_RULES, 'is-selected': ({ data }) => Boolean(selectedOrderId) && data?.order_id === selectedOrderId }), [selectedOrderId]);
+  const [velocityGridNarrow, setVelocityGridNarrow] = useState(false);
   // (P4 2026-11-12) Ledger column order: time | order | amount | status (CONTAINER_SPEC "orders"). Status is read from the row
   // itself: the synthetic burst rows carry no tracking number (backend store.py), so they read "No tracking yet".
   const columns = useMemo(() => [
     // (fix r1 F3, F4) The cell shows the viewer's clock time (dateLabel) while the value is a UTC timestamp: both the quick filter and
     // the column's own filter match the text on screen (the raw timestamp still matches the quick filter), and the
     // column is declared as text so its filter icon opens the same text popup as the other columns.
-    { field: 'occurred_at', headerName: 'TIME', minWidth: 180, flex: 1.2, cellDataType: 'text', filter: 'agTextColumnFilter', valueFormatter: ({ value }) => dateLabel(value),
+    { field: 'occurred_at', headerName: 'TIME', minWidth: velocityGridNarrow ? 96 : 180, flex: 1.2, wrapText: velocityGridNarrow, autoHeight: velocityGridNarrow, cellDataType: 'text', filter: 'agTextColumnFilter', valueFormatter: ({ value }) => dateLabel(value),
       filterValueGetter: ({ data }) => dateLabel(data?.occurred_at), getQuickFilterText: ({ value }) => `${dateLabel(value)} ${value || ''}` },
-    { field: 'order_id', headerName: 'ORDER', minWidth: 170, flex: 1.2, cellRenderer: ({ value }) => <span className="grid-order tg-mono">{value}</span> },
-    { field: 'amount', headerName: 'AMOUNT', minWidth: 120, flex: 0.8, type: 'rightAligned', cellClass: 'grid-amount', valueFormatter: ({ value, data }) => moneyLabel(value, data?.currency || 'USD'),
+    { field: 'order_id', headerName: 'ORDER', minWidth: velocityGridNarrow ? 96 : 170, flex: 1.2, wrapText: velocityGridNarrow, autoHeight: velocityGridNarrow, cellRenderer: ({ value }) => <span className="grid-order tg-mono">{value}</span> },
+    { field: 'amount', headerName: 'AMOUNT', minWidth: 120, flex: 0.8, hide: velocityGridNarrow, type: 'rightAligned', cellClass: 'grid-amount', valueFormatter: ({ value, data }) => moneyLabel(value, data?.currency || 'USD'),
       getQuickFilterText: ({ value, data }) => `${value ?? ''} ${data?.currency || ''}` },
-    { colId: 'status', headerName: 'STATUS', minWidth: 150, flex: 1, valueGetter: ({ data }) => (data?.tracking_number ? 'Tracking on file' : 'No tracking yet') },
-  ], []);
+    { colId: 'status', headerName: 'STATUS', minWidth: velocityGridNarrow ? 96 : 150, flex: 1, wrapText: velocityGridNarrow, autoHeight: velocityGridNarrow, valueGetter: ({ data }) => (data?.tracking_number ? 'Tracking on file' : 'No tracking yet') },
+  ], [velocityGridNarrow]);
 
   // Optional Channel3 category signal: runs after the rule result is shown and never changes it.
   const lookupCategory = (session, evaluationId, text, revision) => {
@@ -1973,7 +1970,7 @@ export default function App() {
         <div id="velocity-pane-orders" className="velocity-pane tg-ledger vs-orders" role="tabpanel" aria-labelledby="velocity-view-orders" hidden={velocityView !== 'orders'}>
         <p className="vs-orders__cap"><b>DEMO ORDERS</b><span>Times in your zone ({VIEWER_ZONE}) · an ink rule every 5 rows</span></p>
         <div className="velocity-grid-tools"><label htmlFor="velocity-quick-filter">Filter orders</label><input data-testid="velocity-filter" id="velocity-quick-filter" type="text" maxLength={200} value={velocityQuickFilter} onChange={(event) => setVelocityQuickFilter(event.target.value)} placeholder="Order, amount or time" disabled={disabled} /></div>
-        <div className="transaction-grid" data-testid="velocity-grid" aria-label="Demo order table"><Suspense fallback={<span className="grid-loading" role="status">Loading the table</span>}><AgGridReact theme={gridTheme} rowData={state?.transactions || []} columnDefs={columns} defaultColDef={{ sortable: true, resizable: true, filter: true }} getRowId={({ data }) => data.order_id} getRowClass={({ data }) => data?.order_id === selectedVelocityTransaction?.order_id ? 'ag-row-selected-transaction' : ''} rowClassRules={LEDGER_ROW_RULES} quickFilterText={velocityQuickFilter} onGridReady={({ api }) => { velocityGridApi.current = api; }} onRowClicked={({ data }) => setSelectedVelocityTransaction(data)} rowHeight={44} headerHeight={36} animateRows loading={loading || !state} overlayLoadingTemplate="Loading transactions" overlayNoRowsTemplate="Select Load sales burst above to see transactions" /></Suspense></div>
+        <div className="transaction-grid" data-testid="velocity-grid" aria-label="Demo order table"><Suspense fallback={<span className="grid-loading" role="status">Loading the table</span>}><AgGridReact compact rowData={state?.transactions || []} columnDefs={columns} defaultColDef={{ sortable: true, resizable: true, filter: true }} getRowId={({ data }) => data.order_id} rowClassRules={velocityRowRules} quickFilterText={velocityQuickFilter} onGridReady={({ api }) => { velocityGridApi.current = api; }} onGridSizeChanged={({ clientWidth }) => { if (clientWidth > 0) setVelocityGridNarrow(clientWidth < VELOCITY_GRID_NARROW); }} onRowClicked={({ data }) => setSelectedVelocityTransaction(data)} animateRows loading={loading || !state} overlayLoadingTemplate="Loading transactions" overlayNoRowsTemplate="Select Load sales burst above to see transactions" /></Suspense></div>
         {selectedVelocityTransaction && <section className="velocity-selected-detail" data-testid="velocity-selected-detail" aria-label="Selected transaction details"><div className="velocity-selected-heading"><div><span className="meta-label">SELECTED ORDER</span><h3>{selectedVelocityTransaction.order_id}</h3></div><Badge tone={velocity?.status === 'review_velocity' ? 'amber' : velocity?.status === 'normal' ? 'green' : 'muted'}><span data-testid="velocity-stage-status">{velocityStageStatusLabel(velocity)}</span></Badge></div><dl><div><dt>Order reference</dt><dd>{selectedVelocityTransaction.order_id}</dd></div><div><dt>Amount</dt><dd>{moneyLabel(selectedVelocityTransaction.amount, selectedVelocityTransaction.currency)}</dd></div><div><dt>Captured at</dt><dd>{dateLabel(selectedVelocityTransaction.occurred_at)}</dd></div><div><dt>Stage evidence checklist</dt><dd>Check capacity and tracking or delivery records; this demo has none.</dd></div></dl><p>This signal does not prove fraud, check delivery or predict what PayPal will do.</p></section>}
         </div>
         </details>

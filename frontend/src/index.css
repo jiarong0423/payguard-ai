@@ -1,3 +1,6 @@
+/* (F1 2026-11-12, OFFICIAL_FIX_GUIDE s2) Layer order: Tailwind base, then the console resets, then Tailwind components
+   and utilities, then AG Grid (themeCssLayer "grid"). Unlayered console CSS still wins over every layer. */
+@layer theme, base, resets, components, utilities, grid;
 @import "./theme/components.css";
 @import "tailwindcss";
 
@@ -34,7 +37,8 @@ h1 span { color: var(--pg-color-muted); font-weight: 400; margin-left: 8px; }
 h2 { margin: 0; font-size: var(--type-stage-title); font-weight: 700; }
 h3 { margin: 4px 0 0; color: var(--pg-color-ink); font-size: var(--type-section-title); font-weight: 650; }
 a { color: inherit; text-decoration: none; }
-button, input, select, textarea { font: inherit; font-size: var(--type-support); line-height: 1.4; }
+button { font: inherit; font-size: var(--type-support); line-height: 1.4; }
+@layer resets { :where(input, select, textarea) { font: inherit; font-size: var(--type-support); line-height: 1.4; } }
 button, a, summary { -webkit-tap-highlight-color: transparent; }
 button { cursor: pointer; }
 button:disabled { cursor: not-allowed; opacity: .45; }
@@ -176,7 +180,7 @@ button, input, select, textarea, a, summary { outline-offset: 2px; }
 
 /* Scenario actions and stage headers */
 .demo-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.panel, .optional-disclosure { border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-card); background: var(--pg-color-panel); box-shadow: var(--pg-elev-l1); overflow: clip; }
+.panel, .optional-disclosure { border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-card); background: var(--pg-color-panel); box-shadow: none; overflow: clip; } /* (F1 D-P13) 1px frame only: the extra 1px ring read as 2px */
 .stage-accordion.is-collapsed { display: none; }
 .stage-accordion.is-open { margin-bottom: 16px; scroll-margin-top: 78px; }
 /* Guides are jump targets (#guide-<situation>): keep their heading clear of the sticky step bar. */
@@ -195,20 +199,25 @@ button, input, select, textarea, a, summary { outline-offset: 2px; }
 
 /* Stage 01: AUP compliance and Sandbox draft */
 .compliance-layout { display: grid; grid-template-columns: minmax(0, 1fr); }
-@media (min-width: 1024px) { .compliance-layout { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); } }
+@media (min-width: 1024px) { .compliance-layout { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); } } /* (F1 D-P25) 5:7 as at 1280+ */
 .invoice-editor, .aup-result { min-width: 0; padding: 16px; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-card); background: var(--pg-color-panel); }
 .description-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
 .description-label { margin: 0; color: var(--pg-color-ink); font-size: var(--type-section-title); font-weight: 650; }
 .description-presets { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; color: var(--pg-color-muted); font-size: var(--type-meta); }
 .description-presets button { min-height: 44px; padding: 8px 12px; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-control); background: var(--pg-color-recede); color: var(--pg-color-ink); font-size: var(--type-meta); font-weight: 600; }
 .description-presets button:hover:not(:disabled) { background: var(--pg-color-accent-tint); border-color: var(--pg-color-accent); }
-textarea, input[type="text"], input[type="number"], select {
-  width: 100%; min-height: 44px; padding: 12px 12px;
-  border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-control);
-  background: var(--pg-color-recede); color: var(--pg-color-ink); font-size: var(--type-body);
+/* (F1 2026-11-12, OFFICIAL_FIX_GUIDE s2) Console form defaults sit in @layer resets with zero specificity (:where), so
+   they no longer reach AG Grid's filter inputs (layer "grid") and any class rule overrides them. 44px high: 9px padding
+   + 1px border + 22.4px line, held by min-height (was 12px padding = 48px). */
+@layer resets {
+  :where(textarea, input[type="text"], input[type="number"], select) {
+    width: 100%; min-height: 44px; padding: 9px 12px;
+    border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-control);
+    background: var(--pg-color-recede); color: var(--pg-color-ink); font-size: var(--type-body);
+  }
+  :where(textarea) { min-height: 112px; resize: vertical; line-height: 1.55; }
+  :where(textarea, input[type="text"], input[type="number"], select):focus { background: var(--pg-color-panel); border-color: var(--pg-color-accent); }
 }
-textarea { min-height: 112px; resize: vertical; line-height: 1.55; }
-textarea:focus, input[type="text"]:focus, input[type="number"]:focus, select:focus { background: var(--pg-color-panel); border-color: var(--pg-color-accent); }
 .editor-bottom { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 12px; }
 
 .aup-result { display: flex; flex-direction: column; justify-content: center; background: var(--pg-color-recede); }
@@ -586,7 +595,7 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 /* One "More" disclosure per step; what sits inside loses its own outer border (two bordered levels at most). */
 .step-more { margin: 16px 16px 0; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-card); background: var(--pg-color-recede); }
 .step-more > summary { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 8px 16px; color: var(--pg-color-muted); font-size: var(--type-meta); font-weight: 650; cursor: pointer; white-space: nowrap; }
-.step-more-body { display: grid; gap: 12px; padding: 0 12px 12px; }
+.step-more-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; padding: 0 12px 12px; } /* (F1 D-P1) the track no longer grows to its widest child (board pushed the page to 741px) */
 .step-more-body > .step-section, .step-more-body > .limits-drawer { margin: 0; box-shadow: none; }
 .step-more-body .optional-trigger small { white-space: normal; }
 

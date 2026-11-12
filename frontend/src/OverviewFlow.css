@@ -50,7 +50,7 @@
 .ov-nowrap { white-space: nowrap; }
 
 /* The product view inside each card: a small framed screen, the same height in all three. */
-.ov-screen { display: grid; align-content: start; gap: var(--pg-space-2); min-height: calc(var(--pg-space-8) + var(--pg-space-7)); padding: var(--pg-space-3); border: thin solid var(--pg-color-rule-soft); background: var(--pg-color-canvas); }
+.ov-screen { display: grid; align-self: start; align-content: start; gap: var(--pg-space-2); padding: var(--pg-space-3); border: thin solid var(--pg-color-rule-soft); background: var(--pg-color-canvas); }
 .ov-screen__row { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--pg-space-1) var(--pg-space-3); margin: 0; font-size: var(--pg-text-2); font-weight: 600; font-variant-numeric: tabular-nums; }
 .ov-screen__row--stamp { align-items: center; justify-content: flex-start; }
 /* Step 3: what happens, three short lines (the send itself is the focus above). */

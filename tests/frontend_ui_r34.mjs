@@ -130,8 +130,13 @@ const grab = (name) => { const match = section.match(new RegExp(`(?:const ${name
   assert.ok(/@media \(max-width: 900px\) \{\n  \.journey-step strong \{ white-space: normal; overflow: visible; text-overflow: clip;/u.test(css), 'step labels wrap at 768');
   assert.ok(css.includes('.feedback-region .message { overflow-wrap: anywhere; }'), 'toast text wraps');
   assert.ok(/\.guide-live-who \{[^}]*white-space: normal;[^}]*overflow-wrap: anywhere;/u.test(guideCss) && !/\.guide-live-who \{[^}]*text-overflow: ellipsis/u.test(guideCss), 'phone badge wraps');
-  for (const field of ['label', 'status', 'source']) assert.ok(new RegExp(`field: '${field}'[^\\n]*wrapText: true, autoHeight: true`, 'u').test(replay), `gap table ${field} wraps`);
-  assert.ok(replayCss.includes('.guide-replay-grid .ag-cell-wrap-text .gap-chip { white-space: normal; max-width: 100%; }'), 'chips wrap inside a wrapped cell');
+  // (F2 2026-11-12, D-P3) Item still wraps; the Status / Source chips never wrap (a wrapped chip cut "not" out of
+  // "Mentioned, not confirmed"), Status is at least as wide as that label, and narrow grids hide Source instead.
+  assert.ok(/field: 'label'[^\n]*wrapText: true, autoHeight: true/u.test(replay), 'gap table Item wraps');
+  for (const field of ['status', 'source']) assert.ok(!new RegExp(`field: '${field}'[^\\n]*wrapText`, 'u').test(replay), `gap table ${field} chip does not wrap`);
+  assert.ok(/field: 'status'[^\n]*minWidth: (\d+)/u.test(replay) && Number(replay.match(/field: 'status'[^\n]*minWidth: (\d+)/u)[1]) >= 220, 'Status column fits the longest label');
+  assert.ok(replay.includes("column.field === 'source' ? { ...column, hide: narrow } : column") && replay.includes('setNarrow(width < GAP_NARROW_WIDTH)'), 'narrow gap table hides Source');
+  assert.ok(replayCss.includes('.guide-replay-grid .gap-chip { white-space: nowrap; }') && !replayCss.includes('.gap-chip { white-space: normal'), 'chips never wrap in the grid');
 }
 
 // ---- #15: visible times in the viewer's clock; UTC only in Technical details. ----

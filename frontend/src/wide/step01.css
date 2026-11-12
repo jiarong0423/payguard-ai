@@ -35,7 +35,7 @@
   #compliance .aup-result { padding: 12px 16px; }
   #compliance .stage-block .country-rules { padding: 12px 16px; gap: 8px; margin-top: 0; }
   #compliance .country-rules-head h3 { margin: 0; }
-  #compliance .country-try-example { margin-top: 4px; min-height: 38px; }
+  #compliance .country-try-example { margin-top: 4px; min-height: 44px; } /* (F1 2026-11-12) A-section: buttons and fields 44 (was 38) */
   #compliance .country-try-note { margin-top: 2px; }
 
   /* Country form: places and goods side by side, one row of fields. */
@@ -45,9 +45,9 @@
   #compliance .country-places { gap: 4px; }
   #compliance .country-places > .country-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px 12px; }
   #compliance .country-places .country-field-place { max-width: none; }
-  #compliance .country-field select, #compliance .country-field input { min-height: 38px; }
+  #compliance .country-field select, #compliance .country-field input { min-height: 44px; }
   #compliance .country-optional > summary { min-height: 28px; }
-  #compliance .country-rules > .button { min-height: 38px; }
+  #compliance .country-rules > .button { min-height: 44px; }
 
   /* Country result: the verdict stacks (title, line, next step); the old three-column banner squeezed the line. */
   #compliance .country-result { gap: 8px; padding-bottom: 8px; }
@@ -68,10 +68,12 @@
   #compliance .invoice-draft-form { padding-top: 8px; gap: 8px 12px; }
   #compliance #sandbox-draft > summary { min-height: 40px; }
 
-  /* Guide: intro and start button on one row; chat, item table and quick questions in three columns. */
+  /* Guide: chat on the left, item table and quick questions stacked on the right. (F4 D-P19) Three columns left the chat
+     at 259px, cut the quick-question fields to 53px ("Sho", "C") and pushed the table's Source column out; the right
+     column keeps at least 640px so the three table columns (170 + 220 + 150 minimum, plus the "Official mention" chip) fit without a sideways scroll or a cut label. */
   #compliance .guide-live { gap: 8px; }
-  #compliance .guide-live-layout { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.3fr) minmax(0, 1fr); gap: 12px; }
-  #compliance .guide-live-side { display: contents; }
+  #compliance .guide-live-layout { grid-template-columns: minmax(0, 1fr) minmax(640px, 1.5fr); gap: 12px; }
+  @container (max-width: 760px) { #compliance .guide-live-layout { grid-template-columns: minmax(0, 1fr); } }
   #compliance .guide-live-log { max-height: 300px; min-height: 120px; }
   #compliance .guide-live-chat { gap: 8px; }
   #compliance .guide-live-forms { gap: 6px; padding: 12px 16px; }

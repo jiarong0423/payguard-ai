@@ -85,6 +85,8 @@ function subscribeMid(onChange) {
   return () => media.removeEventListener('change', onChange);
 }
 const isMid = () => Boolean(midMedia()?.matches);
+// (fix F3 D-C5) Narrowest board box that still takes the four desktop columns (648px) plus a readable time axis.
+const DESKTOP_MIN_BOX = 1100;
 
 // Phones (phone r3 P2 #9): the list above already carries due, evidence and amount, so the timeline keeps one narrow
 // Case column. Bryntum scrolls only the time axis sideways and the locked Case column stays in view, instead of the
@@ -136,6 +138,10 @@ const DESKTOP_SCHEDULER = { columns: COLUMNS, forceFit: true, eventRenderer: des
 const MID_SCHEDULER = { columns: MID_COLUMNS, forceFit: true, eventRenderer: desktopEventRenderer };
 // (phone fix 2026-11-10) Same bar labels as the desktop: stacked phone rows were uneven (64 to 229px) and cut every label.
 const PHONE_SCHEDULER = { columns: PHONE_COLUMNS, forceFit: false, tickSize: 72, eventRenderer: desktopEventRenderer };
+// (fix F3, coordinator ruling 2026-11-12) A phone box under PHONE_NARROW_BOX: the Case column is 112px and the code wraps at
+// its hyphens on two lines (board.css .board-case-wrap), never cut with an ellipsis, so the time axis gets 160px or more.
+const PHONE_NARROW_BOX = 480;
+const PHONE_NARROW_SCHEDULER = { ...PHONE_SCHEDULER, columns: [{ ...PHONE_COLUMNS[0], width: 112, cellCls: 'board-case-wrap' }] };
 
 // Tooltips name the case, its due date and, for the plan bar, the planned window (optimise r24).
 function tooltipHtml(eventRecord, dueAtOf, shownOf) {
@@ -222,7 +228,14 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
   // `sandbox`: the console's live PayPal Sandbox dispute list (null when it holds sample data only).
   const board = useMemo(() => buildEvidenceBoard({ disputes, drafts, sandbox, now: Date.now() }), [disputes, drafts, sandbox]);
   const phone = useSyncExternalStore(subscribePhone, isPhone, () => false);
-  const mid = useSyncExternalStore(subscribeMid, isMid, () => false);
+  const midViewport = useSyncExternalStore(subscribeMid, isMid, () => false);
+  // (fix F3 D-C5) The board's own box, not the viewport, picks the desktop layout: inside the step's fold a 1440 window gives
+  // the board about 660px, and the four desktop columns (648px) on an 880px canvas left the time axis 228px behind a
+  // sideways scroll. Below DESKTOP_MIN_BOX the two-column fitted layout is used, so the axis is in view.
+  const boxRef = useRef(null);
+  const [boxWidth, setBoxWidth] = useState(0);
+  const mid = midViewport || (boxWidth > 0 && boxWidth < DESKTOP_MIN_BOX);
+  const phoneNarrow = phone && boxWidth > 0 && boxWidth < PHONE_NARROW_BOX;
   const VISIBLE_ROWS = useSyncExternalStore(subscribeResize, visibleRowsNow, () => 6);
   const schedulerRef = useRef(null);
   // Plans restored for this board: a stored plan that still fits, otherwise the default (optimise r24).
@@ -404,7 +417,7 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
       if (typeof detachScheduler === 'function') detachScheduler();
       if (typeof detachStore === 'function') detachStore();
     };
-  }, [board, phone, mid, schedulerKey, onPlanKey]);
+  }, [board, phone, mid, phoneNarrow, schedulerKey, onPlanKey]);
 
   // (defect D2) On a phone the axis starts at the oldest event, so the Collect evidence bars sat off-screen: bring the
   // earliest plan bar into view once the scheduler is laid out. Display only; nothing in the data or the plan changes.
@@ -421,7 +434,7 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
       });
     }, 0);
     return () => { clearTimeout(timer); cancelAnimationFrame(frame); };
-  }, [board, events, phone, mid, schedulerKey]);
+  }, [board, events, phone, mid, phoneNarrow, schedulerKey]);
 
   // Quick classify and highlight: Bryntum's own event styling (a record's cls); case data and the plan are not touched.
   useEffect(() => {
@@ -442,7 +455,7 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
       });
     }
     return undefined;
-  }, [board, events, focus, glow, schedulerKey, phone, mid]);
+  }, [board, events, focus, glow, schedulerKey, phone, mid, phoneNarrow]);
 
   // (final red team C P1) A quick filter shows only its cases on the timeline, and the highlight puts the tight cases on top,
   // so the matching rows are always in the six visible rows instead of greyed out below the fold. Case data is unchanged.
@@ -463,22 +476,44 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
       if (focus !== 'all') store.filter({ id: 'payguard-focus', filterBy: (record) => record.id in index });
       store.sort({ fn: (a, b) => (index[a.id] ?? 1e6) - (index[b.id] ?? 1e6) });
     } catch { /* order is cosmetic; the cards above carry the same filter */ }
-  }, [listRows, focus, schedulerKey, phone, mid]);
+  }, [listRows, focus, schedulerKey, phone, mid, phoneNarrow]);
   // The card strip starts at its first card whenever the filter or the order changes (it kept an old scroll offset and
   // showed the end of the list after Reset).
   const listRef = useRef(null);
   useEffect(() => { const list = listRef.current; if (list) list.scrollLeft = 0; }, [focus, glow]);
+  // (fix F3 D-C5, OFFICIAL_FIX_GUIDE s5) Watch the board's box: it is measured once the fold opens and again when the fold or
+  // the page column changes width. A change of layout remounts the scheduler (board-canvas key); a width change inside one
+  // layout calls refresh() so the fitted time axis (forceFit) is laid out again at the new width.
+  const hasBoard = Boolean(board);
+  useEffect(() => {
+    const box = boxRef.current;
+    if (!box || typeof ResizeObserver === 'undefined') return undefined;
+    const observer = new ResizeObserver((entries) => {
+      const width = Math.round(entries[0]?.contentRect?.width || 0);
+      setBoxWidth((previous) => (Math.abs(previous - width) > 1 ? width : previous));
+    });
+    observer.observe(box);
+    return () => observer.disconnect();
+  }, [hasBoard]);
+  useEffect(() => {
+    const scheduler = schedulerRef.current?.instance;
+    if (!scheduler || !boxWidth) return undefined;
+    const frame = requestAnimationFrame(() => {
+      try { if (!scheduler.isDestroyed) scheduler.refresh(); } catch { /* layout refresh is cosmetic */ }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [boxWidth]);
   if (!board) return <p className="board-empty" data-testid="evidence-board-empty">Load the dispute case to see its evidence and response window.</p>;
   // Missing evidence and "no draft yet" are counted apart, so the summary never says none while a card reads "No draft yet" (r20 UX-2).
   const soon = [board.missingSoon && `${board.missingSoon} due within ${DUE_SOON_DAYS} days with evidence missing`, board.noDraftSoon && `${board.noDraftSoon} due within ${DUE_SOON_DAYS} days with no draft yet`].filter(Boolean);
   const timeline = available && BryntumScheduler;
   const unscheduled = new Set(unscheduledRows(board.rows, plans, Date.now()).map((row) => row.id));
   const liveRows = board.rows.filter((row) => row.source === 'sandbox').length;
-  return <div className="evidence-board" data-testid="evidence-board">
+  return <div ref={boxRef} className="evidence-board" data-testid="evidence-board">
     <p className="board-triage" data-testid="evidence-board-triage">{TRIAGE_CAPTION}{liveRows ? ` · ${liveRows} from the PayPal Sandbox dispute list` : ' · sample cases'}</p>
     <p className="board-summary" data-testid="evidence-board-summary">{board.rows.length} case{board.rows.length === 1 ? '' : 's'} · {soon.length ? soon.join(' · ') : `none due within ${DUE_SOON_DAYS} days with evidence missing or no draft`}{unscheduled.size ? ` · ${unscheduled.size} with a deadline but no evidence slot scheduled` : ''} · now {utcLabel(board.nowIso)}{board.rows.length > 2 ? ' · scroll the cards sideways for more →' : ''}</p>
     <BoardList listRef={listRef} rows={listRows} plans={plans} unscheduled={unscheduled} onSchedule={schedule} />
-    {timeline ? <figure className={`board-timeline${phone ? ' board-timeline-phone' : ''}`} data-testid="evidence-board-timeline">
+    {timeline ? <figure className={`board-timeline${phone ? ' board-timeline-phone' : mid ? ' board-timeline-fit' : ''}`} data-testid="evidence-board-timeline">
       <figcaption title="Bars are the seller response window up to the due date. Bryntum Scheduler Community (MIT).">
         Times in UTC · case data read only · bars: response window and your Collect evidence plan · <span className="board-legend-now">now</span> and <span className="board-legend-due">due</span> lines{phone && <span className="board-swipe-hint" data-testid="evidence-board-swipe-hint"> · swipe the timeline sideways →</span>}
       </figcaption>
@@ -499,11 +534,11 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
       </div>
       <div className="board-scroll" tabIndex={0} role="region" aria-label="Evidence deadline timeline, scrolls sideways" aria-describedby="evidence-board-plan-help">
         {/* Keyed on the layout too: a phone and a desktop scheduler differ in columns and fit, so a fresh one is made. */}
-        <div className="board-canvas" key={phone ? 'phone' : mid ? 'mid' : 'desktop'}>
+        <div className="board-canvas" key={phone ? (phoneNarrow ? 'phone-narrow' : 'phone') : mid ? 'mid' : 'desktop'}>
           {/* Keyed on the range: when a newly prepared draft widens it, a fresh scheduler takes start and end
               together. Updating the two props one by one let Bryntum keep the old span, so the axis ended
               before the latest response-window bar. */}
-          <BryntumScheduler key={`${board.startDate.getTime()}-${board.endDate.getTime()}-${board.viewPreset}`} ref={schedulerRef} {...(phone ? PHONE_SCHEDULER : mid ? MID_SCHEDULER : DESKTOP_SCHEDULER)} autoHeight={timelineResources.length <= VISIBLE_ROWS} height={timelineResources.length > VISIBLE_ROWS ? VISIBLE_ROWS * ROW_HEIGHT + TIMELINE_HEADER : undefined} rowHeight={ROW_HEIGHT} barMargin={3} eventLayout="none" startDate={board.startDate} endDate={board.endDate} viewPreset={board.viewPreset}
+          <BryntumScheduler key={`${board.startDate.getTime()}-${board.endDate.getTime()}-${board.viewPreset}`} ref={schedulerRef} {...(phone ? (phoneNarrow ? PHONE_NARROW_SCHEDULER : PHONE_SCHEDULER) : mid ? MID_SCHEDULER : DESKTOP_SCHEDULER)} autoHeight={timelineResources.length <= VISIBLE_ROWS} height={timelineResources.length > VISIBLE_ROWS ? VISIBLE_ROWS * ROW_HEIGHT + TIMELINE_HEADER : undefined} rowHeight={ROW_HEIGHT} barMargin={3} eventLayout="none" startDate={board.startDate} endDate={board.endDate} viewPreset={board.viewPreset}
             snap timeResolution={HOUR_RESOLUTION} enableDeleteKey={false}
             detectCSSCompatibilityIssues={false} useInitialAnimation={false} zoomOnMouseWheel={false} zoomOnTimeAxisDoubleClick={false}
             milestoneLayoutMode="estimate" milestoneTextPosition="outside" resources={resources} events={events}

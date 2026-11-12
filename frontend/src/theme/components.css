@@ -140,7 +140,7 @@
 .tg-ledger__table tbody tr.is-selected, .tg-is-sel { background: var(--pg-color-sel); }
 .tg-ledger__table tr.is-selected td:first-child { box-shadow: inset var(--pg-elev-active-bar) 0 0 var(--pg-color-rule); }
 .tg-ledger__table:has(tr.is-selected) tbody tr:not(.is-selected) { color: var(--pg-color-muted); } /* recede by colour, never opacity (keeps 4.5:1) */
-.tg-ledger__total td { border-top: 3px double var(--pg-color-rule); border-bottom: 0; font-weight: 700; }
+.tg-ledger__total td { border-top: 1px solid var(--pg-color-rule); border-bottom: 0; font-weight: 700; } /* (F1 D-P13) rules 3 / 2 / 1: a total is a 1px ink rule */
 
 /* ---------- Log: day-book timeline (dispute timeline, session activity, send steps) ---------- */
 /* Dates sit left of a 1px ink margin line; entries are separated by a dotted rule (the only non-solid line). */
@@ -189,7 +189,8 @@
 /* Tags + connect: data-link keys; kinds differ by icon (rule, source, ref, proof, ai), never by colour. */
 .tg-tag { display: inline-flex; align-items: center; gap: 5px; height: 24px; padding: 0 8px; border: 1px solid var(--pg-color-rule); background: transparent; color: var(--pg-color-ink); font: 600 var(--pg-text-1)/1 var(--pg-font-sans); letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; cursor: pointer; }
 .tg-tag > svg { width: 14px; height: 14px; flex: none; }
-.is-linked { outline: 2px solid var(--pg-color-accent); outline-offset: 2px; background-color: var(--pg-color-recede); }
+.is-linked { outline: 0; background-color: var(--pg-color-sel); }
+.tg-focus.is-linked { box-shadow: inset var(--pg-elev-active-bar) 0 0 var(--pg-color-rule); } /* a focus area keeps its panel; linked = the 3px bar */ /* (F1 D-P13) linked = tint only, no 2px ring around whole blocks (owner: too heavy); the selected row keeps its 3px bar */
 .tg-connect { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 5; }
 .tg-connect path { fill: none; stroke: var(--pg-color-rule); stroke-width: 1; shape-rendering: crispEdges; }
 .tg-connect rect { fill: var(--pg-color-accent); }
@@ -209,7 +210,7 @@
   .tg-ledger__status { grid-column: 1 / -1; }
   .tg-ledger__table tr.is-selected { box-shadow: inset var(--pg-elev-active-bar) 0 0 var(--pg-color-rule); padding-left: 12px; }
   .tg-ledger__table tr.is-selected td:first-child { box-shadow: none; }
-  .tg-ledger__total { border-top: 3px double var(--pg-color-rule); }
+  .tg-ledger__total { border-top: 1px solid var(--pg-color-rule); }
   .tg-ledger__total td { border: 0; }
   .tg-log__entry { grid-template-columns: 56px 1fr; }
   .tg-log__entry::before { left: 52px; }
@@ -287,6 +288,10 @@ details.tg-fold:not(.limits-drawer)[open] > summary::after { transform: translat
    action fixed on the right. Shown only after the user acted; a load-time failure belongs to the header status. */
 .tg-toast { position: fixed; z-index: 60; left: 50%; bottom: var(--pg-space-5); transform: translateX(-50%); width: min(var(--pg-layout-content), calc(100vw - 32px)); display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: var(--pg-space-4); padding: var(--pg-space-3) var(--pg-space-4); border: var(--pg-rule-fine); border-left-width: 4px; background: var(--pg-color-panel); color: var(--pg-color-ink); box-shadow: var(--pg-elev-l3); font-size: var(--pg-text-2); }
 .tg-toast__title { display: block; font-weight: 700; }
+/* (F1 D-P16) While a toast shows, the page gets room under its last line and focus scrolls stop above the toast, so the
+   toast never sits on the only copy of a field or the send ticket. */
+body:has(.tg-toast) .main-content { padding-bottom: calc(var(--pg-space-8) * 2 + var(--pg-space-5)); }
+html:has(.tg-toast) { scroll-padding-bottom: calc(var(--pg-space-8) * 2 + var(--pg-space-5)); }
 .tg-toast > .button { justify-self: end; }
 .tg-toast .icon-button { min-width: 44px; min-height: 44px; } /* 44px close (attack r22 phone #8) */
 .tg-toast .paypal-issue-line, .tg-toast .paypal-issue-debug { display: block; overflow-wrap: anywhere; }
@@ -328,6 +333,8 @@ details.tg-fold:not(.limits-drawer)[open] > summary::after { transform: translat
   /* Phones: above the action bar, never taller than 40% of the screen; Try again on its own row (attack r21 #12, r34 #7). */
   .tg-toast { grid-template-columns: auto minmax(0, 1fr) auto; bottom: var(--pg-space-3); max-height: 40dvh; overflow-y: auto; }
   .app-shell.has-phone-action .tg-toast { bottom: calc(56px + 12px + env(safe-area-inset-bottom)); }
+  body:has(.tg-toast) .app-shell.has-phone-action .main-content { padding-bottom: calc(40dvh + var(--pg-layout-action-bar) + var(--pg-space-5)); }
+  html:has(.tg-toast) { scroll-padding-bottom: calc(40dvh + var(--pg-layout-action-bar)); }
   .tg-toast > .button { grid-column: 1 / -1; order: 3; justify-self: stretch; }
 }
 
@@ -335,7 +342,7 @@ details.tg-fold:not(.limits-drawer)[open] > summary::after { transform: translat
    One .tg-focus per page (ui_mock/vteam/CONSENSUS.md section 1): it carries the page's one .tg-keyfig (>= 40px). */
 /* Panel (lighter than canvas), not recede: risk text in sunlight fell to 2.48 on recede (a11y phase 2, item 9). Charcoal rule,
    never chestnut: a focus area carries status. The vault keeps its own surface and eyebrow. */
-.tg-focus { margin-block: var(--pg-space-7); padding: var(--pg-space-6); border-top: 2px solid var(--pg-color-rule); view-transition-name: tg-focus; }
+.tg-focus { margin-block: var(--pg-space-7); padding: var(--pg-layout-hero-pad); border-top: 2px solid var(--pg-color-rule); view-transition-name: tg-focus; }
 .tg-focus:not(.tg-vault) { background: var(--pg-color-panel); }
 .tg-focus:not(.tg-vault) .tg-eyebrow { color: var(--pg-color-muted); }
 /* Due (<= 1 day): solid red left bar beside the warning-octagon icon; due soon keeps the clock and no bar. */
@@ -363,7 +370,7 @@ html .tg-glass { background: var(--pg-color-canvas); }
 @media (prefers-reduced-motion: reduce) { ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none; } }
 @media (max-width: 640px) {
   .tg-h1 { font-weight: 700; }
-  .tg-focus { margin-block: var(--pg-space-6); padding: var(--pg-space-5) var(--pg-space-4); }
+  .tg-focus { margin-block: var(--pg-space-6); padding: var(--pg-layout-card-pad); } /* (F1 D-P5) 20 on phones (was 24 / 16) */
   .tg-split, .tg-cards3 { grid-template-columns: minmax(0, 1fr); gap: var(--pg-space-5); }
   .tg-cards3 > * { grid-row: auto; grid-template-rows: none; }
   .tg-grid-paper { --tg-grid: var(--pg-color-paper-grid-soft); }

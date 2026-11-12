@@ -1,21 +1,18 @@
-import { useCallback, useId, useRef, useState } from 'react';
-import { AgGridReact, themeQuartz } from './grid/agGrid.jsx';
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { AgGridReact, GRID_FLOATING_FILTERS_HEIGHT } from './grid/agGrid.jsx';
 import replays from './data/guide_replays_v1.json';
 import './GuideReplay.css';
 
-export const gapGridTheme = themeQuartz.withParams({
-  accentColor: '#2563eb',
-  backgroundColor: '#ffffff',
-  borderColor: '#dbe3ec',
-  browserColorScheme: 'light',
-  foregroundColor: '#1e293b',
-  headerBackgroundColor: '#f1f5f9',
-  headerTextColor: '#334155',
-  oddRowBackgroundColor: '#f8fafc',
-  rowHoverColor: '#eff6ff',
-  fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
-  fontSize: 15,
-});
+// (F2 2026-11-12, OFFICIAL_FIX_GUIDE s1) No separate slate theme any more: null means "the console grid theme"
+// (grid/agGrid.jsx picks the desktop or phone instance of theme/chartTheme.js gridParams()). GuideLive reads this export.
+export const gapGridTheme = null;
+// Below this width the Source column is hidden (AG Grid grid-size: hide the column that does not fit), so Item
+// and the whole status label still fit; the CSV export names its columns and still carries Source.
+export const GAP_NARROW_WIDTH = 560;
+// Below this width even Item (min 120) + the whole Status label (224) do not fit, e.g. the 285px phone column: the rows
+// the grid shows (after its filters) are listed as cards, like the live guide's phone list; the grid stays mounted for
+// the shown-row count and the CSV export.
+export const GAP_CARDS_WIDTH = 346;
 
 const SITUATIONS = [
   ['preflight', 'Policy pre-check'],
@@ -55,13 +52,15 @@ export function SourceChip({ data }) {
 
 // Gap table shared by the replay and the live guide: AG Grid Community with floating text
 // filters, a quick filter, a shown-rows counter and CSV export of every row passed in.
-// (r34 #14) Item, Status and Source wrap and grow the row (wrapText + autoHeight) instead of ending in "…" at 1280 px.
+// (r34 #14) Item wraps and grows the row (wrapText + autoHeight) instead of ending in "…" at 1280 px.
+// (F2 2026-11-12, D-P3) Status and Source are custom chip renderers: wrapText does not apply to them (AG Grid row-height),
+// so the chips never wrap and the column is at least as wide as the longest label ("Mentioned, not confirmed").
 const GAP_COLUMNS = [
-  { field: 'label', headerName: 'Item', flex: 1.4, minWidth: 180, wrapText: true, autoHeight: true, sortable: true, filter: 'agTextColumnFilter', floatingFilter: true },
-  { field: 'status', headerName: 'Status', flex: 1.6, minWidth: 160, wrapText: true, autoHeight: true, cellRenderer: ({ value }) => <StatusChip value={value} />, sortable: true,
+  { field: 'label', headerName: 'Item', flex: 1.4, minWidth: 120, wrapText: true, autoHeight: true, sortable: true, filter: 'agTextColumnFilter', floatingFilter: true },
+  { field: 'status', headerName: 'Status', flex: 1.6, minWidth: 224, suppressSizeToFit: true, cellRenderer: ({ value }) => <StatusChip value={value} />, sortable: true,
     filter: 'agTextColumnFilter', floatingFilter: true, filterValueGetter: ({ data }) => statusText(data.status),
     getQuickFilterText: ({ data }) => statusText(data.status) },
-  { field: 'source', headerName: 'Source', flex: 1, minWidth: 120, wrapText: true, autoHeight: true, cellRenderer: ({ data }) => <SourceChip data={data} />, sortable: true,
+  { field: 'source', headerName: 'Source', flex: 1, minWidth: 160, cellRenderer: ({ data }) => <SourceChip data={data} />, sortable: true,
     filter: 'agTextColumnFilter', floatingFilter: true, filterValueGetter: ({ data }) => sourceText(data),
     getQuickFilterText: ({ data }) => sourceText(data) },
 ];
@@ -71,6 +70,7 @@ export function GapGrid({ items, csvFileName = 'tradeglot-gap-table.csv', export
   const filterId = useId();
   const [quickFilter, setQuickFilter] = useState('');
   const [shownCount, setShownCount] = useState(items.length);
+  const [cards, setCards] = useState(null);
 
   // CSV export (AG Grid Community CsvExportModule) of every row, with the same plain-English
   // wording the table shows instead of internal status codes.
@@ -87,18 +87,46 @@ export function GapGrid({ items, csvFileName = 'tradeglot-gap-table.csv', export
     });
   }, [csvFileName]);
 
+  // Card mode follows the width of the replay column (ResizeObserver on the tools row, which is never hidden).
+  const toolsRef = useRef(null);
+  const [carded, setCarded] = useState(false);
+  const [narrow, setNarrow] = useState(false);
+  useEffect(() => {
+    const box = toolsRef.current;
+    if (!box || typeof ResizeObserver === 'undefined') return undefined;
+    const update = () => { const width = box.clientWidth; if (width > 0) { setCarded(width < GAP_CARDS_WIDTH); setNarrow(width < GAP_NARROW_WIDTH); } };
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(box);
+    return () => observer.disconnect();
+  }, []);
+  const syncCards = useCallback((api) => {
+    if (!carded) { setCards(null); return; }
+    const shown = [];
+    api.forEachNodeAfterFilterAndSort((node) => { if (node.data) shown.push(node.data); });
+    setCards(shown);
+  }, [carded]);
+  useEffect(() => { const api = gridRef.current?.api; if (api) syncCards(api); else if (!carded) setCards(null); }, [syncCards, carded, items]);
+
+  // Narrow column: Source hidden (AG Grid grid-size, column `hide`); measured on the tools row because an autoHeight
+  // grid does not report onGridSizeChanged on its first layout.
+  const columns = useMemo(() => GAP_COLUMNS.map((column) => (column.field === 'source' ? { ...column, hide: narrow } : column)), [narrow]);
+
   return <>
-    <div className="guide-replay-tools">
+    <div className="guide-replay-tools" ref={toolsRef}>
       <label htmlFor={filterId}>Filter items</label>
       <input id={filterId} data-testid={`${testIdPrefix}-quick-filter`} type="search" value={quickFilter}
         onChange={(event) => setQuickFilter(event.target.value)} placeholder="Item, status or source" />
       <output data-testid={`${testIdPrefix}-shown-count`} aria-live="polite">{shownCount} of {items.length} items shown</output>
       <button type="button" data-testid={`${testIdPrefix}-export-csv`} onClick={exportCsv}>{exportLabel}</button>
     </div>
-    <div className="guide-replay-grid" data-testid={`${testIdPrefix}-grid`}>
-      <AgGridReact ref={gridRef} theme={gapGridTheme} rowData={items} columnDefs={GAP_COLUMNS} getRowId={({ data }) => data.id}
-        quickFilterText={quickFilter} onModelUpdated={({ api }) => setShownCount(api.getDisplayedRowCount())}
-        domLayout="autoHeight" rowHeight={46} headerHeight={46} floatingFiltersHeight={40} suppressCellFocus />
+    {cards && <ul className="guide-live-cards" data-testid={`${testIdPrefix}-cards`}>
+      {cards.map((item) => <li key={item.id} className="guide-live-card"><strong>{item.label}</strong><span><StatusChip value={item.status} /><SourceChip data={item} /></span></li>)}
+    </ul>}
+    <div className={`guide-replay-grid${cards ? ' is-carded' : ''}`} data-testid={`${testIdPrefix}-grid`}>
+      <AgGridReact ref={gridRef} theme={gapGridTheme} rowData={items} columnDefs={columns} getRowId={({ data }) => data.id}
+        quickFilterText={quickFilter} onModelUpdated={({ api }) => { setShownCount(api.getDisplayedRowCount()); syncCards(api); }}
+        domLayout="autoHeight" floatingFiltersHeight={GRID_FLOATING_FILTERS_HEIGHT} suppressCellFocus />
     </div>
   </>;
 }

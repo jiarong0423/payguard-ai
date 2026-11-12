@@ -20,7 +20,7 @@
 .guide-replay-say { margin: 0; color: var(--gr-text); font-size: 16px; }
 .guide-replay-grid { min-width: 0; }
 .guide-replay-note { margin: 0; color: var(--gr-muted); font-size: 14px; }
-.gap-chip { display: inline-block; padding: 3px 12px; border-radius: var(--pg-radius-pill); font-size: 14px; line-height: 1.5; white-space: nowrap; }
+.gap-chip { display: inline-block; padding: 3px 12px; border-radius: var(--pg-radius-status); font-size: 14px; line-height: 1.5; white-space: nowrap; }
 .gap-chip-missing { background: var(--pg-color-recede); color: var(--pg-color-muted); }
 .gap-chip-partial { background: var(--pg-tint-watch); color: var(--pg-color-watch); }
 .gap-chip-conflict { background: var(--pg-tint-risk); color: var(--pg-color-risk); }
@@ -37,6 +37,9 @@
 .guide-replay-tools output { color: var(--pg-color-subtle); font-size: 14px; }
 @media (max-width: 760px) { .guide-replay-layout { grid-template-columns: minmax(0, 1fr); } }
 
-/* (r34 #14) Wrapped gap-table cells: chips and labels break onto a second line, with room above and below. */
+/* (r34 #14) Wrapped gap-table Item cells break onto a second line, with room above and below.
+   (F2 2026-11-12, D-P3) Status / Source chips never wrap: a broken chip read "Mentio / confirm" and could lose "not". */
 .guide-replay-grid .ag-cell-wrap-text { white-space: normal; word-break: normal; overflow-wrap: anywhere; line-height: 1.4; padding-top: 8px; padding-bottom: 8px; }
-.guide-replay-grid .ag-cell-wrap-text .gap-chip { white-space: normal; max-width: 100%; }
+.guide-replay-grid .gap-chip { white-space: nowrap; }
+/* (F2) Phone width: the cards above show the grid's rows; the grid stays mounted (row count, CSV export) but is not drawn. */
+.guide-replay-grid.is-carded { display: none; }

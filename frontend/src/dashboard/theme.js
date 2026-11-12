@@ -2,7 +2,7 @@
 // Newsprint"): ink does the interactive jobs, newsprint surfaces and rules, the four greys as the chart palette.
 // The indigo hex values that were written here (VISUAL_SPEC_r7 D2) are gone.
 import { studioTheme } from 'ag-studio';
-import { categorical, color } from '../theme/tokens.js';
+import { categorical, color, font, radius } from '../theme/tokens.js';
 
 export const PAYGUARD_ACCENT = Object.freeze({
   ink: color.ink, text: color.ink, muted: color.muted, subtle: color.subtle, accent: color.accent, accentDark: color.accentStrong,
@@ -18,7 +18,7 @@ const palette = Object.fromEntries(C.series.flatMap((color, index) => [
 ]));
 
 export const payguardTheme = studioTheme.withParams({
-  fontFamily: 'Inter, ui-sans-serif, system-ui, -apple-system, sans-serif',
+  fontFamily: font.sans,
   fontSize: 14,
   textColor: C.text,
   foregroundColor: C.text,
@@ -26,7 +26,8 @@ export const payguardTheme = studioTheme.withParams({
   accentColor: C.accent,
   backgroundColor: C.panel,
   borderColor: C.border,
-  borderRadius: 8,
+  // (F2 2026-11-12, D-C3) Public Sans and square corners like the console grids (was Inter, 8 / 12).
+  borderRadius: radius.control,
   rowHoverColor: C.tint,
   // Small screens: let the canvas shrink to a phone width instead of Studio's 600/720 px minimums.
   studioMinWidth: 320,
@@ -37,9 +38,9 @@ export const payguardTheme = studioTheme.withParams({
   studioWidgetPadding: 12,
   studioValueWidgetFontSize: 28,
   studioCanvasRowHeight: 16,
-  studioCanvasFontFamily: 'Inter, ui-sans-serif, system-ui, -apple-system, sans-serif',
+  studioCanvasFontFamily: font.sans,
   studioWidgetBackgroundColor: C.panel,
-  studioWidgetBorderRadius: 12,
+  studioWidgetBorderRadius: radius.card,
   studioWidgetBorder: { color: C.border, width: 1 },
   studioWidgetTitleFontSize: 16,
   studioWidgetTitleFontWeight: 600,
@@ -65,7 +66,7 @@ export const payguardTheme = studioTheme.withParams({
   chartGridLineColor: C.canvas,
   chartAxisLineColor: C.border,
   chartAccentColor: C.accent,
-  chartFontFamily: 'Inter, ui-sans-serif, system-ui, -apple-system, sans-serif',
+  chartFontFamily: font.sans,
   ...palette,
 });
 
