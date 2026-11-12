@@ -29,7 +29,7 @@ export default function RecordedSendReplay() {
     }, 1000);
   };
 
-  return <section className="recorded-replay" data-testid="recorded-replay" aria-labelledby="recorded-replay-title">
+  return <section className="recorded-replay tg-block" data-testid="recorded-replay" aria-labelledby="recorded-replay-title">
     <h4 id="recorded-replay-title">Try the send: a recorded replay <span className="recorded-replay-chip" data-testid="recorded-replay-chip">Recorded, nothing is sent</span></h4>
     <p className="recorded-replay-note">Nothing on this page sends anything to PayPal. This walks through the same two steps the local console asks for, then shows what the real Sandbox send recorded at 2026-11-04 17:16 UTC (2026-11-05 in UTC+8). Press the buttons: nothing leaves this page.</p>
     {phase === 'idle' && <button type="button" className="recorded-replay-button" data-testid="recorded-replay-start" onClick={() => setPhase('confirm')}>Start the replay</button>}

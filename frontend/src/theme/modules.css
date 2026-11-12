@@ -1,0 +1,75 @@
+/* Module layer (M1, LAYOUT_DECISION A + GLASS_DECISION). Every selector carries tg-mod / tg-block / tg-box / tg-lift.
+   Original CSS stays untouched; this file only refines named modules. Tokens only, square corners. */
+
+/* One title scale: page H1 28, step title 20; figures compared down a column use tabular numerals. */
+.tg-pagehead.tg-mod .tg-h1 { font-size: var(--pg-text-5); line-height: 1.15; }
+.tg-mod .tg-stephead__title { font-size: var(--pg-text-4); line-height: 1.2; }
+table.tg-box { font-variant-numeric: tabular-nums; }
+.step-more.tg-mod { border-radius: 0; }
+
+/* The page's one solid primary button. */
+.tg-box .hero-cta.tg-btn, .evidence-toolbar.tg-block [data-testid="dispute-draft"]:enabled, .app-shell:has(.tg-mod) .phone-action-bar .button:enabled { background: var(--pg-color-accent); color: var(--pg-color-on-accent); border-color: var(--pg-color-accent); }
+
+/* Overview: ticket top-aligned with the eyebrow; the four counts read as one ledger row. */
+.tg-mod--ov-hero { align-items: start; }
+.tg-mod--ov-hero .tg-lift { margin-top: 0; }
+.tg-block--ov-facts { gap: 0; background: none; border-top: 2px solid var(--pg-color-ink); }
+.tg-block--ov-facts > .tg-box { border: 0; border-right: 1px solid var(--pg-color-rule-soft); background: none; }
+.tg-mod--ov-flow { align-items: start; }
+
+/* Check a sale: the three samples become ledger rows, so the verdict reaches the first screen. */
+@media (min-width: 768px) {
+  .tg-mod--ck-three > .check-three__row { grid-template-columns: minmax(0, 1fr); gap: 0; border-top: 2px solid var(--pg-color-ink); }
+  .tg-mod--ck-three .tg-block--ck-sample.tg-block { display: grid; grid-template-columns: 160px minmax(0, 1fr) minmax(0, 1fr) auto; gap: 4px 24px; align-items: start; padding: 12px 0; border: 0; border-bottom: 1px solid var(--pg-color-rule-soft); background: none; }
+  .tg-block--ck-sample > .tg-clip__kicker { grid-area: 1 / 1 / 3; }
+  .tg-block--ck-sample > blockquote.tg-clip__quote { grid-area: 1 / 2; font-size: var(--pg-text-3); }
+  #compliance .tg-block--ck-sample > p:not(.check-three__result) { grid-column: 3; font-size: var(--pg-text-2); line-height: 1.45; }
+  .tg-block--ck-sample > .check-three__result { grid-area: 2 / 2; }
+  .tg-block--ck-sample > .check-three__detail:nth-last-child(2) { grid-row: 1 / span 2; }
+  .tg-block--ck-sample > .tg-box { grid-area: 1 / 4 / 3; justify-items: end; text-align: right; }
+}
+
+/* 1024-1279: policy check and country check side by side, 5 : 7, as at 1280 and up. */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  #compliance .stage-content:has(> .tg-mod) { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--pg-space-5); align-items: start; }
+  #compliance .stage-content > .tg-mod, #compliance .stage-content > .tg-mod ~ * { grid-column: 1 / -1; }
+  #compliance .stage-content > .compliance-layout.tg-mod { grid-column: 1; grid-template-columns: minmax(0, 1fr); }
+  #compliance .stage-content > .stage-block:has(> .tg-mod) { grid-column: 2; }
+}
+
+/* Sales spike: x5.0 and its caption beside the hourly chart, 4 : 8, one object in the first screen. */
+@media (min-width: 1024px) {
+  #velocity .stage-main > .vs-focus.tg-mod--vs-focus { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 0 var(--pg-space-6); align-items: start; }
+  .tg-mod--vs-focus > .vs-hero.tg-block { grid-template-columns: minmax(0, 1fr); min-width: 0; }
+  #velocity .tg-mod--vs-focus .vs-hero__act { grid-column: 1; }
+  .tg-mod--vs-focus .vs-fig > * { white-space: normal; }
+  #velocity .tg-mod--vs-focus .vs-hero .vs-hero__facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--pg-space-2) var(--pg-space-4); }
+  #velocity .tg-mod--vs-focus > .tg-lift { grid-column: 2; grid-row: 1; margin: 0; }
+  /* D-P19: in the 306px guide rail the sentence box takes the full row, so its placeholder is never cut. */
+  .stage-accordion:has(.tg-mod--vs-focus) .guide-live-input { flex-wrap: wrap; }
+  .stage-accordion:has(.tg-mod--vs-focus) .guide-live-input > input { flex-basis: 100%; }
+}
+
+/* Disputes: Next step is the foot of the case head; the AI step recedes; the phone shows 1 day beside the amount. */
+.tg-lift.ds-head.tg-block { margin-bottom: 0; }
+.tg-lift.ds-head + .tg-block { margin: 0; padding: var(--pg-space-4) var(--pg-space-6); background: var(--pg-color-panel); border-top: 1px solid var(--pg-color-rule-soft); }
+.tg-block--ds-ai.tg-block { background: var(--pg-color-recede); border: 0; box-shadow: none; }
+@media (max-width: 767px) {
+  .tg-box.ds-head__figs { display: grid; grid-template-columns: min-content minmax(0, 1fr); gap: var(--pg-space-3); }
+  .tg-box.ds-head__figs .ds-head__num--sub { font-size: var(--pg-text-3); }
+  .tg-lift.ds-head + .tg-block { padding: var(--pg-space-3) var(--pg-space-5); }
+}
+
+/* Lift: "ledger slab". At rest flat. Pointed at (desktop) or tapped (phone, tabindex -1 + :focus-within) it rises toward
+   the top-left light by 4px (2px on phones) and shows a solid 4px (3px) thickness on the right and bottom; the other
+   blocks of the same step page dim to .90 (desktop only; Overview and Proof have no sibling blocks to dim). */
+.tg-lift { position: relative; transition: transform 180ms ease-out, box-shadow 180ms ease-out; --tg-edge: color-mix(in srgb, var(--pg-color-khaki), var(--pg-color-structure)); }
+@media (hover: hover) and (pointer: fine) {
+  .tg-lift:hover, .tg-lift:focus-within { transform: translate(-4px, -4px); box-shadow: inset 1px 1px 0 var(--pg-color-on-accent), 4px 4px 0 var(--tg-edge), 4px 5px 2px color-mix(in srgb, var(--pg-color-structure) 22%, transparent), 4px 10px 12px color-mix(in srgb, var(--pg-color-structure) 14%, transparent), 4px 18px 28px color-mix(in srgb, var(--pg-color-structure) 8%, transparent) !important; }
+  .stage-accordion:has(.tg-lift:hover) .tg-block:not(.tg-lift):not(.tg-block .tg-block):not(:has(.tg-lift:hover)), .stage-accordion:has(.tg-lift:focus-within) .tg-block:not(.tg-lift):not(.tg-block .tg-block):not(:has(.tg-lift:focus-within)) { filter: brightness(.9); }
+}
+@media (hover: none) {
+  .tg-lift:focus-within { transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--tg-edge), 3px 6px 8px color-mix(in srgb, var(--pg-color-structure) 14%, transparent) !important; }
+}
+@media (prefers-reduced-motion: reduce) { .tg-lift { transition: none; } .tg-lift:hover, .tg-lift:focus-within { transform: none; } }
+@media (forced-colors: active) { .tg-block { filter: none !important; } }

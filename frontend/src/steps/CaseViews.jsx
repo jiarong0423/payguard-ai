@@ -41,18 +41,18 @@ const caseMoney = (item) => (item?.dispute_amount ? moneyLabel(item.dispute_amou
 export function CaseQueue({ Icon, DueText, cases, selected, busy, onPick }) {
   const rows = (Array.isArray(cases) ? cases : []).slice().sort((a, b) => (caseDue(a) ?? Infinity) - (caseDue(b) ?? Infinity));
   const urgent = rows.filter((item) => caseDue(item) !== null && caseDue(item) <= 1).length;
-  return <section className="tg-ledger ds-queue" aria-labelledby="ds-queue-title">
-    <p className="ds-queue__cap" id="ds-queue-title"><b>Case queue</b><span>Demo cases in this session · most urgent first</span></p>
+  return <section className="tg-ledger ds-queue tg-block tg-block--ds-queue" aria-labelledby="ds-queue-title">
+    <p className="ds-queue__cap tg-box" id="ds-queue-title"><b>Case queue</b><span>Demo cases in this session · most urgent first</span></p>
     {rows.length ? <>
       <p className="ds-queue__head" aria-hidden="true"><span>Case · Reason</span><span>Amount · Due</span></p>
-      <ol className="ds-queue__list">{rows.map((item) => <li key={item.case_ref}>
+      <ol className="ds-queue__list tg-box">{rows.map((item) => <li key={item.case_ref}>
         <button type="button" className={`ds-queue__row${selected === item.case_ref ? ' tg-is-sel' : ''}`} aria-pressed={selected === item.case_ref} disabled={busy} data-link={`case:${item.case_ref}`} onClick={() => onPick(item)}>
           <span className="ds-queue__ref">{item.case_ref}</span>
           <span className="ds-queue__amt tg-num">{caseMoney(item)}</span>
           <span className="ds-queue__reason">{operatorLabel(item.reason)}{item.case_ref === HOSTED_CASE && <small className="ds-queue__note" data-testid="queue-not-hosted">{NOT_HOSTED}</small>}</span>
           <span className="ds-queue__due tg-num" data-testid={`case-due-${item.case_ref}`}><DueText value={item.seller_response_due_date} fallback="—" /></span>
         </button></li>)}</ol>
-      <p className="ds-queue__total">{rows.length} case{rows.length === 1 ? '' : 's'} · {urgent} due within a day</p>
+      <p className="ds-queue__total tg-box">{rows.length} case{rows.length === 1 ? '' : 's'} · {urgent} due within a day</p>
     </> : <div className="empty-state"><Icon name="file" size={32} /><strong>No dispute cases</strong><p>Use “Load dispute case” above to start.</p></div>}
   </section>;
 }
@@ -64,14 +64,14 @@ export function CaseHead({ Icon, item, draft, sent, onProof }) {
   const due = days !== null && days <= 1;
   // (R5 PayPal judge) One tag style for the three facts in the kicker; the deadline leads, then the amount; ids keep
   // their own case (they are references, not labels).
-  return <header className="ds-head tg-focus" data-testid="case-summary" data-link={`case:${item.case_ref}`}>
-    <p className="ds-head__kicker"><span className="tg-tag tg-tag--neutral" data-testid="case-demo-label">{item.case_ref === HOSTED_CASE ? NOT_HOSTED : 'Demo case in this session'}</span><span className="tg-tag tg-tag--neutral" data-testid="case-reason">{operatorLabel(item.reason)}</span><span className="tg-tag tg-tag--neutral">{operatorLabel(item.status)}</span></p>
+  return <header className="ds-head tg-focus tg-mod tg-block tg-block--ds-head tg-lift" tabIndex={-1} data-testid="case-summary" data-link={`case:${item.case_ref}`}>
+    <p className="ds-head__kicker tg-box"><span className="tg-tag tg-tag--neutral" data-testid="case-demo-label">{item.case_ref === HOSTED_CASE ? NOT_HOSTED : 'Demo case in this session'}</span><span className="tg-tag tg-tag--neutral" data-testid="case-reason">{operatorLabel(item.reason)}</span><span className="tg-tag tg-tag--neutral">{operatorLabel(item.status)}</span></p>
     <h3 className="ds-head__title"><span className="ds-nowrap">{item.case_ref}</span> · <span className="ds-nowrap">{item.order_ref}</span></h3>
-    <div className="ds-head__figs">
+    <div className="ds-head__figs tg-box">
       <div><span className="ds-head__label">Respond within</span><strong className={`ds-head__num tg-num tg-keyfig tg-keyfig--xl${due ? ' is-due' : days !== null && days <= 2 ? ' is-soon' : ''}`} data-testid="case-deadline"><Icon name={due ? 'warning-octagon' : 'clock'} size={28} />{dueShort(item.seller_response_due_date)}</strong><span className="tg-small">{item.seller_response_due_date ? `Due ${dateLabel(item.seller_response_due_date)}` : 'Shown after the draft'}</span></div>
       <div><span className="ds-head__label">Amount</span><strong className="ds-head__num ds-head__num--sub tg-num" data-testid="case-amount">{caseMoney(item)}</strong></div>
     </div>
-    <p className="ds-head__tags">
+    <p className="ds-head__tags tg-box">
       <span className="tg-tag ds-id" tabIndex={0} data-link={`case:${item.case_ref}`}><Icon name="file" size={14} />{item.case_ref}</span>
       <span className="tg-tag ds-id" tabIndex={0} data-link={`order:${item.order_ref}`}><Icon name="layers" size={14} />{item.order_ref}</span>
       {draft && <span className="tg-tag" tabIndex={0} data-link="file:review-zip"><Icon name="lock" size={14} />Review ZIP</span>}
@@ -97,7 +97,7 @@ export function CaseLog({ Icon, item, draft, receipt, sent }) {
     item.seller_response_due_date && { at: item.seller_response_due_date, who: 'PayPal', what: 'seller response due', next: 'PayPal decides the case.', state: days !== null && days <= 1 ? 'is-risk' : 'is-pending', due: days !== null && days <= 1 },
   ].filter(Boolean);
   // (R5) The day sits in the left column once; the dateline under it keeps only the time and zone.
-  return <ol className="tg-log ds-log" data-testid="case-log" aria-label="Case timeline">{rows.map((row, index) => <li key={index} className={`tg-log__entry ${row.state || ''}`} data-link={row.link}>
+  return <ol className="tg-log ds-log tg-mod tg-block" data-testid="case-log" aria-label="Case timeline">{rows.map((row, index) => <li key={index} className={`tg-log__entry ${row.state || ''}`} data-link={row.link}>
     <span className="tg-log__when">{row.at ? dayLabel(row.at).replace(/ \d{4}$/u, '') : 'Now'}</span>
     <div className="tg-log__body">
       <span className="tg-log__dateline">{row.at ? dateLabel(row.at).replace(/^[^,]*, /u, '') : 'This session'}</span>
@@ -142,7 +142,7 @@ function AiTry({ session, onOpenGuide }) {
       setBusy(false);
     }
   };
-  return <form className="ds-ai__try" data-testid="dispute-ai-try" onSubmit={run}>
+  return <form className="ds-ai__try tg-box" data-testid="dispute-ai-try" onSubmit={run}>
     <label htmlFor="dispute-ai-text"><b>Try it</b> <span className="tg-small">Rules only · runs here, no model call · your sentence is added to the Step 03 guide for this case</span></label>
     <div className="ds-ai__tryrow"><input id="dispute-ai-text" data-testid="dispute-ai-input" value={text} maxLength={200} placeholder="e.g. tracking shows delivered on Monday" onChange={(event) => setText(event.target.value)} /><button type="submit" className="tg-btn tg-btn--secondary tg-btn--sm" data-testid="dispute-ai-run" disabled={busy || !session || !text.trim()}>{busy ? 'Checking…' : 'Check'}</button></div>
     {/* (a11y r7) The live region is on the page from the start; only its content changes. */}
@@ -157,9 +157,9 @@ function AiTry({ session, onOpenGuide }) {
 
 export function DisputeAiClip({ chooser, openItems = 0, onOpenGuide, session }) {
   const live = chooser ? (chooser.chooser_mode === 'gemini' ? 'Rules + Gemini' : 'Rules only') : 'Not started';
-  return <figure className="tg-clip ds-ai" data-testid="dispute-ai-clip" data-link="ai:guide">
+  return <figure className="tg-clip ds-ai tg-mod tg-block tg-block--ds-ai" data-testid="dispute-ai-clip" data-link="ai:guide">
     <p className="tg-clip__kicker">AI step · Gemini evidence guide · <span data-testid="dispute-ai-state">{live}</span></p>
-    <ol className="ds-ai__flow">
+    <ol className="ds-ai__flow tg-box">
       <li><b>Your sentence</b><span>Tell the guide what happened, in your own words.</span></li>
       <li><b>Evidence item</b><span>Gemini points the sentence at one missing item{openItems > 0 ? ` · ${openItems} still open` : ''}.</span></li>
       <li><b>Program check</b><span>Fixed rules decide what counts; the model cannot mark evidence by itself.</span></li>
@@ -185,7 +185,7 @@ const HOSTED_SEND = [
   ['Result', 'PayPal', 'holds the evidence; PayPal, not TradeGlot, decides the case', '', 13, ''],
 ];
 export function HostedSendLog() {
-  return <section id="hosted-send" className="ds-hosted" data-testid="hosted-send-log" aria-labelledby="hosted-send-title">
+  return <section id="hosted-send" className="ds-hosted tg-mod tg-block" data-testid="hosted-send-log" aria-labelledby="hosted-send-title">
     <p className="tg-wire__head" id="hosted-send-title">Recorded hosted send · 10 Nov 2026</p>
     <p className="tg-small">The one real send made from the public hosted demo on 10 Nov 2026, for the hosted demo's own case-ref-001. The demo case-ref-001 in the queue above is a different case and has not been sent. Times as written in the receipt.</p>
     <ol className="tg-log ds-log">{HOSTED_SEND.map(([when, who, what, debug, line, call]) => <li key={line} className="tg-log__entry is-done" data-link={debug ? `paypal:${debug}` : undefined}>

@@ -90,14 +90,14 @@ export default function JudgesPage({ onOpen }) {
     window.requestAnimationFrame(seek);
   };
   return <div className="jp" data-testid="judges-page">
-    <ol className="jp-route" aria-label="The route for judges">
+    <ol className="jp-route tg-mod tg-mod--jp-route" aria-label="The route for judges">
       {route.steps.map((step, index) => {
         const look = lookFor(step.page);
         return <li key={step.page}>
-          <figure className="tg-clip tg-clip--step jp-step" data-testid={`judges-step-${step.page}`}>
+          <figure className="tg-clip tg-clip--step jp-step tg-block" data-testid={`judges-step-${step.page}`}>
             <span className="tg-clip__num jp-step__n" aria-hidden="true">{step.n}</span>
-            <figcaption className="jp-step__head"><h3 className="tg-h3">{step.title}</h3><p className="jp-step__do">{step.action}</p></figcaption>
-            <div className="jp-step__look">
+            <figcaption className="jp-step__head tg-box"><h3 className="tg-h3">{step.title}</h3><p className="jp-step__do">{step.action}</p></figcaption>
+            <div className="jp-step__look tg-box">
               <blockquote className="tg-clip__quote jp-step__quote">
                 <span className="jp-look__marks"><span className="tg-clip__kicker jp-step__kicker">Look for</span>{look.marks.map((mark, markIndex) => <Mark key={markIndex} mark={mark} />)}</span>
                 <span className="jp-look__see">{look.see}</span>
@@ -110,7 +110,7 @@ export default function JudgesPage({ onOpen }) {
         </li>;
       })}
     </ol>
-    <p className="jp-reset" data-testid="judges-reset-note">Stuck? Every step has a Reset demo button. Nothing you press on this page is sent anywhere.</p>
+    <p className="jp-reset tg-block" data-testid="judges-reset-note">Stuck? Every step has a Reset demo button. Nothing you press on this page is sent anywhere.</p>
     <SourceLegend testId="judges-basis-legend" />
   </div>;
 }

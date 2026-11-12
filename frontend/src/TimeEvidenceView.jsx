@@ -109,9 +109,9 @@ export default function TimeEvidenceView({ evidence }) {
   ], []);
   if (!evidence || !Array.isArray(evidence.events)) return null;
   return (
-    <section className="time-evidence" data-testid="time-evidence" aria-label="Time evidence">
+    <section className="time-evidence tg-block" data-testid="time-evidence" aria-label="Time evidence">
       <div className="mini-heading"><span>Time evidence · ordered, not judged</span><span className="badge badge-amber">SYNTHETIC</span></div>
-      <div className="time-evidence-views" role="group" aria-label="Time evidence view">
+      <div className="time-evidence-views tg-box" role="group" aria-label="Time evidence view">
         <button type="button" aria-pressed={view === 'table'} className={view === 'table' ? 'is-active' : ''} data-testid="time-evidence-view-table" onClick={() => setView('table')}>Table</button>
         <button type="button" aria-pressed={view === 'timeline'} className={view === 'timeline' ? 'is-active' : ''} data-testid="time-evidence-view-timeline" onClick={() => setView('timeline')}>Timeline</button>
       </div>

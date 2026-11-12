@@ -297,7 +297,7 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
   // (R5 seller 2026-11-12, review_UI5 s3 #1) Never an empty column: until the country list arrives, the card keeps its
   // title and says what happens next (or shows the error with its wait line).
   if (!catalog || !form) {
-    return <section className="country-rules country-rules--empty" data-testid="country-rules-empty" aria-labelledby="country-rules-title" aria-busy={Boolean(session && !error) || undefined}>
+    return <section className="country-rules country-rules--empty tg-mod" data-testid="country-rules-empty" aria-labelledby="country-rules-title" aria-busy={Boolean(session && !error) || undefined}>
       <div className="country-rules-head">
         <h3 id="country-rules-title">Where are you shipping from and to?</h3>
         <p>TradeGlot compares PayPal rules with official export and import rules.</p>
@@ -412,7 +412,7 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
   const extraTags = SHOWN_TAGS.filter((tag) => !COMMON_TAGS.includes(tag));
   const visibleExtra = moreTags ? extraTags : extraTags.filter((tag) => form.goods_tags.includes(tag));
 
-  return <section className="country-rules" data-testid="country-rules" aria-labelledby="country-rules-title">
+  return <section className="country-rules tg-mod" data-testid="country-rules" aria-labelledby="country-rules-title">
     <div className="country-rules-head">
       <h3 id="country-rules-title">Where are you shipping from and to?</h3>
       <p>TradeGlot compares PayPal rules with official export and import rules.</p>
@@ -420,7 +420,7 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
         title="Fills United States to Singapore with E-cigarettes ticked and runs the same check" onClick={tryExample}>Fill from example</button>
       <small className="country-try-note" data-testid="country-try-note">United States to Singapore, e-cigarettes. Synthetic data, no PayPal calls; fills the form and runs the check.</small>
     </div>
-    <div className="country-form" ref={formRef}>
+    <div className="country-form tg-block" ref={formRef}>
       <div className="country-places">
         <div className="country-grid">
           {select('seller_country', 'Ships from', countryOptions, 'country-field-place')}
@@ -461,12 +461,12 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
     <button type="button" className={`button button-secondary${waiting ? ' is-blocked' : ''}`} data-testid="country-check" aria-disabled={busy || waiting || undefined} aria-busy={busy} onClick={run}>{busy ? 'Checking…' : 'Check country rules'}</button>
     {error && <p className="guide-live-error" role="alert">{error}<WaitLine until={waitUntil} now={now} testId="country-wait" /></p>}
     <div className="country-live" aria-live="polite">
-    {result && <div ref={resultRef} tabIndex={-1} className={`country-result ${verdictState(result)}`} data-testid="country-result">
+    {result && <div ref={resultRef} tabIndex={-1} className={`country-result ${verdictState(result)} tg-block`} data-testid="country-result">
       {(() => {
         // (R5 2026-11-12) With a slot from the page (under the three sample cards) the verdict is drawn there; the
         // wrapper repeats the state class so the same .country-result.is-* colours apply. Same Verdict, same test ids.
         const verdict = <div className="country-verdict" data-testid="country-verdict"><Verdict result={result} names={names} tags={result.checked_tags} onEdit={editItem} onContinue={onContinue} /></div>;
-        return verdictTarget ? createPortal(<div className={`country-result country-result--portal tg-focus ${verdictState(result)}`} data-testid="country-verdict-focus">{verdict}</div>, verdictTarget) : verdict;
+        return verdictTarget ? createPortal(<div className={`country-result country-result--portal tg-focus ${verdictState(result)} tg-block tg-lift`} tabIndex={-1} data-testid="country-verdict-focus">{verdict}</div>, verdictTarget) : verdict;
       })()}
       {!result.blocked && unlock?.after && <BeforeAfter record={unlock} names={names} />}
       {(() => {

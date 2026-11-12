@@ -67,16 +67,16 @@ export default function VelocityChart({ velocity, transactions, compact = false 
     {/* (vteam viz r7 T5) The Hourly / Monthly switch heads the chart: first in the DOM and first on screen (top right of
         the chart's title row from 1024px, its own row above the chart below that); the highlight buttons follow the
         plot. DOM order = visual order at every width (a11y phase 2 item 8). */}
-    {monthly.rows.length > 0 && <div className="segmented tg-seg velocity-period" role="tablist" aria-label="Chart period" data-testid="velocity-monthly-details">
+    {monthly.rows.length > 0 && <div className="segmented tg-seg velocity-period tg-box" role="tablist" aria-label="Chart period" data-testid="velocity-monthly-details">
       {[['hourly', 'Hourly'], ['monthly', 'Monthly']].map(([key, label]) => <button key={key} type="button" role="tab" id={`velocity-period-${key}`} aria-selected={view === key} aria-controls={`velocity-period-pane-${key}`} className={view === key ? 'is-active' : ''} onClick={() => choose(key)}>{label}</button>)}
     </div>}
     <figure id="velocity-period-pane-hourly" role="tabpanel" aria-labelledby="velocity-period-hourly" hidden={view !== 'hourly'} className="velocity-chart" data-testid="velocity-chart" aria-label="Hourly amount chart, baseline window versus spike window">
-      <div className="velocity-chart-plot">
+      <div className="velocity-chart-plot tg-box">
         <div ref={containerRef} className="velocity-chart-canvas" />
       </div>
       {/* (fix F3 D-P17) The hour detail sits under the plot, so every bar stays visible and clickable while it is open. */}
       {hour && <HourDetail row={hour} model={model} onClose={() => setHour(null)} />}
-      <div className="velocity-mark-chips" role="group" aria-label="Highlight on the chart" data-testid="velocity-mark-chips">
+      <div className="velocity-mark-chips tg-box" role="group" aria-label="Highlight on the chart" data-testid="velocity-mark-chips">
         <button type="button" aria-pressed={mark === 'peak'} disabled={!peak} data-testid="velocity-mark-peak" onClick={() => setMark(mark === 'peak' ? '' : 'peak')}>Highlight peak hour <span>{peak ? 1 : 0}</span></button>
         <button type="button" aria-pressed={mark === 'over'} disabled={!overCount} data-testid="velocity-mark-over" onClick={() => setMark(mark === 'over' ? '' : 'over')}>Highlight hours above the line <span>{overCount}</span></button>
         <button type="button" disabled={!mark} data-testid="velocity-mark-reset" onClick={() => setMark('')}>Reset</button>
@@ -103,7 +103,7 @@ function HourDetail({ row, model, onClose }) {
   const value = isSpike ? row.spike : row.baseline;
   const over = isSpike && model.reviewLine !== null && row.spike > model.reviewLine;
   return (
-    <aside className="velocity-hour-pop tg-glass" role="status" aria-live="polite" aria-label="Selected hour" data-testid="velocity-hour-detail">
+    <aside className="velocity-hour-pop tg-glass tg-box" role="status" aria-live="polite" aria-label="Selected hour" data-testid="velocity-hour-detail">
       <p className="velocity-hour-pop__when">{isSpike ? 'Spike window' : 'Usual hour'} · {rangeLabel(row, model.offsetMinutes)}</p>
       <button type="button" className="velocity-hour-pop__close" onClick={onClose} data-testid="velocity-hour-close">Close</button>
       <p className="velocity-hour-pop__value">{money(value, model.currency)}{isSpike ? '' : '/h'}

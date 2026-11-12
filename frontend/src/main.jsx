@@ -4,6 +4,7 @@ import App from './App.jsx';
 import { startPwa } from './pwa.js';
 import './index.css';
 import './pwa.css';
+import './theme/modules.css';
 
 createRoot(document.getElementById('root')).render(<App />);
 // Wide-screen layout rules load right after the first render (see wide/index.js).

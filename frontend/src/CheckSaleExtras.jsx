@@ -110,22 +110,22 @@ export function ThreeResults() {
   const offline = () => Boolean(document.querySelector('#compliance [data-testid="country-rules-empty"]'));
   const use = (example) => setPicked(pick(example) ? { kind: example.kind, at: Date.now() }
     : { kind: example.kind === 'route' && offline() ? 'offline' : 'missing', at: Date.now() });
-  return <section className="check-three tg-section" data-testid="three-results" aria-labelledby="three-results-title">
-    <div className="check-head"><h3 id="three-results-title" className="tg-h3">Three sample sales, three answers</h3>
+  return <section className="check-three tg-section tg-mod tg-mod--ck-three" data-testid="three-results" aria-labelledby="three-results-title">
+    <div className="check-head tg-box"><h3 id="three-results-title" className="tg-h3">Three sample sales, three answers</h3>
       <p className="tg-small">The same checks on three sample items. Pick one to try it in the form below.</p></div>
     <div className="check-three__row">
-      {data.examples.map((example) => <figure key={example.id} className={`tg-clip tg-clip--fact tg-card--cta check-three__card is-${example.tone}`} data-testid={`three-results-${example.id}`}>
+      {data.examples.map((example) => <figure key={example.id} className={`tg-clip tg-clip--fact tg-card--cta check-three__card is-${example.tone} tg-block tg-block--ck-sample`} data-testid={`three-results-${example.id}`}>
         <figcaption className="tg-clip__kicker"><span className={`tg-stamp tg-stamp--${example.tone}`}><SpriteIcon name={STAMP_ICON[example.tone]} size="sm" />{example.stamp}</span></figcaption>
         <blockquote className="tg-clip__quote">{example.description}</blockquote>
         <p className="check-three__result" data-link={example.kind === 'route' ? `law:${example.result}` : undefined}><span>{PLAIN_RESULT[example.id] || example.result}</span></p>
         <p className="check-three__detail">{detailOf(example)}</p>
         {example.also ? <p className="check-three__also"><span className="tg-deadline--soon check-three__also-word"><SpriteIcon name={STATUS.warn} size="sm" />{example.also.label}</span> {example.also.statute} · {example.also.detail}</p> : null}
-        <div className="tg-cta check-three__foot"><SourceLine kind="RECOUNTED" source={example.kind === 'route' ? 'country_rules_sg_ecig' : 'policy_check'} />
+        <div className="tg-cta check-three__foot tg-box"><SourceLine kind="RECOUNTED" source={example.kind === 'route' ? 'country_rules_sg_ecig' : 'policy_check'} />
         <button type="button" className="tg-btn tg-btn--secondary check-three__use" data-testid={`three-results-card-${example.id}`} onClick={() => use(example)}>
           {example.kind === 'route' ? 'Try this route' : 'Try this item'}<PhIcon svg={arrowSvg} /></button></div>
       </figure>)}
     </div>
-    <p className="check-three__picked" data-testid="three-results-picked" role="status" aria-live="polite">{picked && <span key={picked.at} className="tg-note check-three__picked-note">
+    <p className="check-three__picked tg-box" data-testid="three-results-picked" role="status" aria-live="polite">{picked && <span key={picked.at} className="tg-note check-three__picked-note">
       {picked.kind === 'offline' ? 'The country check opens once the demo connects. Nothing was sent; the result on this card stands meanwhile.'
         : picked.kind === 'missing' ? 'The form is not quite ready. Please try again in a moment.' : PICKED[picked.kind]}</span>}</p>
   </section>;
@@ -147,8 +147,8 @@ function RuleGridBody() {
   return <section className="check-grid tg-section" data-testid="rule-grid" aria-labelledby="rule-grid-title">
     <div className="check-head"><h3 id="rule-grid-title" className="tg-h3">Rules in the pack: 10 countries, import and export</h3>
       <p className="tg-small">Select a number to list that country's rules for that side.</p></div>
-    <div className="tg-ledger check-grid__ledger">
-      <table className="tg-ledger__table">
+    <div className="tg-ledger check-grid__ledger tg-block tg-block--ck-ledger tg-lift" tabIndex={-1}>
+      <table className="tg-ledger__table tg-box">
         <thead><tr><th scope="col" className="tg-ledger__ref">Country</th><th scope="col" className="tg-ledger__amt">Import rules</th><th scope="col" className="tg-ledger__amt">Export rules</th></tr></thead>
         <tbody>{grid.countries.map(({ code, name }) => <tr key={code} className={cell?.code === code ? 'is-selected' : undefined}>
           <th scope="row" className="tg-ledger__ref">{name}</th>
@@ -161,15 +161,15 @@ function RuleGridBody() {
       </table>
       <SourceLine kind="RECOUNTED" source="country_rules" testId="rule-grid-source">official pages read {dateLabel(grid.retrieved_at)}</SourceLine>
     </div>
-    {cell && <div className="check-grid__list" data-testid="rule-grid-list" aria-live="polite">
+    {cell && <div className="check-grid__list tg-block" data-testid="rule-grid-list" aria-live="polite">
       <div className="check-grid__list-head"><strong>{NAMES[cell.code]} {cell.side} · {grid.counts[cell.side][cell.code]} rules</strong>
         <button type="button" className="tg-btn tg-btn--text" data-testid="rule-grid-clear" onClick={() => setCell(null)}>Clear</button></div>
       {failed ? <p className="tg-small" role="alert">The rule list did not load. The counts above still come from the pack; please try again shortly.</p> : !index ? <p className="tg-small">Loading the rules…</p> : <>
-        <div className="tg-filters" role="group" aria-label="Filter by level">
+        <div className="tg-filters tg-box" role="group" aria-label="Filter by level">
           {['all', ...TIERS].map((key) => <button key={key} type="button" className="tg-filter" aria-pressed={tier === key} data-testid={`rule-grid-tier-${key}`}
             onClick={() => { setTier(key); setAll(false); }}>{key === 'all' ? 'All' : TIER_WORD[key]}<span className="tg-filter__n">{key === 'all' ? rows.length : rows.filter((rule) => rule.tier === key).length}</span></button>)}
         </div>
-        <ul className="check-grid__rules">{visible.map((rule) => <li key={rule.id}><figure className="tg-clip check-grid__rule">
+        <ul className="check-grid__rules tg-box">{visible.map((rule) => <li key={rule.id}><figure className="tg-clip check-grid__rule">
           <figcaption className="tg-clip__kicker"><span className="tg-mono">{rule.id}</span> · {TIER_WORD[rule.tier]}{rule.channel ? ` ${CHANNEL_WORDS[rule.channel] || rule.channel.replace(/_/gu, ' ')} only` : ''} · {placeName(rule.route.split('->')[0])} → {placeName(rule.route.split('->')[1])}</figcaption>
           <blockquote className="tg-clip__quote tg-clip__quote--ruled">{rule.rule}</blockquote>
           <p className="tg-clip__source" title={`${rule.url} · ${grid.source}:${rule.line}`} data-link={lawOf(rule) ? `law:${lawOf(rule)}` : undefined}>{lawOf(rule) ? `${lawOf(rule)} · ` : ''}<a className="tg-link" href={rule.url} target="_blank" rel="noopener noreferrer">{rule.agency || hostOf(rule.url)}</a> · read {dateLabel(rule.retrieved_at)}</p>
@@ -190,11 +190,11 @@ export function GuideAiCard() {
   const ai = data.guide_ai;
   // (R5 seller 2026-11-12, review_UI5 s3) Test figures are for judges, not part of the seller's form: closed by default,
   // short labels on one baseline. Same values, same source line.
-  return <details className="check-ai tg-fold" data-testid="guide-ai-card">
+  return <details className="check-ai tg-fold tg-mod" data-testid="guide-ai-card">
     <summary><span className="check-ai__summary">How the AI step was tested<small className="tg-small">Step 01 guide · recorded run, aggregate scores only</small></span></summary>
-    <div className="tg-fold__body check-ai__body">
+    <div className="tg-fold__body check-ai__body tg-block">
       <p id="guide-ai-title" className="check-ai__lede">Gemini maps a seller sentence to a form item; fixed rules then validate it and code decides what counts.</p>
-      <dl className="check-ai__figures">
+      <dl className="check-ai__figures tg-box">
         <div><dt>Sentences</dt><dd className="tg-num">{ai.sentences}</dd></div>
         <div><dt>Invalid replies</dt><dd className="tg-num">{ai.format_invalid}</dd></div>
         <div><dt>Fields right</dt><dd className="tg-num">{ai.precision}</dd></div>
@@ -217,12 +217,12 @@ export function CategoryReference({ category }) {
 // Channel3 category tree vs PayPal AUP: counts from docs/CHANNEL3_NOTES.md and the published CSV, three CSV rows verbatim.
 function Channel3Body() {
   const tree = data.channel3_tree;
-  return <section className="check-c3 tg-section" data-testid="channel3-reference" aria-labelledby="channel3-reference-title">
+  return <section className="check-c3 tg-section tg-block" data-testid="channel3-reference" aria-labelledby="channel3-reference-title">
     <figure className="tg-clip check-c3__clip">
       <figcaption className="tg-clip__kicker">Reference, does not change the result</figcaption>
       <h3 id="channel3-reference-title" className="tg-h3">Channel3 category tree vs PayPal AUP</h3>
       <p className="check-c3__count" data-testid="channel3-reference-count"><span className="tg-num">{tree.categories_read.toLocaleString('en-US')}</span> Channel3 categories read once; <span className="tg-num">{tree.mapped}</span> mapped to a PayPal AUP item or a question for the seller.</p>
-      <ul className="check-c3__rows">{tree.examples.map((row) => <li key={row.line} data-testid="channel3-reference-row">
+      <ul className="check-c3__rows tg-box">{tree.examples.map((row) => <li key={row.line} data-testid="channel3-reference-row">
         <blockquote className="tg-clip__quote tg-clip__quote--ruled">{row.path}</blockquote>
         <p className="tg-small">{row.paypal_aup_item} · {row.agreement.replace(/^(\d) of 5 readers$/u, '$1 of 5 readers agreed')} · <span title={`${tree.csv}:${row.line}`}>CSV line {row.line}</span></p>
       </li>)}</ul>
@@ -250,7 +250,7 @@ export function RuleGrid() {
     window.addEventListener('hashchange', openIfNamed);
     return () => window.removeEventListener('hashchange', openIfNamed);
   }, []);
-  return <details ref={ref} id="rule-pack" className="check-ref tg-fold" data-testid="rule-pack-fold">
+  return <details ref={ref} id="rule-pack" className="check-ref tg-fold tg-mod" data-testid="rule-pack-fold">
     <summary><span className="check-ai__summary">Behind the check: the rule pack and the Channel3 reference<small className="tg-small">{data.rule_grid.totals.import + data.rule_grid.totals.export} official rules by country and side, and how Channel3 categories map to PayPal's policy</small></span></summary>
     <div className="tg-fold__body check-ref__body"><RuleGridBody /><Channel3Body /></div>
   </details>;

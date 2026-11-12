@@ -50,7 +50,7 @@ function FileCheck({ check }) {
 const QUOTED = [['date', 'Date'], ['where', 'Sent from'], ['debug_id', 'PayPal reference'], ['readback', 'Read-back'], ['file_check', 'File check']];
 function RecordedLines({ send }) {
   const lines = QUOTED.filter(([field]) => send[field]?.value);
-  return <details className="pp-raw" data-testid="proof-row-lines">
+  return <details className="pp-raw tg-box" data-testid="proof-row-lines">
     <summary>Show the recorded lines</summary>
     <ul>{lines.map(([field, label]) => <li key={field} title={`${send.file}:${send[field].line}`}><span className="pp-raw__label">{label}</span> <span className="tg-mono">{send[field].value}</span> <span className="pp-raw__where">line {send[field].line}</span></li>)}</ul>
   </details>;
@@ -60,9 +60,9 @@ function Ledger() {
   const sends = ledger.sends;
   const withId = sends.filter((send) => send.debug_id).length;
   const matched = sends.filter((send) => send.file_check?.state === 'match').length;
-  return <div className="tg-ledger pp-ledger tg-grid-paper" data-testid="proof-ledger">
-    <p className="pp-caption" id="pp-ledger-caption">Every real PayPal Sandbox evidence send on file, one row each</p>
-    <table className="tg-ledger__table" aria-describedby="pp-ledger-caption">
+  return <div className="tg-ledger pp-ledger tg-grid-paper tg-block" data-testid="proof-ledger">
+    <p className="pp-caption tg-box" id="pp-ledger-caption">Every real PayPal Sandbox evidence send on file, one row each</p>
+    <table className="tg-ledger__table tg-box" aria-describedby="pp-ledger-caption">
       <thead><tr><th scope="col">Date</th><th scope="col" className="pp-nowrap">Sent from</th><th scope="col" className="pp-nowrap" title="PayPal-Debug-Id, the reference PayPal returned for each send">PayPal reference</th><th scope="col">Read-back</th><th scope="col">File check</th><th scope="col">Evidence file</th></tr></thead>
       <tbody>{sends.map((send) => <tr key={send.id} id={`ledger-${send.id}`} data-testid="proof-ledger-row" className={send.id === ledger.verify.send_id ? 'is-selected' : undefined}>
         <td className="tg-ledger__date"><time dateTime={send.date.value}>{dateLabel(send.date.value)}</time></td>
@@ -124,23 +124,23 @@ function Verify() {
     }
   };
 
-  return <section className="pp-verify tg-focus tg-focus--bleed tg-vault" id="verify" aria-labelledby="pp-verify-title" data-testid="proof-verify">
-    <div className="pp-verify__head">
+  return <section className="pp-verify tg-focus tg-focus--bleed tg-vault tg-mod tg-block tg-block--pp-verify tg-lift" tabIndex={-1} id="verify" aria-labelledby="pp-verify-title" data-testid="proof-verify">
+    <div className="pp-verify__head tg-box">
       <p className="tg-eyebrow">Check it yourself</p>
       <h3 id="pp-verify-title" className="tg-h3">Is the file PayPal holds the file TradeGlot sent?</h3>
       <p className="pp-verify__lede">{row.label} ({dateLabel(row.date.value)}): the console recorded the file's SHA-256 when it sent. {verify.pdf_note} Your browser can hash it and compare.</p>
-      <dl className="pp-hash">
+      <dl className="pp-hash tg-box">
         <dt>Recorded at send time</dt><dd><Hash value={recorded} testId="proof-recorded-sha" /></dd>
         <dt>File</dt><dd><a className="tg-link" href={`${import.meta.env.BASE_URL}${verify.pdf}`} download><Icon name="file" />{fileName(verify.pdf)}</a> <span className="tg-small">{verify.served_bytes.value}</span></dd>
       </dl>
-      <div className="tg-actions">
+      <div className="tg-actions tg-box">
         <button type="button" className="tg-btn tg-btn--primary" data-testid="proof-verify-run" disabled={busy} onClick={() => run(false)}><Icon name="fingerprint" />Verify in your browser</button>
         {result && <button type="button" className="tg-btn tg-btn--secondary" data-testid="proof-verify-tamper" disabled={busy} onClick={() => run(!result.tamper)}>{result.tamper ? 'Check the original again' : 'Change one byte'}</button>}
       </div>
       {!result && <p className="pp-hint" data-testid="proof-tamper-hint">Verify first. You may then change one byte of the fetched copy, in memory only, and check again.</p>}
       <SourceLine kind={row.basis} source={row.source_key} exact />
     </div>
-    <div className={`pp-verify__log pp-vault${entries.length ? ' is-run' : ''}`} aria-live="polite">
+    <div className={`pp-verify__log pp-vault${entries.length ? ' is-run' : ''} tg-box`} aria-live="polite">
       <p className="pp-vault__head">{entries.length ? (result?.ok ? 'Checked. The file PayPal holds is the file that was sent.' : result ? 'Checked. This copy is not the file that was sent.' : 'Checking…') : 'Not checked yet. Nothing runs until you press Verify.'}</p>
       <ol className="tg-log" data-testid="proof-verify-log">{[...entries, ...PLAN.filter((plan) => !entries.some((entry) => entry.step === plan.step)).map((plan) => ({ ...plan, state: 'is-pending', pending: true }))].map((entry, index) => <li key={`${entry.step}-${index}-${entries.length}`} className={`tg-log__entry ${entry.state}`} data-step={entry.step} style={{ '--pp-i': index }}>
           {entry.pending ? <span className="tg-log__when pp-step-n" aria-label={`Step ${index + 1}, not run yet`}>Step {index + 1}</span> : <time className="tg-log__when">{entry.at}</time>}
@@ -154,7 +154,7 @@ function Verify() {
             </div>}
           </div>
         </li>)}</ol>
-      {result && !result.ok && <p className="pp-diff-note" data-testid="proof-diff">One changed byte changed the whole fingerprint (differing characters marked): this is what a different file looks like.</p>}
+      {result && !result.ok && <p className="pp-diff-note tg-box" data-testid="proof-diff">One changed byte changed the whole fingerprint (differing characters marked): this is what a different file looks like.</p>}
     </div>
   </section>;
 }
@@ -169,7 +169,7 @@ function HashDiff({ value, against }) {
 export default function ProofPage() {
   return <div className="pp" data-testid="proof-page">
     <Verify />
-    <section aria-labelledby="pp-ledger-title" className="pp-section">
+    <section aria-labelledby="pp-ledger-title" className="pp-section tg-mod tg-mod--pp-ledger">
       <h3 id="pp-ledger-title" className="tg-h3">Sandbox evidence sends</h3>
       <Ledger />
     </section>
