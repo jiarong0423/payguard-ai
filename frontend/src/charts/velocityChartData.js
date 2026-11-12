@@ -135,7 +135,8 @@ export function velocityChartOptions({ rows, reviewLine, currency }, container, 
     title: { text: 'Hourly amount: baseline vs spike', fontSize: 14, fontWeight: 600, color: color.ink, ...CAPTION_WRAP },
     subtitle: { text: 'Sample data · amber = above the review line', fontSize: 12, color: color.muted, ...CAPTION_WRAP },
     background: { fill: viz.bg },
-    padding: { top: 12, right: 16, bottom: 8, left: 8 },
+    // (UI r5) left 8 -> 20: the rotated y-axis title ('USD per hour') lost its first letter at the canvas edge.
+    padding: { top: 12, right: 16, bottom: 8, left: 20 },
     series: [
       {
         // (P4) Every past hour as a thin bar at the declared synthetic rate, so the spike reads against a row of usual hours.
@@ -149,7 +150,7 @@ export function velocityChartOptions({ rows, reviewLine, currency }, container, 
         itemStyler: ({ datum }) => {
           const base = reviewLine !== null && datum && datum.spike > reviewLine ? {} : { fill: SPIKE_FILL };
           if (!mark || !datum) return base;
-          return picked(datum) ? { ...base, stroke: color.ink, strokeWidth: 3 } : { ...base, fillOpacity: 0.3 };
+          return picked(datum) ? { ...base, stroke: color.rule, strokeWidth: 3 } : { ...base, fillOpacity: 0.3 };
         },
         label: { enabled: true, placement: 'outside-end', fontSize: 16, fontWeight: 700, color: color.ink,
           formatter: ({ value }) => (value && baselineRate > 0 ? `×${(value / baselineRate).toFixed(1)}` : '') },
@@ -230,7 +231,7 @@ export function monthlyChartOptions({ rows, currency }, container) {
     title: { text: 'Monthly amount and 3-month average', fontSize: 14, fontWeight: 600, color: color.ink, ...CAPTION_WRAP },
     subtitle: { text: 'Illustrative demo data · not used by the review signal', fontSize: 12, color: color.muted, ...CAPTION_WRAP },
     background: { fill: viz.bg },
-    padding: { top: 12, right: 44, bottom: 8, left: 8 },
+    padding: { top: 12, right: 44, bottom: 8, left: 20 },
     series: [
       {
         type: 'line', xKey: 'label', yKey: 'amount', yName: 'Month', stroke: MONTH_STROKE, strokeWidth: 2.5,

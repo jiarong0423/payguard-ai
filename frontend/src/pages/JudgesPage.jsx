@@ -5,6 +5,9 @@
 // tests/frontend_proof_page.mjs). tests/frontend_judges_page.mjs checks each target page exists in App.jsx.
 // (F 2026-11-12) Each stop is one row (number | title and action | look for | seconds | button) so all four fit the
 // 1440x900 first screen; the route length is said once, in the page lede. Sources and the legend from theme/sources.js.
+// (R5 2026-11-12, P0 designer) One look-for vocabulary: every stop shows one framed mark of the same height (a stamp for
+// an outcome, a neutral tag with an icon for a value), buttons share one width, rows are split by a single fine rule, and
+// a closing line says where to reset. Review: ext_review/review_UI5.md section 4.
 import route from '../data/judges_route_v1.json';
 import figures from '../data/overview_figures_v1.json';
 import facts from '../data/proof_facts_v1.json';
@@ -13,11 +16,13 @@ import arrowSvg from '../theme/icons/arrow-right.svg?raw';
 import clockSvg from '../theme/icons/clock.svg?raw';
 import checkSvg from '../theme/icons/check-circle.svg?raw';
 import warningSvg from '../theme/icons/warning.svg?raw';
+import chartSvg from '../theme/icons/chart-line-up.svg?raw';
+import fingerprintSvg from '../theme/icons/fingerprint.svg?raw';
 import { SourceLegend, SourceLine } from '../theme/sources.js';
 import { dateLabel, money } from '../theme/format.js';
 import './JudgesPage.css';
 
-const ICONS = { arrow: arrowSvg, clock: clockSvg, check: checkSvg, warning: warningSvg };
+const ICONS = { arrow: arrowSvg, clock: clockSvg, check: checkSvg, warning: warningSvg, chart: chartSvg, fingerprint: fingerprintSvg };
 function Icon({ name }) {
   return <span className="tg-icon jp-icon" aria-hidden="true" dangerouslySetInnerHTML={{ __html: ICONS[name] }} />;
 }
@@ -35,7 +40,7 @@ function lookFor(page) {
   if (page === 'velocity') {
     const spike = figures.step2_example;
     return {
-      marks: [{ figure: `×${spike.ratio}` }],
+      marks: [{ tag: `×${spike.ratio} the usual hour`, icon: 'chart' }],
       see: `${spike.orders} orders in ${spike.window_hours} h: ${money(spike.total, spike.currency)} against a usual ${money(spike.baseline_per_hour, spike.currency)} an hour.`,
       source: { kind: 'SYNTHETIC', source: spike.source_key },
     };
@@ -44,7 +49,7 @@ function lookFor(page) {
     const send = ledger.sends.find((item) => item.basis === 'HOSTED DEMO');
     const row = facts.rows.find((item) => item.id === figures.step3_send.proof_row);
     return {
-      marks: [{ label: 'PayPal-Debug-Id' }, { mono: send.debug_id.value }],
+      marks: [{ tag: 'PayPal reference', mono: send.debug_id.value, icon: 'fingerprint', title: 'PayPal-Debug-Id, the reference PayPal returned for the send' }],
       see: `Recorded hosted send · ${dateLabel(row.date)}: ${figures.step3_send.case_ref}, ${money(figures.step3_send.amount.value, figures.step3_send.amount.currency)}, read back as ${send.readback.value}.`,
       source: { kind: 'HOSTED DEMO', source: send.source_key },
     };
@@ -59,8 +64,8 @@ function lookFor(page) {
 }
 
 function Mark({ mark }) {
-  if (mark.stamp) return <span className={`tg-stamp tg-stamp--${mark.stamp}`}><Icon name={mark.stamp === 'ok' ? 'check' : 'warning'} />{mark.text}</span>;
-  if (mark.figure) return <span className="jp-figure">{mark.figure}</span>;
+  if (mark.stamp) return <span className={`tg-stamp tg-stamp--${mark.stamp}`}><Icon name={{ ok: 'check', risk: 'warning', warn: 'clock' }[mark.stamp] || 'clock'} />{mark.text}</span>;
+  if (mark.tag) return <span className="tg-tag tg-tag--neutral jp-tag" title={mark.title}><Icon name={mark.icon} />{mark.tag}{mark.mono && <span className="tg-mono jp-mono">{mark.mono}</span>}</span>;
   if (mark.mono) return <span className="tg-mono jp-mono">{mark.mono}</span>;
   return <span className="tg-eyebrow">{mark.label}</span>;
 }
@@ -101,6 +106,7 @@ export default function JudgesPage({ onOpen }) {
         </li>;
       })}
     </ol>
+    <p className="jp-reset" data-testid="judges-reset-note">Stuck? Every step has a Reset demo button. Nothing you press on this page is sent anywhere.</p>
     <SourceLegend testId="judges-basis-legend" />
   </div>;
 }

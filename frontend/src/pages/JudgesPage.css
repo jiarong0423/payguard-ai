@@ -23,6 +23,23 @@
 .jp-step__open .jp-icon { margin-left: var(--pg-space-1); }
 .jp-look__marks .tg-stamp .jp-icon { margin-right: var(--pg-space-1); }
 
+/* (R5) Rows split by one fine rule (the clip's heavy top only on the first stop, its foot rule only on the last). */
+.jp-route > li + li .jp-step { border-top: 1px solid var(--pg-color-rule); box-shadow: none; }
+.jp-route > li:not(:last-child) .jp-step { border-bottom: 0; }
+.jp-route { gap: 0; }
+/* Number and title on one baseline. */
+.jp-step { align-items: baseline; }
+.jp-step__n { align-self: baseline; line-height: 1.2; }
+.jp-step__head .tg-h3 { line-height: 1.2; }
+/* One button width, so the left edges line up. */
+.jp-step__open { justify-self: stretch; justify-content: space-between; align-self: center; }
+.jp-step__time, .jp-step__look { align-self: center; }
+/* Value tags: neutral, the stamp's height; the value in mono, upright. */
+.jp-tag { height: auto; min-height: var(--pg-space-6); gap: var(--pg-space-1); }
+.jp-tag .jp-icon { margin-right: var(--pg-space-1); }
+.jp-tag .jp-mono { margin-left: var(--pg-space-1); }
+.jp-reset { margin: 0; font-size: var(--pg-text-2); color: var(--pg-color-muted); }
+
 @media (max-width: 1100px) {
   .jp-step { grid-template-columns: var(--pg-space-7) minmax(0, 1fr) auto auto; align-items: start; }
   .jp-step__head { grid-column: 2; grid-row: 1; }

@@ -82,28 +82,51 @@ export function RuleChain({ row, tipId, names, result, shownAs, sourceKind }) {
 // B. Three sample items, three results; a card's button puts that example in the form through the page's own controls
 // (the Quick tests buttons, whose texts are the two descriptions, and "Fill from example"), so no new path is added.
 const PICK = { no_match: '.description-presets button:nth-of-type(1)', review_signal: '.description-presets button:nth-of-type(2)', rule_match: '[data-testid="country-try-example"]' };
+// (R5 seller 2026-11-12) A short, calm confirmation after a card is used: what happened and the one next press.
+const PICKED = {
+  description: 'Example added. Press Run Policy Check when you are ready.',
+  route: 'Example filled in: United States to Singapore, e-cigarettes. The country check is under way.',
+};
 function pick(example) {
-  document.querySelector(`#compliance ${PICK[example.id]}`)?.click();
+  const target = document.querySelector(`#compliance ${PICK[example.id]}`);
+  target?.click();
   if (example.kind === 'description') window.requestAnimationFrame(() => document.getElementById('description')?.focus());
+  return Boolean(target);
 }
+// (R5 seller) The NO MATCH card leads with plain words; the engine's own sentence stays in the detail line under it.
+const PLAIN_RESULT = { no_match: 'Nothing flagged for this item' };
 // The detail line never repeats the result line word for word (the NO MATCH card's first sentence).
 const restOf = (detail, result) => (detail.startsWith(result) ? detail.slice(result.length).replace(/^[.\s]+/u, '') : detail);
+const detailOf = (example) => (PLAIN_RESULT[example.id] ? `${example.result}. ${restOf(example.detail, example.result)}` : restOf(example.detail, example.result));
 export function ThreeResults() {
+  const [picked, setPicked] = useState(null);
+  useEffect(() => {
+    if (!picked) return undefined;
+    const timer = window.setTimeout(() => setPicked(null), 6000);
+    return () => window.clearTimeout(timer);
+  }, [picked]);
+  // Without a connection the country form is not on the page yet: say so plainly instead of "not ready".
+  const offline = () => Boolean(document.querySelector('#compliance [data-testid="country-rules-empty"]'));
+  const use = (example) => setPicked(pick(example) ? { kind: example.kind, at: Date.now() }
+    : { kind: example.kind === 'route' && offline() ? 'offline' : 'missing', at: Date.now() });
   return <section className="check-three tg-section" data-testid="three-results" aria-labelledby="three-results-title">
-    <div className="check-head"><h3 id="three-results-title" className="tg-h3">Three items, three results</h3>
-      <p className="tg-small">The same checks on three sample items. Use a card to put its example in the form below.</p></div>
+    <div className="check-head"><h3 id="three-results-title" className="tg-h3">Three sample sales, three answers</h3>
+      <p className="tg-small">The same checks on three sample items. Pick one to try it in the form below.</p></div>
     <div className="check-three__row">
       {data.examples.map((example) => <figure key={example.id} className={`tg-clip tg-clip--fact tg-card--cta check-three__card is-${example.tone}`} data-testid={`three-results-${example.id}`}>
         <figcaption className="tg-clip__kicker"><span className={`tg-stamp tg-stamp--${example.tone}`}><PhIcon svg={STAMP_ICON[example.tone]} />{example.stamp}</span></figcaption>
         <blockquote className="tg-clip__quote">{example.description}</blockquote>
-        <p className={example.tone === 'risk' ? 'tg-risk check-three__result' : 'check-three__result'} data-link={example.kind === 'route' ? `law:${example.result}` : undefined} data-link-risk={example.tone === 'risk' ? '' : undefined}>{example.tone === 'risk' && <PhIcon svg={xCircleSvg} />}<span>{example.result}</span></p>
-        <p className="check-three__detail">{restOf(example.detail, example.result)}</p>
+        <p className={example.tone === 'risk' ? 'tg-risk check-three__result' : 'check-three__result'} data-link={example.kind === 'route' ? `law:${example.result}` : undefined} data-link-risk={example.tone === 'risk' ? '' : undefined}>{example.tone === 'risk' && <PhIcon svg={xCircleSvg} />}<span>{PLAIN_RESULT[example.id] || example.result}</span></p>
+        <p className="check-three__detail">{detailOf(example)}</p>
         {example.also && <p className="check-three__also"><span className="tg-deadline--soon check-three__also-word"><PhIcon svg={warningSvg} />{example.also.label}</span> {example.also.statute} · {example.also.detail}</p>}
         <div className="tg-cta check-three__foot"><SourceLine kind="RECOUNTED" source={example.kind === 'route' ? 'country_rules_sg_ecig' : 'policy_check'} />
-        <button type="button" className="tg-btn tg-btn--secondary tg-btn--sm check-three__use" data-testid={`three-results-card-${example.id}`} onClick={() => pick(example)}>
-          {example.kind === 'route' ? 'Fill the country form' : 'Put in the description'}<PhIcon svg={arrowSvg} /></button></div>
+        <button type="button" className="tg-btn tg-btn--secondary check-three__use" data-testid={`three-results-card-${example.id}`} onClick={() => use(example)}>
+          {example.kind === 'route' ? 'Try this route' : 'Try this item'}<PhIcon svg={arrowSvg} /></button></div>
       </figure>)}
     </div>
+    <p className="check-three__picked" data-testid="three-results-picked" role="status" aria-live="polite">{picked && <span key={picked.at} className="tg-note check-three__picked-note">
+      {picked.kind === 'offline' ? 'The country check opens once the demo connects. Nothing was sent; the result on this card stands meanwhile.'
+        : picked.kind === 'missing' ? 'The form is not quite ready. Please try again in a moment.' : PICKED[picked.kind]}</span>}</p>
   </section>;
 }
 
@@ -140,7 +163,7 @@ export function RuleGrid() {
     {cell && <div className="check-grid__list" data-testid="rule-grid-list" aria-live="polite">
       <div className="check-grid__list-head"><strong>{NAMES[cell.code]} {cell.side} · {grid.counts[cell.side][cell.code]} rules</strong>
         <button type="button" className="tg-btn tg-btn--text" data-testid="rule-grid-clear" onClick={() => setCell(null)}>Clear</button></div>
-      {failed ? <p className="tg-small" role="alert">The rule list could not be loaded. The counts above still come from the pack.</p> : !index ? <p className="tg-small">Loading the rules…</p> : <>
+      {failed ? <p className="tg-small" role="alert">The rule list did not load. The counts above still come from the pack; please try again shortly.</p> : !index ? <p className="tg-small">Loading the rules…</p> : <>
         <div className="tg-filters" role="group" aria-label="Filter by level">
           {['all', ...TIERS].map((key) => <button key={key} type="button" className="tg-filter" aria-pressed={tier === key} data-testid={`rule-grid-tier-${key}`}
             onClick={() => { setTier(key); setAll(false); }}>{key === 'all' ? 'All' : TIER_WORD[key]}<span className="tg-filter__n">{key === 'all' ? rows.length : rows.filter((rule) => rule.tier === key).length}</span></button>)}
@@ -164,19 +187,23 @@ function openGuide() {
 }
 export function GuideAiCard() {
   const ai = data.guide_ai;
-  return <section className="check-ai tg-section" data-testid="guide-ai-card" aria-labelledby="guide-ai-title">
-    <p className="tg-eyebrow">Step 01 guide · AI step</p>
-    <h3 id="guide-ai-title" className="tg-h3">Gemini maps a seller sentence to a form item; fixed rules then validate it and code decides what counts.</h3>
-    <dl className="check-ai__figures">
-      <div><dt>Seller sentences sent</dt><dd className="tg-num">{ai.sentences}</dd></div>
-      <div><dt>Format-invalid replies</dt><dd className="tg-num">{ai.format_invalid}</dd></div>
-      <div><dt>Filled fields that were right</dt><dd className="tg-num">{ai.precision}</dd></div>
-      <div><dt>Recall</dt><dd className="tg-num">{ai.recall}</dd></div>
-      <div><dt>Confident wrong</dt><dd className="tg-num">{ai.confident_wrong}</dd></div>
-    </dl>
-    <SourceLine kind="RECORDED" source="gemini_guide_runs" testId="guide-ai-source">{ai.model}, policy pre-check</SourceLine>
-    <button type="button" className="tg-btn tg-btn--text" data-testid="guide-ai-open" onClick={openGuide}>Open the Step 01 guide</button>
-  </section>;
+  // (R5 seller 2026-11-12, review_UI5 s3) Test figures are for judges, not part of the seller's form: closed by default,
+  // short labels on one baseline. Same values, same source line.
+  return <details className="check-ai tg-fold" data-testid="guide-ai-card">
+    <summary><span className="check-ai__summary">How the AI step was tested<small className="tg-small">Step 01 guide · recorded run, aggregate scores only</small></span></summary>
+    <div className="tg-fold__body check-ai__body">
+      <p id="guide-ai-title" className="check-ai__lede">Gemini maps a seller sentence to a form item; fixed rules then validate it and code decides what counts.</p>
+      <dl className="check-ai__figures">
+        <div><dt>Sentences</dt><dd className="tg-num">{ai.sentences}</dd></div>
+        <div><dt>Invalid replies</dt><dd className="tg-num">{ai.format_invalid}</dd></div>
+        <div><dt>Fields right</dt><dd className="tg-num">{ai.precision}</dd></div>
+        <div><dt>Recall</dt><dd className="tg-num">{ai.recall}</dd></div>
+        <div><dt>Confident errors</dt><dd className="tg-num">{ai.confident_wrong}</dd></div>
+      </dl>
+      <SourceLine kind="RECORDED" source="gemini_guide_runs" testId="guide-ai-source">{ai.model}, policy pre-check</SourceLine>
+      <button type="button" className="tg-btn tg-btn--text" data-testid="guide-ai-open" onClick={openGuide}>Try the guide yourself</button>
+    </div>
+  </details>;
 }
 
 // (P3 2026-11-12, owner decision) A product card names its Channel3 category only; the comparison of Channel3's

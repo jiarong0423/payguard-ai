@@ -47,7 +47,7 @@ assert.ok(css.includes('.button.is-blocked { cursor: not-allowed; opacity: .45; 
 }
 
 // P2: the phone bar's Check country rules shows loading and aria-busy from the panel's own request.
-assert.ok(panel.includes('export default function CountryRules({ session, onResult, onContinue, onSessionExpired, onBusy, onExample, autoExample = false }) {'), 'panel reports busy (P3 2026-11-12: autoExample prop added)');
+assert.ok(panel.includes('export default function CountryRules({ session, onResult, onContinue, onSessionExpired, onBusy, onExample, autoExample = false, verdictTarget = null }) {'), 'panel reports busy (P3 2026-11-12: autoExample prop added; R5 2026-11-12: verdictTarget slot under the sample cards)');
 assert.ok(panel.includes('useEffect(() => { onBusy?.(busy); }, [busy]);'), 'busy forwarded');
 assert.ok(app.includes('onBusy={setCountryBusy}') && app.includes('loading: countryBusy })'), 'bar uses it');
 
@@ -62,7 +62,8 @@ assert.ok(css.includes('.app-shell.phone-action-invoice [data-testid="invoice-cr
 assert.ok(css.includes('.phone-action-bar, .phone-action-bar * { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }'), 'bar not selectable');
 
 // P2: error banner close button is 44px and the offline text is plain.
-assert.ok(css.includes('.message-error .icon-button { min-width: 44px; min-height: 44px; }'), '44px close button');
+// (UI r5) The error is .tg-toast (theme/components.css) now; .message-error is gone.
+assert.ok(readFileSync(new URL('../frontend/src/theme/components.css', import.meta.url), 'utf8').includes('.tg-toast .icon-button { min-width: 44px; min-height: 44px; }'), '44px close button');
 assert.ok(guide.includes("export const OFFLINE_TEXT = 'TradeGlot could not be reached. Check your internet connection, then try again.';"), 'plain offline sentence');
 assert.ok(guide.includes("failure?.code === 'backend_unavailable' ? OFFLINE_TEXT"), 'offline code mapped');
 // attack r23: waitFailureMessage wraps plainFailureMessage and only drops a fixed Retry-After sentence.

@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { apiRequest, retrySecondsLeft } from './api.js';
 import { tabKeyDown } from './tabKeys.js';
 import { useWaitClock, waitFailureMessage, WaitLine } from './GuideLive.jsx';
@@ -41,6 +42,7 @@ function withGloss(sentence, seen) {
 }
 // (optimise r24) Clock time for the before/after card ("Paused at 10:02 → No listed rule matched at 10:04"), local 24-hour time.
 const clockTime = (ms) => new Date(ms).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+const verdictState = (result) => (result.blocked ? 'is-blocked' : result.findings.some(isPostalBan) ? 'is-caution' : 'is-clear');
 const verdictWord = (result) => (result.blocked ? 'Draft paused' : result.findings.some(isPostalBan) ? 'Draft allowed (other carrier)' : 'No listed rule matched');
 // A rule row reads "{Country} {side} ({tier}): {rule}. [Statute Article]". The seller reads the plain sentence
 // first; the scope and the statute move to a small second line and the source link (review r1 P0.4).
@@ -185,7 +187,7 @@ export const countryAmountProblem = (value) => {
   if (!text) return '';
   return AMOUNT.test(text) && Number(text) > 0 ? '' : 'Enter an amount above 0 like 120 or 120.50 (at most two decimals), or leave it empty.';
 };
-const SESSION_EXPIRED_TEXT = 'The demo session expired. Select Reconnect at the top of the page to start a new one.';
+const SESSION_EXPIRED_TEXT = 'The demo session has ended. Nothing was sent. Select Reconnect at the top of the page to begin a fresh one.';
 
 // "Try the example" (judge self-test): ships from the United States to Singapore with E-cigarettes ticked, then runs the
 // same local rules check as the Check country rules button. No other request kind, no PayPal call, no model call.
@@ -195,7 +197,7 @@ export const EXAMPLE_ROUTE = Object.freeze({ seller_country: 'US', buyer_country
 // the Check a sale page is shown in a page load, the existing "Fill from example" runs once (same request, same rules).
 let autoExampleDone = false;
 
-export default function CountryRules({ session, onResult, onContinue, onSessionExpired, onBusy, onExample, autoExample = false }) {
+export default function CountryRules({ session, onResult, onContinue, onSessionExpired, onBusy, onExample, autoExample = false, verdictTarget = null }) {
   const [catalog, setCatalog] = useState(null);
   const [unavailable, setUnavailable] = useState(false);
   const [form, setForm] = useState(null);
@@ -258,7 +260,7 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
       if (failure.status === 404) setUnavailable(true);
       else if (failure.status === 401) { setError(SESSION_EXPIRED_TEXT); onSessionExpired?.(failure, session); }
       else {
-        setError(waitFailureMessage(failure, 'Country rules could not be loaded.'));
+        setError(waitFailureMessage(failure, 'The country list did not load. Nothing was sent; please try again shortly.'));
         if (retrySecondsLeft(failure) && catalogTry === 0) {
           setWaitUntil(failure.retryAt);
           retryTimer = window.setTimeout(() => { if (live) { setError(''); setCatalogTry(1); } }, failure.retryAt - Date.now());
@@ -288,7 +290,19 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
 
   const names = useMemo(() => Object.fromEntries((catalog?.countries || []).map((row) => [row.code, row.name])), [catalog]);
   if (unavailable) return <p className="text-dim" data-testid="country-rules-unavailable">Country rules are not part of this build.</p>;
-  if (!catalog || !form) return error ? <p className="guide-live-error" role="alert">{error}<WaitLine until={waitUntil} now={now} testId="country-wait" /></p> : null;
+  // (R5 seller 2026-11-12, review_UI5 s3 #1) Never an empty column: until the country list arrives, the card keeps its
+  // title and says what happens next (or shows the error with its wait line).
+  if (!catalog || !form) {
+    return <section className="country-rules country-rules--empty" data-testid="country-rules-empty" aria-labelledby="country-rules-title" aria-busy={Boolean(session && !error) || undefined}>
+      <div className="country-rules-head">
+        <h3 id="country-rules-title">Where are you shipping from and to?</h3>
+        <p>TradeGlot compares PayPal rules with official export and import rules.</p>
+      </div>
+      {error ? <p className="guide-live-error" role="alert">{error}<WaitLine until={waitUntil} now={now} testId="country-wait" /></p>
+        : <p className="country-empty-note" data-testid="country-rules-empty-note">{session ? 'One moment: fetching the country list.'
+          : 'Not connected yet. The country check opens as soon as the demo connects; until then, the e-cigarettes card above shows what it finds for United States to Singapore.'}</p>}
+    </section>;
+  }
 
   const set = (key, value) => { setForm((current) => ({ ...current, [key]: value })); setResult(null); onResult?.(null, { stale: stopPendingRef.current });
     if (key === 'amount' && !countryAmountProblem(value)) setAmountNote(''); };
@@ -352,7 +366,7 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
       if (!current()) return;
       if (failure.status === 401) { setError(SESSION_EXPIRED_TEXT); onSessionExpired?.(failure, session); return; }
       if (retrySecondsLeft(failure)) setWaitUntil(failure.retryAt);
-      setError(waitFailureMessage(failure, 'The country check failed; try again.'));
+      setError(waitFailureMessage(failure, 'That check did not go through. Nothing was sent; please try again.'));
     } finally {
       if (liveRef.current && token === runTokenRef.current) setBusy(false);
     }
@@ -443,8 +457,13 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
     <button type="button" className={`button button-secondary${waiting ? ' is-blocked' : ''}`} data-testid="country-check" aria-disabled={busy || waiting || undefined} aria-busy={busy} onClick={run}>{busy ? 'Checking…' : 'Check country rules'}</button>
     {error && <p className="guide-live-error" role="alert">{error}<WaitLine until={waitUntil} now={now} testId="country-wait" /></p>}
     <div className="country-live" aria-live="polite">
-    {result && <div ref={resultRef} tabIndex={-1} className={`country-result ${result.blocked ? 'is-blocked' : result.findings.some(isPostalBan) ? 'is-caution' : 'is-clear'}`} data-testid="country-result">
-      <div className="country-verdict" data-testid="country-verdict"><Verdict result={result} names={names} tags={result.checked_tags} onEdit={editItem} onContinue={onContinue} /></div>
+    {result && <div ref={resultRef} tabIndex={-1} className={`country-result ${verdictState(result)}`} data-testid="country-result">
+      {(() => {
+        // (R5 2026-11-12) With a slot from the page (under the three sample cards) the verdict is drawn there; the
+        // wrapper repeats the state class so the same .country-result.is-* colours apply. Same Verdict, same test ids.
+        const verdict = <div className="country-verdict" data-testid="country-verdict"><Verdict result={result} names={names} tags={result.checked_tags} onEdit={editItem} onContinue={onContinue} /></div>;
+        return verdictTarget ? createPortal(<div className={`country-result country-result--portal ${verdictState(result)}`}>{verdict}</div>, verdictTarget) : verdict;
+      })()}
       {!result.blocked && unlock?.after && <BeforeAfter record={unlock} names={names} />}
       {(() => {
         const seen = new Set();

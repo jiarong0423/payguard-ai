@@ -3,14 +3,14 @@
   --pg-color-canvas: #f1ede3;
   --pg-color-panel: #f8f5ee;
   --pg-color-recede: #e8e2d5;
-  --pg-color-rule: #111111;
+  --pg-color-rule: #2b2d30;
   --pg-color-rule-soft: #cfc8b8;
   --pg-color-control-line: #8a857a;
   --pg-color-ink: #111111;
   --pg-color-muted: #5a554c;
   --pg-color-subtle: #5a554c;
-  --pg-color-accent: #111111;
-  --pg-color-accent-strong: #000000;
+  --pg-color-accent: #2b2d30;
+  --pg-color-accent-strong: #1f2124;
   --pg-color-accent-tint: #e8e2d5;
   --pg-color-accent-selected: #e8e2d5;
   --pg-color-context: #8a857a;
@@ -26,7 +26,7 @@
   --pg-color-band-muted: #bdb6a6;
   --pg-color-band-amber: #e8b04a;
   --pg-color-band-green: #8fc79a;
-  --pg-color-focus: #111111;
+  --pg-color-focus: #2b2d30;
   --pg-color-on-accent: #f8f5ee;
   --pg-color-chip: #ddd6c6;
   --pg-color-hover: #ebe6da;
@@ -40,6 +40,13 @@
   --pg-color-ok-tint: #e4ece0;
   --pg-color-warn-tint: #f2e8d0;
   --pg-color-ink3: #8a8478;
+  --pg-color-vault: #16181b;
+  --pg-color-vault-ink: #f1ede3;
+  --pg-color-vault-muted: #b9b3a6;
+  --pg-color-vault-rule: #4b4b4a;
+  --pg-color-vault-ok: #8fc79a;
+  --pg-color-vault-warn: #e8b04a;
+  --pg-color-vault-risk: #f28b8b;
   --pg-tint-ok: #dfe8da;
   --pg-tint-watch: #efe2c4;
   --pg-tint-risk: #f6dfe0;
@@ -80,6 +87,10 @@
   --pg-motion-reveal-max: 2500ms;
   --pg-motion-ease-out: cubic-bezier(.2,.8,.2,1);
   --pg-motion-ease-in: cubic-bezier(.4,0,1,1);
+  --pg-motion-quick: 160ms;
+  --pg-motion-sweep: 200ms;
+  --pg-motion-settle: 240ms;
+  --pg-motion-precise: cubic-bezier(.2,0,0,1);
   --pg-font-sans: 'Public Sans', 'Inter Variable', Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --pg-font-serif: 'Newsreader', 'Iowan Old Style', Georgia, serif;
   --pg-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -110,10 +121,14 @@
   --pg-layout-grid-col: 64px;
   --pg-layout-grid-gutter: 24px;
   --pg-layout-step-head: 72px;
+  --pg-layout-rule-block: 2px;
   --pg-viz-base: #bdb6a6;
   --pg-viz-line: #5a554c;
   --pg-viz-alert: #7a5000;
   --pg-viz-bg: #e8e2d5;
   --pg-grid-columns: 12;
   --pg-grid-measure: 68ch;
+  --pg-rule-fine: 1px solid #2b2d30;
+  --pg-rule-double: 3px double #2b2d30;
+  --pg-label-tracking: .16em;
 }

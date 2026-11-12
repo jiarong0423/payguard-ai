@@ -107,7 +107,8 @@ assert.ok(app.includes('>Send tracking to PayPal Sandbox (test)</Button><LockRea
 // ---- A4: Confirm local draft review ----
 const draftReady = { draft_digest: 'd', routing: { overall_state: 'READY_FOR_LOCAL_REVIEW' } };
 assert.equal(approveLockReason({ draft: draftReady, reviewChecked: true }), null);
-assert.equal(note(approveLockReason({ draft: draftReady })), 'Locked: tick the review box above first.');
+// (R5) No direction word: on a phone the sticky bar sits below the box, so "above" was wrong there.
+assert.equal(note(approveLockReason({ draft: draftReady })), 'Locked: first tick "I have read the evidence".');
 assert.equal(note(approveLockReason({ draft: { ...draftReady, routing: { overall_state: 'NEEDS_SELLER_INPUT' } } })), 'Locked: this draft is not ready for a local review.');
 assert.equal(approveLockReason({ draft: draftReady, receipt: { reviewer: 'r' } }), null, 'recorded: the button says so');
 assert.equal(approveLockReason({ draft: draftReady, reviewedOnServer: true }), null);

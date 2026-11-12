@@ -4,11 +4,12 @@
      the guide and "More" on the left; the country check on the right; the rule grid and the Next bar full width.
      An opened guide takes the full width under both columns. Unknown children (notes) span both columns. */
   #compliance .stage-content { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; column-gap: var(--pg-space-5); row-gap: 0; padding-top: 0;
-    grid-template-areas: "three three" "policy country" "draft country" "ai country" "guide country" "more country" "grid grid" "c3 c3" "next next";
-    grid-template-rows: auto auto auto auto auto 1fr auto auto auto; }
-  #compliance .stage-content:has(> #guide-live-preflight.is-open) { grid-template-areas: "three three" "policy country" "draft country" "ai country" "more country" "guide guide" "grid grid" "c3 c3" "next next"; }
+    grid-template-areas: "three three" "verdict verdict" "policy country" "draft country" "ai country" "guide country" "more country" "grid grid" "c3 c3" "next next";
+    grid-template-rows: auto auto auto auto auto auto 1fr auto auto auto; }
+  #compliance .stage-content:has(> #guide-live-preflight.is-open) { grid-template-areas: "three three" "verdict verdict" "policy country" "draft country" "ai country" "more country" "guide guide" "grid grid" "c3 c3" "next next"; }
   #compliance .stage-content > * { grid-column: 1 / -1; }
   #compliance .stage-content > .check-three { grid-area: three; }
+  #compliance .stage-content > .country-verdict-slot { grid-area: verdict; }
   #compliance .stage-content > .compliance-layout { grid-area: policy; grid-template-columns: minmax(0, 1fr); }
   #compliance .stage-content > .stage-block { grid-area: country; align-self: stretch; border-left: 1px solid var(--pg-color-rule-soft); }
   #compliance .stage-content > #sandbox-draft { grid-area: draft; }

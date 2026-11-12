@@ -5,10 +5,8 @@
 @media (min-width: 1280px) {
   .main-content { width: min(100%, var(--pg-layout-content)); }
   .aup-result { align-self: start; }
-  /* Title row and the "Start here" links share one line instead of two stacked rows. */
   .page-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
   .page-top .hero { margin-bottom: 0; }
-  .page-top .start-here { margin-bottom: 0; flex-shrink: 0; padding-bottom: 4px; }
   .page-top { margin-bottom: 12px; }
   /* Step 01 layout: named areas in step01.css (P3 2026-11-12). */
   /* Tighter title, shorter text box and slimmer metric cards so more of each step fits in the first screen. */
@@ -29,20 +27,19 @@
   .brand { min-height: 36px; gap: 10px; }
   .brand small { margin-top: 0; line-height: 1.1; }
   .topbar nav a { min-height: 36px; }
-  .topbar .button, .topbar button { min-height: 32px; padding-top: 4px; padding-bottom: 4px; }
+  /* (UI r5, review_UI5 G2) More, Download and Connect share one 36px height. */
+  .topbar .button, .topbar button { height: 36px; min-height: 36px; padding-top: 0; padding-bottom: 0; }
 
   /* Less padding above the title row. */
   .main-content { padding-top: 8px; }
 
-  /* Title row: eyebrow and the two hero buttons share one line, the h1 sits under them, "Start here" is on the right. */
+  /* Title row: eyebrow and the two hero buttons share one line, the h1 sits under them. */
   .page-top { align-items: flex-end; gap: 8px 24px; margin-bottom: 8px; }
   .page-top .hero-compact > div:first-child { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 0 16px; }
   .page-top .hero-compact .eyebrow { grid-column: 1; grid-row: 1; margin: 0; }
   .page-top .hero-compact .hero-actions { grid-column: 2; grid-row: 1; display: flex; flex-wrap: nowrap; align-items: center; gap: 8px; margin: 0; }
   .page-top .hero-compact .hero-actions > * { min-height: 44px; padding-top: 2px; padding-bottom: 2px; font-size: var(--type-meta); white-space: nowrap; } /* P2: 44px calls to action */
   .page-top .hero-compact h1 { grid-column: 1 / -1; grid-row: 2; margin: 2px 0 0; line-height: 1.2; }
-  .page-top .start-here { padding-bottom: 2px; gap: 8px; }
-  .page-top .start-here-link { min-height: 28px; padding: 2px 10px; }
 
   /* Compact segmented step bar. */
   .journey { margin-bottom: 8px; border-radius: var(--pg-radius-control); }

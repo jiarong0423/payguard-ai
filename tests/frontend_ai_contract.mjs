@@ -409,7 +409,8 @@ for (const [name, source] of [['App', appSource], ['API', apiSource], ['Referenc
     // (P4 2026-11-12, review_INTEG s4 #10) The review state is a status line, not a chip: "Your review: pending / done".
     'Your review:</span>',
     "'Category check: not available'",
-    "'Sample sales loaded.'",
+    // (R5 design review) The success line counts the orders from the server state, not a typed number.
+    '`Sample sales loaded. ${nextState?.velocity?.transaction_count ?? 0} orders are ready to inspect.`',
     'const NOTICE_DISMISS_MS = 4000;',
     "'Sample cases. Connect the Sandbox in Step 01 to see real Sandbox cases.'",
     "'Sample PayPal cases (not real)'",

@@ -2,7 +2,7 @@
  * TradeGlot console service worker. Hand-written, no dependencies.
  *
  * What it does:
- *   - On install, precaches the built shell: the offline page, the web manifest, the icons and
+ *   - On install, precaches the built shell: the offline page (and its two fonts), the web manifest, the icons and
  *     the /assets/ files that the freshly fetched index.html references.
  *   - Page navigations go to the network first; when the local server cannot be reached, the
  *     precached offline page explains that the console needs the local API.
@@ -26,6 +26,9 @@ const STATIC_SHELL = Object.freeze([
   '/icons/icon-512.png',
   '/icons/icon-maskable-512.png',
   '/icons/apple-touch-icon.png',
+  // (S26 2026-11-12) The offline page's two self-hosted fonts, so it keeps the console's type when the server is down.
+  '/fonts/Newsreader-latin-var.woff2',
+  '/fonts/PublicSans-latin-var.woff2',
 ]);
 const SHELL_ASSET_PATTERN = /(?:src|href)="(\/assets\/[A-Za-z0-9._-]+)"/g;
 

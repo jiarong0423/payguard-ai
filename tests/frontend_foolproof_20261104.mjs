@@ -50,7 +50,7 @@ assert.match(app, /\{!evidenceSent && evidencePreview\.paypal_debug_id && <p cla
 
 // Colours are the send dialog's (orange then green), already contrast-checked in frontend_send_guard_r25.mjs.
 // (P4 2026-11-12) Continue is the ink primary token (the orange #c2410c left the palette); Send stays sage green.
-assert.match(css, /\.button\.button-confirm-continue \{ background: var\(--pg-color-ink\);/u);
+assert.match(css, /\.button\.button-confirm-continue \{ background: var\(--pg-color-accent\);/u); // round 5: charcoal, not ink
 assert.match(css, /\.button\.button-confirm-send \{ background: #4a6a4e;/u);
 
 // (r30 J2 P2-1) The server's single-use confirmation: the dialog's re-check keeps it and the send carries it.

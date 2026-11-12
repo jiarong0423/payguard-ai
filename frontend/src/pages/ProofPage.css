@@ -13,7 +13,7 @@
 .pp-ledger__src { width: 30%; min-width: 12rem; }
 
 /* Verify: explanation and buttons on the left, the log on the right; one column on phones. */
-.pp-verify { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--pg-space-6); padding-top: var(--pg-space-4); border-top: 1px solid var(--pg-color-rule); scroll-margin-top: var(--pg-space-7); }
+.pp-verify { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--pg-space-6); padding-top: var(--pg-space-4); border-top: 1px solid var(--pg-color-rule); align-items: start; scroll-margin-top: var(--pg-space-7); }
 .pp-check .pp-icon { margin-right: var(--pg-space-1); }
 .pp-muted { color: var(--pg-color-muted); }
 .pp-verify__head { display: grid; align-content: start; gap: var(--pg-space-3); min-width: 0; }
@@ -24,13 +24,39 @@
 .pp-hash dd { margin: 0 0 var(--pg-space-2); overflow-wrap: anywhere; }
 .pp-verify__log { display: grid; align-content: start; gap: var(--pg-space-3); min-width: 0; }
 .pp-verify__log .tg-log__ref { overflow-wrap: anywhere; }
+/* (R5) The check runs in the vault (theme/components.css .tg-vault, the one dark panel on the site). Light text only;
+   status hues come from the vault's own light tokens; a risk title uses the vault's light red, never #c8102e on dark. */
+.pp-vault { gap: var(--pg-space-4); }
+.pp-vault__head { margin: 0; font-family: var(--pg-font-serif); font-size: var(--pg-text-4); line-height: 1.3; }
+.pp-vault .is-risk .tg-log__title { color: var(--pg-color-vault-risk); }
+.pp-vault .is-pending::before { background: var(--pg-color-vault); box-shadow: inset 0 0 0 1px var(--pg-color-vault-muted); }
+.pp-vault .tg-log__entry + .tg-log__entry > .tg-log__body { border-top-color: var(--pg-color-vault-rule); }
+/* Lines appear in order once the check runs: a short fade each, no movement; none with reduced motion. */
+.pp-vault.is-run .tg-log__entry:not(.is-pending) { animation: pp-line var(--pg-motion-quick) var(--pg-motion-precise) both; animation-delay: calc(var(--pp-i) * var(--pg-motion-state)); }
+@keyframes pp-line { from { opacity: 0; } }
+/* The result as a seal: a larger stamp with the short fingerprint under it. */
+.pp-seal { display: inline-grid; justify-items: start; gap: var(--pg-space-2); margin-top: var(--pg-space-3); padding: var(--pg-space-3) var(--pg-space-4); border: 1px solid var(--pg-color-vault-rule); }
+.pp-seal .tg-stamp { height: auto; padding: var(--pg-space-2) var(--pg-space-3); font-size: var(--pg-text-3); letter-spacing: .18em; }
+.pp-seal__hash { font-size: var(--pg-text-2); color: var(--pg-color-vault-muted); }
+/* Hash in groups of eight: same characters, a small gap between groups, never broken mid-group. */
+.pp-hashgroups { display: inline-flex; flex-wrap: wrap; gap: 0 var(--pg-space-2); font-size: var(--pg-text-2); line-height: 1.6; }
+.pp-hashgroups > span { white-space: nowrap; }
+/* Recorded lines behind each ledger row (progressive disclosure). */
+.pp-raw { margin-top: var(--pg-space-1); font-size: var(--pg-text-1); }
+.pp-raw summary { display: inline-flex; align-items: center; gap: var(--pg-space-2); cursor: pointer; color: var(--pg-color-ink); font-weight: 600; text-decoration: underline; text-underline-offset: var(--pg-space-1); }
+.pp-raw ul { margin: var(--pg-space-2) 0 0; padding: 0; list-style: none; display: grid; gap: var(--pg-space-1); }
+.pp-raw__label { font-weight: 700; }
+.pp-raw__where { color: var(--pg-color-muted); }
+@media (prefers-reduced-motion: reduce) {
+  .pp-vault.is-run .tg-log__entry:not(.is-pending) { animation: none; }
+}
 /* Steps not run yet: muted text, the log's own hollow dot (.tg-log__entry.is-pending). */
-.pp-verify__log .is-pending .tg-log__title, .pp-verify__log .is-pending .tg-log__note { color: var(--pg-color-muted); font-weight: 500; }
+.pp-verify__log .is-pending .tg-log__title, .pp-verify__log .is-pending .tg-log__note { color: var(--pg-color-vault-muted); font-weight: 500; }
 /* "Change one byte" appears only after Verify; a sentence says so before (disabled look comes from components.css v2). */
 .pp-hint { margin: 0; font-size: var(--pg-text-2); line-height: 1.43; color: var(--pg-color-muted); }
 .pp-verdict { margin-top: var(--pg-space-2); }
 .pp-diff { background: var(--pg-tint-risk); color: var(--pg-color-risk); font-weight: 700; }
-.pp-diff-note { margin: 0; font-size: var(--pg-text-2); color: var(--pg-color-risk); }
+.pp-diff-note { margin: 0; font-size: var(--pg-text-2); color: var(--pg-color-vault-risk); }
 
 @media (max-width: 900px) {
   .pp-verify { grid-template-columns: minmax(0, 1fr); gap: var(--pg-space-5); }
@@ -38,4 +64,10 @@
 @media (max-width: 640px) {
   .pp { gap: var(--pg-space-5); margin-top: var(--pg-space-4); }
   .pp-ledger__src { grid-column: 1 / -1; min-width: 0; width: auto; }
+  /* The time stamp sits above each line in the vault on phones, so it is never clipped. */
+  .pp-vault .tg-log__entry { grid-template-columns: minmax(0, 1fr); }
+  .pp-vault .tg-log__entry::before { content: none; }
+  .pp-vault .tg-log__when { padding: var(--pg-space-3) 0 0; text-align: left; letter-spacing: 0; }
+  .pp-vault .tg-log__body { padding-left: 0; border-left: 0; }
+  .pp-vault { padding: var(--pg-space-4); }
 }

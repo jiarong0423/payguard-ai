@@ -44,4 +44,9 @@
   #disputes .board-plan-reset { min-height: 32px; }
   #disputes .board-chips { margin-bottom: 4px; gap: 6px; }
   #disputes .board-timeline figcaption { margin-bottom: 4px; }
+  /* (R5 PayPal judge) One left edge (the view tabs) and one right edge (the step head) for the case and the rail. */
+  #disputes .stage-body { column-gap: var(--pg-space-6); }
+  #disputes .stage-body > .ds-side { padding-right: 0; }
+  #disputes .stage-main > .ds-layout { padding-left: 0; padding-right: 0; }
+  #disputes .stage-main > .ds-hosted { margin-left: 0; margin-right: 0; }
 }

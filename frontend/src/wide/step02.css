@@ -6,7 +6,6 @@
   /* Fold: slim summary, tabs and period switch tight, chart and table sized to fit one screen when open. */
   #velocity .stage-fold > summary { min-height: 40px; padding: 8px 16px; }
   #velocity .stage-fold .segmented-row { padding: 4px 16px 0; }
-  #velocity .stage-fold .segmented button { min-height: 32px; padding: 2px 12px; }
   #velocity .velocity-period { margin-bottom: 4px; }
   #velocity .velocity-pane { padding-bottom: 8px; }
   #velocity .velocity-mark-chips { margin-top: 0; margin-bottom: 0; }
@@ -23,4 +22,10 @@
   #velocity .stage-side > .step-section, #velocity .stage-side > .step-more { margin: 0; }
   #velocity .stage-side > .step-section .optional-trigger { padding-top: 6px; padding-bottom: 6px; min-height: 0; }
   #velocity .step-more > summary { min-height: 40px; padding: 4px 16px; }
+
+  /* (UI r5, review_UI5 s6) Both view switches are .tg-seg (36px) on one baseline; the four facts sit 2 x 2 instead of
+     3 + 1; the side column ends on the page's right edge (1240), like the header. */
+  #velocity .stage-fold .velocity-pane > .velocity-period { top: -40px; }
+  #velocity .vs-hero .vs-hero__facts { display: grid; grid-template-columns: repeat(2, max-content); gap: var(--pg-space-2) var(--pg-space-7); }
+  #velocity .stage-body > .stage-side { padding-right: 0; }
 }

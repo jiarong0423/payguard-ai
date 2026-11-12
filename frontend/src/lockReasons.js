@@ -65,6 +65,6 @@ export function approveLockReason({ sessionExpired = false, draft = null, receip
   if (!draft || receipt || reviewedOnServer) return null;
   if (sessionExpired) return SESSION_LOCK;
   if (!draft.draft_digest || draft.routing?.overall_state !== 'READY_FOR_LOCAL_REVIEW') return 'Locked: this draft is not ready for a local review.';
-  if (!reviewChecked) return 'Locked: tick the review box above first.';
+  if (!reviewChecked) return 'Locked: first tick "I have read the evidence".';
   return null;
 }

@@ -137,7 +137,9 @@ ok(renderToStaticMarkup(createElement(sources.SourceLine, { kind: 'RECORDED', so
 const legend = renderToStaticMarkup(createElement(sources.SourceLegend, { testId: 'x' }));
 ok(KINDS.every((kind) => legend.includes(`<b>${kind}</b>`)) && table.labels.every((item) => legend.includes(item.meaning)), 'legend: four labels with their sentence');
 const sourcesCss = read('frontend/src/theme/sources.css').replace(/\/\*[\s\S]*?\*\//gu, '');
-ok(/white-space: normal/u.test(sourcesCss) && !/ellipsis/u.test(sourcesCss), 'source lines wrap, never an ellipsis');
+// (R5 2026-11-12) The wrap rule moved from sources.css into components.css (.tg-source); check it there.
+const sourceRule = (read('frontend/src/theme/components.css').match(/^\.tg-source \{[^}]*\}/mu) || [''])[0];
+ok(/overflow-wrap: anywhere/u.test(sourceRule) && !/ellipsis|nowrap/u.test(sourceRule) && !/ellipsis/u.test(sourcesCss), 'source lines wrap, never an ellipsis');
 ok(!/#[0-9a-f]{3,8}\b|font-size|font-family|border-radius/iu.test(sourcesCss), 'sources.css: tokens only');
 
 // 4. The four pages.

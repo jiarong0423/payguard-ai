@@ -30,14 +30,25 @@
 /* Chart highlight chips: square filter chips (.tg-filter look), one row, 44px; pressed = ink inset and a check mark. */
 .velocity-mark-chips { display: flex; flex-wrap: nowrap; gap: 8px; margin: 0 0 8px; overflow-x: auto; scrollbar-width: none; }
 .velocity-mark-chips button { flex: none; min-height: 44px; padding: 0 12px; border: 1px solid var(--pg-color-control-line); border-radius: var(--pg-radius-control); background: transparent; color: var(--pg-color-ink); font: 500 var(--pg-text-2)/1 var(--pg-font-sans); white-space: nowrap; cursor: pointer; }
-.velocity-mark-chips button span { margin-left: 6px; padding-left: 6px; border-left: 1px solid currentColor; font-variant-numeric: tabular-nums; }
-.velocity-mark-chips button[aria-pressed="true"] { border-color: var(--pg-color-ink); box-shadow: inset 0 0 0 1px var(--pg-color-ink); }
+/* (UI r5) The count reads as a count: a small ink square, not "| 1". */
+.velocity-mark-chips button span { display: inline-grid; place-items: center; min-width: 20px; height: 20px; margin-left: 8px; padding: 0 4px; box-shadow: inset 0 0 0 1px currentColor; color: var(--pg-color-ink); font: 600 var(--pg-text-1)/1 var(--pg-font-sans); font-variant-numeric: tabular-nums; }
+.velocity-mark-chips button:disabled span { color: var(--pg-color-ink3); }
+.velocity-mark-chips button[aria-pressed="true"] { border-color: var(--pg-color-accent); box-shadow: inset 0 0 0 1px var(--pg-color-accent); }
 /* (fix r1 F10) The check mark sits in a fixed slot of the left padding in both states (hidden until pressed), so
    pressing a chip changes no width and a label that wraps stays aligned. */
 .velocity-mark-chips button[aria-pressed] { position: relative; padding-left: 30px; }
 .velocity-mark-chips button[aria-pressed]::before { content: "\2713"; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); visibility: hidden; }
 .velocity-mark-chips button[aria-pressed="true"]::before { visibility: visible; }
 .velocity-mark-chips button:last-child { margin-left: auto; border-color: transparent; text-decoration: underline; text-underline-offset: 3px; }
-.velocity-mark-chips button:disabled { color: var(--pg-color-disabled-text); cursor: not-allowed; }
+.velocity-mark-chips button:disabled { color: var(--pg-color-ink3); cursor: not-allowed; }
+.velocity-mark-chips button:last-child:disabled { text-decoration: none; } /* (UI r5) a disabled Reset must not look like a link */
 .velocity-mark-chips button:focus-visible { outline: 2px solid var(--pg-color-focus); outline-offset: 2px; }
 .velocity-mark-note { margin: 0 0 8px; font-size: var(--pg-text-2); color: var(--pg-color-ink); }
+
+/* (UI r5, review_UI5 s7) Phones: highlight buttons stack instead of running off the right edge; the records list and the
+   legend share the chart's 12px inner edge. Scoped to #velocity, loaded with the chart. */
+@media (max-width: 640px) {
+  #velocity .velocity-mark-chips { display: grid; grid-template-columns: minmax(0, 1fr); overflow: visible; }
+  #velocity .velocity-mark-chips button:last-child { justify-self: start; margin-left: 0; }
+  #velocity .velocity-pane > .spike-records, #velocity .velocity-pane > .phone-chart-legend { padding-inline: 12px; }
+}

@@ -3,7 +3,7 @@
    review will add later: design system v2 classes (.tg-seg, .tg-fold, .tg-tag--neutral, .tg-is-sel) replace the local ones. */
 .ds-layout { padding: var(--pg-space-4); }
 .ds-head__num.is-soon { color: var(--pg-color-warn); }
-.ds-hosted { display: grid; gap: var(--pg-space-2); margin: var(--pg-space-4); padding-top: var(--pg-space-2); border-top: 2px solid var(--pg-color-ink); scroll-margin-top: 80px; }
+.ds-hosted { display: grid; gap: var(--pg-space-2); margin: var(--pg-space-4); padding-top: var(--pg-space-2); border-top: 3px double var(--pg-color-ink); scroll-margin-top: 80px; }
 .ds-hosted > p { margin: 0; }
 .ds-queue-col, .ds-case { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--pg-space-4); align-content: start; min-width: 0; }
 .ds-queue__cap { display: grid; gap: 2px; margin: 0; padding: var(--pg-space-2) 0; border-bottom: 1px solid var(--pg-color-ink); font-size: var(--pg-text-1); }
@@ -44,6 +44,22 @@
 .ds-ai__state { margin: 0 0 var(--pg-space-2); font-size: var(--pg-text-2); }
 .ds-ai__state .tg-source__label { margin-right: 6px; }
 
+/* (R5 PayPal judge) Ids are references: mono, their own case. One rule between the head and the next step. The deadline
+   always carries its clock; colour alone says how close it is. Actor and action read as two words. */
+.ds-id { font-family: var(--pg-font-mono); letter-spacing: 0; text-transform: none; }
+.ds-head { border-bottom: 0; }
+.ds-head__num > svg { flex: none; }
+.ds-log .tg-log__who::after { content: " ·"; }
+.ds-links { margin: 0; padding-top: var(--pg-space-2); border-top: 1px solid var(--pg-color-rule-soft); font-size: var(--pg-text-2); color: var(--pg-color-muted); }
+#disputes .human-review .checkbox-label { min-height: 44px; align-items: center; }
+#disputes .ds-case .step-one-evidence { border: 0; border-top: 1px solid var(--pg-color-rule-soft); border-radius: 0; background: transparent; padding-left: 0; padding-right: 0; }
+#disputes .human-review .checkbox-label input { width: 24px; height: 24px; flex: none; accent-color: var(--pg-color-ink); }
+/* Below the wide layout the case comes first and the queue follows it (phone: the queue no longer pushes the case down). */
+@media (max-width: 1279px) {
+  #disputes .ds-side > .ds-queue-col { order: 1; }
+  #disputes .ds-side > :not(.ds-queue-col) { order: 2; }
+}
+
 /* Step 02 hero, fold and orders ledger. */
 /* Step 02: hero figure (the same x5.0 as Overview card 02), a sentence, the facts and one primary button. */
 .vs-hero { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--pg-space-3) var(--pg-space-6); align-items: start; margin: var(--pg-space-3) var(--pg-space-4) 0; padding: var(--pg-space-4) 0; border-top: var(--pg-layout-rule-heavy) solid var(--pg-color-ink); border-bottom: 1px solid var(--pg-color-ink); }
@@ -72,3 +88,4 @@
   .ds-head__num { font-size: var(--pg-text-5); }
   .ds-ai__flow { grid-template-columns: minmax(0, 1fr); }
 }
+

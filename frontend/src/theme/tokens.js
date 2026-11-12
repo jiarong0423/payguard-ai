@@ -10,14 +10,16 @@ export const color = Object.freeze({
   canvas: '#f1ede3',          // L0 newsprint
   panel: '#f8f5ee',           // inputs and raised paper
   recede: '#e8e2d5',          // surface, a shade darker than the page
-  rule: '#111111',            // thin black rules (cards, sections, masthead)
+  // Round 5 (owner: "all black is too heavy"; style reference: charcoal, not black): rules and every interactive job
+  // move to charcoal #2b2d30; running text stays ink #111111. Paper on charcoal 12.7:1, charcoal on canvas 11.8:1.
+  rule: '#2b2d30',            // rules (cards, sections, masthead): charcoal
   ruleSoft: '#cfc8b8',        // row separators inside tables and lists
   controlLine: '#8a857a',     // newsprint grey: control edges and marks (3.1:1 on canvas, WCAG 1.4.11)
   ink: '#111111',
   muted: '#5a554c',           // secondary text (6.3:1 on canvas, 5.7:1 on surface)
   subtle: '#5a554c',
-  accent: '#111111',          // interactive = ink: buttons, links, counts, selected bar, current nav, focus
-  accentStrong: '#000000',
+  accent: '#2b2d30',          // interactive = charcoal: buttons, segment frames, current nav, focus
+  accentStrong: '#1f2124',    // primary hover, one step darker (14.8:1 under paper)
   accentTint: '#e8e2d5',
   accentSelected: '#e8e2d5',  // selected rows: surface fill + 3px ink bar
   context: '#8a857a',         // marks only (3.1:1), never text
@@ -33,7 +35,7 @@ export const color = Object.freeze({
   bandMuted: '#bdb6a6',
   bandAmber: '#e8b04a',
   bandGreen: '#8fc79a',
-  focus: '#111111',           // 2px ink ring, :focus-visible only
+  focus: '#2b2d30',           // 2px charcoal ring with a 3px gap, :focus-visible only
   onAccent: '#f8f5ee',        // text on ink fills
   chip: '#ddd6c6',            // neutral count badge
   hover: '#ebe6da',           // row / item hover
@@ -48,7 +50,23 @@ export const color = Object.freeze({
   okTint: '#e4ece0',
   warnTint: '#f2e8d0',
   ink3: '#8a8478',            // disabled text and non-text meta marks only (3.2:1 on canvas): never running text
+  // UI round 5 (style reference, review_STYLEREF s2): ONE dark surface, the Proof verify panel ("vault"). Status hues on it
+  // are their own light values (the paper hues fail on dark: ok 2.8, risk 3.0, warn 2.5). Ratios on vault: ink 15.2,
+  // muted 8.5, ok 9.2, warn 9.1, risk 7.5. The vault itself never means risk and never carries an error.
+  vault: '#16181b',
+  vaultInk: '#f1ede3',
+  vaultMuted: '#b9b3a6',
+  vaultRule: '#4b4b4a',       // hairline on the vault (decorative, 2.0:1)
+  vaultOk: '#8fc79a',
+  vaultWarn: '#e8b04a',
+  vaultRisk: '#f28b8b',
 });
+
+// Rules (round 5): fine hairline between rows, double rule to open a block. Ink only.
+export const rule = Object.freeze({ fine: '1px solid #2b2d30', double: '3px double #2b2d30' });
+
+// Tracked small caps (round 5): eyebrow, stamp and tag only; never body text or IDs.
+export const label = Object.freeze({ tracking: '.16em' }); // round 5: wider, tailored small caps
 
 // Data viz (v2): no teal, no orange, no white. Above the review line = check first (amber), not risk (red).
 export const viz = Object.freeze({ base: '#bdb6a6', line: '#5a554c', alert: '#7a5000', bg: '#e8e2d5' });
@@ -80,6 +98,8 @@ export const motion = Object.freeze({
   hover: 120, state: 180, dataMin: 240, dataMax: 400, max: 500, revealMax: 2500, // ms
   easeOut: 'cubic-bezier(.2,.8,.2,1)',
   easeIn: 'cubic-bezier(.4,0,1,1)',
+  // Round 5: precise micro-interactions, 160-240 ms, no overshoot; off under prefers-reduced-motion.
+  quick: 160, sweep: 200, settle: 240, precise: 'cubic-bezier(.2,0,0,1)',
 });
 
 export const font = Object.freeze({
@@ -102,6 +122,7 @@ export const layout = Object.freeze({
   maxWidth: 1200, topBar: 56, band: 56, actionBar: 56, gridRow: 40, gridRowPhone: 44, sectionGap: 48, sectionGapPhone: 32,
   cardPad: 20, cardPadWide: 24, heroPad: 32, cardGap: 24, phone: 640, content: 1040, focusRing: 2, ruleHeavy: 3,
   gridCol: 64, gridGutter: 24, stepHead: 72, // v2
+  ruleBlock: 2, // round 5: 3px (ruleHeavy) is for the masthead only; a block opens with 2px
 });
 
 const kebab = (name) => String(name).replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
@@ -122,6 +143,8 @@ export function cssVariables() {
   for (const [k, v] of Object.entries(layout)) vars[`--pg-layout-${kebab(k)}`] = `${v}px`;
   for (const [k, v] of Object.entries(viz)) vars[`--pg-viz-${k}`] = v;
   for (const [k, v] of Object.entries(grid)) vars[`--pg-grid-${k}`] = String(v);
+  for (const [k, v] of Object.entries(rule)) vars[`--pg-rule-${k}`] = v;
+  for (const [k, v] of Object.entries(label)) vars[`--pg-label-${k}`] = v;
   return vars;
 }
 

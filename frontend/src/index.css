@@ -53,7 +53,7 @@ button, input, select, textarea, a, summary { outline-offset: 2px; }
 .topbar {
   min-height: 64px; height: 64px;
   padding: 0 max(16px, calc((100vw - var(--pg-layout-content)) / 2));
-  border-bottom: var(--pg-layout-rule-heavy) solid var(--pg-color-ink);
+  border-bottom: var(--pg-layout-rule-heavy) solid var(--pg-color-rule);
   background: var(--pg-color-canvas);
   display: flex; align-items: center; justify-content: space-between; gap: 24px;
 }
@@ -76,7 +76,7 @@ button, input, select, textarea, a, summary { outline-offset: 2px; }
 .topbar-more { position: relative; margin-left: auto; }
 .topbar-more > summary { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 12px; border: 1px solid var(--pg-color-control-line); color: var(--pg-color-ink); font-size: 13px; font-weight: 600; cursor: pointer; list-style: none; }
 .topbar .topbar-more > nav { display: none !important; }
-.topbar .topbar-more[open] > nav { position: absolute; top: calc(100% + 6px); right: 0; z-index: 60; display: grid !important; gap: 0; min-width: 220px; padding: 4px 0; border: 1px solid var(--pg-color-ink); background: var(--pg-color-panel); box-shadow: var(--pg-elev-l3); }
+.topbar .topbar-more[open] > nav { position: absolute; top: calc(100% + 6px); right: 0; z-index: 60; display: grid !important; gap: 0; min-width: 220px; padding: 4px 0; border: 1px solid var(--pg-color-rule); background: var(--pg-color-panel); box-shadow: var(--pg-elev-l3); }
 .topbar .topbar-more nav a { display: flex !important; padding: 0 16px; color: var(--pg-color-ink); }
 .topbar .topbar-more nav a:hover { background: var(--pg-color-hover); }
 .topbar .pwa-install-button { border-radius: 0; }
@@ -145,7 +145,7 @@ button, input, select, textarea, a, summary { outline-offset: 2px; }
 .main-content #disputes .case-card.case-selected {
   position: relative; z-index: 1;
   background: var(--pg-color-accent-selected);
-  box-shadow: inset var(--pg-elev-active-bar) 0 0 var(--pg-color-ink);
+  box-shadow: inset var(--pg-elev-active-bar) 0 0 var(--pg-color-rule);
   border-radius: 0;
 }
 .main-content .journey-step.is-active strong { color: var(--pg-color-ink); font-weight: 700; }
@@ -440,7 +440,7 @@ details:not(.limits-drawer)[open] > summary::after { transform: rotate(225deg); 
 .reference-search-row { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .reference-search-row p, .reference-status, .reference-locator, .reference-retrieved, .reference-limitations { margin: 8px 0 0; color: var(--pg-color-muted); font-size: var(--type-meta); line-height: 1.55; }
 .reference-search-row small { display: block; color: var(--pg-color-subtle); font-size: var(--type-meta); }
-.reference-error, .message-error { padding: 12px; margin-top: 12px; border: 1px solid var(--pg-color-risk); border-radius: var(--pg-radius-control); background: var(--pg-tint-risk); color: var(--pg-color-risk); font-size: var(--type-meta); }
+.reference-error { padding: 12px; margin-top: 12px; border: 1px solid var(--pg-color-risk); border-radius: var(--pg-radius-control); background: var(--pg-tint-risk); color: var(--pg-color-risk); font-size: var(--type-meta); }
 .reference-results { margin-top: 12px; display: grid; gap: 12px; }
 .reference-card-header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-size: var(--type-meta); }
 .reference-card-header > span, .reference-dates dt, .reference-provenance dt { color: var(--pg-color-muted); font-size: var(--type-meta); }
@@ -471,7 +471,6 @@ details:not(.limits-drawer)[open] > summary::after { transform: rotate(225deg); 
 .stage-next .button { flex-shrink: 0; }
 
 /* Optional Analytics & Activity sections */
-/* Start here box: one jump into the guided form */
 .analytics-launch-card { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-card); background: var(--pg-color-recede); }
 .analytics-launch-copy { display: grid; gap: 8px; min-width: 0; }
 .analytics-launch-copy > strong { color: var(--pg-color-ink); font-size: var(--type-section-title); font-weight: 650; }
@@ -504,11 +503,7 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 .message { display: flex; align-items: center; gap: 12px; margin: 0 0 12px; padding: 12px 16px; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-control); box-shadow: var(--pg-elev-l3); font-size: var(--type-meta); pointer-events: auto; }
 .message-info { color: var(--pg-color-accent-strong); background: var(--pg-color-accent-tint); border-color: var(--pg-color-accent); }
 .message-success { color: var(--pg-color-ok); background: var(--pg-tint-ok); border-color: var(--pg-color-ok); }
-.message-error > svg { flex-shrink: 0; }
-.message-error > div { display: flex; flex-direction: column; gap: 4px; }
-.message-error .button { margin-left: auto; }
 /* (evloop) PayPal's reason for a failed send, one line per code, then the debug id. */
-.message-error .paypal-issue-line, .message-error .paypal-issue-debug { display: block; overflow-wrap: anywhere; }
 .icon-button { display: grid; place-items: center; margin-left: auto; padding: 8px; border: 0; background: transparent; color: inherit; }
 .spinner { width: 14px; height: 14px; border: 2px solid var(--pg-color-rule); border-top-color: var(--pg-color-accent); border-radius: var(--pg-radius-pill); animation: spin .7s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -562,8 +557,6 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
      error, which blocks the next action anyway, stays fixed above the action bar. */
   .feedback-region { position: static; width: auto; margin: 0 16px; }
   .feedback-region .message { box-shadow: none; }
-  .feedback-region .message-error { position: fixed; left: 10px; right: 10px; bottom: 12px; z-index: 45; }
-  .app-shell.has-phone-action .feedback-region .message-error { bottom: calc(56px + 12px + env(safe-area-inset-bottom)); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -580,16 +573,11 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 .button[aria-disabled="true"] { cursor: progress; }
 .badge, .journey-status, .country-sev, .gap-chip { white-space: nowrap; }
 
-/* Header and the one-line Start here row: page top at or under 220px. */
+/* Header: page top at or under 220px. */
 .brand, .topbar nav a { white-space: nowrap; flex-shrink: 0; }
 /* The mode badge may shrink: on a 360px phone a fixed badge widened the page to 404px (phone test 2026-11-03). */
 .environment { white-space: nowrap; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .footer-independent { color: var(--pg-color-muted); }
-.start-here { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; margin-bottom: 12px; padding: 0; border: 0; background: transparent; }
-.start-here-title { margin: 0; color: var(--pg-color-muted); font-size: var(--type-meta); font-weight: 650; white-space: nowrap; }
-.start-here-actions { display: flex; flex-wrap: wrap; gap: 8px; }
-.start-here-link { display: inline-flex; align-items: center; gap: 8px; min-height: 32px; padding: 4px 12px; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-pill); background: var(--pg-color-panel); color: var(--pg-color-accent-strong); font-size: var(--type-meta); font-weight: 650; white-space: nowrap; }
-.start-here-link:hover { border-color: var(--pg-color-accent); background: var(--pg-color-accent-tint); }
 
 /* Step tabs: one line per label; a long status is cut with an ellipsis instead of wrapping. */
 .journey-step > div { min-width: 0; }
@@ -630,7 +618,6 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
   .stage-accordion.is-open, [id^="guide-live-"], .country-result, .step-more { scroll-margin-top: 64px; }
   .journey-step .journey-status { display: none; }
   .journey-step { min-height: 48px; justify-content: center; }
-  .start-here-title { width: 100%; }
   .stage-block, .stage-block-details, .step-more { margin-left: 16px; margin-right: 16px; }
   .stage-block { padding: 0; margin-top: 0; }
   .compliance-layout { padding: 16px; }
@@ -646,10 +633,9 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
   .app-shell.is-typing .phone-action-bar { display: none; }
 }
 @media (pointer: coarse) {
-  .button, .button-secondary, .button-ghost, .start-here-link, .step-more > summary, .country-more > summary, .country-optional > summary { min-height: 44px; }
+  .button, .button-secondary, .button-ghost, .step-more > summary, .country-more > summary, .country-optional > summary { min-height: 44px; }
 }
 .page-top { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 12px; }
-.page-top .start-here { justify-content: flex-start; margin: 0; }
 .journey-status-danger { color: var(--pg-color-risk); }
 .over-limit { color: var(--pg-color-watch); font-weight: 650; }
 .label-short { display: none; }
@@ -657,13 +643,8 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
   .label-full { display: none; }
   .label-short { display: inline; }
   .journey-step > div { width: 100%; align-items: center; }
-  .start-here { flex-wrap: nowrap; }
-  .start-here-title { width: auto; }
-  .start-here-actions { flex-wrap: nowrap; }
-  .start-here-link { padding: 4px 12px; }
   .page-top { gap: 8px; }
 }
-@media (max-width: 640px) { .start-here-link svg { display: none; } }
 
 /* ---- UI plan r2 (2026-11-03): one view at a time, one disclosure style, 4/8/12/16/24/32 spacing ---- */
 /* Segmented control (country rules, sales chart or orders, hourly or monthly). Phones scroll it sideways. */
@@ -725,9 +706,6 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
   .sandbox-details.provider-disputes { margin-left: var(--pg-space-3); margin-right: var(--pg-space-3); }
 }
 
-/* Phone: the step tabs already offer Policy / Sales / Dispute, so the start-here row would repeat them. Kept last so
-   the layout rules above cannot override it. */
-@media (max-width: 640px) { .page-top .start-here, .start-here { display: none; } }
 /* Phones keep one header link, the dashboard; the other two have in-page entries (click-all 2026-11-03 #11;
    Proof: dispute case list and dashboard footer, 2026-11-04). */
 @media (max-width: 640px) {
@@ -752,8 +730,8 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 .topbar .topbar-sandbox.is-connected .topbar-sandbox-back { transform: rotateY(0deg); visibility: visible; transition: transform 280ms ease-out 280ms, visibility 0s linear 280ms; }
 /* (P1 2026-11-12) The Connect face is a secondary button in the component spec (.tg-btn--secondary): ink outline and ink
    text, no orange and no glow; the signal light stays an ink dot. The connected face stays green (sent / held). */
-.topbar .topbar-sandbox-front { background: transparent; border: 1px solid var(--pg-color-ink); border-radius: var(--pg-radius-control); color: var(--pg-color-ink); font-weight: 600; box-shadow: none; }
-.topbar .topbar-sandbox-front:hover:not(:disabled) { background: var(--pg-color-recede); border-color: var(--pg-color-ink); }
+.topbar .topbar-sandbox-front { background: transparent; border: 1px solid var(--pg-color-rule); border-radius: var(--pg-radius-control); color: var(--pg-color-accent); font-weight: 600; box-shadow: none; }
+.topbar .topbar-sandbox-front:hover:not(:disabled) { background: var(--pg-color-recede); border-color: var(--pg-color-rule); }
 .topbar .topbar-sandbox-back { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 12px; border-radius: var(--pg-radius-control); background: var(--pg-color-ok); color: #fff; font-size: 14px; font-weight: 650; }
 /* Signal light (owner 2026-11-03: the light must visibly blink): a white dot that clearly blinks on and off on both faces. */
 .topbar-sandbox-breath { width: 8px; height: 8px; flex-shrink: 0; border-radius: var(--pg-radius-pill); background: currentColor; animation: pg-sandbox-breath 1.1s ease-in-out infinite; }
@@ -884,12 +862,6 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 .invoice-draft-form .field-note { flex-basis: 100%; margin: 0; }
 
 @media (max-width: 640px) {
-  /* Error banner (attack r21 phone #12): the text takes the full width and Reconnect moves to its own row, instead of
-     the message squeezing into a ~90px column between the buttons. */
-  .feedback-region .message-error { flex-wrap: wrap; align-items: flex-start; }
-  .feedback-region .message-error > div { flex: 1 1 0; min-width: 0; }
-  .feedback-region .message-error .icon-button { order: 2; margin-left: 0; padding: 4px; }
-  .feedback-region .message-error .button { order: 3; flex: 1 0 100%; margin-left: 0; justify-content: center; }
   /* The policy result scrolls to just above the phone action bar (attack r21 phone #6). */
   [data-testid="aup-result"] { scroll-margin-bottom: calc(56px + 24px + env(safe-area-inset-bottom)); }
   .receipt { scroll-margin-bottom: calc(56px + 96px + env(safe-area-inset-bottom)); }
@@ -915,12 +887,9 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
   .app-shell.phone-action-invoice [data-testid="invoice-create"],
   .app-shell.phone-action-connect [data-testid="sandbox-connect"] { visibility: hidden; }
   .app-shell.has-phone-action.is-typing :is([data-testid="invoice-create"], [data-testid="sandbox-connect"]) { visibility: visible; }
-  /* Error banner close button: 26px was too small to tap (attack r22 phone #8). */
-  .feedback-region .message-error .icon-button { padding: 10px; }
 }
 /* Long-press on a bar button selected its label and put the selection handles over the bar (attack r22 phone #7). */
 .phone-action-bar, .phone-action-bar * { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
-.message-error .icon-button { min-width: 44px; min-height: 44px; }
 /* Very short viewports (300% zoom is about 427x267 CSS px): the sticky step bar plus the phone bar covered about 41%
    of the screen, so the step bar scrolls away with the page there. */
 @media (max-height: 480px) { .journey { position: static; } }
@@ -1006,7 +975,7 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 .send-confirm .send-confirm-warning { display: flex; gap: 8px; align-items: center; margin: 0 0 8px; font-weight: 650; color: var(--pg-color-warn); }
 .send-confirm-countdown { margin: 0 0 16px; color: #334155; }
 .send-confirm-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
-.button.button-confirm-continue { background: var(--pg-color-ink); border-color: var(--pg-color-ink); color: var(--pg-color-on-accent); }
+.button.button-confirm-continue { background: var(--pg-color-accent); border-color: var(--pg-color-rule); color: var(--pg-color-on-accent); }
 .button.button-confirm-send { background: #4a6a4e; border-color: #4a6a4e; color: #fff; }
 .button.button-confirm-send.is-holding, .button.button-confirm-send:disabled { background: #cbd5d0; border-color: #cbd5d0; color: #334155; cursor: not-allowed; }
 .button.button-confirm-continue:disabled { background: transparent; border-color: var(--pg-color-disabled-line); color: var(--pg-color-disabled-text); cursor: not-allowed; }
@@ -1049,10 +1018,6 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 .provider-disputes-body > .technical-details:last-child { margin-top: 32px; padding-top: 16px; border-top: 1px dashed var(--pg-color-rule); }
 /* (r34 #21) The country check that ended with an expired session, in step 01 where its result was. */
 .country-lost { margin: 0 16px 8px; }
-@media (max-width: 640px) {
-  /* (r34 #7) A phone error stays above the sticky bar and never grows over it; a refused preview is shown in place. */
-  .feedback-region .message-error { max-height: 40vh; max-height: 40dvh; overflow-y: auto; }
-}
 
 /* Before the draft exists the right column says what will appear, so it does not read as an empty page. */
 .evidence-next { margin-top: 12px; padding: 12px 0 0; border-top: 1px solid var(--pg-color-rule-soft); color: var(--pg-color-muted); font-size: var(--pg-text-2); line-height: 1.6; }
@@ -1066,7 +1031,6 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
 @media (min-width: 641px) {
   .feedback-region { position: static; width: calc(100% - 52px); max-width: 1136px; margin: 0 auto; }
   .feedback-region .message { box-shadow: none; }
-  .feedback-region .message-error { position: fixed; left: 18px; right: 18px; bottom: 12px; z-index: 45; }
 }
 
 /* Phone: the top-bar links are hidden, so the proof page gets a visible link under the title. */

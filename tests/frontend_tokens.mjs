@@ -27,13 +27,14 @@ assert.deepEqual(declared, tokens.cssVariables(), 'every CSS variable mirrors it
 // 2026-11-12 P0 restyle, round 3 ("Editorial Newsprint", red option 2; owner decision, ui_mock/red_compare.html):
 // colour, radius and elevation values changed on purpose; names are unchanged. Previous pins: accent #4f46e5,
 // canvas #eceae5, band #0b1b33/#13284a, context #7c8799, radius {6,8,12,999}, elevation l1-l3 indigo/slate shadows.
-assert.equal(tokens.color.accent, '#111111', 'interactive elements are ink');
+// Round 5 (2026-11-12, owner: "all black is too heavy"): interactive and rules move to charcoal; text stays ink.
+assert.equal(tokens.color.accent, '#2b2d30', 'interactive elements are charcoal');
 assert.equal(tokens.color.canvas, '#f1ede3', 'L0 canvas: newsprint');
 assert.equal(tokens.color.recede, '#e8e2d5');
 assert.equal(tokens.color.ink, '#111111');
 assert.equal(tokens.color.risk, '#c8102e', 'red means rule match / risk only');
 assert.equal(tokens.color.masthead, undefined, 'round 5: no decorative red token; red means risk only');
-assert.equal(tokens.color.focus, '#111111', 'focus ring in ink');
+assert.equal(tokens.color.focus, '#2b2d30', 'focus ring in charcoal');
 assert.equal(tokens.color.band, '#111111');
 assert.equal(tokens.color.bandShade, '#1c1b19');
 assert.equal(tokens.color.context, '#8a857a');
@@ -171,7 +172,7 @@ assert.ok(sizes.every((s) => s >= 14), `chart text >= 14 px (${sizes})`);
 assert.equal(theme.overrides.common.background.visible, false, 'no hard-coded chart background');
 assert.equal(gridParams().rowHeight, 40);
 assert.equal(gridParams({ phone: true }).rowHeight, 44);
-assert.equal(gridParams().accentColor, '#111111');
+assert.equal(gridParams().accentColor, '#2b2d30', 'grid accent follows the charcoal accent (round 5)');
 assert.ok(gridParams().fontSize >= 14 && gridParams().headerFontSize >= 14);
 
 // 7. shared/asOf.js: the dashboard file is the only source; ?asof= only in public demo mode.

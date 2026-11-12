@@ -24,6 +24,20 @@
 .country-tags-picked strong { color: var(--pg-color-ink); }
 .country-link-button { min-height: 32px; padding: 2px 12px; border: 1px solid var(--pg-color-rule); border-radius: 0; background: transparent; color: var(--pg-color-ink); font-size: var(--type-meta); font-weight: 650; white-space: nowrap; }
 .country-rules > .button { justify-self: start; }
+/* (R5 seller) Empty state while the country list loads or the demo is not connected: one calm line, never a blank column. */
+/* (R5) The verdict drawn under the three sample cards: the wrapper is only a colour scope, no second frame. */
+.country-result--portal { margin: 0; padding: 0; border: 0; background: transparent; }
+/* (S28 2026-11-12, phone acceptance) Tinted note, not a solid red block: tint ground, 4px tone bar on the left, tone only on
+   the icon and the title, body text in ink. Same structure for risk (rule match), check first (amber) and clear (green).
+   Contrast on the tints: risk 4.81, warn 5.79, ok 5.29, ink 15+ (frontend_design_system_v2 ratios). */
+/* Selector weight beats the step's own .country-result.is-* .country-verdict rules (CheckSaleExtras.css loads later). */
+#compliance .stage-content .country-result.country-result--portal .country-verdict { padding: var(--pg-space-3) var(--pg-space-4); border: 0; border-left: 4px solid var(--tg-verdict-tone); background: var(--tg-verdict-tint); color: var(--pg-color-ink); }
+#compliance .country-result--portal.is-blocked { --tg-verdict-tone: var(--pg-color-risk); --tg-verdict-tint: var(--pg-color-risk-tint); }
+#compliance .country-result--portal.is-caution { --tg-verdict-tone: var(--pg-color-warn); --tg-verdict-tint: var(--pg-color-warn-tint); }
+#compliance .country-result--portal.is-clear { --tg-verdict-tone: var(--pg-color-ok); --tg-verdict-tint: var(--pg-color-ok-tint); }
+#compliance .country-result--portal .country-verdict-big { color: var(--tg-verdict-tone); }
+#compliance .country-result--portal .country-verdict-line, #compliance .country-result--portal .country-verdict-notclear { color: var(--pg-color-ink); }
+.country-empty-note { margin: 0; padding: var(--pg-space-3) 0 0; border-top: 1px solid var(--pg-color-rule-soft); color: var(--pg-color-ink); font-size: var(--pg-text-3); line-height: 1.5; }
 
 /* Result: verdict banner first, then rows whose plain sentence comes first (review r1 P0.3, P0.4). */
 .country-live { display: contents; }

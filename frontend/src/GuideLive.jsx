@@ -503,7 +503,7 @@ export default function GuideLive({ session, Disclosure, Badge, request, scenari
     if (view?.chooser_mode) onChooser?.({ chooser_mode: view.chooser_mode, model_requested: view.model_requested === true });
   }, [view?.chooser_mode, view?.model_requested]); // eslint-disable-line react-hooks/exhaustive-deps -- onChooser: a setState from the page
 
-  return <Disclosure id={sectionId} title={`Step ${stepNumber} guide: ${title}`} subtitle="Tell it what happened" icon="layers"
+  return <Disclosure id={sectionId} title={`Step ${stepNumber} guide: ${title}`} subtitle="Describe it in your own words" icon="layers"
     open={open} onToggle={setOpen} testId={`optional-toggle-guide-live-${scenario}`}>
     {open ? <section className="guide-live" data-testid={`guide-live-${scenario}`} data-scenario={scenario} aria-label={`Guided gap filling, live: ${title}`}>
       <p className="guide-live-intro">Type as a seller. TradeGlot shows which details are still missing.</p>

@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
@@ -111,7 +111,8 @@ async function runLifecycle(worker, type) {
   const addAll = worker.cacheOps.find(([op]) => op === 'addAll');
   assert.ok(addAll, 'install calls cache.addAll');
   assert.equal(addAll[1], 'payguard-shell-index-abc', 'cache name carries the build version from the registration URL');
-  for (const url of ['/offline.html', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/icon-maskable-512.png', '/assets/index-abc.js', '/assets/index-abc.css']) {
+  // (S26 2026-11-12) The offline page's two self-hosted fonts are precached too, so it keeps the console's type offline.
+  for (const url of ['/offline.html', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/icon-maskable-512.png', '/fonts/Newsreader-latin-var.woff2', '/fonts/PublicSans-latin-var.woff2', '/assets/index-abc.js', '/assets/index-abc.css']) {
     assert.ok(addAll[2].includes(url), `precache includes ${url}`);
   }
   assert.ok(addAll[2].every((url) => !/^\/+api/i.test(url)), 'precache never contains /api/');
@@ -153,6 +154,14 @@ async function runLifecycle(worker, type) {
   assert.match(offlineHtml, /cannot reach its API/);
   assert.match(offlineHtml, /tools\/run\.sh console/);
   assert.doesNotMatch(offlineHtml, /<script|src="https?:|href="https?:/i);
+  // (S26 2026-11-12) Console look: newsprint canvas, square ink button, Newsreader + Public Sans from /fonts, a Phosphor icon,
+  // the toast's wording; the old blue button, white card and blue shield image are gone.
+  assert.match(offlineHtml, /--canvas: #f1ede3;/);
+  assert.match(offlineHtml, /url\('\/fonts\/Newsreader-latin-var\.woff2'\)/);
+  assert.match(offlineHtml, /url\('\/fonts\/PublicSans-latin-var\.woff2'\)/);
+  assert.match(offlineHtml, /Nothing was sent/);
+  assert.doesNotMatch(offlineHtml, /#2563eb|#f8fafc|border-radius|icon-192\.png/i);
+  for (const font of ['Newsreader-latin-var.woff2', 'PublicSans-latin-var.woff2']) assert.ok(existsSync(resolve(publicDir, 'fonts', font)), `${font} ships in public/fonts`);
 }
 
 // 6. Manifest contract.

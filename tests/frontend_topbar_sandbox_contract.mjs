@@ -18,7 +18,8 @@ assert.ok(card.includes("aria-hidden={connected ? undefined : true}") && card.in
 assert.ok(app.includes('<Button data-testid="sandbox-connect"'), 'step 01 button kept');
 
 // (P1 2026-11-12) Orange and its glow left the palette: the Connect face is the ink-outline secondary button until connected.
-assert.ok(/\.topbar \.topbar-sandbox-front \{[^}]*border: 1px solid var\(--pg-color-ink\)[^}]*color: var\(--pg-color-ink\)/.test(css), 'ink outline until connected');
+// (round 5) Charcoal outline and text (owner: all black is too heavy).
+assert.ok(/\.topbar \.topbar-sandbox-front \{[^}]*border: 1px solid var\(--pg-color-rule\)[^}]*color: var\(--pg-color-accent\)/.test(css), 'charcoal outline until connected');
 assert.ok(!/#e06c1e|pg-sandbox-glow/.test(css), 'no orange face and no glow');
 assert.ok(/\.topbar \.topbar-sandbox-back \{[^}]*background: var\(--pg-color-ok\)/.test(css), 'green back face');
 assert.ok(/\.topbar \.topbar-sandbox\.is-connected \.topbar-sandbox-back \{ transform: rotateY\(0deg\); visibility: visible;/.test(css), 'flips in when connected');

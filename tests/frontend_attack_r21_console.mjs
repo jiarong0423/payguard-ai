@@ -75,7 +75,8 @@ assert.ok(app.includes("if (how === 'RETURN_TO_EDIT') { focusWhenIdle(['#descrip
 assert.ok(app.includes("focusWhenIdle(['[data-testid=\"aup-review\"]', '[data-testid=\"phone-action-aup\"]', '#stage-trigger-compliance']);"), 'Cancel lands on a button');
 
 // Phones: error banner full width; offline recovery; result above the bar; stale banner cleared; download repeats.
-assert.ok(css.includes('.feedback-region .message-error .button { order: 3; flex: 1 0 100%; margin-left: 0; justify-content: center; }'), 'Reconnect on its own row');
+// (UI r5) The error is .tg-toast (theme/components.css) now; .message-error is gone. Same behaviour: the action gets its own row.
+assert.ok(readFileSync(new URL('../frontend/src/theme/components.css', import.meta.url), 'utf8').includes('  .tg-toast > .button { grid-column: 1 / -1; order: 3; justify-self: stretch; }'), 'Reconnect on its own row');
 assert.ok(app.includes("autoLoadedRef.current[scenario] = ok === true ? true : 'failed';"), 'auto-load marked done only after success');
 assert.ok(app.includes("window.addEventListener('online', onOnline);"), 'coming back online retries');
 assert.ok(css.includes('[data-testid="aup-result"] { scroll-margin-bottom: calc(56px + 24px + env(safe-area-inset-bottom)); }'), 'policy result clears the bar');
@@ -83,7 +84,7 @@ assert.ok(app.includes("if (errorSourceRef.current === 'aup' && value.trim() && 
 assert.ok(app.includes("if (!firstClick('redacted')) return;") && app.includes("if (!firstClick('zip')) return;") && app.includes('const DOWNLOAD_REPEAT_MS = 1000;'), 'download repeat clicks ignored');
 
 // 401 in the country panel and the guides uses the console's Reconnect flow.
-assert.ok(app.includes('onContinue={continueToDraft} onSessionExpired={panelSessionExpired} onBusy={setCountryBusy} onExample={() => editDescription(EXAMPLE_DESCRIPTION)} autoExample={currentPage === \'compliance\'} />'), 'country panel reports 401 (attack r22: and its busy state; P3 2026-11-12: autoExample prop added)');
+assert.ok(app.includes('onContinue={continueToDraft} onSessionExpired={panelSessionExpired} onBusy={setCountryBusy} onExample={() => editDescription(EXAMPLE_DESCRIPTION)} autoExample={currentPage === \'compliance\'} verdictTarget={verdictSlot} />'), 'country panel reports 401 (attack r22: and its busy state; P3 2026-11-12: autoExample prop added; R5: verdictTarget, the slot under the example cards)');
 assert.equal(app.split('request={guideRequest} onSessionExpired={panelSessionExpired} />').length - 1, 3, 'all three guides report 401');
 assert.ok(panel.includes('onSessionExpired?.(failure, session);') && guide.includes('if (failure.status === 401) onSessionExpired?.(failure, session);'), 'panels call it');
 assert.ok(!guide.includes('Reload the page to start a new one'), 'no reload instruction left');

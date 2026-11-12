@@ -4,8 +4,9 @@
 .ov { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--pg-space-6); min-width: 0; margin: var(--pg-space-5) 0 var(--pg-space-6); }
 .ov > * { min-width: 0; }
 
-/* Where AI works: one clip, kept to a readable measure. */
+/* Where AI works: one short upright line under the figures, not a long italic paragraph (review_FULL section 1). */
 .ov-ai { max-width: var(--pg-layout-content); }
+.ov .ov-ai .ov-ai__text { font-family: var(--pg-font-sans); font-style: normal; font-size: var(--pg-text-2); line-height: 1.5; }
 
 /* The three steps: equal columns, top edges and source lines aligned. */
 .ov-flow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--pg-space-6); margin: 0; padding: 0; list-style: none; }
@@ -14,20 +15,37 @@
 .ov-step__link:hover { background: var(--pg-color-hover); }
 .ov-step__link:focus-visible { outline: var(--pg-layout-focus-ring) solid var(--pg-color-focus); outline-offset: var(--pg-space-1); }
 .ov-step__link > .tg-clip { display: flex; flex-direction: column; gap: var(--pg-space-2); width: 100%; min-width: 0; } /* (F) inner padding from .tg-pad (components.css v2) */
-.ov-step__link .tg-clip__quote { margin: 0; line-height: 1.5; font-weight: 600; font-variant-numeric: tabular-nums; }
+.ov-step__link .tg-clip__quote { margin: 0; font-size: var(--pg-text-2); line-height: 1.5; font-weight: 600; font-variant-numeric: tabular-nums; }
 .ov-step__name { margin: 0; font-size: var(--pg-text-4); font-weight: 700; line-height: 1.2; }
 .ov-step__what, .ov-step__line { margin: 0; font-size: var(--pg-text-2); line-height: 1.43; color: var(--pg-color-muted); }
 .ov-step__wait { display: inline-flex; align-items: center; gap: var(--pg-space-1); } /* (F) read-back still under review: neutral clock, green is kept for sent */
 .ov-step__line .tg-mono { color: var(--pg-color-ink); }
 .ov-step__stamp { align-self: flex-start; margin-block: var(--pg-space-1); }
-.ov-step__figure { font-family: var(--pg-font-serif); font-size: var(--pg-text-6); font-weight: 600; line-height: 1; font-variant-numeric: lining-nums tabular-nums; }
-.ov-step__open { display: inline-flex; align-items: center; gap: var(--pg-space-2); margin-top: auto; padding-top: var(--pg-space-3); font-size: var(--pg-text-2); font-weight: 600; text-decoration: underline; text-underline-offset: var(--pg-space-1); }
+.ov-step__figure { font-family: var(--pg-font-serif); font-size: var(--pg-text-5); font-weight: 600; line-height: 1; font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; }
+.ov-step__open { display: inline-flex; align-items: center; gap: var(--pg-space-2); font-size: var(--pg-text-2); font-weight: 600; text-decoration: underline; text-underline-offset: var(--pg-space-1); }
 .ov-step__link .tg-source { max-width: 100%; }
 
-/* (F) Card 03, the real hosted send, is the one to see second: recessed surface and a heavier name. */
-.ov-step--send .ov-step__link > .tg-clip { background: var(--pg-color-recede); }
-.ov-step--send .ov-step__name { font-size: var(--pg-text-5); }
-.ov-step--send .ov-step__link:hover > .tg-clip { background: var(--pg-color-hover); }
+/* (R5) One card spec for all three: same surface, same name size, same order (kicker, name, one line, product view, then
+   the source and the Open link together at the foot). No card is weighted over the others (review_UI5 section 1). */
+.ov-step__what { min-height: calc(2 * 1.43em); }
+.ov-step__foot { display: grid; gap: var(--pg-space-3); padding-top: var(--pg-space-2); }
+.ov-nowrap { white-space: nowrap; }
+
+/* The product view inside each card: a small framed screen, the same height in all three. */
+.ov-screen { flex: 1 1 auto; display: grid; align-content: start; gap: var(--pg-space-2); min-height: calc(var(--pg-space-8) + var(--pg-space-7)); padding: var(--pg-space-3); border: thin solid var(--pg-color-rule-soft); background: var(--pg-color-canvas); }
+.ov-screen__row { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--pg-space-1) var(--pg-space-3); margin: 0; font-size: var(--pg-text-2); font-weight: 600; font-variant-numeric: tabular-nums; }
+.ov-screen__row--stamp { align-items: center; justify-content: flex-start; }
+.ov-screen .ov-step__stamp { margin-block: 0; }
+
+/* Step 2: the usual hour against this hour, as two bars drawn from the data file. */
+.ov-bars { display: grid; gap: var(--pg-space-1); }
+.ov-bar { display: grid; gap: var(--pg-space-1); font-size: var(--pg-text-1); font-weight: 600; font-variant-numeric: tabular-nums; }
+.ov-bar::after { content: ""; display: block; width: var(--ov-w, 100%); height: var(--pg-space-2); background: var(--pg-color-ink); }
+.ov-bar--usual::after { background: var(--pg-color-control-line); }
+
+/* Step 3: the send ticket: a block rule on top, the date as its head, the reference in mono. */
+.ov-ticket { border-top: var(--pg-layout-rule-block) solid var(--pg-color-rule); } /* 2px block rule; 3px is kept for the masthead only */
+.ov-ticket__head { margin: 0; font-size: var(--pg-text-1); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 
 /* Figures: four equal columns. */
 .ov-facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--pg-space-5); }
@@ -56,3 +74,10 @@
   .ov-step__link .tg-clip__quote { font-size: var(--pg-text-2); }
   .ov-facts + .tg-legend { margin-top: calc(-1 * var(--pg-space-3)); }
 }
+
+/* (S09 2026-11-12) Overview hero spacing, carried in this lazy file because the first-load budget is full. The hero lives in
+   App.jsx (header.tg-pagehead.hero-pagehead, div.hero-actions); this file loads with the Overview, the only page with the hero.
+   28px under the H1 (24 + 4), a balanced two-line H1, 8px x 24px between the hero actions, 1px link underline. */
+.hero-pagehead .tg-h1 { margin-bottom: calc(var(--pg-space-5) + var(--pg-space-1)); text-wrap: balance; }
+.hero-pagehead .hero-actions { gap: var(--pg-space-2) var(--pg-space-5); }
+.hero-pagehead .hero-actions .tg-link { text-decoration-thickness: calc(var(--pg-space-1) / 4); } /* 1px */

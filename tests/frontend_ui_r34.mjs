@@ -78,8 +78,10 @@ const grab = (name) => { const match = section.match(new RegExp(`(?:const ${name
     'Locked: This dispute does not match the selected case (reason or amount differ).', 'refusal reason, not "prepare the preview first"');
   assert.ok(app.includes("if (failure?.status !== 409) throw failure;"), 'only a 409 refusal is kept in place; other failures keep the banner');
   assert.ok(app.includes("setPreviewRefusal({ kind, ...request, message: failure.message || 'This preview could not be prepared. Nothing was sent.' });"), 'refusal kept with its dispute and case');
-  assert.ok(/@media \(max-width: 640px\) \{\n  \/\* \(r34 #7\)[^\n]*\n  \.feedback-region \.message-error \{ max-height: 40vh; max-height: 40dvh; overflow-y: auto; \}/u.test(css), 'phone error never grows over the bar');
-  assert.ok(css.includes('.app-shell.has-phone-action .feedback-region .message-error { bottom: calc(56px + 12px + env(safe-area-inset-bottom)); }'), 'and sits above it');
+  // (UI r5) The error is .tg-toast (theme/components.css) now; .message-error is gone. Same two phone rules.
+  const toastCss = readFileSync(new URL('../frontend/src/theme/components.css', import.meta.url), 'utf8');
+  assert.ok(/@media \(max-width: 640px\) \{[^}]*\.tg-toast \{[^}]*max-height: 40dvh; overflow-y: auto; \}/u.test(toastCss), 'phone error never grows over the bar');
+  assert.ok(toastCss.includes('.app-shell.has-phone-action .tg-toast { bottom: calc(56px + 12px + env(safe-area-inset-bottom)); }'), 'and sits above it');
 }
 
 // ---- #6: Case amount beside the dispute amount in the send dialog. ----

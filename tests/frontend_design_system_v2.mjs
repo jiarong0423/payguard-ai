@@ -13,11 +13,12 @@ const { color, viz, grid, layout, radius, scale } = tokens;
 
 // 1. Pre-v2 tokens keep their values (the pages finished before v2 build on them).
 const before = {
-  canvas: '#f1ede3', panel: '#f8f5ee', recede: '#e8e2d5', rule: '#111111', ruleSoft: '#cfc8b8', controlLine: '#8a857a',
-  ink: '#111111', muted: '#5a554c', accent: '#111111', accentSelected: '#e8e2d5', ok: '#2f6b3a', warn: '#7a5000',
+  canvas: '#f1ede3', panel: '#f8f5ee', recede: '#e8e2d5', rule: '#2b2d30', ruleSoft: '#cfc8b8', controlLine: '#8a857a',
+  ink: '#111111', muted: '#5a554c', accent: '#2b2d30', accentSelected: '#e8e2d5', ok: '#2f6b3a', warn: '#7a5000',
   risk: '#c8102e', hover: '#ebe6da', disabledLine: '#cfc8b8', disabledText: '#9a958a',
 };
-for (const [k, v] of Object.entries(before)) assert.equal(color[k], v, `pre-v2 token ${k} unchanged`);
+// (round 5) rule and accent moved #111111 -> charcoal #2b2d30 on purpose (owner: all black is too heavy); ink text did not.
+for (const [k, v] of Object.entries(before)) assert.equal(color[k], v, `pre-v2 token ${k} as pinned`);
 assert.equal(radius.pill, 999, 'pill radius kept for old pages');
 
 // 2. The v2 values (coordinator decision 2026-11-12).
@@ -92,8 +93,8 @@ assert.match(css, /\.tg-stack-48 > \* \+ \* \{ margin-top: var\(--pg-space-7\); 
 assert.match(rule('.tg-grid'), /repeat\(var\(--pg-grid-columns\), minmax\(0, 1fr\)\)/);
 assert.match(rule('.tg-grid'), /gap: var\(--pg-layout-grid-gutter\)/);
 assert.match(rule('.tg-measure'), /max-width: var\(--pg-grid-measure\)/);
-assert.match(rule('.tg-seg'), /border: 1px solid var\(--pg-color-ink\)/, 'segmented: 1px ink frame');
-assert.match(css, /\.tg-seg > button\[aria-pressed="true"\], \.tg-seg > button\[aria-selected="true"\], \.tg-seg > button\.is-active \{ background: var\(--pg-color-ink\); color: var\(--pg-color-on-accent\); \}/);
+assert.match(rule('.tg-seg'), /border: 1px solid var\(--pg-color-rule\)/, 'segmented: 1px charcoal frame');
+assert.match(css, /\.tg-seg > button\[aria-pressed="true"\], \.tg-seg > button\[aria-selected="true"\], \.tg-seg > button\.is-active \{ background: var\(--pg-color-sel\); color: var\(--pg-color-ink\); box-shadow: inset 0 -2px 0 var\(--pg-color-accent\); \}/, 'selected segment: tint + charcoal underline, not a solid block (round 5)');
 assert.match(rule('.tg-fold'), /border: 1px solid var\(--pg-color-line\)/, 'fold: 1px hairline, never 2px ink');
 assert.match(rule('.tg-tag--neutral'), /border-color: var\(--pg-color-line\)/);
 assert.match(rule('.tg-stephead'), /min-height: var\(--pg-layout-step-head\)/);
@@ -102,16 +103,19 @@ assert.match(rule('.tg-note--check'), /border-left-color: var\(--pg-color-warn\)
 assert.match(rule('.tg-note--risk'), /border-left-color: var\(--pg-color-risk\); background: var\(--pg-color-risk-tint\)/);
 assert.match(rule('.tg-note'), /border-left: 4px solid/);
 // Table states paint the row (no per-cell patches on phones); selection is the one tint + 3px ink bar.
-assert.match(css, /\.tg-ledger__table tbody tr:hover, \.tg-table tbody tr:hover \{ background: var\(--pg-color-row-hover\); \}/);
-assert.match(css, /\.tg-ledger__table tbody tr\.is-selected, \.tg-row\[aria-selected="true"\], \.tg-is-sel \{ background: var\(--pg-color-sel\); \}/);
+assert.match(css, /\.tg-ledger__table tbody tr:hover \{ background: var\(--pg-color-row-hover\); \}/);
+assert.match(css, /\.tg-ledger__table tbody tr\.is-selected, \.tg-is-sel \{ background: var\(--pg-color-sel\); \}/);
+// (UI r5) .tg-table / .tg-row / .tg-figure / .tg-dialog / .tg-field / .tg-input / .tg-count were unused in the app and removed
+// for the first-load budget; the ledger is the one table container.
+assert.equal(/\.tg-(table|row|figure|figures|dialog|field|input|count)\b/.test(css), false, 'retired component families stay out');
 assert.equal(/tr[^{]*td\s*\{[^}]*background/.test(css), false, 'no cell-level row backgrounds');
 assert.equal(/accent-selected|var\(--pg-color-hover\)/.test(css), false, 'components.css uses sel / row-hover only');
 assert.match(css, /\.tg-btn:disabled, \.tg-btn\[aria-disabled="true"\] \{[^}]*border: 1px dashed var\(--pg-color-line\); color: var\(--pg-color-ink3\);/);
-assert.match(css, /outline: var\(--pg-layout-focus-ring\) solid var\(--pg-color-focus\); outline-offset: 2px;/, 'focus: 2px ink, offset 2px');
+assert.match(css, /outline: var\(--pg-layout-focus-ring\) solid var\(--pg-color-focus\); outline-offset: 3px;/, 'focus: 2px charcoal, 3px gap (round 5)');
 // Corners: square everywhere; status labels 2px; no pill radius left in components.css.
-assert.equal(/radius-pill/.test(css), false, 'no pill radius in the v2 components');
+for (const m of css.matchAll(/([^{}]+)\{[^}]*radius-pill[^}]*\}/g)) assert.match(m[1], /\.tg-dot\b/, `pill radius only on round dots: ${m[1].trim()}`);
 for (const m of css.matchAll(/border-radius:\s*([^;]+);/g)) {
-  assert.ok(/^(0|var\(--pg-radius-(status|control)\)|50%)$/.test(m[1].trim()), `radius ${m[1]} is square, 2px status or a dot`);
+  assert.ok(/^(0|var\(--pg-radius-(status|control|pill)\)|50%)$/.test(m[1].trim()), `radius ${m[1]} is square, 2px status or a dot`);
 }
 // ink-3 only for disabled text and marks; red only through risk tokens.
 for (const m of css.matchAll(/([^{}]+)\{[^}]*var\(--pg-color-ink3\)[^}]*\}/g)) {
@@ -123,4 +127,40 @@ const v2 = css.slice(css.indexOf('.tg-page {'));
 assert.ok(css.indexOf('.tg-page {') > 0);
 for (const m of v2.matchAll(/font(?:-size)?:[^;]*?(\d+)px/g)) assert.fail(`literal px font size in v2 block: ${m[0]}`);
 
-console.log(JSON.stringify({ status: 'PASS', v2_tokens: 17, classes: classes.length + 3, ratios }));
+// 7. UI round 5: style-reference tokens and classes (review_STYLEREF, coordinator decision 2026-11-12).
+const { rule: ruleTokens, label, motion } = tokens;
+assert.deepEqual({ ...ruleTokens }, { fine: '1px solid #2b2d30', double: '3px double #2b2d30' });
+assert.equal(label.tracking, '.16em');
+for (const k of ['quick', 'sweep', 'settle']) assert.ok(motion[k] >= 160 && motion[k] <= 240, `${k} within 160-240 ms`);
+assert.equal(motion.precise, 'cubic-bezier(.2,0,0,1)', 'no overshoot (no control value above 1)');
+assert.deepEqual(['vault', 'vaultInk', 'vaultMuted'].map((k) => color[k]), ['#16181b', '#f1ede3', '#b9b3a6']);
+for (const [fg, min] of [['vaultInk', 4.5], ['vaultMuted', 4.5], ['vaultOk', 4.5], ['vaultWarn', 4.5], ['vaultRisk', 4.5]]) {
+  const r = cr(color[fg], color.vault); ratios[`${fg}/vault`] = +r.toFixed(2); assert.ok(r >= min, `${fg} on vault: ${r.toFixed(2)}`);
+}
+for (const k of ['ok', 'warn', 'risk']) assert.ok(cr(color[k], color.vault) < 4.5, `paper ${k} fails on the vault, so it needs vault${k[0].toUpperCase()}${k.slice(1)}`);
+for (const c of ['.tg-toast', '.tg-dot', '.tg-fold--guide', '.tg-redact', '.tg-vault', '.tg-id, .tg-ts']) rule(c);
+assert.equal(/\.tg-toast \{[^}]*(risk|#c8102e)/.test(css), false, 'system messages are ink, never red');
+assert.match(rule('.tg-toast'), /width: min\(var\(--pg-layout-content\), calc\(100vw - 32px\)\)/, 'toast spans the content column');
+assert.match(rule('.tg-redact'), /background: var\(--pg-color-accent\)/); // round 5: charcoal like every other solid block
+assert.equal(/\.tg-redact[^{]*\{[^}]*content:/.test(css), false, 'the bar renders no text: the value is not in the DOM');
+assert.match(css, /letter-spacing: var\(--pg-label-tracking\)/, 'labels use the tracking token');
+assert.match(css, /@media \(prefers-reduced-motion: reduce\) \{[^}]*\.tg-stamp\.is-new[^}]*animation: none;/, 'motion off under reduced motion');
+assert.match(css, /(^|\n)\.tg-source \{[^}]*overflow-wrap: anywhere/, 'source lines wrap, no ellipsis');
+assert.equal(/\.tg-source \{[^}]*text-overflow: ellipsis/.test(css), false);
+assert.match(rule('.tg-clip__quote'), /border-left: 2px solid var\(--pg-color-rule\)/, 'quotes: 2px charcoal rule, no lone opening mark');
+assert.equal(/\.tg-clip__quote::before/.test(css), false);
+assert.match(css, /\.tg-seg > button \{ height: 36px;[^}]*white-space: nowrap;/, 'one control height, labels never wrap');
+for (const k of ['vault', 'vault-ink', 'vault-muted', 'vault-ok', 'vault-warn', 'vault-risk']) assert.match(tokensCss, new RegExp(`--pg-color-${k}:`));
+assert.match(tokensCss, /--pg-rule-double: 3px double #2b2d30;/);
+
+// 8. Round 5 weight: charcoal controls and rules, 3px only in the masthead, finer seals, stitched day-book line.
+for (const bg of ['canvas', 'recede', 'sel']) assert.ok(cr(color.accent, color[bg]) >= 3, `charcoal control edge on ${bg}`);
+assert.ok(cr(color.onAccent, color.accent) >= 4.5 && cr(color.onAccent, color.accentStrong) >= 4.5, 'paper text on charcoal and on its hover');
+assert.ok(cr(color.ink, color.canvas) > cr(color.accent, color.canvas), 'text stays darker than the controls');
+assert.equal(layout.ruleHeavy, 3); assert.equal(layout.ruleBlock, 2);
+assert.equal((css.match(/rule-heavy/g) || []).length, 1, 'the 3px rule appears once: the masthead');
+assert.match(rule('.tg-stamp'), /border: 1px solid var\(--tg-tone\); box-shadow: inset 0 0 0 2px var\(--pg-color-canvas\), inset 0 0 0 3px var\(--tg-tone\);/, 'seal: 1px, 2px air, 1px');
+assert.match(css, /\.tg-log__entry \+ \.tg-log__entry \{ background: linear-gradient\(90deg, var\(--pg-color-control-line\) 2px, transparent 0\) 0 0 \/ 5px 1px repeat-x; \}/, 'stitched line across the whole log row');
+assert.equal(/[a-z-]+: [^;{}]*var\(--pg-color-ink\)/.test(css.replace(/(^|[;{\s])color: var\(--pg-color-ink\)/g, '')), false, 'ink is for text only; lines and controls are charcoal');
+
+console.log(JSON.stringify({ status: 'PASS', v2_tokens: 17, r5_tokens: 15, classes: classes.length + 9, ratios }));
