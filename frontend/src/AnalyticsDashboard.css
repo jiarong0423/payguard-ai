@@ -32,20 +32,20 @@
 .analytics-mobile-copy > span,
 .analytics-mobile-notice > span {
   color: #1d4ed8;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 800;
   letter-spacing: 0.09em;
 }
 
 .analytics-toolbar strong {
   color: #0f172a;
-  font-size: 22px;
+  font-size: 20px;
   line-height: 1.2;
 }
 
 .analytics-toolbar small {
   color: #475569;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.5;
 }
 
@@ -67,7 +67,7 @@
   color: #475569;
   background: transparent;
   font: inherit;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 750;
   cursor: pointer;
 }
@@ -96,14 +96,14 @@
   border-radius: 10px;
   color: #475569;
   background: #f8fafc;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.45;
 }
 
 .analytics-rights-note strong {
   flex: 0 0 auto;
   color: #334155;
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -154,7 +154,7 @@
 
 .analytics-card-header strong {
   color: #0f172a;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.3;
 }
 
@@ -166,7 +166,7 @@
   border-radius: 999px;
   color: #1d4ed8;
   background: #eff6ff;
-  font-size: 13px;
+  font-size: 12px;
   font-style: normal;
   font-weight: 800;
   line-height: 1.2;
@@ -232,13 +232,13 @@
 .analytics-stage-copy span,
 .analytics-stage-copy small {
   color: var(--analytics-muted);
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.4;
 }
 
 .analytics-stage-copy strong {
   color: var(--analytics-text);
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.35;
 }
 
@@ -247,7 +247,7 @@
   justify-self: start;
   padding: 4px 8px;
   border-radius: 999px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 800;
   line-height: 1.2;
 }
@@ -303,7 +303,7 @@
 .analytics-mobile-authority span,
 .analytics-pulse-row span {
   color: #64748b;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .analytics-authority li strong,
@@ -319,7 +319,7 @@
 .analytics-guide > small {
   margin: 12px 0 0;
   color: #64748b;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.5;
 }
 
@@ -377,7 +377,7 @@
   color: #0f172a;
   background: #ffffff;
   font: inherit;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .analytics-grid-frame {
@@ -393,7 +393,7 @@
   margin-top: 7px;
   padding: 3px 7px;
   border-radius: 999px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 800;
   line-height: 1.2;
   text-transform: capitalize;
@@ -426,7 +426,7 @@
   border-radius: 8px;
   color: #334155;
   background: #f8fafc;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.55;
 }
 
@@ -438,7 +438,7 @@
   border-top: 1px solid var(--analytics-border);
   color: #64748b;
   background: #ffffff;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
 }
 
@@ -487,11 +487,11 @@
   }
 
   .analytics-toolbar strong {
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .analytics-toolbar small {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .analytics-mode-switch,
@@ -536,7 +536,7 @@
   .analytics-mobile-empty {
     margin: 0;
     color: #475569;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.5;
   }
 
@@ -628,20 +628,20 @@
   .analytics-mobile-stage > div:nth-child(2) span {
     margin: 0;
     color: #64748b;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.4;
   }
 
   .analytics-mobile-stage p {
     margin: 0;
     color: #475569;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.45;
   }
 
   .analytics-mobile-stage > div:nth-child(2) strong {
     color: #1e293b;
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .analytics-mobile-stage .analytics-status {
@@ -667,12 +667,12 @@
 
   .analytics-mobile-metrics strong {
     color: #1e293b;
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .analytics-mobile-metrics span {
     color: #64748b;
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .analytics-mobile-transactions {
@@ -701,19 +701,19 @@
 
   .analytics-mobile-transactions span {
     color: #64748b;
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .analytics-mobile-transactions strong {
     min-width: 0;
     color: #1e293b;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.4;
     overflow-wrap: anywhere;
   }
 
   .analytics-mobile-authority li {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .analytics-mobile-boundary {
@@ -723,7 +723,7 @@
   .analytics-footer {
     gap: 8px;
     padding: 10px 16px;
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .analytics-footer span {
@@ -757,7 +757,7 @@
   }
 
   .analytics-mobile-copy > span {
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.3;
   }
 
@@ -801,7 +801,7 @@
 
 /* Quick classify chips and the row highlight (AG Grid getRowClass). */
 .analytics-grid-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
-.analytics-grid-chips button { min-height: 44px; padding: 0 14px; border: 1px solid #cbd5e1; border-radius: 999px; background: #ffffff; color: #0f172a; font: inherit; font-size: 15px; cursor: pointer; }
+.analytics-grid-chips button { min-height: 44px; padding: 0 14px; border: 1px solid #cbd5e1; border-radius: 999px; background: #ffffff; color: #0f172a; font: inherit; font-size: 14px; cursor: pointer; }
 .analytics-grid-chips button span { margin-left: 4px; padding: 0 6px; border-radius: 999px; background: #f1f5f9; font-size: 14px; }
 .analytics-grid-chips button[aria-pressed="true"] { border-color: #1d4ed8; background: #eff6ff; color: #1d4ed8; text-shadow: 0.45px 0 0 currentColor, -0.45px 0 0 currentColor; }
 /* (fix r1 F10) The check mark sits in a fixed slot of the left padding in both states (hidden until pressed), so
@@ -825,7 +825,7 @@
   /* Title bar: tighter padding; the large empty band above the cards shrinks. */
   .analytics-toolbar { padding: 10px 16px; }
   /* Title stays the largest text but no longer dominates the panel. */
-  .analytics-toolbar strong { font-size: 19px; }
+  .analytics-toolbar strong { font-size: 20px; }
   /* Subtitle keeps a readable 14px on one line. */
   .analytics-toolbar small { font-size: 14px; line-height: 1.4; }
   /* Rights note: slimmer strip, same words. */
@@ -882,7 +882,7 @@
   /* Moved: chips in the first toolbar column, first toolbar line. */
   .analytics-grid-widget > .analytics-grid-chips { grid-column: 1; grid-row: 2; margin: 0; }
   /* Moved: the "not a risk score" note at 13px, one line right under the chips (was its own column, see above). */
-  .analytics-grid-widget > .analytics-grid-note { grid-column: 1; grid-row: 3; margin: 0; font-size: 13px; }
+  .analytics-grid-widget > .analytics-grid-note { grid-column: 1; grid-row: 3; margin: 0; font-size: 14px; }
   /* Moved: the row filter in the last column, centred beside chips and note. */
   .analytics-grid-widget > .analytics-grid-tools { grid-column: 2; grid-row: 2 / span 2; display: flex; align-items: center; gap: 8px; margin: 0; }
   /* The table follows the toolbar block. */
@@ -897,7 +897,7 @@
   /* Filter input matches the 32px chips and is narrower so the toolbar stays one row. */
   .analytics-grid-tools input { width: 180px; min-height: 32px; font-size: 14px; }
   /* Filter label 13px bold, on one line. */
-  .analytics-grid-tools label { font-size: 13px; white-space: nowrap; }
+  .analytics-grid-tools label { font-size: 12px; white-space: nowrap; }
   /* Grid: 38px header + 8 full 36px rows + 2px border, so no half-cut row at the bottom. */
   .analytics-grid-frame { height: 328px; }
 

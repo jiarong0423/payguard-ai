@@ -136,10 +136,10 @@ const dateTime = (id, name) => ({ id, name, format: 'dateTimeFormat', formatOpti
 // in one widget cross-filters the requirement and time-event widgets.
 export function studioData({ disputes, benchmark, receipts }) {
   return {
-    description: 'TradeGlot synthetic dispute evidence readiness. Read only: nothing here decides a dispute or submits to PayPal.',
+    description: 'TradeGlot demo dispute evidence readiness. Read only: nothing here decides a dispute or submits to PayPal.',
     sources: [
       {
-        id: 'cases', name: 'Dispute cases', description: `Synthetic dispute cases as of ${disputes.as_of}.`, data: caseRows(disputes),
+        id: 'cases', name: 'Dispute cases', description: `Demo dispute cases as of ${disputes.as_of}.`, data: caseRows(disputes),
         fields: [text('case_ref', 'Case'), text('order_ref', 'Order'), text('reason', 'Reason'), text('lifecycle_stage', 'Stage'),
           text('readiness', 'Readiness'), dateTime('due_date', 'Seller response due'), decimal('days_to_due', 'Days to due'),
           text('due_window', 'Due window'), text('delivery_proof', 'Delivery proof'), text('carrier_status', 'Carrier status'),
@@ -147,18 +147,18 @@ export function studioData({ disputes, benchmark, receipts }) {
           text('submission', 'Submission')],
       },
       {
-        id: 'requirements', name: 'Requested evidence', description: 'Evidence the synthetic provider snapshot requests per case.', data: requirementRows(disputes),
+        id: 'requirements', name: 'Requested evidence', description: 'Evidence requested per demo case (made-up data in PayPal’s format).', data: requirementRows(disputes),
         fields: [text('requirement_id', 'Requirement', { hide: true }), text('case_ref', 'Case'), text('evidence_type', 'Evidence type'),
           text('state', 'State'), text('mandatory', 'Mandatory'), integer('proof_count', 'Proof records'), integer('attachment_count', 'Accepted attachments')],
       },
       {
-        id: 'time_events', name: 'Time evidence', description: 'Ordered time events (synthetic, seller-provided unless stated).', data: timeEventRows(disputes),
+        id: 'time_events', name: 'Time evidence', description: 'Ordered time events (demo data, seller-provided unless stated).', data: timeEventRows(disputes),
         fields: [text('event_id', 'Event id', { hide: true }), text('case_ref', 'Case'), integer('order', 'Order'), text('event', 'Event'),
           dateTime('at', 'Time'), text('source', 'Source'), decimal('gap_hours', 'Hours since previous')],
       },
       {
         id: 'benchmark', name: 'Guide benchmark', description: benchmark.source, data: benchmarkRows(benchmark),
-        fields: [text('flow_id', 'Flow id', { hide: true }), text('flow', 'Flow'), integer('model_calls', 'Model calls'), integer('rounds', 'Rounds'),
+        fields: [text('flow_id', 'Flow id', { hide: true }), text('flow', 'Flow'), integer('model_calls', 'AI calls'), integer('rounds', 'Rounds'),
           integer('wrong_honest', 'Wrong (seller checks each value)'), integer('wrong_careless', 'Wrong (seller confirms without reading)')],
       },
       {

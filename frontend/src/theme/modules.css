@@ -2,8 +2,11 @@
    Original CSS stays untouched; this file only refines named modules. Tokens only, square corners. */
 
 /* One title scale: page H1 28, step title 20; figures compared down a column use tabular numerals. */
-.tg-pagehead.tg-mod .tg-h1 { font-size: var(--pg-text-5); line-height: 1.15; }
-.tg-mod .tg-stephead__title { font-size: var(--pg-text-4); line-height: 1.2; }
+.tg-pagehead.tg-mod .tg-h1 { font-size: var(--pg-text-5); line-height: 1.25; }
+.tg-mod .tg-stephead__title { font-size: var(--pg-text-5); line-height: 1.2; } /* (coordinator X05, judges A#4 B-2) step page titles match the other pages (28) */
+#disputes .tg-mod .tg-stephead__title { font-size: var(--pg-text-5); } /* (X05) beats caseViews.css:147 (20px) */
+@media (max-width: 640px) { .tg-mod .tg-stephead__title, #disputes .tg-mod .tg-stephead__title { font-size: var(--pg-text-4); } }
+.tg-mod .tg-mono { font-size: max(12px, .9em); } /* (coordinator X06, judge B-5) mono ids never below the 12px floor */
 table.tg-box { font-variant-numeric: tabular-nums; }
 .step-more.tg-mod { border-radius: 0; }
 
@@ -70,7 +73,8 @@ table.tg-box { font-variant-numeric: tabular-nums; }
 .tg-lift { position: relative; transition: transform 180ms ease-out, box-shadow 180ms ease-out; --tg-edge: color-mix(in srgb, var(--pg-color-khaki), var(--pg-color-structure)); }
 @media (hover: hover) and (pointer: fine) {
   .tg-lift:is(:hover, :focus-within) { transform: translate(-4px, -4px); box-shadow: inset 1px 1px 0 var(--pg-color-on-accent), 4px 4px 0 var(--tg-edge), 4px 5px 2px color-mix(in srgb, var(--pg-color-structure) 22%, transparent), 4px 10px 12px color-mix(in srgb, var(--pg-color-structure) 14%, transparent), 4px 18px 28px color-mix(in srgb, var(--pg-color-structure) 8%, transparent) !important; }
-  .stage-accordion:has(.tg-lift:is(:hover, :focus-within)) .tg-block:not(.tg-lift, .tg-block .tg-block, :has(.tg-lift:is(:hover, :focus-within), [class*=risk], [class*=due])) { filter: brightness(.9); }
+  /* J-B item8-B#8: the same dimming on every page with a lift (Overview ticket, Proof verify panel too), not only on steps. */
+  main:has(.tg-lift:not(.tg-block--ck-ledger):is(:hover, :focus-within)) .tg-block:not(.tg-lift, .tg-block .tg-block, :has(.tg-lift:is(:hover, :focus-within), [class*=risk], [class*=due])) { filter: brightness(.9); }
 }
 @media (hover: none) {
   .tg-lift:focus-within { transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--tg-edge), 3px 6px 8px color-mix(in srgb, var(--pg-color-structure) 14%, transparent) !important; }
@@ -98,7 +102,8 @@ table.tg-box { font-variant-numeric: tabular-nums; }
 @media (max-width: 640px) {
   .tg-mod--ds-rail > :is(.ds-log, .ds-hosted) { margin-inline: var(--pg-space-3); }
 }
-#disputes .stage-body + .step-more.tg-mod { margin-top: var(--pg-space-6); }
+#disputes .stage-body + .step-more.tg-mod { margin-top: var(--pg-space-2); } /* J-B item2: 8px (was 32) */
+.tg-lift.ds-head + .evidence-toolbar.tg-block { margin-bottom: 0; } /* J-B item2: Next step joins the guide row below (was 8px) */
 /* Deadline board tab panel: in the case area's place, under the view tabs (focus ring: the global :focus-visible). */
 .tg-mod--ds-board { margin-top: var(--pg-space-4); }
 /* The two id tags of the case head stay on one line, side by side. */
@@ -129,3 +134,210 @@ table.tg-box { font-variant-numeric: tabular-nums; }
 
 /* Deadline board on a narrow column: the cards stack in one full-width column (no sideways strip). */
 @media (max-width: 640px) { .tg-mod--ds-board .board-list { display: grid; overflow: visible; } }
+
+/* ---- N1 A (2026-11-12, phone_final_findings PF1-PF12). Tokens only; every subject is a module or named inside one. ---- */
+/* PF1: at phone width the amount sits under "1 day", so the right-hand thickness of the raised case head never crosses it. */
+@media (max-width: 480px) {
+  .tg-box.ds-head__figs { grid-template-columns: minmax(0, 1fr); gap: var(--pg-space-2); }
+  .tg-box.ds-head__figs .ds-head__num--sub { white-space: normal; overflow-wrap: anywhere; }
+  .tg-lift.ds-head.tg-block { padding-right: calc(var(--pg-space-5) + 4px); }
+}
+/* PF6: the case timeline's PayPal line is neutral; only the word "due" and its mark carry the risk colour. */
+.ds-log.tg-mod .tg-log__entry.is-risk .tg-log__title { color: var(--pg-color-ink); }
+.ds-log.tg-mod .ds-log__due { color: var(--pg-color-risk); }
+.ds-log.tg-mod .ds-log__due { font-weight: 700; }
+.ds-log.tg-mod .tg-log__entry.is-risk .tg-log__who { color: var(--pg-color-ink); }
+/* PF11: the try-it sentence box takes the full row on a phone (placeholder never cut); a disabled Check stays legible. */
+@media (max-width: 640px) {
+  .tg-block--ds-ai .ds-ai__tryrow { flex-wrap: wrap; }
+  .tg-block--ds-ai .ds-ai__tryrow > #dispute-ai-text { flex: 1 1 100%; min-width: 0; }
+  .tg-block--ds-ai .ds-ai__tryrow > .tg-btn { flex: 1 1 100%; }
+}
+.tg-block--ds-ai .ds-ai__tryrow > .tg-btn:disabled { opacity: 1; background: var(--pg-color-recede); border: 1px dashed var(--pg-color-muted); color: var(--pg-color-muted); }
+/* PF12: the disabled bottom action reads as a button that is waiting, not as a blank strip. */
+.phone-action-bar .tg-box--phone-cta:disabled { opacity: 1; background: var(--pg-color-panel); border: 1px dashed var(--pg-color-muted); color: var(--pg-color-muted); }
+/* PF9: the draft's due state and evidence states are token stamps; long states wrap instead of running off a phone. */
+.tg-stamp.tg-box--stamp { flex: none; max-width: 100%; height: auto; min-height: 28px; padding-block: 4px; line-height: 1.25; letter-spacing: .08em; white-space: normal; }
+/* Notice (Sales spike "Sample sales loaded"): a token note, not the old green box. */
+.message.tg-box--notice { gap: var(--pg-space-2); border: 0; border-left: 4px solid var(--pg-color-ok); border-radius: 0; background: var(--pg-color-surface2); box-shadow: none; color: var(--pg-color-ink); }
+/* PF10: the replay fold title is sentence case, one or two lines, not a three-line capitals label. */
+.tg-box--ov-replay > summary > .tg-eyebrow { text-transform: none; letter-spacing: normal; font-size: var(--pg-text-2); line-height: 1.35; }
+/* PF10: the optional order table and session activity are flat ledger rows like the sponsor map, not old framed cards. */
+:is(#analytics, #activity) { border: 0; border-top: 1px solid var(--pg-color-rule); border-radius: 0; background: none; }
+:is(#analytics, #activity) > .optional-heading .optional-trigger { background: none; }
+/* PF3-PF4: board cards end at their last line; the filter and plan buttons share one width, one alignment. */
+@media (max-width: 640px) {
+  .tg-mod--ds-board .board-list .board-row dl > div:nth-child(5), .tg-mod--ds-board .board-list .board-row-noplan dl > div:nth-child(5) { min-height: 0; }
+  .tg-mod--ds-board .board-chips { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .tg-mod--ds-board .board-chips > button { display: flex; align-items: center; justify-content: flex-start; width: 100%; padding: 0 10px 0 30px; text-align: left; }
+  .tg-mod--ds-board .board-plan-bar { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tg-mod--ds-board .board-plan-bar > .board-plan-message, .tg-mod--ds-board .board-plan-bar > .board-plan-ics-note { grid-column: 1 / -1; }
+  .tg-mod--ds-board .board-plan-bar > .board-plan-reset { width: 100%; justify-content: center; text-align: center; white-space: normal; }
+}
+/* PF2: the phone plan label stays inside its bar, above the now / due lines. */
+.tg-mod--ds-board .board-canvas .ev-label-plan { position: relative; z-index: 2; }
+/* X10 (red-team PF2 @1440): a desktop plan bar is a few hours wide at week scale, so its label ran right over the due line.
+   Lane 2 holds only the plan and the plan sits before the due line, so the label ends just left of its bar instead. */
+.tg-mod--ds-board .board-timeline:not(.board-timeline-phone) .board-canvas .payguard-board-plan .ev-label { position: absolute; right: calc(100% + 6px); top: 50%; translate: 0 -50%; white-space: nowrap; }
+
+/* ---- N1 B (2026-11-12, COPY_FINAL_v4_1): the copy's info buttons (ⓘ) and folds, theme/copy.jsx. Tokens only. ---- */
+.tg-box--info { display: inline; position: relative; }
+.tg-box--info > .copy-info__btn { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; min-height: 24px; margin: 0 2px; padding: 0 4px; border: 1px solid var(--pg-color-rule-soft); border-radius: 0; background: none; color: var(--pg-color-muted); font: inherit; font-size: var(--pg-text-1); line-height: 1; vertical-align: baseline; cursor: pointer; }
+.tg-box--info > .copy-info__btn[aria-expanded="true"] { border-color: var(--pg-color-ink); color: var(--pg-color-ink); }
+.tg-box--info > .copy-info__body { display: block; margin: 4px 0; padding: 6px 10px; border-left: 2px solid var(--pg-color-rule); background: var(--pg-color-surface2); color: var(--pg-color-ink); font-size: var(--pg-text-1); line-height: 1.45; white-space: normal; text-transform: none; letter-spacing: normal; }
+@media (hover: none) { .tg-box--info > .copy-info__btn { min-width: 32px; min-height: 32px; } }
+.tg-box--fold { margin-top: var(--pg-space-2); }
+.tg-box--fold > .copy-fold__body { margin-top: var(--pg-space-2); font-size: var(--pg-text-2); line-height: 1.45; overflow-wrap: anywhere; }
+.tg-box--fold > .copy-fold__sum { cursor: pointer; font-size: var(--pg-text-2); color: var(--pg-color-muted); }
+/* For judges: the "If you have" depth list above the route. */
+.tg-block--jp-depth { margin: 0 0 var(--pg-space-4); padding: var(--pg-space-3) 0; border-top: 1px solid var(--pg-color-rule-soft); border-bottom: 1px solid var(--pg-color-rule-soft); }
+/* Source legend: the extra note is a tap (native fold) inline with its sentence; on a phone the legend is one fold. */
+.tg-legend__note { display: inline; margin-left: 4px; }
+.tg-legend__note > summary { display: inline; cursor: pointer; color: var(--pg-color-muted); list-style: none; }
+.tg-legend-fold > summary { cursor: pointer; font-size: var(--pg-text-1); color: var(--pg-color-muted); }
+
+/* ---- N1 PF7 (coordinator ruling 2026-11-12): first screen on a phone. The page tabs (sticky) already name the step, so
+   the 01/02/03 sub-step rail is hidden at 640px and below; the step head is one row: eyebrow and title on one line with the
+   subtitle under them, Reset demo and Your review stacked small on the right. The header bar above still scrolls away. ---- */
+@media (max-width: 640px) {
+  nav.journey.tg-mod { display: none; }
+  .tg-stephead.tg-mod { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; column-gap: var(--pg-space-3); min-height: 0; padding: var(--pg-space-2) 0; }
+  .tg-stephead.tg-mod > .stage-pagehead-text { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--pg-space-2); min-width: 0; }
+  .tg-stephead.tg-mod > .stage-pagehead-text > .tg-eyebrow { margin: 0; }
+  .tg-stephead.tg-mod > .stage-pagehead-text > .tg-stephead__title { margin: 0; }
+  .tg-stephead.tg-mod > .stage-pagehead-text > .tg-small { flex: 1 1 100%; margin: 2px 0 0; }
+  .tg-stephead.tg-mod > .tg-stephead__actions { flex-direction: column; flex-wrap: nowrap; align-items: flex-end; justify-content: flex-start; gap: 2px; }
+  .tg-stephead.tg-mod > .tg-stephead__actions .button { min-height: 32px; padding: 0 8px; font-size: var(--pg-text-1); }
+  .tg-stephead.tg-mod > .tg-stephead__actions > .review-status { margin: 0; font-size: var(--pg-text-1); white-space: nowrap; }
+}
+
+/* ---- N1 icon alignment (coordinator 2026-11-12, scratchpad/clickall/icon_align.py): one site-wide rule for every sprite
+   icon that sits with text. The icon's box starts at the top of the first text line (vertical-align: top in running text,
+   flex-start in a flex row) and is then moved by half a line minus half its own height, so its centre is the first
+   line's centre at any icon size, one line or several. The sprite's inline vertical-align (-0.125em) only worked in
+   running text and is overridden here; the global svg display: block reset is undone for icons, so an icon in a
+   paragraph stays on its line. ---- */
+svg[data-icon] { display: inline-block; vertical-align: top !important; align-self: flex-start; margin-block: 0 !important; translate: 0 calc(0.5lh - 50%); }
+:has(> svg[data-icon]):not(.tg-stamp, .tg-tag, .tg-pill) { align-items: flex-start !important; }
+/* (coordinator X04, judges A#1 B-1 B-3) one-line stamps, tags and pills: icon centred with its label, no first-line offset */
+:is(.tg-stamp, .tg-tag, .tg-pill) > svg[data-icon] { align-self: center; translate: none; margin-top: 0; }
+/* A button or a link row with a minimum height keeps its single line in the middle: one grid row centred in the box
+   (align-content), its icon and text aligned to that row's top as above. */
+.button:has(> svg[data-icon]) { display: inline-grid; grid-auto-flow: column; align-content: center; text-align: start; }
+a.tg-link:has(> svg[data-icon]) { display: grid; grid-auto-flow: column; justify-content: start; align-content: center; }
+/* A summary row with an icon: the title sits next to its icon (not spread across the row); the status item after it
+   goes to the right end, on the same line or, when it wraps, on its own line. */
+.sandbox-details > summary:has(> svg[data-icon]) { justify-content: flex-start; }
+.sandbox-details > summary:has(> svg[data-icon]) > span + span { margin-left: auto; }
+
+/* ---- N1 text audit (coordinator 2026-11-12, T1 text_audit.md section A). One rule per finding type, site-wide. ---- */
+/* Short labels and headings break into even lines, never one orphan word ("(preview)", "(test)", "PAYPAL SHOWED"). */
+:where(h1, h2, h3, h4, button, summary, th, .tg-tag) { text-wrap: balance; }
+/* Running text stays at or under 80 characters a line (measured: 68ch of this sans gives 86 characters, 62ch about 78). */
+:where(p, li, dd, blockquote, figcaption, .footer-independent) { max-width: 62ch; }
+/* Info buttons and fold titles on the one dark surface (Proof check) use the light band text (contrast was 2.4:1). */
+.tg-vault .tg-box--info > .copy-info__btn, .tg-vault .tg-box--fold > .copy-fold__sum { color: var(--pg-color-band-text); border-color: var(--pg-color-band-text); }
+.tg-vault .tg-box--fold > .copy-fold__sum { border: 0; }
+/* The amount field is wide enough for its placeholder on a phone. */
+.country-rules.tg-mod #country-amount-input { min-width: 72px; padding-inline: 8px; }
+/* (N1 C07) The board card labels carry their own colon in the text ("Amount: 125.50 USD"), so the old generated one goes. */
+.tg-mod--ds-board .board-list .board-row dt::after { content: "\a0"; }
+/* (coordinator X07, judge A#3) due within 3 days but not within 1: amber like the case queue; red stays for 1 day or past due */
+.tg-mod--ds-board .board-list :is(.board-row-due_soon, .board-row-due_soon_no_draft, .board-row-due_soon_missing):not(.board-row-urgent) { border-left: 4px solid var(--pg-color-warn); }
+.tg-mod--ds-board .board-list :is(.board-row-due_soon, .board-row-due_soon_no_draft, .board-row-due_soon_missing):not(.board-row-urgent) .board-row-status { color: var(--pg-color-warn); font-weight: 600; }
+/* ---- J-B (2026-11-12, judge B, judge_B_current.md B-4 / #3 / #8 / #10). Tokens only; subjects are modules or named inside one. ---- */
+/* J-B item1: Check a sale reads verdict band → sample chips → form. At 1280+ the step01 grid's two top areas swap owners
+   (wide/step01.css names them "three" then "verdict"), so the order holds with the guide or the rule pack open too. */
+@media (min-width: 1280px) {
+  #compliance .stage-content > .country-verdict-slot.tg-mod { grid-area: three; }
+  #compliance .stage-content > .check-three.tg-mod { grid-area: verdict; }
+}
+@media (min-width: 1024px) and (max-width: 1279px) {
+  #compliance .stage-content > .country-verdict-slot.tg-mod { order: -1; }
+}
+/* J-B item1: the sample chips (frame mark only, ink, no answer text) and the closed fold that keeps the three cards. */
+#compliance .stage-content > .check-three.tg-mod { display: flex; flex-wrap: wrap; align-items: center; gap: var(--pg-space-2) var(--pg-space-4); padding: var(--pg-space-2) 0; }
+.tg-mod--ck-three .check-three__chips { display: flex; flex: 1 1 auto; flex-wrap: wrap; align-items: center; gap: var(--pg-space-2); min-width: 0; }
+.tg-mod--ck-three .check-three__try { color: var(--pg-color-muted); font-size: var(--pg-text-2); font-weight: 600; }
+.tg-mod--ck-three .check-three__chip { display: inline-flex; align-items: center; gap: var(--pg-space-2); min-height: 44px; padding: 0 var(--pg-space-3); border: 1px solid var(--pg-color-rule); border-radius: 0; background: var(--pg-color-panel); color: var(--pg-color-ink); font: inherit; font-size: var(--pg-text-2); font-weight: 600; cursor: pointer; }
+.tg-mod--ck-three .check-three__chip:hover { border-color: var(--pg-color-ink); }
+.tg-mod--ck-three .check-three__mark { flex: none; width: 12px; height: 12px; box-sizing: border-box; }
+.tg-mod--ck-three .check-three__chip.is-neutral > .check-three__mark { display: none; }
+.tg-mod--ck-three .check-three__chip.is-warn > .check-three__mark { border: 1px dashed var(--pg-color-ink); }
+.tg-mod--ck-three .check-three__chip.is-risk > .check-three__mark { border: 3px double var(--pg-color-ink); }
+.tg-mod--ck-three .check-three__more { flex: 0 1 auto; min-width: 0; }
+.tg-mod--ck-three .check-three__more[open] { flex-basis: 100%; }
+.tg-mod--ck-three .check-three__more > .check-three__sum { display: flex; align-items: center; min-height: 44px; cursor: pointer; color: var(--pg-color-muted); font-size: var(--pg-text-2); }
+.tg-mod--ck-three .check-three__more > .check-three__sum > .tg-h3 { margin: 0; font-size: var(--pg-text-2); font-weight: 600; color: inherit; }
+.tg-mod--ck-three .check-three__more[open] > .check-three__sum { margin-bottom: var(--pg-space-3); color: var(--pg-color-ink); }
+.tg-mod--ck-three .check-three__picked:empty { display: none; }
+.tg-mod--ck-three .check-three__picked { flex-basis: 100%; }
+/* J-B item1: the chips replace the form's two "Quick tests" buttons (same texts); those stay in the DOM for the chips to press. */
+.compliance-layout.tg-mod .description-presets { display: none; }
+/* J-B item1: verdict band. With the key rules folded (CountryRules key-rules fold, request in J_requests.md) the verdict
+   takes 8 of 12 columns and the two rule folds sit at its right; the verdict sentence is the page's one 28px line. */
+@media (min-width: 1024px) {
+  #compliance .country-result--portal.tg-block:has(> .tg-box--ck-rules > .tg-box--ck-keyfold) { grid-template-columns: minmax(0, 9fr) minmax(0, 3fr); }
+  #compliance .country-result--portal.tg-block .country-verdict-big { font-size: var(--pg-text-5); line-height: 1.25; }
+  /* The band sits close under the step head and over the chips (was 24px above and below). */
+  #compliance .country-verdict-slot.tg-mod > .country-result--portal.tg-block { margin: var(--pg-space-3) 0; }
+  /* Two visible lines in the description box (rows=3 kept; it still scrolls and resizes), so Run Policy Check is in the first screen. */
+  .compliance-layout.tg-mod #description { height: 64px; min-height: 64px; }
+  /* B-4 step 1: one step-head row on every step page: eyebrow, title and subtitle on one baseline; actions at the right. */
+  .tg-stephead.tg-mod > .stage-pagehead-text { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--pg-space-3); }
+  .tg-stephead.tg-mod > .stage-pagehead-text > :is(.tg-eyebrow, .tg-stephead__title, .tg-small) { margin: 0; }
+  .tg-stephead.tg-mod { align-items: center; padding-block: var(--pg-space-2); }
+}
+/* B-4 phone: the step head is one row (the sticky page tabs name the step); the subtitle is the desktop line only. */
+@media (max-width: 640px) {
+  .tg-stephead.tg-mod { padding-block: var(--pg-space-1); }
+  .tg-stephead.tg-mod > .stage-pagehead-text > .tg-small { display: none; }
+  .tg-stephead.tg-mod > .tg-stephead__actions > .review-status { line-height: 1.2; }
+  #compliance .country-verdict-slot.tg-mod > .country-result--portal.tg-block { margin-top: 0; }
+}
+.tg-box--ck-keyfold > summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; font-size: var(--pg-text-2); font-weight: 600; }
+.tg-box--ck-keyfold[open] > summary { margin-bottom: var(--pg-space-2); }
+.tg-box--ck-keyfold > #country-view-rows > ul { margin-top: 0; } /* J-B (A 23:08 request): same as the ck-rules rule, one level down */
+/* J-B item2: Disputes "How this draft is built (3)": one closed row under the case; opened, its three parts stack. */
+.tg-mod--ds-built { margin-top: 0; border-top: 1px solid var(--pg-color-rule-soft); }
+.tg-mod--ds-built > .ds-built__sum { display: flex; align-items: center; min-height: 44px; cursor: pointer; font-size: var(--pg-text-2); font-weight: 600; }
+.tg-mod--ds-built[open] > .ds-built__sum { margin-bottom: var(--pg-space-3); }
+.tg-mod--ds-built > .tg-mod + .tg-mod { margin-top: var(--pg-space-5); }
+/* J-B item8-B#8: one lift per page: the rule-pack table (judge material in a closed fold) stays flat. */
+.tg-block--ck-ledger.tg-lift:is(:hover, :focus-within) { transform: none; box-shadow: none !important; }
+/* J-B item8-B#10: Sales spike facts: each figure spans two rows of the facts grid (label row, value row), so labels share
+   a row height and values share a baseline across the two columns. */
+.tg-box--vs-facts .vs-hero__facts { grid-auto-rows: auto; }
+.tg-box--vs-facts .vs-hero__facts > .vs-fig { grid-row: span 2; grid-template-rows: subgrid; row-gap: 2px; }
+.tg-box--vs-facts .vs-hero__facts > .vs-fig > .vs-fig__label { align-self: end; }
+.tg-box--vs-facts .vs-hero__facts > .vs-fig > .vs-fig__value { align-self: baseline; }
+
+/* J-A: item 4, the Overview quick file check sits under the send ticket, one soft rule above it; its button stays outlined so
+   the hero keeps the page's one solid button. */
+.tg-box--ov-verify { margin-top: var(--pg-space-5); padding-top: var(--pg-space-4); border-top: 1px solid var(--pg-color-rule-soft); }
+.tg-box--ov-verify > .tg-eyebrow { margin: 0 0 var(--pg-space-1); }
+.tg-box--ov-verify > .ov-verify__act { display: flex; flex-wrap: wrap; align-items: center; gap: var(--pg-space-2) var(--pg-space-3); margin: var(--pg-space-3) 0; }
+/* (coordinator X03) the Plan field's label was screen-reader only (board.css:138); show it like the other four fields */
+.tg-mod--ds-board .board-list .board-row dl > div:nth-child(5) dt { position: static; width: auto; height: auto; margin: 0; overflow: visible; clip-path: none; white-space: normal; }
+/* K1: G10a phones (640px and under): every page title is 20px like the three step titles; Proof and For judges included.
+   The Overview hero (header.hero-pagehead) keeps its 28px first screen. */
+@media (max-width: 640px) { .tg-pagehead.tg-mod:not(.hero-pagehead) .tg-h1 { font-size: var(--pg-text-4); line-height: 1.2; } }
+/* K4 (text_audit compliance@1440): the "See all rules and notes" fold title sits in the 179px rules column and wrapped to
+   two lines. From 1200px it fits on one line with tighter inline padding; narrower screens keep a balanced wrap. */
+/* K5 (user): same inset, weight and chevron column as "See the 2 rules" above it. */
+.tg-mod .country-all-rules > summary { padding-inline: 0; gap: 4px; font-weight: 600; text-wrap: balance; }
+@media (min-width: 1200px) { .tg-mod .country-all-rules > summary { white-space: nowrap; } }
+/* K5 (user 2026-11-13): three spots that sat too tight.
+   1. Sales spike fold: the panes had no inline padding, so "Records that back it" and its rows touched the fold border. */
+#velocity .tg-fold.tg-mod > .velocity-pane { padding-inline: var(--pg-space-4); } /* beats #velocity-pane-chart padding (index.css:650) */
+/* 2. Copy folds ("How it was measured"): the chevron touched the last letter, and the source line below sat on the fold. */
+.tg-box--fold > .copy-fold__sum::after { margin-inline-start: .5em; }
+.tg-box--fold + .tg-source { margin-top: var(--pg-space-2); }
+/* 3. Footer "Sponsor map": text and chevron ran to the edges; inset them to match the Session activity row above. */
+.sponsor-map > summary { padding-inline: 16px 14px; }
+@media (min-width: 1280px) { .sponsor-map > summary { padding-inline: 14px; } } /* K7 (R2 B2): same inset as #activity .optional-trigger (wide/compact.css:13) */
+/* 4. Check a sale and Sales spike: the folds under the step sat at 0, 12 and 16px from the stage edge; one edge for all. */
+:is(#compliance, #velocity) .stage-content :is(#sandbox-draft, .step-more.tg-mod, .tg-fold--guide) { margin-inline: 0; }
+:is(#compliance, #velocity) .step-more.tg-mod > summary { padding-inline: var(--pg-space-4); }
+/* K7 (R2 B1): on phones caseViews.css:87 gave the Sales spike fold a 12px side margin; the folds below it sit at 0. */
+@media (max-width: 640px) { #velocity .stage-fold.tg-mod { margin-inline: 0; } }

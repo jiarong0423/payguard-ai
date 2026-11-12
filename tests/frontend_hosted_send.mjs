@@ -97,7 +97,7 @@ assert.ok(restorePlans({}, mixed.rows, NOW)['case-ref-001'], 'sample cases still
 assert.equal(buildEvidenceBoard({ disputes: [], drafts: {}, now: NOW, sandbox: null }), null);
 
 // 6. Bryntum's own wording (J4 sponsor review quotes "disputed amount, response deadline, and evidence readiness").
-assert.equal(TRIAGE_CAPTION, 'Dispute triage board: disputed amount, response deadline, and evidence readiness per case');
+assert.equal(TRIAGE_CAPTION, 'Each case: amount, deadline, evidence');
 assert.equal(UNSCHEDULED_LABEL, 'Deadline set · no evidence slot scheduled');
 assert.ok(boardSource.includes('data-testid="evidence-board-triage"') && boardSource.includes('data-testid="evidence-board-unscheduled"') && boardSource.includes('data-testid="evidence-board-schedule"'));
 assert.ok(boardSource.includes('with a deadline but no evidence slot scheduled'));

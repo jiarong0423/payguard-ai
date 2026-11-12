@@ -4,6 +4,7 @@ import { SpriteIcon, STATUS } from './theme/iconMap.js';
 import { apiRequest, retrySecondsLeft } from './api.js';
 import { tabKeyDown } from './tabKeys.js';
 import { useWaitClock, waitFailureMessage, WaitLine } from './GuideLive.jsx';
+import { Fold, Short } from './theme/copy.jsx';
 import './CountryRules.css';
 
 // Per-country rules for the seller (ships from) and the buyer (ships to). Both sides pick their own country;
@@ -97,7 +98,8 @@ const RuleChain = lazy(() => import('./CheckSaleExtras.jsx').then((module) => ({
 
 // The link reads "Source" on one line; the statute or source kind sits in its tooltip and accessible name (plan r2 C11).
 // The act and article also show as a small line of their own, so a viewer can read the act the video names (r20 UX-5).
-function Finding({ row, retrievedAt, gloss, chain }) {
+// (N1 C37) In the "See all rules" fold (deep) the rule sentence is one more tap down: "Rule text" opens it.
+function Finding({ row, retrievedAt, gloss, chain, deep = false }) {
   const { sentence, scope, statute } = splitRule(row.text);
   const label = statute ? `Source: ${statute}` : sourceLabel(row.source);
   const tipId = `rule-chain-${chain.key}`;
@@ -107,7 +109,7 @@ function Finding({ row, retrievedAt, gloss, chain }) {
   return <li className={`country-finding sev-${row.severity.toLowerCase()}`} data-testid={`country-finding-${row.code}`}>
     <span className="tg-tip country-chain"><button type="button" className="country-sev tg-tip__trigger" data-testid="rule-chain-trigger" aria-describedby={tipId} {...link}><SevIcon severity={row.severity} />{SEVERITY_TEXT[row.severity]}</button>
       <Suspense fallback={null}><RuleChain row={row} tipId={tipId} names={chain.names} result={chain.result} shownAs={SEVERITY_TEXT[row.severity]} sourceKind={sourceLabel(row.source)} /></Suspense></span>
-    <span className="country-finding-body"><span>{gloss(sentence)}</span>
+    <span className="country-finding-body">{deep ? <Fold summary="Rule text">{gloss(sentence)}</Fold> : <span>{gloss(sentence)}</span>}
       {statute && <small className="country-statute" data-testid={`country-statute-${row.code}`} {...link}>{statute}</small>}
       <small className="country-source-line" title={`${scope ? `${scope} · ` : ''}${row.source}`}>{scope && <span>{scope} · </span>}<a href={row.source} target="_blank" rel="noopener noreferrer" title={label} {...link}
         aria-label={`${label}${scope ? ` (${scope})` : ''}, opens in a new tab`}>Source ↗</a>
@@ -168,8 +170,8 @@ function Verdict({ result, names, tags, onEdit, onContinue }) {
   const noGoods = tags.length === 0 && <span className="country-verdict-line" data-testid="country-no-goods">No goods ticked: account and shipping rules only.</span>;
   // One next step under the verdict (plan r2 E19): change the goods after a Stop, or go on to the draft.
   if (result.blocked) {
-    return <><strong className="country-verdict-big"><VerdictIcon tone="risk" />A listed rule may apply to this sale.</strong>
-      <span className="country-verdict-line">Draft paused: {plural(block.length, 'listed rule')} {block.length === 1 ? 'applies' : 'apply'} to {seller} → {buyer}.</span>{noGoods}
+    return <><span className="tg-stamp tg-stamp--risk" data-testid="country-paused-stamp">Paused</span><strong className="country-verdict-big"><VerdictIcon tone="risk" />A listed rule may apply to this sale.</strong>
+      <span className="country-verdict-line"><Short wide={`Draft paused: ${plural(block.length, 'listed rule')} ${block.length === 1 ? 'applies' : 'apply'} to ${seller} → ${buyer}.`} phone="" more={`Draft paused: ${plural(block.length, 'listed rule')} ${block.length === 1 ? 'applies' : 'apply'} to ${seller} → ${buyer}.`} label="Full rule sentence" /> <button type="button" className="tg-btn tg-btn--text tg-btn--sm" data-testid="country-see-rule" onClick={() => { const fold = document.querySelector('[data-testid="country-key-rules-fold"]'); if (fold) fold.open = true; document.getElementById('country-view-rows')?.scrollIntoView({ block: 'center' }); }}>See the rule →</button></span>{noGoods}
       <span className="country-verdict-next"><button type="button" className="button button-secondary" data-testid="country-edit-item" onClick={() => onEdit(accountStop)}>{accountStop ? 'Change account' : 'Edit item'}</button></span></>;
   }
   if (ban.length) {
@@ -418,7 +420,7 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
       <p>TradeGlot compares PayPal rules with official export and import rules.</p>
       <button type="button" className="button button-secondary country-try-example" data-testid="country-try-example" aria-disabled={busy || waiting || undefined}
         title="Fills United States to Singapore with E-cigarettes ticked and runs the same check" onClick={tryExample}>Fill from example</button>
-      <small className="country-try-note" data-testid="country-try-note">United States to Singapore, e-cigarettes. Synthetic data, no PayPal calls; fills the form and runs the check.</small>
+      <small className="country-try-note" data-testid="country-try-note">US → Singapore, e-cigarettes. Demo data, no PayPal calls.</small>
     </div>
     <div className="country-form tg-block" ref={formRef}>
       <div className="country-places">
@@ -481,12 +483,19 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
   function rules() {
     const seen = new Set();
     const list = (items, where) => <ul>{items.map((row, at) => <Finding key={`${row.code}-${row.text}`} row={row} retrievedAt={result.retrieved_at} gloss={(text) => withGloss(text, seen)}
-      chain={{ key: `${where}-${at}`, names, result }} />)}</ul>;
+      chain={{ key: `${where}-${at}`, names, result }} deep={where !== 'key'} />)}</ul>;
+    const keyList = <div id="country-view-rows" data-testid="country-key-rules">
+      {keyRows.length > 0 ? list(keyRows, 'key') : <p className="country-footnote">No rule to check first.</p>}
+    </div>;
+    // (J-A for J-B item 1, J_requests.md 22:54) In the verdict focus (portal) the key rules start folded, so the verdict
+    // band stays short; "See the rule →" opens the fold first. Without a portal, or with no key rule, nothing changes.
     return <>
-      <div id="country-view-rows" data-testid="country-key-rules">
-        {keyRows.length > 0 ? list(keyRows, 'key') : <p className="country-footnote">No rule to check first.</p>}
-      </div>
+      {verdictTarget && keyRows.length > 0
+        ? <details className="tg-box tg-box--ck-keyfold" data-testid="country-key-rules-fold"><summary>See the {plural(keyRows.length, 'rule')}</summary>{keyList}</details>
+        : keyList}
       {foldViews.length > 0 && <details className="sandbox-details country-all-rules" data-testid="country-all-rules"><summary>See all rules and notes</summary>
+        {/* (N1 C37) One short line first; the rule text stays in the groups below. */}
+        <p className="country-footnote" data-testid="country-all-rules-lede"><Short wide={`${plural(Math.max(0, groups.action.length - keyRows.length), 'more rule')} and ${plural(groups.info.length, 'note')} for ${names[result.seller_country]} → ${names[result.buyer_country]}. The key rules are above.`} phone={`${plural(Math.max(0, groups.action.length - keyRows.length), 'more rule')}, ${plural(groups.info.length, 'note')}, ${result.seller_country === 'US' ? 'US' : names[result.seller_country]} → ${names[result.buyer_country]}. Tap a rule for its text.`} /></p>
         <div className="segmented" role="tablist" aria-label="Which rules to show"
           onKeyDown={(event) => tabKeyDown(event, foldViews.map(([key]) => key), shown, setView, (key) => `country-view-${key}`)}>
           {foldViews.map(([key, label, testId]) => <button key={key} type="button" role="tab" id={`country-view-${key}`} data-testid={testId} aria-selected={shown === key} tabIndex={shown === key ? 0 : -1} aria-controls="country-view-fold" className={shown === key ? 'is-active' : ''} onClick={() => setView(key)}>{label}</button>)}

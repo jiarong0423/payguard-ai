@@ -1,6 +1,7 @@
 // Scenario runs (/scenarios.html), linked from the console top bar. Runs the fixed work orders in
 // workOrders.js against this server's own local API; owner steps are checkboxes that never call anything.
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { Short } from '../theme/copy.jsx';
 import { createRoot } from 'react-dom/client';
 import { apiRequest } from '../api.js';
 import { STATUS, WORK_ORDERS, cardStatus, clearRun, detectMode, openOwnerSteps, receiptLines, restoreRun, runWorkOrder, saveRun } from './workOrders.js';
@@ -147,7 +148,7 @@ function ScenariosPage() {
         <div>
           <span className="meta-label">WORK ORDERS</span>
           <h1>Scenario runs</h1>
-          <p>Each card runs one scene of the demo against this console's own API with synthetic data. Owner steps are ticked by hand; ticking never calls PayPal or a model.</p>
+          <p><Short wide="Each card runs one demo scene on this console with demo data. You tick the owner steps by hand. Ticking never calls PayPal or an AI." phone="Each card runs one demo scene. Ticking never calls PayPal or AI." more="Each card runs one demo scene on this console with demo data. You tick the owner steps by hand." /></p>
           <p className="scenarios-mode" data-testid="scenario-mode"><Chip status={shownMode.tone} label={shownMode.label} /></p>
         </div>
         <div className="scenarios-actions">
@@ -180,9 +181,9 @@ function ScenariosPage() {
                   <div className="scenario-step-body">
                     {manual
                       ? <label className="scenario-owner"><input type="checkbox" checked={isTicked} disabled={localOnly} onChange={(event) => setTicked((all) => ({ ...all, [order.id]: { ...all[order.id], [step.n]: event.target.checked } }))} /><span><strong>Owner · {step.label}</strong></span></label>
-                      : <strong>{step.label}</strong>}
+                      : <strong><Short wide={step.label} phone={step.labelPhone} more={step.labelMore} label="Full step" /></strong>}
                     <dl>
-                      <div><dt>Expected</dt><dd>{step.expect}</dd></div>
+                      <div><dt>Expected</dt><dd><Short wide={step.expect} phone={step.expectPhone} more={step.expectMore} label="Full expected result" /></dd></div>
                       <div><dt>Actual</dt><dd>{manual ? (localOnly ? ownerLocalText(step) : isTicked ? 'Ticked by the owner' : 'Owner checks this on camera') : (state?.actual || '—')}</dd></div>
                     </dl>
                     {state?.note && !manual && <small className="scenario-note">{state.note}</small>}
@@ -204,7 +205,7 @@ function ScenariosPage() {
           </article>;
         })}
       </div>
-      <footer><span><Icon name="shield" size={15} /> TradeGlot <span className="footer-divider">/</span> Scenario runs</span><span className="footer-independent" data-testid="footer-independent">TradeGlot is an independent hackathon demo. Not affiliated with or endorsed by PayPal.</span><span>Synthetic data · nothing is sent to PayPal from this page</span></footer>
+      <footer><span><Icon name="shield" size={15} /> TradeGlot <span className="footer-divider">/</span> Scenario runs</span><span className="footer-independent" data-testid="footer-independent">TradeGlot is an independent hackathon demo. Not affiliated with or endorsed by PayPal.</span><span>Demo data · nothing is sent to PayPal from this page</span></footer>
     </main>
   </div>;
 }

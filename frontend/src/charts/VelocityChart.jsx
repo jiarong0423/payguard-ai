@@ -107,7 +107,7 @@ function HourDetail({ row, model, onClose }) {
       <p className="velocity-hour-pop__when">{isSpike ? 'Spike window' : 'Usual hour'} · {rangeLabel(row, model.offsetMinutes)}</p>
       <button type="button" className="velocity-hour-pop__close" onClick={onClose} data-testid="velocity-hour-close">Close</button>
       <p className="velocity-hour-pop__value">{money(value, model.currency)}{isSpike ? '' : '/h'}
-        <span className="velocity-hour-pop__meta">{isSpike ? <>{row.captures ?? 0} orders · {over ? <strong>▲ above the review line</strong> : 'under the review line'}</> : 'synthetic baseline rate'}</span></p>
+        <span className="velocity-hour-pop__meta">{isSpike ? <>{row.captures ?? 0} orders · {over ? <strong>▲ above the review line</strong> : 'under the review line'}</> : 'usual rate (demo)'}</span></p>
     </aside>
   );
 }

@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
 import { AgGridReact, themeQuartz } from './grid/agGrid.jsx';
 import { operatorLabel } from './operatorLabels.js';
+import { dateTimeLabel } from './theme/format.js';
+import { Info } from './theme/copy.jsx';
 import './charts/charts.css';
 
 // Registered here too, not only in App.jsx: the view is also mounted on its own (the optional timeline wrapper and
@@ -31,10 +33,15 @@ const GAP_NAMES = [
   ['payment_to_claim', 'Payment to claim'],
 ];
 
+// (N1 C83) Local time with its zone name ("10 Nov 2026, 21:46 GMT+8"); the UTC value is one tap away (ⓘ) or the title.
 function whenLabel(value) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return '—';
-  return `${date.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'UTC' })} UTC`;
+  return dateTimeLabel(date);
+}
+function utcValue(value) {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? '—' : dateTimeLabel(date, 'UTC');
 }
 
 function gapLabel(seconds) {
@@ -81,7 +88,7 @@ function EventCell({ data }) {
 }
 
 function TimeCell({ value }) {
-  return <time className="te-time" dateTime={value}>{whenLabel(value)}</time>;
+  return <time className="te-time" dateTime={value} title={utcValue(value)}>{whenLabel(value)}</time>;
 }
 
 function SourceCell({ value }) {
@@ -123,7 +130,7 @@ export default function TimeEvidenceView({ evidence }) {
       </div> : <ol className="time-events">
         {evidence.events.map((event, index) => (
           <li key={`${event.kind}-${event.at}-${index}`} className={`time-event time-event-${event.kind.toLowerCase()}`}>
-            <time dateTime={event.at}>{whenLabel(event.at)}</time>
+            <time dateTime={event.at}>{whenLabel(event.at)} <Info label="UTC value">{utcValue(event.at)}</Info></time>
             <strong>{operatorLabel(event.kind)}</strong>
             {event.kind === 'MESSAGE' && <span>{operatorLabel(event.channel)} · {operatorLabel(event.direction)} · {operatorLabel(event.topic)}</span>}
             <em>{operatorLabel(event.source)}</em>
@@ -138,7 +145,7 @@ export default function TimeEvidenceView({ evidence }) {
       {evidence.flags?.length > 0 && (
         <p className="time-flags">{evidence.flags.map((flag) => <span key={flag} className="badge badge-muted">{operatorLabel(flag)}</span>)}</p>
       )}
-      <p className="time-note">TradeGlot orders and preserves times. It states no intent, predicts no outcome and gives no legal advice. Messages are kept as a topic and a keyed digest, never as text. A negative gap means the second event is earlier than the first.</p>
+      <p className="time-note">TradeGlot orders and preserves times. It states no intent, predicts no outcome and gives no legal advice. Messages are kept as a topic and a keyed code, never as text. A negative gap means the second event is earlier than the first.</p>
     </section>
   );
 }

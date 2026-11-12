@@ -87,7 +87,7 @@ assert.match(css, /\.ag-filter-body input\.ag-input-field-input\[type="text"\][^
   const dashboard = read('frontend/src/dashboard/main.jsx');
   assert.ok(dashboard.includes('setTimeout(() => (textOnly ? showAnswerLine() : focusAnswer()), 300);'), 'phone: answer line instead of a widget search');
   assert.ok(dashboard.includes('data-testid="dashboard-delegated" ref={delegatedLineRef} tabIndex={-1}'), 'the line can take focus');
-  assert.ok(dashboard.includes("{delegated.recorded ? 'Recorded data-agent answer (no model call here):' : 'Data agent:'}"), 'a replay is labelled as recorded');
+  assert.ok(dashboard.includes("{delegated.recorded ? 'Recorded data-agent answer (no AI call here):' : 'Data agent:'}"), 'a replay is labelled as recorded');
   assert.match(read('frontend/src/dashboard/dashboard.css'), /\.pg-delegated \{ scroll-margin-top: 136px;/u, 'not hidden under the sticky top bar');
 }
 

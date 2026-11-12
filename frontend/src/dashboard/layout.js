@@ -88,7 +88,7 @@ const guide = {
     [GUIDE_ANSWER_SLOT_ID]: grid(['receipts.query', 'receipts.called_at', 'receipts.http_status', 'receipts.result_status', 'receipts.cards', 'receipts.latency_seconds'],
       'Channel3 receipts', 'Recorded once; the hosted demo replays them and makes no call'),
     'calls-chart': columns('bar-chart-grouped', 'benchmark.flow', 'benchmark.model_calls', 'sum',
-      'Model calls per flow', 'Recorded guide benchmark, 268 cases · lower is cheaper'),
+      'AI calls per flow', 'Recorded guide benchmark, 268 cases · lower is cheaper'),
     'rounds-chart': columns('bar-chart-grouped', 'benchmark.flow', 'benchmark.rounds', 'sum',
       'Rounds per flow', 'The first flow records no rounds'),
     'kpi-receipts': value('receipts.receipt_id', 'countd', 'Searches', 'Channel3, recorded'),

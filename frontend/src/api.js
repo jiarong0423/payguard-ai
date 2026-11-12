@@ -818,7 +818,7 @@ export async function apiRequest(path, { method = 'GET', body, session, signal }
     if (error instanceof ApiError) throw error;
     if (signal?.aborted) throw new ApiError('Request canceled.', 0, 'request_cancelled');
     if (error.name === 'AbortError' && paypalWrite) throw new ApiError(PAYPAL_WRITE_TIMEOUT_MESSAGE, 0, 'request_timeout');
-    throw new ApiError(error.name === 'AbortError' ? 'Request timed out; try again.' : 'Cannot connect to the backend service; confirm that the API is running.', 0, error.name === 'AbortError' ? 'request_timeout' : 'backend_unavailable');
+    throw new ApiError(error.name === 'AbortError' ? 'Request timed out; try again.' : 'Cannot connect to the backend service; confirm that the server is running.', 0, error.name === 'AbortError' ? 'request_timeout' : 'backend_unavailable');
   } finally {
     clearTimeout(timeout);
     signal?.removeEventListener('abort', abort);

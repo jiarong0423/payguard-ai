@@ -20,6 +20,7 @@ import chartSvg from '../theme/icons/chart-line-up.svg?raw';
 import fingerprintSvg from '../theme/icons/fingerprint.svg?raw';
 import { SourceLegend, SourceLine } from '../theme/sources.js';
 import { dateLabel, money } from '../theme/format.js';
+import { Short } from '../theme/copy.jsx';
 import './JudgesPage.css';
 
 const ICONS = { arrow: arrowSvg, clock: clockSvg, check: checkSvg, warning: warningSvg, chart: chartSvg, fingerprint: fingerprintSvg };
@@ -49,8 +50,8 @@ function lookFor(page) {
     const send = ledger.sends.find((item) => item.basis === 'HOSTED DEMO');
     const row = facts.rows.find((item) => item.id === figures.step3_send.proof_row);
     return {
-      marks: [{ tag: 'PayPal reference', mono: send.debug_id.value, icon: 'fingerprint', title: 'PayPal-Debug-Id, the reference PayPal returned for the send' }],
-      see: `Recorded hosted send · ${dateLabel(row.date)}: ${figures.step3_send.case_ref}, ${money(figures.step3_send.amount.value, figures.step3_send.amount.currency)}, read back as ${send.readback.value}.`,
+      marks: [{ tag: 'PayPal request ID', mono: send.debug_id.value, icon: 'fingerprint', title: 'PayPal’s ID for the send request (PayPal-Debug-Id header)' }],
+      see: <Short wide={`Recorded hosted send · ${dateLabel(row.date)}: ${figures.step3_send.case_ref}, ${money(figures.step3_send.amount.value, figures.step3_send.amount.currency)}, PayPal showed: ${send.readback.value} (${dateLabel(row.date).replace(/ \d{4}$/u, '')}).`} phone={`Recorded hosted send · ${dateLabel(row.date).replace(/ \d{4}$/u, '')}: ${figures.step3_send.case_ref}, ${money(figures.step3_send.amount.value, figures.step3_send.amount.currency)}, PayPal showed: ${send.readback.value}.`} more={dateLabel(row.date)} label="Date" />,
       source: { kind: 'HOSTED DEMO', source: send.source_key },
     };
   }
@@ -58,7 +59,7 @@ function lookFor(page) {
   const send = ledger.sends.find((item) => item.id === verify.send_id);
   return {
     marks: [{ stamp: 'ok', text: 'Match' }],
-    see: `Your browser hashes the ${verify.served_bytes.value} PayPal served back; it must equal ${verify.recorded_sha256.value.slice(0, 8)}…, recorded at send time.`,
+    see: <Short wide={`Your browser fingerprints the ${verify.served_bytes.value.replace(/ bytes$/u, '-byte')} copy PayPal served back (saved on this site). It must equal ${verify.recorded_sha256.value.slice(0, 8)}…, the fingerprint recorded at send time.`} phone={`Your browser fingerprints the saved PayPal copy. It must equal ${verify.recorded_sha256.value.slice(0, 8)}….`} more={`${verify.served_bytes.value}, the copy PayPal served back, fingerprint recorded at send time.`} />,
     source: { kind: send.basis, source: send.source_key },
   };
 }
@@ -82,6 +83,10 @@ export default function JudgesPage({ onOpen }) {
     // after the lazy parts above it have drawn, so it does not land short of the anchor.
     const seek = () => {
       const target = document.getElementById(anchor);
+      // (Wave J) A target inside a closed fold (Disputes "How this draft is built") is never on screen: open the fold
+      // once its page is shown, then scroll on the next frame.
+      const fold = target?.parentElement?.closest('details:not([open])');
+      if (fold && fold.offsetParent !== null) { fold.open = true; window.requestAnimationFrame(seek); return; }
       if (target && target.offsetParent !== null) {
         target.scrollIntoView({ block: 'start' });
         window.setTimeout(() => target.scrollIntoView({ block: 'start' }), 7e2);
@@ -90,6 +95,11 @@ export default function JudgesPage({ onOpen }) {
     window.requestAnimationFrame(seek);
   };
   return <div className="jp" data-testid="judges-page">
+    {/* (N1 C54) Judges pick their depth first: one action per line. */}
+    <section className="jp-depth tg-block tg-block--jp-depth" data-testid="judges-depth" aria-label="If you have">
+      <p className="tg-eyebrow">If you have</p>
+      <ul>{route.depth.map((line) => <li key={line.wide}><Short wide={line.wide} phone={line.phone} more={line.more} /></li>)}</ul>
+    </section>
     <ol className="jp-route tg-mod tg-mod--jp-route" aria-label="The route for judges">
       {route.steps.map((step, index) => {
         const look = lookFor(step.page);
@@ -110,7 +120,7 @@ export default function JudgesPage({ onOpen }) {
         </li>;
       })}
     </ol>
-    <p className="jp-reset tg-block" data-testid="judges-reset-note">Stuck? Every step has a Reset demo button. Nothing you press on this page is sent anywhere.</p>
+    <p className="jp-reset tg-block" data-testid="judges-reset-note">Stuck? Use Reset demo on any step. Nothing on this page is sent.</p>
     <SourceLegend testId="judges-basis-legend" />
   </div>;
 }

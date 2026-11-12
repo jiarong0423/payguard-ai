@@ -76,7 +76,7 @@ export default function BenchmarkCharts() {
         <li><strong>Rounds {history[0].rounds} to {history[history.length - 1].rounds}</strong> across the design steps on the clean blind set ({Math.round((1 - history[history.length - 1].rounds / history[0].rounds) * 100)}% fewer), now below a plain form's {benchmark.history_form_only_rounds}; over all {benchmark.cases} cases {benchmark.flows[benchmark.flows.length - 1].rounds} versus {benchmark.form_only_rounds} for a plain form, with no wrong value filled.</li>
       </ul>
       {/* (vteam viz) Phone: the wrapped flow names (up to four lines) overlapped in 360px; 460px gives each bar band room. */}
-      <Chart build={callChartOptions} testId="benchmark-calls" label={`Model calls: ${saving.baseline} ${saving.all}, current flow ${saving.current}; every sentence to the AI ${saving.computed}, one call for each case`} narrowHeight={460} />
+      <Chart build={callChartOptions} testId="benchmark-calls" label={`AI calls: ${saving.baseline} ${saving.all}, current flow ${saving.current}; every sentence to the AI ${saving.computed}, one call for each case`} narrowHeight={460} />
       <Chart build={roundChartOptions} testId="benchmark-rounds" label="Guide rounds to finish compared with a plain form" narrowHeight={460} />
       <Chart build={historyChartOptions} testId="benchmark-history" label="Rounds for each design step on the clean blind set" height={300} />
       <p className="benchmark-note">Simulated sellers on one-sentence test cases (four blind sets written by people who never saw the rules); not a study of real sellers. Source: {benchmark.source}. Charts: AG Charts Community.</p>

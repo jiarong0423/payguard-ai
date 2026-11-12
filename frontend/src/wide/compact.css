@@ -6,13 +6,13 @@
   /* The green "Sample sales loaded" strip is one slim line. */
   /* (P1 2026-11-12) Messages sit in the page flow under the step strip, square and slim: a floating note covered the
      content (external review 2.7). Success and info notes are cleared by their own timers in App.jsx. */
-  .feedback-region .message { margin: 0 0 8px; padding: 6px 14px; border-radius: 0; font-size: 13px; line-height: 1.35; min-height: 0; box-shadow: none; }
+  .feedback-region .message { margin: 0 0 8px; padding: 6px 14px; border-radius: 0; font-size: 14px; line-height: 1.35; min-height: 0; box-shadow: none; }
   .feedback-region .message-success { background: var(--pg-tint-ok); }
   .feedback-region .message-info { background: var(--pg-color-panel); }
   /* Merchant Evidence Buffer and Session activity: one line each, title and note side by side. */
   #analytics .optional-trigger, #activity .optional-trigger { min-height: 40px; padding: 6px 14px; }
   #analytics .optional-trigger span:has(> strong), #activity .optional-trigger span:has(> strong) { display: flex; align-items: baseline; gap: 12px; }
-  #analytics .optional-trigger strong, #activity .optional-trigger strong { display: inline; font-size: 15px; }
+  #analytics .optional-trigger strong, #activity .optional-trigger strong { display: inline; font-size: 16px; }
   #analytics .optional-trigger small, #activity .optional-trigger small { display: inline; margin: 0; }
 
 

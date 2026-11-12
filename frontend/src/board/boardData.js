@@ -4,10 +4,17 @@
 // The case data alone draws the response window, the due line, the now line and the plan bar; a
 // draft only adds readiness and its evidence events. No Bryntum import here, so it runs in plain Node.
 import { operatorLabel } from '../operatorLabels.js';
-import { utcWallClock, viewPresetFor } from '../optional/timelineModel.js';
+import { viewPresetFor } from '../optional/timelineModel.js';
 import { displayDisputeId } from '../disputeDisplay.js';
 
 export const DUE_SOON_DAYS = 3;
+// (N1 B, D-C21/PF5, 2026-11-12) The board reads in the viewer's own time zone, like the rest of the console
+// (dateTimeLabel, "GMT+8"): Bryntum lays out real Dates in local time, so the axis, the bars and the labels share one zone.
+// It replaces the UTC wall clock (fields of a UTC time read as local), which put the board 8 hours off the case head.
+export function boardWall(value) {
+  const date = value instanceof Date ? new Date(value.getTime()) : new Date(value ?? '');
+  return Number.isNaN(date.getTime()) ? null : date;
+}
 const HOUR = 3600 * 1000;
 const DAY = 24 * HOUR;
 const PRESENT = 'STRUCTURALLY_PRESENT';
@@ -31,7 +38,8 @@ export const BOARD_STATUS_LABELS = {
 
 // Bryntum's own wording for this board (its hackathon idea list, quoted in the J4 sponsor review of 2026-11-10):
 // "Dispute triage board (Scheduler)" with "disputed amount, response deadline, and evidence readiness".
-export const TRIAGE_CAPTION = 'Dispute triage board: disputed amount, response deadline, and evidence readiness per case';
+// (N1 C06, 2026-11-12) Plain subtitle under the "Evidence deadline board" title (external review: subtitle, not a new title).
+export const TRIAGE_CAPTION = 'Each case: amount, deadline, evidence';
 export const UNSCHEDULED_LABEL = 'Deadline set · no evidence slot scheduled';
 
 // (2026-11-10) Short text for the scheduler's narrow left grid, so a Sandbox row never wraps past its row height
@@ -147,7 +155,7 @@ export function buildEvidenceBoard({ disputes, drafts = {}, now, sandbox = null 
     const id = dispute.case_ref;
     const caseEvents = evidenceEvents(dispute, draft);
     caseEvents.forEach((event, index) => {
-      const at = utcWallClock(event.at);
+      const at = boardWall(event.at);
         // Case data stays read only on the board: only the seller's own plan bar can move (optimise r24).
       events.push({
         id: `${id}-evidence-${index}`, resourceId: id, name: event.name, startDate: at, endDate: at,
@@ -159,7 +167,7 @@ export function buildEvidenceBoard({ disputes, drafts = {}, now, sandbox = null 
     const openedMs = instant(openedAt);
     if (dueMs !== null && openedMs !== null && dueMs > openedMs) {
       events.push({
-        id: `${id}-window`, resourceId: id, name: 'Response window', startDate: utcWallClock(openedAt), endDate: utcWallClock(dueAt),
+        id: `${id}-window`, resourceId: id, name: 'Response window', startDate: boardWall(openedAt), endDate: boardWall(dueAt),
         kind: 'RESPONSE_WINDOW', at: dueAt, source: fromSandbox ? 'PayPal Sandbox · seller response due date' : draft ? operatorLabel(draft.routing?.due_state) : 'Case queue · no draft yet', eventColor: WINDOW_COLORS[status] || 'blue', cls: `payguard-board-window payguard-board-window-${status.toLowerCase()}`,
         draggable: false, resizable: false,
       });
@@ -191,17 +199,17 @@ export function buildEvidenceBoard({ disputes, drafts = {}, now, sandbox = null 
   });
   if (rows.length === 0) return null;
   // Default view: from the earliest evidence event to the latest due date (every row's due date, even
-  // one without a window bar), with "now" included so the remaining window is visible. Wall-clock UTC
+  // one without a window bar), with "now" included so the remaining window is visible. Local time
   // like the events.
-  const nowWall = utcWallClock(new Date(nowMs).toISOString()).getTime();
-  const dueTimes = rows.filter((row) => instant(row.dueAt) !== null).map((row) => utcWallClock(row.dueAt).getTime());
+  const nowWall = boardWall(new Date(nowMs).toISOString()).getTime();
+  const dueTimes = rows.filter((row) => instant(row.dueAt) !== null).map((row) => boardWall(row.dueAt).getTime());
   // Lines in the TimeRanges shape (zero-length range = a line): "now" across every row and each case's response
   // due date on its own row. Bryntum's TimeRanges feature is not in the Community tier (8.0.0 README, features per
   // tier), so EvidenceBoard draws these with the Community coordinate API (optimise r24).
   const timeRanges = [
     { id: 'now', kind: 'NOW', name: 'Now', resourceId: null, at: new Date(nowMs).toISOString(), startDate: new Date(nowWall) },
     ...rows.filter((row) => instant(row.dueAt) !== null).map((row) => ({
-      id: `${row.id}-due`, kind: 'DUE', name: `${row.caseRefShown} response due`, resourceId: row.id, at: row.dueAt, startDate: utcWallClock(row.dueAt),
+      id: `${row.id}-due`, kind: 'DUE', name: `${row.caseRefShown} response due`, resourceId: row.id, at: row.dueAt, startDate: boardWall(row.dueAt),
     })),
   ];
   const times = [nowWall, ...dueTimes, ...events.flatMap((event) => [event.startDate.getTime(), event.endDate.getTime()])];
@@ -249,12 +257,12 @@ export const PLAN_MESSAGES = {
 export const floorHour = (ms) => Math.floor(ms / HOUR) * HOUR;
 export const ceilHour = (ms) => Math.ceil(ms / HOUR) * HOUR;
 
-// Inverse of utcWallClock: Bryntum hands back local wall-clock Dates whose fields are UTC fields.
+// Inverse of boardWall: Bryntum hands back real local Dates, so the instant is the Date's own time.
 export function wallToUtcMs(date) {
   if (!(date instanceof Date) || Number.isNaN(date.getTime())) return Number.NaN;
-  return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
+  return date.getTime();
 }
-const wallOfMs = (ms) => utcWallClock(new Date(ms).toISOString());
+const wallOfMs = (ms) => boardWall(new Date(ms).toISOString());
 
 // The hours a plan may use: from the next whole hour after now to the last whole hour at or before the due date.
 export function planWindowOf(row, nowMs) {

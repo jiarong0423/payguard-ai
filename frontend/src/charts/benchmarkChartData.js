@@ -78,11 +78,12 @@ export function callChartOptions(benchmark, container) {
   return {
     container,
     data: callRows(benchmark),
-    title: TITLE('Model calls for the same 268 seller sentences', container),
-    subtitle: { text: 'Lower is cheaper · grey: the comparison · rules and Python settle what they can before any model call', ...SUBTITLE, ...captionFit(container, 3) },
+    title: TITLE('AI calls for the same 268 seller sentences', container),
+    // (N2 C77) Phone: shorter subtitle; the chart canvas cannot hold a fold, so "grey: the comparison" shows only at wide widths.
+    subtitle: { text: isNarrow(container) ? 'Lower is cheaper · rules and code settle first, then any AI call' : 'Lower is cheaper · grey: the comparison · rules and code settle what they can before any AI call', ...SUBTITLE, ...captionFit(container, 3) },
     background: { fill: chartColor.plot },
     series: [{
-      type: 'bar', direction: 'horizontal', xKey: 'label', yKey: 'calls', yName: 'Model calls', cornerRadius: 0,
+      type: 'bar', direction: 'horizontal', xKey: 'label', yKey: 'calls', yName: 'AI calls', cornerRadius: 0,
       label: { enabled: true, ...valueLabel, placement: 'outside-end' },
       // (vteam viz) The every-sentence row is labelled "... (1 per case)", so an exact label match missed it and the bar
       // fell back to AG Charts' default blue. Match the flow by its label prefix; the first flow is the comparison.

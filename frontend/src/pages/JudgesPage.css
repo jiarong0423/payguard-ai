@@ -5,6 +5,9 @@
 .jp-icon svg { display: block; width: 100%; height: 100%; }
 
 .jp-route { display: grid; gap: var(--pg-space-3); margin: 0; padding: 0; list-style: none; }
+/* (N2) Each route row spans the page: the reading-measure cap on li (modules.css :where(... li ...) 62ch) squeezed the
+   step head to ~55px at 1440, so two-word titles broke onto two lines. */
+.jp-route > li { max-width: none; }
 .jp-step { display: grid; grid-template-columns: var(--pg-space-7) minmax(0, 4fr) minmax(0, 7fr) 4.5rem 13rem; align-items: center; gap: var(--pg-space-2) var(--pg-space-5); padding-block: var(--pg-space-3) var(--pg-space-2); }
 .jp-step__n { margin-top: 0; align-self: start; }
 .jp-step__head { display: grid; gap: var(--pg-space-1); min-width: 0; }

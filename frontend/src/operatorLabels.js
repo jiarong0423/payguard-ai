@@ -78,7 +78,7 @@ const labels = {
   DOCUMENT_UPDATE_IN_FUTURE: 'Document update date is after the comparison time',
   UNKNOWN_EFFECTIVE_DATE: 'Effective date is not verified',
   EFFECTIVE_DATE_IN_FUTURE: 'Effective date is after the comparison time',
-  API_REFERENCE_NOT_POLICY: 'API guidance does not establish policy applicability',
+  API_REFERENCE_NOT_POLICY: 'PayPal developer docs do not decide whether a policy applies',
   GUIDANCE_NOT_APPLICABLE_POLICY: 'Guidance does not establish current policy applicability',
   HISTORICAL_CASE_NOT_APPLICABLE_POLICY: 'Historical case does not establish current policy applicability',
   PROCEDURE_NOT_APPLICABLE_POLICY: 'Procedural record does not establish current policy applicability',
@@ -113,22 +113,22 @@ const labels = {
   local_draft_reviewed: 'Local review recorded',
   INR: 'Item not received',
   delivered: 'Delivered',
-  synthetic: 'Synthetic record',
+  synthetic: 'Demo record',
   unsupported_reason: 'Unsupported case reason',
-  AUTHORED_SYNTHETIC_SCENARIOS_NOT_REAL_CASES: 'Authored synthetic scenario',
-  SYNTHETIC_PROVIDER_FIXTURE: 'Synthetic provider record',
-  SYNTHETIC_BASELINE: 'Synthetic baseline',
+  AUTHORED_SYNTHETIC_SCENARIOS_NOT_REAL_CASES: 'Authored demo scenario',
+  SYNTHETIC_PROVIDER_FIXTURE: 'Demo provider record',
+  SYNTHETIC_BASELINE: 'Demo baseline',
   CALLER_SUPPLIED_UNVERIFIED: 'Unverified supplied baseline',
   // The corpus holds author paraphrases of PayPal pages (with links), not the pages themselves (Q11).
-  official_api_reference: 'PayPal API reference (paraphrased)',
+  official_api_reference: 'PayPal developer reference (paraphrased)',
   official_policy: 'PayPal US policy (paraphrased)',
-  official_api_schema: 'PayPal API schema (paraphrased)',
+  official_api_schema: 'PayPal developer field list (paraphrased)',
   official_policy_guidance: 'PayPal policy guidance (paraphrased)',
   public_case_decision: 'Public case record',
   public_court_order_copy: 'Official US court procedural record',
   any: 'All source stages',
   procedural_order: 'Procedural order · not final merits',
-  not_applicable: 'Policy or API document · not a case decision',
+  not_applicable: 'Policy or developer document · not a case decision',
   SETTLEMENT_APPROVAL_NOT_FINAL_MERITS: 'Settlement approval · not a final merits finding',
   ARBITRATION_COMPELLED_UNDERLYING_MERITS_NOT_DECIDED: 'Arbitration compelled · underlying merits not decided',
   saved_retrieved_at_exact_elapsed_time: 'Saved retrieval time compared with the evaluation time',
@@ -136,7 +136,7 @@ const labels = {
   current_policy: 'Current-policy claim',
   historical_case: 'Historical case',
   procedural_reference: 'Procedural reference',
-  api_reference: 'API reference',
+  api_reference: 'Developer reference',
   guidance_reference: 'Policy guidance reference',
   financial_action: 'Financial action',
   assurance: 'Assurance claim',
@@ -151,8 +151,17 @@ const labels = {
 
 export const OPERATOR_LABELS = Object.freeze(labels);
 
+// (N2 C63, COPY_FINAL_v4_1) Phone text (below 768px) for the two developer-docs labels; read at render time.
+// Node tests and wide screens get OPERATOR_LABELS. The field-list label keeps its one wording on every width.
+export const OPERATOR_LABELS_PHONE = Object.freeze({
+  API_REFERENCE_NOT_POLICY: 'PayPal developer docs do not decide policy',
+  official_api_reference: 'Developer reference (paraphrased)',
+});
+const phoneWidth = () => typeof window !== 'undefined' && typeof window.matchMedia === 'function' && window.matchMedia('(max-width: 767px)').matches;
+
 export function operatorLabel(value, fallback = 'Needs review') {
   if (typeof value !== 'string' || value.length === 0) return fallback;
+  if (Object.hasOwn(OPERATOR_LABELS_PHONE, value) && phoneWidth()) return OPERATOR_LABELS_PHONE[value];
   return Object.hasOwn(OPERATOR_LABELS, value) ? OPERATOR_LABELS[value] : fallback;
 }
 
@@ -174,4 +183,19 @@ export function reviewSubmissionLabel(receipt, sentTo) {
 export function restoredReviewText(sentTo) {
   return sentTo ? `Review recorded earlier in this session. Evidence was sent to the PayPal Sandbox (${sentTo}).`
     : 'Review recorded earlier in this session. Nothing was sent to PayPal.';
+}
+
+// (K8, three-way arbitration 2026-11-13) After a PayPal read-back, one fixed next step per dispute status. Rules only,
+// no AI call, no promise about the outcome: PayPal decides the case.
+const NEXT_STEPS = Object.freeze({
+  WAITING_FOR_SELLER_RESPONSE: 'PayPal is waiting for you. Review the draft, then send it.',
+  WAITING_FOR_BUYER_RESPONSE: 'PayPal is waiting for the buyer. Nothing to send now.',
+  UNDER_REVIEW: 'PayPal is reviewing your case. Keep your records ready; PayPal decides.',
+  RESOLVED: 'PayPal closed this case. Check the outcome in your PayPal account.',
+});
+// Right after a send PayPal may still show the seller's turn for a moment: never tell the seller to send again then.
+export function nextStepFor(status, { afterSend = false } = {}) {
+  const key = String(status ?? '').trim().toUpperCase().replace(/[\s-]+/g, '_');
+  if (afterSend && key === 'WAITING_FOR_SELLER_RESPONSE') return 'PayPal may still be updating. Check again soon; do not send twice.';
+  return NEXT_STEPS[key] || 'Check this case in your PayPal account before you act.';
 }

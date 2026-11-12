@@ -18,6 +18,7 @@ import checkSale from './data/check_sale_examples_v1.json';
 import { SourceLegend, SourceLine } from './theme/sources.js';
 import { dateLabel, money } from './theme/format.js';
 import { ACTION, FOCUS, ROLE, STATUS, SpriteIcon } from './theme/iconMap.js';
+import { Fold, Info, Short } from './theme/copy.jsx';
 import './OverviewFlow.css';
 
 const RecordedSendReplay = lazy(() => import('./RecordedSendReplay.jsx'));
@@ -42,10 +43,10 @@ export function SendTicket({ onOpen }) {
     <p className="tg-eyebrow ov-ticket__head" data-testid="overview-send-stamp"><SpriteIcon name={FOCUS.overview} size="focus" />{dateLabel(sendRow?.date)} hosted send</p>
     <h2 className="tg-h3 ov-ticket__title" id="ov-ticket-title">Sandbox send · {send.case_ref}</h2>
     <span className="tg-keyfig tg-keyfig--xl">{money(send.amount.value, send.amount.currency)}</span>
-    <p className="ov-ticket__row tg-box"><span className="tg-stamp tg-stamp--ok"><SpriteIcon name={STATUS.ok} size="sm" />Submitted</span>{readBack && <span className="ov-ticket__wait"><SpriteIcon name={STATUS.warn} size="sm" />Read-back: {readBack}</span>}</p>
-    {debugId && <p className="ov-ticket__ref tg-box" title="PayPal-Debug-Id, the reference PayPal returned for the send">PayPal reference <span className="tg-mono">{debugId}</span></p>}
+    <p className="ov-ticket__row tg-box"><span className="tg-stamp tg-stamp--ok"><SpriteIcon name={STATUS.ok} size="sm" />Submitted</span>{readBack && <span className="ov-ticket__wait"><SpriteIcon name={STATUS.warn} size="sm" />PayPal showed: {readBack} ({dateLabel(sendRow?.date).replace(/ \d{4}$/u, '')})</span>}</p>
     <SourceLine kind="HOSTED DEMO" source={send.source_key} />
     {onOpen && <a className="tg-link ov-ticket__open" href="#proof" data-testid="overview-ticket-proof" onClick={(event) => { event.preventDefault(); onOpen('proof'); }}>See every send in Proof <SpriteIcon name={ACTION.open} size="sm" /></a>}
+    {debugId && <p className="ov-ticket__ref tg-box" title="PayPal’s ID for the send request (PayPal-Debug-Id header)">PayPal request ID <span className="tg-mono">{debugId}</span></p>}
   </section>;
 }
 
@@ -87,25 +88,26 @@ export default function OverviewFlow({ onOpen, ticket = true }) {
 
   const factsRow = <>
     <div className="ov-facts tg-grid-paper tg-block tg-block--ov-facts" role="list" aria-label="Figures, each with its source">
+      {/* (N1 C53) The small source label sits above the number; the file it was counted from is one tap away (ⓘ). */}
       <figure className="tg-clip tg-clip--fact tg-box" role="listitem">
+        <SourceLine kind="RECOUNTED" source={rules.source_key} compact><Info label="Source: Country rules file">Country rules file</Info></SourceLine>
         <figcaption className="tg-clip__kicker">Rules check<span className="tg-clip__num">{rules.import_rules + rules.export_rules}</span></figcaption>
-        <blockquote className="tg-clip__quote">official import and export rules ({rules.import_rules} import, {rules.export_rules} export)</blockquote>
-        <SourceLine kind="RECOUNTED" source={rules.source_key} />
+        <blockquote className="tg-clip__quote"><Short wide={`official import and export rules (${rules.import_rules} import, ${rules.export_rules} export)`} phone="official rules" more={`official import and export rules (${rules.import_rules} import, ${rules.export_rules} export)`} /></blockquote>
       </figure>
       <figure className="tg-clip tg-clip--fact tg-box" role="listitem">
+        <SourceLine kind="RECOUNTED" source={rules.source_key} compact><Info label="Source: Country rules file">Country rules file</Info></SourceLine>
         <figcaption className="tg-clip__kicker">Coverage<span className="tg-clip__num">{rules.countries}</span></figcaption>
         <blockquote className="tg-clip__quote">countries in the rules check</blockquote>
-        <SourceLine kind="RECOUNTED" source={rules.source_key} />
       </figure>
       <figure className="tg-clip tg-clip--fact tg-box" role="listitem">
+        <SourceLine kind="RECORDED" text={`${sendsWithId} receipts`} title={sendPaths} compact><Info label="Source: receipts">{sendsWithId} receipts</Info> <a className="tg-link" href="#proof" data-testid="overview-sends-proof" onClick={open('proof')}>see Proof</a></SourceLine>
         <figcaption className="tg-clip__kicker">Sandbox sends<span className="tg-clip__num">{sends.length}</span></figcaption>
         <blockquote className="tg-clip__quote">real evidence sends on file</blockquote>
-        <SourceLine kind="RECORDED" text={`${sendsWithId} receipts`} title={sendPaths}><a className="tg-link" href="#proof" data-testid="overview-sends-proof" onClick={open('proof')}>see Proof</a></SourceLine>
       </figure>
       <figure className="tg-clip tg-clip--fact tg-box" role="listitem">
+        <SourceLine kind="RECOUNTED" source="proof_table" compact><Info label="Source: Proof table">Proof table</Info></SourceLine>
         <figcaption className="tg-clip__kicker">Proof rows<span className="tg-clip__num">{facts.rows.length}</span></figcaption>
         <blockquote className="tg-clip__quote">rows, each naming its source file</blockquote>
-        <SourceLine kind="RECOUNTED" source="proof_table" />
       </figure>
     </div>
 
@@ -186,13 +188,14 @@ export default function OverviewFlow({ onOpen, ticket = true }) {
         boundary clause is README.md:131 and :46, docs/SPONSOR_TECH_MAP.md:19. */}
     <figure className="tg-clip ov-ai tg-mod tg-block" data-testid="overview-ai">
       <figcaption className="tg-clip__kicker">Where AI works</figcaption>
-      <blockquote className="tg-clip__quote tg-clip__quote--ruled ov-ai__text">Gemini guide, {guide.sentences} seller sentences: {guide.format_invalid} format-invalid replies, precision {guide.precision}, recall {guide.recall}. Code checks every item it fills; PayPal decides the outcome.</blockquote>
+      <blockquote className="tg-clip__quote tg-clip__quote--ruled ov-ai__text"><Short wide="Gemini suggests form items. Code checks each one it fills. PayPal decides the outcome." phone="Gemini suggests items. Code checks each. PayPal decides." /></blockquote>
+      <Fold summary="How it was measured" testId="overview-ai-measured">{guide.sentences} seller sentences: {guide.format_invalid} format-invalid replies, precision {guide.precision}, recall {guide.recall}.</Fold>
       <SourceLine kind="RECORDED" source="gemini_guide_runs" />
     </figure>
 
     <section className="tg-card ov-replay tg-mod" aria-label="Recorded replay of an earlier send" data-testid="overview-replay">
       {/* (M2 2026-11-12) The replay is a fold: its date line is the summary, the walk-through opens on demand. */}
-      <details className="ov-replay__fold tg-box tg-box--ov-replay" data-testid="overview-replay-fold"><summary><span className="tg-eyebrow">{dateLabel(replay.date)} local send: recorded replay (nothing is sent now)</span></summary>
+      <details className="ov-replay__fold tg-box tg-box--ov-replay" data-testid="overview-replay-fold"><summary><span className="tg-eyebrow">Recorded replay: {dateLabel(replay.date)} local send · Nothing is sent now</span></summary>
       <Suspense fallback={<p className="tg-small" role="status">Loading the recorded replay</p>}><RecordedSendReplay /></Suspense>
       </details>
     </section>

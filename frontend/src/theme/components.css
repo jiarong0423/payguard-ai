@@ -65,7 +65,7 @@
 .tg-btn--secondary:hover { background: var(--pg-color-recede); }
 .tg-btn--text { height: 28px; padding: 0 2px; border-color: transparent; text-decoration: underline; text-underline-offset: 4px; }
 .tg-btn--text:hover { text-decoration-thickness: 2px; }
-.tg-btn--sm { height: 30px; padding: 0 12px; font-size: 13px; }
+.tg-btn--sm { height: 30px; padding: 0 12px; font-size: 14px; }
 .tg-btn:disabled, .tg-btn[aria-disabled="true"] { cursor: not-allowed; background: transparent; border: 1px dashed var(--pg-color-line); color: var(--pg-color-ink3); } /* v2: ink-3 + dashed hairline (was #9a958a, 1.5:1) */
 .tg-link { color: var(--pg-color-ink); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 .tg-link:hover { text-decoration-thickness: 2px; }
@@ -101,7 +101,7 @@
 /* ---------- Tooltip (only floating layer with a shadow) ---------- */
 .tg-tip { position: relative; display: inline-flex; }
 .tg-tip__trigger { border: 0; background: none; padding: 0; color: inherit; font: inherit; cursor: help; text-decoration: underline dotted 1px; text-underline-offset: 3px; }
-.tg-tip__body { position: absolute; left: 0; top: calc(100% + 8px); z-index: 40; width: max-content; max-width: 320px; padding: 12px 14px; border: 1px solid var(--pg-color-rule); background: var(--pg-color-panel); box-shadow: var(--pg-elev-l3); font-size: 13px; line-height: 1.5; opacity: 0; visibility: hidden; transition: opacity .12s, visibility 0s linear .12s; pointer-events: none; }
+.tg-tip__body { position: absolute; left: 0; top: calc(100% + 8px); z-index: 40; width: max-content; max-width: 320px; padding: 12px 14px; border: 1px solid var(--pg-color-rule); background: var(--pg-color-panel); box-shadow: var(--pg-elev-l3); font-size: 14px; line-height: 1.5; opacity: 0; visibility: hidden; transition: opacity .12s, visibility 0s linear .12s; pointer-events: none; }
 .tg-tip:hover .tg-tip__body, .tg-tip:focus-within .tg-tip__body, .tg-tip__body.is-open { opacity: 1; visibility: visible; transition-delay: 0s; }
 
 /* ---------- Card: thin black rule, no shadow ---------- */
@@ -160,7 +160,7 @@
 .tg-log__entry.is-risk .tg-log__title { display: flex; align-items: center; gap: 6px; color: var(--pg-color-risk); }
 .tg-log__title > svg { width: 16px; height: 16px; flex: none; }
 .tg-log__note { margin: 2px 0 0; font-size: var(--pg-text-2); color: var(--pg-color-muted); }
-.tg-log__ref { display: block; margin-top: 4px; font-family: var(--pg-font-mono); font-size: 13px; overflow-wrap: anywhere; }
+.tg-log__ref { display: block; margin-top: 4px; font-family: var(--pg-font-mono); font-size: 14px; overflow-wrap: anywhere; }
 
 /* ---------- Clipping: quote or single fact (law quotes, process cards, judge steps) ---------- */
 .tg-clip { margin: 0; padding: var(--pg-space-4) var(--pg-space-4) var(--pg-space-3); background: var(--pg-color-panel); border-top: var(--pg-rule-head); border-bottom: 1px solid var(--pg-color-rule); box-shadow: inset 0 2px 0 var(--pg-color-panel), inset 0 3px 0 var(--pg-color-rule); } /* one frame only: 3px + 1px rules on top, 1px below, no sides */

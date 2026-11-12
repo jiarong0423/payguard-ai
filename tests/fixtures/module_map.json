@@ -112,10 +112,6 @@
     "file": "frontend/src/App.jsx"
    },
    {
-    "name": "ds-ai",
-    "file": "frontend/src/steps/CaseViews.jsx"
-   },
-   {
     "name": "ds-queue-col",
     "file": "frontend/src/App.jsx"
    },
@@ -128,12 +124,8 @@
     "file": "frontend/src/App.jsx"
    },
    {
-    "name": "case-log",
-    "file": "frontend/src/steps/CaseViews.jsx"
-   },
-   {
-    "name": "hosted-send-log",
-    "file": "frontend/src/steps/CaseViews.jsx"
+    "name": "ds-built",
+    "file": "frontend/src/App.jsx"
    }
   ],
   "proof": [
@@ -230,6 +222,126 @@
   {
    "selector": ".tg-box--ov-replay[open] > summary",
    "reason": "open replay fold: space under its summary"
+  },
+  {
+   "selector": ":is(#analytics, #activity)",
+   "reason": "N1 PF10: the two optional folds under Overview (order table, session activity) by their own ids, flat ledger rows instead of the old framed cards; outside every module because they are page-level sections"
+  },
+  {
+   "selector": ":is(#analytics, #activity) > .optional-heading .optional-trigger",
+   "reason": "N1 PF10: the trigger row of those two folds loses the old panel background"
+  },
+  {
+   "selector": ".tg-mod--ds-board .board-list .board-row dl > div:nth-child(5)",
+   "reason": "N1 PF3: the board card's Plan row (fifth field, no class of its own) inside the Deadline board module; its 68px minimum height left about 100px blank under every card"
+  },
+  {
+   "selector": ".tg-mod--ds-board .board-list .board-row-noplan dl > div:nth-child(5)",
+   "reason": "N1 PF3: same Plan row on a card with no plan"
+  },
+  {
+   "selector": ".tg-mod--ds-board .board-chips > button",
+   "reason": "N1 PF4: the board's five filter buttons (no class of their own) inside the Deadline board module: one width, one alignment"
+  },
+  {
+   "selector": ".tg-legend__note",
+   "reason": "N1 C13: the source legend's extra note (\"Not the local console.\") is a native fold inline with its sentence; theme/sources.js builds the legend with createElement and is not a module element"
+  },
+  {
+   "selector": ".tg-legend__note > summary",
+   "reason": "N1 C13: the ⓘ mark of that note"
+  },
+  {
+   "selector": ".tg-legend-fold > summary",
+   "reason": "N1 C13: on a phone the legend is one fold whose summary names the four labels"
+  },
+  {
+   "selector": "svg[data-icon]",
+   "reason": "N1 icon alignment (coordinator ruling 2026-11-12): every sprite icon (theme/iconMap.js SpriteIcon, data-icon) centres on the first line of its text: inline-block, top of the line or flex-start, then half a line minus half its own height. One rule for the whole site instead of per-point fixes; measured by scratchpad/clickall/icon_align.py"
+  },
+  {
+   "selector": ":has(> svg[data-icon]):not(.tg-stamp, .tg-tag, .tg-pill)",
+   "reason": "N1 icon alignment: the row that holds an icon aligns its items to the top so the text's first line and the icon start together (align-items only acts on flex and grid rows) Coordinator X04 (judge B-1/B-3): fixed-height stamps and tags excluded so their single line stays centred."
+  },
+  {
+   "selector": ".button:has(> svg[data-icon])",
+   "reason": "N1 icon alignment: a button with an icon becomes one centred grid row (align-content) so its single line stays in the middle of its minimum height while icon and text align to the first line"
+  },
+  {
+   "selector": "a.tg-link:has(> svg[data-icon])",
+   "reason": "N1 icon alignment: the same for a link row with a minimum height (Next: step links)"
+  },
+  {
+   "selector": ".sandbox-details > summary:has(> svg[data-icon]) > span + span",
+   "reason": "N1 icon alignment: a summary's second item (status badge) goes to the right end (margin auto), on the title's line or on its own line when it wraps"
+  },
+  {
+   "selector": ".sandbox-details > summary:has(> svg[data-icon])",
+   "reason": "N1 icon alignment: a summary row with an icon keeps its title next to the icon (justify-content flex-start instead of space-between, which pushed the title 47px away at 393)"
+  },
+  {
+   "selector": ":where(h1, h2, h3, h4, button, summary, th, .tg-tag)",
+   "reason": "N1 text audit (coordinator 2026-11-12, T1 text_audit.md A): headings, buttons, summaries, table heads and tags balance their lines so no word is left alone on a line"
+  },
+  {
+   "selector": ":where(p, li, dd, blockquote, figcaption, .footer-independent)",
+   "reason": "N1 text audit A: running text (and the footer's independence line) keeps at most about 80 characters a line: 62ch, zero specificity, so any page rule that sets its own width wins"
+  },
+  {
+   "selector": ".tg-mod--ds-board .board-list .board-row dt::after",
+   "reason": "N1 C07: the board card labels now carry their colon as text (copy v4.1 'Amount: 125.50 USD'); the generated ': ' after each label inside the Deadline board module is removed"
+  },
+  {
+   "selector": ".tg-mod--ds-board .board-list .board-row dl > div:nth-child(5) dt",
+   "reason": "Coordinator X03: the board card Plan field label (fifth field, no class of its own) was screen-reader only in board.css:138; shown like the other four fields"
+  },
+  {
+   "selector": ":is(.tg-stamp, .tg-tag, .tg-pill) > svg[data-icon]",
+   "reason": "Coordinator X04 (judges A#1, B-1, B-3): one-line stamps, tags and pills centre their icon; the global first-line offset is for multi-line text only"
+  },
+  {
+   "selector": ".tg-mod--ds-board .board-list :is(.board-row-due_soon, .board-row-due_soon_no_draft, .board-row-due_soon_missing):not(.board-row-urgent)",
+   "reason": "Coordinator X07 (judge A#3): board cards due within 3 days but not within 1 use the warn colour, matching the case queue; red only for 1 day or past due"
+  },
+  {
+   "selector": ".tg-mod--ds-board .board-list :is(.board-row-due_soon, .board-row-due_soon_no_draft, .board-row-due_soon_missing):not(.board-row-urgent) .board-row-status",
+   "reason": "Coordinator X07 (judge A#3): board cards due within 3 days but not within 1 use the warn colour, matching the case queue; red only for 1 day or past due"
+  },
+  {
+   "selector": ".tg-mod--ds-board .board-timeline:not(.board-timeline-phone) .board-canvas .payguard-board-plan .ev-label",
+   "reason": "Coordinator X10 (red-team PF2 at 1440): desktop plan label sits left of its bar so it never crosses the due line or overflows the bar"
+  },
+  {
+   "selector": ".tg-box--ck-keyfold > #country-view-rows > ul",
+   "reason": "J-B (A request 23:08): the key-rules list inside the Check a sale key-rules fold starts flush under its summary; the ul has no class of its own (CountryRules.jsx rules()), same rule as .tg-box--ck-rules > #country-view-rows > ul one level down"
+  },
+  {
+   "selector": ".tg-box--ck-keyfold > summary",
+   "reason": "J-B item 1: the summary line (\"See the n rules\") of the Check a sale key-rules fold (CountryRules.jsx, A) is a 44px row like the other folds; the summary has no class of its own"
+  },
+  {
+   "selector": ".tg-box--ck-keyfold[open] > summary",
+   "reason": "J-B item 1: same key-rules fold summary when open: space under it"
+  },
+  {
+   "selector": ".tg-mod .country-all-rules > summary",
+   "reason": "Coordinator K4 (text_audit compliance@1440): the See all rules and notes fold title fits one line in the 179px rules column from 1200px; balanced wrap below"
+  },
+  {
+   "selector": ".tg-box--fold + .tg-source",
+   "reason": "Coordinator K5 (user 2026-11-13): the source line under a copy fold sat on the fold; 8px gap"
+  },
+  {
+   "selector": ".sponsor-map > summary",
+   "reason": "Coordinator K5 (user 2026-11-13): footer Sponsor map text and chevron ran to the edges; inset to match the Session activity row"
+  },
+  {
+   "selector": ":is(#compliance, #velocity) .stage-content :is(#sandbox-draft, .step-more.tg-mod, .tg-fold--guide)",
+   "reason": "Coordinator K5 (user 2026-11-13): folds under Check a sale and Sales spike sat at 0, 12 and 16px from the stage edge; one edge for all"
+  },
+  {
+   "selector": ":is(#compliance, #velocity) .step-more.tg-mod > summary",
+   "reason": "Coordinator K5 (user 2026-11-13): More fold title uses the same 16px inset as the other step folds"
   }
  ],
  "index_html_style_sha16": [
@@ -286,6 +398,14 @@
    "key": "nav|class=\"journey\"",
    "module_classes": [
     "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "div|class=\"message message-success\"",
+   "module_classes": [
+    "tg-box",
+    "tg-box--notice"
    ]
   },
   {
@@ -389,6 +509,22 @@
    "key": "div|class=\"ds-queue-col\"#1/2",
    "module_classes": [
     "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "span|class={`tg-stamp ${draft.routing?.due_state === 'OPEN' ? 'tg-stamp--ok' : 'tg-stamp--risk'}`}",
+   "module_classes": [
+    "tg-box",
+    "tg-box--stamp"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "span|class={`tg-stamp ${row.requirement_state === 'STRUCTURALLY_PRESENT' ? ' tg-stamp--ok' : row.requirement_state.includes('MISSING') ? ' tg-stamp--warn' : ''}`}",
+   "module_classes": [
+    "tg-box",
+    "tg-box--stamp"
    ]
   },
   {
@@ -794,6 +930,14 @@
   },
   {
    "file": "frontend/src/pages/JudgesPage.jsx",
+   "key": "section|testid=\"judges-depth\"",
+   "module_classes": [
+    "tg-block",
+    "tg-block--jp-depth"
+   ]
+  },
+  {
+   "file": "frontend/src/pages/JudgesPage.jsx",
    "key": "ol|class=\"jp-route\"",
    "module_classes": [
     "tg-mod",
@@ -1007,6 +1151,46 @@
     "tg-block",
     "tg-mod"
    ]
+  },
+  {
+   "file": "frontend/src/theme/copy.jsx",
+   "key": "span|testid={testId}",
+   "module_classes": [
+    "tg-box",
+    "tg-box--info"
+   ]
+  },
+  {
+   "file": "frontend/src/theme/copy.jsx",
+   "key": "details|testid={testId}",
+   "module_classes": [
+    "tg-box",
+    "tg-box--fold"
+   ]
+  },
+  {
+   "file": "frontend/src/pages/ProofPage.jsx",
+   "key": "section|testid=\"overview-verify\"",
+   "module_classes": [
+    "tg-box",
+    "tg-box--ov-verify"
+   ]
+  },
+  {
+   "file": "frontend/src/CountryRules.jsx",
+   "key": "details|testid=\"country-key-rules-fold\"",
+   "module_classes": [
+    "tg-box",
+    "tg-box--ck-keyfold"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "details|testid=\"ds-built-fold\"",
+   "module_classes": [
+    "tg-mod",
+    "tg-mod--ds-built"
+   ]
   }
  ],
  "focus_elements": [
@@ -1023,13 +1207,6 @@
    "tabindex": "{-1}",
    "lift": false,
    "reason": "step heading takes focus when a step opens"
-  },
-  {
-   "file": "frontend/src/App.jsx",
-   "key": "button|class={`secondary-tab ${tab === key ? 'is-active' : ''}`}",
-   "tabindex": "{tab === key ? 0 : -1}",
-   "lift": false,
-   "reason": "roving tabindex of a WAI-ARIA tab list"
   },
   {
    "file": "frontend/src/App.jsx",

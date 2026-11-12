@@ -3,9 +3,9 @@
   "note": "The one copy of the four source labels and of every source line the console pages show (Overview, Check a sale, Proof, For judges). A page names a source by key; theme/sources.js builds the visible line (the plain source, then its date; the line number only where exact is asked, the Proof page) and the title (full path and cited lines). (R6 2026-11-12) Each label also has a sentence-case name, the only form shown on the page; kind stays the key. tests/frontend_source_labels.mjs checks every cited line against its file and that the pages use keys, not typed strings.",
   "labels": [
     { "kind": "RECORDED", "name": "Recorded", "meaning": "A real run, written down in a committed receipt." },
-    { "kind": "RECOUNTED", "name": "Recounted", "meaning": "Counted again from a committed data file by a test." },
-    { "kind": "SYNTHETIC", "name": "Synthetic", "meaning": "Demo data the app generates; no real source." },
-    { "kind": "HOSTED DEMO", "name": "Hosted demo", "meaning": "Made on the public hosted page with a PayPal Sandbox test account, not the local console." }
+    { "kind": "RECOUNTED", "name": "Recounted", "meaning": "Counted again by a test from a saved data file." },
+    { "kind": "SYNTHETIC", "name": "Synthetic", "meaning": "Demo data, no real source." },
+    { "kind": "HOSTED DEMO", "name": "Hosted demo", "meaning": "Made on the hosted demo with a PayPal Sandbox test account.", "note": "Not the local console." }
   ],
   "sources": {
     "country_rules": { "text": "Country rules file", "path": "data/country_rules/paypal_country_rules_v1.json", "lines": [] },

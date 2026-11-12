@@ -30,7 +30,7 @@ assert.ok(panel.includes("block: fromExample ? 'start' : 'nearest', behavior: re
 assert.ok(/\.country-try-example\s*\{[^}]*min-height:\s*44px/.test(css), 'touch size 44px');
 assert.ok(/@media \(max-width: 640px\)\s*\{\s*\.country-try-example\s*\{[^}]*width:\s*100%/.test(css), 'phone width rule exists');
 assert.ok(!/\.country-try-example\s*\{[^}]*display:\s*none/.test(css), 'never hidden');
-assert.ok(panel.includes('Synthetic data, no PayPal calls'), 'the note under the button says synthetic data and no PayPal calls');
+assert.ok(panel.includes('Demo data, no PayPal calls'), 'the note under the button says demo data and no PayPal calls (N1 C19)');
 assert.ok(!readFileSync(new URL('../frontend/src/App.jsx', import.meta.url), 'utf8').includes('<p>Results show here.</p>'), 'right pane no longer reads as empty');
 // README step 1 names the button; the phone Proof link is named in step 5.
 assert.ok(readme.includes('select **Run the step 1 example**'), 'README step 1 uses the button');

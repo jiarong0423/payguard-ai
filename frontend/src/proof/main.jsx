@@ -6,6 +6,7 @@ import { createRoot } from 'react-dom/client';
 import facts from '../data/proof_facts_v1.json';
 import receipts from '../data/channel3_receipts_v1.json';
 import { HISTORY_CUTOFF, LATEST_ALSO, LATEST_DATE, LATEST_ROWS, METHOD_ORDER, REFUSED_LABEL, channel3Summary, dateLabel, groupProof, methodCounts, refusedCount, splitHistory, PROOF_SPONSORS, PROOF_METHOD_CHIPS, emptyProofNote, parseProofHash, proofHash, resolveProofFilter, rowMatches } from './proofData.js';
+import { Short } from '../theme/copy.jsx';
 import './proof.css';
 import { LEGACY, SpriteIcon } from '../theme/iconMap.js';
 
@@ -76,7 +77,7 @@ function Legend() {
 function ProofRow({ row }) {
   return <li className="proof-row" id={`row-${row.id}`} data-testid="proof-row" data-row-id={row.id} data-method={row.method}>
     <div className="proof-row-head"><MethodChip method={row.method} />{row.refused && <span className="proof-chip proof-chip-muted" data-testid="proof-refused">{REFUSED_LABEL}</span>}<time dateTime={row.date}>{dateLabel(row)}</time></div>
-    <p className="proof-proven">{row.proven}</p>
+    <p className="proof-proven"><Short wide={row.proven} phone={row.proven_phone} more={row.proven_more} label="Full claim" /></p>
     <dl className="proof-meta">
       <div><dt>How</dt><dd>{row.how}</dd></div>
       <div><dt>Source</dt><dd><code data-testid="proof-source">{row.source}</code></dd></div>
@@ -111,10 +112,19 @@ function ProofPage() {
   const setFilter = (next) => { setFilterState(next); window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}${proofHash(next)}`); };
   useEffect(() => {
     // A link to a view (#sponsor=...) or to a row (#row-...) from anywhere on the page. A row anchor clears the filters so the row exists, then scrolls to it.
+    // (Wave J) The row may sit in the closed history fold: open every fold around it before scrolling. Runs on load too,
+    // so a "Matches Proof" stamp on a step page lands on its row.
+    const toRow = () => {
+      const row = document.getElementById(window.location.hash.slice(1));
+      if (!row) return;
+      for (let fold = row.parentElement?.closest('details'); fold; fold = fold.parentElement?.closest('details')) fold.open = true;
+      window.requestAnimationFrame(() => row.scrollIntoView());
+    };
     const onHash = () => {
       setFilterState(parseProofHash(window.location.hash));
-      if (window.location.hash.startsWith('#row-')) window.requestAnimationFrame(() => document.getElementById(window.location.hash.slice(1))?.scrollIntoView());
+      if (window.location.hash.startsWith('#row-')) window.requestAnimationFrame(toRow);
     };
+    if (window.location.hash.startsWith('#row-')) window.requestAnimationFrame(toRow);
     window.addEventListener('hashchange', onHash);
     return () => window.removeEventListener('hashchange', onHash);
   }, []);
@@ -127,8 +137,8 @@ function ProofPage() {
     <main id="proof-main" className="proof-main" tabIndex={-1}>
       <div className="proof-intro">
         <h1>What has been shown, and how</h1>
-        <p>Each row says what was proven, whether it came from a real PayPal Sandbox call, a recorded run, an automated test or synthetic data, when, and the committed file it comes from. This page is static: it calls nothing and reads only files in the repository.</p>
-        <p>Short codes like b017f5d are git commit hashes kept for traceability; two (653111a, 7e49835) come from the development history and do not open in this repository.</p>
+        <p><Short wide="Each row says what was proven and how: real PayPal Sandbox call, recorded run, automated test or demo data. It also says when, and which repository file it comes from. This page calls nothing. It only reads files in the repository." phone="What was proven, how, when and from which file. Calls nothing." more="Each row says what was proven and how: real PayPal Sandbox call, recorded run, automated test or demo data. It also says when, and which repository file it comes from. This page calls nothing. It only reads files in the repository." /></p>
+        <p><Short wide="Short codes like b017f5d are git commit IDs, kept so each claim can be traced. Two (653111a, 7e49835) come from the development history and do not open in this repository." phone="b017f5d-style codes are git commit IDs, for tracing." more="Two (653111a, 7e49835) come from the development history and do not open in this repository." /></p>
         <p className="proof-note">Identifiers are masked as in the receipts. Sandbox rows are test data the author created with two Sandbox test accounts, not a real merchant case. TradeGlot was called PayGuard AI until 2026-11-09, so the receipt files and recordings dated before then carry the old name.</p>
       </div>
       <Latest />

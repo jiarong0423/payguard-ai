@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AgGridReact } from './grid/agGrid.jsx';
+import { Short } from './theme/copy.jsx';
 import './AnalyticsDashboard.css';
 
 // (F2 2026-11-12, OFFICIAL_FIX_GUIDE s1) The order grid uses the console grid theme from grid/agGrid.jsx (no theme prop).
@@ -78,7 +79,7 @@ function EvidencePulseWidget({ evidenceCounts }) {
         </div>;
       })}
     </div>
-    <p>Counts describe visible synthetic session items only. They do not rank merchants or predict PayPal action.</p>
+    <p>Counts describe visible demo session items only. They do not rank merchants or predict PayPal action.</p>
   </section>;
 }
 
@@ -113,7 +114,7 @@ function MobileAnalyticsSummary({ boundaries, evidenceCounts, stages, transactio
     <div className="analytics-mobile-notice">
       <span>RESPONSIVE REVIEW MODE</span>
       <strong>Evidence overview</strong>
-      <p>The full AG Grid analytics workspace is available on desktop. This mobile view keeps the complete review story readable without horizontal scrolling.</p>
+      <p><Short wide="The full AG Grid table is on desktop. This phone view keeps the whole review readable without sideways scrolling." phone="Full AG Grid table on desktop. This view needs no sideways scroll." /></p>
     </div>
 
     <MobileAccordionSection activeSection={activeSection} badge="Advisory only" eyebrow="MERCHANT EVIDENCE LIFECYCLE" id="lifecycle" onActivate={setActiveSection} title="Three-stage evidence funnel">
@@ -132,7 +133,7 @@ function MobileAnalyticsSummary({ boundaries, evidenceCounts, stages, transactio
       </div>
     </MobileAccordionSection>
 
-    <MobileAccordionSection activeSection={activeSection} badge={`${transactions.length} total`} eyebrow="TRANSACTION TABLE" id="stream" onActivate={setActiveSection} title="Recent synthetic transactions">
+    <MobileAccordionSection activeSection={activeSection} badge={`${transactions.length} total`} eyebrow="TRANSACTION TABLE" id="stream" onActivate={setActiveSection} title="Recent demo transactions">
       {transactions.length ? <div className="analytics-mobile-transactions">
         {transactions.slice(0, 3).map((transaction) => <article key={transaction.order_id}>
           <div><span>Order</span><strong>{transaction.order_id}</strong></div>
@@ -157,14 +158,14 @@ function responseFor(prompt, snapshot) {
   }
   if (normalized.includes('attention') || normalized.includes('review')) {
     const labels = attention.length ? attention.map((stage) => stage.label).join(', ') : 'no stage currently shows a review signal';
-    return `Current synthetic dashboard review: ${labels}. This is a presentation summary of backend state, not a fraud, compliance, limitation, or dispute decision.`;
+    return `Current demo dashboard review: ${labels}. This is a presentation summary of backend state, not a fraud, compliance, limitation, or dispute decision.`;
   }
-  return `Dashboard snapshot: ${snapshot.transactionCount} synthetic transactions, ${snapshot.disputeCount} synthetic disputes, and ${snapshot.aupFindingCount} AUP review findings are visible. This deterministic summary uses only the current in-memory session.`;
+  return `Dashboard snapshot: ${snapshot.transactionCount} demo transactions, ${snapshot.disputeCount} demo disputes and ${snapshot.aupFindingCount} policy review findings. This summary is made by rules, not AI, from this session’s data.`;
 }
 
 export default function AnalyticsDashboard({ aup, state }) {
   const [mode, setMode] = useState('view');
-  const [guideResponse, setGuideResponse] = useState('Select a bounded prompt to explain the current synthetic dashboard.');
+  const [guideResponse, setGuideResponse] = useState('Select a bounded prompt to explain the current demo dashboard.');
   const [quickFilter, setQuickFilter] = useState('');
   const [band, setBand] = useState('all');
   const [highlight, setHighlight] = useState(false);
@@ -192,12 +193,12 @@ export default function AnalyticsDashboard({ aup, state }) {
     {
       id: 'velocity', phase: 'FULFILLMENT', label: 'Velocity evidence readiness',
       status: velocity?.alert ? 'Needs evidence' : velocity?.transaction_count > 0 ? 'No review signal' : 'No in-window data',
-      detail: velocity ? `${velocity.transaction_count} captures across the ${velocity.window_hours}-hour synthetic window.` : 'Waiting for backend state.',
+      detail: velocity ? `${velocity.transaction_count} captures across the ${velocity.window_hours}-hour demo window.` : 'Waiting for backend state.',
     },
     {
       id: 'dispute', phase: 'POST-TRANSACTION', label: 'Dispute evidence mediation',
       status: disputeStatus,
-      detail: disputeCount ? `${disputeCount} synthetic case${disputeCount === 1 ? '' : 's'}; status comes from the case workflow.` : 'Load dispute case to open the evidence workspace.',
+      detail: disputeCount ? `${disputeCount} demo case${disputeCount === 1 ? '' : 's'}; status comes from the case workflow.` : 'Load dispute case to open the evidence workspace.',
     },
   ], [aup, aupFindingCount, disputeCount, disputeStatus, velocity]);
 
@@ -208,7 +209,7 @@ export default function AnalyticsDashboard({ aup, state }) {
   ], []);
 
   const evidenceCounts = useMemo(() => [
-    { id: 'aup', label: 'AUP findings', value: aupFindingCount },
+    { id: 'aup', label: 'Policy findings', value: aupFindingCount },
     { id: 'transactions', label: 'Transactions', value: transactionCount },
     { id: 'disputes', label: 'Disputes', value: disputeCount },
   ], [aupFindingCount, disputeCount, transactionCount]);
@@ -233,9 +234,9 @@ export default function AnalyticsDashboard({ aup, state }) {
   useEffect(() => { gridApi.current?.setFilterModel(band === 'all' ? null : { amount: AMOUNT_BANDS.find((entry) => entry.id === band).model }); }, [rowData.length]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const prompts = [
-    { id: 'attention', label: 'What needs attention?', prompt: 'Which stages need human attention in this synthetic dashboard?' },
+    { id: 'attention', label: 'What needs attention?', prompt: 'Which stages need human attention in this demo dashboard?' },
     { id: 'authority', label: 'Explain authority', prompt: 'Explain who has authority to decide each outcome.' },
-    { id: 'snapshot', label: 'Summarize snapshot', prompt: 'Summarize the current synthetic dashboard snapshot.' },
+    { id: 'snapshot', label: 'Summarize snapshot', prompt: 'Summarize the current demo dashboard snapshot.' },
   ];
 
   return <div className={`analytics-feature analytics-feature-${mode}`} data-testid="community-analytics-dashboard">
@@ -243,7 +244,7 @@ export default function AnalyticsDashboard({ aup, state }) {
       <div>
         <span>REVIEW ANALYTICS</span>
         <strong>Merchant Evidence Buffer</strong>
-        <small>Review AUP signals, fulfillment readiness, and dispute preparation in one workspace.</small>
+        <small>Review policy signals, delivery readiness and dispute prep in one place.</small>
       </div>
       <div className="analytics-mode-switch" role="group" aria-label="Analytics layout">
         <button type="button" aria-pressed={mode === 'view'} className={mode === 'view' ? 'active' : ''} onClick={() => setMode('view')}>Review overview</button>
@@ -264,7 +265,7 @@ export default function AnalyticsDashboard({ aup, state }) {
 
       <section className="analytics-card analytics-grid-widget" data-testid="analytics-grid-widget">
         <div className="analytics-card-header">
-          <div><span>TRANSACTION REVIEW</span><strong>Synthetic transaction table</strong></div>
+          <div><span>TRANSACTION REVIEW</span><strong>Demo transaction table</strong></div>
           <em>AG Grid Community · {transactions.length} rows</em>
         </div>
         <div className="analytics-grid-chips" role="group" aria-label="Quick classify orders by amount" data-testid="analytics-grid-bands">
@@ -272,12 +273,12 @@ export default function AnalyticsDashboard({ aup, state }) {
           <button type="button" aria-pressed={highlight} data-testid="analytics-highlight-large" onClick={() => setHighlight((on) => !on)}>Highlight orders of {HIGHLIGHT_FROM}.00 or more</button>
           <button type="button" data-testid="analytics-grid-reset" disabled={!gridActive} onClick={resetGrid}>Reset</button>
         </div>
-        <p className="analytics-grid-note" role="status" aria-live="polite">These bands only sort the synthetic rows by amount. They are not a risk score.</p>
+        <p className="analytics-grid-note" role="status" aria-live="polite">These bands only sort the demo rows by amount. They are not a risk score.</p>
         <div className="analytics-grid-tools">
           <label htmlFor="analytics-grid-filter">Filter visible rows</label>
           <input id="analytics-grid-filter" type="search" maxLength={200} value={quickFilter} onChange={(event) => setQuickFilter(event.target.value)} placeholder="Order or currency" />
         </div>
-        <div className="analytics-grid-frame" aria-label="AG Grid Community synthetic transaction analytics">
+        <div className="analytics-grid-frame" aria-label="AG Grid Community demo transaction analytics">
           <AgGridReact
             rowData={rowData}
             columnDefs={columnDefs}

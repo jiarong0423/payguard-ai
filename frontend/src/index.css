@@ -62,10 +62,10 @@ button, input, select, textarea, a, summary { outline-offset: 2px; }
   display: flex; align-items: center; justify-content: space-between; gap: 24px;
 }
 .brand { display: inline-flex; align-items: center; min-height: 44px; gap: 12px; color: var(--pg-color-ink); font-family: var(--pg-font-serif); font-size: var(--pg-text-5); font-weight: 700; letter-spacing: -.01em; line-height: 1; }
-.brand small { display: block; margin-top: 4px; color: var(--pg-color-muted); font-family: var(--pg-font-sans); font-size: 13px; font-weight: 600; letter-spacing: .12em; }
+.brand small { display: block; margin-top: 4px; color: var(--pg-color-muted); font-family: var(--pg-font-sans); font-size: 14px; font-weight: 600; letter-spacing: .12em; }
 .brand-mark { display: none; } /* scenarios page still renders the old shield mark; the masthead has none */
 .topbar nav { display: flex; align-items: center; gap: 24px; color: var(--pg-color-muted); }
-.topbar nav a { display: inline-flex; align-items: center; min-height: 44px; font-size: 13px; font-weight: 500; }
+.topbar nav a { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; font-weight: 500; }
 /* Console pages: sticky under the masthead, one thin rule; the current page is ink with a 2px underline. */
 .console-pages { position: sticky; top: 0; z-index: 30; } /* background: .tg-glass (vteam r2) */
 .console-pages .tg-nav__inner { gap: 20px; padding: 0 clamp(16px, 2.5vw, 32px); scroll-padding-inline: 12px; }
@@ -78,7 +78,7 @@ button, input, select, textarea, a, summary { outline-offset: 2px; }
 .console-pages a.tg-nav__item[aria-current="page"] { font-weight: 500; text-shadow: 0 0 .6px currentColor, 0 0 .6px currentColor; }
 /* Masthead "More" menu: the five other pages in one dropdown (links and test ids unchanged). */
 .topbar-more { position: relative; margin-left: auto; }
-.topbar-more > summary { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 12px; border: 1px solid var(--pg-color-control-line); color: var(--pg-color-ink); font-size: 13px; font-weight: 600; cursor: pointer; list-style: none; }
+.topbar-more > summary { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 12px; border: 1px solid var(--pg-color-control-line); color: var(--pg-color-ink); font-size: 14px; font-weight: 600; cursor: pointer; list-style: none; }
 .topbar .topbar-more > nav { display: none !important; }
 .topbar .topbar-more[open] > nav { position: absolute; top: calc(100% + 6px); right: 0; z-index: 60; display: grid !important; gap: 0; min-width: 220px; padding: 4px 0; border: 1px solid var(--pg-color-rule); background: var(--pg-color-panel); box-shadow: var(--pg-elev-l3); }
 .topbar .topbar-more nav a { display: flex !important; padding: 0 16px; color: var(--pg-color-ink); }
@@ -747,7 +747,7 @@ footer > span:first-child { display: flex; align-items: center; gap: 8px; }
      it connects (r20 UX-8). Tighter padding and 13px text keep the top bar inside 360px. */
   .topbar { gap: 8px; }
   .topbar .topbar-sandbox-face { min-width: 44px; min-height: 44px; padding: 0 10px; gap: 6px; }
-  .topbar .topbar-sandbox-short { display: inline; font-size: 13px; white-space: nowrap; }
+  .topbar .topbar-sandbox-short { display: inline; font-size: 14px; white-space: nowrap; }
 }
 
 /* Hosted demo only (GET /connections mode "hosted_demo"). Local runs never carry these classes. */
@@ -1095,7 +1095,7 @@ footer { padding: 8px 0 0; }
    open state drives the tab, so every existing way of opening it keeps working. */
 
 /* Bryntum bars: let the "Collect evidence" label fit its bar (the bar width encodes time, so the text shrinks, not the bar). */
-.b-sch-event .b-sch-event-content, .b-sch-event .b-sch-event-text { padding-inline: 3px; font-size: 13px; letter-spacing: -0.3px; }
+.b-sch-event .b-sch-event-content, .b-sch-event .b-sch-event-text { padding-inline: 3px; font-size: 14px; letter-spacing: -0.3px; }
 .b-sch-event .ev-label { display: block; min-width: 0; flex: 1 1 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* Wide screens: hide the main content for the short moment before the wide layout rules arrive (avoids a visible jump). */
@@ -1104,8 +1104,8 @@ footer { padding: 8px 0 0; }
 /* ZIP card: the two notes are separate lines (they ran together as "PayPalOne download"). */
 .zip-contents > small { display: block; }
 /* (2026-11-10) Receipt after a real Sandbox evidence send: SUBMITTED, PayPal-Debug-Id and the read-back in large text. */
-.send-receipt-big { display: flex; flex-direction: column; gap: 6px; margin: 12px 0; padding: 16px; border: 2px solid var(--pg-color-ok); border-radius: 12px; font-size: 1.15rem; overflow-wrap: anywhere; }
-.send-receipt-big strong { font-size: 1.5rem; color: var(--pg-color-ok); }
+.send-receipt-big { display: flex; flex-direction: column; gap: 6px; margin: 12px 0; padding: 16px; border: 2px solid var(--pg-color-ok); border-radius: 12px; font-size: 20px; overflow-wrap: anywhere; }
+.send-receipt-big strong { font-size: 20px; color: var(--pg-color-ok); }
 .send-receipt-big small { font-size: var(--type-meta); color: var(--pg-color-muted); }
 /* (round2 X, B 6a/6d) A stored note the read-back did not confirm: plain, amber edge, no green stamp. */
 .send-restored-note { margin: 12px 0; padding: 10px 12px; border-left: 3px solid var(--pg-color-warn); border-radius: 6px; font-size: var(--type-support); overflow-wrap: anywhere; }

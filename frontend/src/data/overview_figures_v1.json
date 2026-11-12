@@ -43,7 +43,9 @@
       "amounts": 54,
       "burst_rows": 708
     },
-    "note": "The synthetic burst the Sales spike step loads: 50 rows cycling DEMO_BURST_AMOUNTS in a 1-hour window against DEMO_VELOCITY_BASELINE; ratio = total / hours / baseline (src/payguard/engines.py).",
+    "note": "The demo sales burst the Sales spike step loads: 50 orders in one hour against the usual rate.",
+    "note_phone": "Demo burst: 50 orders in one hour vs the usual rate",
+    "note_detail": "Sales spike step: 50 rows cycling DEMO_BURST_AMOUNTS in a 1-hour window against DEMO_VELOCITY_BASELINE; ratio = total / hours / baseline (src/payguard/engines.py).",
     "source_key": "demo_burst"
   },
   "receipt_sends": [

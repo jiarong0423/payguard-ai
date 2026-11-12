@@ -12,6 +12,7 @@ import { dateLabel } from './theme/format.js';
 import arrowSvg from './theme/icons/arrow-right.svg?raw';
 import fileSvg from './theme/icons/file-text.svg?raw';
 import { SpriteIcon, STATUS } from './theme/iconMap.js';
+import { Fold, Short } from './theme/copy.jsx';
 import './ProductReference.css';
 import './CheckSaleExtras.css';
 
@@ -96,9 +97,13 @@ function pick(example) {
 }
 // (R5 seller) The NO MATCH card leads with plain words; the engine's own sentence stays in the detail line under it.
 const PLAIN_RESULT = { no_match: 'Nothing flagged for this item' };
+// (J-B item 1) Short chip names for the three samples (B-4: "Try: Coffee cup · ROI package · E-cig US→SG").
+const CHIP_LABEL = { no_match: 'Coffee cup', review_signal: 'ROI package', rule_match: 'E-cig US→SG' };
 // The detail line never repeats the result line word for word (the NO MATCH card's first sentence).
 const restOf = (detail, result) => (detail.startsWith(result) ? detail.slice(result.length).replace(/^[.\s]+/u, '') : detail);
-const detailOf = (example) => (PLAIN_RESULT[example.id] ? `${example.result}. ${restOf(example.detail, example.result)}` : restOf(example.detail, example.result));
+// (N1 C20) A card may carry a shorter shown sentence (detail_shown, detail_phone); `detail` stays the engine's own words,
+// which tests/test_check_sale_p3_data.py compares with the engine.
+const detailOf = (example) => (example.detail_shown ? example.detail_shown : PLAIN_RESULT[example.id] ? `${example.result}. ${restOf(example.detail, example.result)}` : restOf(example.detail, example.result));
 export function ThreeResults() {
   const [picked, setPicked] = useState(null);
   useEffect(() => {
@@ -110,21 +115,28 @@ export function ThreeResults() {
   const offline = () => Boolean(document.querySelector('#compliance [data-testid="country-rules-empty"]'));
   const use = (example) => setPicked(pick(example) ? { kind: example.kind, at: Date.now() }
     : { kind: example.kind === 'route' && offline() ? 'offline' : 'missing', at: Date.now() });
+  // (J-B item 1, judge_B_current.md B-4) One row of sample chips above the form replaces the three sample rows in the first
+  // screen; the chip carries only a frame mark (none / dashed / double), never the answer, so the page keeps one red
+  // stamp (the verdict). The three cards, their answers and sources are unchanged inside the closed fold under the chips.
   return <section className="check-three tg-section tg-mod tg-mod--ck-three" data-testid="three-results" aria-labelledby="three-results-title">
-    <div className="check-head tg-box"><h3 id="three-results-title" className="tg-h3">Three sample sales, three answers</h3>
+    <div className="check-three__chips" role="group" aria-labelledby="three-results-try"><span id="three-results-try" className="check-three__try">Try:</span>
+      {data.examples.map((example) => <button key={example.id} type="button" className={`check-three__chip is-${example.tone}`} data-testid={`three-results-chip-${example.id}`} onClick={() => use(example)}><span className="check-three__mark" aria-hidden="true" />{CHIP_LABEL[example.id]}</button>)}</div>
+    <details className="check-three__more" data-testid="three-results-fold"><summary className="check-three__sum"><h3 id="three-results-title" className="tg-h3">Three sample sales, three answers</h3></summary>
+    <div className="check-head tg-box">
       <p className="tg-small">The same checks on three sample items. Pick one to try it in the form below.</p></div>
     <div className="check-three__row">
       {data.examples.map((example) => <figure key={example.id} className={`tg-clip tg-clip--fact tg-card--cta check-three__card is-${example.tone} tg-block tg-block--ck-sample`} data-testid={`three-results-${example.id}`}>
         <figcaption className="tg-clip__kicker"><span className={`tg-stamp tg-stamp--${example.tone}`}><SpriteIcon name={STAMP_ICON[example.tone]} size="sm" />{example.stamp}</span></figcaption>
         <blockquote className="tg-clip__quote">{example.description}</blockquote>
         <p className="check-three__result" data-link={example.kind === 'route' ? `law:${example.result}` : undefined}><span>{PLAIN_RESULT[example.id] || example.result}</span></p>
-        <p className="check-three__detail">{detailOf(example)}</p>
+        <p className="check-three__detail"><Short wide={detailOf(example)} phone={example.detail_phone} more={example.detail_phone ? detailOf(example) : undefined} /></p>
         {example.also ? <p className="check-three__also"><span className="tg-deadline--soon check-three__also-word"><SpriteIcon name={STATUS.warn} size="sm" />{example.also.label}</span> {example.also.statute} · {example.also.detail}</p> : null}
         <div className="tg-cta check-three__foot tg-box"><SourceLine kind="RECOUNTED" source={example.kind === 'route' ? 'country_rules_sg_ecig' : 'policy_check'} />
         <button type="button" className="tg-btn tg-btn--secondary check-three__use" data-testid={`three-results-card-${example.id}`} onClick={() => use(example)}>
           {example.kind === 'route' ? 'Try this route' : 'Try this item'}<PhIcon svg={arrowSvg} /></button></div>
       </figure>)}
     </div>
+    </details>
     <p className="check-three__picked tg-box" data-testid="three-results-picked" role="status" aria-live="polite">{picked && <span key={picked.at} className="tg-note check-three__picked-note">
       {picked.kind === 'offline' ? 'The country check opens once the demo connects. Nothing was sent; the result on this card stands meanwhile.'
         : picked.kind === 'missing' ? 'The form is not quite ready. Please try again in a moment.' : PICKED[picked.kind]}</span>}</p>
@@ -191,7 +203,7 @@ export function GuideAiCard() {
   // (R5 seller 2026-11-12, review_UI5 s3) Test figures are for judges, not part of the seller's form: closed by default,
   // short labels on one baseline. Same values, same source line.
   return <details className="check-ai tg-fold tg-mod" data-testid="guide-ai-card">
-    <summary><span className="check-ai__summary">How the AI step was tested<small className="tg-small">Step 01 guide · recorded run, aggregate scores only</small></span></summary>
+    <summary><span className="check-ai__summary">How the AI step was tested<small className="tg-small">Step 01 guide · recorded test, totals only</small></span></summary>
     <div className="tg-fold__body check-ai__body tg-block">
       <p id="guide-ai-title" className="check-ai__lede">Gemini maps a seller sentence to a form item; fixed rules then validate it and code decides what counts.</p>
       <dl className="check-ai__figures tg-box">
@@ -214,14 +226,14 @@ export function CategoryReference({ category }) {
   return <p className="product-card-ref" data-testid="product-card-category-ref">Channel3 category: <strong>{category}</strong></p>;
 }
 
-// Channel3 category tree vs PayPal AUP: counts from docs/CHANNEL3_NOTES.md and the published CSV, three CSV rows verbatim.
+// Channel3 category tree vs PayPal’s Acceptable Use Policy: counts from docs/CHANNEL3_NOTES.md and the published CSV, three CSV rows verbatim.
 function Channel3Body() {
   const tree = data.channel3_tree;
   return <section className="check-c3 tg-section tg-block" data-testid="channel3-reference" aria-labelledby="channel3-reference-title">
     <figure className="tg-clip check-c3__clip">
       <figcaption className="tg-clip__kicker">Reference, does not change the result</figcaption>
-      <h3 id="channel3-reference-title" className="tg-h3">Channel3 category tree vs PayPal AUP</h3>
-      <p className="check-c3__count" data-testid="channel3-reference-count"><span className="tg-num">{tree.categories_read.toLocaleString('en-US')}</span> Channel3 categories read once; <span className="tg-num">{tree.mapped}</span> mapped to a PayPal AUP item or a question for the seller.</p>
+      <h3 id="channel3-reference-title" className="tg-h3">Channel3 category tree vs PayPal’s Acceptable Use Policy</h3>
+      <p className="check-c3__count" data-testid="channel3-reference-count"><span className="tg-num">{tree.categories_read.toLocaleString('en-US')}</span> Channel3 categories read once; <span className="tg-num">{tree.mapped}</span> mapped to a PayPal policy item or a question for the seller.</p>
       <ul className="check-c3__rows tg-box">{tree.examples.map((row) => <li key={row.line} data-testid="channel3-reference-row">
         <blockquote className="tg-clip__quote tg-clip__quote--ruled">{row.path}</blockquote>
         <p className="tg-small">{row.paypal_aup_item} · {row.agreement.replace(/^(\d) of 5 readers$/u, '$1 of 5 readers agreed')} · <span title={`${tree.csv}:${row.line}`}>CSV line {row.line}</span></p>
@@ -251,8 +263,13 @@ export function RuleGrid() {
     return () => window.removeEventListener('hashchange', openIfNamed);
   }, []);
   return <details ref={ref} id="rule-pack" className="check-ref tg-fold tg-mod" data-testid="rule-pack-fold">
-    <summary><span className="check-ai__summary">Behind the check: the rule pack and the Channel3 reference<small className="tg-small">{data.rule_grid.totals.import + data.rule_grid.totals.export} official rules by country and side, and how Channel3 categories map to PayPal's policy</small></span></summary>
-    <div className="tg-fold__body check-ref__body"><RuleGridBody /><Channel3Body /></div>
+    <summary><span className="check-ai__summary">Behind the check: the rule pack and the Channel3 reference<small className="tg-small"><Short wide={`${data.rule_grid.totals.import + data.rule_grid.totals.export} official rules and the Channel3 → PayPal policy map`} phone={`${data.rule_grid.totals.import + data.rule_grid.totals.export} official rules · Channel3 → PayPal policy map`} /></small></span></summary>
+    {/* (N1 C39) One short line when it opens, then two closed groups; the full tables are one level down. */}
+    <div className="tg-fold__body check-ref__body">
+      <p className="tg-small" data-testid="rule-pack-lede"><Short wide={`${data.rule_grid.totals.import + data.rule_grid.totals.export} official rules and the Channel3 → PayPal policy map.`} phone={`${data.rule_grid.totals.import + data.rule_grid.totals.export} official rules · Channel3 → PayPal policy map · 2 groups.`} /></p>
+      <Fold summary={`Rule pack by country · ${data.rule_grid.countries.length} countries`} testId="rule-pack-group-grid"><RuleGridBody /></Fold>
+      <Fold summary="Channel3 categories → PayPal policy" testId="rule-pack-group-channel3"><Channel3Body /></Fold>
+    </div>
   </details>;
 }
 export function Channel3Reference() {

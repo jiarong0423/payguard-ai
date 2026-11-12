@@ -18,7 +18,7 @@ body { margin: 0; background: var(--pg-color-canvas); color: var(--pg-color-ink)
 .proof-intro .proof-note { font-size: 14px; color: var(--pg-color-subtle); }
 
 .proof-legend, .proof-section { padding: var(--pg-layout-card-pad); border-radius: var(--pg-radius-card); background: var(--pg-color-panel); box-shadow: var(--pg-elev-l1); min-width: 0; }
-.proof-legend h2, .proof-section h2 { margin: 0 0 var(--pg-space-3); font-size: 18px; line-height: 1.35; font-weight: 650; display: flex; align-items: baseline; gap: var(--pg-space-2); }
+.proof-legend h2, .proof-section h2 { margin: 0 0 var(--pg-space-3); font-size: 16px; line-height: 1.35; font-weight: 650; display: flex; align-items: baseline; gap: var(--pg-space-2); }
 .proof-number { color: var(--pg-color-accent-strong); font-size: 14px; font-weight: 700; letter-spacing: 0.04em; }
 .proof-legend dl { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: var(--pg-space-4); }
 .proof-legend-item { display: grid; gap: var(--pg-space-1); align-content: start; }
@@ -52,7 +52,7 @@ body { margin: 0; background: var(--pg-color-canvas); color: var(--pg-color-ink)
 .proof-foot p { margin: 0; max-width: 90ch; min-width: 0; overflow-wrap: anywhere; }
 
 @media (max-width: 640px) {
-  .proof-intro h1 { font-size: 24px; }
+  .proof-intro h1 { font-size: 20px; }
   .proof-legend, .proof-section { padding: var(--pg-space-4); }
   .proof-meta > div { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .proof-chip { white-space: normal; }
@@ -60,7 +60,7 @@ body { margin: 0; background: var(--pg-color-canvas); color: var(--pg-color-ink)
 
 /* Recorded real send (2026-11-08): a text timeline taken from the committed receipt. */
 .proof-recorded { padding: var(--pg-layout-card-pad); border-radius: var(--pg-radius-card); background: var(--pg-color-panel); box-shadow: var(--pg-elev-l1); }
-.proof-recorded h2 { margin: 0 0 var(--pg-space-2); font-size: 18px; line-height: 1.35; font-weight: 650; }
+.proof-recorded h2 { margin: 0 0 var(--pg-space-2); font-size: 16px; line-height: 1.35; font-weight: 650; }
 .proof-recorded-intro { margin: 0 0 var(--pg-space-3); color: var(--pg-color-muted); font-size: 14px; }
 .proof-recorded-steps { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--pg-space-2); }
 .proof-recorded-steps li { display: grid; grid-template-columns: minmax(110px, 190px) 1fr; gap: var(--pg-space-3); align-items: start; padding: var(--pg-space-2) 0; border-top: 1px solid var(--pg-color-rule); font-size: 14px; }
@@ -73,11 +73,11 @@ body { margin: 0; background: var(--pg-color-canvas); color: var(--pg-color-ink)
 
 /* Earlier runs: a closed fold per scenario (2026-11-09). */
 .proof-history { margin-top: var(--pg-space-3); }
-.proof-history > summary { cursor: pointer; font-weight: 600; font-size: 15px; color: var(--pg-color-muted); padding: 12px 0; min-height: 44px; box-sizing: border-box; }
+.proof-history > summary { cursor: pointer; font-weight: 600; font-size: 14px; color: var(--pg-color-muted); padding: 12px 0; min-height: 44px; box-sizing: border-box; }
 
 /* Latest evidence strip (2026-11-09). */
 .proof-latest { border: 1px solid var(--pg-color-rule); border-left: 4px solid var(--pg-color-ok); border-radius: var(--pg-radius-control); background: var(--pg-color-panel); padding: var(--pg-space-3) var(--pg-space-4); margin-bottom: var(--pg-space-4); }
-.proof-latest h2 { margin: 0 0 var(--pg-space-2); font-size: 18px; }
+.proof-latest h2 { margin: 0 0 var(--pg-space-2); font-size: 16px; }
 .proof-latest ul { margin: 0; padding-left: 18px; display: grid; gap: var(--pg-space-2); font-size: 16px; overflow-wrap: anywhere; }
 
 /* Phone tap targets: inline links in the latest-evidence strip get a 44px touch area without moving the text. */
@@ -90,7 +90,7 @@ body { margin: 0; background: var(--pg-color-canvas); color: var(--pg-color-ink)
 
 /* Filter chips: real buttons, 44px tall, pressed state shown by colour and a check mark, not colour alone. */
 .proof-filters { display: grid; gap: var(--pg-space-2); margin: var(--pg-space-3) 0; }
-.proof-filters h2 { margin: 0; font-size: 18px; }
+.proof-filters h2 { margin: 0; font-size: 16px; }
 .proof-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
 .proof-filter-chip { min-height: 44px; padding: 0 14px; border: 1px solid var(--pg-color-rule); border-radius: 999px; background: var(--pg-color-panel); color: var(--pg-color-ink); font: inherit; font-size: 16px; cursor: pointer; }
 .proof-filter-chip[aria-pressed="true"] { border-color: var(--pg-color-accent-strong); background: var(--pg-color-recede); color: var(--pg-color-accent-strong); text-shadow: 0.45px 0 0 currentColor, -0.45px 0 0 currentColor; }

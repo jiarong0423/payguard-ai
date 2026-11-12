@@ -48,7 +48,7 @@ assert.ok(app.includes("setVelocityView('orders'); window.requestAnimationFrame(
 for (const view of ['chart', 'orders']) assert.ok(app.includes(`['${view}',`), `velocity view ${view}`);
 assert.ok(app.includes('data-testid={`velocity-view-${key}`}'), 'velocity view test ids');
 // (R7 T4) Step 03's More takes a label and opens itself for the board or after a draft, so it carries props.
-for (const stage of ['compliance', 'velocity']) assert.ok(app.includes(`<StepMore id="${stage}">`), `step ${stage} has its More disclosure`);
+for (const stage of ['compliance', 'velocity']) assert.ok(app.includes(`<StepMore id="${stage}" intro=`), `step ${stage} has its More disclosure (N1 C38: with its one-line intro)`);
 assert.ok(app.includes('<StepMore id="disputes" label='), 'step disputes has its More disclosure');
 assert.ok(app.includes('data-testid={`step-more-${id}`}'), 'StepMore test id');
 const shortLabels = app.match(/const SHORT_LABEL = (\{[^}]*\});/);
@@ -76,12 +76,16 @@ assert.deepEqual(names(claimTypes[1]), names(backendTypes[1]), 'the policy check
 
 console.log('frontend_start_here: ok');
 
-// Download-the-demo link (2026-11-09): direct GitHub asset, new tab, no opener; hero, footer and Proof page.
+// Download-the-demo link (2026-11-09): direct GitHub asset, new tab, no opener; console footer and Proof page.
+// (K1 G9 2026-11-13) The console has one copy, in the footer: the header More menu copy (hero-download-demo) is gone.
 {
   const url = 'https://github.com/jiarong0423/payguard-ai/releases/download/demo-package-20261109/tradeglot-demo.zip';
   const appSrc = readFileSync(new URL('../frontend/src/App.jsx', import.meta.url), 'utf8');
   const proofSrc = readFileSync(new URL('../frontend/src/proof/main.jsx', import.meta.url), 'utf8');
-  for (const [name, src, id] of [['hero', appSrc, 'hero-download-demo'], ['footer', appSrc, 'footer-download-demo'], ['proof', proofSrc, 'proof-download-demo']]) {
+  assert.equal(appSrc.split(`href="${url}"`).length - 1, 1, 'the console shows the demo download once (footer)');
+  assert.ok(!appSrc.includes('data-testid="hero-download-demo"'), 'the header More menu has no demo download');
+  assert.ok(/<footer>[\s\S]*data-testid="footer-download-demo"[\s\S]*<\/footer>/.test(appSrc), 'the console download sits in the footer');
+  for (const [name, src, id] of [['footer', appSrc, 'footer-download-demo'], ['proof', proofSrc, 'proof-download-demo']]) {
     const tag = src.match(new RegExp(`<a [^>]*data-testid="${id}"[^>]*>[\\s\\S]*?</a>`))?.[0] || '';
     assert.ok(tag.includes(`href="${url}"`), `${name} download link has the exact asset URL`);
     assert.ok(tag.includes('rel="noopener noreferrer"') && tag.includes('target="_blank"'), `${name} download link opens a new tab without opener`);

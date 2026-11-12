@@ -19,7 +19,7 @@ function baseHostedCopy(chooser) {
     return {
       mode,
       pill: 'Hosted demo · no PayPal calls',
-      intro: `This public copy runs the same code without PayPal keys, so it makes no PayPal calls right now. Only the guide may call Gemini, on the operator's free-tier key (${HOSTED_GUIDE_CAPS}); the evidence brief stays off.`,
+      intro: `The hosted demo runs the same code without PayPal keys, so it makes no PayPal calls right now. Only the guide may call Gemini, on the operator's free-tier key (${HOSTED_GUIDE_CAPS}); the evidence brief stays off.`,
       guides: 'Guides (rules + Gemini, capped) and recorded replays',
       local: 'Gemini evidence brief',
       gemini: `On for the guide only (${HOSTED_GUIDE_CAPS})`,
@@ -29,7 +29,7 @@ function baseHostedCopy(chooser) {
     return {
       mode,
       pill: 'Hosted demo · rules only · no PayPal calls',
-      intro: "This public copy runs the same code without keys, so right now it makes no PayPal or Gemini calls and uses no account or API credit.",
+      intro: 'The hosted demo has no keys right now, so it makes no PayPal or Gemini calls and uses no account or paid credit.',
       guides: 'Guides in rules-only mode and recorded replays',
       local: 'Gemini evidence brief and Gemini guide',
       gemini: 'Off in hosted demo',
@@ -38,7 +38,7 @@ function baseHostedCopy(chooser) {
   return {
     mode,
     pill: 'Hosted demo · no PayPal calls',
-    intro: `This public copy runs the same code without PayPal keys, so it makes no PayPal calls right now. The guide may call Gemini only if the operator turned it on (${HOSTED_GUIDE_CAPS}); the guide's badge shows which. The evidence brief stays off.`,
+    intro: `The hosted demo runs the same code without PayPal keys, so it makes no PayPal calls right now. The guide may call Gemini only if the operator turned it on (${HOSTED_GUIDE_CAPS}); the guide's badge shows which. The evidence brief stays off.`,
     guides: 'Guides and recorded replays',
     local: 'Gemini evidence brief',
     gemini: `Start a guide to see it (guide only, at most ${HOSTED_GUIDE_CAPS})`,
@@ -55,15 +55,18 @@ export function hostedCopy(chooser, sandboxReads = false, sandboxSend = false) {
     return {
       ...copy,
       pill: 'Hosted demo · Sandbox reads + capped send',
-      intro: "This public copy uses the author's PayPal Sandbox test account (never a live account). It reads Sandbox test disputes and, after your review and the send dialog, can send evidence built from the demo's synthetic seller records to one of them: once per dispute and once per visit (at most 2 sends per address per day), under a shared limit. Invoice drafts and tracking stay local-only.",
+      intro: "The hosted demo uses the author's PayPal Sandbox test account (never a live account). It reads Sandbox test disputes and, after your review and the send dialog, can send evidence built from the demo seller records to one of them: once per dispute and once per visit (at most 2 sends per address per day), under a shared limit. Invoice drafts and tracking stay local-only.",
     };
   }
   // Not yet known (null): no claim either way; the pill never says "no PayPal calls" while the flag could still be on.
-  if (sandboxReads === null) return { ...copy, pill: 'Hosted demo', intro: 'This public copy runs the same code. Its PayPal Sandbox mode is being checked.' };
+  // (N2) Properties written out: a changed line may not carry an object spread (module-layer guard).
+  if (sandboxReads === null) {
+    return { mode: copy.mode, pill: 'Hosted demo', intro: 'The hosted demo runs the same code. Its PayPal Sandbox mode is being checked.', guides: copy.guides, local: copy.local, gemini: copy.gemini };
+  }
   if (sandboxReads !== true) return copy;
   return {
     ...copy,
     pill: 'Hosted demo · read-only Sandbox',
-    intro: 'This public copy only reads the PayPal Sandbox; it cannot write.',
+    intro: 'The hosted demo only reads the PayPal Sandbox. It cannot write.',
   };
 }

@@ -2,7 +2,7 @@
 .guide-live-label { margin: 0; padding: 12px 16px; border: 1px solid var(--gl-border); border-radius: var(--pg-radius-card); background: var(--pg-color-recede); color: var(--pg-color-ink); font-size: 14px; }
 .guide-live-controls { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; }
 .guide-live-controls label { display: grid; gap: 4px; color: var(--gl-muted); font-size: 14px; }
-.guide-live select, .guide-live input { min-height: 38px; padding: 8px 12px; border: 1px solid var(--gl-border); border-radius: var(--pg-radius-control); background: var(--pg-color-panel); color: var(--gl-text); font: inherit; font-size: 15px; }
+.guide-live select, .guide-live input { min-height: 38px; padding: 8px 12px; border: 1px solid var(--gl-border); border-radius: var(--pg-radius-control); background: var(--pg-color-panel); color: var(--gl-text); font: inherit; font-size: 14px; }
 .guide-live button { min-height: 38px; padding: 8px 16px; border: 1px solid var(--gl-border); border-radius: var(--pg-radius-control); background: var(--pg-color-panel); color: var(--gl-text); font: inherit; font-size: 14px; cursor: pointer; }
 .guide-live button:disabled { opacity: 0.45; cursor: default; }
 .guide-live .guide-live-primary { border-color: var(--pg-color-accent); background: var(--pg-color-accent); color: var(--pg-color-panel); }
@@ -12,11 +12,11 @@
 .guide-live-chat, .guide-live-side { display: grid; gap: 12px; min-width: 0; }
 .guide-live-log { display: grid; gap: 8px; max-height: 460px; min-height: 160px; margin: 0; padding: 12px; overflow-y: auto; border: 1px solid var(--gl-border); border-radius: var(--pg-radius-card); background: var(--pg-color-recede); list-style: none; }
 .guide-live-msg { display: grid; gap: 4px; max-width: 92%; padding: 12px 12px; border: 1px solid var(--gl-border); border-radius: var(--pg-radius-card); background: var(--pg-color-panel); }
-.guide-live-msg p { margin: 0; color: var(--gl-text); font-size: 15px; overflow-wrap: anywhere; }
-.guide-live-msg small { color: var(--gl-muted); font-size: 13px; }
+.guide-live-msg p { margin: 0; color: var(--gl-text); font-size: 14px; overflow-wrap: anywhere; }
+.guide-live-msg small { color: var(--gl-muted); font-size: 14px; }
 .guide-live-msg-seller { justify-self: end; border-color: var(--pg-color-rule); background: var(--pg-color-accent-tint); }
 .guide-live-msg-form { justify-self: center; background: var(--pg-tint-ok); border-color: #c9d6c5; }
-.guide-live-tag { color: var(--gl-muted); font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+.guide-live-tag { color: var(--gl-muted); font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
 .guide-live .guide-live-dropped { color: var(--pg-color-watch); }
 /* The field shrinks so Send stays whole on a 360 px phone (phone click-all #5, still cut in r2). */
 .guide-live-input { display: flex; gap: 8px; min-width: 0; max-width: 100%; box-sizing: border-box; }
@@ -24,7 +24,7 @@
 .guide-live-input > button { flex: none; }
 .guide-live-input input { flex: 1; min-width: 0; }
 .guide-live-input .button { flex-shrink: 0; }
-.guide-live-count { color: var(--gl-muted); font-size: 13px; }
+.guide-live-count { color: var(--gl-muted); font-size: 12px; }
 .guide-live-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .guide-live-grid { min-width: 0; }
 .guide-live-forms { display: grid; gap: 8px; padding: 12px 16px; border: 1px solid var(--gl-border); border-radius: var(--pg-radius-card); background: var(--pg-color-panel); }
@@ -41,14 +41,14 @@
 .guide-live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--pg-color-accent); animation: guide-live-pulse 1s ease-in-out infinite; }
 @keyframes guide-live-pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .guide-live-dot { animation: none; } }
-.guide-live-forms small { color: var(--gl-muted); font-size: 13px; }
-.guide-live-subtraction { margin: 0; padding: 8px 12px; border-radius: var(--pg-radius-control); background: var(--pg-color-accent-tint); color: var(--pg-color-accent-strong); font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
-.guide-live-notsure { display: flex; align-items: center; gap: 8px; color: var(--gl-muted); font-size: 13px; white-space: nowrap; }
+.guide-live-forms small { color: var(--gl-muted); font-size: 14px; }
+.guide-live-subtraction { margin: 0; padding: 8px 12px; border-radius: var(--pg-radius-control); background: var(--pg-color-accent-tint); color: var(--pg-color-accent-strong); font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.guide-live-notsure { display: flex; align-items: center; gap: 8px; color: var(--gl-muted); font-size: 14px; white-space: nowrap; }
 .guide-live-notsure input { min-height: 0; }
 .guide-live-round-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 
 /* Round 2 review: 44px controls, no reading text under 14px. */
-.guide-live-intro { margin: 0; color: var(--gl-text); font-size: 15px; line-height: 1.5; }
+.guide-live-intro { margin: 0; color: var(--gl-text); font-size: 14px; line-height: 1.5; }
 .guide-live select, .guide-live input:not([type="checkbox"]):not([type="radio"]), .guide-live button { min-height: 44px; }
 .guide-live-msg small, .guide-live-count, .guide-live-forms small, .guide-live-notsure { font-size: 14px; }
 .guide-live-notsure { min-height: 44px; }
@@ -60,16 +60,16 @@
 
 .guide-route { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 12px; flex-basis: 100%; }
 .guide-route label { flex: 1 1 220px; }
-.guide-route input { min-height: 44px; padding: 0 12px; border: 1px solid var(--gl-border, var(--pg-color-rule)); border-radius: var(--pg-radius-control); font: inherit; font-size: 15px; }
+.guide-route input { min-height: 44px; padding: 0 12px; border: 1px solid var(--gl-border, var(--pg-color-rule)); border-radius: var(--pg-radius-control); font: inherit; font-size: 14px; }
 .guide-live-secondary { min-height: 44px; padding: 0 16px; border: 1px solid var(--pg-color-accent); border-radius: var(--pg-radius-control); background: transparent; color: inherit; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
 .guide-live-secondary:disabled { opacity: .55; cursor: default; }
 .guide-route-result { flex-basis: 100%; padding: 12px 16px; border-radius: var(--pg-radius-card); background: rgba(99, 102, 241, .08); font-size: 14px; line-height: 1.5; }
 .guide-route-result p { margin: 0 0 4px; }
 .guide-route-matches { margin: 4px 0; padding-left: 16px; }
-.guide-route-score { color: var(--gl-muted, var(--pg-color-subtle)); font-size: 13px; }
+.guide-route-score { color: var(--gl-muted, var(--pg-color-subtle)); font-size: 12px; }
 .guide-route-items { font-weight: 600; }
-.guide-route-note { color: var(--gl-muted, var(--pg-color-subtle)); font-size: 13px; }
-.guide-route-type { display: inline-block; padding: 1px 8px; border-radius: var(--pg-radius-pill); font-size: 13px; font-weight: 700; }
+.guide-route-note { color: var(--gl-muted, var(--pg-color-subtle)); font-size: 14px; }
+.guide-route-type { display: inline-block; padding: 1px 8px; border-radius: var(--pg-radius-pill); font-size: 12px; font-weight: 700; }
 .guide-route-type-exact { background: var(--pg-tint-ok); color: var(--pg-color-ok); }
 .guide-route-type-close { background: var(--pg-tint-watch); color: var(--pg-color-watch); }
 
@@ -87,7 +87,7 @@
 .guide-live-controls label { white-space: nowrap; }
 .guide-live-cards { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
 .guide-live-card { display: grid; gap: 8px; padding: 12px 12px; border: 1px solid var(--gl-border); border-radius: var(--pg-radius-control); background: var(--pg-color-panel); }
-.guide-live-card strong { color: var(--gl-text); font-size: 15px; }
+.guide-live-card strong { color: var(--gl-text); font-size: 16px; }
 .guide-live-card > span { display: flex; flex-wrap: wrap; gap: 8px; }
 /* The field grid never squeezes below 360px: it stacks instead (container query on the guide itself). */
 @container (max-width: 760px) { .guide-live-layout { grid-template-columns: minmax(0, 1fr); } }

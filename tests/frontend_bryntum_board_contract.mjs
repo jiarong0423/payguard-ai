@@ -138,7 +138,8 @@ const inputInstants = new Set([
   ...disputes.flatMap((row) => [row.opened_at, row.seller_response_due_date]),
   ...Object.values(drafts).flatMap((draft) => [draft.routing.seller_response_due_date, ...Object.values(draft.evidence || {}), ...(draft.time_evidence?.events || []).map((event) => event.at)]),
 ]);
-const wall = (iso) => { const date = new Date(iso); return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes()).getTime(); };
+// (N1 B, D-C21) The board reads in the viewer's own zone: a board date is the real instant (local Date), not UTC fields read as local.
+const wall = (iso) => new Date(iso).getTime();
 const allowedTimes = new Set([...inputInstants].filter((value) => Number.isFinite(Date.parse(value))).map(wall));
 for (const event of board.events) {
   assert.ok(allowedTimes.has(event.startDate.getTime()) && allowedTimes.has(event.endDate.getTime()), `${event.id} times come from the inputs`);
@@ -233,6 +234,9 @@ assert.equal(boardStatus({ dueMs: NOW + 3 * day + 1, readiness: null, nowMs: NOW
   for (const row of caseOnly.rows) assert.equal(validatePlan(caseOnlyPlans[row.id], { nowMs: NOW, dueMs: Date.parse(row.dueAt) }).valid, true);
 }
 assert.ok(read('frontend/src/board/EvidenceBoard.jsx').includes('due within ${DUE_SOON_DAYS} days with no draft yet'), 'summary counts cases with no draft');
+// (N1 C05) The phone summary has its own shorter string; the desktop string above stays word for word, and the phone one
+// must say the same count and the same "no draft" state.
+assert.ok(read('frontend/src/board/EvidenceBoard.jsx').includes('due within ${DUE_SOON_DAYS} days, no draft`'), 'phone summary counts cases with no draft');
 assert.equal(readinessOf({}), null);
 assert.equal(amountOf({ dispute_amount: { value: '25.00', currency_code: 'USD' } }), '25.00 USD');
 assert.equal(amountOf({ case_ref: 'case-ref-001' }), null);
@@ -275,7 +279,7 @@ for (const source of [boardSource, read('frontend/src/board/boardData.js')]) {
 assert.equal(/TimeRanges?Feature|timeRangesFeature/u.test(boardSource), false, 'no Business-tier TimeRanges feature');
 // Start and end reach Bryntum together: the scheduler is keyed on the computed range.
 assert.ok(boardSource.includes('<BryntumScheduler key={`${board.startDate.getTime()}-${board.endDate.getTime()}-${board.viewPreset}`}'), 'scheduler keyed on its range');
-assert.ok(boardSource.includes("`${row.amount} · synthetic`"), 'list labels the amount synthetic');
+assert.ok(boardSource.includes("`${row.amount} · demo`"), 'list labels the amount demo (N1 C07: synthetic -> demo)');
 const css = read('frontend/src/board/board.css');
 assert.ok(css.includes('.board-scroll { max-width: 100%; overflow-x: auto;'), 'only the board box scrolls sideways');
 for (const size of css.matchAll(/font-size:\s*(\d+)px/gu)) assert.ok(Number(size[1]) >= 14, `font-size ${size[1]}px >= 14px`);
@@ -294,7 +298,7 @@ assert.equal(board.timeRanges[1].startDate.getTime(), wall(drafts['case-ref-001'
 const HOUR = 3600 * 1000;
 assert.equal(floorHour(NOW + 1), NOW);
 assert.equal(ceilHour(NOW + 1), NOW + HOUR);
-assert.equal(wallToUtcMs(new Date(2026, 9, 8, 8, 0)), Date.parse('2026-10-08T08:00:00Z'), 'wall clock back to UTC');
+assert.equal(wallToUtcMs(new Date(2026, 9, 8, 8, 0)), Date.parse('2026-10-08T08:00:00'), 'local board Date back to its instant');
 assert.ok(Number.isNaN(wallToUtcMs(new Date('nope'))));
 const odd = NOW + 20 * 60 * 1000;
 const windowFirst = planWindowOf(first, odd);

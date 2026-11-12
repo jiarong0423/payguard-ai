@@ -11,6 +11,8 @@
    "match_status": "NO_MATCH",
    "result": "No configured demo keyword matched",
    "detail": "No configured demo keyword matched. Review the actual goods or activity against applicable policy; this result does not certify compliance.",
+   "detail_shown": "No demo keyword matched. Check the real goods or activity against policy. This is not a compliance sign-off.",
+   "detail_phone": "No demo keyword matched. Check the real goods or activity. Not a compliance sign-off.",
    "source": "src/payguard/engines.py check_aup"
   },
   {

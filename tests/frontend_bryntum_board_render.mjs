@@ -174,7 +174,7 @@ try {
   assert.ok(rendered.end >= Math.max(...rendered.windowEnds), 'AXIS_ENDS_BEFORE_A_RESPONSE_WINDOW');
   assert.ok(rendered.canvasOverflow !== null && rendered.canvasOverflow <= 1, `TIMELINE_CANVAS_OVERFLOWS_${rendered.canvasOverflow}`);
   assert.deepEqual(rendered.statuses, ['DUE_SOON', 'DUE_SOON', 'DUE_SOON_MISSING']);
-  assert.deepEqual(rendered.amounts, disputes.map((row) => `${row.dispute_amount.value} ${row.dispute_amount.currency_code} · synthetic`));
+  assert.deepEqual(rendered.amounts, disputes.map((row) => `${row.dispute_amount.value} ${row.dispute_amount.currency_code} · demo`));
   assert.match(rendered.summary, /^3 cases · 1 due within 3 days with evidence missing/u);
   // (optimise r24) Plan bars: one "Collect evidence" bar per case, a now line and one due line per case. A drag
   // moves a bar in whole hours and is kept in this tab's sessionStorage; a drop before now snaps back with a
@@ -184,7 +184,7 @@ try {
     const element = document.querySelector('[data-testid="evidence-board-timeline"] .b-scheduler');
     const namespace = window.bryntum;
     const scheduler = (namespace?.core?.Widget || namespace?.scheduler?.Widget || namespace?.Widget)?.fromElement?.(element);
-    const utc = (date) => Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes());
+    const utc = (date) => date.getTime(); // (N1 B) board Dates are real local instants
     const span = (id) => { const record = scheduler.eventStore.getById(id); return record && { start: utc(record.startDate), end: utc(record.endDate) }; };
     const box = (id) => { const bar = document.querySelector(`[data-event-id="${id}"]`); if (!bar) return null; const r = bar.getBoundingClientRect(); return { x: r.x, y: r.y, w: r.width, h: r.height }; };
     return {

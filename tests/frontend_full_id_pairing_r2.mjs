@@ -152,7 +152,7 @@ const sent = (id) => ({ dispute_id: id, case_ref: CASE, external_send: 'SUBMITTE
 {
   assert.ok(app.includes('const keptReceipt = Boolean(evidenceSent && restoredSend?.confirmed && restoredSend.dispute_id === evidencePreview?.dispute_id);'));
   assert.ok(app.includes('{keptReceipt && <span data-testid="send-receipt-kept">{keptSendText(restoredSend)}</span>}'), 'restored stamp is labelled');
-  assert.ok(app.includes("PayPal-Debug-Id{keptReceipt ? ' (from that send, kept in this tab)' : ''}: {evidencePreview.paypal_debug_id || 'not returned'}"), 'Debug-Id is the stored one, labelled; never made up');
+  assert.ok(app.includes("PayPal request ID{keptReceipt ? ' (from that send, kept in this tab)' : ''}: {evidencePreview.paypal_debug_id || 'not returned'}"), 'Debug-Id is the stored one, labelled; never made up');
   const note = app.split('\n').find((line) => line.includes('data-testid="send-restored-note"'));
   assert.ok(note && note.includes('!restoredSend.confirmed') && !/paypal_debug_id|SUBMITTED to PayPal/u.test(note), 'unconfirmed note: no stamp and no Debug-Id');
   assert.equal(app.split('setRestoredSend(restored);').length - 1, 1, 'set from the fresh read only');

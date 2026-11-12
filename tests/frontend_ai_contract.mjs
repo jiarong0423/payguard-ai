@@ -415,7 +415,8 @@ for (const [name, source] of [['App', appSource], ['API', apiSource], ['Referenc
     "'Sample cases. Connect the Sandbox in Step 01 to see real Sandbox cases.'",
     "'Sample PayPal cases (not real)'",
     'subtitle="Review all orders in one table"',
-    '<Badge tone="blue">OPTIONAL</Badge>',
+    // (N1 PF10) the optional badge is a token tag in sentence case
+    '<span className="tg-tag tg-tag--neutral">Optional</span>',
     '>All orders</a>',
     "'Evidence summary (sample)'",
     "'What the AI can and can\\'t do'",

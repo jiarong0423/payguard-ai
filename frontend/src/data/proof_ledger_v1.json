@@ -31,7 +31,7 @@
       "source_key": "readback_send1",
       "basis": "RECORDED",
       "file": "docs/evidence/READBACK_20261109.md",
-      "label": "Read-back, send 1",
+      "label": "Send 1 · what PayPal showed",
       "date": { "value": "2026-11-09", "line": 1 },
       "where": { "value": "local console", "line": 3 },
       "debug_id": null,
@@ -43,7 +43,7 @@
       "source_key": "readback_send2",
       "basis": "RECORDED",
       "file": "docs/evidence/READBACK_20261109.md",
-      "label": "Read-back, send 2",
+      "label": "Send 2 · what PayPal showed",
       "date": { "value": "2026-11-09", "line": 1 },
       "where": { "value": "local console", "line": 3 },
       "debug_id": { "value": "ca5782cf8df90", "line": 22 },
@@ -55,7 +55,7 @@
       "source_key": "readback_send3",
       "basis": "RECORDED",
       "file": "docs/evidence/READBACK_20261109.md",
-      "label": "Read-back, send 3",
+      "label": "Send 3 · what PayPal showed",
       "date": { "value": "2026-11-09", "line": 1 },
       "where": { "value": "local console", "line": 3 },
       "debug_id": { "value": "f492438834396", "line": 36 },
@@ -82,7 +82,7 @@
     "served_bytes": { "value": "2,015 bytes", "line": 41 },
     "byte_count": 2015,
     "pdf": "evidence/send3_paypal_copy.pdf",
-    "pdf_note": "This site keeps the copy PayPal Sandbox served back (synthetic data only).",
+    "pdf_note": "Your browser checks the copy PayPal Sandbox served back (saved on this site) against it. Demo data only.",
     "tamper_byte": 100
   }
 }

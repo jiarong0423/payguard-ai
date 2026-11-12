@@ -34,8 +34,8 @@ export const WORK_ORDERS = Object.freeze([
   {
     id: 'WO-S1', title: 'Policy pre-check: US to Singapore e-cigarettes, a rule applies and no draft is made', scene: 'Policy pre-check',
     steps: [
-      { n: 1, kind: 'auto', label: 'Create a demo session', expect: '201 · synthetic session' },
-      { n: 2, kind: 'auto', label: `AUP review "${AUP_DESCRIPTION}"`, expect: '200 · no review signal' },
+      { n: 1, kind: 'auto', label: 'Create a demo session', expect: '201 · demo session' },
+      { n: 2, kind: 'auto', label: `Policy check “${AUP_DESCRIPTION}”`, expect: '200 · no review signal', labelPhone: 'Policy check', labelMore: `“${AUP_DESCRIPTION}”` },
       { n: 3, kind: 'auto', label: 'Country check US → SG, goods: e-cigarettes', expect: '200 · a rule applies' },
       { n: 4, kind: 'auto', label: 'Invoice review for the same item', expect: '409 · draft paused by the country check' },
     ],
@@ -43,9 +43,9 @@ export const WORK_ORDERS = Object.freeze([
   {
     id: 'WO-S2', title: 'Policy pre-check: clear route, then a Sandbox draft', scene: 'Policy pre-check',
     steps: [
-      { n: 1, kind: 'auto', label: 'Create a demo session', expect: '201 · synthetic session' },
+      { n: 1, kind: 'auto', label: 'Create a demo session', expect: '201 · demo session' },
       { n: 2, kind: 'auto', label: 'Country check US → GB, no goods tags', expect: '200 · no listed rule' },
-      { n: 3, kind: 'auto', label: `AUP review "${AUP_DESCRIPTION}"`, expect: '200 · no review signal' },
+      { n: 3, kind: 'auto', label: `Policy check “${AUP_DESCRIPTION}”`, expect: '200 · no review signal', labelPhone: 'Policy check', labelMore: `“${AUP_DESCRIPTION}”` },
       { n: 4, kind: 'auto', label: 'Invoice review', expect: '200 · review token issued' },
       { n: 5, kind: 'manual', needs: 'paypal', console: true, label: 'Connect the US Sandbox', expect: 'Sandbox shows Connected' },
       { n: 6, kind: 'manual', needs: 'paypal', label: 'Create the Sandbox draft', expect: 'Draft created, not sent' },
@@ -55,21 +55,24 @@ export const WORK_ORDERS = Object.freeze([
   {
     id: 'WO-S3', title: 'Sales spike: burst and guide (rules)', scene: 'Sales spike',
     steps: [
-      { n: 1, kind: 'auto', label: 'Create a demo session', expect: '201 · synthetic session' },
-      { n: 2, kind: 'auto', label: 'Load the synthetic sales burst', expect: '200 · velocity review with a ratio' },
+      { n: 1, kind: 'auto', label: 'Create a demo session', expect: '201 · demo session' },
+      { n: 2, kind: 'auto', label: 'Load the demo sales burst', expect: '200 · velocity review with a ratio' },
       { n: 3, kind: 'auto', label: 'Start the sales spike guide', expect: '200 · rules-only mode', guide: true },
-      { n: 4, kind: 'auto', label: `Guide turn: "${S3_SENTENCE}"`, expect: '200 · keyword chooser · settled items recorded', guide: true },
-      { n: 5, kind: 'manual', needs: 'gemini', label: 'Same turn with Gemini on', expect: 'Model step shown as analysing, then replaced or kept' },
+      { n: 4, kind: 'auto', label: `Guide step: “${S3_SENTENCE}”`, expect: '200 · rules only, no AI call · settled items recorded', guide: true,
+        labelPhone: 'Guide step: rules only', labelMore: `“${S3_SENTENCE}”`, expectPhone: '200 · rules only, no AI call', expectMore: 'Settled items recorded.' },
+      { n: 5, kind: 'manual', needs: 'gemini', label: 'Same step with Gemini on', expect: 'AI step shown as analysing, then replaced or kept' },
     ],
   },
   {
     id: 'WO-S4', title: 'Dispute evidence: case, guide and draft', scene: 'Dispute evidence',
     steps: [
-      { n: 1, kind: 'auto', label: 'Create a demo session', expect: '201 · synthetic session' },
-      { n: 2, kind: 'auto', label: 'Load the synthetic dispute case', expect: '200 · case-ref-001 present' },
+      { n: 1, kind: 'auto', label: 'Create a demo session', expect: '201 · demo session' },
+      { n: 2, kind: 'auto', label: 'Load the demo dispute case', expect: '200 · case-ref-001 present' },
       { n: 3, kind: 'auto', label: 'Start the dispute evidence guide (physical goods)', expect: '200 · rules-only mode', guide: true },
-      { n: 4, kind: 'auto', label: `Guide turn: "${S4_SENTENCE_TICK}"`, expect: '200 · nothing counted', guide: true },
-      { n: 5, kind: 'auto', label: `Guide turn: "${S4_SENTENCE_SHIPPED}"`, expect: '200 · ship date and delivery record', guide: true },
+      { n: 4, kind: 'auto', label: `Guide step: “${S4_SENTENCE_TICK}”`, expect: '200 · rules only, no AI call · nothing counted', guide: true,
+        labelPhone: 'Guide step: rules only', labelMore: `“${S4_SENTENCE_TICK}”`, expectPhone: '200 · nothing counted', expectMore: 'Rules only, no AI call.' },
+      { n: 5, kind: 'auto', label: `Guide step: “${S4_SENTENCE_SHIPPED}”`, expect: '200 · rules only, no AI call · ship date and delivery record', guide: true,
+        labelPhone: 'Guide step: rules only', labelMore: `“${S4_SENTENCE_SHIPPED}”`, expectPhone: '200 · ship date and delivery record', expectMore: 'Rules only, no AI call.' },
       { n: 6, kind: 'auto', label: 'Prepare the evidence draft for case-ref-001', expect: '200 · readiness reported' },
       { n: 7, kind: 'manual', needs: 'gemini', label: 'Thursday sentence with Gemini on', expect: 'Date asked back, never guessed' },
       { n: 8, kind: 'manual', needs: 'paypal', console: true, label: 'Sandbox dispute pairing and provide-evidence preview', expect: 'Preview only, nothing submitted' },

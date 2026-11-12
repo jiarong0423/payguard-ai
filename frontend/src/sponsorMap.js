@@ -11,7 +11,7 @@ export const SPONSOR_MAP = Object.freeze([
   { name: 'Channel3', what: 'Product search for the seller-confirmed product reference card (goes into the review ZIP)', proof: 'Channel3' },
   { name: 'PayPal', what: 'OAuth, unsent invoice draft, dispute list and detail, and a gated provide-evidence send', proof: 'PayPal' },
   { name: 'Render', what: 'One free Docker web service from a Blueprint', proof: 'Render' },
-  { name: 'Gemini', what: 'Closed-option guide chooser, evidence brief, Studio agent turn, each behind code validation and per-session caps', proof: 'Gemini' },
+  { name: 'Gemini', what: 'The guide’s AI step, the evidence brief and the Studio agent, each checked by code and capped per session', proof: 'Gemini' },
   { name: 'APIMatic', what: "The OpenAPI 3.1 description of the local console API (37 operations) passes APIMatic's validator with 0 errors", proof: 'APIMatic' },
   { name: 'Postman', what: 'A collection generated from that OpenAPI (37 requests, empty body skeletons, local console only)', proof: 'Postman' },
 ]);

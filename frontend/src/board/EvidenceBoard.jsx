@@ -12,9 +12,11 @@ import { BryntumScheduler, available } from 'virtual:payguard-optional-timeline'
 import {
   DUE_SOON_DAYS, PLAN_MESSAGES, PLAN_NAME, buildEvidenceBoard, defaultPlan, planEvents, planWindowOf, readStoredPlans,
   restorePlans, shiftPlan, URGENCY_CHIPS, urgencyCounts, barClasses, plansToIcs, PLAN_ICS_NAME, PLAN_ICS_EMPTY_REASON, validatePlan, wallToUtcMs, writeStoredPlans,
-  TRIAGE_CAPTION, UNSCHEDULED_LABEL, unscheduledRows, gridEvidenceLabel, gridReasonLabel, isTight,
+  TRIAGE_CAPTION, UNSCHEDULED_LABEL, unscheduledRows, gridEvidenceLabel, gridReasonLabel, isTight, boardWall,
 } from './boardData.js';
-import { utcWallClock } from '../optional/timelineModel.js';
+import { dateTimeLabel, zoneLabel } from '../theme/format.js';
+import { dueDays } from '../dueDays.js';
+import { Fold, Info, usePhoneCopy } from '../theme/copy.jsx';
 import './board.css';
 
 // (2026-11-10) Two lines in the Case cell (code, then reason) fit this height at the board's 14px text.
@@ -34,15 +36,19 @@ function subscribeResize(onChange) {
 }
 const TIMELINE_HEADER = 58;
 
-function utcLabel(iso) {
+// (N1 B, D-C21/PF5) The board's times are the viewer's own, named like the rest of the console ("13 Nov, 18:15 GMT+8",
+// dateTimeLabel without the year), so a card, the case head and the queue read the same clock.
+function localLabel(iso) {
   const date = new Date(iso ?? '');
   if (Number.isNaN(date.getTime())) return '—';
-  return `${date.toLocaleString('en-US', { month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'UTC' })} UTC`;
+  return dateTimeLabel(date).replace(/ \d{4},/u, ',');
 }
-const msLabel = (ms) => utcLabel(new Date(ms).toISOString());
+const viewerZone = () => zoneLabel(-new Date().getTimezoneOffset());
+const msLabel = (ms) => localLabel(new Date(ms).toISOString());
 const wallLabel = (date) => msLabel(wallToUtcMs(date));
-const wallOf = (ms) => utcWallClock(new Date(ms).toISOString());
-const planLabel = (plan) => (plan ? `${msLabel(plan.startMs)} → ${msLabel(plan.endMs)}` : '—');
+const wallOf = (ms) => boardWall(new Date(ms).toISOString());
+// (N1 C07) "12 Nov, 19:00 → 13 Nov, 18:00 GMT+8": the zone is named once, at the end.
+const planLabel = (plan) => (plan ? `${msLabel(plan.startMs).replace(/ (?:GMT|UTC)\S*$/u, '')} → ${msLabel(plan.endMs)}` : '—');
 
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
@@ -112,7 +118,7 @@ const isPhone = () => Boolean(phoneMedia()?.matches);
 // The full name is also the label's title, so a short bar that ends in "…" still shows it on hover.
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 // (2026-11-10) A plan bar names its day ("Collect evidence · Nov 10"): a few-hour slot at week scale is narrow, so the bar
-// has a minimum width in board.css and never shows as an empty box. The dates are wall-clock UTC fields (utcWallClock).
+// has a minimum width in board.css and never shows as an empty box. The dates are the viewer's local time (boardWall).
 // Milestones carry a short label inside their diamond (the full name is the title and the tooltip).
 const MILESTONE_SHORT = { CLAIM_OPENED: 'Claim', ORDER_RECORD_CREATED: 'Order', DELIVERY: 'Delivered', PAYMENT: 'Paid', MESSAGE: 'Message' };
 const eventLabel = (eventRecord) => {
@@ -121,7 +127,7 @@ const eventLabel = (eventRecord) => {
   if (short) return short;
   const start = eventRecord.startDate;
   return eventRecord.get('kind') === 'PLAN' && start instanceof Date && !Number.isNaN(start.getTime())
-    ? `${name} · ${MONTHS[start.getMonth()]} ${start.getDate()}` : name;
+    ? `${name} · ${start.getDate()} ${MONTHS[start.getMonth()]}` : name;
 };
 // (external review 2026-11-10 #2) On the one-line desktop rows a milestone is its diamond only: several milestones close
 // together ("C", "Del", "Claim") overlapped each other and the window label. The name is the diamond's tooltip and title.
@@ -134,10 +140,16 @@ const desktopEventRenderer = ({ eventRecord }) => {
   const full = eventRecord.get('kind') === 'PLAN' ? label : escapeHtml(String(eventRecord.name ?? ''));
   return `<span class="ev-label" title="${full}">${label}</span>`;
 };
+// (N1 PF2) On the phone a 24-hour plan bar is one 72px day: the label is "Plan" so it ends inside its bar, clear of the
+// due line (the day is on the axis; the full name and dates are the title and the tooltip).
+const phoneEventRenderer = (context) => {
+  if (context.eventRecord.get('kind') !== 'PLAN') return desktopEventRenderer(context);
+  return `<span class="ev-label ev-label-plan" title="${escapeHtml(eventLabel(context.eventRecord))}">Plan</span>`;
+};
 const DESKTOP_SCHEDULER = { columns: COLUMNS, forceFit: true, eventRenderer: desktopEventRenderer };
 const MID_SCHEDULER = { columns: MID_COLUMNS, forceFit: true, eventRenderer: desktopEventRenderer };
 // (phone fix 2026-11-10) Same bar labels as the desktop: stacked phone rows were uneven (64 to 229px) and cut every label.
-const PHONE_SCHEDULER = { columns: PHONE_COLUMNS, forceFit: false, tickSize: 72, eventRenderer: desktopEventRenderer };
+const PHONE_SCHEDULER = { columns: PHONE_COLUMNS, forceFit: false, tickSize: 72, eventRenderer: phoneEventRenderer };
 // (fix F3, coordinator ruling 2026-11-12) A phone box under PHONE_NARROW_BOX: the Case column is 112px and the code wraps at
 // its hyphens on two lines (board.css .board-case-wrap), never cut with an ellipsis, so the time axis gets 160px or more.
 const PHONE_NARROW_BOX = 480;
@@ -150,11 +162,11 @@ function tooltipHtml(eventRecord, dueAtOf, shownOf) {
   const due = dueAtOf(caseRef);
   const lines = [`<strong>${escapeHtml(eventRecord.name)} · ${escapeHtml(shownOf(caseRef))}</strong>`];
   if (kind === 'PLAN') {
-    lines.push(`Due ${escapeHtml(utcLabel(due))}`, `Planned ${escapeHtml(wallLabel(eventRecord.startDate))} → ${escapeHtml(wallLabel(eventRecord.endDate))}`, 'Your plan · this tab only, not sent');
+    lines.push(`Due ${escapeHtml(localLabel(due))}`, `Planned ${escapeHtml(wallLabel(eventRecord.startDate))} → ${escapeHtml(wallLabel(eventRecord.endDate))}`, 'Your plan · this tab only, not sent');
   } else if (kind === 'RESPONSE_WINDOW') {
-    lines.push(`Due ${escapeHtml(utcLabel(eventRecord.get('at')))}`, escapeHtml(eventRecord.get('source') || ''));
+    lines.push(`Due ${escapeHtml(localLabel(eventRecord.get('at')))}`, escapeHtml(eventRecord.get('source') || ''));
   } else {
-    lines.push(escapeHtml(utcLabel(eventRecord.get('at'))), `Due ${escapeHtml(utcLabel(due))}`, escapeHtml(eventRecord.get('source') || ''));
+    lines.push(escapeHtml(localLabel(eventRecord.get('at'))), `Due ${escapeHtml(localLabel(due))}`, escapeHtml(eventRecord.get('source') || ''));
   }
   return lines.join('<br>');
 }
@@ -192,11 +204,15 @@ function drawTimeRanges(scheduler, ranges) {
   layer.replaceChildren(...lines);
   // (external review 2026-11-10, "Dec 202") A header label cut by the axis end is hidden instead of showing "Dec 202".
   // Only visibility changes: Bryntum reuses header cells while scrolling, so the text itself is never rewritten.
-  const edge = scheduler.timeAxisSubGridElement?.getBoundingClientRect().right ?? Infinity;
+  // (N1 PF2) The same for a label cut by the axis start after a sideways scroll ("h 12" for "Th 12").
+  const axis = scheduler.timeAxisSubGridElement?.getBoundingClientRect();
+  const edge = axis?.right ?? Infinity;
+  const start = axis?.left ?? -Infinity;
   scheduler.element?.querySelectorAll('.b-sch-header-time-axis-cell > .b-sch-header-text').forEach((text) => {
     text.style.visibility = '';
     const box = text.getBoundingClientRect();
-    if (box.width && box.right > Math.min(edge, text.parentElement.getBoundingClientRect().right) - 2) text.style.visibility = 'hidden';
+    const cell = text.parentElement.getBoundingClientRect();
+    if (box.width && (box.right > Math.min(edge, cell.right) - 2 || box.left < Math.max(start, cell.left) + 2)) text.style.visibility = 'hidden';
   });
 }
 
@@ -208,18 +224,28 @@ const CARD_STATUS_SHORT = {
 };
 // (external review 2026-11-10 #8) One order for the cards and the timeline: a chip filters both, and the highlight puts
 // the tight cases first, soonest due first.
+// (N1 B, D-C21/PF5) The card says the case's own day count from the one dueDays() the case head and the queue use
+// ("Due in 1 day · no draft"), not the bucket's 3-day limit.
+function cardStatus(row) {
+  const days = dueDays(row.dueAt);
+  const when = days === null ? null : days < 0 ? 'Past due' : days === 0 ? 'Due today' : `Due in ${days} day${days === 1 ? '' : 's'}`;
+  if (!when || !['DUE_SOON_MISSING', 'DUE_SOON_NO_DRAFT', 'DUE_SOON'].includes(row.status)) return CARD_STATUS_SHORT[row.status] || row.statusLabel;
+  return row.status === 'DUE_SOON_MISSING' ? `${when} · evidence missing` : row.status === 'DUE_SOON_NO_DRAFT' ? `${when} · no draft` : when;
+}
 function orderedRows(rows, focus, glow) {
   const list = focus === 'tight' ? rows.filter(isTight) : focus === 'open' ? rows.filter((row) => !isTight(row)) : rows;
-  if (!glow) return list;
   const due = (row) => { const ms = Date.parse(row.dueAt ?? ''); return Number.isNaN(ms) ? Infinity : ms; };
-  return [...list.filter(isTight).sort((a, b) => due(a) - due(b)), ...list.filter((row) => !isTight(row))];
+  // (coordinator X07, judge A#3) the cards always run soonest due first, like the case queue; the highlight still lifts tight cases
+  if (!glow) return [...list].sort((a, b) => due(a) - due(b));
+  return [...list.filter(isTight).sort((a, b) => due(a) - due(b)), ...list.filter((row) => !isTight(row)).sort((a, b) => due(a) - due(b))];
 }
 
 function BoardList({ rows, plans, unscheduled, onSchedule, listRef }) {
-  return <ul ref={listRef} className="board-list" data-testid="evidence-board-list">{rows.map((row) => <li key={row.id} className={`board-row board-row-${row.status.toLowerCase()}${row.highlight ? ' board-row-urgent' : ''}${unscheduled.has(row.id) ? ' board-row-unscheduled' : ''}${!plans[row.id] && !unscheduled.has(row.id) ? ' board-row-noplan' : ''}`} data-testid="evidence-board-row" data-status={row.status} data-source={row.source}>
-    <div className="board-row-head"><strong>{row.caseRefShown}</strong>{row.source === 'sandbox' && <span className="board-row-source" data-testid="evidence-board-sandbox-tag">PayPal Sandbox</span>}<span className="board-row-status" title={row.statusLabel}>{CARD_STATUS_SHORT[row.status] || row.statusLabel}</span></div>
-    <dl><div title={row.reason}><dt>Reason</dt><dd>{gridReasonLabel(row.reason)}</dd></div><div><dt>Due</dt><dd>{row.dueAt ? utcLabel(row.dueAt) : '—'}</dd></div><div title={row.readinessLabel}><dt>Evidence</dt><dd>{gridEvidenceLabel(row)}{row.readiness?.manual ? ` · ${row.readiness.manual} need manual review` : ''}</dd></div><div><dt>Amount</dt><dd>{row.amount ? (row.source === 'sandbox' ? `${row.amount} · Sandbox` : `${row.amount} · synthetic`) : 'Not in case data'}</dd></div>
-      <div><dt>Plan</dt><dd data-testid="evidence-board-plan">{plans[row.id] ? `${PLAN_NAME} ${planLabel(plans[row.id])}` : unscheduled.has(row.id) ? <><strong className="board-unscheduled" data-testid="evidence-board-unscheduled" title={UNSCHEDULED_LABEL}>No evidence slot yet</strong> <button type="button" className="board-plan-reset" data-testid="evidence-board-schedule" onClick={() => onSchedule(row)}>Schedule a slot</button></> : row.source === 'sandbox' && row.providerStatus && row.providerStatus !== 'WAITING_FOR_SELLER_RESPONSE' ? 'Not waiting for the seller.' : row.dueAt ? PLAN_MESSAGES.NO_WINDOW : '—'}</dd></div></dl>
+  const narrow = usePhoneCopy();
+  return <ul ref={listRef} className="board-list" data-testid="evidence-board-list">{rows.map((row) => <li key={row.id} className={`board-row board-row-${row.status.toLowerCase()}${row.highlight && (dueDays(row.dueAt) ?? Infinity) <= 1 ? ' board-row-urgent' : ''}${unscheduled.has(row.id) ? ' board-row-unscheduled' : ''}${!plans[row.id] && !unscheduled.has(row.id) ? ' board-row-noplan' : ''}`} data-testid="evidence-board-row" data-status={row.status} data-source={row.source}>
+    <div className="board-row-head"><strong>{row.caseRefShown}</strong>{row.source === 'sandbox' && <span className="board-row-source" data-testid="evidence-board-sandbox-tag">PayPal Sandbox</span>}<span className="board-row-status" title={row.statusLabel}>{cardStatus(row)}</span></div>
+    <dl><div title={row.reason}><dt>Reason:</dt><dd>{gridReasonLabel(row.reason)}</dd></div><div><dt>Due:</dt><dd>{row.dueAt ? localLabel(row.dueAt) : '—'}</dd></div><div title={row.readinessLabel}><dt>Evidence:</dt><dd>{gridEvidenceLabel(row)}{row.readiness?.manual ? ` · ${row.readiness.manual} need manual review` : ''}</dd></div><div><dt>Amount:</dt><dd>{row.amount ? (row.source === 'sandbox' ? `${row.amount} · Sandbox` : `${row.amount} · demo`) : 'Not in case data'}</dd></div>
+      <div><dt>Plan:</dt><dd data-testid="evidence-board-plan">{plans[row.id] ? planLabel(plans[row.id]) : unscheduled.has(row.id) ? <><strong className="board-unscheduled" data-testid="evidence-board-unscheduled" title={UNSCHEDULED_LABEL}>No evidence slot yet</strong> <button type="button" className="board-plan-reset" data-testid="evidence-board-schedule" onClick={() => onSchedule(row)}>Schedule a slot</button></> : row.source === 'sandbox' && row.providerStatus && row.providerStatus !== 'WAITING_FOR_SELLER_RESPONSE' ? 'Not waiting for the seller.' : row.dueAt ? PLAN_MESSAGES.NO_WINDOW : '—'}</dd></div></dl>
   </li>)}</ul>;
 }
 
@@ -228,6 +254,7 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
   // `sandbox`: the console's live PayPal Sandbox dispute list (null when it holds sample data only).
   const board = useMemo(() => buildEvidenceBoard({ disputes, drafts, sandbox, now: Date.now() }), [disputes, drafts, sandbox]);
   const phone = useSyncExternalStore(subscribePhone, isPhone, () => false);
+  const phoneCopy = usePhoneCopy();
   const midViewport = useSyncExternalStore(subscribeMid, isMid, () => false);
   // (fix F3 D-C5) The board's own box, not the viewport, picks the desktop layout: inside the step's fold a 1440 window gives
   // the board about 660px, and the four desktop columns (648px) on an 880px canvas left the time axis 228px behind a
@@ -265,7 +292,7 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
 
   const resources = useMemo(() => (board?.rows || []).map((row) => ({
     id: row.id, name: `${row.caseRefShown} · ${row.reason}`, caseRef: row.caseRefShown, reasonText: gridReasonLabel(row.reason), reasonFull: row.reason, cls: row.cls,
-    dueText: row.dueAt ? utcLabel(row.dueAt) : 'No due date', readinessLabel: row.readinessLabel, gridEvidence: gridEvidenceLabel(row), amountText: row.amount ?? '—',
+    dueText: row.dueAt ? localLabel(row.dueAt) : 'No due date', readinessLabel: row.readinessLabel, gridEvidence: gridEvidenceLabel(row), amountText: row.amount ?? '—',
   })), [board]);
   // The events reach Bryntum once per board; later moves live in Bryntum's own store and in `plans`.
   const events = useMemo(() => (board ? [...board.events, ...planEvents(board.rows, restored)] : []), [board, restored]);
@@ -506,21 +533,24 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
   if (!board) return <p className="board-empty" data-testid="evidence-board-empty">Load the dispute case to see its evidence and response window.</p>;
   // Missing evidence and "no draft yet" are counted apart, so the summary never says none while a card reads "No draft yet" (r20 UX-2).
   const soon = [board.missingSoon && `${board.missingSoon} due within ${DUE_SOON_DAYS} days with evidence missing`, board.noDraftSoon && `${board.noDraftSoon} due within ${DUE_SOON_DAYS} days with no draft yet`].filter(Boolean);
+  // (N1 C05) Phone summary: the same counts, shorter, and the clock time only (the date is one tap away).
+  const soonPhone = [board.missingSoon && `${board.missingSoon} due within ${DUE_SOON_DAYS} days, evidence missing`, board.noDraftSoon && `${board.noDraftSoon} due within ${DUE_SOON_DAYS} days, no draft`].filter(Boolean);
+  const nowText = localLabel(board.nowIso);
   const timeline = available && BryntumScheduler;
   const unscheduled = new Set(unscheduledRows(board.rows, plans, Date.now()).map((row) => row.id));
   const liveRows = board.rows.filter((row) => row.source === 'sandbox').length;
   return <div ref={boxRef} className="evidence-board" data-testid="evidence-board">
     <p className="board-triage" data-testid="evidence-board-triage">{TRIAGE_CAPTION}{liveRows ? ` · ${liveRows} from the PayPal Sandbox dispute list` : ' · sample cases'}</p>
-    <p className="board-summary" data-testid="evidence-board-summary">{board.rows.length} case{board.rows.length === 1 ? '' : 's'} · {soon.length ? soon.join(' · ') : `none due within ${DUE_SOON_DAYS} days with evidence missing or no draft`}{unscheduled.size ? ` · ${unscheduled.size} with a deadline but no evidence slot scheduled` : ''} · now {utcLabel(board.nowIso)}{board.rows.length > 2 ? (phone ? ' · the cards are listed one under another' : ' · scroll the cards sideways for more →') : ''}</p>
+    <p className="board-summary" data-testid="evidence-board-summary">{board.rows.length} case{board.rows.length === 1 ? '' : 's'} · {phoneCopy ? (soonPhone.length ? soonPhone.join(' · ') : `none due within ${DUE_SOON_DAYS} days`) : soon.length ? soon.join(' · ') : `none due within ${DUE_SOON_DAYS} days with evidence missing or no draft`}{unscheduled.size ? ` · ${unscheduled.size} with a deadline but no evidence slot scheduled` : ''}{phoneCopy ? <> · {nowText.replace(/^[^,]*, /u, '')} <Info label="Now">now {nowText.replace(/,.*$/u, '')}</Info></> : ` · now ${nowText}`}</p>
     <BoardList listRef={listRef} rows={listRows} plans={plans} unscheduled={unscheduled} onSchedule={schedule} />
     {timeline ? <figure className={`board-timeline${phone ? ' board-timeline-phone' : mid ? ' board-timeline-fit' : ''}`} data-testid="evidence-board-timeline">
       <figcaption title="Bars are the seller response window up to the due date. Bryntum Scheduler Community (MIT).">
-        Times in UTC · case data read only · bars: response window and your Collect evidence plan · <span className="board-legend-now">now</span> and <span className="board-legend-due">due</span> lines{phone && <span className="board-swipe-hint" data-testid="evidence-board-swipe-hint"> · swipe the timeline sideways →</span>}
+        {phoneCopy ? <>Your zone ({viewerZone()}) · bars: window and plan</> : <>Times in your zone ({viewerZone()}) · bars: response window and your plan · <span className="board-legend-now">now</span> and <span className="board-legend-due">due</span> lines</>}<span className="board-swipe-hint" data-testid="evidence-board-swipe-hint"> · swipe →</span> <Info label="About the times">Times in your zone ({viewerZone()}). Case data is read only.</Info>
       </figcaption>
-      <p className="board-plan-help" id="evidence-board-plan-help" data-testid="evidence-board-plan-help">
-        Drag or resize each <strong>{PLAN_NAME}</strong> bar to plan when you will gather the proof, in whole hours, between now and the due date.
-        With a bar focused (Tab, then the arrow keys), Shift+←/→ moves it one hour and Alt+←/→ moves its end.
-      </p>
+      <div className="board-plan-help" id="evidence-board-plan-help" data-testid="evidence-board-plan-help">
+        <p>{phoneCopy ? 'Drag or resize a bar to plan, in whole hours, before the due date.' : 'Drag or resize a bar to plan when you will gather proof, in whole hours, between now and the due date.'}</p>
+        <Fold summary="Keyboard help" testId="evidence-board-keyboard-help">With a bar focused (Tab, then the arrow keys), Shift+←/→ moves it one hour and Alt+←/→ moves its end.</Fold>
+      </div>
       <div className="board-chips" role="group" aria-label="Quick classify cases by urgency" data-testid="evidence-board-urgency">
         {URGENCY_CHIPS.map(([key, label]) => <button key={key} type="button" aria-pressed={focus === key} data-testid={`evidence-board-urgency-${key}`} onClick={() => setFocus(key)}>{label} <span>{urgencyCounts(board.rows)[key]}</span></button>)}
         <button type="button" aria-pressed={glow} data-testid="evidence-board-glow" onClick={() => setGlow((on) => !on)}>Highlight tight deadlines</button>
@@ -530,7 +560,7 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
         <p className="board-plan-message" role="status" aria-live="polite" data-testid="evidence-board-plan-message" title={message}>{message}</p>
         <button type="button" className="board-plan-reset" data-testid="evidence-board-plan-reset" onClick={resetPlans}>Reset plans</button>
         <button type="button" className="board-plan-reset board-plan-download" data-testid="evidence-board-plan-ics" disabled={!Object.keys(plans).length} aria-describedby="evidence-board-plan-ics-note" onClick={downloadPlan}>Download my plan (.ics)</button>
-        <small id="evidence-board-plan-ics-note" className="board-plan-ics-note" data-testid="evidence-board-plan-ics-note">{Object.keys(plans).length ? 'A calendar file of your Collect evidence bars.' : PLAN_ICS_EMPTY_REASON}</small>
+        <small id="evidence-board-plan-ics-note" className="board-plan-ics-note" data-testid="evidence-board-plan-ics-note">{Object.keys(plans).length ? 'Calendar file of your plan.' : PLAN_ICS_EMPTY_REASON}</small>
       </div>
       <div className="board-scroll" tabIndex={0} role="region" aria-label="Evidence deadline timeline, scrolls sideways" aria-describedby="evidence-board-plan-help">
         {/* Keyed on the layout too: a phone and a desktop scheduler differ in columns and fit, so a fresh one is made. */}

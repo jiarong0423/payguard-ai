@@ -81,7 +81,7 @@ assert.ok(app.includes("import { ApiError, apiRequest, paypalIssueLines, retrySe
 assert.ok(app.includes('{waitFailureMessage(error)}<PaypalIssueNote error={error} />'), 'banner shows the PayPal reason');
 const note = app.slice(app.indexOf('function PaypalIssueNote('), app.indexOf('\n}\n', app.indexOf('function PaypalIssueNote(')));
 assert.ok(note.includes('paypalIssueLines(error?.paypalIssue)') && note.includes('error.paypalDebugId'));
-assert.ok(note.includes('data-testid="paypal-issue-line"') && note.includes('PayPal debug ID'));
+assert.ok(note.includes('data-testid="paypal-issue-line"') && note.includes('PayPal request ID'));
 assert.equal(/paypal_issue|dangerouslySetInnerHTML/u.test(note), false, 'only the checked ApiError fields reach the page');
 assert.equal(/[\u3000-\u9fff\uac00-\ud7af\uff00-\uffef]/u.test(note), false, 'English only');
 

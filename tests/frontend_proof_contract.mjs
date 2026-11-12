@@ -59,8 +59,8 @@ assert.ok(!JSON.stringify(facts).includes('mocked-transport tests only'), 'no re
 const gateRow = facts.rows.find((row) => row.id === 'dispute-submit-gated').proven;
 assert.ok(/six sends/u.test(gateRow) && /hosted demo on 2026-11-10/u.test(gateRow) && !/two sends/u.test(gateRow), 'gate row names the six sends');
 // (r34) Each send row names the PayPal-Debug-Id from its receipt, and the page footer names every Sandbox receipt.
-assert.ok(facts.rows.find((row) => row.id === 'dispute-evidence-sent').how.includes('PayPal-Debug-Id f908765a01293'), 'send row names the Debug-Id');
-assert.ok(facts.rows.find((row) => row.id === 'dispute-evidence-sent-recorded').how.includes('PayPal-Debug-Id f2088142a6218'), 'recorded send row names the Debug-Id');
+assert.ok(facts.rows.find((row) => row.id === 'dispute-evidence-sent').how.includes('PayPal request ID f908765a01293'), 'send row names the Debug-Id');
+assert.ok(facts.rows.find((row) => row.id === 'dispute-evidence-sent-recorded').how.includes('PayPal request ID f2088142a6218'), 'recorded send row names the Debug-Id');
 // (r48) The recorded send row names its readback Debug-Id; refusals are labelled apart from the real calls.
 assert.ok(facts.rows.find((row) => row.id === 'dispute-evidence-sent-recorded').how.includes('ca5554cf42ef6'), 'recorded send row names the readback Debug-Id');
 assert.deepEqual(facts.rows.filter((row) => row.refused).map((row) => row.id), ['dispute-mismatch-refused', 'dispute-unauthorized-refused', 'dispute-resend-amount-refused']);

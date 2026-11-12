@@ -13,7 +13,7 @@ assert.ok(start > 0 && body.length > 0, 'AiTry exists');
 for (const path of ["'/guide/state?scenario=dispute'", "'/guide/start'", "'/guide/turn'"]) assert.ok(body.includes(path), `uses ${path}`);
 assert.equal(/https?:\/\//u.test(body), false, 'no outside address');
 assert.ok(body.includes("view.chooser_mode === 'gemini'") && body.includes('use the Step 03 guide below instead'), 'never sends while the guide is on Gemini');
-assert.ok(body.includes('Rules only · runs here, no model call · your sentence is added to the Step 03 guide for this case'), 'says it joins the guide');
+assert.ok(body.includes('Rules only · no AI call · adds to the Step 03 guide'), 'says it joins the guide');
 assert.ok(body.includes('Confirmed in the guide:') && body.includes('data-testid="dispute-ai-confirmed"'), 'lists items confirmed outright');
 assert.ok(body.includes('Marked in the guide:') && body.includes('data-testid="dispute-ai-marked"'), 'lists items marked');
 assert.ok(body.includes('Not added to the guide: ${failure.message}'), 'a refused turn shows the reason');

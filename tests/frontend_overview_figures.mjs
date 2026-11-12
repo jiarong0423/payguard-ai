@@ -104,7 +104,7 @@ const readme = read('README.md').split('\n');
 assert.ok(readme[130].includes("The model only maps a seller's sentence to closed form items and a closed tag, and code, not the model, decides what is complete."), 'README.md:131 AI boundary');
 assert.ok(/^\| Gemini \| used \| Closed-option evidence guide/u.test(readme[45]), 'README.md:46 Gemini row');
 assert.ok(readme[41].includes(`replays the recording dated ${ai.studio_date}, with its four questions`) && ai.studio_questions === 4, 'README.md:42 AG Studio replay');
-assert.ok(read('docs/SPONSOR_TECH_MAP.md').split('\n')[18].startsWith('| Gemini | Closed-option guide chooser'), 'SPONSOR_TECH_MAP.md:19');
+assert.ok(read('docs/SPONSOR_TECH_MAP.md').split('\n')[18].startsWith('| Gemini | The guide’s AI step'), 'SPONSOR_TECH_MAP.md:19');
 
 // The page reads these files only, nothing typed in.
 const page = read('frontend/src/OverviewFlow.jsx');
@@ -120,7 +120,7 @@ assert.equal(clips.length, 8, 'AI clip, three step clips, four figure clips');
 for (const clip of clips) assert.equal((clip.match(/<SourceLine |className="tg-source"/gu) || []).length, 1, 'exactly one source per clip');
 assert.ok(!/RECEIPT_|docs\/evidence\/|\.json[^']/u.test(page.replace(/^import .*$/gmu, '').replace(/title=(\{`[^`]*`\}|\{[\w.]+\}|"[^"]*")/gu, '').replace(/^\s*\/\/.*$/gmu, '').replace(/\{\/\*[\s\S]*?\*\/\}/gu, '')), 'no file path in visible text');
 // (F 2026-11-12) Dates through format.js dateLabel ("10 Nov 2026"), the site-wide date format; was "Nov 10".
-assert.ok(page.includes('{dateLabel(sendRow?.date)} hosted send') && page.includes('{dateLabel(replay.date)} local send: recorded replay (nothing is sent now)'), 'card 03 and the replay name their dates (2026-11-12: replay summary reworded on request)');
+assert.ok(page.includes('{dateLabel(sendRow?.date)} hosted send') && page.includes('Recorded replay: {dateLabel(replay.date)} local send · Nothing is sent now'), 'card 03 and the replay name their dates (2026-11-12: replay summary reworded on request)');
 // (F 2026-11-12) Card 03 says "Sandbox send" next to its HOSTED DEMO label (review_INTEG section 4 item 11), not "Real".
 assert.ok(page.includes('Sandbox send · {send.case_ref}') && !page.includes('Real Sandbox send'), 'card 03 wording');
 // (F 2026-11-12) Card 03's read-back is still under review: neutral clock, not the green check (review_FULL #32).

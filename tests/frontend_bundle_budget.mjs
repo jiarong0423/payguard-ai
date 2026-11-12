@@ -26,7 +26,8 @@ const distRoot = join(projectRoot, 'frontend', 'dist');
 // more than the local one. The format-unification phase must delete the duplicate console CSS to win it back.
 // 188 kB (was 187 kB), 2026-11-12 visual team phase 2: focus/keyfig/glass/status-shape classes, the token-driven
 // chart theme hook and the shared icon component; the page owners delete the console CSS these replace in the same round.
-const FIRST_LOAD_BUDGET = 192512;
+// 2026-11-12 owner: no size cap; budget kept to show growth
+const FIRST_LOAD_BUDGET = 204800;
 const GRID_ENTRY = 'grid/agGrid.jsx';
 
 const walk = (dir) => readdirSync(dir).flatMap((name) => {

@@ -151,7 +151,7 @@ async function runLifecycle(worker, type) {
 // 5. Offline page says the console cannot reach its API, explains the hosted wake-up and the local start, and loads nothing from elsewhere.
 {
   const offlineHtml = readFileSync(resolve(publicDir, 'offline.html'), 'utf8');
-  assert.match(offlineHtml, /cannot reach its API/);
+  assert.match(offlineHtml, /cannot reach its server/);
   assert.match(offlineHtml, /tools\/run\.sh console/);
   assert.doesNotMatch(offlineHtml, /<script|src="https?:|href="https?:/i);
   // (S26 2026-11-12) Console look: newsprint canvas, square ink button, Newsreader + Public Sans from /fonts, a Phosphor icon,

@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { apiRequest, POLICY_CLAIM_TYPES, policyInstant } from './api.js';
 import { operatorLabel, operatorLabels } from './operatorLabels.js';
 
-const labels = { source_compliance: 'AUP preflight screen', velocity_guard: 'Velocity and account-risk signals', dispute_mediation: 'Dispute mediation' };
+const labels = { source_compliance: 'Policy pre-check screen', velocity_guard: 'Velocity and account-risk signals', dispute_mediation: 'Dispute mediation' };
 const panelLabel = 'Rule check';
-const syntheticText = 'Authored synthetic reference statement requiring human review.';
+const syntheticText = 'Authored demo reference statement requiring human review.';
 const authority = 'REFERENCE_ONLY_NO_ACTION_AUTHORIZATION';
 function SourceDate({ label, value, status }) {
   return <div><dt>{label}</dt><dd>{value ?? '— (unknown)'}<small>{status === undefined ? 'No status supplied; human review required' : operatorLabel(status)}</small></dd></div>;
@@ -96,7 +96,7 @@ export default function PolicyPanel({ theme, session, revision, unavailable, onS
     } finally { if (isCurrent()) { setEvaluating(false); gateController.current = null; } }
   }
   return <details open={open} onToggle={(event) => onToggle?.(event.currentTarget.open)} className="reference-panel policy-panel" data-testid={`policy-panel-${theme}`}>
-    <summary id={`${prefix}-summary`} aria-controls={`${prefix}-content`}><span>Policy evidence and synthetic-claim check</span><span>{panelLabel}</span></summary>
+    <summary id={`${prefix}-summary`} aria-controls={`${prefix}-content`}><span>Policy evidence and demo-claim check</span><span>{panelLabel}</span></summary>
     <div className="reference-inner" id={`${prefix}-content`} role="region" aria-labelledby={`${prefix}-summary`}>
       <p className="reference-boundary"><strong>Human reference · not current-policy applicability certification</strong> · No payment, refund, assurance, or submission authority. This panel uses fixed public summaries and runs no AI model.</p>
       <form className="reference-form" onSubmit={assess}>
@@ -113,7 +113,7 @@ export default function PolicyPanel({ theme, session, revision, unavailable, onS
           <p><strong>{operatorLabel(assessment.status)}</strong> · current-policy applicability: {operatorLabel(assessment.current_policy_applicability)}; human review is required.</p>
           <p>US-profile sources: {assessment.coverage.regional_source_count}; sources for this theme: {assessment.coverage.selected_source_count}; citations: {assessment.coverage.selected_chunk_count}. Coverage complete: {String(assessment.coverage.complete)}.</p>
           <p>Official-policy citations by theme: {Object.entries(assessment.coverage.official_policy_chunk_count_by_theme).map(([t,n]) => `${labels[t]} ${n}`).join('; ')}. Themes without official-policy coverage: {assessment.coverage.missing_official_policy_themes.map(t=>labels[t]).join(', ') || 'none; summaries still do not equal complete policy'}</p>
-          {assessment.chunks.length === 0 && <p>No reference coverage exists for this region and theme; synthetic-claim checking is disabled.</p>}
+          {assessment.chunks.length === 0 && <p>No reference coverage exists for this region and theme; demo-claim checking is disabled.</p>}
           <p className="policy-code">{operatorLabels(assessment.reason_codes).join(' · ')}</p>
           {assessment.sources.map(source => <div key={source.source_id} className="policy-source">
             <p className="flat-label">{source.title} · {operatorLabel(source.observation_status)}</p>
@@ -129,12 +129,12 @@ export default function PolicyPanel({ theme, session, revision, unavailable, onS
       </section>
       <div className="policy-gate-form reference-form">
         <label htmlFor={`${prefix}-citation`}>Fixed evidence citation<select id={`${prefix}-citation`} data-testid={`policy-citation-${theme}`} disabled={disabled || !assessment || assessing || !assessment.chunks.length} value={citation} onChange={e=>changeGate(setCitation,e.target.value)}><option value="">Assess first, then select a citation</option>{assessment?.chunks.map(c=><option key={c.chunk_id} value={c.chunk_id}>{c.chunk_id} · {operatorLabel(c.material_type)} · {operatorLabel(c.case_stage)}</option>)}</select></label>
-        <label htmlFor={`${prefix}-claim-type`}>Synthetic claim type<select id={`${prefix}-claim-type`} data-testid={`policy-claim-type-${theme}`} disabled={disabled} value={claimType} onChange={e=>changeGate(setClaimType,e.target.value)}>{POLICY_CLAIM_TYPES.map(t=><option key={t} value={t}>{operatorLabel(t)}</option>)}</select></label>
+        <label htmlFor={`${prefix}-claim-type`}>Demo claim type<select id={`${prefix}-claim-type`} data-testid={`policy-claim-type-${theme}`} disabled={disabled} value={claimType} onChange={e=>changeGate(setClaimType,e.target.value)}>{POLICY_CLAIM_TYPES.map(t=><option key={t} value={t}>{operatorLabel(t)}</option>)}</select></label>
         <p className="reference-query">Fixed synthetic sentence: {syntheticText} (synthetic test only). This sentence tests structure only and reads no product description, customer data, or other query.</p>
-        <button type="button" data-testid={`policy-evaluate-${theme}`} disabled={disabled || !assessment || !citation || assessing || evaluating || !contextValid} onClick={evaluate}>{evaluating ? 'Checking structure' : 'Check synthetic claim'}</button>
+        <button type="button" data-testid={`policy-evaluate-${theme}`} disabled={disabled || !assessment || !citation || assessing || evaluating || !contextValid} onClick={evaluate}>{evaluating ? 'Checking structure' : 'Check demo claim'}</button>
       </div>
       {gateError && <p className="reference-error" role="alert" data-testid={`policy-gate-error-${theme}`}>{gateError.message}</p>}
-      <section aria-label={`${labels[theme]} synthetic claim result`} data-testid={`policy-gate-${theme}`} aria-live="polite" aria-busy={evaluating}>
+      <section aria-label={`${labels[theme]} demo claim result`} data-testid={`policy-gate-${theme}`} aria-live="polite" aria-busy={evaluating}>
         {gate && <><p><strong>{operatorLabel(gate.status)}</strong></p>{gate.claim_gates.map(g=><p className="policy-code" key={g.claim_index}>{operatorLabel(g.claim_type)} · {operatorLabel(g.status)}<br />Citations: {g.trusted_citation_chunk_ids.join(', ') || 'no trusted citations'}<br />{operatorLabels(g.reason_codes).join(' · ') || 'No structural issue found'}</p>)}<p>Semantic meaning, personal-data handling, prompt-injection resistance, and action wording require human review. No AI model runs in this check. A structural pass does not prove semantic grounding, policy applicability, or financial authority.</p><details><summary>Structural-check limitations</summary>{gate.limitations.map((s,i)=><p key={i}>{s}</p>)}</details></>}
       </section>
     </div>

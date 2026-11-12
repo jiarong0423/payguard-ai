@@ -40,7 +40,7 @@
   .journey { margin-bottom: 8px; border-radius: var(--pg-radius-control); }
   .journey-step { min-height: 40px; padding: 6px 12px; gap: 10px; }
   .journey-step > div { gap: 0; }
-  .journey-step strong { font-size: 15px; line-height: 1.2; }
+  .journey-step strong { font-size: 16px; line-height: 1.2; }
   .journey-step .journey-status { line-height: 1.2; }
   .journey-where { margin: 0 2px 8px; }
 

@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { apiRequest, retrySecondsLeft, waitText, withoutFixedWait } from './api.js';
+import { Short } from './theme/copy.jsx';
 import './GuideLive.css';
 
 // Local stand-in with the props of C1's shared GapGrid ({ items, testIdPrefix }), built from the current GuideReplay pieces.
@@ -569,7 +570,7 @@ export default function GuideLive({ session, Disclosure, Badge, request, scenari
         </div>
       </div>}
       {/* (r30 J4 #6c) Kept, but collapsed at the very end of the panel, out of the main reading path. */}
-      <details className="technical-details guide-live-technical" data-testid="guide-live-technical"><summary>Technical details</summary><p className="guide-live-label">A chooser may only point a sentence at a form item and say who said it. Fixed rules decide what counts, compute the gap and pick the wording. Only code marks an item filled in: a form value that passes the rule check, or a closed value the rule layer reads from your own words, which you confirm in the summary. Your text and form values are not stored.</p></details>
+      <details className="technical-details guide-live-technical" data-testid="guide-live-technical"><summary>Technical details</summary><p className="guide-live-label"><Short wide="The AI step may only point a sentence at a form item and say who said it." phone="The AI step only points a sentence at a form item." more="It also says who said it." label="Who said it" /> Fixed rules decide what counts, compute the gap and pick the wording. Only code marks an item filled in: a form value that passes the rule check, or a closed value the rule layer reads from your own words, which you confirm in the summary. Your text and form values are not stored.</p></details>
     </section> : null}
   </Disclosure>;
 }

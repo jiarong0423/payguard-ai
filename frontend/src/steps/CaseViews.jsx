@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { apiRequest } from '../api.js';
 import { dueDays } from '../dueDays.js';
 import studioRun from '../data/studio_agent_run_v1.json';
+import ProofMatch from '../pages/ProofMatch.jsx';
 
 // (R6 S29) The 10 Nov hosted send answered the hosted demo's own case-ref-001 (RECEIPT_20261110_hosted_live.md). Each
 // session makes a fresh demo case with the same name, so that one is marked as a different, unsent case.
@@ -18,6 +19,7 @@ const NOT_HOSTED = 'Demo case · not the 10 Nov hosted send';
 // (R6 S30) One recorded AG Studio answer, read from the committed recording, never typed in or asked again.
 const DUE_RUN = studioRun.runs.find((run) => run.question === 'Which case is due first?');
 const DUE_ROWS = DUE_RUN ? [...DUE_RUN.reply.matchAll(/`(case-ref-\d+)`[\s\S]*?days_to_due\]: (\d+)/gu)].map((match) => [match[1], Number(match[2])]) : [];
+import { Short } from '../theme/copy.jsx';
 import './caseViews.css';
 
 const VIEWER_ZONE = zoneLabel(-new Date().getTimezoneOffset());
@@ -42,7 +44,7 @@ export function CaseQueue({ Icon, DueText, cases, selected, busy, onPick }) {
   const rows = (Array.isArray(cases) ? cases : []).slice().sort((a, b) => (caseDue(a) ?? Infinity) - (caseDue(b) ?? Infinity));
   const urgent = rows.filter((item) => caseDue(item) !== null && caseDue(item) <= 1).length;
   return <section className="tg-ledger ds-queue tg-block tg-block--ds-queue" aria-labelledby="ds-queue-title">
-    <p className="ds-queue__cap tg-box" id="ds-queue-title"><b>Case queue</b><span>Demo cases in this session · most urgent first</span></p>
+    <p className="ds-queue__cap tg-box" id="ds-queue-title"><b>Case queue</b><span>Demo cases · most urgent first</span></p>
     {rows.length ? <>
       <p className="ds-queue__head" aria-hidden="true"><span>Case · Reason</span><span>Amount · Due</span></p>
       <ol className="ds-queue__list tg-box">{rows.map((item) => <li key={item.case_ref}>
@@ -75,8 +77,8 @@ export function CaseHead({ Icon, item, draft, sent, onProof }) {
       <span className="tg-tag ds-id" tabIndex={0} data-link={`case:${item.case_ref}`}><Icon name="file" size={14} />{item.case_ref}</span>
       <span className="tg-tag ds-id" tabIndex={0} data-link={`order:${item.order_ref}`}><Icon name="layers" size={14} />{item.order_ref}</span>
       {draft && <span className="tg-tag" tabIndex={0} data-link="file:review-zip"><Icon name="lock" size={14} />Review ZIP</span>}
-      {sent && <span className="tg-tag" tabIndex={0} data-link="paypal:send"><Icon name="link" size={14} />PayPal-Debug-Id</span>}
-      {sent?.readback && <span className="tg-tag" tabIndex={0} data-link="paypal:readback"><Icon name="check" size={14} />Read-back</span>}
+      {sent && <span className="tg-tag" tabIndex={0} data-link="paypal:send"><Icon name="link" size={14} />PayPal request ID</span>}
+      {sent?.readback && <span className="tg-tag" tabIndex={0} data-link="paypal:readback"><Icon name="check" size={14} />PayPal showed</span>}
     </p>
     <SourceLine kind="SYNTHETIC" text="Demo case made for this session; Seller Protection: PayPal decides if it applies" title="backend/app/store.py (demo dispute cases)" testId="case-source" />
     <SourceLine kind="HOSTED DEMO" source="hosted_receipt" testId="case-hosted-source"><a className="tg-link" href="#proof" data-testid="case-proof-link" onClick={(event) => { event.preventDefault(); onProof(); }}>The real 10 Nov 2026 send is on Proof</a>{item.case_ref === HOSTED_CASE && <> · <a className="tg-link" href="#hosted-send" data-testid="case-hosted-link">See that send below</a></>}</SourceLine>
@@ -93,8 +95,8 @@ export function CaseLog({ Icon, item, draft, receipt, sent }) {
     { at: item.opened_at, who: 'Buyer', what: `opened a dispute: ${operatorLabel(item.reason)}`, next: draft ? '' : 'Next: prepare the evidence draft.', link: `case:${item.case_ref}` },
     draft && { who: 'You', what: 'prepared the evidence draft and the review ZIP', next: receipt ? '' : 'Next: check it, then record your review.', link: 'file:review-zip', state: 'is-done' },
     receipt && { at: receipt.reviewed_at, who: 'You', what: 'recorded your review (local, demo)', state: 'is-done' },
-    sent && { who: 'PayPal', what: 'received the evidence (Sandbox)', ref: `PayPal-Debug-Id ${sent.debug || 'not returned'}`, link: 'paypal:send', state: 'is-done' },
-    item.seller_response_due_date && { at: item.seller_response_due_date, who: 'PayPal', what: 'seller response due', next: 'PayPal decides the case.', state: days !== null && days <= 1 ? 'is-risk' : 'is-pending', due: days !== null && days <= 1 },
+    sent && { who: 'PayPal', what: 'received the evidence (Sandbox)', ref: `PayPal request ID ${sent.debug || 'not returned'}`, link: 'paypal:send', state: 'is-done' },
+    item.seller_response_due_date && { at: item.seller_response_due_date, who: 'PayPal', what: <>seller response <span className="ds-log__due">due</span></>, next: 'PayPal decides the case.', state: days !== null && days <= 1 ? 'is-risk' : 'is-pending', due: days !== null && days <= 1 },
   ].filter(Boolean);
   // (R5) The day sits in the left column once; the dateline under it keeps only the time and zone.
   return <ol className="tg-log ds-log tg-mod tg-block" data-testid="case-log" aria-label="Case timeline">{rows.map((row, index) => <li key={index} className={`tg-log__entry ${row.state || ''}`} data-link={row.link}>
@@ -143,8 +145,8 @@ function AiTry({ session, onOpenGuide }) {
     }
   };
   return <form className="ds-ai__try tg-box" data-testid="dispute-ai-try" onSubmit={run}>
-    <label htmlFor="dispute-ai-text"><b>Try it</b> <span className="tg-small">Rules only · runs here, no model call · your sentence is added to the Step 03 guide for this case</span></label>
-    <div className="ds-ai__tryrow"><input id="dispute-ai-text" data-testid="dispute-ai-input" value={text} maxLength={200} placeholder="e.g. tracking shows delivered on Monday" onChange={(event) => setText(event.target.value)} /><button type="submit" className="tg-btn tg-btn--secondary tg-btn--sm" data-testid="dispute-ai-run" disabled={busy || !session || !text.trim()}>{busy ? 'Checking…' : 'Check'}</button></div>
+    <label htmlFor="dispute-ai-text"><b>Try it</b> <span className="tg-small">Rules only · no AI call · adds to the Step 03 guide</span></label>
+    <div className="ds-ai__tryrow"><input id="dispute-ai-text" data-testid="dispute-ai-input" value={text} maxLength={200} placeholder="e.g. delivered on Monday" onChange={(event) => setText(event.target.value)} /><button type="submit" className="tg-btn tg-btn--secondary tg-btn--sm" data-testid="dispute-ai-run" disabled={busy || !session || !text.trim()}>{busy ? 'Checking…' : 'Check'}</button></div>
     {/* (a11y r7) The live region is on the page from the start; only its content changes. */}
     <div className="ds-ai__result" role="status" data-testid="dispute-ai-result" hidden={!out}>{out && (out.note ? <p>{out.note}</p> : <>
       {out.confirmed.length > 0 && <p data-testid="dispute-ai-confirmed">Confirmed in the guide: <b>{out.confirmed.join(', ')}</b></p>}
@@ -162,7 +164,7 @@ export function DisputeAiClip({ chooser, openItems = 0, onOpenGuide, session }) 
     <ol className="ds-ai__flow tg-box">
       <li><b>Your sentence</b><span>Tell the guide what happened, in your own words.</span></li>
       <li><b>Evidence item</b><span>Gemini points the sentence at one missing item{openItems > 0 ? ` · ${openItems} still open` : ''}.</span></li>
-      <li><b>Program check</b><span>Fixed rules decide what counts; the model cannot mark evidence by itself.</span></li>
+      <li><b>Program check</b><span>Fixed rules decide what counts, not the AI.</span></li>
     </ol>
     <AiTry session={session} onOpenGuide={onOpenGuide} />
     <p className="ds-ai__state"><button type="button" className="tg-btn tg-btn--text tg-btn--sm" data-testid="dispute-ai-open-guide" onClick={onOpenGuide}>Open the full guide</button></p>
@@ -187,10 +189,12 @@ const HOSTED_SEND = [
 export function HostedSendLog() {
   return <section id="hosted-send" className="ds-hosted tg-mod tg-block" data-testid="hosted-send-log" aria-labelledby="hosted-send-title">
     <p className="tg-wire__head" id="hosted-send-title">Recorded hosted send · 10 Nov 2026</p>
-    <p className="tg-small">The one real send made from the public hosted demo on 10 Nov 2026, for the hosted demo's own case-ref-001. The demo case-ref-001 in the queue above is a different case and has not been sent. Times as written in the receipt.</p>
+    {/* (J-B, judge B #6 via J-A) This record is the Proof row of the hosted live send. */}
+    <p className="ds-hosted__proof"><ProofMatch row="dispute-hosted-send-live" /></p>
+    <p className="tg-small"><Short wide="The one real send from the hosted demo (10 Nov 2026), for the hosted demo’s own case-ref-001. It is a different case from the demo case-ref-001 above, which has not been sent. Times as written in the receipt." phone="The one real send, 10 Nov: a different case-ref-001. Demo case not sent." more="The one real send from the hosted demo (10 Nov 2026), for the hosted demo’s own case-ref-001. It is a different case from the demo case-ref-001 above, which has not been sent. Times as written in the receipt." /></p>
     <ol className="tg-log ds-log">{HOSTED_SEND.map(([when, who, what, debug, line, call]) => <li key={line} className="tg-log__entry is-done" data-link={debug ? `paypal:${debug}` : undefined}>
       <span className="tg-log__when">{when}</span>
-      <div className="tg-log__body"><p className="tg-log__title"><span className="tg-log__who">{who}</span>{what}</p>{debug && <span className="tg-log__ref" title={`${call} · receipt line ${line}`}>PayPal reference {debug}</span>}</div>
+      <div className="tg-log__body"><p className="tg-log__title"><span className="tg-log__who">{who}</span>{what}</p>{debug && <span className="tg-log__ref" title={`${call} · receipt line ${line}`}>PayPal request ID {debug}</span>}</div>
     </li>)}</ol>
     <SourceLine kind="HOSTED DEMO" source="hosted_receipt" testId="hosted-send-source" />
   </section>;

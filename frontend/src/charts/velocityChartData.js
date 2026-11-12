@@ -34,8 +34,8 @@ export function hourLabel(ms, offsetMinutes = 0) {
 
 /**
  * Build one row per hour: the baseline window first, then the spike (observation) window.
- * Baseline rows carry the synthetic baseline rate the velocity signal compares against;
- * spike rows carry the captured amount summed from synthetic transactions in that hour.
+ * Baseline rows carry the usual rate (demo) the velocity signal compares against;
+ * spike rows carry the captured amount summed from demo transactions in that hour.
  * The spike window is left-open, right-closed, the same boundary the backend uses.
  */
 export function buildVelocityHourlyRows(velocity, transactions, { offsetMinutes = 0 } = {}) {
@@ -152,7 +152,7 @@ export function velocityChartOptions({ rows, reviewLine, currency, offsetMinutes
         type: 'bar', xKey: 'label', yKey: 'baseline', yName: 'Usual hours', fill: BASELINE_FILL, stacked: true, cornerRadius: 0, strokeWidth: 0,
         // (vteam viz) With the clicked-hour panel (onPick) the default white tooltip is off: one detail layer, not two.
         tooltip: { enabled: !onPick, renderer: ({ datum }) => ({ heading: 'Baseline window', title: rangeLabel(datum, offsetMinutes),
-          data: [{ label: 'Synthetic baseline rate', value: `${money(datum.baseline, currency)}/h` }] }) },
+          data: [{ label: 'Usual rate (demo)', value: `${money(datum.baseline, currency)}/h` }] }) },
       },
       {
         type: 'bar', xKey: 'label', yKey: 'spike', yName: 'Spike hour above the review line', fill: FLAG_FILL, stacked: true,

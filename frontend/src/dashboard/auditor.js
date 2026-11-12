@@ -25,8 +25,8 @@ export const ANSWER_WIDGET_ID = ANSWER_SLOTS.readiness;
 export const ANSWER_PAGE_ID = 'readiness';
 export const ANSWER_SLOT = Object.freeze({ xTrack: 0, yTrack: 18, xSpan: 24, ySpan: 14 });
 export const BUILT_IN_AGENT_IDS = Object.freeze(['lead', 'data', 'page', 'planning', 'widget']);
-export const BOUNDARY = 'Read only: this page orders and shows synthetic records. It makes no dispute decision, predicts no outcome and submits nothing to PayPal.';
-export const BUILT_IN_OFF = 'Studio\'s built-in agents (lead, data, page, planning, widget) are off: no model is configured, and the hosted demo makes no model calls.';
+export const BOUNDARY = 'Read only: this page orders and shows demo records. It makes no dispute decision, predicts no outcome and submits nothing to PayPal.';
+export const BUILT_IN_OFF = 'Studio\'s built-in agents (lead, data, page, planning, widget) are off: no AI is configured, and the hosted demo makes no AI calls.';
 export const BUILT_IN_LIVE = 'Studio\'s built-in agents (lead, data, page, planning, widget) are on: they use Gemini through the console\'s governed route (local live mode, call caps, no key in the browser).';
 // (rehearsal 2026-11-04) The widget example used all 20 Studio calls and ended with no widget; this question ran in
 // six agent turns on 2026-11-04 and matched the rows.
@@ -289,7 +289,7 @@ export function createEvidenceAuditor({ studio, getState, data, delegate = null,
   return {
     id: AUDITOR_ID,
     name: 'Evidence auditor',
-    description: 'Answers fixed evidence-readiness questions from the synthetic records with code, and builds the answer on the canvas with Studio tools.',
+    description: 'Answers fixed evidence-readiness questions from the demo records with code, and builds the answer on the canvas with Studio tools.',
     async *run(input, ctx = {}) {
       const { threadId, runId } = input;
       const toolCtx = toolContext(input, ctx.signal);

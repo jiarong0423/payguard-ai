@@ -9,7 +9,7 @@
   /* Draft view: routing, requirements, step 01 proof, download strip and review box. */
   #disputes .dispute-route, #disputes .restricted-summary { padding: 8px 12px; margin-bottom: 8px; gap: 12px; }
   #disputes .dispute-route > div { gap: 1px; }
-  #disputes .dispute-route strong { font-size: 15px; }
+  #disputes .dispute-route strong { font-size: 16px; }
   #disputes .requirement-list { margin: 0 0 8px; gap: 6px; }
   #disputes .requirement-list > div { padding: 8px 12px; gap: 2px 12px; }
   #disputes .time-evidence { margin-top: 8px; padding: 8px 12px; }
