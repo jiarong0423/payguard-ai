@@ -13,7 +13,9 @@ assert.ok(topbar.includes("{!hosted && <TopbarSandbox connected={sandbox?.status
 const card = app.slice(app.indexOf('function TopbarSandbox('), app.indexOf('// "Start here" box'));
 assert.ok(card.includes('data-testid="topbar-sandbox-connect"') && card.includes('disabled={disabled || connected}'), 'front face: connect button');
 assert.ok(card.includes('data-testid="topbar-sandbox-status"') && card.includes('Sandbox connected'), 'back face: connected');
-assert.equal(card.split('topbar-sandbox-breath').length - 1, 2, 'breathing light on both faces');
+// (R7 T7) The state is said once: the words "Not connected" beside the button, so the front face drops its dot;
+// the connected face keeps its breathing light.
+assert.equal(card.split('topbar-sandbox-breath').length - 1, 1, 'breathing light on the connected face');
 assert.ok(card.includes("aria-hidden={connected ? undefined : true}") && card.includes('tabIndex={connected ? -1 : undefined}'), 'hidden face is not read or focused');
 assert.ok(app.includes('<Button data-testid="sandbox-connect"'), 'step 01 button kept');
 

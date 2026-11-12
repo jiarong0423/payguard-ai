@@ -85,7 +85,7 @@ export function zoneOffsetMinutes(label) {
 }
 export function zoneLabel(offsetMinutes) {
   if (!Number.isFinite(offsetMinutes)) return '';
-  if (offsetMinutes === 0) return 'GMT';
+  if (offsetMinutes === 0) return 'UTC'; // (vteam viz r7) one name for offset 0 everywhere: facts and chart both say UTC
   const abs = Math.abs(offsetMinutes);
   return `GMT${offsetMinutes > 0 ? '+' : '-'}${Math.floor(abs / 60)}${abs % 60 ? `:${pad2(abs % 60)}` : ''}`;
 }

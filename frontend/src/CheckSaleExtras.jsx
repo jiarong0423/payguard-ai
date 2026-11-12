@@ -9,7 +9,6 @@ import { useEffect, useRef, useState } from 'react';
 import data from './data/check_sale_examples_v1.json';
 import { CHANNEL3_READERS, SourceLine } from './theme/sources.js';
 import { dateLabel } from './theme/format.js';
-import xCircleSvg from './theme/icons/x-circle.svg?raw';
 import arrowSvg from './theme/icons/arrow-right.svg?raw';
 import fileSvg from './theme/icons/file-text.svg?raw';
 import { SpriteIcon, STATUS } from './theme/iconMap.js';
@@ -20,6 +19,8 @@ import './CheckSaleExtras.css';
 function PhIcon({ svg }) {
   return <span className="tg-icon check-ph" aria-hidden="true" dangerouslySetInnerHTML={{ __html: svg }} />;
 }
+// (T3 round 7) One verdict per page: the red result lives in the verdict under the cards; a card keeps only its stamp
+// in colour, its result line is ink.
 // (vteam r6) Status icons from theme/iconMap.js STATUS: risk x-circle on a rule row, check first / review the clock, note the info mark.
 const STAMP_ICON = { risk: STATUS.riskNo, warn: STATUS.warn, neutral: STATUS.info };
 
@@ -112,14 +113,13 @@ export function ThreeResults() {
   return <section className="check-three tg-section" data-testid="three-results" aria-labelledby="three-results-title">
     <div className="check-head"><h3 id="three-results-title" className="tg-h3">Three sample sales, three answers</h3>
       <p className="tg-small">The same checks on three sample items. Pick one to try it in the form below.</p></div>
-    <div className="check-three__row tg-cards3">
+    <div className="check-three__row">
       {data.examples.map((example) => <figure key={example.id} className={`tg-clip tg-clip--fact tg-card--cta check-three__card is-${example.tone}`} data-testid={`three-results-${example.id}`}>
         <figcaption className="tg-clip__kicker"><span className={`tg-stamp tg-stamp--${example.tone}`}><SpriteIcon name={STAMP_ICON[example.tone]} size="sm" />{example.stamp}</span></figcaption>
         <blockquote className="tg-clip__quote">{example.description}</blockquote>
-        <p className={example.tone === 'risk' ? 'tg-risk check-three__result' : 'check-three__result'} data-link={example.kind === 'route' ? `law:${example.result}` : undefined} data-link-risk={example.tone === 'risk' ? '' : undefined}>{example.tone === 'risk' && <PhIcon svg={xCircleSvg} />}<span>{PLAIN_RESULT[example.id] || example.result}</span></p>
+        <p className="check-three__result" data-link={example.kind === 'route' ? `law:${example.result}` : undefined}><span>{PLAIN_RESULT[example.id] || example.result}</span></p>
         <p className="check-three__detail">{detailOf(example)}</p>
-        {/* tg-cards3 rows line up across cards: a card without a second rule keeps an empty row. */}
-        {example.also ? <p className="check-three__also"><span className="tg-deadline--soon check-three__also-word"><SpriteIcon name={STATUS.warn} size="sm" />{example.also.label}</span> {example.also.statute} · {example.also.detail}</p> : <span className="check-three__also" aria-hidden="true" />}
+        {example.also ? <p className="check-three__also"><span className="tg-deadline--soon check-three__also-word"><SpriteIcon name={STATUS.warn} size="sm" />{example.also.label}</span> {example.also.statute} · {example.also.detail}</p> : null}
         <div className="tg-cta check-three__foot"><SourceLine kind="RECOUNTED" source={example.kind === 'route' ? 'country_rules_sg_ecig' : 'policy_check'} />
         <button type="button" className="tg-btn tg-btn--secondary check-three__use" data-testid={`three-results-card-${example.id}`} onClick={() => use(example)}>
           {example.kind === 'route' ? 'Try this route' : 'Try this item'}<PhIcon svg={arrowSvg} /></button></div>

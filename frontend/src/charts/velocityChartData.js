@@ -2,7 +2,7 @@
 // derived from the backend `velocity` block and the synthetic `transactions` list.
 
 import { axisText, chartColor, noGrid, valueGrid } from './chartTheme.js';
-import { money } from '../theme/format.js';
+import { money, zoneLabel } from '../theme/format.js';
 
 // (vteam viz) Amounts use the site format from theme/format.js: "USD 500.00" (code first), never "500.00 USD".
 export { money };
@@ -22,8 +22,13 @@ function toCents(value) {
   return Number.isFinite(number) ? Math.round(number * 100) : null;
 }
 
-export function hourLabel(ms) {
-  const date = new Date(ms);
+// (vteam viz r7 T5) One time zone per screen: the chart reads hours in the viewer's own zone, like the facts above it
+// ("Window ends ... GMT+8"). offsetMinutes 0 keeps UTC (tests, server-side use); the chart passes the viewer's offset.
+export function chartZone(offsetMinutes = 0) {
+  return zoneLabel(offsetMinutes); // the same label dateTimeLabel prints (UTC at offset 0)
+}
+export function hourLabel(ms, offsetMinutes = 0) {
+  const date = new Date(ms + offsetMinutes * 60000);
   return `${String(date.getUTCHours()).padStart(2, '0')}:${String(date.getUTCMinutes()).padStart(2, '0')}`;
 }
 
@@ -33,7 +38,7 @@ export function hourLabel(ms) {
  * spike rows carry the captured amount summed from synthetic transactions in that hour.
  * The spike window is left-open, right-closed, the same boundary the backend uses.
  */
-export function buildVelocityHourlyRows(velocity, transactions) {
+export function buildVelocityHourlyRows(velocity, transactions, { offsetMinutes = 0 } = {}) {
   if (!velocity || typeof velocity !== 'object') return { rows: [], reviewLine: null, currency: 'USD' };
   const baselineStart = toMs(velocity.baseline_window_start);
   const baselineEnd = toMs(velocity.baseline_window_end);
@@ -50,7 +55,7 @@ export function buildVelocityHourlyRows(velocity, transactions) {
       const start = baselineStart + index * HOUR_MS;
       rows.push({
         key: `baseline-${index}`,
-        label: hourLabel(start),
+        label: hourLabel(start, offsetMinutes),
         window: 'baseline',
         start: new Date(start).toISOString(),
         end: new Date(Math.min(start + HOUR_MS, baselineEnd)).toISOString(),
@@ -77,7 +82,7 @@ export function buildVelocityHourlyRows(velocity, transactions) {
       const start = spikeStart + index * HOUR_MS;
       rows.push({
         key: `spike-${index}`,
-        label: `${hourLabel(start)} ▲`,
+        label: `${hourLabel(start, offsetMinutes)} ▲`,
         window: 'spike',
         start: new Date(start).toISOString(),
         end: new Date(Math.min(start + HOUR_MS, spikeEnd)).toISOString(),
@@ -91,7 +96,7 @@ export function buildVelocityHourlyRows(velocity, transactions) {
   const reviewLine = baselineRateCents !== null && Number.isFinite(thresholdNumber)
     ? Math.round(baselineRateCents * thresholdNumber) / 100
     : null;
-  return { rows, reviewLine, currency };
+  return { rows, reviewLine, currency, offsetMinutes, zone: chartZone(offsetMinutes) };
 }
 
 // (P4 2026-11-12, review_FULL s3a) Token colours only, and each legend swatch is its bars' colour: every past hour is a
@@ -111,9 +116,9 @@ const MONTH_STROKE = chartColor.ink;
 const CAPTION_WRAP = Object.freeze({ wrapping: 'on-space', maxHeight: 60 });
 
 
-function rangeLabel(datum) {
-  const fmt = (iso) => new Date(iso).toISOString().slice(11, 16);
-  return `${fmt(datum.start)}–${fmt(datum.end)} UTC`;
+export function rangeLabel(datum, offsetMinutes = 0) {
+  const fmt = (iso) => hourLabel(Date.parse(iso), offsetMinutes);
+  return `${fmt(datum.start)}–${fmt(datum.end)} ${chartZone(offsetMinutes)}`;
 }
 
 // compact: phones, where the page shows its own unpaginated legend (App.jsx PhoneChartLegend) because this one pages.
@@ -128,7 +133,7 @@ export function hoursAbove(rows, reviewLine) {
 
 // `mark`: '' (none), 'peak' (outline the largest hour, soften the rest) or 'over' (outline the hours above the review line).
 // `onPick`: called with the clicked hour's row (vteam viz: the frosted hour detail), or omitted.
-export function velocityChartOptions({ rows, reviewLine, currency }, container, { compact = false, mark = '', onPick = null } = {}) {
+export function velocityChartOptions({ rows, reviewLine, currency, offsetMinutes = 0 }, container, { compact = false, mark = '', onPick = null } = {}) {
   const peak = mark === 'peak' ? peakHourOf(rows) : null;
   const picked = (datum) => (mark === 'peak' ? Boolean(peak) && datum.key === peak.key : mark === 'over' ? reviewLine !== null && datum.spike > reviewLine : true);
   const baselineRate = rows.find((row) => row.window === 'baseline')?.baseline || null;
@@ -136,7 +141,8 @@ export function velocityChartOptions({ rows, reviewLine, currency }, container, 
     container,
     data: rows,
     title: { text: 'Hourly amount: baseline vs spike', fontSize: 14, fontWeight: 600, color: chartColor.ink, ...CAPTION_WRAP },
-    subtitle: { text: 'Sample data · hours in UTC · amber ▲ = above the review line · click an hour for its detail', fontSize: 12, color: chartColor.muted, ...CAPTION_WRAP },
+    // (r7 T5) Phone: one subtitle line, so the bars stay on the first screen under the period switch.
+    subtitle: { text: compact ? 'Sample data · ▲ above the line · tap an hour' : 'Sample data · amber ▲ = above the review line · click an hour for its detail', fontSize: 12, color: chartColor.muted, ...CAPTION_WRAP },
     background: { fill: chartColor.plot },
     // (UI r5) left 8 -> 20: the rotated y-axis title ('USD per hour') lost its first letter at the canvas edge.
     padding: { top: 12, right: 16, bottom: 8, left: 20 },
@@ -145,7 +151,7 @@ export function velocityChartOptions({ rows, reviewLine, currency }, container, 
         // (P4) Every past hour as a thin bar at the declared synthetic rate, so the spike reads against a row of usual hours.
         type: 'bar', xKey: 'label', yKey: 'baseline', yName: 'Usual hours', fill: BASELINE_FILL, stacked: true, cornerRadius: 0, strokeWidth: 0,
         // (vteam viz) With the clicked-hour panel (onPick) the default white tooltip is off: one detail layer, not two.
-        tooltip: { enabled: !onPick, renderer: ({ datum }) => ({ heading: 'Baseline window', title: rangeLabel(datum),
+        tooltip: { enabled: !onPick, renderer: ({ datum }) => ({ heading: 'Baseline window', title: rangeLabel(datum, offsetMinutes),
           data: [{ label: 'Synthetic baseline rate', value: `${money(datum.baseline, currency)}/h` }] }) },
       },
       {
@@ -159,14 +165,13 @@ export function velocityChartOptions({ rows, reviewLine, currency }, container, 
         // Direct label: the multiple of the usual rate; an hour above the review line also gets the ▲ (shape, not colour).
         label: { enabled: true, placement: 'outside-end', fontSize: 16, fontWeight: 700, color: chartColor.ink,
           formatter: ({ value }) => (value && baselineRate > 0 ? `${reviewLine !== null && value > reviewLine ? '▲ ' : ''}×${(value / baselineRate).toFixed(1)}` : '') },
-        tooltip: { enabled: !onPick, renderer: ({ datum }) => ({ heading: 'Spike window', title: rangeLabel(datum),
+        tooltip: { enabled: !onPick, renderer: ({ datum }) => ({ heading: 'Spike window', title: rangeLabel(datum, offsetMinutes),
           data: [{ label: 'Captured amount', value: money(datum.spike, currency) }, { label: 'Orders', value: String(datum.captures ?? 0) }] }) },
       },
     ],
     axes: {
-      // The hour labels are UTC; the subtitle says so (the rest of the page shows the viewer's own zone).
-      // (vteam viz) The axis title 'Hour (UTC)' moved into the subtitle: 20px more plot height for the bars.
-      x: { type: 'category', position: 'bottom', label: { ...axisText, autoRotate: false }, gridLine: noGrid },
+      // (vteam viz r7 T5) The axis names the zone of its hours: the viewer's own, the same as the facts above the chart.
+      x: { type: 'category', position: 'bottom', title: { text: `Hour (${chartZone(offsetMinutes)})`, ...axisText }, label: { ...axisText, autoRotate: false }, gridLine: noGrid },
       y: {
         type: 'number', position: 'left', min: 0, nice: true,
         title: { text: `${currency} per hour`, ...axisText },

@@ -154,3 +154,18 @@
 /* (a11y 4b re-measure 4) Wide screens: the AI step and the next-step line step back so "1 day" leads. */
 #disputes .ds-ai.tg-clip { border-top: 1px solid var(--pg-color-rule); box-shadow: none; }
 #disputes .ds-case .evidence-toolbar h3 { font-weight: 500; }
+
+/* (R7) T6 the AI step can be tried here; T4 the hosted send sits in the rail under the queue. */
+.ds-ai__try { display: grid; gap: 6px; margin: 0 0 var(--pg-space-3); }
+.ds-ai__tryrow { display: flex; gap: var(--pg-space-2); }
+.ds-ai__tryrow input { flex: 1; min-width: 0; height: 36px; padding: 0 10px; border: 1px solid var(--pg-color-control-line); background: var(--pg-color-panel); color: var(--pg-color-ink); font: inherit; }
+.ds-ai__result { margin: 0; padding: var(--pg-space-2) var(--pg-space-3); border-left: 2px solid var(--pg-color-ink); background: var(--pg-color-canvas); }
+#disputes .stage-main > .ds-hosted { margin-left: 0; margin-right: 0; }
+/* (a11y r7) Long fold titles wrap on phones instead of widening the page. */
+#disputes .step-more > summary > span { min-width: 0; white-space: normal; }
+.ds-ai__tryrow input::placeholder { color: var(--pg-color-muted); opacity: 1; }
+@media (max-width: 640px) { .ds-ai__tryrow input, .ds-ai__tryrow button { min-height: 44px; } }
+.ds-ai__result p { margin: 0 0 4px; }
+/* (a11y r8) The rail's links are one quiet line: muted, 400, thin underline, no wrap. */
+#disputes .ds-links { white-space: nowrap; font-size: var(--pg-text-1); }
+#disputes .ds-links a { color: var(--pg-color-muted); font-weight: 400; text-decoration-thickness: 1px; }

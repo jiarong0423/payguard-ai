@@ -66,9 +66,11 @@ eq(format.dateTimeLabel('2026-11-09', 'GMT+8'), format.DASH, 'dateTimeLabel: a c
 {
   const at = new Date('2026-11-09T00:00:00Z');
   const local = format.dateTimeLabel(at);
-  ok(local.endsWith(` ${format.zoneLabel(-at.getTimezoneOffset())}`) && /^\d{1,2} [A-Z][a-z]{2} \d{4}, \d{2}:\d{2} GMT/u.test(local), `dateTimeLabel: viewer zone named (${local})`);
+  ok(local.endsWith(` ${format.zoneLabel(-at.getTimezoneOffset())}`) && /^\d{1,2} [A-Z][a-z]{2} \d{4}, \d{2}:\d{2} (?:GMT|UTC)/u.test(local), `dateTimeLabel: viewer zone named (${local})`);
 }
 eq(format.zoneLabel(480), 'GMT+8', 'zoneLabel');
+// (vteam viz r7) Offset 0 is named UTC, the same word the chart axis uses (was GMT on the facts, UTC on the chart).
+eq(format.zoneLabel(0), 'UTC', 'zoneLabel offset 0');
 eq(format.zoneLabel(-330), 'GMT-5:30', 'zoneLabel half hour');
 
 // 2. The table.

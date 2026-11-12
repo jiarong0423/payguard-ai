@@ -1164,3 +1164,9 @@ details:not(.limits-drawer) > summary::after { display: inline-block; }
 
 /* (a11y phase 2) Phones: the resumed-session note is one line (full text in its title, and it can be closed), so it never pushes a page's focus out of the first screen. */
 @media (max-width: 640px) { .message-info .info-text { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; } [data-testid="console-info"] { padding-block: 4px; } }
+
+/* (R7 T1) Overview hero: the three steps as one short list under the call to action. */
+.hero-flow { display: grid; gap: 4px; margin: var(--pg-space-4) 0 0; }
+@media (max-width: 640px) { .hero-flow { display: none; } } /* phones: the step cards below carry the same three steps */
+/* (a11y r8) Overview: the call to action is an outlined 44px button so the hosted send stays the one focus. */
+.hero-actions .hero-cta { height: 44px; }

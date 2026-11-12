@@ -264,6 +264,7 @@ EXACT_FILES = (
     "tests/frontend_send_confirm_r31.mjs",
     "tests/frontend_lock_reasons_r31.mjs",
     "tests/frontend_due_days_clock.mjs",
+    "tests/frontend_dispute_ai_try.mjs",
     "tests/frontend_icon_sprite.mjs",
     "tests/frontend_visual_detail.mjs",
     "tests/frontend_console_r32.mjs",

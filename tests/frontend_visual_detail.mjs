@@ -64,7 +64,7 @@ assert.match(rule('.tg-due'), /box-shadow: inset 4px 0 0 var\(--pg-color-risk\);
 assert.doesNotMatch(rule('.tg-cards3 > *'), /container-type/, 'cards keep subgrid: container queries sit on .tg-cq');
 assert.match(rule('.tg-cq'), /container-type: inline-size;/);
 assert.match(block('@media (prefers-reduced-motion: reduce) { ::view-transition'), /animation: none;/, 'view transitions off under reduced motion');
-const phone = css.slice(css.lastIndexOf('@media (max-width: 640px)'));
-assert.match(phone, /\.tg-focus--bleed \{ margin-inline: 0; \}/, 'no bleed on phones');
+assert.match(rule('.tg-focus--bleed'), /^\s*margin-inline: 0;\s*$/, 'focus stays inside the content column at every width (no sideways scroll, aligned with the masthead)');
+assert.equal((css.match(/\.tg-focus--bleed \{/g) || []).length, 1, 'one bleed rule, no width overrides');
 
 console.log('frontend_visual_detail: ok (status frames, glass fallbacks, charcoal focus, layout guards)');

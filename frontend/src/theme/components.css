@@ -340,7 +340,7 @@ details.tg-fold:not(.limits-drawer)[open] > summary::after { transform: translat
 .tg-focus:not(.tg-vault) .tg-eyebrow { color: var(--pg-color-muted); }
 /* Due (<= 1 day): solid red left bar beside the warning-octagon icon; due soon keeps the clock and no bar. */
 .tg-due { padding-left: var(--pg-space-3); box-shadow: inset 4px 0 0 var(--pg-color-risk); }
-.tg-focus--bleed { margin-right: calc(-1 * var(--pg-space-5)); } /* runs to the content edge */
+.tg-focus--bleed { margin-inline: 0; } /* r7: stays inside the content column at every width (it ran 24px past the masthead) */
 .tg-split { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--pg-space-7); align-items: start; }
 .tg-keyfig { display: block; font: 600 var(--pg-text-6)/1 var(--pg-font-serif); font-variant-numeric: lining-nums tabular-nums; }
 .tg-keyfig small { font-size: .55em; font-weight: 500; color: var(--pg-color-muted); }
@@ -364,7 +364,6 @@ html .tg-glass { background: var(--pg-color-canvas); }
 @media (max-width: 640px) {
   .tg-h1 { font-weight: 700; }
   .tg-focus { margin-block: var(--pg-space-6); padding: var(--pg-space-5) var(--pg-space-4); }
-  .tg-focus--bleed { margin-inline: 0; } /* no bleed on phones: page gutters differ, never scroll sideways */
   .tg-split, .tg-cards3 { grid-template-columns: minmax(0, 1fr); gap: var(--pg-space-5); }
   .tg-cards3 > * { grid-row: auto; grid-template-rows: none; }
   .tg-grid-paper { --tg-grid: var(--pg-color-paper-grid-soft); }

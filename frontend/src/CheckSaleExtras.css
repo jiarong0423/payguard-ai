@@ -69,9 +69,9 @@
 #compliance .stage-content > .check-three { padding: var(--pg-space-4); }
 
 /* ---------- B. Three results side by side ---------- */
-/* (vteam r6) .tg-cards3 (components.css) lays the three cards out and lines their rows up (subgrid): stamp, item,
-   result, detail, second rule, source and button. */
-.check-three__row.tg-cards3 { --tg-rows: 6; gap: var(--pg-space-5); }
+/* (T3 round 7) Cards keep their natural content height inside the row; the grid row stretches them to the tallest
+   card and .tg-card--cta puts the source and button on each card's floor, so buttons still line up. No subgrid rows. */
+.check-three__row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--pg-space-5); align-items: stretch; }
 /* No chestnut rule on a card that carries a status stamp: the cards' top rule is the neutral charcoal. */
 .check-three__card.tg-clip { border-top-color: var(--pg-color-rule); }
 /* .tg-card--cta + .tg-cta (components.css v2) put the source and button on each card's floor: one button baseline. */
@@ -136,12 +136,11 @@
 .product-card-ref { display: grid; gap: var(--pg-space-1); margin-top: var(--pg-space-1); padding-top: var(--pg-space-2); border-top: 1px solid var(--pg-color-rule-soft); font-size: var(--pg-text-2); line-height: 1.5; }
 
 @media (max-width: 640px) {
-  .check-three__row.tg-cards3 { gap: var(--pg-space-4); }
+  .check-three__row { grid-template-columns: minmax(0, 1fr); gap: var(--pg-space-4); }
   /* (vteam r6) Phones read the RULE MATCH card first; every card after the first shown one gets the thin separator. */
   .check-three__card.is-risk { order: -1; }
   .check-three__card + .check-three__card { padding-left: 0; border-left: 0; }
   .check-three__card:not(.is-risk) { padding-top: var(--pg-space-4); border-top: 1px solid var(--pg-color-rule-soft); }
-  .check-three__also:empty { display: none; }
   .check-ai__figures { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: none; grid-auto-flow: row; row-gap: var(--pg-space-3); }
   .check-ai__figures > div { display: grid; gap: var(--pg-space-1); align-content: end; }
   #compliance .description-presets button, .check-three__use { min-height: 44px; }

@@ -3,10 +3,16 @@
   /* (P3 2026-11-12) Named areas: three sample results across the top; policy check, Sandbox draft, the guide's AI card,
      the guide and "More" on the left; the country check on the right; the rule grid and the Next bar full width.
      An opened guide takes the full width under both columns. Unknown children (notes) span both columns. */
-  #compliance .stage-content { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; column-gap: var(--pg-space-5); row-gap: 0; padding-top: 0;
-    grid-template-areas: "three three" "verdict verdict" "policy country" "draft country" "ai country" "guide country" "more country" "grid grid" "next next";
+  /* (T3 round 7) Balance: the country column is wider (its rule rows wrap less) and the rule-pack fold sits in the
+     left column under "More", so neither column ends in a large blank. */
+  #compliance .stage-content { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: start; column-gap: var(--pg-space-5); row-gap: 0; padding-top: 0;
+    grid-template-areas: "three three" "verdict verdict" "policy country" "draft country" "ai country" "guide country" "more country" "grid country" "next next";
+    grid-template-rows: auto auto auto auto auto auto auto 1fr auto; }
+  #compliance .stage-content:has(> #guide-live-preflight.is-open) { grid-template-areas: "three three" "verdict verdict" "policy country" "draft country" "ai country" "more country" "grid country" "guide guide" "next next"; }
+  /* An opened rule pack needs the full width for its table and quotes. */
+  #compliance .stage-content:has(> .check-ref[open]) { grid-template-areas: "three three" "verdict verdict" "policy country" "draft country" "ai country" "guide country" "more country" "grid grid" "next next";
     grid-template-rows: auto auto auto auto auto auto 1fr auto auto; }
-  #compliance .stage-content:has(> #guide-live-preflight.is-open) { grid-template-areas: "three three" "verdict verdict" "policy country" "draft country" "ai country" "more country" "guide guide" "grid grid" "next next"; }
+  #compliance .stage-content:has(> #guide-live-preflight.is-open):has(> .check-ref[open]) { grid-template-areas: "three three" "verdict verdict" "policy country" "draft country" "ai country" "more country" "guide guide" "grid grid" "next next"; }
   #compliance .stage-content > * { grid-column: 1 / -1; }
   #compliance .stage-content > .check-three { grid-area: three; }
   #compliance .stage-content > .country-verdict-slot { grid-area: verdict; }
@@ -16,7 +22,7 @@
   #compliance .stage-content > .check-ai { grid-area: ai; }
   #compliance .stage-content > #guide-live-preflight { grid-area: guide; align-self: start; }
   #compliance .stage-content > .step-more { grid-area: more; align-self: start; margin: 0; }
-  /* (S31) The rule pack and the Channel3 reference share one fold (.check-ref) in the grid row. */
+  /* (S31) The rule pack and the Channel3 reference share one fold (.check-ref): left column when closed, full width when open. */
   #compliance .stage-content > .check-ref { grid-area: grid; }
   #compliance .stage-content > .stage-next { grid-area: next; margin: 0; }
 

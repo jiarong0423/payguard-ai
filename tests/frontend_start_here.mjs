@@ -47,7 +47,9 @@ assert.ok(app.includes("const [velocityView, setVelocityView] = useState('chart'
 assert.ok(app.includes("setVelocityView('orders'); window.requestAnimationFrame(() => document.getElementById('velocity-quick-filter')?.focus());"), 'Inspect orders switches to the table and focuses the filter');
 for (const view of ['chart', 'orders']) assert.ok(app.includes(`['${view}',`), `velocity view ${view}`);
 assert.ok(app.includes('data-testid={`velocity-view-${key}`}'), 'velocity view test ids');
-for (const stage of ['compliance', 'velocity', 'disputes']) assert.ok(app.includes(`<StepMore id="${stage}">`), `step ${stage} has its More disclosure`);
+// (R7 T4) Step 03's More takes a label and opens itself for the board or after a draft, so it carries props.
+for (const stage of ['compliance', 'velocity']) assert.ok(app.includes(`<StepMore id="${stage}">`), `step ${stage} has its More disclosure`);
+assert.ok(app.includes('<StepMore id="disputes" label='), 'step disputes has its More disclosure');
 assert.ok(app.includes('data-testid={`step-more-${id}`}'), 'StepMore test id');
 const shortLabels = app.match(/const SHORT_LABEL = (\{[^}]*\});/);
 assert.ok(shortLabels, 'SHORT_LABEL map');

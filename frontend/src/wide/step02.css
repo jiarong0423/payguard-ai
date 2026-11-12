@@ -6,7 +6,7 @@
   /* Fold: slim summary, tabs and period switch tight, chart and table sized to fit one screen when open. */
   #velocity .stage-fold > summary { min-height: 40px; padding: 8px 16px; }
   #velocity .stage-fold .segmented-row { padding: 4px 16px 0; }
-  #velocity .velocity-period { margin: 8px 0 0; } /* (a11y item 8) the switch now follows the chart */
+  #velocity .velocity-period { margin: 0; } /* (r7 T5) the switch heads the chart; charts.css places it */
   #velocity .velocity-pane { padding-bottom: 8px; }
   #velocity .velocity-mark-chips { margin-top: 8px; margin-bottom: 0; }
   #velocity .velocity-chart { margin-bottom: 0; }

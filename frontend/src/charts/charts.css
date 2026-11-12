@@ -1,6 +1,16 @@
 /* Styles for AG Charts Community and the AG Grid views added in C1. Kept out of index.css. */
 .velocity-chart { margin: 0 0 16px; padding: 12px; background: var(--pg-viz-bg); } /* (P4) no white plot, no box; (vteam viz) viz-bg = page paper, so the ledger grid shows */
 .velocity-chart-plot { position: relative; }
+/* (vteam viz r7 T5) Hourly / Monthly switch: heads the chart. Selected = ink text on a 2px ink underline, unselected =
+   muted text; no fill, no box (scoped here, over .tg-seg). From 1024px it sits at the right end of the chart's title row;
+   below that it is its own row above the chart. */
+.velocity-chart-wrap { position: relative; }
+.velocity-chart-wrap > .velocity-period { display: flex; width: max-content; margin: 0 0 4px auto; border: 0; }
+.velocity-chart-wrap > .velocity-period > button { height: 36px; padding: 0 12px; border: 0; background: transparent; box-shadow: none; color: var(--pg-color-muted); font-weight: 500; }
+.velocity-chart-wrap > .velocity-period > button + button { border-left: 0; }
+.velocity-chart-wrap > .velocity-period > button:hover { background: transparent; color: var(--pg-color-ink); }
+.velocity-chart-wrap > .velocity-period > button[aria-selected="true"] { background: transparent; color: var(--pg-color-ink); font-weight: 600; box-shadow: inset 0 -2px 0 var(--pg-color-ink); }
+@media (min-width: 1024px) { .velocity-chart-wrap > .velocity-period { position: absolute; top: 16px; right: 12px; z-index: 1; margin: 0; } }
 .velocity-chart-canvas { width: 100%; height: 320px; } /* (vteam viz) 280 -> 320: the plot itself gets about 200px */
 /* (vteam viz) wide/polish02.css (260) and relax.css (230) shrank the canvas on wide screens, leaving a 65px plot where the
    ×5.0 bar could not read as five times the usual hour. Kept here, in the lazy chart CSS (first load unchanged), with
@@ -8,8 +18,10 @@
 @media (min-width: 1280px) { #velocity .velocity-chart .velocity-chart-canvas { height: 360px; } }
 /* (vteam viz, CONSENSUS s1) Focus area once App.jsx moves the chart out of the fold into section.vs-chart (handoff
    vteam/viz/HANDOFF_viz_App.md): full content width under the hero, 48px of air below it. Inert until then. */
-#velocity .vs-chart { grid-column: 1 / -1; margin: 0 0 var(--pg-space-7); }
-#velocity .vs-chart > .velocity-chart, #velocity .vs-chart > figure.velocity-chart { margin: 0; padding: 16px 0 0; border-top: 2px solid var(--pg-color-structure); }
+/* (r7 T5) No bottom margin: the focus panel's own padding ends it (was 48px here + the panel padding, about 80px empty). */
+#velocity .vs-chart { grid-column: 1 / -1; margin: 0; }
+#velocity .vs-chart .velocity-chart-wrap { border-top: 2px solid var(--pg-color-structure); }
+#velocity .vs-chart .velocity-chart { margin: 0; padding: 16px 0 0; }
 
 /* (vteam viz, CONSENSUS s4c) Clicked-hour detail on the shared frosted panel .tg-glass (components.css). */
 /* Sits low and left, over the usual hours (they blur behind it), never over the spike bar, its ×5.0 or the review line:
@@ -63,7 +75,7 @@
 .velocity-mark-chips button[aria-pressed] { position: relative; padding-left: 30px; }
 .velocity-mark-chips button[aria-pressed]::before { content: "\2713"; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); visibility: hidden; }
 .velocity-mark-chips button[aria-pressed="true"]::before { visibility: visible; }
-.velocity-mark-chips button:last-child { margin-left: auto; border-color: transparent; text-decoration: underline; text-underline-offset: 3px; }
+.velocity-mark-chips button:last-child { margin-left: 0; border-color: transparent; text-decoration: underline; text-underline-offset: 3px; }
 .velocity-mark-chips button:disabled { color: var(--pg-color-ink3); cursor: not-allowed; }
 .velocity-mark-chips button:last-child:disabled { text-decoration: none; } /* (UI r5) a disabled Reset must not look like a link */
 .velocity-mark-chips button:focus-visible { outline: 2px solid var(--pg-color-focus); outline-offset: 2px; }
@@ -72,6 +84,9 @@
 /* (UI r5, review_UI5 s7) Phones: highlight buttons stack instead of running off the right edge; the records list and the
    legend share the chart's 12px inner edge. Scoped to #velocity, loaded with the chart. */
 @media (max-width: 640px) {
+  #velocity .velocity-chart-canvas { height: 300px; } /* (r7 T5) the period switch row now sits above the chart */
+  .velocity-chart-wrap > .velocity-period { width: auto; margin: 0 0 4px; }
+  .velocity-chart-wrap > .velocity-period > button { flex: 1; min-height: 44px; }
   #velocity .velocity-hour-pop { left: 8px; right: 8px; bottom: 40px; width: auto; padding: 8px 12px; }
   #velocity .velocity-hour-pop__meta { display: block; margin-left: 0; }
   #velocity .velocity-mark-chips { display: grid; grid-template-columns: minmax(0, 1fr); overflow: visible; }

@@ -5,6 +5,8 @@
 import { dateLabel as fmtDay, dateTimeLabel as fmtDateTime, money as fmtMoney, zoneLabel } from '../theme/format.js';
 import { SourceLine } from '../theme/sources.js';
 import { operatorLabel } from '../operatorLabels.js';
+import { useState } from 'react';
+import { apiRequest } from '../api.js';
 import { dueDays } from '../dueDays.js';
 import studioRun from '../data/studio_agent_run_v1.json';
 
@@ -109,7 +111,51 @@ export function CaseLog({ Icon, item, draft, receipt, sent }) {
 // The AI step, open by default in the main column beside the evidence list (review_INTEG #1, review_FULL s4): sentence ->
 // evidence item -> program check. Live values are the guide's own (chooser state from the guide API it calls when opened,
 // open items it reports to the page); the recorded runs are cited. Adds no request.
-export function DisputeAiClip({ chooser, openItems = 0, onOpenGuide }) {
+// (R7 T6) Try the AI step here: one sentence goes to the same local guide endpoints the Step 03 guide uses (/guide/state,
+// /guide/start, /guide/turn on this server). It runs only while the guide is on Rules only, so it never calls Gemini or any
+// outside service; the answer is the evidence item the rules moved, read from the guide's own reply.
+function AiTry({ session, onOpenGuide }) {
+  const [text, setText] = useState('');
+  const [out, setOut] = useState(null);
+  const [busy, setBusy] = useState(false);
+  const run = async (event) => {
+    event.preventDefault();
+    const message = text.trim();
+    if (!message || busy || !session) return;
+    setBusy(true);
+    setOut(null);
+    try {
+      let view = await apiRequest('/guide/state?scenario=dispute', { session });
+      if (view.chooser_mode === 'gemini') { setOut({ note: 'This guide is set to Rules + Gemini; use the Step 03 guide below instead.' }); return; }
+      if (!view.started) view = await apiRequest('/guide/start', { method: 'POST', body: { scenario: 'dispute', goods_type: 'physical' }, session });
+      const was = Object.fromEntries((view.items || []).map((item) => [item.id, item.status]));
+      const next = await apiRequest('/guide/turn', { method: 'POST', body: { text: message, scenario: 'dispute' }, session });
+      const named = (ids) => ids.map((id) => next.items.find((item) => item.id === id)?.label).filter(Boolean);
+      // (red team r7) Say what the sentence changed in the shared guide: items it confirmed outright, and items it marked.
+      const confirmed = named(next.auto_confirmed || []);
+      const marked = (next.items || []).filter((item) => item.id in was && was[item.id] !== item.status && !confirmed.includes(item.label)).map((item) => item.label);
+      setOut({ confirmed, marked, reply: next.reply?.text || '' });
+    } catch (failure) {
+      // A guide that has used its turns or saves for this session says why (the server's own message), never nothing.
+      setOut({ note: failure?.status === 401 ? 'The demo session ended. Select Reconnect at the top.' : failure?.message ? `Not added to the guide: ${failure.message}` : 'That did not go through. Nothing was sent.' });
+    } finally {
+      setBusy(false);
+    }
+  };
+  return <form className="ds-ai__try" data-testid="dispute-ai-try" onSubmit={run}>
+    <label htmlFor="dispute-ai-text"><b>Try it</b> <span className="tg-small">Rules only · runs here, no model call · your sentence is added to the Step 03 guide for this case</span></label>
+    <div className="ds-ai__tryrow"><input id="dispute-ai-text" data-testid="dispute-ai-input" value={text} maxLength={200} placeholder="e.g. tracking shows delivered on Monday" onChange={(event) => setText(event.target.value)} /><button type="submit" className="tg-btn tg-btn--secondary tg-btn--sm" data-testid="dispute-ai-run" disabled={busy || !session || !text.trim()}>{busy ? 'Checking…' : 'Check'}</button></div>
+    {/* (a11y r7) The live region is on the page from the start; only its content changes. */}
+    <div className="ds-ai__result" role="status" data-testid="dispute-ai-result" hidden={!out}>{out && (out.note ? <p>{out.note}</p> : <>
+      {out.confirmed.length > 0 && <p data-testid="dispute-ai-confirmed">Confirmed in the guide: <b>{out.confirmed.join(', ')}</b></p>}
+      {out.marked.length > 0 && <p data-testid="dispute-ai-marked">Marked in the guide: <b>{out.marked.join(', ')}</b></p>}
+      {!out.confirmed.length && !out.marked.length && <p>No evidence item matched this sentence; nothing in the guide changed.</p>}
+      {out.reply && <p className="tg-small">Guide: {out.reply}</p>}</>)}
+      {out && <button type="button" className="tg-btn tg-btn--text tg-btn--sm" data-testid="dispute-ai-open-result" onClick={onOpenGuide}>Open the guide to see the same state</button>}</div>
+  </form>;
+}
+
+export function DisputeAiClip({ chooser, openItems = 0, onOpenGuide, session }) {
   const live = chooser ? (chooser.chooser_mode === 'gemini' ? 'Rules + Gemini' : 'Rules only') : 'Not started';
   return <figure className="tg-clip ds-ai" data-testid="dispute-ai-clip" data-link="ai:guide">
     <p className="tg-clip__kicker">AI step · Gemini evidence guide · <span data-testid="dispute-ai-state">{live}</span></p>
@@ -118,12 +164,13 @@ export function DisputeAiClip({ chooser, openItems = 0, onOpenGuide }) {
       <li><b>Evidence item</b><span>Gemini points the sentence at one missing item{openItems > 0 ? ` · ${openItems} still open` : ''}.</span></li>
       <li><b>Program check</b><span>Fixed rules decide what counts; the model cannot mark evidence by itself.</span></li>
     </ol>
-    <p className="ds-ai__state"><button type="button" className="tg-btn tg-btn--secondary tg-btn--sm" data-testid="dispute-ai-open-guide" onClick={onOpenGuide}>Describe it in your own words</button></p>
+    <AiTry session={session} onOpenGuide={onOpenGuide} />
+    <p className="ds-ai__state"><button type="button" className="tg-btn tg-btn--text tg-btn--sm" data-testid="dispute-ai-open-guide" onClick={onOpenGuide}>Open the full guide</button></p>
     {DUE_RUN && <blockquote className="ds-ai__out" data-testid="dispute-ai-recorded">
       <p className="ds-ai__q">Asked: “{DUE_RUN.question}”</p>
       <p className="ds-ai__a">AG Studio data agent: <b>{DUE_ROWS[0]?.[0]}</b> is due first.</p>
       <ul className="ds-ai__rows">{DUE_ROWS.map(([ref, days]) => <li key={ref}><span className="ds-id">{ref}</span> · {days} day{days === 1 ? '' : 's'} to due</li>)}</ul>
-      <SourceLine kind="RECORDED" text={`Gemini, ${DUE_RUN.turns} turns, ${(DUE_RUN.duration_ms / 1000).toFixed(1)} s · ${DUE_RUN.steps.map((step) => step.tool).join(', ')} · ${fmtDay(studioRun.recorded_at)} run, its own demo cases`} title="frontend/src/data/studio_agent_run_v1.json (question at line 64, reply at line 130); docs/evidence/AG_STUDIO_LIVE_RUNS_20261109.md" testId="dispute-ai-recorded-source" />
+      <SourceLine kind="RECORDED" text={`AG Studio with Gemini · ${fmtDay(studioRun.recorded_at)} run, its own demo cases`} title={`${DUE_RUN.turns} turns, ${(DUE_RUN.duration_ms / 1000).toFixed(1)} s, tools ${DUE_RUN.steps.map((step) => step.tool).join(', ')} · frontend/src/data/studio_agent_run_v1.json (question at line 64, reply at line 130); docs/evidence/AG_STUDIO_LIVE_RUNS_20261109.md`} testId="dispute-ai-recorded-source" />
     </blockquote>}
     <SourceLine kind="RECORDED" source="gemini_guide_runs" />
     <SourceLine kind="RECORDED" source="ag_studio_runs"><a className="tg-link" href="/dashboard.html">AG Studio questions</a></SourceLine>
