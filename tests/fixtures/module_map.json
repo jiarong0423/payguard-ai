@@ -1,0 +1,1196 @@
+{
+ "version": 3,
+ "about": "Module layer map: the named modules each console page must show (checked in a browser by the scratch module_health.mjs at 1440 and 393) and the JSX file that owns each. tests/frontend_module_layer.mjs checks it statically. A name is the tg-mod--/tg-block-- modifier, else data-testid, else id, else the first non-tg class; marker is used when the test id is built at runtime. v3 (MX4): allowlist with unique keys. module_elements = the only elements that may carry tg-mod/tg-block/tg-box/tg-lift; focus_elements = the only elements that may carry tabIndex or tg-lift (raw value pinned). Key = tag + data-testid, else className without module tokens, else id; a key shared by twins in one file ends in #n/total (document order). Each key appears once. The guard trusts the map committed at its base commit; a different map needs --registry-change <sha256> after review.",
+ "module_classes": [
+  "tg-mod",
+  "tg-block",
+  "tg-box",
+  "tg-lift"
+ ],
+ "pages": {
+  "overview": [
+   {
+    "name": "ov-hero",
+    "file": "frontend/src/App.jsx"
+   },
+   {
+    "name": "ov-ticket",
+    "file": "frontend/src/OverviewFlow.jsx"
+   },
+   {
+    "name": "ov-facts",
+    "file": "frontend/src/OverviewFlow.jsx"
+   },
+   {
+    "name": "ov-flow",
+    "file": "frontend/src/OverviewFlow.jsx"
+   },
+   {
+    "name": "overview-ai",
+    "file": "frontend/src/OverviewFlow.jsx"
+   },
+   {
+    "name": "overview-replay",
+    "file": "frontend/src/OverviewFlow.jsx"
+   }
+  ],
+  "compliance": [
+   {
+    "name": "stage-heading",
+    "file": "frontend/src/App.jsx"
+   },
+   {
+    "name": "ck-three",
+    "file": "frontend/src/CheckSaleExtras.jsx"
+   },
+   {
+    "name": "ck-sample",
+    "file": "frontend/src/CheckSaleExtras.jsx"
+   },
+   {
+    "name": "country-verdict-slot",
+    "file": "frontend/src/App.jsx"
+   },
+   {
+    "name": "country-verdict-focus",
+    "file": "frontend/src/CountryRules.jsx"
+   },
+   {
+    "name": "compliance-layout",
+    "file": "frontend/src/App.jsx"
+   },
+   {
+    "name": "country-rules",
+    "file": "frontend/src/CountryRules.jsx"
+   },
+   {
+    "name": "stage-next",
+    "file": "frontend/src/App.jsx"
+   }
+  ],
+  "velocity": [
+   {
+    "name": "stage-heading",
+    "file": "frontend/src/App.jsx"
+   },
+   {
+    "name": "vs-focus",
+    "file": "frontend/src/App.jsx"
+   },
+   {
+    "name": "velocity-metrics",
+    "file": "frontend/src/App.jsx"
+   },
+   {
+    "name": "velocity-chart-focus",
+    "file": "frontend/src/App.jsx"
+   },
+   {
+    "name": "velocity-fold",
+    "file": "frontend/src/App.jsx"
+   },
+   {
+    "name": "stage-next",
+    "file": "frontend/src/App.jsx"
+   }
+  ],
+  "disputes": [
+   {
+    "name": "stage-heading",
+    "file": "frontend/src/App.jsx"
+   },
+   {
+    "name": "inner-tabs",
+    "file": "frontend/src/App.jsx"
+   },
+   {
+    "name": "ds-head",
+    "file": "frontend/src/steps/CaseViews.jsx"
+   },
+   {
+    "name": "evidence-toolbar",
+    "file": "frontend/src/App.jsx"
+   },
+   {
+    "name": "ds-ai",
+    "file": "frontend/src/steps/CaseViews.jsx"
+   },
+   {
+    "name": "ds-queue-col",
+    "file": "frontend/src/App.jsx"
+   },
+   {
+    "name": "ds-queue",
+    "file": "frontend/src/steps/CaseViews.jsx"
+   },
+   {
+    "name": "ds-rail",
+    "file": "frontend/src/App.jsx"
+   },
+   {
+    "name": "case-log",
+    "file": "frontend/src/steps/CaseViews.jsx"
+   },
+   {
+    "name": "hosted-send-log",
+    "file": "frontend/src/steps/CaseViews.jsx"
+   }
+  ],
+  "proof": [
+   {
+    "name": "tg-pagehead",
+    "file": "frontend/src/App.jsx"
+   },
+   {
+    "name": "pp-verify",
+    "file": "frontend/src/pages/ProofPage.jsx"
+   },
+   {
+    "name": "pp-ledger",
+    "file": "frontend/src/pages/ProofPage.jsx"
+   }
+  ],
+  "judges": [
+   {
+    "name": "tg-pagehead",
+    "file": "frontend/src/App.jsx"
+   },
+   {
+    "name": "jp-route",
+    "file": "frontend/src/pages/JudgesPage.jsx"
+   },
+   {
+    "name": "judges-step-compliance",
+    "file": "frontend/src/pages/JudgesPage.jsx",
+    "marker": "data-testid={`judges-step-${step.page}`}"
+   },
+   {
+    "name": "judges-reset-note",
+    "file": "frontend/src/pages/JudgesPage.jsx"
+   }
+  ]
+ },
+ "selector_allowlist": [
+  {
+   "selector": ".evidence-toolbar.tg-block [data-testid=\"dispute-draft\"]:enabled",
+   "reason": "the Disputes step's one primary button; it has no class of its own, only its test id, inside the Next step module"
+  },
+  {
+   "selector": "#compliance .tg-block--ck-sample > p:not(.check-three__result)",
+   "reason": "the sample's caption paragraph inside the Check a sale sample module (ledger-row column 3)"
+  },
+  {
+   "selector": "#compliance .stage-content:has(> .tg-mod)",
+   "reason": "1024-1279px only: the 5:7 grid needs the Check a sale step container (page-level); scoped by #compliance and :has(> .tg-mod), carries no module class"
+  },
+  {
+   "selector": "#compliance .stage-content:has(> .tg-mod) > *",
+   "reason": "same 1024-1279px grid: every child of that step container spans both columns unless placed below"
+  },
+  {
+   "selector": "#compliance .stage-content > .stage-block:has(> .tg-mod)",
+   "reason": "same grid: the country check block goes to column 2"
+  },
+  {
+   "selector": ".tg-mod--vs-focus .vs-fig > *",
+   "reason": "Sales spike figure parts wrap inside the 4:8 focus module"
+  },
+  {
+   "selector": ".stage-accordion:has(.tg-mod--vs-focus) .guide-live-input",
+   "reason": "D-P19: in the 306px guide rail of the Sales spike step the sentence box takes the full row (guide rail is outside the step modules)"
+  },
+  {
+   "selector": ".stage-accordion:has(.tg-mod--vs-focus) .guide-live-input > input",
+   "reason": "same D-P19 rule: the guide input takes the full row so its placeholder is never cut"
+  },
+  {
+   "selector": ".tg-block--ds-ai .ds-ai__tryrow > *",
+   "reason": "A5: the AI try-it input and its Check button are 44px touch targets inside the Disputes AI module"
+  },
+  {
+   "selector": ".tg-box--ck-rules > #country-view-rows > ul",
+   "reason": "the key-rules list inside the Check a sale rules box starts flush"
+  },
+  {
+   "selector": ".tg-box--vs-facts > * + *",
+   "reason": "spacing between the facts inside the Sales spike facts fold"
+  },
+  {
+   "selector": ":is(.tg-box--vs-facts, .tg-box--ov-steps) > summary",
+   "reason": "the summary line of these two module folds (hidden above 640px, a 44px row below)"
+  },
+  {
+   "selector": ".tg-box--ov-steps[open] > summary",
+   "reason": "open Overview steps fold: space under its summary"
+  },
+  {
+   "selector": ".tg-box--ov-replay > summary",
+   "reason": "the summary line of the Overview replay fold module"
+  },
+  {
+   "selector": ".tg-box--ov-replay[open] > summary",
+   "reason": "open replay fold: space under its summary"
+  }
+ ],
+ "index_html_style_sha16": [
+  "72143a8a26b91558"
+ ],
+ "module_elements": [
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "header|class=\"stage-heading tg-stephead\"",
+   "module_classes": [
+    "tg-block",
+    "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "header|class=\"tg-pagehead\"",
+   "module_classes": [
+    "tg-block",
+    "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "details|testid={`step-more-${id}`}",
+   "module_classes": [
+    "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "nav|testid=\"console-pages\"",
+   "module_classes": [
+    "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "header|class=\"tg-pagehead hero-pagehead tg-split\"",
+   "module_classes": [
+    "tg-mod",
+    "tg-mod--ov-hero"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "div|class=\"hero-actions\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "nav|class=\"journey\"",
+   "module_classes": [
+    "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "div|testid=\"country-verdict-slot\"",
+   "module_classes": [
+    "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "div|class=\"compliance-layout\"",
+   "module_classes": [
+    "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "div|class=\"invoice-editor\"",
+   "module_classes": [
+    "tg-block"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "div|class=\"stage-next\"",
+   "module_classes": [
+    "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "div|class=\"vs-focus tg-focus\"",
+   "module_classes": [
+    "tg-mod",
+    "tg-mod--vs-focus"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "section|testid=\"velocity-metrics\"",
+   "module_classes": [
+    "tg-block"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "details|testid=\"velocity-facts-fold\"",
+   "module_classes": [
+    "tg-box",
+    "tg-box--vs-facts"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "section|testid=\"velocity-chart-focus\"",
+   "module_classes": [
+    "tg-block",
+    "tg-lift"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "details|testid=\"velocity-fold\"",
+   "module_classes": [
+    "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "p|class=\"stage-next stage-next--link\"",
+   "module_classes": [
+    "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "div|class=\"inner-tabs tg-seg\"",
+   "module_classes": [
+    "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "div|class=\"ds-board-panel\"",
+   "module_classes": [
+    "tg-mod",
+    "tg-mod--ds-board"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "div|class=\"evidence-toolbar\"",
+   "module_classes": [
+    "tg-block",
+    "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "div|class=\"ds-queue-col\"#1/2",
+   "module_classes": [
+    "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "aside|class=\"stage-side ds-side\"",
+   "module_classes": [
+    "tg-mod",
+    "tg-mod--ds-rail"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "div|class=\"ds-queue-col\"#2/2",
+   "module_classes": [
+    "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "Button|testid={`phone-action-${phoneAction.key}`}",
+   "module_classes": [
+    "tg-box",
+    "tg-box--phone-cta"
+   ]
+  },
+  {
+   "file": "frontend/src/CheckSaleExtras.jsx",
+   "key": "section|testid=\"three-results\"",
+   "module_classes": [
+    "tg-mod",
+    "tg-mod--ck-three"
+   ]
+  },
+  {
+   "file": "frontend/src/CheckSaleExtras.jsx",
+   "key": "div|class=\"check-head\"#1/2",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/CheckSaleExtras.jsx",
+   "key": "figure|testid={`three-results-${example.id}`}",
+   "module_classes": [
+    "tg-block",
+    "tg-block--ck-sample"
+   ]
+  },
+  {
+   "file": "frontend/src/CheckSaleExtras.jsx",
+   "key": "div|class=\"tg-cta check-three__foot\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/CheckSaleExtras.jsx",
+   "key": "p|testid=\"three-results-picked\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/CheckSaleExtras.jsx",
+   "key": "div|class=\"tg-ledger check-grid__ledger\"",
+   "module_classes": [
+    "tg-block",
+    "tg-block--ck-ledger",
+    "tg-lift"
+   ]
+  },
+  {
+   "file": "frontend/src/CheckSaleExtras.jsx",
+   "key": "table|class=\"tg-ledger__table\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/CheckSaleExtras.jsx",
+   "key": "div|testid=\"rule-grid-list\"",
+   "module_classes": [
+    "tg-block"
+   ]
+  },
+  {
+   "file": "frontend/src/CheckSaleExtras.jsx",
+   "key": "div|class=\"tg-filters\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/CheckSaleExtras.jsx",
+   "key": "ul|class=\"check-grid__rules\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/CheckSaleExtras.jsx",
+   "key": "details|testid=\"guide-ai-card\"",
+   "module_classes": [
+    "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/CheckSaleExtras.jsx",
+   "key": "div|class=\"tg-fold__body check-ai__body\"",
+   "module_classes": [
+    "tg-block"
+   ]
+  },
+  {
+   "file": "frontend/src/CheckSaleExtras.jsx",
+   "key": "dl|class=\"check-ai__figures\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/CheckSaleExtras.jsx",
+   "key": "section|testid=\"channel3-reference\"",
+   "module_classes": [
+    "tg-block"
+   ]
+  },
+  {
+   "file": "frontend/src/CheckSaleExtras.jsx",
+   "key": "ul|class=\"check-c3__rows\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/CheckSaleExtras.jsx",
+   "key": "details|testid=\"rule-pack-fold\"",
+   "module_classes": [
+    "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/CountryRules.jsx",
+   "key": "section|testid=\"country-rules-empty\"",
+   "module_classes": [
+    "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/CountryRules.jsx",
+   "key": "section|testid=\"country-rules\"",
+   "module_classes": [
+    "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/CountryRules.jsx",
+   "key": "div|class=\"country-form\"",
+   "module_classes": [
+    "tg-block"
+   ]
+  },
+  {
+   "file": "frontend/src/CountryRules.jsx",
+   "key": "div|testid=\"country-result\"",
+   "module_classes": [
+    "tg-block"
+   ]
+  },
+  {
+   "file": "frontend/src/CountryRules.jsx",
+   "key": "div|testid=\"country-verdict-focus\"",
+   "module_classes": [
+    "tg-block",
+    "tg-lift"
+   ]
+  },
+  {
+   "file": "frontend/src/CountryRules.jsx",
+   "key": "div|class=\"country-focus-rules\"",
+   "module_classes": [
+    "tg-box",
+    "tg-box--ck-rules"
+   ]
+  },
+  {
+   "file": "frontend/src/OverviewFlow.jsx",
+   "key": "section|testid=\"overview-send-ticket\"",
+   "module_classes": [
+    "tg-block",
+    "tg-block--ov-ticket",
+    "tg-lift"
+   ]
+  },
+  {
+   "file": "frontend/src/OverviewFlow.jsx",
+   "key": "p|class=\"ov-ticket__row\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/OverviewFlow.jsx",
+   "key": "p|class=\"ov-ticket__ref\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/OverviewFlow.jsx",
+   "key": "div|class=\"ov-facts tg-grid-paper\"",
+   "module_classes": [
+    "tg-block",
+    "tg-block--ov-facts"
+   ]
+  },
+  {
+   "file": "frontend/src/OverviewFlow.jsx",
+   "key": "figure|class=\"tg-clip tg-clip--fact\"#1/4",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/OverviewFlow.jsx",
+   "key": "figure|class=\"tg-clip tg-clip--fact\"#2/4",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/OverviewFlow.jsx",
+   "key": "figure|class=\"tg-clip tg-clip--fact\"#3/4",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/OverviewFlow.jsx",
+   "key": "figure|class=\"tg-clip tg-clip--fact\"#4/4",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/OverviewFlow.jsx",
+   "key": "details|testid=\"overview-steps-fold\"",
+   "module_classes": [
+    "tg-box",
+    "tg-box--ov-steps"
+   ]
+  },
+  {
+   "file": "frontend/src/OverviewFlow.jsx",
+   "key": "ol|class=\"ov-flow tg-cards3\"",
+   "module_classes": [
+    "tg-mod",
+    "tg-mod--ov-flow"
+   ]
+  },
+  {
+   "file": "frontend/src/OverviewFlow.jsx",
+   "key": "figure|class=\"tg-clip tg-clip--step tg-pad\"#1/3",
+   "module_classes": [
+    "tg-block"
+   ]
+  },
+  {
+   "file": "frontend/src/OverviewFlow.jsx",
+   "key": "div|class=\"ov-screen\"#1/2",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/OverviewFlow.jsx",
+   "key": "div|class=\"ov-step__foot\"#1/3",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/OverviewFlow.jsx",
+   "key": "figure|class=\"tg-clip tg-clip--step tg-pad\"#2/3",
+   "module_classes": [
+    "tg-block"
+   ]
+  },
+  {
+   "file": "frontend/src/OverviewFlow.jsx",
+   "key": "div|class=\"ov-screen\"#2/2",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/OverviewFlow.jsx",
+   "key": "div|class=\"ov-step__foot\"#2/3",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/OverviewFlow.jsx",
+   "key": "figure|class=\"tg-clip tg-clip--step tg-pad\"#3/3",
+   "module_classes": [
+    "tg-block"
+   ]
+  },
+  {
+   "file": "frontend/src/OverviewFlow.jsx",
+   "key": "ol|class=\"ov-screen ov-steps3\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/OverviewFlow.jsx",
+   "key": "div|class=\"ov-step__foot\"#3/3",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/OverviewFlow.jsx",
+   "key": "div|class=\"ov-facts-row\"",
+   "module_classes": [
+    "tg-mod",
+    "tg-mod--ov-facts"
+   ]
+  },
+  {
+   "file": "frontend/src/OverviewFlow.jsx",
+   "key": "figure|testid=\"overview-ai\"",
+   "module_classes": [
+    "tg-block",
+    "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/OverviewFlow.jsx",
+   "key": "section|testid=\"overview-replay\"",
+   "module_classes": [
+    "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/OverviewFlow.jsx",
+   "key": "details|testid=\"overview-replay-fold\"",
+   "module_classes": [
+    "tg-box",
+    "tg-box--ov-replay"
+   ]
+  },
+  {
+   "file": "frontend/src/RecordedSendReplay.jsx",
+   "key": "section|testid=\"recorded-replay\"",
+   "module_classes": [
+    "tg-block"
+   ]
+  },
+  {
+   "file": "frontend/src/TimeEvidenceView.jsx",
+   "key": "section|testid=\"time-evidence\"",
+   "module_classes": [
+    "tg-block"
+   ]
+  },
+  {
+   "file": "frontend/src/TimeEvidenceView.jsx",
+   "key": "div|class=\"time-evidence-views\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/charts/VelocityChart.jsx",
+   "key": "div|testid=\"velocity-monthly-details\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/charts/VelocityChart.jsx",
+   "key": "div|class=\"velocity-chart-plot\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/charts/VelocityChart.jsx",
+   "key": "div|testid=\"velocity-mark-chips\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/charts/VelocityChart.jsx",
+   "key": "aside|testid=\"velocity-hour-detail\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/pages/JudgesPage.jsx",
+   "key": "ol|class=\"jp-route\"",
+   "module_classes": [
+    "tg-mod",
+    "tg-mod--jp-route"
+   ]
+  },
+  {
+   "file": "frontend/src/pages/JudgesPage.jsx",
+   "key": "figure|testid={`judges-step-${step.page}`}",
+   "module_classes": [
+    "tg-block"
+   ]
+  },
+  {
+   "file": "frontend/src/pages/JudgesPage.jsx",
+   "key": "figcaption|class=\"jp-step__head\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/pages/JudgesPage.jsx",
+   "key": "div|class=\"jp-step__look\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/pages/JudgesPage.jsx",
+   "key": "p|testid=\"judges-reset-note\"",
+   "module_classes": [
+    "tg-block"
+   ]
+  },
+  {
+   "file": "frontend/src/pages/ProofPage.jsx",
+   "key": "details|testid=\"proof-row-lines\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/pages/ProofPage.jsx",
+   "key": "div|testid=\"proof-ledger\"",
+   "module_classes": [
+    "tg-block"
+   ]
+  },
+  {
+   "file": "frontend/src/pages/ProofPage.jsx",
+   "key": "p|class=\"pp-caption\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/pages/ProofPage.jsx",
+   "key": "table|class=\"tg-ledger__table\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/pages/ProofPage.jsx",
+   "key": "section|testid=\"proof-verify\"",
+   "module_classes": [
+    "tg-block",
+    "tg-block--pp-verify",
+    "tg-lift",
+    "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/pages/ProofPage.jsx",
+   "key": "div|class=\"pp-verify__head\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/pages/ProofPage.jsx",
+   "key": "dl|class=\"pp-hash\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/pages/ProofPage.jsx",
+   "key": "div|class=\"tg-actions\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/pages/ProofPage.jsx",
+   "key": "div|class={`pp-verify__log pp-vault${entries.length ? ' is-run' : ''}`}",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/pages/ProofPage.jsx",
+   "key": "p|testid=\"proof-diff\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/pages/ProofPage.jsx",
+   "key": "section|class=\"pp-section\"",
+   "module_classes": [
+    "tg-mod",
+    "tg-mod--pp-ledger"
+   ]
+  },
+  {
+   "file": "frontend/src/steps/CaseViews.jsx",
+   "key": "section|class=\"tg-ledger ds-queue\"",
+   "module_classes": [
+    "tg-block",
+    "tg-block--ds-queue"
+   ]
+  },
+  {
+   "file": "frontend/src/steps/CaseViews.jsx",
+   "key": "p|class=\"ds-queue__cap\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/steps/CaseViews.jsx",
+   "key": "ol|class=\"ds-queue__list\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/steps/CaseViews.jsx",
+   "key": "p|class=\"ds-queue__total\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/steps/CaseViews.jsx",
+   "key": "header|testid=\"case-summary\"",
+   "module_classes": [
+    "tg-block",
+    "tg-block--ds-head",
+    "tg-lift",
+    "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/steps/CaseViews.jsx",
+   "key": "p|class=\"ds-head__kicker\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/steps/CaseViews.jsx",
+   "key": "div|class=\"ds-head__figs\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/steps/CaseViews.jsx",
+   "key": "p|class=\"ds-head__tags\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/steps/CaseViews.jsx",
+   "key": "ol|testid=\"case-log\"",
+   "module_classes": [
+    "tg-block",
+    "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/steps/CaseViews.jsx",
+   "key": "form|testid=\"dispute-ai-try\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/steps/CaseViews.jsx",
+   "key": "figure|testid=\"dispute-ai-clip\"",
+   "module_classes": [
+    "tg-block",
+    "tg-block--ds-ai",
+    "tg-mod"
+   ]
+  },
+  {
+   "file": "frontend/src/steps/CaseViews.jsx",
+   "key": "ol|class=\"ds-ai__flow\"",
+   "module_classes": [
+    "tg-box"
+   ]
+  },
+  {
+   "file": "frontend/src/steps/CaseViews.jsx",
+   "key": "section|testid=\"hosted-send-log\"",
+   "module_classes": [
+    "tg-block",
+    "tg-mod"
+   ]
+  }
+ ],
+ "focus_elements": [
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "Button|testid=\"topbar-sandbox-connect\"",
+   "tabindex": "{connected ? -1 : undefined}",
+   "lift": false,
+   "reason": "the Connect face leaves the Tab order once the Sandbox is connected (the other face takes over)"
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "h2|testid={`stage-header-${id}`}",
+   "tabindex": "{-1}",
+   "lift": false,
+   "reason": "step heading takes focus when a step opens"
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "button|class={`secondary-tab ${tab === key ? 'is-active' : ''}`}",
+   "tabindex": "{tab === key ? 0 : -1}",
+   "lift": false,
+   "reason": "roving tabindex of a WAI-ARIA tab list"
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "main|testid={state ? \"session-ready\" : \"session-unavailable\"}",
+   "tabindex": "{-1}",
+   "lift": false,
+   "reason": "skip-link target"
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "section|testid=\"velocity-chart-focus\"",
+   "tabindex": "{-1}",
+   "lift": true,
+   "reason": "lift block (M1): tabIndex -1 so a tap gives :focus-within on touch; not in the Tab order"
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "button|testid={`velocity-view-${key}`}",
+   "tabindex": "{velocityView === key ? 0 : -1}",
+   "lift": false,
+   "reason": "roving tabindex of a WAI-ARIA tab list"
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "button|testid=\"disputes-tab-review\"",
+   "tabindex": "{boardOpen ? -1 : 0}",
+   "lift": false,
+   "reason": "roving tabindex of a WAI-ARIA tab list"
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "button|testid=\"disputes-tab-board\"",
+   "tabindex": "{boardOpen ? 0 : -1}",
+   "lift": false,
+   "reason": "roving tabindex of a WAI-ARIA tab list"
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "div|class=\"ds-board-panel\"",
+   "tabindex": "{-1}",
+   "lift": false,
+   "reason": "WAI-ARIA tab panel (role=tabpanel) takes focus after the Deadline board tab (M2)"
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "div|testid=\"dispute-result\"",
+   "tabindex": "{-1}",
+   "lift": false,
+   "reason": "draft receipt takes focus after review"
+  },
+  {
+   "file": "frontend/src/App.jsx",
+   "key": "div|testid=\"aup-warning-dialog\"",
+   "tabindex": "{-1}",
+   "lift": false,
+   "reason": "modal dialog focus target"
+  },
+  {
+   "file": "frontend/src/CheckSaleExtras.jsx",
+   "key": "div|class=\"tg-ledger check-grid__ledger\"",
+   "tabindex": "{-1}",
+   "lift": true,
+   "reason": "lift block (M1): tabIndex -1 so a tap gives :focus-within on touch; not in the Tab order"
+  },
+  {
+   "file": "frontend/src/CountryRules.jsx",
+   "key": "div|testid=\"country-result\"",
+   "tabindex": "{-1}",
+   "lift": false,
+   "reason": "country verdict takes focus after a check; tabIndex predates the module layer (66ad57b), M1 only added tg-block"
+  },
+  {
+   "file": "frontend/src/CountryRules.jsx",
+   "key": "div|testid=\"country-verdict-focus\"",
+   "tabindex": "{-1}",
+   "lift": true,
+   "reason": "lift block (M1): tabIndex -1 so a tap gives :focus-within on touch; not in the Tab order"
+  },
+  {
+   "file": "frontend/src/CountryRules.jsx",
+   "key": "button|testid={testId}",
+   "tabindex": "{shown === key ? 0 : -1}",
+   "lift": false,
+   "reason": "roving tabindex of a WAI-ARIA tab list"
+  },
+  {
+   "file": "frontend/src/OverviewFlow.jsx",
+   "key": "section|testid=\"overview-send-ticket\"",
+   "tabindex": "{-1}",
+   "lift": true,
+   "reason": "lift block (M1): tabIndex -1 so a tap gives :focus-within on touch; not in the Tab order"
+  },
+  {
+   "file": "frontend/src/board/EvidenceBoard.jsx",
+   "key": "div|class=\"board-scroll\"",
+   "tabindex": "{0}",
+   "lift": false,
+   "reason": "keyboard-scrollable timeline region"
+  },
+  {
+   "file": "frontend/src/dashboard/main.jsx",
+   "key": "p|testid=\"dashboard-delegated\"",
+   "tabindex": "{-1}",
+   "lift": false,
+   "reason": "status line takes focus after delegation"
+  },
+  {
+   "file": "frontend/src/pages/ProofPage.jsx",
+   "key": "section|testid=\"proof-verify\"",
+   "tabindex": "{-1}",
+   "lift": true,
+   "reason": "lift block (M1): tabIndex -1 so a tap gives :focus-within on touch; not in the Tab order"
+  },
+  {
+   "file": "frontend/src/proof/main.jsx",
+   "key": "main|class=\"proof-main\"",
+   "tabindex": "{-1}",
+   "lift": false,
+   "reason": "skip-link target"
+  },
+  {
+   "file": "frontend/src/steps/CaseViews.jsx",
+   "key": "header|testid=\"case-summary\"",
+   "tabindex": "{-1}",
+   "lift": true,
+   "reason": "lift block (M1): tabIndex -1 so a tap gives :focus-within on touch; not in the Tab order"
+  },
+  {
+   "file": "frontend/src/steps/CaseViews.jsx",
+   "key": "span|class=\"tg-tag ds-id\"#1/2",
+   "tabindex": "{0}",
+   "lift": false,
+   "reason": "focusable chip that opens its tooltip from the keyboard"
+  },
+  {
+   "file": "frontend/src/steps/CaseViews.jsx",
+   "key": "span|class=\"tg-tag ds-id\"#2/2",
+   "tabindex": "{0}",
+   "lift": false,
+   "reason": "focusable chip that opens its tooltip from the keyboard"
+  },
+  {
+   "file": "frontend/src/steps/CaseViews.jsx",
+   "key": "span|class=\"tg-tag\"#1/3",
+   "tabindex": "{0}",
+   "lift": false,
+   "reason": "focusable chip that opens its tooltip from the keyboard"
+  },
+  {
+   "file": "frontend/src/steps/CaseViews.jsx",
+   "key": "span|class=\"tg-tag\"#2/3",
+   "tabindex": "{0}",
+   "lift": false,
+   "reason": "focusable chip that opens its tooltip from the keyboard"
+  },
+  {
+   "file": "frontend/src/steps/CaseViews.jsx",
+   "key": "span|class=\"tg-tag\"#3/3",
+   "tabindex": "{0}",
+   "lift": false,
+   "reason": "focusable chip that opens its tooltip from the keyboard"
+  }
+ ]
+}

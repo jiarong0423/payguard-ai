@@ -511,7 +511,7 @@ export default function EvidenceBoard({ disputes, drafts, sandbox = null }) {
   const liveRows = board.rows.filter((row) => row.source === 'sandbox').length;
   return <div ref={boxRef} className="evidence-board" data-testid="evidence-board">
     <p className="board-triage" data-testid="evidence-board-triage">{TRIAGE_CAPTION}{liveRows ? ` · ${liveRows} from the PayPal Sandbox dispute list` : ' · sample cases'}</p>
-    <p className="board-summary" data-testid="evidence-board-summary">{board.rows.length} case{board.rows.length === 1 ? '' : 's'} · {soon.length ? soon.join(' · ') : `none due within ${DUE_SOON_DAYS} days with evidence missing or no draft`}{unscheduled.size ? ` · ${unscheduled.size} with a deadline but no evidence slot scheduled` : ''} · now {utcLabel(board.nowIso)}{board.rows.length > 2 ? ' · scroll the cards sideways for more →' : ''}</p>
+    <p className="board-summary" data-testid="evidence-board-summary">{board.rows.length} case{board.rows.length === 1 ? '' : 's'} · {soon.length ? soon.join(' · ') : `none due within ${DUE_SOON_DAYS} days with evidence missing or no draft`}{unscheduled.size ? ` · ${unscheduled.size} with a deadline but no evidence slot scheduled` : ''} · now {utcLabel(board.nowIso)}{board.rows.length > 2 ? (phone ? ' · the cards are listed one under another' : ' · scroll the cards sideways for more →') : ''}</p>
     <BoardList listRef={listRef} rows={listRows} plans={plans} unscheduled={unscheduled} onSchedule={schedule} />
     {timeline ? <figure className={`board-timeline${phone ? ' board-timeline-phone' : mid ? ' board-timeline-fit' : ''}`} data-testid="evidence-board-timeline">
       <figcaption title="Bars are the seller response window up to the due date. Bryntum Scheduler Community (MIT).">

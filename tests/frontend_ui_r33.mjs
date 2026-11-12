@@ -15,7 +15,7 @@ const dashboard = read('frontend/src/dashboard/main.jsx');
 // ---- M1: one collapsed Technical details for the evidence area, after both previews, with all of its information. ----
 {
   const start = app.indexOf('<div className="provider-disputes-body">');
-  const body = app.slice(start, app.indexOf('</details>\n        <StepSection id="evidence-board"', start));
+  const body = app.slice(start, app.indexOf('</details>\n        <StepSection id="guide-replay"', start));
   assert.ok(start > 0 && body.length > 0, 'evidence area found');
   assert.equal(body.split('<summary>Technical details</summary>').length - 1, 1, 'one Technical details in the evidence area');
   const details = body.indexOf('<details className="technical-details" data-testid="evidence-technical-details">');

@@ -352,7 +352,7 @@ assert.equal(failed.events.at(-1).type, 'RUN_ERROR', 'a failing tool ends the ru
 assert.ok(read('frontend/src/dashboard/layout.js').includes(`Recorded guide benchmark, ${benchmark.cases} cases`), 'benchmark subtitle quotes the case count from the file');
 
 // 7. Render in headless Chromium (optional)
-let render = 'SKIP (playwright is not available)';
+let render = 'UNVERIFIABLE (playwright is not available; browser stage not run; substitute evidence: module_health.mjs (CDP) + screenshots; set PAYGUARD_REQUIRE_RENDER=1 to make this a failure)';
 let chromium;
 try { ({ chromium } = createRequire(import.meta.url)('playwright')); } catch { chromium = null; }
 if (chromium && existsSync(join(frontendRoot, 'node_modules', '.bin', 'vite'))) {
@@ -404,11 +404,14 @@ if (chromium && existsSync(join(frontendRoot, 'node_modules', '.bin', 'vite'))) 
   }
 }
 
+// The static contract above passed; when the browser stage could not run the status says so instead of a bare PASS.
+const renderUnverifiable = render.startsWith('UNVERIFIABLE');
 console.log(JSON.stringify({
-  status: 'PASS',
+  status: renderUnverifiable ? 'PASS_STATIC_RENDER_UNVERIFIABLE' : 'PASS',
   sources: data.sources.map((source) => `${source.id}:${source.data.length}`),
   auditor_questions: QUESTIONS.length,
   studio_calls_per_question: Object.fromEntries(Object.entries(studioCalls).map(([question, calls]) => [question, calls.join(' ')])),
   custom_widgets: [DEADLINE_WIDGET, CHECKLIST_WIDGET],
   render,
 }));
+if (renderUnverifiable && process.env.PAYGUARD_REQUIRE_RENDER === '1') process.exit(1);

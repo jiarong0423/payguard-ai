@@ -235,6 +235,9 @@ EXACT_FILES = (
     "tests/frontend_bryntum_board_contract.mjs",
     "tests/frontend_bryntum_board_render.mjs",
     "tests/frontend_bundle_budget.mjs",
+    # Module layer contract (static): modules.css selectors stay inside named modules; the map is shared with module_health.
+    "tests/frontend_module_layer.mjs",
+    "tests/fixtures/module_map.json",
     "tests/frontend_bryntum_render.mjs",
     "tests/frontend_guide_funnel_r30.mjs",
     "tests/frontend_guide_live_api.mjs",

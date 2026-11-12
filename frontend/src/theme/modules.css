@@ -8,7 +8,7 @@ table.tg-box { font-variant-numeric: tabular-nums; }
 .step-more.tg-mod { border-radius: 0; }
 
 /* The page's one solid primary button. */
-.tg-box .hero-cta.tg-btn, .evidence-toolbar.tg-block [data-testid="dispute-draft"]:enabled, .app-shell:has(.tg-mod) .phone-action-bar .button:enabled { background: var(--pg-color-accent); color: var(--pg-color-on-accent); border-color: var(--pg-color-accent); }
+.tg-box .hero-cta.tg-btn, .evidence-toolbar.tg-block [data-testid="dispute-draft"]:enabled, .phone-action-bar .tg-box--phone-cta:enabled { background: var(--pg-color-accent); color: var(--pg-color-on-accent); border-color: var(--pg-color-accent); }
 
 /* Overview: ticket top-aligned with the eyebrow; the four counts read as one ledger row. */
 .tg-mod--ov-hero { align-items: start; }
@@ -32,7 +32,7 @@ table.tg-box { font-variant-numeric: tabular-nums; }
 /* 1024-1279: policy check and country check side by side, 5 : 7, as at 1280 and up. */
 @media (min-width: 1024px) and (max-width: 1279px) {
   #compliance .stage-content:has(> .tg-mod) { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--pg-space-5); align-items: start; }
-  #compliance .stage-content > .tg-mod, #compliance .stage-content > .tg-mod ~ * { grid-column: 1 / -1; }
+  #compliance .stage-content:has(> .tg-mod) > * { grid-column: 1 / -1; }
   #compliance .stage-content > .compliance-layout.tg-mod { grid-column: 1; grid-template-columns: minmax(0, 1fr); }
   #compliance .stage-content > .stage-block:has(> .tg-mod) { grid-column: 2; }
 }
@@ -52,8 +52,11 @@ table.tg-box { font-variant-numeric: tabular-nums; }
 
 /* Disputes: Next step is the foot of the case head; the AI step recedes; the phone shows 1 day beside the amount. */
 .tg-lift.ds-head.tg-block { margin-bottom: 0; }
-.tg-lift.ds-head + .tg-block { margin: 0; padding: var(--pg-space-4) var(--pg-space-6); background: var(--pg-color-panel); border-top: 1px solid var(--pg-color-rule-soft); }
+/* The case grid keeps a 16px row gap; the step pulls itself up by that gap so head and step are one unit. */
+.tg-lift.ds-head + .tg-block { margin: calc(-1 * var(--pg-space-4)) 0 0; padding: var(--pg-space-4) var(--pg-space-6); background: var(--pg-color-panel); border-top: 1px solid var(--pg-color-rule-soft); }
 .tg-block--ds-ai.tg-block { background: var(--pg-color-recede); border: 0; box-shadow: none; }
+/* The AI try-it box is a 44px touch target at every width (the original rule is 36px above 640px). */
+.tg-block--ds-ai .ds-ai__tryrow > * { min-height: 44px; }
 @media (max-width: 767px) {
   .tg-box.ds-head__figs { display: grid; grid-template-columns: min-content minmax(0, 1fr); gap: var(--pg-space-3); }
   .tg-box.ds-head__figs .ds-head__num--sub { font-size: var(--pg-text-3); }
@@ -62,14 +65,67 @@ table.tg-box { font-variant-numeric: tabular-nums; }
 
 /* Lift: "ledger slab". At rest flat. Pointed at (desktop) or tapped (phone, tabindex -1 + :focus-within) it rises toward
    the top-left light by 4px (2px on phones) and shows a solid 4px (3px) thickness on the right and bottom; the other
-   blocks of the same step page dim to .90 (desktop only; Overview and Proof have no sibling blocks to dim). */
+   blocks of the same step page dim to .90 (desktop only; Overview and Proof have no sibling blocks to dim). A block that
+   carries risk text (a risk stamp, risk line or due deadline) is not dimmed, so its risk text keeps its full contrast. */
 .tg-lift { position: relative; transition: transform 180ms ease-out, box-shadow 180ms ease-out; --tg-edge: color-mix(in srgb, var(--pg-color-khaki), var(--pg-color-structure)); }
 @media (hover: hover) and (pointer: fine) {
-  .tg-lift:hover, .tg-lift:focus-within { transform: translate(-4px, -4px); box-shadow: inset 1px 1px 0 var(--pg-color-on-accent), 4px 4px 0 var(--tg-edge), 4px 5px 2px color-mix(in srgb, var(--pg-color-structure) 22%, transparent), 4px 10px 12px color-mix(in srgb, var(--pg-color-structure) 14%, transparent), 4px 18px 28px color-mix(in srgb, var(--pg-color-structure) 8%, transparent) !important; }
-  .stage-accordion:has(.tg-lift:hover) .tg-block:not(.tg-lift):not(.tg-block .tg-block):not(:has(.tg-lift:hover)), .stage-accordion:has(.tg-lift:focus-within) .tg-block:not(.tg-lift):not(.tg-block .tg-block):not(:has(.tg-lift:focus-within)) { filter: brightness(.9); }
+  .tg-lift:is(:hover, :focus-within) { transform: translate(-4px, -4px); box-shadow: inset 1px 1px 0 var(--pg-color-on-accent), 4px 4px 0 var(--tg-edge), 4px 5px 2px color-mix(in srgb, var(--pg-color-structure) 22%, transparent), 4px 10px 12px color-mix(in srgb, var(--pg-color-structure) 14%, transparent), 4px 18px 28px color-mix(in srgb, var(--pg-color-structure) 8%, transparent) !important; }
+  .stage-accordion:has(.tg-lift:is(:hover, :focus-within)) .tg-block:not(.tg-lift, .tg-block .tg-block, :has(.tg-lift:is(:hover, :focus-within), [class*=risk], [class*=due])) { filter: brightness(.9); }
 }
 @media (hover: none) {
   .tg-lift:focus-within { transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--tg-edge), 3px 6px 8px color-mix(in srgb, var(--pg-color-structure) 14%, transparent) !important; }
 }
-@media (prefers-reduced-motion: reduce) { .tg-lift { transition: none; } .tg-lift:hover, .tg-lift:focus-within { transform: none; } }
+@media (prefers-reduced-motion: reduce) { .tg-lift { transition: none; } .tg-lift:is(:hover, :focus-within) { transform: none; } }
 @media (forced-colors: active) { .tg-block { filter: none !important; } }
+
+/* M2 (LAYOUT_DECISION B). Structure moved in the JSX; these rules only place the moved pieces. */
+/* Disputes: from 1280px the rail holds the queue, the case timeline and the recorded hosted send (in flow, not sticky,
+   since it now runs about as long as the case column); More spans the full measure under both columns. */
+@media (min-width: 1280px) {
+  #disputes .stage-body > .ds-side.tg-mod--ds-rail { position: static; max-height: none; overflow: visible; gap: var(--pg-space-6); }
+  .tg-mod--ds-rail > :is(.ds-log, .ds-hosted) { font-size: var(--pg-text-2); }
+  .tg-mod--ds-rail > .ds-log { border-top: var(--pg-layout-rule-block) solid var(--pg-color-ink); }
+  .tg-mod--ds-rail .tg-log__entry { grid-template-columns: 64px minmax(0, 1fr); }
+  .tg-mod--ds-rail .tg-log__entry::before { left: 60px; }
+  .tg-mod--ds-rail .tg-log__when { padding-right: 8px; letter-spacing: .04em; }
+  .tg-mod--ds-rail .tg-log__body { padding-left: 16px; }
+}
+@media (max-width: 1279px) {
+  .tg-mod--ds-rail > .ds-log { margin: var(--pg-space-4) var(--pg-space-4) 0; }
+  .tg-mod--ds-rail > .ds-hosted { margin-inline: var(--pg-space-4); }
+  .ds-case > .ds-queue-col.tg-mod { padding: 0; }
+}
+@media (max-width: 640px) {
+  .tg-mod--ds-rail > :is(.ds-log, .ds-hosted) { margin-inline: var(--pg-space-3); }
+}
+#disputes .stage-body + .step-more.tg-mod { margin-top: var(--pg-space-6); }
+/* Deadline board tab panel: in the case area's place, under the view tabs (focus ring: the global :focus-visible). */
+.tg-mod--ds-board { margin-top: var(--pg-space-4); }
+/* The two id tags of the case head stay on one line, side by side. */
+.tg-box.ds-head__tags > .ds-id { white-space: nowrap; }
+
+/* Check a sale: the key rules sit in the verdict focus, 5 : 7 beside the verdict from 1024px, under it below. */
+@media (min-width: 1024px) {
+  #compliance .country-result--portal.tg-block:has(> .tg-box--ck-rules) { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 0 var(--pg-space-6); align-items: start; }
+  .tg-box--ck-rules { padding-left: var(--pg-space-5); border-left: 1px solid var(--pg-color-rule-soft); }
+}
+@media (max-width: 1023px) {
+  .tg-box--ck-rules { margin-top: var(--pg-space-4); padding-top: var(--pg-space-3); border-top: 1px solid var(--pg-color-rule-soft); }
+}
+.tg-box--ck-rules > #country-view-rows > ul { margin-top: 0; }
+
+/* Sales spike and Overview folds: open, with no summary line, above phone width; folded on phones. */
+.tg-box--vs-facts > * + * { margin-top: var(--pg-space-2); }
+@media (min-width: 641px) {
+  :is(.tg-box--vs-facts, .tg-box--ov-steps) > summary { display: none; }
+}
+@media (max-width: 640px) {
+  :is(.tg-box--vs-facts, .tg-box--ov-steps) > summary { display: flex; align-items: center; justify-content: space-between; gap: var(--pg-space-2); min-height: 44px; font-size: var(--pg-text-2); font-weight: 600; border-top: 1px solid var(--pg-color-rule-soft); }
+  .tg-box--ov-steps[open] > summary { margin-bottom: var(--pg-space-4); }
+}
+.tg-box--ov-replay > summary { display: flex; align-items: center; justify-content: space-between; gap: var(--pg-space-3); min-height: 44px; }
+.tg-box--ov-replay > summary > .tg-eyebrow { margin: 0; }
+.tg-box--ov-replay[open] > summary { margin-bottom: var(--pg-space-3); }
+
+/* Deadline board on a narrow column: the cards stack in one full-width column (no sideways strip). */
+@media (max-width: 640px) { .tg-mod--ds-board .board-list { display: grid; overflow: visible; } }

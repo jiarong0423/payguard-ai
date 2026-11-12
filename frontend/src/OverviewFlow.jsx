@@ -11,7 +11,7 @@
 // Icons come from the sprite (theme/iconMap.js). (a11y 4a) The send ticket carries the page's one focus-size icon, a 56px key
 // figure and a heavier ink rule on top, so it, not the headline, is the first thing a squinting eye finds.
 // SendTicket is also exported so App.jsx can place it beside the hero (render <OverviewFlow ticket={false} /> then).
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import figures from './data/overview_figures_v1.json';
 import facts from './data/proof_facts_v1.json';
 import checkSale from './data/check_sale_examples_v1.json';
@@ -49,7 +49,23 @@ export function SendTicket({ onOpen }) {
   </section>;
 }
 
+// (M2) Phone width, same breakpoint as the console's other phone folds (640px).
+function usePhone() {
+  const query = '(max-width: 640px)';
+  const [phone, setPhone] = useState(() => typeof window !== 'undefined' && window.matchMedia(query).matches);
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    const update = () => setPhone(media.matches);
+    update();
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+  return phone;
+}
+
 export default function OverviewFlow({ onOpen, ticket = true }) {
+  const phone = usePhone();
+  const [stepsOpen, setStepsOpen] = useState(false);
   const rules = figures.country_rules;
   const example = figures.step1_example;
   const send = figures.step3_send;
@@ -100,6 +116,8 @@ export default function OverviewFlow({ onOpen, ticket = true }) {
       ? <div className="tg-split ov-top"><div className="ov-top__facts">{factsRow}</div><SendTicket onOpen={onOpen} /></div>
       : null}
 
+    {/* (M2 2026-11-12) Phones: the 01/02/03 cards repeat the step tabs above, so they start folded; wider screens show them open. */}
+    <details className="ov-flow-fold tg-box tg-box--ov-steps" data-testid="overview-steps-fold" open={!phone || stepsOpen} onToggle={(event) => { if (phone) setStepsOpen(event.currentTarget.open); }}><summary>The three steps</summary>
     <ol className="ov-flow tg-cards3 tg-mod tg-mod--ov-flow" aria-label="The seller flow, step by step">
       <li className="ov-step">
         <a className="ov-step__link" href="#compliance" data-testid="overview-step-compliance" onClick={open('compliance')}>
@@ -159,6 +177,7 @@ export default function OverviewFlow({ onOpen, ticket = true }) {
         </a>
       </li>
     </ol>
+    </details>
     {!ticket && <div className="ov-facts-row tg-mod tg-mod--ov-facts">{factsRow}</div>}
 
 
@@ -172,8 +191,10 @@ export default function OverviewFlow({ onOpen, ticket = true }) {
     </figure>
 
     <section className="tg-card ov-replay tg-mod" aria-label="Recorded replay of an earlier send" data-testid="overview-replay">
-      <p className="tg-eyebrow">{dateLabel(replay.date)} local send: recorded replay (nothing is sent now)</p>
+      {/* (M2 2026-11-12) The replay is a fold: its date line is the summary, the walk-through opens on demand. */}
+      <details className="ov-replay__fold tg-box tg-box--ov-replay" data-testid="overview-replay-fold"><summary><span className="tg-eyebrow">{dateLabel(replay.date)} local send: recorded replay (nothing is sent now)</span></summary>
       <Suspense fallback={<p className="tg-small" role="status">Loading the recorded replay</p>}><RecordedSendReplay /></Suspense>
+      </details>
     </section>
   </div>;
 }

@@ -117,7 +117,7 @@ const grab = (name) => { const match = section.match(new RegExp(`(?:const ${name
 
 // ---- #13: Technical details last in the evidence area and set apart. ----
 {
-  const body = app.slice(app.indexOf('<div className="provider-disputes-body">'), app.indexOf('</details>\n        <StepSection id="evidence-board"'));
+  const body = app.slice(app.indexOf('<div className="provider-disputes-body">'), app.indexOf('</details>\n        <StepSection id="guide-replay"'));
   const tech = body.indexOf('<details className="technical-details" data-testid="evidence-technical-details">');
   assert.ok(tech > body.indexOf('{trackingPreview && <div className="evidence-preview tracking-preview"') && tech > body.indexOf('data-testid="evidence-debug-id"'), 'below the previews and the Debug-Id line');
   assert.equal(body.slice(body.indexOf('</details>', tech) + '</details>'.length).trim(), '</div>', 'nothing after it in the send area');

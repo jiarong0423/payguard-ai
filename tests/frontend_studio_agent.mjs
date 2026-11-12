@@ -280,7 +280,7 @@ assert.ok(read('backend/app/demo_mode.py').includes('("POST", "/api/v1/studio/ag
 assert.ok(read('tools/record_studio_agent_run.mjs').includes("if (mode !== 'live') throw new Error"), 'the recorder refuses to run unless live');
 
 // 6. Browser: the real Studio loop with a fake model (optional) -------------------------------------------------
-let browserStage = 'SKIP (playwright is not available)';
+let browserStage = 'UNVERIFIABLE (playwright is not available; browser stage not run; substitute evidence: module_health.mjs (CDP) + screenshots; set PAYGUARD_REQUIRE_RENDER=1 to make this a failure)';
 let chromium;
 try { ({ chromium } = createRequire(import.meta.url)('playwright')); } catch { chromium = null; }
 if (chromium && existsSync(join(frontendRoot, 'node_modules', '.bin', 'vite'))) {
@@ -341,7 +341,10 @@ if (chromium && existsSync(join(frontendRoot, 'node_modules', '.bin', 'vite'))) 
   }
 }
 
-console.log(JSON.stringify({ status: 'PASS', adapter: 'closed', recording_schema: RECORDING_SCHEMA, browser: browserStage }));
+// The static contract above passed; when the browser stage could not run the status says so instead of a bare PASS.
+const browserUnverifiable = browserStage.startsWith('UNVERIFIABLE');
+console.log(JSON.stringify({ status: browserUnverifiable ? 'PASS_STATIC_BROWSER_UNVERIFIABLE' : 'PASS', adapter: 'closed', recording_schema: RECORDING_SCHEMA, browser: browserStage }));
+if (browserUnverifiable && process.env.PAYGUARD_REQUIRE_RENDER === '1') process.exit(1);
 
 // Four recorded live runs (2026-11-09): the committed recording holds all four questions and replay finds each one.
 {

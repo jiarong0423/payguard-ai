@@ -18,9 +18,10 @@ import { BRYNTUM_PACKAGE, detectBryntum } from '../frontend/src/optional/vitePlu
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const frontendRoot = join(projectRoot, 'frontend');
 
+// Without a browser this test cannot render anything: it says UNVERIFIABLE (never PASS) and names the reason.
 function skip(reason) {
-  console.log(`frontend_bryntum_board_render: SKIP (${reason})`);
-  process.exit(0);
+  console.log(`frontend_bryntum_board_render: UNVERIFIABLE (${reason}; render not checked; substitute evidence: module_health.mjs (CDP) + screenshots; set PAYGUARD_REQUIRE_RENDER=1 to make this a failure)`);
+  process.exit(process.env.PAYGUARD_REQUIRE_RENDER === '1' ? 1 : 0);
 }
 
 const bryntum = detectBryntum(frontendRoot);

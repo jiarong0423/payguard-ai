@@ -3,12 +3,18 @@
 // the frontend fixtures were hand-written; here the receipts come from backend/app/paypal.py itself.
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
+import { existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { assertSandboxReceipt } from '../frontend/src/api.js';
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const python = process.env.PAYGUARD_PYTHON_BIN || resolve(projectRoot, '.venv/bin/python3');
+// Fail closed with a greppable reason when the backend runtime is missing (never a TypeError, never a pass).
+if (!existsSync(python)) {
+  console.error(`ERROR PAYGUARD_RUNTIME_MISSING: no Python runtime at ${python}; create .venv or set PAYGUARD_PYTHON_BIN`);
+  process.exit(1);
+}
 const pythonProgram = String.raw`
 import json
 from datetime import datetime, timezone
@@ -32,7 +38,7 @@ const generated = spawnSync(python, ['-c', pythonProgram], {
   encoding: 'utf8',
   maxBuffer: 1024 * 1024,
 });
-assert.equal(generated.status, 0, generated.stderr || generated.stdout);
+assert.equal(generated.status, 0, `ERROR receipt generator failed: ${generated.stderr || generated.stdout || String(generated.error)}`);
 const cases = JSON.parse(generated.stdout.trim());
 assert.equal(cases.length, 8);
 for (const { action, invoice_id: invoiceId, receipt } of cases) {

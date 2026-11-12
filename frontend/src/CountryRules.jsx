@@ -466,29 +466,33 @@ export default function CountryRules({ session, onResult, onContinue, onSessionE
         // (R5 2026-11-12) With a slot from the page (under the three sample cards) the verdict is drawn there; the
         // wrapper repeats the state class so the same .country-result.is-* colours apply. Same Verdict, same test ids.
         const verdict = <div className="country-verdict" data-testid="country-verdict"><Verdict result={result} names={names} tags={result.checked_tags} onEdit={editItem} onContinue={onContinue} /></div>;
-        return verdictTarget ? createPortal(<div className={`country-result country-result--portal tg-focus ${verdictState(result)} tg-block tg-lift`} tabIndex={-1} data-testid="country-verdict-focus">{verdict}</div>, verdictTarget) : verdict;
+        // (M2 2026-11-12) The rules to check first and "See all rules" sit in the focus beside the verdict, so the
+        // verdict and the rule behind it are read once, together; the right column keeps the form. Same test ids.
+        return verdictTarget ? createPortal(<div className={`country-result country-result--portal tg-focus ${verdictState(result)} tg-block tg-lift`} tabIndex={-1} data-testid="country-verdict-focus">{verdict}<div className="country-focus-rules tg-box tg-box--ck-rules">{rules()}</div></div>, verdictTarget) : verdict;
       })()}
       {!result.blocked && unlock?.after && <BeforeAfter record={unlock} names={names} />}
-      {(() => {
-        const seen = new Set();
-        const list = (items, where) => <ul>{items.map((row, at) => <Finding key={`${row.code}-${row.text}`} row={row} retrievedAt={result.retrieved_at} gloss={(text) => withGloss(text, seen)}
-          chain={{ key: `${where}-${at}`, names, result }} />)}</ul>;
-        return <>
-          <div id="country-view-rows" data-testid="country-key-rules">
-            {keyRows.length > 0 ? list(keyRows, 'key') : <p className="country-footnote">No rule to check first.</p>}
-          </div>
-          {foldViews.length > 0 && <details className="sandbox-details country-all-rules" data-testid="country-all-rules"><summary>See all rules and notes</summary>
-            <div className="segmented" role="tablist" aria-label="Which rules to show"
-              onKeyDown={(event) => tabKeyDown(event, foldViews.map(([key]) => key), shown, setView, (key) => `country-view-${key}`)}>
-              {foldViews.map(([key, label, testId]) => <button key={key} type="button" role="tab" id={`country-view-${key}`} data-testid={testId} aria-selected={shown === key} tabIndex={shown === key ? 0 : -1} aria-controls="country-view-fold" className={shown === key ? 'is-active' : ''} onClick={() => setView(key)}>{label}</button>)}
-            </div>
-            <div id="country-view-fold" role="tabpanel" aria-labelledby={`country-view-${shown}`}>{list(foldRows, shown)}</div>
-          </details>}
-        </>;
-      })()}
+      {!verdictTarget && rules()}
       <small className="country-footnote">Paraphrased from official pages, {result.retrieved_at}. Not legal advice.</small>
       <LineCheckNote />
     </div>}
     </div>
   </section>;
+
+  function rules() {
+    const seen = new Set();
+    const list = (items, where) => <ul>{items.map((row, at) => <Finding key={`${row.code}-${row.text}`} row={row} retrievedAt={result.retrieved_at} gloss={(text) => withGloss(text, seen)}
+      chain={{ key: `${where}-${at}`, names, result }} />)}</ul>;
+    return <>
+      <div id="country-view-rows" data-testid="country-key-rules">
+        {keyRows.length > 0 ? list(keyRows, 'key') : <p className="country-footnote">No rule to check first.</p>}
+      </div>
+      {foldViews.length > 0 && <details className="sandbox-details country-all-rules" data-testid="country-all-rules"><summary>See all rules and notes</summary>
+        <div className="segmented" role="tablist" aria-label="Which rules to show"
+          onKeyDown={(event) => tabKeyDown(event, foldViews.map(([key]) => key), shown, setView, (key) => `country-view-${key}`)}>
+          {foldViews.map(([key, label, testId]) => <button key={key} type="button" role="tab" id={`country-view-${key}`} data-testid={testId} aria-selected={shown === key} tabIndex={shown === key ? 0 : -1} aria-controls="country-view-fold" className={shown === key ? 'is-active' : ''} onClick={() => setView(key)}>{label}</button>)}
+        </div>
+        <div id="country-view-fold" role="tabpanel" aria-labelledby={`country-view-${shown}`}>{list(foldRows, shown)}</div>
+      </details>}
+    </>;
+  }
 }
