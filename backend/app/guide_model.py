@@ -43,6 +43,9 @@ from .ai_brief import (
 from .ai_usage import UsageInvalid, parse_usage
 
 GUIDE_MODEL_ENV = "PAYGUARD_GUIDE_MODEL"
+# (K10, 2026-11-13) The API-key guide worker may answer from this listed fallback when the primary call fails
+# at the provider; the reply is validated exactly as before.
+GUIDE_API_KEY_FALLBACK_MODEL = "gemini-3.5-flash-lite"
 GUIDE_OPERATION = "map_guide_clauses"
 GUIDE_PROMPT_ID = "payguard-guide-chooser-v6"
 GUIDE_CONTRACT = 2
@@ -207,7 +210,7 @@ def parse_guide_envelope_with_usage(raw, scenario):
     result = envelope["result"]
     if envelope["status"] != "ok" or type(result) is not dict or set(result) != {"reply", "prompt_sha256", "model"}:
         raise GuideModelError("guide_response_invalid")
-    if result["prompt_sha256"] != guide_prompt(scenario)["sha256"] or result["model"] != MODEL:
+    if result["prompt_sha256"] != guide_prompt(scenario)["sha256"] or result["model"] not in (MODEL, GUIDE_API_KEY_FALLBACK_MODEL):
         raise GuideModelError("guide_response_invalid")
     reply = result["reply"]
     if type(reply) is not str or not reply.isascii() or not 0 < len(reply) <= eg.MAX_CHOOSER_BYTES:

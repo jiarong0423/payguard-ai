@@ -1,5 +1,5 @@
 {
-  "created_at_utc": "2026-11-12T17:42:53Z",
+  "created_at_utc": "2026-11-12T18:30:30Z",
   "dependency_locks": {
     "frontend_npm": "0f98893564efb5556cc0a92710feedcb9da085108f9668fee93f29940b87f09d",
     "gemini_python": "36554331392d6102519a4ead5778704c4ff89e79da6bb9d6648b656f130724bb",
@@ -141,11 +141,11 @@
       "source_sha256": "78666dbfb3add5b02fff8b9c63cd405bbd19edf798522151ff3709ba0fe82807"
     },
     {
-      "bytes": 16096,
+      "bytes": 16358,
       "path": "backend/app/guide_model.py",
-      "sha256": "97d41dca0f924ae6b15ec1bbd1b40a4f225cd38c6fad99ddd44aa94af9508025",
+      "sha256": "f1036c76cc1d90d12be904a782a86e4f8ea6ac302bc12484a318e8f8319ec0be",
       "source_path": "backend/app/guide_model.py",
-      "source_sha256": "97d41dca0f924ae6b15ec1bbd1b40a4f225cd38c6fad99ddd44aa94af9508025"
+      "source_sha256": "f1036c76cc1d90d12be904a782a86e4f8ea6ac302bc12484a318e8f8319ec0be"
     },
     {
       "bytes": 47264,
@@ -2432,16 +2432,16 @@
     {
       "bytes": 7894,
       "path": "integrations/gemini/check_runtime.py",
-      "sha256": "019d2c35b7f3fad0027538c95f55a84423cd9d24e15f52f899d82ae5b66368f8",
+      "sha256": "0282ad8af7300ee14e028b42c12751f856341b3c2b4be6ea7266789ad7fa5e7a",
       "source_path": "integrations/gemini/check_runtime.py",
-      "source_sha256": "019d2c35b7f3fad0027538c95f55a84423cd9d24e15f52f899d82ae5b66368f8"
+      "source_sha256": "0282ad8af7300ee14e028b42c12751f856341b3c2b4be6ea7266789ad7fa5e7a"
     },
     {
       "bytes": 1074,
       "path": "integrations/gemini/pyproject.toml",
-      "sha256": "5dc51aeb44f9d30875e534d8a425bfe788c63c6310c3a16f8e87ea0e3aa5a3b0",
+      "sha256": "c3577e620cb92e9c26af32d74c07853c35ddb6b253b41ca505eec8e6c9a00fa1",
       "source_path": "integrations/gemini/pyproject.toml",
-      "source_sha256": "5dc51aeb44f9d30875e534d8a425bfe788c63c6310c3a16f8e87ea0e3aa5a3b0"
+      "source_sha256": "c3577e620cb92e9c26af32d74c07853c35ddb6b253b41ca505eec8e6c9a00fa1"
     },
     {
       "bytes": 51446,
@@ -2465,11 +2465,11 @@
       "source_sha256": "a010a95824708cab0a44d9c3cf85da343ac6a8149a553a0bf12bd1415c241287"
     },
     {
-      "bytes": 41220,
+      "bytes": 42846,
       "path": "integrations/gemini/worker.py",
-      "sha256": "6159d3bf1e18100a7fce720bbbca47aabfeb6bc6f2b843404eeb981dd34f4ca1",
+      "sha256": "49052c453cd31420918db2b404422133f2add30d4f16f4c58939843c0dc46598",
       "source_path": "integrations/gemini/worker.py",
-      "source_sha256": "6159d3bf1e18100a7fce720bbbca47aabfeb6bc6f2b843404eeb981dd34f4ca1"
+      "source_sha256": "49052c453cd31420918db2b404422133f2add30d4f16f4c58939843c0dc46598"
     },
     {
       "bytes": 845,
@@ -3863,8 +3863,8 @@
     "scope": "RECORDED_OWNER_RIGHTS_AND_ENTRANT_ELIGIBILITY"
   },
   "package_digest_algorithm": "sha256(sorted utf-8 '<file_sha256>  <relative_path>\\n' records; manifest and detached hash excluded)",
-  "package_digest_sha256": "5c48f892d52e7eeb098cdfba099a2319f838cb8435d7dc5ee4c3210d67d3430d",
-  "public_artifact_id": "payguard-public-source-5c48f892d52e7eeb",
+  "package_digest_sha256": "7765c651672f46c6bee1d7b9bf816ff19932879e532dfc51226c8274bb174b26",
+  "public_artifact_id": "payguard-public-source-7765c651672f46c6",
   "publication_authorized": false,
   "raw_bounded_prompt_disclosure": {
     "intent": "INTENTIONAL_PUBLIC_EXECUTABLE_PRODUCT_SOURCE",

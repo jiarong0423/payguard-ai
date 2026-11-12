@@ -23,7 +23,7 @@ PROJECT_MARKERS = {
     'backend/app/main.py': '0e9744f780bbe266295113e527b74f6425bee72df8cce4c33d15338f0639978d',
     'backend/app/store.py': '5284479938776b1a4897cc50655009c6c49645cc991b0932fe49e68b7b76cbcd',
     'integrations/gemini/run.sh': '6f276cb1cbe6905a5d04e8c107afb83487fd0898c2ab405da28fc8ee18979203',
-    'integrations/gemini/worker.py': '6159d3bf1e18100a7fce720bbbca47aabfeb6bc6f2b843404eeb981dd34f4ca1',
+    'integrations/gemini/worker.py': '49052c453cd31420918db2b404422133f2add30d4f16f4c58939843c0dc46598',
 }
 EXPECTED_PART_FIELDS = frozenset(
     {

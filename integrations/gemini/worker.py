@@ -541,14 +541,19 @@ def _guide_timeouts():
     return guide_model.GUIDE_HTTP_TIMEOUT_SECONDS, guide_model.GUIDE_PROVIDER_TIMEOUT_SECONDS
 
 
-def _api_key_response_metadata(response) -> None:
+# (K10, 2026-11-13) Guide on the API-key transport only: when the primary model call fails at the provider (for
+# example a free-tier key that may not call it), the same turn tries one listed fallback model. Nothing else changes:
+# same prompt, schema, validation and deadline; a timeout is never retried.
+
+
+def _api_key_response_metadata(response, expected_model=MODEL) -> None:
     """AI Studio may report a versioned model name and may omit the response id; identity is still checked."""
     model_version = _safe_provider_scalar(
         getattr(response, "model_version", None),
         r"[A-Za-z0-9_.:/-]{1,256}",
         ValidationSubcode.RESPONSE_MODEL_IDENTITY_INVALID,
     )
-    if model_version != MODEL and not model_version.startswith(MODEL + "-"):
+    if model_version != expected_model and not model_version.startswith(expected_model + "-"):
         response_fail(ValidationSubcode.RESPONSE_MODEL_IDENTITY_INVALID)
     response_id = getattr(response, "response_id", None)
     if response_id is not None:
@@ -609,23 +614,45 @@ class GeminiGuideWorkerAdapter:
                 automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
             )
             contents = [types.Content(role="user", parts=[types.Part(text=logical["contents"])])]
+            used_model = MODEL
             async with asyncio.timeout(guide_model.GUIDE_PROVIDER_TIMEOUT_SECONDS):
                 async with parent_client.aio as async_client:
-                    response = await async_client.models.generate_content(
-                        model=MODEL,
-                        contents=contents,
-                        config=sdk_config,
-                    )
+                    try:
+                        response = await async_client.models.generate_content(
+                            model=MODEL,
+                            contents=contents,
+                            config=sdk_config,
+                        )
+                    except (TimeoutError, asyncio.TimeoutError, asyncio.CancelledError):
+                        raise
+                    except Exception:
+                        if not api_key_transport:
+                            raise
+                        used_model = guide_model.GUIDE_API_KEY_FALLBACK_MODEL
+                        fallback_config = types.GenerateContentConfig(
+                            system_instruction=logical["system_instruction"],
+                            max_output_tokens=logical["max_output_tokens"],
+                            response_mime_type="application/json",
+                            response_json_schema=logical["response_json_schema"],
+                            temperature=guide_model.GUIDE_TEMPERATURE,
+                            tools=[],
+                            automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
+                        )
+                        response = await async_client.models.generate_content(
+                            model=used_model,
+                            contents=contents,
+                            config=fallback_config,
+                        )
                 async_closed = True
             _CALL_USAGE.set(_usage_metadata(response))
             text = _single_text_part(response)
             if guide_rules.validate_increments(text, logical["scenario"], 2) is None:
                 response_fail(ValidationSubcode.RESPONSE_SCHEMA_INVALID)
             if api_key_transport:
-                _api_key_response_metadata(response)
+                _api_key_response_metadata(response, used_model)
             else:
                 _response_metadata(response)
-            return {"reply": text, "prompt_sha256": logical["prompt_sha256"], "model": MODEL}
+            return {"reply": text, "prompt_sha256": logical["prompt_sha256"], "model": used_model}
         except AiBriefError:
             raise
         except (TimeoutError, asyncio.TimeoutError):
