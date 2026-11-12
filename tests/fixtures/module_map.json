@@ -342,6 +342,10 @@
   {
    "selector": ":is(#compliance, #velocity) .step-more.tg-mod > summary",
    "reason": "Coordinator K5 (user 2026-11-13): More fold title uses the same 16px inset as the other step folds"
+  },
+  {
+   "selector": ".tg-mod--ck-three .check-three__row > .check-three__card.tg-block--ck-sample.tg-block > *",
+   "reason": "Coordinator K12 (user 2026-11-13): sample cards in the Three sample sales fold stack in one column; children span the single column so text never overlaps"
   }
  ],
  "index_html_style_sha16": [

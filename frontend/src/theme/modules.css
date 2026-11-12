@@ -341,3 +341,8 @@ a.tg-link:has(> svg[data-icon]) { display: grid; grid-auto-flow: column; justify
 :is(#compliance, #velocity) .step-more.tg-mod > summary { padding-inline: var(--pg-space-4); }
 /* K7 (R2 B1): on phones caseViews.css:87 gave the Sales spike fold a 12px side margin; the folds below it sit at 0. */
 @media (max-width: 640px) { #velocity .stage-fold.tg-mod { margin-inline: 0; } }
+/* K12 (user 2026-11-13): inside the "Three sample sales" fold each card is about 300px wide, but its 4-column grid
+   (stamp 160 | result | detail | button 150) left the middle columns 0px wide, so the text overlapped. Stack each
+   card in one column: stamp, result, detail, then the button. */
+.tg-mod--ck-three .check-three__row > .check-three__card.tg-block--ck-sample.tg-block { grid-template-columns: minmax(0, 1fr) !important; grid-template-areas: none !important; align-content: start; gap: var(--pg-space-2); }
+.tg-mod--ck-three .check-three__row > .check-three__card.tg-block--ck-sample.tg-block > * { grid-column: 1 / -1 !important; grid-row: auto !important; grid-area: auto !important; min-width: 0; }

@@ -1,5 +1,5 @@
 {
-  "created_at_utc": "2026-11-12T18:44:45Z",
+  "created_at_utc": "2026-11-12T18:53:37Z",
   "dependency_locks": {
     "frontend_npm": "0f98893564efb5556cc0a92710feedcb9da085108f9668fee93f29940b87f09d",
     "gemini_python": "36554331392d6102519a4ead5778704c4ff89e79da6bb9d6648b656f130724bb",
@@ -2276,11 +2276,11 @@
       "source_sha256": "7397b15e1fa66eaf6ff9b59fe91d483cb5c3bcf75b2fe052097ab6f0593b513a"
     },
     {
-      "bytes": 32276,
+      "bytes": 32992,
       "path": "frontend/src/theme/modules.css",
-      "sha256": "d0e53bc229f87be8a604214ac32054bb9eb6d76e09f7bdcbbeb657fefec4de3a",
+      "sha256": "98585b823acd10eeb404d935a86ffbf377de44a1d81d2ff7954e7ace52c77d4f",
       "source_path": "frontend/src/theme/modules.css",
-      "source_sha256": "d0e53bc229f87be8a604214ac32054bb9eb6d76e09f7bdcbbeb657fefec4de3a"
+      "source_sha256": "98585b823acd10eeb404d935a86ffbf377de44a1d81d2ff7954e7ace52c77d4f"
     },
     {
       "bytes": 3165,
@@ -2738,11 +2738,11 @@
       "source_sha256": "1592c1088e38c12c8beabf17df3f1e7d56336f32d4c062ee5ce595c80c7bbdec"
     },
     {
-      "bytes": 36590,
+      "bytes": 36877,
       "path": "tests/fixtures/module_map.json",
-      "sha256": "0204d32612faadd520239c86d166ebdb5ee673d4bf6dc1af250a9fefe636d2fe",
+      "sha256": "e35c599b078d284765b5a761c19b7fb6edaef40a7d8a08f844e31ba9f8cf7e70",
       "source_path": "tests/fixtures/module_map.json",
-      "source_sha256": "0204d32612faadd520239c86d166ebdb5ee673d4bf6dc1af250a9fefe636d2fe"
+      "source_sha256": "e35c599b078d284765b5a761c19b7fb6edaef40a7d8a08f844e31ba9f8cf7e70"
     },
     {
       "bytes": 16986,
@@ -3863,8 +3863,8 @@
     "scope": "RECORDED_OWNER_RIGHTS_AND_ENTRANT_ELIGIBILITY"
   },
   "package_digest_algorithm": "sha256(sorted utf-8 '<file_sha256>  <relative_path>\\n' records; manifest and detached hash excluded)",
-  "package_digest_sha256": "a9a036f54a44541956d38c1320b5872c1ddd0d9d52344b69213ecde2a72e71c2",
-  "public_artifact_id": "payguard-public-source-a9a036f54a445419",
+  "package_digest_sha256": "2ec1faf57dbedcbf33f47a008550949d0c7cd66a378bc3a56e847d77291126e5",
+  "public_artifact_id": "payguard-public-source-2ec1faf57dbedcbf",
   "publication_authorized": false,
   "raw_bounded_prompt_disclosure": {
     "intent": "INTENTIONAL_PUBLIC_EXECUTABLE_PRODUCT_SOURCE",
